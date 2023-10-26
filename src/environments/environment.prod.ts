@@ -1,6 +1,6 @@
 export const environment = {
-    production: true,
-    URL_BACKEND: 'api.dominio.com/',
-    URL_SERVICE: 'api.dominio.com/api',
-    URL_FRONTEND: 'ecommerce.dominio.com',
+    production: false,
+    URL_BACKEND: 'http://localhost:3000/',
+    URL_SERVICE: 'http://localhost:3000/api/',
+    URL_FRONTEND: 'http://localhost:5000/',
 };
