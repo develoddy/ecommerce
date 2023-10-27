@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_sercices/auth.service';
+import { AuthService } from '../_services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -16,9 +17,13 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     public _authService: AuthService,
+    public _router: Router
   ){}
 
   ngOnInit(): void {
+    if (this._authService.user) {
+      this._router.navigate(['/']);
+    }
   }
 
   register() {
