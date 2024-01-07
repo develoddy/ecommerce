@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HomeService } from './_services/home.service';
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
+declare function ModalProductDetail():any;
 
 @Component({
   selector: 'app-home',
@@ -14,15 +15,13 @@ export class HomeComponent implements OnInit {
   categories:any = [];
   besProducts:any = [];
   ourProducts:any = [];
+  product_selected:any=null;
 
   constructor(
     public homeService: HomeService,
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
-
     this.homeService.listHome().subscribe((resp:any) => {
       console.log(resp.categories);
       this.sliders = resp.sliders;
@@ -33,5 +32,15 @@ export class HomeComponent implements OnInit {
         HOMEINITTEMPLATE($)
       }, 50);
     });
+  }
+
+  openModal(besProduct:any) {
+    this.product_selected = null;
+    setTimeout(() => {
+      this.product_selected = besProduct;
+      setTimeout(() => {
+        ModalProductDetail();
+      }, 50);
+    }, 150);
   }
 }
