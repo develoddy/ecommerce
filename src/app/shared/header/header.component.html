@@ -59,7 +59,7 @@
                             <span class="icon"><i class="fal fa-bars"></i></span>
                             <span class="text">Categories</span>
                         </button>
-                        <nav class="department-nav-menu">
+                        <nav class="department-nav-menu" [ngClass]="{'d-none': !isHome()}">
                             <button class="sidebar-close"><i class="fas fa-times"></i></button>
                             <ul class="nav-menu-list">
                                 <li>

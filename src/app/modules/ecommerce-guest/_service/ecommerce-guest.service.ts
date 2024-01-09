@@ -5,14 +5,14 @@ import { URL_SERVICE } from 'src/app/config/config';
 @Injectable({
   providedIn: 'root'
 })
-export class HomeService {
+export class EcommerceGuestService {
 
   constructor(
     public _http: HttpClient
   ) { }
 
-  listHome(TIME_NOW:any = "") {
-    let URL = URL_SERVICE+"home/list?TIME_NOW="+TIME_NOW;
+  showLandingProduct(slug:string) {
+    let URL = URL_SERVICE+"home/show_landing_product/"+slug;
     return this._http.get(URL);
   }
 }

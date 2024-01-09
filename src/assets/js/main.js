@@ -1043,9 +1043,9 @@ function ModalProductDetail() {
     });
     }
 
-    $('.pro-qty').prepend('<span class="dec qtybtn">-</span>');
-    $('.pro-qty').append('<span class="inc qtybtn">+</span>');
-    $('.qtybtn').on('click', function() {
+    $('.modal_product .pro-qty').prepend('<span class="dec qtybtn">-</span>');
+    $('.modal_product .pro-qty').append('<span class="inc qtybtn">+</span>');
+    $('.modal_product .qtybtn').on('click', function() {
         var $button = $(this);
         var oldValue = $button.parent().find('input').val();
         if ($button.hasClass('inc')) {
@@ -1059,5 +1059,94 @@ function ModalProductDetail() {
             }
         }
         $button.parent().find('input').val(newVal);
+    });
+}
+
+function LandingProductDetail() {
+    $('.product-small-thumb-2').slick({
+        infinite: true,
+        slidesToShow: 6,
+        slidesToScroll: 1,
+        arrows: false,
+        dots: false,
+        focusOnSelect: true,
+        speed: 800,
+        asNavFor: '.product-large-thumbnail-2',
+        responsive: [{
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 5,
+                }
+            },
+            {
+                breakpoint: 479,
+                settings: {
+                    slidesToShow: 4,
+                }
+            }
+        ]
+    });
+
+    $('.product-large-thumbnail-2').slick({
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        dots: false,
+        speed: 800,
+        draggable: false,
+        asNavFor: '.product-small-thumb-2',
+        prevArrow: '<button class="slide-arrow prev-arrow"><i class="fal fa-long-arrow-left"></i></button>',
+        nextArrow: '<button class="slide-arrow next-arrow"><i class="fal fa-long-arrow-right"></i></button>'
+    });
+
+    $('.landing-product .pro-qty').prepend('<span class="dec qtybtn">-</span>');
+    $('.landing-product .pro-qty').append('<span class="inc qtybtn">+</span>');
+    $('.landing-product .qtybtn').on('click', function() {
+        var $button = $(this);
+        var oldValue = $button.parent().find('input').val();
+        if ($button.hasClass('inc')) {
+            var newVal = parseFloat(oldValue) + 1;
+        } else {
+            // Don't allow decrementing below zero
+            if (oldValue > 0) {
+                var newVal = parseFloat(oldValue) - 1;
+            } else {
+                newVal = 0;
+            }
+        }
+        $button.parent().find('input').val(newVal);
+    });
+
+    $('.recent-product-activation').slick({
+        infinite: true,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        arrows: true,
+        dots: false,
+        prevArrow: '<button class="slide-arrow prev-arrow"><i class="fal fa-long-arrow-left"></i></button>',
+        nextArrow: '<button class="slide-arrow next-arrow"><i class="fal fa-long-arrow-right"></i></button>',
+        responsive: [{
+                breakpoint: 1199,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3
+                }
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+            },
+            {
+                breakpoint: 479,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
     });
 }

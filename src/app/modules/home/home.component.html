@@ -169,7 +169,7 @@
                             <div class="slick-single-layout">
                                 <div class="axil-product product-style-three">
                                     <div class="thumbnail">
-                                        <a href="single-product.html">
+                                        <a [routerLink]="['/landing-product', besProduct.slug]">
                                             <img data-sal="fade" style="width: 255px; height: 255px; object-fit: cover;" data-sal-delay="100" data-sal-duration="1500" [src]="besProduct.imagen" alt="Product Images">
                                         </a>
                                         <div class="product-hover-action">
@@ -192,7 +192,7 @@
                                         </span>
                                                 <span class="rating-number">(18)</span>
                                             </div>
-                                            <h5 class="title"><a href="single-product.html"> {{besProduct.title}} </a></h5>
+                                            <h5 class="title"><a [routerLink]="['/landing-product', besProduct.slug]"> {{besProduct.title}} </a></h5>
                                             <div class="product-price-variant">
                                                 <span class="price current-price"> {{besProduct.price_soles}} PEN </span>
                                                 <!-- <span class="price old-price">$50</span> -->
