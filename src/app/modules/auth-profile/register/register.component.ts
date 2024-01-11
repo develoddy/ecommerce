@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { Router } from '@angular/router';
 
+declare function alertDanger([]):any;
+declare function alertWarning([]):any;
+declare function alertSuccess([]):any;
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -33,11 +37,11 @@ export class RegisterComponent implements OnInit {
       !this.surname ||
       !this.password ||
       !this.repeat_password) {
-        alert("Todos los campos son requeridos");
+        alertDanger("Todos los campos son requeridos");
     }
 
     if(this.password != this.repeat_password) {
-      alert("Las contraseñas deben ser iguales");
+      alertDanger("Las contraseñas deben ser iguales");
     }
 
     let data = {

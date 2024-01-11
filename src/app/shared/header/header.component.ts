@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
+
 
 @Component({
   selector: 'app-header',
@@ -8,12 +10,27 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   
+  listCarts:any=[];
+  totalCarts:any=0;
+
   constructor(
-    public _router: Router
+    public _router: Router,
+    public _cartService: CartService,
   ) {
 
   }
   ngOnInit() {
+    this._cartService.currenteDataCart$.subscribe((resp:any) => {
+      this.listCarts = resp;
+      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+    });
+    if (this._cartService._authService.user) {
+      this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
+        resp.carts.forEach((cart:any) => {
+          this._cartService.changeCart(cart);
+        });
+      });
+    }
   }
 
   isHome() {

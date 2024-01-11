@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
     let TIME_NOW = new Date().getTime();
 
     this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
-      console.log(resp);
+      //console.log(resp);
       this.sliders = resp.sliders;
       this.categories = resp.categories;
       this.besProducts = resp.bes_products;
@@ -69,9 +69,9 @@ export class HomeComponent implements OnInit {
 
   getCalNewPrice(product:any) {
     if (this.FlashSale.type_discount == 1) {
-      return product.price_soles - product.price_soles*this.FlashSale.discount*0.01;
+      return product.price_usd - product.price_usd*this.FlashSale.discount*0.01;
     } else {
-      return product.price_soles - this.FlashSale.discount;
+      return product.price_usd - this.FlashSale.discount;
     }
   }
 }

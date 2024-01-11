@@ -30,7 +30,7 @@ function HOMEINITTEMPLATE ($, undefined) {
             axilInit.campaignCountdown('.campaign-countdown', '2022/10/01');
             axilInit.countdownInit('.poster-countdown', '2022/10/01');
             //axilInit.countdownInit('.sale-countdown', '2024/10/31');
-            axilInit.sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');
+            //axilInit.sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');
             axilInit.sideOffcanvasToggle('.mobile-nav-toggler', '.header-main-nav');
             axilInit.sideOffcanvasToggle('.department-side-menu', '.department-nav-menu');
             axilInit.sideOffcanvasToggle('.filter-toggle', '.axil-shop-sidebar');
@@ -1148,5 +1148,130 @@ function LandingProductDetail() {
                 }
             }
         ]
+    });
+}
+
+
+function sideOffcanvasToggle(selectbtn, openElement) {
+
+    $('body').on('click', selectbtn, function(e) {
+        e.preventDefault();
+        console.log("click");
+        var $this = $(this),
+            wrapp = $this.parents('body'),
+            wrapMask = $('<div / >').addClass('closeMask'),
+            cartDropdown = $(openElement);
+
+        if (!(cartDropdown).hasClass('open')) {
+            wrapp.addClass('open');
+            cartDropdown.addClass('open');
+            cartDropdown.parent().append(wrapMask);
+            wrapp.css({
+                'overflow': 'hidden'
+
+            });
+
+        } else {
+            removeSideMenu();
+        }
+
+        function removeSideMenu() {
+            wrapp.removeAttr('style');
+            wrapp.removeClass('open').find('.closeMask').remove();
+            cartDropdown.removeClass('open');
+        }
+
+        $('.sidebar-close, .closeMask').on('click', function() {
+            removeSideMenu();
+        });
+    });
+}
+
+function sectionCart() {
+    // $('.section-cart .pro-qty').prepend('<span class="dec qtybtn">-</span>');
+    // $('.section-cart .pro-qty').append('<span class="inc qtybtn">+</span>');
+    // $('.section-cart .qtybtn').on('click', function() {
+    //     var $button = $(this);
+    //     var oldValue = $button.parent().find('input').val();
+    //     if ($button.hasClass('inc')) {
+    //         var newVal = parseFloat(oldValue) + 1;
+    //     } else {
+    //         // Don't allow decrementing below zero
+    //         if (oldValue > 0) {
+    //             var newVal = parseFloat(oldValue) - 1;
+    //         } else {
+    //             newVal = 0;
+    //         }
+    //     }
+    //     $button.parent().find('input').val(newVal);
+    // });
+}
+
+function alertDanger(TEXT){
+    const notification = document.getElementById("notification-ecommerce-danger");
+    const closeBtn = document.getElementById("close");
+
+    notification?.classList.add("notification-show");
+
+    var SECONDS = 0;
+    var showTime = () => {
+      SECONDS ++;
+      $("#notification-ecommerce-danger .btn-secondary").text(SECONDS);
+    };
+    $("#notification-ecommerce-danger .text-message-notification").text(TEXT);
+    var timer = setInterval(showTime, 1000);
+    setTimeout(() => {
+      clearInterval(timer);
+      document.getElementById("notification-ecommerce-danger")?.classList.remove("notification-show");
+    }, 6000);
+
+    closeBtn.addEventListener("click", () => {
+      document.getElementById("notification-ecommerce-danger")?.classList.remove("notification-show");
+    });
+}
+
+function alertWarning(TEXT){
+  const notification = document.getElementById("notification-ecommerce-warning");
+  const closeBtn = document.getElementById("close");
+
+  notification?.classList.add("notification-show");
+
+  var SECONDS = 0;
+  var showTime = () => {
+    SECONDS ++;
+    $("#notification-ecommerce-warning .btn-secondary").text(SECONDS);
+  };
+  $("#notification-ecommerce-warning .text-message-notification").text(TEXT);
+  var timer = setInterval(showTime, 1000);
+  setTimeout(() => {
+    clearInterval(timer);
+    document.getElementById("notification-ecommerce-warning")?.classList.remove("notification-show");
+  }, 6000);
+
+  closeBtn.addEventListener("click", () => {
+    document.getElementById("notification-ecommerce-warning")?.classList.remove("notification-show");
+  });
+}
+
+function alertSuccess(TEXT){
+  const notification = document.getElementById("notification-ecommerce-success");
+    const closeBtn = document.getElementById("close");
+
+    notification?.classList.add("notification-show");
+
+    var SECONDS = 0;
+    var showTime = () => {
+      SECONDS ++;
+      $("#notification-ecommerce-success .btn-secondary").text(SECONDS);
+    };
+    $("#notification-ecommerce-success .text-message-notification").text(TEXT);
+    var timer = setInterval(showTime, 1000);
+    setTimeout(() => {
+      clearInterval(timer);
+      document.getElementById("notification-ecommerce-success")?.classList.remove("notification-show");
+    }, 6000);
+
+    closeBtn.addEventListener("click", () => {
+      document.getElementById("notification-ecommerce-success")?.classList.remove("notification-show");
     });
 }

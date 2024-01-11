@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { Router } from '@angular/router';
 
+declare function alertDanger([]):any;
+declare function alertWarning([]):any;
+declare function alertSuccess([]):any;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -25,11 +29,11 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (!this.email) {
-      alert("Es necesario ingresar el email");
+      alertDanger("Es necesario ingresar el email");
     }
 
     if (!this.password) {
-      alert("Es necesario ingresar el password");
+      alertDanger("Es necesario ingresar el password");
     }
 
     this._authService.login(this.email, this.password).subscribe((resp:any) => {
@@ -39,7 +43,7 @@ export class LoginComponent implements OnInit {
        if (!resp.error && resp) {
         this._router.navigate(["/"]);
       } else {
-        alert(resp.error.message)
+        alertDanger(resp.error.message)
       }
     });
   }

@@ -30,7 +30,7 @@
                         <div class="single-product-content">
                             <div class="inner">
                                 <h2 class="product-title">{{product_selected.title}}</h2>
-                                <span class="price-amount">{{product_selected.price_soles}} PEN</span>
+                                <span class="price-amount">{{product_selected.price_usd}} USD</span>
                                 <div class="product-rating">
                                     <div class="star-rating">
                                         <i class="fas fa-star"></i>
@@ -72,7 +72,7 @@
                                         <h6 class="title">Size:</h6>
                                         <ul class="range-variant">
                                             <ng-container *ngFor="let variedad of product_selected.variedades">
-                                                <li>{{variedad.valor}}</li>
+                                                <li (click)="selectedVariedad(variedad)">{{variedad.valor}}</li>
                                             </ng-container>
                                         </ul>
                                     </div>
@@ -83,12 +83,12 @@
                                 <!-- Start Product Action Wrapper  -->
                                 <div class="product-action-wrapper d-flex-center landing-product">
                                     <!-- Start Quentity Action  -->
-                                    <div class="pro-qty mr--20"><input type="text" value="1"></div>
+                                    <div class="pro-qty mr--20"><input type="text" id="qty-cart" value="1"></div>
                                     <!-- End Quentity Action  -->
 
                                     <!-- Start Product Action  -->
                                     <ul class="product-action d-flex-center mb--0">
-                                        <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-primary">Add to Cart</a></li>
+                                        <li class="add-to-cart"><a href="#" onclick="return false;" (click)="addCart(product_selected)" class="axil-btn btn-bg-primary">Add to Cart</a></li>
                                         <li class="wishlist"><a href="wishlist.html" class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li>
                                     </ul>
                                     <!-- End Product Action  -->
@@ -382,7 +382,7 @@
                                     <h5 class="title"><a [href]="'/landing-product/' + related_product.slug">{{related_product.title}}</a></h5>
                                     <div class="product-price-variant">
                                         <!-- <span class="price old-price">$30</span> -->
-                                        <span class="price current-price">{{related_product.price_soles}} PEN</span>
+                                        <span class="price current-price">{{related_product.price_usd}} USD</span>
                                     </div>
                                     <div class="color-variant-wrapper">
                                         <ul class="color-variant">
@@ -449,7 +449,7 @@
                                                         <div class="product-badget">{{product_selected_modal.FlashSale.discount}} % OFF</div>
                                                     </div>
                                                     <div class="label-block label-right" *ngIf="product_selected_modal.FlashSale.type_discount == 2">
-                                                        <div class="product-badget">{{product_selected_modal.FlashSale.discount}} PEN OFF</div>
+                                                        <div class="product-badget">{{product_selected_modal.FlashSale.discount}} USD OFF</div>
                                                     </div>
                                                 </ng-container>
                                                 
@@ -507,9 +507,9 @@
                                         </div>
                                     </div>
                                     <h3 class="product-title">{{product_selected_modal.title}}</h3>
-                                    <span class="price-amount" *ngIf="!product_selected_modal.FlashSale ">{{product_selected_modal.price_soles}} PEN</span>
-                                    <span class="price-amount" *ngIf="product_selected_modal.FlashSale "> <del>{{product_selected_modal.price_soles}} PEN</del></span>
-                                    <span class="price-amount" *ngIf="product_selected_modal.FlashSale ">{{ getCalNewPrice(product_selected_modal)}} PEN</span>
+                                    <span class="price-amount" *ngIf="!product_selected_modal.FlashSale ">{{product_selected_modal.price_usd}} USD</span>
+                                    <span class="price-amount" *ngIf="product_selected_modal.FlashSale "> <del>{{product_selected_modal.price_usd}} USD</del></span>
+                                    <span class="price-amount" *ngIf="product_selected_modal.FlashSale ">{{ getCalNewPrice(product_selected_modal)}} USD</span>
                                     <ul class="product-meta">
                                         <li><i class="fal fa-check"></i>In stock</li>
                                         <li><i class="fal fa-check"></i>Free delivery available</li>
@@ -562,7 +562,7 @@
 
                                         <!-- Start Product Action  -->
                                         <ul class="product-action d-flex-center mb--0">
-                                            <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-primary">Add to Cart</a></li>
+                                            <li class="add-to-cart"><a href="#" onclick="return false;" (click)="addCart(product_selected)" class="axil-btn btn-bg-primary">Add to Cart</a></li>
                                             <li class="wishlist"><a href="wishlist.html" class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li>
                                         </ul>
                                         <!-- End Product Action  -->

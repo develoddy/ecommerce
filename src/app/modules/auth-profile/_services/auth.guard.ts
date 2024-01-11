@@ -16,12 +16,17 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if ( !this._authService.user || this._authService.token ) {
+      if ( !this._authService.user || !this._authService.token ) {
         this._router.navigate(["auth/login"]);
         return false;
       }
 
       let token = this._authService.token;
+      console.log("DEBUGG auth.guarda:");
+      console.log(token);
+      
+      
+
       let expiration = (JSON.parse(atob(token.split('.')[1]))).exp;
       if (Math.floor((new Date).getTime() / 1000) >= expiration) {
         this._authService.logout();
