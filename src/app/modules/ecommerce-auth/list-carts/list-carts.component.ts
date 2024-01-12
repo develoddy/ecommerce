@@ -16,6 +16,7 @@ export class ListCartsComponent implements OnInit {
 
   listCarts:any=[];
   totalCarts:any=0;
+  code_cupon:any=null;
 
   constructor(
     public _router: Router,
@@ -83,5 +84,34 @@ export class ListCartsComponent implements OnInit {
       console.log(resp);
       this._cartService.removeItemCart(cart);
     });
+  }
+
+  apllyCupon() {
+    let data = {
+      code: this.code_cupon,
+      user_id: this._cartService._authService.user._id,
+
+    }
+
+    this._cartService.apllyCupon(data).subscribe((resp:any) => {
+      console.log(resp);
+      if (resp.message == 403) {
+        alertDanger(resp.message_text);
+      } else {
+        alertSuccess(resp.message_text);
+        this.listAllCarts();
+      }
+    });
+  }
+
+  listAllCarts() {
+    this._cartService.resetCart();
+        if (this._cartService._authService.user) {
+          this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
+            resp.carts.forEach((cart:any) => {
+              this._cartService.changeCart(cart);
+            });
+          });
+        }
   }
 }

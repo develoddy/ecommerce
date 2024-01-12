@@ -32,7 +32,7 @@
                                         </ng-container>
                                        
                                     </td>
-                                    <td class="product-price" data-title="Price"><span class="currency-symbol"></span>{{cart.price_unitario}} USD</td>
+                                    <td class="product-price" data-title="Price"><span class="currency-symbol"></span>{{ cart.subtotal }} USD</td>
                                     <td class="section-cart product-quantity" data-title="Qty">
                                         <div class="pro-qty">
                                             <span class="dec qtybtn" (click)="dec(cart)">-</span>
@@ -40,7 +40,7 @@
                                             <span class="inc qtybtn" (click)="inc(cart)">+</span>
                                         </div>
                                     </td>
-                                    <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol"></span>{{cart.total}} USD</td>
+                                    <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol"></span>{{ cart.total }} USD</td>
                                 </tr>
                             </ng-container>
                         </tbody>
@@ -48,13 +48,13 @@
                 </div>
                 <div class="cart-update-btn-area">
                     <div class="input-group product-cupon">
-                        <input placeholder="Enter coupon code" type="text">
+                        <input placeholder="Enter coupon code" type="text" [(ngModel)]="code_cupon">
                         <div class="product-cupon-btn">
-                            <button type="submit" class="axil-btn btn-outline">Apply</button>
+                            <button type="submit" class="axil-btn btn-outline" (click)="apllyCupon()">Apply</button>
                         </div>
                     </div>
                     <div class="update-btn">
-                        <a href="#" class="axil-btn btn-outline">Update Cart</a>
+                        <a href="#" onclick="return false;" class="axil-btn btn-outline" (click)="listAllCarts()" >Update Cart</a>
                     </div>
                 </div>
                 <div class="row">
@@ -91,7 +91,7 @@
                                         </tr>
                                         <tr class="order-total">
                                             <td>Total</td>
-                                            <td class="order-total-amount">{{totalCarts}} USD</td>
+                                            <td class="order-total-amount">{{ totalCarts }} USD</td>
                                         </tr>
                                     </tbody>
                                 </table>

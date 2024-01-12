@@ -103,7 +103,7 @@ export class LandingProductComponent implements OnInit {
       code_cupon: null,
       code_discount: null,
       price_unitario: this.product_selected.price_usd,
-      subtotal: this.product_selected.price_usd*$("#qty-cart").val(),
+      subtotal: this.product_selected.price_usd, //*$("#qty-cart").val(),
       total: this.product_selected.price_usd*$("#qty-cart").val(), // De momento es igual, luego aplicamos el descuento
     }
     this._cartService.registerCart(data).subscribe((resp:any) => {

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EcommerceAuthComponent } from './ecommerce-auth.component';
 import { ListCartsComponent } from './list-carts/list-carts.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 const routes: Routes = [{
   path: '',
@@ -10,6 +11,10 @@ const routes: Routes = [{
     {
       path: "list-carts",
       component: ListCartsComponent,
+    },
+    {
+      path: "payment-process",
+      component: CheckoutComponent,
     }
   ]
 }];

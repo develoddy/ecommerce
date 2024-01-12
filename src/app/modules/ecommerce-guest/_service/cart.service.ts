@@ -64,4 +64,10 @@ export class CartService {
     let URL = URL_SERVICE+"cart/delete/"+cart_id;
     return this._http.delete(URL, {headers: headers});
   }
+
+  apllyCupon(data:any) {
+    let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE+"cart/aplly_cupon";
+    return this._http.post(URL, data, {headers: headers});
+  }
 }
