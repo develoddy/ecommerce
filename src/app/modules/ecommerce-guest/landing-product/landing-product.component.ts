@@ -22,6 +22,8 @@ export class LandingProductComponent implements OnInit {
   product_selected_modal:any=null;
   related_products:any = [];
   variedad_selected:any=null;
+  discount_id:any;
+  SALE_FLASH:any = null;
 
   constructor(
     public _ecommerce_guestService: EcommerceGuestService,
@@ -35,12 +37,16 @@ export class LandingProductComponent implements OnInit {
       this.slug = resp["slug"];
     });
 
+    this._routerActived.queryParams.subscribe((resp:any) => {
+      this.discount_id = resp["_id"];
+    });
+
     console.log(this.slug);
-    this._ecommerce_guestService.showLandingProduct(this.slug).subscribe((resp:any) => {
+    this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
       console.log(resp);
       this.product_selected = resp.product;
       this.related_products = resp.related_products;
-
+      this.SALE_FLASH = resp.SALE_FLASH;
       setTimeout(() => {
         LandingProductDetail();
       }, 50);
@@ -56,6 +62,18 @@ export class LandingProductComponent implements OnInit {
         ModalProductDetail();
       }, 50);
     }, 150);
+  }
+
+  getDiscount() {
+    let discount = 0;
+    if (this.SALE_FLASH) {
+      if (this.SALE_FLASH.type_discount == 1) {
+        return this.SALE_FLASH.discount*this.product_selected.price_usd*0.01;
+      } else {
+        return this.SALE_FLASH.discount;
+      }
+    }
+    return discount;
   }
 
   getCalNewPrice(product:any) {
@@ -96,15 +114,15 @@ export class LandingProductComponent implements OnInit {
     let data = {
       user: this._cartService._authService.user._id,
       product: this.product_selected._id,
-      type_discount: null,
-      discount: 0,
+      type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
+      discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
       cantidad: $("#qty-cart").val(),
       variedad: this.variedad_selected ? this.variedad_selected._id : null,
       code_cupon: null,
-      code_discount: null,
+      code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
       price_unitario: this.product_selected.price_usd,
-      subtotal: this.product_selected.price_usd, //*$("#qty-cart").val(),
-      total: this.product_selected.price_usd*$("#qty-cart").val(), // De momento es igual, luego aplicamos el descuento
+      subtotal: this.product_selected.price_usd - this.getDiscount(),  //*$("#qty-cart").val(),
+      total: (this.product_selected.price_usd - this.getDiscount())*$("#qty-cart").val(), // De momento es igual, luego aplicamos el descuento
     }
     this._cartService.registerCart(data).subscribe((resp:any) => {
       if (resp.message == 403) {
@@ -121,8 +139,6 @@ export class LandingProductComponent implements OnInit {
         
         this._cartService._authService.logout();
       }
-      
-    })
-    
+    });
   }
 }

@@ -41,7 +41,8 @@ export class LoginComponent implements OnInit {
       // SI NO TIENE UN ERROR Y LA RESPUESTA ES VERDADERA
       // SIGNIFICA QUE EL USUARIO SE LOGUEO CORRECTAMENTE
        if (!resp.error && resp) {
-        this._router.navigate(["/"]);
+        //this._router.navigate(["/"]); 
+        location.reload();
       } else {
         alertDanger(resp.error.message)
       }

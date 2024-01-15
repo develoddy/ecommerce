@@ -30,7 +30,14 @@
                         <div class="single-product-content">
                             <div class="inner">
                                 <h2 class="product-title">{{product_selected.title}}</h2>
-                                <span class="price-amount">{{product_selected.price_usd}} USD</span>
+                                <ng-container *ngIf="getDiscount() > 0">
+                                    <br>
+                                    <small>DESCUENTO POR:<b> {{ SALE_FLASH.type_campaign == 1 ? 'CAMPAÑA DE DESCUENTO' : 'VENTA FLASH' }} </b></small> <br>
+                                    <small>PRECIO ANTERIOR: <b><del> {{ product_selected.price_usd }} USD</del></b></small>
+                                    
+                                </ng-container>
+                                <!-- <span class="price-amount" *ngIf="getDiscount() > 0"> <del> {{ product_selected.price_usd }} USD</del></span> -->
+                                <span class="price-amount">{{ product_selected.price_usd - getDiscount() }} USD</span>
                                 <div class="product-rating">
                                     <div class="star-rating">
                                         <i class="fas fa-star"></i>

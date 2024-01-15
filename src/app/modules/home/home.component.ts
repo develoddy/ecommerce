@@ -28,7 +28,8 @@ export class HomeComponent implements OnInit {
     let TIME_NOW = new Date().getTime();
 
     this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
-      //console.log(resp);
+      console.log("DEBBUG: home.component ngOninit");
+      console.log(resp);
       this.sliders = resp.sliders;
       this.categories = resp.categories;
       this.besProducts = resp.bes_products;
@@ -73,5 +74,23 @@ export class HomeComponent implements OnInit {
     } else {
       return product.price_usd - this.FlashSale.discount;
     }
+  }
+
+  getDiscountProduct(besProduct:any) {
+    if (besProduct.campaing_discount) {
+      if (besProduct.campaing_discount.type_discount == 1) { // 1 porcentaje
+        return besProduct.price_usd*besProduct.campaing_discount.discount*0.01;
+      } else { // 2 es moneda
+        return besProduct.campaing_discount.discount;
+      }
+    }
+    return 0;
+  }
+
+  getRouterDiscount(besProduct:any) {
+    if (besProduct.campaing_discount) {
+      return {_id: besProduct.campaing_discount._id};
+    }
+    return {};
   }
 }

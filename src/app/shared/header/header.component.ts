@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit {
   
   listCarts:any=[];
   totalCarts:any=0;
+  user:any;
 
   constructor(
     public _router: Router,
@@ -20,6 +21,7 @@ export class HeaderComponent implements OnInit {
 
   }
   ngOnInit() {
+    this.user = this._cartService._authService.user;
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
@@ -35,5 +37,16 @@ export class HeaderComponent implements OnInit {
 
   isHome() {
     return this._router.url == "" || this._router.url == "/" ? true : false;
+  }
+
+  logout() {
+    this._cartService._authService.logout();
+  }
+
+  removeCart(cart:any) {
+    this._cartService.deleteCart(cart._id).subscribe((resp:any) => {
+      console.log(resp);
+      this._cartService.removeItemCart(cart);
+    });
   }
 }

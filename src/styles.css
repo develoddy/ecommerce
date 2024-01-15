@@ -34,6 +34,10 @@
     animation: warning 600ms ease-in-out forwards;
     display: flex;
   }
+
+  .star-del {
+    color: #ccc !important;
+  }
   
   @keyframes warning {
     0% {

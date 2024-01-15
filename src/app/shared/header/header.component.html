@@ -370,12 +370,12 @@
                                 <i class="flaticon-magnifying-glass"></i>
                             </a>
                         </li>
-                        <li class="wishlist">
+                        <li class="wishlist" *ngIf="user">
                             <a href="wishlist.html">
                                 <i class="flaticon-heart"></i>
                             </a>
                         </li>
-                        <li class="shopping-cart">
+                        <li class="shopping-cart" *ngIf="user">
                             <a href="#" class="cart-dropdown-btn">
                                 <span class="cart-count">{{listCarts.length}}</span>
                                 <i class="flaticon-shopping-cart"></i>
@@ -385,6 +385,7 @@
                             <a href="javascript:void(0)">
                                 <i class="flaticon-person"></i>
                             </a>
+                            <small *ngIf="user">{{ user.name }}</small>
                             <div class="my-account-dropdown">
                                 <span class="title">QUICKLINKS</span>
                                 <ul>
@@ -401,7 +402,8 @@
                                         <a href="#">Language</a>
                                     </li>
                                 </ul>
-                                <a href="sign-in.html" class="axil-btn btn-bg-primary">Login</a>
+                                <a [routerLink]="['/auth/login']" class="axil-btn btn-bg-primary" *ngIf="!user">Login</a>
+                                <a href="#" onclick="return false;" (click)="logout()" class="axil-btn btn-bg-primary" *ngIf="user">Logout</a>
                                 <div class="reg-footer text-center">No account yet? <a href="sign-up.html" class="btn-link">REGISTER HERE.</a></div>
                             </div>
                         </li>
@@ -509,8 +511,8 @@
                 <ng-container *ngFor="let cart of listCarts">
                     <li class="cart-item">
                         <div class="item-img">
-                            <a href="single-product.html"><img [src]="cart.product.imagen" alt="Commodo Blown Lamp"></a>
-                            <button class="close-btn"><i class="fas fa-times"></i></button>
+                            <a href="single-product.html"><img [src]="cart.product.imagen" alt="Commodo Blown Lamp"></a> 
+                            <button class="close-btn" (click)="removeCart(cart)"><i class="fas fa-times"></i></button>
                         </div>
                         <div class="item-content">
                             <div class="product-rating">
@@ -540,8 +542,8 @@
                 <span class="subtotal-amount">{{ totalCarts }} USD</span>
             </h3>
             <div class="group-btn">
-                <a href="cart.html" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
-                <a href="checkout.html" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
+                <a routerLink="/list-carts" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
+                <a routerLink="/payment-process" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
             </div>
         </div>
     </div>
