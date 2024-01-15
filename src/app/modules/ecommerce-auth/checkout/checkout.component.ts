@@ -117,6 +117,7 @@ export class CheckoutComponent implements OnInit {
           this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}).subscribe((resp:any) => {
             console.log(resp);
             alertSuccess(resp.message);
+            location.reload();
           })
           // return actions.order.capture().then(captureOrderHandler);
       },

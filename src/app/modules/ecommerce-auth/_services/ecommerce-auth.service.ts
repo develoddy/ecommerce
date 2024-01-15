@@ -45,4 +45,31 @@ export class EcommerceAuthService {
     let URL = URL_SERVICE+"sale/register";
     return this._http.post(URL, data, {headers: headers});
   }
+
+  //
+  showProfileClient(data:any) {
+    let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE+"home/profile_client";
+    return this._http.post(URL, data, {headers: headers});
+  }
+
+  updateProfileClient(data:any) {
+    let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE+"home/update_client";
+    return this._http.post(URL, data, {headers: headers});
+  }
+
+  // REVIEW
+  registerProfileClientReview(data:any) {
+    let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE+"review/register";
+    return this._http.post(URL, data, {headers: headers});
+  }
+
+  updateProfileClientReview(data:any) {
+    let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE+"review/update";
+    return this._http.put(URL, data, {headers: headers});
+  }
+
 }

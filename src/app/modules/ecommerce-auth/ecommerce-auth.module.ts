@@ -9,13 +9,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { ProfileClientComponent } from './profile-client/profile-client.component';
 
 
 @NgModule({
   declarations: [
     EcommerceAuthComponent,
     ListCartsComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    ProfileClientComponent
   ],
   imports: [
     CommonModule,
