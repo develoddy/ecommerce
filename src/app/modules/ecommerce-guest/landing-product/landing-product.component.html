@@ -40,14 +40,14 @@
                                 <span class="price-amount">{{ product_selected.price_usd - getDiscount() }} USD</span>
                                 <div class="product-rating">
                                     <div class="star-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
+                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 1 }"></i>
+                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 2 }"></i>
+                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 3 }"></i>
+                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 4 }"></i>
+                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 5 }"></i>
                                     </div>
                                     <div class="review-link">
-                                        <a href="#">(<span>2</span> customer reviews)</a>
+                                        <a href="#">(<span>{{ COUNT_REVIEW }}</span> customer reviews)</a>
                                     </div>
                                 </div>
                                 <ul class="product-meta">
@@ -196,100 +196,46 @@
                                     <div class="row">
                                         <div class="col-lg-6 mb--40">
                                             <div class="axil-comment-area pro-desc-commnet-area">
-                                                <h5 class="title">01 Review for this product</h5>
+                                                <h5 class="title">{{ REVIEWS.lenght }} Review for this product</h5>
                                                 <ul class="comment-list">
-                                                    <!-- Start Single Comment  -->
-                                                    <li class="comment">
-                                                        <div class="comment-body">
-                                                            <div class="single-comment">
-                                                                <div class="comment-img">
-                                                                    <img src="./assets/images/blog/author-image-4.png" alt="Author Images">
-                                                                </div>
-                                                                <div class="comment-inner">
-                                                                    <h6 class="commenter">
-                                                                        <a class="hover-flip-item-wrapper" href="#">
-                                                                            <span class="hover-flip-item">
-                                                                                <span data-text="Cameron Williamson">Eleanor Pena</span>
-                                                                            </span>
-                                                                        </a>
-                                                                        <span class="commenter-rating ratiing-four-star">
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star empty-rating"></i></a>
-                                                                        </span>
-                                                                    </h6>
-                                                                    <div class="comment-text">
-                                                                        <p>“We’ve created a full-stack structure for our working workflow processes, were from the funny the century initial all the made, have spare to negatives. ” </p>
+                                                    <ng-container *ngFor="let REVIEW of REVIEWS">
+                                                        <!-- Start Single Comment  -->
+                                                        <li class="comment">
+                                                            <div class="comment-body">
+                                                                <div class="single-comment">
+                                                                    <div class="comment-img">
+                                                                        <img src="./assets/images/blog/author-image-4.png" alt="Author Images">
                                                                     </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <!-- End Single Comment  -->
+                                                                    <div class="comment-inner">
+                                                                        <h6 class="commenter">
+                                                                            <a class="hover-flip-item-wrapper" href="#">
+                                                                                <span class="hover-flip-item">
+                                                                                    <span data-text="Cameron Williamson">{{ REVIEW.user.name + ' ' +  REVIEW.user.surname  }}</span>
+                                                                                </span>
+                                                                            </a>
+                                                                            <span class="commenter-rating ratiing-four-star">
+                                                                                <!-- <a href="#"><i class="fas fa-star"></i></a>
+                                                                                <a href="#"><i class="fas fa-star"></i></a>
+                                                                                <a href="#"><i class="fas fa-star"></i></a>
+                                                                                <a href="#"><i class="fas fa-star"></i></a>
+                                                                                <a href="#"><i class="fas fa-star empty-rating"></i></a> -->
 
-                                                    <!-- Start Single Comment  -->
-                                                    <li class="comment">
-                                                        <div class="comment-body">
-                                                            <div class="single-comment">
-                                                                <div class="comment-img">
-                                                                    <img src="./assets/images/blog/author-image-4.png" alt="Author Images">
-                                                                </div>
-                                                                <div class="comment-inner">
-                                                                    <h6 class="commenter">
-                                                                        <a class="hover-flip-item-wrapper" href="#">
-                                                                            <span class="hover-flip-item">
-                                                                                <span data-text="Rahabi Khan">Courtney Henry</span>
+                                                                                <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 1 }"></i></a>
+                                                                                <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 2 }"></i></a>
+                                                                                <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 3 }"></i></a>
+                                                                                <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 4 }"></i></a>
+                                                                                <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 5 }"></i></a>
                                                                             </span>
-                                                                        </a>
-                                                                        <span class="commenter-rating ratiing-four-star">
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                        </span>
-                                                                    </h6>
-                                                                    <div class="comment-text">
-                                                                        <p>“We’ve created a full-stack structure for our working workflow processes, were from the funny the century initial all the made, have spare to negatives. ”</p>
+                                                                        </h6>
+                                                                        <div class="comment-text">
+                                                                            <p> {{ REVIEW.description }} </p>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </li>
-                                                    <!-- End Single Comment  -->
-
-                                                    <!-- Start Single Comment  -->
-                                                    <li class="comment">
-                                                        <div class="comment-body">
-                                                            <div class="single-comment">
-                                                                <div class="comment-img">
-                                                                    <img src="./assets/images/blog/author-image-5.png" alt="Author Images">
-                                                                </div>
-                                                                <div class="comment-inner">
-                                                                    <h6 class="commenter">
-                                                                        <a class="hover-flip-item-wrapper" href="#">
-                                                                            <span class="hover-flip-item">
-                                                                                <span data-text="Rahabi Khan">Devon Lane</span>
-                                                                            </span>
-                                                                        </a>
-                                                                        <span class="commenter-rating ratiing-four-star">
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                            <a href="#"><i class="fas fa-star"></i></a>
-                                                                        </span>
-                                                                    </h6>
-                                                                    <div class="comment-text">
-                                                                        <p>“We’ve created a full-stack structure for our working workflow processes, were from the funny the century initial all the made, have spare to negatives. ” </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <!-- End Single Comment  -->
+                                                        </li>
+                                                        <!-- End Single Comment  -->
+                                                    </ng-container>
                                                 </ul>
                                             </div>
                                             <!-- End .axil-commnet-area -->
@@ -311,7 +257,7 @@
                                                     </div>
                                                 </div>
 
-                                                <form action="#">
+                                                <!-- <form action="#">
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="form-group">
@@ -337,7 +283,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                </form> -->
                                             </div>
                                             <!-- End Comment Respond  -->
                                         </div>

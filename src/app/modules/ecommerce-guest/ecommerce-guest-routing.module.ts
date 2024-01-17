@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EcommerceGuestComponent } from './ecommerce-guest.component';
 import { LandingProductComponent } from './landing-product/landing-product.component';
+import { FilterProductsComponent } from './filter-products/filter-products.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
       {
         path: 'landing-product/:slug',
         component: LandingProductComponent
+      },
+      {
+        path: 'filter-products',
+        component: FilterProductsComponent,
       }
     ]
   }
