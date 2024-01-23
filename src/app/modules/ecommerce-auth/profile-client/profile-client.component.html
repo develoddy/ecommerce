@@ -8,9 +8,9 @@
                         <ul class="axil-breadcrumb">
                             <li class="axil-breadcrumb-item"><a href="index.html">Home</a></li>
                             <li class="separator"></li>
-                            <li class="axil-breadcrumb-item active" aria-current="page">My Account</li>
+                            <li class="axil-breadcrumb-item active" aria-current="page">My profile</li>
                         </ul>
-                        <h1 class="title">Explore All Products</h1>
+                        <h1 class="title">My profile</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-4">
@@ -30,13 +30,14 @@
         <div class="container">
             <div class="axil-dashboard-warp">
                 <div class="axil-dashboard-author">
-                    <div class="media">
-                        <div class="thumbnail">
-                            <img src="./assets/images/product/author1.png" alt="Hello Annie">
+                    <div class="media d-flex flex-row">
+                        <div class="thumbnail mb-0">
+                            <img src="./assets/images/product/author1.jpg" style="width: 50px; height: 50px;" alt="Hello Annie">
                         </div>
-                        <div class="media-body">
-                            <h5 class="title mb-0">Hello Annie</h5>
-                            <span class="joining-date">eTrade Member Since Sep 2020</span>
+                        <div class="media-body px-3">
+                            <span class="joining-date">Hello 👋</span>
+                            <h5 class="title mb-0" >{{ name_c }} {{surname_c}} </h5>
+                            
                         </div>
                     </div>
                 </div>
@@ -59,8 +60,9 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="nav-dashboard" role="tabpanel">
                                 <div class="axil-dashboard-overview">
-                                    <div class="welcome-text">Hello Annie (not <span>Annie?</span> <a href="sign-in.html">Log Out</a>)</div>
-                                    <p>From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details.</p>
+                                    <!-- <div class="welcome-text">Hello Annie (not <span>Annie?</span> <a href="sign-in.html">Log Out</a>)</div> -->
+                                    <div class="welcome-text text-primary fw-bold">{{ name_c }} {{surname_c}} </div>
+                                    <p>Desde el panel de su cuenta puede ver sus pedidos recientes, administrar sus direcciones de envío y facturación y editar su contraseña y los detalles de su cuenta.</p>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="nav-orders" role="tabpanel">
@@ -69,21 +71,24 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Order</th>
-                                                    <th scope="col">Fecha</th>
-                                                    <th scope="col">Metodo de pago</th>
-                                                    <th scope="col">Total</th>
-                                                    <th scope="col">Acción</th>
+                                                    <th scope="col">ORDER</th>
+                                                    <th scope="col">FECHA</th>
+                                                    <th scope="col">METODO DE PAGO</th>
+                                                    <th scope="col">TOTAL</th>
+                                                    <th scope="col">ACCIÓN</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <ng-container  *ngFor="let order of sale_orders">
+                                                <ng-container *ngFor="let order of sale_orders">
                                                     <tr>
                                                         <th scope="row">#{{ order.sale._id }}</th>
                                                         <td>{{ getDate(order.sale.createdAt) }}</td>
                                                         <td>{{ order.sale.method_payment }}</td>
-                                                        <td>{{ order.sale.total }} USD</td>
-                                                        <td><a href="#" onclick="return false" (click)="viewDetailSale(order)" class="axil-btn view-btn">View</a></td>
+                                                        <td class="text-primary fw-bold">{{ order.sale.total }} USD</td>
+                                                        <td>
+                                                            <a href="#" onclick="return false" (click)="viewDetailSale(order)" class="axil-btn mb-2 view-btn w-75 text-center ">View order</a>
+                                                            <a href="#" onclick="return false" (click)="viewDetailSale(order)" class="axil-btn view-btn w-75 text-center">Write a Review</a>
+                                                        </td>
                                                     </tr>
                                                 </ng-container>
                                             </tbody>

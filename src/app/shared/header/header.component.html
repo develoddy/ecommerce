@@ -385,12 +385,12 @@
                             <a href="javascript:void(0)">
                                 <i class="flaticon-person"></i>
                             </a>
-                            <small *ngIf="user">{{ user.name }}</small>
+                            <!-- <small *ngIf="user">{{ user.name }}</small> -->
                             <div class="my-account-dropdown">
                                 <span class="title">QUICKLINKS</span>
                                 <ul>
                                     <li>
-                                        <a href="my-account.html">My Account</a>
+                                        <a [routerLink]="['/profile']">My Account</a>
                                     </li>
                                     <li>
                                         <a href="#">Initiate return</a>

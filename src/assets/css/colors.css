@@ -1,0 +1,12 @@
+/* colors.css */
+
+:root {
+    --color-primary: rgb(19,17,23); 
+    --color-secondary: rgb(19,17,23); 
+    --color-tertiary: rgb(163,42,133);
+    --color-dark: rgb(19,17,23);
+    --color-light: rgb(218,225,225);
+    --color-green: rgb(95,187,135);
+    --color-gray: rgb(153,151,159);
+    --color-white: rgb(255,255,255);
+  }

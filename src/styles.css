@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('assets/css/colors.css');
 
 .notification-ecommerce {
     position: fixed;
@@ -52,3 +53,202 @@
       top: 4rem;
     }
   }
+
+  /* New style */
+/* .background-primary {
+  background-color: var(--color-primary) !important;
+} */
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  color: var(--color-white) !important;
+  background-color: var(--color-primary) !important;
+  border-radius: 6px;
+}
+p {
+  color: var(--color-primary) !important;
+}
+
+.text-primary {
+    color: var(--color-primary) !important;
+}
+
+.text-gray {
+  color: var(--color-gray) !important;
+}
+
+
+.text-light {
+  color: var(--color-light) !important;
+}
+
+.axil-product .product-content .title {
+  color: var(--color-primary) !important;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.axil-product .product-content .product-price-variant span.price {
+  margin: 4px;
+  font-weight: 900;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  color: var(--color-primary) !important;
+}
+
+.form-group input {
+  border: 1px solid var(--color-primary) !important;
+}
+
+.bg_image--9 {
+  background-image: url(../src/assets/images/bg/imglogin.jpg) !important;
+}
+
+.bg_image--10 {
+  background-image: url(../src/assets/images/bg/imgregister.jpg) !important;
+}
+
+.axil-signin-form-wrap {
+  margin: 180px 0px -30px !important;
+}
+
+.axil-dashboard-aside .nav-link.active, .axil-dashboard-aside .nav-link:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white) !important;
+}
+
+.axil-dashboard-order .table tbody .view-btn {
+  padding: 10px 10px !important;
+  border: 1px solid var(--color-primary) !important;
+}
+
+.axil-dashboard-order .table thead th {
+  font-size: 14px !important;
+  font-weight: var(--p-bold) !important;
+}
+
+.axil-dashboard-aside .nav-link {
+  color: var(--color-primary) !important;
+  font-weight: 100 !important;
+}
+
+a.axil-btn, button.axil-btn {
+  font-size: var(--font-size-b2) !important;
+  font-weight: 100 !important;
+}
+
+.bg-vista-white {
+  background-color: var(--color-white) !important;
+}
+
+.single-product-content .inner .product-rating{
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.range-variant li {
+  border: 1px solid var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+a.axil-btn.wishlist-btn, button.axil-btn.wishlist-btn {
+  border: 1px solid var(--color-primary) !important;
+}
+a.axil-btn.wishlist-btn i, button.axil-btn.wishlist-btn i {
+  color: var(--color-primary) !important;
+}
+
+a.axil-btn.wishlist-btn i, button.axil-btn.wishlist-btn i :hover {
+  color: var(--color-white);
+}
+
+/* ul li a:hover {
+  color: var(--color-white) !important;
+} */
+
+.small-thumb-style-two .small-thumb-img img {
+  border-radius: 0 !important;
+}
+
+.single-product-thumbnail .thumbnail img {
+  height: 100% !important;
+  border-radius: 0 !important;
+}
+
+.small-thumb-wrapper .small-thumb-img {
+  border-radius: 0 !important;
+}
+
+.small-thumb-wrapper .small-thumb-img img {
+  background-color: #f6f7fb !important;
+}
+
+.axil-mainmenu.aside-category-menu .header-department .department-nav-menu .nav-link:hover {
+  color: var(--color-primary) !important;
+}
+
+.product-additional-info {
+  padding: 0 !important;
+}
+
+.small-thumb-style-three {
+  margin: 0 !important;
+}
+
+.small-thumb-style-three .small-thumb-img {
+  margin: 10px 10px 0 0px !important;
+}
+
+.axil-slick-arrow .slide-arrow:before {
+  content: "";
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-primary);
+  border-radius: 50% !important;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  transition: transform .5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.axil-slick-arrow .slide-arrow {
+  border-radius: 50% !important;
+  color: var(--color-white) !important;
+}
+
+.mb--60 {
+  margin-bottom: 0 !important;
+}
+
+.comment-list .comment .single-comment .comment-img img {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.comment-list .comment .single-comment .comment-img {
+  margin-right: 5px !important;
+}
+
+.comment-list .comment .single-comment {
+  padding: 0px 0 !important;
+}
+
+.pro-desc-commnet-area .comment-list .comment .commenter .hover-flip-item-wrapper, .pro-desc-commnet-area .comment-list .comment .commenter .commenter-rating {
+  margin-bottom: 0 !important;
+}
+
+.comment-list .comment .commenter {
+  line-height: 0 !important;
+}
+
+.axil-dashboard-overview .welcome-text a {
+  color: rgb(233, 161, 59) !important;
+}
+
+.single-product-content .inner .product-rating .star-rating {
+  color: rgb(233, 161, 59) !important; 
+}

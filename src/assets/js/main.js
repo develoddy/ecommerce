@@ -1151,7 +1151,6 @@ function LandingProductDetail() {
     });
 }
 
-
 function sideOffcanvasToggle(selectbtn, openElement) {
 
     $('body').on('click', selectbtn, function(e) {

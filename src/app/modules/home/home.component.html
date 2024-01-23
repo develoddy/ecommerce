@@ -83,9 +83,41 @@
                         </div>
                         <div class="sale-countdown countdown"></div>
                     </div>
-                    <div class="new-arrivals-product-activation slick-layout-wrapper--15 axil-slick-arrow  arrow-top-slide">
+                    <div class="new-arrivals-product-activation slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
+
                         <ng-container *ngFor="let product of FlashProductList">
                             <div class="slick-single-layout">
+                                <div class="axil-product product-style-four" >
+                                    <div class="thumbnail ">
+                                        <a [routerLink]="['/landing-product', product.slug]" [queryParams]="{_id:FlashSale._id}" class="rounded-0">
+                                            <img data-sal="zoom-out" style="width: 100%; height: 300px;" class="rounded-0" data-sal-delay="100" data-sal-duration="1500"  [src]="product.imagen" alt="Product Images">
+                                        </a>
+                                        <div class="label-block label-right" *ngIf="FlashSale.type_discount == 1">
+                                            <div class="product-badget">{{FlashSale.discount}}% OFF</div>
+                                        </div>
+                                        <div class="label-block label-right" *ngIf="FlashSale.type_discount == 2">
+                                            <div class="product-badget">{{FlashSale.discount}} USD OFF</div>
+                                        </div>
+                                        <div class="product-hover-action">
+                                            <ul class="cart-action">
+                                                <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a></li>
+                                                <li class="select-option"><a href="#" onclick="return false;" (click)="addCart(product, 1)">Add to Cart</a></li>
+                                                <li class="quickview"><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal" (click)="openModal(product, FlashSale)"><i class="far fa-eye"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-content text-start">
+                                        <div class="inner">
+                                            <h2 class="title fw-bold"><a [routerLink]="['/landing-product', product.slug]" [queryParams]="{_id:FlashSale._id}">{{ product.title }}</a></h2>
+                                            <div class="product-price-variant">
+                                                <span class="price current-price">{{ getCalNewPrice(product) }} USD</span>
+                                                <span class="price old-price">{{ product.price_usd }} USD</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="slick-single-layout border border-success">
                                 <div class="axil-product product-style-four">
                                     <div class="thumbnail">
                                         <a [routerLink]="['/landing-product', product.slug]" [queryParams]="{_id:FlashSale._id}">
@@ -115,9 +147,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>  -->
                         </ng-container>
-                        <!-- End .slick-single-layout -->
+                        <!-- End .slick-single-layout -->                                                
                     </div>
                 </div>
             </div>
@@ -169,8 +201,8 @@
                             <div class="slick-single-layout">
                                 <div class="axil-product product-style-three">
                                     <div class="thumbnail">
-                                        <a [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="getRouterDiscount(besProduct)">
-                                            <img data-sal="fade" style="width: 255px; height: 255px; object-fit: cover;" data-sal-delay="100" data-sal-duration="1500" [src]="besProduct.imagen" alt="Product Images">
+                                        <a [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="getRouterDiscount(besProduct)" class="rounded-0">
+                                            <img data-sal="fade" style="width: 100%; height: 300px;" class="rounded-0" data-sal-delay="100" data-sal-duration="1500" [src]="besProduct.imagen" alt="Product Images">
                                         </a>
                                         <div class="product-hover-action">
                                             <ul class="cart-action">
@@ -260,9 +292,9 @@
                                 <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30">
                                     <div class="axil-product product-style-one">
                                         <div class="thumbnail">
-                                            <a [routerLink]="['/landing-product', ourProduct.slug]">
-                                                <img data-sal="zoom-out" style="width: 255px; height: 255px; object-fit: cover;" data-sal-delay="200" data-sal-duration="800" class="main-img" [src]="ourProduct.imagen" alt="Product Images">
-                                                <img class="hover-img" style="width: 255px; height: 255px; object-fit: cover;" [src]="ourProduct.imagen_two" alt="Product Images">
+                                            <a [routerLink]="['/landing-product', ourProduct.slug]" class="rounded-0">
+                                                <img data-sal="zoom-out" style="width: 100%; height: 300px;" data-sal-delay="200" data-sal-duration="800" class="main-img rounded-0" [src]="ourProduct.imagen" alt="Product Images">
+                                                <!-- <img class="hover-img" style="width: 255px; height: 255px; object-fit: cover;" [src]="ourProduct.imagen_two" alt="Product Images"> -->
                                             </a>
                                             <div class="label-block label-right" *ngIf="ourProduct.campaing_discount">
                                                 <div class="product-badget" *ngIf="ourProduct.campaing_discount.type_discount == 1">{{ ourProduct.campaing_discount.discount }}% Off</div>
