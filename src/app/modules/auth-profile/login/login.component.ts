@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -18,13 +19,27 @@ export class LoginComponent implements OnInit {
   
   constructor(
     public _authService: AuthService,
-    public _router: Router
-  ) { }
+    public _router: Router,
+    public translate: TranslateService
+  ) { 
+    translate.setDefaultLang('es');
+  }
 
   ngOnInit(): void {
     if (this._authService.user) {
       this._router.navigate(['/']);
     }
+  }
+
+  // Se cambia el idioma a Español
+  changeLanguageToSpanish(): void {
+    this.translate.use('es');
+    console.log('Idioma cambiado al Español');
+  }
+  // Se cambia el idioma a Inglés
+  changeLanguageToEnglish(): void {
+    this.translate.use('en');
+    console.log('Idioma cambiado al Inglés');
   }
 
   login() {
@@ -48,5 +63,4 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-
 }

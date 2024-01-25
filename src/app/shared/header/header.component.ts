@@ -1,7 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { debounceTime, fromEvent } from 'rxjs';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
+import { LanguageService } from 'src/app/services/language.service';
 
 
 @Component({
@@ -24,9 +26,27 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   constructor(
     public _router: Router,
     public _cartService: CartService,
+    public translate: TranslateService,
+    private languageService: LanguageService,
   ) {
-
+    translate.setDefaultLang('es');
   }
+
+  // changeLanguage(language: string) {
+  //   this.languageService.setLanguage(language);
+  // }
+
+  //  // Se cambia el idioma a Español
+    changeLanguageToSpanish(language: string): void {
+     this.translate.use('es');
+     //this.languageService.setLanguage(language);
+   }
+  // // Se cambia el idioma a Inglés
+   changeLanguageToEnglish(language: string): void {
+     this.translate.use('en');
+     //this.languageService.setLanguage(language);
+   }
+
   ngOnInit() {
     this.user = this._cartService._authService.user;
     this._cartService.currenteDataCart$.subscribe((resp:any) => {

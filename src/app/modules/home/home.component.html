@@ -78,8 +78,8 @@
                 <div class="product-area pb--50">
                     <div class="d-md-flex align-items-end flash-sale-section">
                         <div class="section-title-wrapper">
-                            <span class="title-highlighter highlighter-primary"><i class="fas fa-fire"></i> Today's</span>
-                            <h2 class="title">Flash Sales</h2>
+                            <span class="title-highlighter highlighter-primary"><i class="fas fa-fire"></i> {{ 'home.today' | translate }}</span>
+                            <h2 class="title">{{ 'home.flash_sales' | translate }}</h2>
                         </div>
                         <div class="sale-countdown countdown"></div>
                     </div>
@@ -161,7 +161,7 @@
             <div class="container">
                 <div class="section-title-wrapper">
                     <span class="title-highlighter highlighter-secondary"> <i class="far fa-tags"></i> Categories</span>
-                    <h2 class="title">Browse by Category</h2>
+                    <h2 class="title">{{ 'home.browse_by_category' | translate }}</h2>
                 </div>
                 <div class="categrie-product-activation slick-layout-wrapper--15 axil-slick-arrow  arrow-top-slide" >
                     <ng-container *ngFor="let categorie of categories">
@@ -194,7 +194,7 @@
                 <div class="product-area pb--50">
                     <div class="section-title-wrapper">
                         <span class="title-highlighter highlighter-primary"> <i class="far fa-shopping-basket"></i>This Month</span>
-                        <h2 class="title">Best Selling Products</h2>
+                        <h2 class="title">{{ 'home.best_selling_products' | translate }}</h2>
                     </div>
                     <div class="new-arrivals-product-activation-2 slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide product-slide-mobile">
                         <ng-container *ngFor="let besProduct of besProducts">
@@ -283,7 +283,7 @@
             <div class="container">
                 <div class="section-title-wrapper">
                     <span class="title-highlighter highlighter-primary"> <i class="fal fa-store"></i> Our Products</span>
-                    <h2 class="title">Explore our Products</h2>
+                    <h2 class="title">{{ 'home.explore_our_products' | translate }}</h2>
                 </div>
                 <div class="explore-product-activation slick-layout-wrapper slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
                     <div class="slick-single-layout">
@@ -407,7 +407,7 @@
             <div class="container">
                 <div class="section-title-wrapper">
                     <span class="title-highlighter highlighter-secondary"> <i class="fal fa-quote-left"></i>Testimonials</span>
-                    <h2 class="title">Users Feedback</h2>
+                    <h2 class="title">{{ 'home.users_feedback' | translate }}</h2>
                 </div>
                 <!-- End .section-title -->
                 <div class="testimonial-slick-activation testimonial-style-one-wrapper slick-layout-wrapper--20 axil-slick-arrow arrow-top-slide">
@@ -502,7 +502,7 @@
             <div class="container">
                 <div class="section-title-wrapper">
                     <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i> This Week’s</span>
-                    <h2 class="title">New Arrivals</h2>
+                    <h2 class="title">{{ 'home.new_arrivals' | translate }}</h2>
                 </div>
                 <div class="new-arrivals-product-activation slick-layout-wrapper--30 axil-slick-arrow  arrow-top-slide">
                     <ng-container *ngFor="let besProduct of besProducts">
@@ -585,8 +585,8 @@
                             <img src="./assets/images/icons/service1.png" alt="Service">
                         </div>
                         <div class="content">
-                            <h6 class="title">Fast &amp; Secure Delivery</h6>
-                            <p>Tell about your service.</p>
+                            <h6 class="title">{{ 'home.service_and_quality.delivery.title' | translate }}</h6>
+                            <p>{{ 'home.service_and_quality.delivery.description' | translate }}</p>
                         </div>
                     </div>
                 </div>
@@ -596,8 +596,8 @@
                             <img src="./assets/images/icons/service2.png" alt="Service">
                         </div>
                         <div class="content">
-                            <h6 class="title">Money Back Guarantee</h6>
-                            <p>Within 10 days.</p>
+                            <h6 class="title">{{ 'home.service_and_quality.warranty.title' | translate }}</h6>
+                            <p>{{ 'home.service_and_quality.warranty.description' | translate }}</p>
                         </div>
                     </div>
                 </div>
@@ -607,8 +607,8 @@
                             <img src="./assets/images/icons/service3.png" alt="Service">
                         </div>
                         <div class="content">
-                            <h6 class="title">24 Hour Return Policy</h6>
-                            <p>No question ask.</p>
+                            <h6 class="title">{{ 'home.service_and_quality.return.title' | translate }}</h6>
+                            <p>{{ 'home.service_and_quality.return.description' | translate }}</p>
                         </div>
                     </div>
                 </div>
@@ -618,8 +618,8 @@
                             <img src="./assets/images/icons/service4.png" alt="Service">
                         </div>
                         <div class="content">
-                            <h6 class="title">Pro Quality Support</h6>
-                            <p>24/7 Live support.</p>
+                            <h6 class="title">{{ 'home.service_and_quality.support.title' | translate }}</h6>
+                            <p>{{ 'home.service_and_quality.support.description' | translate }}</p>
                         </div>
                     </div>
                 </div>

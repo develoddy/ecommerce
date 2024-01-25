@@ -1,0 +1,53 @@
+{
+    "app": {
+        "title": "Online store"
+    },
+    "login": {
+        "welcome": "Welcome",
+        "please_login_here":"Please login here",
+        "not_member": "Not a member?",
+        "sign_up_now": "Sign Up Now",
+        "email": "Email",
+        "password": "Password",
+        "forget_password": "Forget password?",
+        "login":"Login"
+    },
+    "header": {
+        "categories":"Categories"
+    },
+    "home": { 
+        "today":"Today's",
+        "flash_sales": "Flash Sales",
+        "browse_by_category":"Browse by Category",
+        "best_selling_products":"Best Selling Products",
+        "explore_our_products":"Explore our Products",
+        "users_feedback":"Users Feedback",
+        "new_arrivals":"New Arrivals",
+
+        "service_and_quality": {
+            "delivery": {
+                "title": "Fast & Secure Delivery",
+                "description": "Tell about your service."
+            },
+            "warranty": {
+                "title": "Money Back Guarantee",
+                "description": "Within 10 days."
+            },
+            "return": {
+                "title": "24 Hour Return Policy",
+                "description": "No question ask."
+            },
+            "support": {
+                "title": "Pro Quality Support",
+                "description": "24/7 Live support."
+            }
+        }
+    },
+    "main": {
+        "language": "Language",
+        "spanish": "Spanish",
+        "english": "English",
+        "input_placeholder": "Introduce text here",
+        "introduced_text": "Introduced text is: {{ text }}"
+    }
+}

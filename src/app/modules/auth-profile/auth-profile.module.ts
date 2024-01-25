@@ -7,9 +7,11 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpLoaderFactory } from 'src/app/app.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,13 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     FormsModule,
     AuthProfileRoutingModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [ HttpClient ]
+      }
+    }),
     SharedModule,
     ReactiveFormsModule,
     HttpClientModule,

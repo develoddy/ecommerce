@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HomeService } from './_services/home.service';
 import { CartService } from '../ecommerce-guest/_service/cart.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/services/language.service';
+import { Subscription } from 'rxjs';
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function ModalProductDetail():any;
@@ -23,12 +26,28 @@ export class HomeComponent implements OnInit {
   FlashSale:any = null;
   FlashProductList:any = [];
   variedad_selected:any=null;
+  translatedText: string = "";
+  //private subscription: Subscription;
 
   constructor(
     public homeService: HomeService,
     public _cartService: CartService,
     public _router: Router,
-  ) {}
+    public translate: TranslateService,
+    //private languageService: LanguageService,
+  ) {
+    //translate.setDefaultLang('es');
+   
+  }
+
+  private translateTextAccordingToLanguage(language: string): string {
+    // Lógica para traducir el texto según el idioma
+    return 'Texto traducido';
+  }
+
+  // ngOnDestroy() {
+  //   this.subscription.unsubscribe();
+  // }
 
   ngOnInit(): void {
 

@@ -163,10 +163,6 @@ a.axil-btn.wishlist-btn i, button.axil-btn.wishlist-btn i :hover {
   color: var(--color-white);
 }
 
-/* ul li a:hover {
-  color: var(--color-white) !important;
-} */
-
 .small-thumb-style-two .small-thumb-img img {
   border-radius: 0 !important;
 }
@@ -251,4 +247,8 @@ a.axil-btn.wishlist-btn i, button.axil-btn.wishlist-btn i :hover {
 
 .single-product-content .inner .product-rating .star-rating {
   color: rgb(233, 161, 59) !important; 
+}
+
+.mainmenu>.menu-item-has-children>a::after {
+  color: var(--color-primary) !important; 
 }

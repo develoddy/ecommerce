@@ -34,12 +34,13 @@
                         </div>
                         <div class="dropdown">
                             <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                EN
+                                ES
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">EN</a></li>
-                                <li><a class="dropdown-item" href="#">ARB</a></li>
-                                <li><a class="dropdown-item" href="#">SPN</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="return false;" (click)="changeLanguageToSpanish('es')">ES</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="return false;" (click)="changeLanguageToEnglish('en')">EN</a></li>
+                                
+                                <!-- <li><a class="dropdown-item" href="#">ARB</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -57,7 +58,7 @@
                     <aside class="header-department">
                         <button class="header-department-text department-title">
                             <span class="icon"><i class="fal fa-bars"></i></span>
-                            <span class="text">Categories</span>
+                            <span class="text">{{ 'header.categories' | translate }}</span>
                         </button>
                         <nav class="department-nav-menu" [ngClass]="{'d-none': !isHome()}">
                             <button class="sidebar-close"><i class="fas fa-times"></i></button>
@@ -480,12 +481,14 @@
             <h2 class="header-title">Cart review</h2>
             <button class="cart-close sidebar-close"><i class="fas fa-times"></i></button>
         </div>
+
         <div class="cart-body">
             <ul class="cart-item-list">
+                <h6>You have {{ listCarts.length }} items in your cart</h6>
                 <ng-container *ngFor="let cart of listCarts">
                     <li class="cart-item">
                         <div class="item-img">
-                            <a href="single-product.html"><img [src]="cart.product.imagen" alt="Commodo Blown Lamp"></a> 
+                            <a href="single-product.html" class="rounded-0"><img [src]="cart.product.imagen" class="rounded-0" alt=""></a> 
                             <button class="close-btn" (click)="removeCart(cart)"><i class="fas fa-times"></i></button>
                         </div>
                         <div class="item-content">
@@ -499,9 +502,9 @@
                             </span>
                                 <span class="rating-number">(64)</span>
                             </div>
-                            <h3 class="item-title"><a href="single-product-3.html">{{cart.product.title}}</a></h3>
-                            <span *ngIf="cart.variedad"><small><b>VARIEDAD: </b> {{cart.variedad.valor}} </small></span>
-                            <div class="item-price"><span class="currency-symbol"></span>{{cart.total }} USD</div>
+                            <h3 class="item-title mb-0"><a href="single-product-3.html">{{cart.product.title}}</a></h3>
+                            <span class="text-primary" *ngIf="cart.variedad"><b>Size: </b> {{cart.variedad.valor}}</span>
+                            <div class="item-price fw-bold"><span class="currency-symbol"></span>{{cart.total }} USD</div>
                             <div class="pro-qty item-quantity">
                                 <input type="number" class="quantity-input" [value]="cart.cantidad">
                             </div>
