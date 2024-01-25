@@ -47,7 +47,14 @@ export class LandingProductComponent implements OnInit {
 
     console.log(this.slug);
     this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
-      this.product_selected = resp.product
+      console.log("DEBBUG: LanDING resp");
+      console.log(resp);
+
+      this.product_selected = resp.product;
+      
+      console.log("DEBBUG: product_selected");
+      console.log(this.product_selected);
+      
       this.related_products = resp.related_products;
       this.SALE_FLASH = resp.SALE_FLASH;
       this.REVIEWS = resp.REVIEWS;

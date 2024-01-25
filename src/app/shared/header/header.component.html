@@ -426,7 +426,7 @@
                                 <i class="flaticon-person"></i>
                             </a>
                             <!-- <small *ngIf="user">{{ user.name }}</small> -->
-                            <div class="my-account-dropdown">
+                            <!-- <div class="my-account-dropdown">
                                 <span class="title">QUICKLINKS</span>
                                 <ul>
                                     <li>
@@ -445,6 +445,18 @@
                                 <a [routerLink]="['/auth/login']" class="axil-btn btn-bg-primary" *ngIf="!user">Login</a>
                                 <a href="#" onclick="return false;" (click)="logout()" class="axil-btn btn-bg-primary" *ngIf="user">Logout</a>
                                 <div class="reg-footer text-center">No account yet? <a href="sign-up.html" class="btn-link">REGISTER HERE.</a></div>
+                            </div> 
+                            -->
+                            <div class="my-account-dropdown">
+                                <span class="title d-none">QUICKLINKS</span>
+                                <ul>
+                                    <li><a [routerLink]="['/profile']">{{ 'header.list_account.myaccount' | translate }} </a></li>
+                                    <li><a href="#">{{ 'header.list_account.myorders' | translate }}</a></li>
+                                    <li><a href="#">{{ 'header.list_account.myorders' | translate }}</a></li>
+                                </ul>
+                                <a [routerLink]="['/auth/login']" class="axil-btn btn-bg-primary" *ngIf="!user">{{ 'header.list_account.login' | translate }}</a>
+                                <a href="#" onclick="return false;" (click)="logout()" class="axil-btn btn-bg-primary" *ngIf="user">{{ 'header.list_account.logout' | translate }}</a>
+                                <div class="reg-footer text-center d-none">No account yet? <a href="#" class="btn-link">REGISTER HERE.</a></div>
                             </div>
                         </li>
                         <li class="axil-mobile-toggle">
