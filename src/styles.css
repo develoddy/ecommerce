@@ -55,10 +55,6 @@
   }
 
   /* New style */
-/* .background-primary {
-  background-color: var(--color-primary) !important;
-} */
-
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
   color: var(--color-white) !important;
   background-color: var(--color-primary) !important;
@@ -251,4 +247,12 @@ a.axil-btn.wishlist-btn i, button.axil-btn.wishlist-btn i :hover {
 
 .mainmenu>.menu-item-has-children>a::after {
   color: var(--color-primary) !important; 
+}
+
+.header-action .my-account .my-account-dropdown li a {
+  padding: 10px 0;
+}
+
+.main-slider-style-2 .slider-offset-left {
+  margin-left: 0 !important;
 }

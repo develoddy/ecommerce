@@ -55,6 +55,7 @@ export class RegisterComponent implements OnInit {
 
     this._authService.register(data).subscribe((resp:any) => {
       console.log(resp);
+      alertSuccess("Muy bien! Tus datos se han registrado correctamente.");
     });
   }
 }

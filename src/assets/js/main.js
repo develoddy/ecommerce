@@ -22,7 +22,7 @@ function HOMEINITTEMPLATE ($, undefined) {
             axilInit.shopFilterWidget();
             axilInit.mobileMenuActivation();
             axilInit.menuLinkActive();
-            axilInit.headerIconToggle();
+            //axilInit.headerIconToggle();
             axilInit.priceRangeSlider();
             axilInit.quantityRanger();
             axilInit.axilSlickActivation();
@@ -194,7 +194,6 @@ function HOMEINITTEMPLATE ($, undefined) {
         },
 
         headerIconToggle: function() {
-
             $('.my-account > a').on('click', function(e) {
                 $(this).toggleClass('open').siblings().toggleClass('open');
             })
@@ -1292,4 +1291,11 @@ function alertSuccess(TEXT){
     closeBtn.addEventListener("click", () => {
       document.getElementById("notification-ecommerce-success")?.classList.remove("notification-show");
     });
+}
+
+
+function headerIconToggle($) {
+    $('.my-account > a').on('click', function(e) {
+        $(this).toggleClass('open').siblings().toggleClass('open');
+    })
 }

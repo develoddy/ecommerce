@@ -51,7 +51,8 @@ export class ProfileClientComponent implements OnInit {
     this.showProfileClient();
     this.name_c = this._ecommerceAuthService._authService.user.name;
     this.surname_c = this._ecommerceAuthService._authService.user.surname;
-    this.email_c = this._ecommerceAuthService._authService.user.email
+    this.email_c = this._ecommerceAuthService._authService.user.email;
+    
   }
 
   showProfileClient() {
@@ -192,14 +193,17 @@ export class ProfileClientComponent implements OnInit {
 
   updateProfileClient() {
 
-    // password_repeat
+    if ( this.password == null || this.password == ""  || this.password_repeat == null ) {
+      alertDanger("Es obligatorio ingresar ambas contraseñeas para modificar sus datos.");
+      return;
+    }
+
     if (this.password) {
       if (this.password != this.password_repeat) {
-        alertDanger("Las contraseñas son incorrectas");
+        alertDanger("Ambas contraseñas son incorrectas. Vuelve a intentarlo");
         return;
       }
     }
-
 
     let data = {
       _id: this._ecommerceAuthService._authService.user._id,

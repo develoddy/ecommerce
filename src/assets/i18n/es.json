@@ -13,6 +13,12 @@
         "login":"Iniciar sesión"
     },
     "header": {
+        "list_account": {
+            "myaccount":"Mi cuenta",
+            "myorders":"Mis pedidos",
+            "login":"Entrar",
+            "logout":"Cerrar sesión"
+        },
         "categories":"Categorias"
     },
     "home": {

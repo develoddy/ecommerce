@@ -54,8 +54,6 @@ export class HomeComponent implements OnInit {
     let TIME_NOW = new Date().getTime();
 
     this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
-      console.log("DEBBUG: home.component ngOninit");
-      console.log(resp);
       this.sliders = resp.sliders;
       this.categories = resp.categories;
       this.besProducts = resp.bes_products;

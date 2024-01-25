@@ -4,7 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { debounceTime, fromEvent } from 'rxjs';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { LanguageService } from 'src/app/services/language.service';
-
+declare var $:any;
+declare function headerIconToggle([]):any;
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,7 @@ import { LanguageService } from 'src/app/services/language.service';
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
   
+  selectedLanguage: string = 'ES';
   listCarts:any=[];
   totalCarts:any=0;
   user:any;
@@ -32,18 +34,15 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     translate.setDefaultLang('es');
   }
 
-  // changeLanguage(language: string) {
-  //   this.languageService.setLanguage(language);
-  // }
-
-  //  // Se cambia el idioma a Español
-    changeLanguageToSpanish(language: string): void {
-     this.translate.use('es');
+  changeLanguageToSpanish(language: string): void {
+    this.selectedLanguage = language.toUpperCase();
+    this.translate.use('es');
      //this.languageService.setLanguage(language);
    }
-  // // Se cambia el idioma a Inglés
-   changeLanguageToEnglish(language: string): void {
-     this.translate.use('en');
+  
+  changeLanguageToEnglish(language: string): void {
+    this.selectedLanguage = language.toUpperCase();
+    this.translate.use('en');
      //this.languageService.setLanguage(language);
    }
 
@@ -60,6 +59,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         });
       });
     }
+
+    setTimeout(() => {
+      headerIconToggle($);
+    }, 50);
   }
 
   ngAfterViewInit(): void {
