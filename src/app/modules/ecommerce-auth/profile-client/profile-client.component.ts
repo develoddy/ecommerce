@@ -200,7 +200,7 @@ export class ProfileClientComponent implements OnInit {
 
     if (this.password) {
       if (this.password != this.password_repeat) {
-        alertDanger("Ambas contraseñas son incorrectas. Vuelve a intentarlo.");
+        alertDanger("Ambas contraseñas son incorrectas. Intentalo denuevo.");
         return;
       }
     }

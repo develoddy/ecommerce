@@ -92,25 +92,40 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="axil-order-summery order-checkout-summery">
-                            <h5 class="title mb--20">Your Order</h5>
+                            <h5 class="title mb--20 fw-bold">Review Your Order</h5>
                             <div class="summery-table-wrap">
                                 <table class="table summery-table">
                                     <thead>
                                         <tr>
-                                            <th>Product</th>
-                                            <th>Subtotal</th>
+                                            <th class="fw-bold">Product</th>
+                                            <th class="fw-bold">Subtotal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <ng-container *ngFor="let cart of listCarts">
                                             <tr class="order-product">
-                                                <td>{{ cart.product.title }} <span class="quantity">x{{ cart.cantidad }} </span></td>
+                                                <!-- <td> <img [src]="cart.product.imagen" alt="" width="50"> {{ cart.product.title }} <span class="quantity">x{{ cart.cantidad }} </span></td> -->
+                                                <td> 
+                                                    <div class="d-flex flex-row">
+                                                        <div class="p-0">
+                                                            <img [src]="cart.product.imagen" alt="" width="50"> 
+                                                        </div>
+                                                        <div class="p-2">
+                                                            <span class="fw-bold">{{ cart.product.title }} </span> <span class="quantity">x{{ cart.cantidad }} </span><br>
+                                                            <span class="">{{ cart.product.price_usd }} USD</span>
+                                                            <ng-container *ngIf="cart.variedad">
+                                                                <br>
+                                                                <span class="">Size: {{cart.variedad.valor}}</span>
+                                                            </ng-container>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>{{ cart.total }} USD</td>
                                             </tr>
                                         </ng-container>
                                         
                                         <tr class="order-subtotal">
-                                            <td>Subtotal</td>
+                                            <td class="fw-bold">Subtotal</td>
                                             <td>{{totalCarts}} USD</td>
                                         </tr>
                                         <tr class="order-shipping">
@@ -159,7 +174,8 @@
                                     <div class="input-group justify-content-between align-items-center">
                                         <input type="radio" id="radio6" name="payment" checked>
                                         <label for="radio6">Paypal</label>
-                                        <img src="./assets/images/others/payment.png" alt="Paypal payment">
+                                        <!-- <img src="./assets/images/others/payment.png" alt="Paypal payment"> -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" style="width: 35px;" viewBox="0 0 576 512"><path d="M64 32C28.7 32 0 60.7 0 96v32H576V96c0-35.3-28.7-64-64-64H64zM576 224H0V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V224zM112 352h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm112 16c0-8.8 7.2-16 16-16H368c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-8.8 0-16-7.2-16-16z"/></svg>
                                     </div>
                                     <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
                                 </div>

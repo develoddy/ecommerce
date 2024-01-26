@@ -90,7 +90,7 @@
                                 <div class="axil-product product-style-four" >
                                     <div class="thumbnail ">
                                         <a [routerLink]="['/landing-product', product.slug]" [queryParams]="{_id:FlashSale._id}" class="rounded-0">
-                                            <img data-sal="zoom-out" style="width: 100%; height: 300px;" class="rounded-0" data-sal-delay="100" data-sal-duration="1500"  [src]="product.imagen" alt="Product Images">
+                                            <img data-sal="zoom-out" style="height: 330px;" class="rounded-0" data-sal-delay="100" data-sal-duration="1500"  [src]="product.imagen" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right" *ngIf="FlashSale.type_discount == 1">
                                             <div class="product-badget">{{FlashSale.discount}}% OFF</div>
@@ -202,7 +202,7 @@
                                 <div class="axil-product product-style-three">
                                     <div class="thumbnail">
                                         <a [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="getRouterDiscount(besProduct)" class="rounded-0">
-                                            <img data-sal="fade" style="width: 100%; height: 300px;" class="rounded-0" data-sal-delay="100" data-sal-duration="1500" [src]="besProduct.imagen" alt="Product Images">
+                                            <img data-sal="fade" style="width: 100%; height: 330px;" class="rounded-0" data-sal-delay="100" data-sal-duration="1500" [src]="besProduct.imagen" alt="Product Images">
                                         </a>
                                         <div class="product-hover-action">
                                             <ul class="cart-action">
@@ -293,7 +293,7 @@
                                     <div class="axil-product product-style-one">
                                         <div class="thumbnail">
                                             <a [routerLink]="['/landing-product', ourProduct.slug]" class="rounded-0">
-                                                <img data-sal="zoom-out" style="width: 100%; height: 300px;" data-sal-delay="200" data-sal-duration="800" class="main-img rounded-0" [src]="ourProduct.imagen" alt="Product Images">
+                                                <img data-sal="zoom-out" style="width: 100%; height: 330px;" data-sal-delay="200" data-sal-duration="800" class="main-img rounded-0" [src]="ourProduct.imagen" alt="Product Images">
                                                 <!-- <img class="hover-img" style="width: 255px; height: 255px; object-fit: cover;" [src]="ourProduct.imagen_two" alt="Product Images"> -->
                                             </a>
                                             <div class="label-block label-right" *ngIf="ourProduct.campaing_discount">
