@@ -9,4 +9,8 @@
     --color-green: rgb(95,187,135);
     --color-gray: rgb(153,151,159);
     --color-white: rgb(255,255,255);
+    --color-teal: #20c997;
+    --color-success: #d1e7dd;
+    --color-warning: #fff3cd;
+    --color-danger: #f8d7da;
   }

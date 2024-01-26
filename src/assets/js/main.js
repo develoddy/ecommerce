@@ -1232,8 +1232,8 @@ function alertDanger(TEXT){
 
     var SECONDS = 0;
     var showTime = () => {
-      SECONDS ++;
-      $("#notification-ecommerce-danger .btn-secondary").text(SECONDS);
+    SECONDS ++;
+        $("#notification-ecommerce-danger .btn-secondary").text(SECONDS);
     };
     $("#notification-ecommerce-danger .text-message-notification").text(TEXT);
     var timer = setInterval(showTime, 1000);

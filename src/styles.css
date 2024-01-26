@@ -1,19 +1,56 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('assets/css/colors.css');
 
+.notification-ecommerce-warning {
+  position: fixed;
+  left: 70%;
+  top: 10%;
+  background-color: var(--color-warning);
+  border: 1px solid #ffecb5;
+  color: #664d03;
+  /* #ffebeb; */
+  border-radius: 0.2rem;
+  overflow: hidden;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+.notification-ecommerce-success {
+  position: fixed;
+  left: 70%;
+  top: 10%;
+  color: #0f5132;
+  background-color: var(--color-success);
+  border: 1px solid #badbcc;
+  /* #ffebeb; */
+  border-radius: 0.2rem;
+  overflow: hidden;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+
 .notification-ecommerce {
-    position: fixed;
-    left: 70%;
-    top: 10%;
-    background-color: #faebff;
-    /* #ffebeb; */
-    border-radius: 0.2rem;
-    overflow: hidden;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-  }
+  position: fixed;
+  left: 70%;
+  top: 10%;
+  background-color: var(--color-danger);
+  border: 1px solid #f5c2c7;
+  color: #842029;
+  /* #ffebeb; */
+  border-radius: 0.2rem;
+  overflow: hidden;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
   .notification__warning {
     width: 1.5rem;
     margin-left: 1rem;
@@ -276,4 +313,15 @@ a.axil-btn.wishlist-btn i, button.axil-btn.wishlist-btn i :hover {
       margin: 200px 0 0 !important;
       height: calc(100vh - 200px);
   }
+}
+
+.axil-product .cart-action li.select-option a {
+  color: var(--color-primary);
+}
+.axil-product .cart-action li.select-option a:before {
+  background-color: var(--color-white);
+}
+
+.axil-product .cart-action li.select-option a:hover{
+  color: var(--color-primary);
 }

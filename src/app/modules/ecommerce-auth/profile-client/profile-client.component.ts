@@ -194,13 +194,13 @@ export class ProfileClientComponent implements OnInit {
   updateProfileClient() {
 
     if ( this.password == null || this.password == ""  || this.password_repeat == null ) {
-      alertDanger("Es obligatorio ingresar ambas contraseñeas para modificar sus datos.");
+      alertWarning("Es obligatorio ingresar ambas contraseñeas para modificar sus datos.");
       return;
     }
 
     if (this.password) {
       if (this.password != this.password_repeat) {
-        alertDanger("Ambas contraseñas son incorrectas. Vuelve a intentarlo");
+        alertDanger("Ambas contraseñas son incorrectas. Vuelve a intentarlo.");
         return;
       }
     }
