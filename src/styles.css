@@ -97,15 +97,21 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .bg_image--9 {
-  background-image: url(../src/assets/images/bg/imglogin.jpg) !important;
+  background-image: url(../src/assets/images/bg/bg-login.png) !important;
 }
 
 .bg_image--10 {
-  background-image: url(../src/assets/images/bg/imgregister.jpg) !important;
+  background-image: url(../src/assets/images/bg/bg-register.png) !important;
 }
 
+.bg_image--11 {
+  background-image: url(../src/assets/images/bg/bg-forgot-password.png) !important;
+}
+
+
+
 .axil-signin-form-wrap {
-  margin: 180px 0px -30px !important;
+  margin: 140px -30px -30px;
 }
 
 .axil-dashboard-aside .nav-link.active, .axil-dashboard-aside .nav-link:hover {
@@ -259,4 +265,15 @@ a.axil-btn.wishlist-btn i, button.axil-btn.wishlist-btn i :hover {
 
 .mainmenu>li>a {
   font-size: 14px;
+}
+
+.signin-header {
+  padding: 20px 100px;
+}
+
+@media only screen and (max-width: 575px){
+  .axil-signin-form-wrap {
+      margin: 200px 0 0 !important;
+      height: calc(100vh - 200px);
+  }
 }

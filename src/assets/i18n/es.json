@@ -2,15 +2,36 @@
     "app": {
         "title": "Tienda online"
     },
-    "login": {
-        "welcome": "Bienvenido",
-        "please_login_here":"Por favor inicia sesión aquí",
-        "not_member": "No eres un miembro?",
-        "sign_up_now": "Regístrate ahora",
-        "email": "Correo electrónico",
-        "password": "Contraseña",
-        "forget_password": "¿Contraseña olvidada?",
-        "login":"Iniciar sesión"
+    "auth_profile": {
+        "login": {
+            "title": "Bienvenido",
+            "subtitle":"Por favor inicia sesión aquí",
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "remember":"Recodar contraseña",
+            "forget_password":"Olvidaste tu contraseña?",
+            "button_sign_up_now": "Regístrate ahora",
+            "button_login":"Iniciar sesión"
+        },
+        "register": {
+            "title":"Crear una nueva cuenta",
+            "subtitle":"Por favor ingresa los detalles",
+            "first_name": "Nombre",
+            "last_name": "Apellido",
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "password_repeat": "Repetir contraseña",
+            "condition":"Acepto los <b>Términos y condiciones</b>",
+            "button_login": "Iniciar sesión",
+            "button_signup":"Registrar"
+        },
+        "forgot_password": {
+            "title":"Has olvidado tu contraseña",
+            "subtitle":"Ingrese su dirección de correo electrónico registrada. Le enviaremos un código para restablecer su contraseña.",
+            "email": "Correo electrónico",
+            "button_send":"Enviar",
+            "button_back": "Atrás"
+        }
     },
     "header": {
         "home":"Inicio",
