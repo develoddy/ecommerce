@@ -13,13 +13,34 @@
         "login":"Iniciar sesión"
     },
     "header": {
+        "home":"Inicio",
+        "shop": {
+            "title": "Compras",
+            "list": {
+                "": ""
+            }
+        },
+        "pages":{
+            "title": "Paginas",
+            "list": {
+                "account": "Mi cuenta",
+                "cart": "Mi carrito",
+                "wishlist": "Mi lista de deseos",
+                "checkout": "Proceso de pago"
+            }
+        },
+        "about":"Nuestra historia",
+        "blog":"Blog",
+        "contact":"Contacta con nosotros",
         "list_account": {
             "myaccount":"Mi cuenta",
             "myorders":"Mis pedidos",
+            "support":"Soporte",
             "login":"Entrar",
             "logout":"Cerrar sesión"
         },
         "categories":"Categorias"
+        
     },
     "home": {
         "today":"Hoy",

@@ -13,9 +13,29 @@
         "login":"Login"
     },
     "header": {
+        "home":"Home",
+        "shop": {
+            "title": "Compras",
+            "list": {
+                "":""
+            }
+        },
+        "pages": {
+            "title": "Pages",
+            "list": {
+                "account": "My Account",
+                "cart": "My Cart",
+                "wishlist": "My Wishlist",
+                "checkout": "Checkout"
+            }
+        },
+        "about":"About",
+        "blog":"Blog",
+        "contact":"Contact Us",
         "list_account": {
             "myaccount":"My Account",
             "myorders":"My Orders",
+            "support":"Support",
             "login":"Log In",
             "logout":"Log Out"
         },

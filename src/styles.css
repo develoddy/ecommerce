@@ -256,3 +256,7 @@ a.axil-btn.wishlist-btn i, button.axil-btn.wishlist-btn i :hover {
 .main-slider-style-2 .slider-offset-left {
   margin-left: 0 !important;
 }
+
+.mainmenu>li>a {
+  font-size: 14px;
+}
