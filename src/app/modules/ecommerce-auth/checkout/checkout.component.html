@@ -1,31 +1,50 @@
 <main class="main-wrapper">
 
-    <!-- Start Checkout Area  -->
+    <!-- START CHECKOUT AREA -->
     <div class="axil-checkout-area axil-section-gap">
         <div class="container">
             <form action="#">
                 <div class="row">
+                    <!-- SHIPPING ADDRESS -->
                     <div class="col-lg-6">
                         <div class="axil-checkout-notice">
                             <div class="tab-pane" id="nav-address" role="tabpanel">
                                 <div class="axil-dashboard-address">
                                     <!-- <p class="notice-text">The following addresses will be used on the checkout page by default.</p> -->
+                                    <h3 class="text-dark mb-0">Shipping Address</h3>
+                                    <p class="notice-text">Is the address you'd like to use displayed below? If so, click the corresponding "Delivery to this address" button. Or you can enter a new delivery address. </p>
                                     <a href="#" onclick="return false;" (click)="newAddress()">Nueva dirección +</a>
                                     <div class="row row--30">
                                         <ng-container *ngFor="let list_address of listAddressClients; let i=index">
                                             <div class="col-lg-6">
-                                                <div class="address-info mb--40">
-                                                    <div class="addrss-header d-flex align-items-center justify-content-between">
-                                                        <h4 class="title mb-0">Direccion # {{ i+1 }} </h4>
-                                                        <a href="#" onclick="return false;" (click)="addressClienteSelected(list_address)" class="address-edit"><i class="far fa-edit"></i></a>
+                                                <div class="p-5 py-5 background-gray-100 b-r-14">
+                                                    <div class="address-info">
+                                                        <div class="addrss-header d-flex align-items-center justify-content-between">
+                                                            <!-- <h4 class="title mb-0 text-dark fw-bold">Direccion # {{ i+1 }} </h4> -->
+                                                            <h4 class="title mb-0 text-dark fw-bold">{{ list_address.name +' '+ list_address.surname }} </h4>
+                                                            <a href="#" onclick="return false;" (click)="addressClienteSelected(list_address)" class="address-edit"><i class="far fa-edit"></i></a>
+                                                        </div>
+                                                        <ul class="address-details">
+                                                            <!-- <li>Nombre y apellido:  {{ list_address.name +' '+ list_address.surname }} </li> -->
+                                                            <li>Email: {{ list_address.email }}</li>
+                                                            <li>Telefono: {{ list_address.telefono }}</li>
+                                                            <li >{{ list_address.address }}</li>
+                                                        </ul>
                                                     </div>
-                                                    <ul class="address-details">
-                                                        <li>Nombre y apellido:  {{ list_address.name +' '+ list_address.surname }} </li>
-                                                        <li>Email: {{ list_address.email }}</li>
-                                                        <li>Telefono: {{ list_address.telefono }}</li>
-                                                        <li class="mt--30">{{ list_address.address }} <br>
-                                                        Las Vegas, Nevada 89128</li>
-                                                    </ul>
+                                                    <div class="p-0 d-flex flex-row justify-content-between">
+                                                        <a href="#" onclick="return false;" (click)="addressClienteSelected(list_address)" class="address-edit text-dark fw-bold p-2 w-50">
+                                                            <div class="p-2 background-gray-200 text-center b-r-8">
+                                                                <!-- <a href="#" onclick="return false;" (click)="addressClienteSelected(list_address)" class="address-edit text-dark fw-bold"><i class="far fa-edit"> Edit</i></a> -->
+                                                                <i class="far fa-edit"> Edit</i>
+                                                            </div>
+                                                        </a>
+                                                        <a href="#" onclick="return false;" (click)="addressClienteSelected(list_address)" class="address-edit text-tertiary fw-bold p-2 w-50">
+                                                            <div class="p-2 background-tertiary-100 text-center b-r-8">
+                                                                <!-- <a href="#" onclick="return false;" (click)="addressClienteSelected(list_address)" class="address-edit text-dark fw-bold"><i class="far fa-edit"> Edit</i></a> -->
+                                                                <i class="far fa-trash"> Delete</i>
+                                                            </div>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </ng-container>
@@ -34,7 +53,7 @@
                             </div>
                         </div>
                         <div class="axil-checkout-billing">
-                            <h4 class="title mb--40">Billing details</h4>
+                            <h3 class="title mb--40">Billing details</h3>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -90,9 +109,11 @@
                             <button type="button" *ngIf="address_client_selected" (click)="store()" class="axil-btn btn-bg-primary checkout-btn">Guardar cambios</button>
                         </div>
                     </div>
+
+                    <!-- REVIEW YOUR ORDER -->
                     <div class="col-lg-6">
+                        <h4 class="title mb--20 fw-bold">Review Your Order</h4>
                         <div class="axil-order-summery order-checkout-summery">
-                            <h5 class="title mb--20 fw-bold">Review Your Order</h5>
                             <div class="summery-table-wrap">
                                 <table class="table summery-table">
                                     <thead>
@@ -106,17 +127,22 @@
                                             <tr class="order-product">
                                                 <!-- <td> <img [src]="cart.product.imagen" alt="" width="50"> {{ cart.product.title }} <span class="quantity">x{{ cart.cantidad }} </span></td> -->
                                                 <td> 
-                                                    <div class="d-flex flex-row">
-                                                        <div class="p-0">
-                                                            <img [src]="cart.product.imagen" alt="" width="50"> 
-                                                        </div>
-                                                        <div class="p-2">
-                                                            <span class="fw-bold">{{ cart.product.title }} </span> <span class="quantity">x{{ cart.cantidad }} </span><br>
-                                                            <span class="">{{ cart.product.price_usd }} USD</span>
-                                                            <ng-container *ngIf="cart.variedad">
-                                                                <br>
-                                                                <span class="">Size: {{cart.variedad.valor}}</span>
-                                                            </ng-container>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="row">
+                                                                <div class="col-6 col-sm-3 col-md-3 col-lg-6 background-gray-100 p-0">
+                                                                    <img [src]="cart.product.imagen" alt="" class="img-fluid" style="height: 150px;width: 200px;">
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div><span class="fw-bold">{{ cart.product.title }} </span> <span class="quantity">x{{ cart.cantidad }} </span></div>
+                                                                    <div><span class="">{{ cart.product.price_usd }} USD</span></div>
+                                                                    <ng-container *ngIf="cart.variedad">
+                                                                        <div>
+                                                                            <span class="">Size: {{cart.variedad.valor}}</span>
+                                                                        </div>
+                                                                    </ng-container>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -128,7 +154,7 @@
                                             <td class="fw-bold">Subtotal</td>
                                             <td>{{totalCarts}} USD</td>
                                         </tr>
-                                        <tr class="order-shipping">
+                                        <tr class="order-shipping d-none">
                                             <td colspan="2">
                                                 <div class="shipping-amount">
                                                     <span class="title">Shipping Method</span>
@@ -189,5 +215,5 @@
             </form>
         </div>
     </div>
-    <!-- End Checkout Area  -->
+    <!-- END CHECKOUT AREA -->
 </main>

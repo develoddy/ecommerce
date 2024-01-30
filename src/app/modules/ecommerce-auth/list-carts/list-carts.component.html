@@ -24,11 +24,15 @@
                             <ng-container *ngFor="let cart of listCarts">
                                 <tr>
                                     <td class="product-remove"><a href="#" onclick="return false;" class="remove-wishlist" (click)="removeCart(cart)"><i class="fal fa-times"></i></a></td>
-                                    <td class="product-thumbnail"><a href="single-product.html"><img [src]="cart.product.imagen" alt="Digital Product"></a></td>
-                                    <td class="product-title"><a href="single-product.html">{{cart.product.title}}</a>
+                                    <td class="product-thumbnail">
+                                        <a href="single-product.html">
+                                            <img [src]="cart.product.imagen" alt="" class="img-fluid">
+                                        </a>
+                                    </td>
+                                    <td class="product-title"><a href="single-product.html" class="fw-bold text-dark">{{cart.product.title}}</a>
                                         <ng-container *ngIf="cart.variedad">
                                             <br>
-                                            <small class="text-secondary">VARIEDAD: {{cart.variedad.valor}}</small>
+                                            <small class="">Variedad: {{cart.variedad.valor}}</small>
                                         </ng-container>
                                        
                                     </td>
@@ -53,7 +57,7 @@
                             <button type="submit" class="axil-btn btn-outline" (click)="apllyCupon()">Apply</button>
                         </div>
                     </div>
-                    <div class="update-btn">
+                    <div class="update-btn d-none">
                         <a href="#" onclick="return false;" class="axil-btn btn-outline" (click)="listAllCarts()" >Update Cart</a>
                     </div>
                 </div>

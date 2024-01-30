@@ -49,7 +49,7 @@
                         <div class="single-product-content">
                             <div class="inner">
                                 <h2 class="product-title">{{product_selected.title}}</h2>
-                                <small class="text-primary fw-bold">Man Pink Moana Printed Dress</small>
+                                <small class="text-dark fw-bold">Man Pink Moana Printed Dress</small>
                                 <ng-container *ngIf="getDiscount() > 0">
                                     <br>
                                     <small class="text-gray">Descuento por:<b class="text-gray"> {{ SALE_FLASH.type_campaign == 1 ? 'Campaña de descuento' : 'Venta flash' }} </b></small> <br>
@@ -88,7 +88,7 @@
                                     <li><i class="fal fa-check"></i>Free delivery available</li>
                                     <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>
                                 </ul>
-                                <p class="description text-primary"> {{product_selected.resumen}} </p>
+                                <p class="description text-dark"> {{product_selected.resumen}} </p>
 
                                 <div class="product-variations-wrapper">
                                     <!-- Start Product Variation  -->
@@ -168,10 +168,10 @@
                     <div class="col-12">
                         <ul class="nav nav-pills border-bottom mb-3">
                             <li class="nav-item">
-                              <a class="nav-link text-primary background-primary active" data-bs-toggle="tab" href="#nav-addinfo" role="tab" aria-selected="false">Additional Informartion</a>
+                              <a class="nav-link text-dark background-primary active" data-bs-toggle="tab" href="#nav-addinfo" role="tab" aria-selected="false">Additional Informartion</a>
                             </li>
                             <li class="nav-item px-2">
-                              <a class="nav-link text-primary" data-bs-toggle="tab" href="#nav-reviews" role="tab" aria-selected="false">Reviews</a>
+                              <a class="nav-link text-dark" data-bs-toggle="tab" href="#nav-reviews" role="tab" aria-selected="false">Reviews</a>
                             </li>
                         </ul>
                     </div>
@@ -182,7 +182,7 @@
                             <!-- Description -->
                             <div class="tab-pane fade show active" id="nav-addinfo" role="tabpanel">
                                 <div class="axil-dashboard-overview">
-                                    <div class="welcome-text text-primary fw-bold">
+                                    <div class="welcome-text text-dark fw-bold">
                                         <div class="woocommerce-tabs wc-tabs-wrapper bg-vista-white p-0">
                                             <div class="container">
                                                 <div class="additional-info pb--40 pb_sm--20 p-0">
@@ -223,7 +223,7 @@
                             <!-- Reviews -->
                             <div class="tab-pane fade show" *ngIf="REVIEWS.length > 0" id="nav-reviews" role="tabpanel">
                                 <div class="axil-dashboard-overview">
-                                    <div class="welcome-text text-primary fw-bold">
+                                    <div class="welcome-text text-dark fw-bold">
                                         <div class="reviews-wrapper">
                                             <!-- <h4 class="">Reviews</h4> -->
                                             <div class="row">
@@ -250,7 +250,7 @@
                                                                                         </div>
                                                                                         <div class="p-0 d-flex flex-column">
                                                                                             <div class="p-0">
-                                                                                                <span class="hover-flip-item text-primary">
+                                                                                                <span class="hover-flip-item text-dark">
                                                                                                     <span data-text="Cameron Williamson">{{ REVIEW.user.name + ' ' +  REVIEW.user.surname  }}</span>
                                                                                                 </span>
                                                                                             </div>
@@ -273,7 +273,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <!-- <h6 class="commenter">
-                                                                                    <a class="hover-flip-item-wrapper text-primary border border-success" href="#">
+                                                                                    <a class="hover-flip-item-wrapper text-dark border border-success" href="#">
                                                                                         <span class="hover-flip-item">
                                                                                             <span data-text="Cameron Williamson">{{ REVIEW.user.name + ' ' +  REVIEW.user.surname  }}</span>
                                                                                         </span>
