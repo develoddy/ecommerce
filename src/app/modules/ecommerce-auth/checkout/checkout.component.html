@@ -16,7 +16,7 @@
                                     <a href="#" onclick="return false;" (click)="newAddress()">Nueva dirección +</a>
                                     <div class="row row--30">
                                         <ng-container *ngFor="let list_address of listAddressClients; let i=index">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-6 mb-5">
                                                 <div class="p-5 py-5 background-gray-100 b-r-14">
                                                     <div class="address-info">
                                                         <div class="addrss-header d-flex align-items-center justify-content-between">
@@ -175,7 +175,7 @@
                                             </td>
                                         </tr>
                                         <tr class="order-total">
-                                            <td>Total</td>
+                                            <td>Grand Total</td>
                                             <td class="order-total-amount">{{totalCarts}} USD</td>
                                         </tr>
                                     </tbody>

@@ -106,9 +106,9 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="product-content text-start">
+                                    <div class="product-content">
                                         <div class="inner">
-                                            <h2 class="title fw-bold"><a [routerLink]="['/landing-product', product.slug]" [queryParams]="{_id:FlashSale._id}">{{ product.title }}</a></h2>
+                                            <h2 class="title"><a [routerLink]="['/landing-product', product.slug]" [queryParams]="{_id:FlashSale._id}">{{ product.title }}</a></h2>
                                             <div class="product-price-variant">
                                                 <span class="price current-price">{{ getCalNewPrice(product) }} USD</span>
                                                 <span class="price old-price">{{ product.price_usd }} USD</span>

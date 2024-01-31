@@ -89,7 +89,7 @@
   }
 
 /* --------- New style --------- */
-
+/*
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
   color: var(--color-white) !important;
   background-color: var(--color-dark) !important;
@@ -112,7 +112,6 @@
   border-radius: 8px;
 }
 
-
 .axil-product .product-content .title {
   color: var(--color-dark) !important;
   font-size: 18px;
@@ -125,11 +124,6 @@
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   color: var(--color-dark) !important;
 }
-
-
-/* .form-group input {
-  border: 1px solid var(--color-primary) !important;
-} */
 
 .bg_image--9 {
   background-image: url(../src/assets/images/bg/bg-login.png) !important;
@@ -297,10 +291,6 @@ a.axil-btn.btn-bg-primary:before, button.axil-btn.btn-bg-primary:before {
   color: var(--color-dark) !important;
 }
 
-/* .mainmenu>.menu-item-has-children>a::after {
-  color: var(--color-primary) !important; 
-} */
-
 .header-action .my-account .my-account-dropdown li a {
   padding: 10px 0;
 }
@@ -376,3 +366,4 @@ a.axil-btn.wishlist-btn:before, button.axil-btn.wishlist-btn:before {
 .small-thumb-wrapper .small-thumb-img:hover img, .small-thumb-wrapper .small-thumb-img.slick-current img {
   border-color: var(--color-dark) !important;
 }
+*/

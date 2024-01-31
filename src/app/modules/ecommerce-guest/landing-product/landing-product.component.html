@@ -1,23 +1,4 @@
 <main class="main-wrapper" *ngIf="product_selected">
-
-    <!-- Start Breadcrumb Area  -->
-    <div class="axil-breadcrumb-area">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-8">
-                    <div class="inner">
-                        <ul class="axil-breadcrumb">
-                            <li class="axil-breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li class="separator"></li>
-                            <li class="axil-breadcrumb-item active" aria-current="page">Product</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Breadcrumb Area  -->
-
     <!-- Start Shop Area  -->
     <div class="axil-single-product-area bg-color-white">
         <div class="single-product-thumb axil-section-gap pb--20 pb_sm--0 bg-vista-white">
@@ -28,8 +9,8 @@
                             <div class="col-lg-12">
                                 <div class="product-large-thumbnail-2 single-product-thumbnail axil-product slick-layout-wrapper--15 axil-slick-arrow arrow-both-side-3">
                                     <ng-container *ngFor="let item of product_selected.galerias">
-                                        <div class="thumbnail" style="width: 623px; height: 623px;">
-                                            <img [src]="item.imagen" alt="Product Images" class="img-fluid" height="100%">
+                                        <div class="thumbnail">
+                                            <img [src]="item.imagen" alt="Product Images">
                                         </div>
                                     </ng-container>
                                 </div>
@@ -37,8 +18,8 @@
                             <div class="col-lg-12">
                                 <div class="small-thumb-wrapper product-small-thumb-2 small-thumb-style-two small-thumb-style-three">
                                     <ng-container *ngFor="let item of product_selected.galerias">
-                                        <div class="small-thumb-img" width="100px" style="height:100px !important;">
-                                            <img [src]="item.imagen" alt="samll-thumb" class="img-fluid" style="width: 100% !important; height: 100% !important;">
+                                        <div class="small-thumb-img">
+                                            <img [src]="item.imagen" alt="samll-thumb">
                                         </div>
                                     </ng-container>
                                 </div>
@@ -49,46 +30,32 @@
                         <div class="single-product-content">
                             <div class="inner">
                                 <h2 class="product-title">{{product_selected.title}}</h2>
-                                <small class="text-dark fw-bold">Man Pink Moana Printed Dress</small>
                                 <ng-container *ngIf="getDiscount() > 0">
                                     <br>
-                                    <small class="text-gray">Descuento por:<b class="text-gray"> {{ SALE_FLASH.type_campaign == 1 ? 'Campaña de descuento' : 'Venta flash' }} </b></small> <br>
-                                    <small class="text-gray">Precio anterior: <b ><del class="text-gray"> {{ product_selected.price_usd }} USD</del></b></small>
+                                    <small>DESCUENTO POR:<b> {{ SALE_FLASH.type_campaign == 1 ? 'CAMPAÑA DE DESCUENTO' : 'VENTA FLASH' }} </b></small> <br>
+                                    <small>PRECIO ANTERIOR: <b><del> {{ product_selected.price_usd }} USD</del></b></small>
+                                    
                                 </ng-container>
-
-                                <div class="product-rating">
-                                    <div class="star-rating">
-                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 1 }"></i>
-                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 2 }"></i>
-                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 3 }"></i>
-                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 4 }"></i>
-                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 5 }"></i>
-                                    </div>
-                                    <div class="review-link">
-                                        <a href="#" class="text-gray">(<small>{{ COUNT_REVIEW }} Reviews)</small></a>
-                                    </div>
-                                </div>
-                                
                                 <!-- <span class="price-amount" *ngIf="getDiscount() > 0"> <del> {{ product_selected.price_usd }} USD</del></span> -->
                                 <span class="price-amount">{{ product_selected.price_usd - getDiscount() }} USD</span>
-                                <!-- <div class="product-rating">
+                                <div class="product-rating">
                                     <div class="star-rating">
-                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 1 }"></i>
-                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 2 }"></i>
-                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 3 }"></i>
-                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 4 }"></i>
-                                        <i class="fas fa-star" [ngClass]="{'star-del': AVG_REVIEW < 5 }"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
                                     </div>
                                     <div class="review-link">
-                                        <a href="#">(<span>{{ COUNT_REVIEW }}</span> customer reviews)</a>
+                                        <a href="#">(<span>2</span> customer reviews)</a>
                                     </div>
-                                </div> -->
+                                </div>
                                 <ul class="product-meta">
                                     <li><i class="fal fa-check"></i>In stock</li>
                                     <li><i class="fal fa-check"></i>Free delivery available</li>
                                     <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>
                                 </ul>
-                                <p class="description text-dark"> {{product_selected.resumen}} </p>
+                                <p class="description"> {{product_selected.resumen}} </p>
 
                                 <div class="product-variations-wrapper">
                                     <!-- Start Product Variation  -->
@@ -163,204 +130,14 @@
                         </div>
                         <!-- End .row -->
                     </div>
-                    
-                    <!-- Tabs -->
-                    <div class="col-12">
-                        <ul class="nav nav-pills border-bottom mb-3">
-                            <li class="nav-item">
-                              <a class="nav-link text-dark background-primary active" data-bs-toggle="tab" href="#nav-addinfo" role="tab" aria-selected="false">Additional Informartion</a>
-                            </li>
-                            <li class="nav-item px-2">
-                              <a class="nav-link text-dark" data-bs-toggle="tab" href="#nav-reviews" role="tab" aria-selected="false">Reviews</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Tabs content -->
-                    <div class="col-12">
-                        <div class="tab-content">
-                            <!-- Description -->
-                            <div class="tab-pane fade show active" id="nav-addinfo" role="tabpanel">
-                                <div class="axil-dashboard-overview">
-                                    <div class="welcome-text text-dark fw-bold">
-                                        <div class="woocommerce-tabs wc-tabs-wrapper bg-vista-white p-0">
-                                            <div class="container">
-                                                <div class="additional-info pb--40 pb_sm--20 p-0">
-                                                    <div class="product-additional-info" [innerHTML]="product_selected.description"></div>
-                                                    <h4 class="mb--60 pb-3">Variedades</h4>
-                                                    <div class="product-additional-info">
-                                                        <div class="table-responsive">
-                                                            <table>
-                                                                <tbody>
-                                                                    <tr *ngIf="product_selected.variedades.length > 0">
-                                                                        <th style="width: 100px;" class="fw-bold">Size:</th>
-                                                                        <td>
-                                                                            <ng-container *ngFor="let variedad of product_selected.variedades">
-                                                                                {{variedad.valor}},
-                                                                            </ng-container>
-                                                                        </td>
-                                                                    </tr>
-
-                                                                    <tr *ngIf="product_selected.tags.length > 0">
-                                                                        <th style="width: 100px;" class="fw-bold">Color:</th>
-                                                                        <td>
-                                                                            <ng-container *ngFor="let color of product_selected.tags">
-                                                                                {{color}},
-                                                                            </ng-container>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Reviews -->
-                            <div class="tab-pane fade show" *ngIf="REVIEWS.length > 0" id="nav-reviews" role="tabpanel">
-                                <div class="axil-dashboard-overview">
-                                    <div class="welcome-text text-dark fw-bold">
-                                        <div class="reviews-wrapper">
-                                            <!-- <h4 class="">Reviews</h4> -->
-                                            <div class="row">
-                                                <div class="col-lg-12 mb--40">
-                                                    <div class="axil-comment-area pro-desc-commnet-area">
-                                                        <h5 class="title mt-3 mb-3">{{ REVIEWS.length }} Review for this product</h5>
-                                                        <ul class="comment-list">
-                                                            <ng-container *ngFor="let REVIEW of REVIEWS">
-                                                                <!-- Start Single Comment  -->
-                                                                <li class="comment border-bottom mb-5">
-                                                                    <div class="comment-body">
-                                                                        <div class="single-comment">
-                                                                            <!-- <div class="comment-img">
-                                                                                <img src="./assets/images/product/author1.jpg" alt="Author Images">
-                                                                            </div> -->
-                                                                            <div class="comment-inner">
-                                                                                <div class="d-flex flex-column">
-                                                                                    <!-- Item 1 -->
-                                                                                    <div class="p-2 d-flex flex-row">
-                                                                                        <div class="p-0">
-                                                                                            <div class="comment-img mb-0" style="margin-right: 0 !important;">
-                                                                                                <img src="./assets/images/product/author1.jpg" alt="Author Images">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="p-0 d-flex flex-column">
-                                                                                            <div class="p-0">
-                                                                                                <span class="hover-flip-item text-dark">
-                                                                                                    <span data-text="Cameron Williamson">{{ REVIEW.user.name + ' ' +  REVIEW.user.surname  }}</span>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                            <div class="p-0">
-                                                                                                <span class="commenter-rating ratiing-four-star">
-                                                                                                    <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 1 }"></i></a>
-                                                                                                    <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 2 }"></i></a>
-                                                                                                    <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 3 }"></i></a>
-                                                                                                    <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 4 }"></i></a>
-                                                                                                    <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 5 }"></i></a>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!-- Item 2 -->
-                                                                                    <div class="p-2 d-flex">
-                                                                                        <div class="comment-text">
-                                                                                            <p> {{ REVIEW.description }} </p>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!-- <h6 class="commenter">
-                                                                                    <a class="hover-flip-item-wrapper text-dark border border-success" href="#">
-                                                                                        <span class="hover-flip-item">
-                                                                                            <span data-text="Cameron Williamson">{{ REVIEW.user.name + ' ' +  REVIEW.user.surname  }}</span>
-                                                                                        </span>
-                                                                                    </a>
-                                                                                    <span class="commenter-rating ratiing-four-star">
-                                                                                        <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 1 }"></i></a>
-                                                                                        <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 2 }"></i></a>
-                                                                                        <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 3 }"></i></a>
-                                                                                        <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 4 }"></i></a>
-                                                                                        <a href="#"><i class="fas fa-star" [ngClass]="{'star-del': REVIEW.cantidad < 5 }"></i></a>
-                                                                                    </span>
-                                                                                </h6>
-                                                                                <div class="comment-text">
-                                                                                    <p> {{ REVIEW.description }} </p>
-                                                                                </div> -->
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                                <!-- End Single Comment  -->
-                                                            </ng-container>
-                                                        </ul>
-                                                    </div>
-                                                    <!-- End .axil-commnet-area -->
-                                                </div>
-                                                <!-- End .col -->
-                                                <div class="col-lg-12 mb--40">
-                                                    <!-- Start Comment Respond  -->
-                                                    <div class="comment-respond pro-des-commend-respond mt--0">
-                                                        <h5 class="title mb--30">Add a Review</h5>
-                                                        <div class="rating-wrapper d-flex-center mb--40">
-                                                            Your Rating <span class="require">*</span>
-                                                            <div class="reating-inner ml--20">
-                                                                <a href="#"><i class="fal fa-star"></i></a>
-                                                                <a href="#"><i class="fal fa-star"></i></a>
-                                                                <a href="#"><i class="fal fa-star"></i></a>
-                                                                <a href="#"><i class="fal fa-star"></i></a>
-                                                                <a href="#"><i class="fal fa-star"></i></a>
-                                                            </div>
-                                                        </div>
-                                                        <form action="#">
-                                                            <div class="row">
-                                                                <div class="col-lg-12 col-md-6 col-12">
-                                                                    <div class="form-group">
-                                                                        <label class="bg-white">Name <span class="require">*</span></label>
-                                                                        <input id="name" type="text" name="name" placeholder="Your Name">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-md-6 col-12">
-                                                                    <div class="form-group">
-                                                                        <label class="bg-white">Email Address <span class="require">*</span> </label>
-                                                                        <input id="email" type="email" name="email" placeholder="Your Email">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="form-group">
-                                                                        <label class="bg-white">Your Review</label>
-                                                                        <textarea name="message" class="border border-dark" placeholder="Your Review"></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12">
-                                                                    <div class="form-submit">
-                                                                        <button type="submit" id="submit" class="axil-btn btn-bg-primary w-auto p-3 px-5">Send Message</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <!-- End Comment Respond  -->
-                                                </div>
-                                                <!-- End .col -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 
                     <div class="col-lg-12 mb--40">
                         <div class="woocommerce-tabs wc-tabs-wrapper bg-vista-white">
                             <div class="container">
+                                <!-- End .product-desc-wrapper -->
                                 <div class="additional-info pb--40 pb_sm--20">
                                     <h4 class="mb--60">Additional Information</h4>
                                     <div class="product-additional-info" [innerHTML]="product_selected.description">
-                                    <div class="product-additional-info">
-                                        <div class="table-responsive">
+                                        <!-- <div class="table-responsive">
                                             <table>
                                                 <tbody>
                                                     <tr>
@@ -409,22 +186,179 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                        </div> -->
+                                    </div>
+                                    <!-- End .product-additional-info -->
+                                </div>
+
+                                <div class="reviews-wrapper">
+                                    <h4 class="mb--60">Reviews</h4>
+                                    <div class="row">
+                                        <div class="col-lg-6 mb--40">
+                                            <div class="axil-comment-area pro-desc-commnet-area">
+                                                <h5 class="title">01 Review for this product</h5>
+                                                <ul class="comment-list">
+                                                    <!-- Start Single Comment  -->
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            <div class="single-comment">
+                                                                <div class="comment-img">
+                                                                    <img src="./assets/images/blog/author-image-4.png" alt="Author Images">
+                                                                </div>
+                                                                <div class="comment-inner">
+                                                                    <h6 class="commenter">
+                                                                        <a class="hover-flip-item-wrapper" href="#">
+                                                                            <span class="hover-flip-item">
+                                                                                <span data-text="Cameron Williamson">Eleanor Pena</span>
+                                                                            </span>
+                                                                        </a>
+                                                                        <span class="commenter-rating ratiing-four-star">
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star empty-rating"></i></a>
+                                                                        </span>
+                                                                    </h6>
+                                                                    <div class="comment-text">
+                                                                        <p>“We’ve created a full-stack structure for our working workflow processes, were from the funny the century initial all the made, have spare to negatives. ” </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <!-- End Single Comment  -->
+
+                                                    <!-- Start Single Comment  -->
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            <div class="single-comment">
+                                                                <div class="comment-img">
+                                                                    <img src="./assets/images/blog/author-image-4.png" alt="Author Images">
+                                                                </div>
+                                                                <div class="comment-inner">
+                                                                    <h6 class="commenter">
+                                                                        <a class="hover-flip-item-wrapper" href="#">
+                                                                            <span class="hover-flip-item">
+                                                                                <span data-text="Rahabi Khan">Courtney Henry</span>
+                                                                            </span>
+                                                                        </a>
+                                                                        <span class="commenter-rating ratiing-four-star">
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                        </span>
+                                                                    </h6>
+                                                                    <div class="comment-text">
+                                                                        <p>“We’ve created a full-stack structure for our working workflow processes, were from the funny the century initial all the made, have spare to negatives. ”</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <!-- End Single Comment  -->
+
+                                                    <!-- Start Single Comment  -->
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            <div class="single-comment">
+                                                                <div class="comment-img">
+                                                                    <img src="./assets/images/blog/author-image-5.png" alt="Author Images">
+                                                                </div>
+                                                                <div class="comment-inner">
+                                                                    <h6 class="commenter">
+                                                                        <a class="hover-flip-item-wrapper" href="#">
+                                                                            <span class="hover-flip-item">
+                                                                                <span data-text="Rahabi Khan">Devon Lane</span>
+                                                                            </span>
+                                                                        </a>
+                                                                        <span class="commenter-rating ratiing-four-star">
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                            <a href="#"><i class="fas fa-star"></i></a>
+                                                                        </span>
+                                                                    </h6>
+                                                                    <div class="comment-text">
+                                                                        <p>“We’ve created a full-stack structure for our working workflow processes, were from the funny the century initial all the made, have spare to negatives. ” </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <!-- End Single Comment  -->
+                                                </ul>
+                                            </div>
+                                            <!-- End .axil-commnet-area -->
                                         </div>
+                                        <!-- End .col -->
+                                        <div class="col-lg-6 mb--40">
+                                            <!-- Start Comment Respond  -->
+                                            <div class="comment-respond pro-des-commend-respond mt--0">
+                                                <h5 class="title mb--30">Add a Review</h5>
+                                                <p>Your email address will not be published. Required fields are marked *</p>
+                                                <div class="rating-wrapper d-flex-center mb--40">
+                                                    Your Rating <span class="require">*</span>
+                                                    <div class="reating-inner ml--20">
+                                                        <a href="#"><i class="fal fa-star"></i></a>
+                                                        <a href="#"><i class="fal fa-star"></i></a>
+                                                        <a href="#"><i class="fal fa-star"></i></a>
+                                                        <a href="#"><i class="fal fa-star"></i></a>
+                                                        <a href="#"><i class="fal fa-star"></i></a>
+                                                    </div>
+                                                </div>
+
+                                                <form action="#">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="form-group">
+                                                                <label>Other Notes (optional)</label>
+                                                                <textarea name="message" placeholder="Your Comment"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-12">
+                                                            <div class="form-group">
+                                                                <label>Name <span class="require">*</span></label>
+                                                                <input id="name" type="text">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-12">
+                                                            <div class="form-group">
+                                                                <label>Email <span class="require">*</span> </label>
+                                                                <input id="email" type="email">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="form-submit">
+                                                                <button type="submit" id="submit" class="axil-btn btn-bg-primary w-auto">Send Message</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <!-- End Comment Respond  -->
+                                        </div>
+                                        <!-- End .col -->
                                     </div>
                                 </div>
+                                <!-- End .reviews-wrapper -->
                             </div>
                         </div>
-                    </div> 
-                    -->
+                        <!-- woocommerce-tabs -->
+                    </div>
                 </div>
             </div>
         </div>
         <!-- End .single-product-thumb -->
+
     </div>
     <!-- End Shop Area  -->
 
     <!-- Start Recently Viewed Product Area  -->
-    <div class="axil-product-area bg-color-white axil-section-gap pb--50 pb_sm--30 p-0">
+    <div class="axil-product-area bg-color-white axil-section-gap pb--50 pb_sm--30">
         <div class="container">
             <div class="section-title-wrapper">
                 <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i> Your Recently</span>
@@ -436,8 +370,8 @@
                     <div class="slick-single-layout">
                         <div class="axil-product">
                             <div class="thumbnail">
-                                <a [href]="'/landing-product/' + related_product.slug" class="rounded-0">
-                                    <img [src]="related_product.imagen" style="width: 100%; height: 300px;" class="rounded-0"  alt="Product Images">
+                                <a [href]="'/landing-product/' + related_product.slug">
+                                    <img [src]="related_product.imagen" style="width: 255px; height: 255px; object-fit: cover;"  alt="Product Images">
                                 </a>
                                 <!-- <div class="label-block label-right">
                                     <div class="product-badget">20% OFF</div>
@@ -478,7 +412,6 @@
         </div>
     </div>
     <!-- End Recently Viewed Product Area  -->
-
     <!-- Start Axil Newsletter Area  -->
     <div class="axil-newsletter-area axil-section-gap pt--0">
         <div class="container">

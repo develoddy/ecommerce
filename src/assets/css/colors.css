@@ -13,14 +13,13 @@
     --color-success: #d1e7dd;
     --color-warning: #fff3cd;
     --color-danger: #f8d7da;
-  } */
+  } 
 
 
   :root {
     --color-primary: #3577f0;
     --light-primary: #8c71db;
     --color-secondary: #ff497c;
-    /*--color-tertiary: #FAB8C4;*/
     --color-tertiary: rgb(238,122,105);
     --color-white: #ffffff;
     --color-dark: #27272E;
@@ -151,15 +150,17 @@
 }
 
 
-/* ------ Background Color ------ */
+
 .background-gray-100 {background-color: var(--bs-gray-100);}
 .background-gray-200 {background-color: var(--bs-gray-200);}
 .background-gray-300 {background-color: var(--bs-gray-300);}
 .background-tertiary-100 {background-color: var(--bs-tertiary-100) !important ;}
 
-/* ------ Text Color ----- */
+
 .text-dark { color: var(--color-dark) !important;}
 .text-tertiary {color: var(--color-tertiary) !important;}
 .text-primary {color: var(--color-primary) !important;}
 .text-gray {color: var(--color-gray) !important;}
 .text-light {color: var(--color-light) !important;}
+
+*/

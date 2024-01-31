@@ -1154,7 +1154,6 @@ function sideOffcanvasToggle(selectbtn, openElement) {
 
     $('body').on('click', selectbtn, function(e) {
         e.preventDefault();
-        console.log("click");
         var $this = $(this),
             wrapp = $this.parents('body'),
             wrapMask = $('<div / >').addClass('closeMask'),
@@ -1292,7 +1291,6 @@ function alertSuccess(TEXT){
       document.getElementById("notification-ecommerce-success")?.classList.remove("notification-show");
     });
 }
-
 
 function headerIconToggle($) {
     $('.my-account > a').on('click', function(e) {
