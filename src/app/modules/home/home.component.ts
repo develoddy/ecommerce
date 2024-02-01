@@ -54,6 +54,10 @@ export class HomeComponent implements OnInit {
     let TIME_NOW = new Date().getTime();
 
     this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
+
+      console.log("DEBUGG: resp");
+      console.log(resp);
+
       this.sliders = resp.sliders;
       this.categories = resp.categories;
       this.besProducts = resp.bes_products;
@@ -93,9 +97,10 @@ export class HomeComponent implements OnInit {
   }
 
   getCalNewPrice(product:any) {
-    if (this.FlashSale.type_discount == 1) {
-      return product.price_usd - product.price_usd*this.FlashSale.discount*0.01;
-    } else {
+    if (this.FlashSale.type_discount == 1) { // Por porcentaje
+      // Round to 2 decimal places
+      return (product.price_usd - product.price_usd*this.FlashSale.discount*0.01).toFixed(2);
+    } else { // Port moneda
       return product.price_usd - this.FlashSale.discount;
     }
   }
@@ -103,14 +108,15 @@ export class HomeComponent implements OnInit {
   getDiscountProduct(besProduct:any, is_sale_flash:any=null) {
     if (is_sale_flash) {
       if (this.FlashSale.type_discount == 1) { // 1 porcentaje
-        return besProduct.price_usd*this.FlashSale.discount*0.01;
+        return (besProduct.price_usd*this.FlashSale.discount*0.01).toFixed(2);
       } else { // 2 es moneda
         return this.FlashSale.discount;
       }
     } else {
       if (besProduct.campaing_discount) {
         if (besProduct.campaing_discount.type_discount == 1) { // 1 porcentaje
-          return besProduct.price_usd*besProduct.campaing_discount.discount*0.01;
+          //return besProduct.price_usd*besProduct.campaing_discount.discount*0.01;
+          return (besProduct.price_usd*besProduct.campaing_discount.discount*0.01).toFixed(2);
         } else { // 2 es moneda
           return besProduct.campaing_discount.discount;
         }

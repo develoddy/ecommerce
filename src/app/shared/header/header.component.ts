@@ -54,6 +54,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     });
     if (this._cartService._authService.user) {
       this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
+        console.log("DEBUGG: Header  listCarts");
+        console.log(resp);
+        
         resp.carts.forEach((cart:any) => {
           this._cartService.changeCart(cart);
         });
