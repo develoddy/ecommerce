@@ -1,10 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './modules/auth-profile/_services/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     loadChildren: () => import("./modules/home/home.module").then(m => m.HomeModule),
+  },
+  {
+    path: '',
+    loadChildren: () => import("./modules/ecommerce-guest/ecommerce-guest.module").then(m => m.EcommerceGuestModule),
+  },
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    loadChildren: () => import("./modules/ecommerce-auth/ecommerce-auth.module").then(m => m.EcommerceAuthModule),
   },
   {
     path: 'auth',
@@ -23,6 +33,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }

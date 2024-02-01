@@ -1,0 +1,100 @@
+{
+    "app": {
+        "title": "Online store"
+    },
+    "auth_profile": {
+        "login": {
+            "title": "Welcome",
+            "subtitle":"Please login here",
+            "email": "Email Address",
+            "password": "Password",
+            "remember":"Remember Me",
+            "forget_password":"Forgot Password?",
+            "button_sign_up_now": "Sign Up Now",
+            "button_login":"Login"
+        },
+        "register": {
+            "title":"Create New Account",
+            "subtitle":"Please enter details",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "email": "Email Address",
+            "password": "Password",
+            "password_repeat": "Password Repeat",
+            "condition":"I agree to the <b>Terms & Condition</b>",
+            "button_login": "Log In",
+            "button_signup":"Signup"
+        },
+        "forgot_password": {
+            "title":"Forgot Password",
+            "subtitle":"Enter your registered email address. we'll send you a code to reset your password.",
+            "email": "Email Address",
+            "button_send":"Send OTP",
+            "button_back": "Back"
+        }
+    },
+    "header": {
+        "home":"Home",
+        "shop": {
+            "title": "Compras",
+            "list": {
+                "":""
+            }
+        },
+        "pages": {
+            "title": "Pages",
+            "list": {
+                "account": "My Account",
+                "cart": "My Cart",
+                "wishlist": "My Wishlist",
+                "checkout": "Checkout"
+            }
+        },
+        "about":"About",
+        "blog":"Blog",
+        "contact":"Contact Us",
+        "list_account": {
+            "myaccount":"My Account",
+            "myorders":"My Orders",
+            "support":"Support",
+            "login":"Log In",
+            "logout":"Log Out"
+        },
+        "categories":"Categories"
+    },
+    "home": { 
+        "today":"Today's",
+        "flash_sales": "Flash Sales",
+        "browse_by_category":"Browse by Category",
+        "best_selling_products":"Best Selling Products",
+        "explore_our_products":"Explore our Products",
+        "users_feedback":"Users Feedback",
+        "new_arrivals":"New Arrivals",
+
+        "service_and_quality": {
+            "delivery": {
+                "title": "Fast & Secure Delivery",
+                "description": "Tell about your service."
+            },
+            "warranty": {
+                "title": "Money Back Guarantee",
+                "description": "Within 10 days."
+            },
+            "return": {
+                "title": "24 Hour Return Policy",
+                "description": "No question ask."
+            },
+            "support": {
+                "title": "Pro Quality Support",
+                "description": "24/7 Live support."
+            }
+        }
+    },
+    "main": {
+        "language": "Language",
+        "spanish": "Spanish",
+        "english": "English",
+        "input_placeholder": "Introduce text here",
+        "introduced_text": "Introduced text is: {{ text }}"
+    }
+}

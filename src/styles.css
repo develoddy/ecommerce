@@ -1,1 +1,369 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('assets/css/colors.css');
+
+.notification-ecommerce-warning {
+  position: fixed;
+  left: 70%;
+  top: 10%;
+  background-color: var(--color-warning);
+  border: 1px solid #ffecb5;
+  color: #664d03;
+  /* #ffebeb; */
+  border-radius: 0.2rem;
+  overflow: hidden;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.notification-ecommerce-success {
+  position: fixed;
+  left: 70%;
+  top: 10%;
+  color: #0f5132;
+  background-color: var(--color-success);
+  border: 1px solid #badbcc;
+  /* #ffebeb; */
+  border-radius: 0.2rem;
+  overflow: hidden;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.notification-ecommerce {
+  position: fixed;
+  left: 70%;
+  top: 10%;
+  background-color: var(--color-danger);
+  border: 1px solid #f5c2c7;
+  color: #842029;
+  /* #ffebeb; */
+  border-radius: 0.2rem;
+  overflow: hidden;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+  .notification__warning {
+    width: 1.5rem;
+    margin-left: 1rem;
+    fill: #e00000;
+  }
+  .notification__close {
+    background-color: #faebff;
+    /* #ffc2c2; */
+    border: aliceblue;
+    padding: 1rem;
+    display: flex;
+    cursor: pointer;
+  }
+  .notification__close svg {
+    width: .9rem;
+    fill: #a687ff;
+  }
+  .notification-show {
+    animation: warning 600ms ease-in-out forwards;
+    display: flex;
+  }
+
+  .star-del {
+    color: #ccc !important;
+  }
+  
+  @keyframes warning {
+    0% {
+      opacity: 0;
+      top: 2rem;
+    }
+    5% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+      top: 4rem;
+    }
+  }
+
+/* --------- New style --------- */
+/*
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  color: var(--color-white) !important;
+  background-color: var(--color-dark) !important;
+  border-radius: 6px;
+}
+
+.b-r-14 {
+  border-radius: 14px;
+}
+
+.b-r-12 {
+  border-radius: 12px;
+}
+
+.b-r-10 {
+  border-radius: 10px;
+}
+
+.b-r-8 {
+  border-radius: 8px;
+}
+
+.axil-product .product-content .title {
+  color: var(--color-dark) !important;
+  font-size: 18px;
+}
+
+.axil-product .product-content .product-price-variant span.price {
+  color: var(--color-dark) !important;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  color: var(--color-dark) !important;
+}
+
+.bg_image--9 {
+  background-image: url(../src/assets/images/bg/bg-login.png) !important;
+}
+
+.bg_image--10 {
+  background-image: url(../src/assets/images/bg/bg-register.png) !important;
+}
+
+.bg_image--11 {
+  background-image: url(../src/assets/images/bg/bg-forgot-password.png) !important;
+}
+
+.axil-signin-form-wrap {
+  margin: 140px -30px -30px;
+}
+
+.axil-dashboard-aside .nav-link.active, .axil-dashboard-aside .nav-link:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white) !important;
+}
+
+.axil-dashboard-order .table tbody .view-btn {
+  padding: 10px 10px !important;
+  border: 1px solid var(--color-primary) !important;
+}
+
+.axil-dashboard-order .table thead th {
+  font-size: 14px !important;
+  font-weight: var(--p-bold) !important;
+}
+
+.axil-dashboard-aside .nav-link {
+  color: var(--color-primary) !important;
+  font-weight: 100 !important;
+}
+
+a.axil-btn, button.axil-btn {
+  font-size: var(--font-size-b2) !important;
+  font-weight: 100 !important;
+}
+
+.bg-vista-white {
+  background-color: var(--color-white) !important;
+}
+
+.single-product-content .inner .product-rating{
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.range-variant li {
+  border: 1px solid var(--color-dark) !important;
+  color: var(--color-dark) !important;
+}
+
+a.axil-btn.wishlist-btn, button.axil-btn.wishlist-btn {
+  border: 1px solid var(--color-dark) !important;
+}
+a.axil-btn.wishlist-btn i, button.axil-btn.wishlist-btn i {
+  color: var(--color-dark);
+}
+
+a.axil-btn.wishlist-btn i, button.axil-btn.wishlist-btn i :hover {
+  color: var(--color-dark);
+}
+
+.small-thumb-style-two .small-thumb-img img {
+  border-radius: 0 !important;
+}
+
+.single-product-thumbnail .thumbnail img {
+  height: 100% !important;
+  border-radius: 0 !important;
+}
+
+.small-thumb-wrapper .small-thumb-img {
+  border-radius: 0 !important;
+}
+
+.small-thumb-wrapper .small-thumb-img img {
+  background-color: #f6f7fb !important;
+}
+
+.axil-mainmenu.aside-category-menu .header-department .department-nav-menu .nav-link:hover {
+  color: var(--color-primary) !important;
+}
+
+.product-additional-info {
+  padding: 0 !important;
+}
+
+.small-thumb-style-three {
+  margin: 0 !important;
+}
+
+.small-thumb-style-three .small-thumb-img {
+  margin: 10px 10px 0 0px !important;
+}
+
+.axil-slick-arrow .slide-arrow:before {
+  content: "";
+  height: 100%;
+  width: 100%;
+  background-color: #f6f7fb !important;
+  border-radius: 50% !important;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  transition: transform .5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.axil-slick-arrow .slide-arrow {
+  border-radius: 50% !important;
+  color: var(--color-dark) !important;
+}
+
+.mb--60 {
+  margin-bottom: 0 !important;
+}
+
+.comment-list .comment .single-comment .comment-img img {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.comment-list .comment .single-comment .comment-img {
+  margin-right: 5px !important;
+}
+
+.comment-list .comment .single-comment {
+  padding: 0px 0 !important;
+}
+
+.pro-desc-commnet-area .comment-list .comment .commenter .hover-flip-item-wrapper, .pro-desc-commnet-area .comment-list .comment .commenter .commenter-rating {
+  margin-bottom: 0 !important;
+}
+
+.comment-list .comment .commenter {
+  line-height: 0 !important;
+}
+
+.axil-dashboard-overview .welcome-text a {
+  color: rgb(233, 161, 59) !important;
+}
+
+.single-product-content .inner .product-rating .star-rating {
+  color: rgb(233, 161, 59) !important; 
+}
+
+a.axil-btn.btn-bg-primary, button.axil-btn.btn-bg-primary {
+  background-color: var(--color-dark) !important;
+  color: var(--color-white) !important;
+}
+
+a.axil-btn.btn-bg-primary:before, button.axil-btn.btn-bg-primary:before {
+  background-color: var(--color-dark) !important;
+}
+
+.axil-signin-form .forgot-btn {
+  color: var(--color-dark) !important;
+}
+
+.header-action .my-account .my-account-dropdown li a {
+  padding: 10px 0;
+}
+
+.main-slider-style-2 .slider-offset-left {
+  margin-left: 0 !important;
+}
+
+.mainmenu>li>a {
+  font-size: 14px;
+}
+
+.signin-header {
+  padding: 20px 100px;
+}
+
+@media only screen and (max-width: 575px){
+  .axil-signin-form-wrap {
+      margin: 200px 0 0 !important;
+      height: calc(100vh - 200px);
+  }
+}
+
+.axil-product .cart-action li.select-option a {
+  color: var(--color-primary);
+}
+.axil-product .cart-action li.select-option a:before {
+  background-color: var(--color-white);
+}
+
+.axil-product .cart-action li.select-option a:hover{
+  color: var(--color-primary);
+}
+
+.axil-product-table tbody td.product-thumbnail a img {
+  height: 100px !important;
+  width: 100px !important;
+}
+
+.axil-product-table tbody td {
+  font-size: 14px !important;
+  color: var(--color-dark) !important;
+}
+
+.axil-product-cart-wrap .product-cupon .axil-btn {
+  background-color: var(--color-dark) !important;
+  color: var(--color-white) !important;
+}
+
+.axil-product-cart-wrap .product-cupon .axil-btn:hover {
+  border-color: var(--color-dark) !important;
+}
+
+.axil-order-summery .summery-table .order-total-amount {
+  color: var(--color-dark) !important;
+}
+
+.header-action .shopping-cart .cart-dropdown-btn .cart-count {
+  background-color: var(--color-dark) !important;
+}
+
+.single-product-content .inner .price-amount {
+  color: var(--color-dark) !important;
+}
+.single-product-content .inner .product-meta li {
+  color: var(--color-dark);
+}
+
+a.axil-btn.wishlist-btn:before, button.axil-btn.wishlist-btn:before {
+  background-color: var(--color-dark) !important;
+}
+
+.small-thumb-wrapper .small-thumb-img:hover img, .small-thumb-wrapper .small-thumb-img.slick-current img {
+  border-color: var(--color-dark) !important;
+}
+*/

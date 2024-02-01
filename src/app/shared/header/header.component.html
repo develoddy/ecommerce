@@ -34,12 +34,13 @@
                         </div>
                         <div class="dropdown">
                             <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                EN
+                                ES
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">EN</a></li>
-                                <li><a class="dropdown-item" href="#">ARB</a></li>
-                                <li><a class="dropdown-item" href="#">SPN</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="return false;" (click)="changeLanguageToSpanish('es')">ES</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="return false;" (click)="changeLanguageToEnglish('en')">EN</a></li>
+                                
+                                <!-- <li><a class="dropdown-item" href="#">ARB</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -57,9 +58,9 @@
                     <aside class="header-department">
                         <button class="header-department-text department-title">
                             <span class="icon"><i class="fal fa-bars"></i></span>
-                            <span class="text">Categories</span>
+                            <span class="text">{{ 'header.categories' | translate }}</span>
                         </button>
-                        <nav class="department-nav-menu">
+                        <nav class="department-nav-menu" [ngClass]="{'d-none': !isHome()}">
                             <button class="sidebar-close"><i class="fas fa-times"></i></button>
                             <ul class="nav-menu-list">
                                 <li>
@@ -370,14 +371,14 @@
                                 <i class="flaticon-magnifying-glass"></i>
                             </a>
                         </li>
-                        <li class="wishlist">
+                        <li class="wishlist" *ngIf="user">
                             <a href="wishlist.html">
                                 <i class="flaticon-heart"></i>
                             </a>
                         </li>
-                        <li class="shopping-cart">
+                        <li class="shopping-cart" *ngIf="user">
                             <a href="#" class="cart-dropdown-btn">
-                                <span class="cart-count">3</span>
+                                <span class="cart-count">{{listCarts.length}}</span>
                                 <i class="flaticon-shopping-cart"></i>
                             </a>
                         </li>
@@ -385,11 +386,12 @@
                             <a href="javascript:void(0)">
                                 <i class="flaticon-person"></i>
                             </a>
+                            <!-- <small *ngIf="user">{{ user.name }}</small> -->
                             <div class="my-account-dropdown">
                                 <span class="title">QUICKLINKS</span>
                                 <ul>
                                     <li>
-                                        <a href="my-account.html">My Account</a>
+                                        <a [routerLink]="['/profile']">My Account</a>
                                     </li>
                                     <li>
                                         <a href="#">Initiate return</a>
@@ -401,7 +403,8 @@
                                         <a href="#">Language</a>
                                     </li>
                                 </ul>
-                                <a href="sign-in.html" class="axil-btn btn-bg-primary">Login</a>
+                                <a [routerLink]="['/auth/login']" class="axil-btn btn-bg-primary" *ngIf="!user">Login</a>
+                                <a href="#" onclick="return false;" (click)="logout()" class="axil-btn btn-bg-primary" *ngIf="user">Logout</a>
                                 <div class="reg-footer text-center">No account yet? <a href="sign-up.html" class="btn-link">REGISTER HERE.</a></div>
                             </div>
                         </li>
@@ -417,3 +420,108 @@
     </div>
     <!-- End Mainmenu Area  -->
 </header>
+
+<!-- Header Search Modal End -->
+<div class="header-search-modal" id="header-search-modal">
+    <button class="card-close sidebar-close"><i class="fas fa-times"></i></button>
+    <div class="header-search-wrap">
+        <div class="card-header">
+            <form action="#">
+                <div class="input-group">
+                    <input type="search" class="form-control" [(ngModel)]="search_product" (keyup.enter)="searchProduct()" #filter name="prod-search" id="prod-search" placeholder="Buscar productos...">
+                    <button type="submit" class="axil-btn btn-bg-primary"><i class="far fa-search"></i></button>
+                </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <div class="search-result-header">
+                <h6 class="title">{{ products_search.length }} Result Found</h6>
+                <a href="shop.html" class="view-all">View All</a>
+            </div>
+            <div class="psearch-results">
+                <ng-container *ngFor="let product of products_search">
+                    <div class="axil-product-list">
+                        <div class="thumbnail">
+                            <a [routerLink]="['/landing-product', product.slug]" [queryParams]="getRouterDiscount(product)">
+                                <img [src]="product.imagen" width="120px" alt="Yantiti Leather Bags">
+                            </a>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-rating">
+                                <span class="rating-icon">
+                                    <i class="fas fa-star" [ngClass]="{'star-del': product.avg_review < 1 }"></i>
+                                    <i class="fas fa-star" [ngClass]="{'star-del': product.avg_review < 2 }"></i>
+                                    <i class="fas fa-star" [ngClass]="{'star-del': product.avg_review < 3 }"></i>
+                                    <i class="fas fa-star" [ngClass]="{'star-del': product.avg_review < 4 }"></i>
+                                    <i class="fas fa-star" [ngClass]="{'star-del': product.avg_review < 5 }"></i>
+                                </span>
+                                <span class="rating-number"><span>{{ product.count_review }}+</span> Reviews</span>
+                            </div>
+                            <h6 class="product-title"><a [routerLink]="['/landing-product', product.slug]" [queryParams]="getRouterDiscount(product)">{{ product.title }}</a></h6>
+                            <div class="product-price-variant">
+                                <span class="price old-price" *ngIf="product.campaing_discount"> {{ product.price_usd }} USD</span>
+                                <span class="price current-price"> {{ product.price_usd - getDiscountProduct(product) }} USD </span> 
+                            </div>
+                            <div class="product-cart">
+                                <a href="cart.html" class="cart-btn"><i class="fal fa-shopping-cart"></i></a>
+                                <a href="wishlist.html" class="cart-btn"><i class="fal fa-heart"></i></a>        
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Header Search Modal End -->
+
+<div class="cart-dropdown" id="cart-dropdown">
+    <div class="cart-content-wrap">
+        <div class="cart-header">
+            <h2 class="header-title">Cart review</h2>
+            <button class="cart-close sidebar-close"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="cart-body">
+            <ul class="cart-item-list">
+                <h6>You have {{ listCarts.length }} items in your cart</h6>
+                <ng-container *ngFor="let cart of listCarts">
+                    <li class="cart-item">
+                        <div class="item-img">
+                            <a href="single-product.html" class="rounded-0"><img [src]="cart.product.imagen" class="rounded-0" alt=""></a> 
+                            <button class="close-btn" (click)="removeCart(cart)"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="item-content">
+                            <div class="product-rating">
+                                <span class="icon">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                                <span class="rating-number">(64)</span>
+                            </div>
+                            <h3 class="item-title mb-0"><a href="single-product-3.html">{{cart.product.title}}</a></h3>
+                            <span class="text-primary" *ngIf="cart.variedad"><b>Size: </b> {{cart.variedad.valor}}</span>
+                            <div class="item-price fw-bold"><span class="currency-symbol"></span>{{cart.total }} USD</div>
+                            <div class="pro-qty item-quantity">
+                                <input type="number" class="quantity-input" [value]="cart.cantidad">
+                            </div>
+                        </div>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
+        <div class="cart-footer">
+            <h3 class="cart-subtotal">
+                <span class="subtotal-title">Subtotal:</span>
+                <span class="subtotal-amount">{{ totalCarts }} USD</span>
+            </h3>
+            <div class="group-btn">
+                <a routerLink="/list-carts" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
+                <a routerLink="/payment-process" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
+            </div>
+        </div>
+    </div>
+</div>

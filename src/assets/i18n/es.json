@@ -1,0 +1,101 @@
+{
+    "app": {
+        "title": "Tienda online"
+    },
+    "auth_profile": {
+        "login": {
+            "title": "Bienvenido",
+            "subtitle":"Por favor inicia sesión aquí",
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "remember":"Recodar contraseña",
+            "forget_password":"Olvidaste tu contraseña?",
+            "button_sign_up_now": "Regístrate ahora",
+            "button_login":"Iniciar sesión"
+        },
+        "register": {
+            "title":"Crear una nueva cuenta",
+            "subtitle":"Por favor ingresa los detalles",
+            "first_name": "Nombre",
+            "last_name": "Apellido",
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "password_repeat": "Repetir contraseña",
+            "condition":"Acepto los <b>Términos y condiciones</b>",
+            "button_login": "Iniciar sesión",
+            "button_signup":"Registrar"
+        },
+        "forgot_password": {
+            "title":"Has olvidado tu contraseña",
+            "subtitle":"Ingrese su dirección de correo electrónico registrada. Le enviaremos un código para restablecer su contraseña.",
+            "email": "Correo electrónico",
+            "button_send":"Enviar",
+            "button_back": "Atrás"
+        }
+    },
+    "header": {
+        "home":"Inicio",
+        "shop": {
+            "title": "Compras",
+            "list": {
+                "": ""
+            }
+        },
+        "pages":{
+            "title": "Paginas",
+            "list": {
+                "account": "Mi cuenta",
+                "cart": "Mi carrito",
+                "wishlist": "Mi lista de deseos",
+                "checkout": "Proceso de pago"
+            }
+        },
+        "about":"Nuestra historia",
+        "blog":"Blog",
+        "contact":"Contacta con nosotros",
+        "list_account": {
+            "myaccount":"Mi cuenta",
+            "myorders":"Mis pedidos",
+            "support":"Soporte",
+            "login":"Entrar",
+            "logout":"Cerrar sesión"
+        },
+        "categories":"Categorias"
+        
+    },
+    "home": {
+        "today":"Hoy",
+        "flash_sales": "Venta Flash",
+        "browse_by_category":"Buscar por categoría",
+        "best_selling_products":"Productos más vendidos",
+        "explore_our_products":"Explora nuestros productos",
+        "users_feedback":"Comentarios de los usuarios",
+        "new_arrivals":"Los recién llegados",
+
+        "service_and_quality": {
+            "delivery": {
+                "title": "Entrega rápida y segura",
+                "description": "Cuéntanos sobre tu servicio."
+            },
+            "warranty": {
+                "title": "Garantía de devolución del dinero",
+                "description": "En 10 días."
+            },
+            "return": {
+                "title": "Política de devolución de 24 horas",
+                "description": "No hay preguntas."
+            },
+            "support": {
+                "title": "Soporte de calidad profesional",
+                "description": "Soporte en vivo 24 horas al día, 7 días a la semana."
+            }
+        }
+    },
+    "main": {
+        "language": "Idioma",
+        "spanish": "Español",
+        "english": "Inglés",
+        "input_placeholder": "Introduce texto aquí",
+        "introduced_text": "El texto introducido es: {{ text }}"
+    }
+}

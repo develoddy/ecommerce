@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+
+declare function alertDanger([]):any;
+declare function alertWarning([]):any;
+declare function alertSuccess([]):any;
 
 @Component({
   selector: 'app-login',
@@ -14,8 +19,11 @@ export class LoginComponent implements OnInit {
   
   constructor(
     public _authService: AuthService,
-    public _router: Router
-  ) { }
+    public _router: Router,
+    public translate: TranslateService
+  ) { 
+    translate.setDefaultLang('es');
+  }
 
   ngOnInit(): void {
     if (this._authService.user) {
@@ -23,13 +31,24 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  // Se cambia el idioma a Español
+  changeLanguageToSpanish(): void {
+    this.translate.use('es');
+    console.log('Idioma cambiado al Español');
+  }
+  // Se cambia el idioma a Inglés
+  changeLanguageToEnglish(): void {
+    this.translate.use('en');
+    console.log('Idioma cambiado al Inglés');
+  }
+
   login() {
     if (!this.email) {
-      alert("Es necesario ingresar el email");
+      alertDanger("Es necesario ingresar el email");
     }
 
     if (!this.password) {
-      alert("Es necesario ingresar el password");
+      alertDanger("Es necesario ingresar el password");
     }
 
     this._authService.login(this.email, this.password).subscribe((resp:any) => {
@@ -37,11 +56,11 @@ export class LoginComponent implements OnInit {
       // SI NO TIENE UN ERROR Y LA RESPUESTA ES VERDADERA
       // SIGNIFICA QUE EL USUARIO SE LOGUEO CORRECTAMENTE
        if (!resp.error && resp) {
-        this._router.navigate(["/"]);
+        //this._router.navigate(["/"]); 
+        location.reload();
       } else {
-        alert(resp.error.message)
+        alertDanger(resp.error.message)
       }
     });
   }
-
 }

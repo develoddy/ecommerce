@@ -1,0 +1,166 @@
+/* colors.css */
+
+/* :root {
+    --color-primary: rgb(19,17,23); 
+    --color-secondary: rgb(19,17,23); 
+    --color-tertiary: rgb(163,42,133);
+    --color-dark: rgb(19,17,23);
+    --color-light: #f8f9fa;
+    --color-green: rgb(95,187,135);
+    --color-gray: rgb(153,151,159);
+    --color-white: rgb(255,255,255);
+    --color-teal: #20c997;
+    --color-success: #d1e7dd;
+    --color-warning: #fff3cd;
+    --color-danger: #f8d7da;
+  } 
+
+
+  :root {
+    --color-primary: #3577f0;
+    --light-primary: #8c71db;
+    --color-secondary: #ff497c;
+    --color-tertiary: rgb(238,122,105);
+    --color-white: #ffffff;
+    --color-dark: #27272E;
+    --color-black: #000000;
+    --color-light: #CBD3D9;
+    --color-lighter: #F6F7FB;
+    --color-lightest: #C4C4C4;
+    --color-chart01: #896BA7;
+    --color-chart02: #BADEFF;
+    --color-chart03: #E76458;
+    --color-heading: #292930;
+    --color-body: #777777;
+    --color-border-light: #E3E6E9;
+    --color-border-dark: #42424A;
+    --color-gray: #999FAE;
+    --color-midgray: #878787;
+    --color-extra01: #999FAE;
+    --color-success: #3EB75E;
+    --color-danger: #FF0003;
+    --color-warning: #FF8F3C;
+    --color-info: #1BA2DB;
+    --color-facebook: #3B5997;
+    --color-twitter: #1BA1F2;
+    --color-youtube: #ED4141;
+    --color-linkedin: #0077B5;
+    --color-pinterest: #E60022;
+    --color-instagram: #C231A1;
+    --color-vimeo: #00ADEF;
+    --color-twitch: #6441A3;
+    --color-discord: #7289da;
+    --radius: 6px;
+    --radius-big: 16px;
+    --radius-small: 6px;
+    --border-width: 2px;
+    --border-thin: 1px;
+    --p-light: 300;
+    --p-regular: 400;
+    --p-medium: 500;
+    --p-semi-bold: 600;
+    --p-bold: 700;
+    --p-extra-bold: 800;
+    --p-black: 900;
+    --s-light: 300;
+    --s-regular: 400;
+    --s-medium: 500;
+    --s-bold: 700;
+    --s-black: 900;
+    --shadow-primary: 0px 4px 10px rgba(37, 47, 63, 0.1);
+    --shadow-light: 0 2px 6px 0 rgba(0, 0, 0, 0.05);
+    --shadow-dark: 0 16px 32px 0 rgba(0, 0, 0, 0.04);
+    --transition: 0.3s;
+    --font-primary: "DM Sans", sans-serif;
+    --font-secondary: "DM Sans", sans-serif;
+    --font-awesome: "Font Awesome 5 Pro";
+    --font-size-b1: 16px;
+    --font-size-b2: 14px;
+    --font-size-b3: 12px;
+    --line-height-b1: 1.7;
+    --line-height-b2: 1.65;
+    --line-height-b3: 1.6;
+    --h1: 46px;
+    --h2: 36px;
+    --h3: 28px;
+    --h4: 24px;
+    --h5: 20px;
+    --h6: 18px;
+  } 
+
+
+
+  :root {
+    --bs-blue: #0d6efd;
+    --bs-indigo: #6610f2;
+    --bs-purple: #6f42c1;
+    --bs-pink: #d63384;
+    --bs-red: #dc3545;
+    --bs-orange: #fd7e14;
+    --bs-yellow: #ffc107;
+    --bs-green: #198754;
+    --bs-teal: #20c997;
+    --bs-cyan: #0dcaf0;
+    --bs-white: #fff;
+    --bs-gray: #6c757d;
+    --bs-gray-dark: #343a40;
+    --bs-gray-100: #f8f9fa;
+    --bs-gray-200: #e9ecef;
+    --bs-gray-300: #dee2e6;
+    --bs-gray-400: #ced4da;
+    --bs-gray-500: #adb5bd;
+    --bs-gray-600: #6c757d;
+    --bs-gray-700: #495057;
+    --bs-gray-800: #343a40;
+    --bs-gray-900: #212529;
+    
+    --bs-tertiary-100: #fab8c436;
+    --bs-tertiary-200: #fab8c4ec;
+    --bs-tertiary-300: #FAB8C4;
+
+    --bs-primary: #0d6efd;
+    --bs-secondary: #6c757d;
+    --bs-success: #198754;
+    --bs-info: #0dcaf0;
+    --bs-warning: #ffc107;
+    --bs-danger: #dc3545;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+    --bs-primary-rgb: 13,110,253;
+    --bs-secondary-rgb: 108,117,125;
+    --bs-success-rgb: 25,135,84;
+    --bs-info-rgb: 13,202,240;
+    --bs-warning-rgb: 255,193,7;
+    --bs-danger-rgb: 220,53,69;
+    --bs-light-rgb: 248,249,250;
+    --bs-dark-rgb: 33,37,41;
+    --bs-white-rgb: 255,255,255;
+    --bs-black-rgb: 0,0,0;
+    --bs-body-color-rgb: 33,37,41;
+    --bs-body-bg-rgb: 255,255,255;
+    --bs-font-sans-serif: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    --bs-font-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+    --bs-body-font-family: var(--bs-font-sans-serif);
+    --bs-body-font-size: 1rem;
+    --bs-body-font-weight: 400;
+    --bs-body-line-height: 1.5;
+    --bs-body-color: #212529;
+    --bs-body-bg: #fff;
+}
+
+
+
+.background-gray-100 {background-color: var(--bs-gray-100);}
+.background-gray-200 {background-color: var(--bs-gray-200);}
+.background-gray-300 {background-color: var(--bs-gray-300);}
+.background-tertiary-100 {background-color: var(--bs-tertiary-100) !important ;}
+
+
+.text-dark { color: var(--color-dark) !important;}
+.text-tertiary {color: var(--color-tertiary) !important;}
+.text-primary {color: var(--color-primary) !important;}
+.text-gray {color: var(--color-gray) !important;}
+.text-light {color: var(--color-light) !important;}
+
+*/
