@@ -51,10 +51,6 @@ export class LandingProductComponent implements OnInit {
       console.log(resp);
 
       this.product_selected = resp.product;
-      
-      console.log("DEBBUG: product_selected");
-      console.log(this.product_selected);
-      
       this.related_products = resp.related_products;
       this.SALE_FLASH = resp.SALE_FLASH;
       this.REVIEWS = resp.REVIEWS;
@@ -81,7 +77,7 @@ export class LandingProductComponent implements OnInit {
     let discount = 0;
     if (this.SALE_FLASH) {
       if (this.SALE_FLASH.type_discount == 1) {
-        return this.SALE_FLASH.discount*this.product_selected.price_usd*0.01;
+        return (this.SALE_FLASH.discount*this.product_selected.price_usd*0.01).toFixed(2);
       } else {
         return this.SALE_FLASH.discount;
       }

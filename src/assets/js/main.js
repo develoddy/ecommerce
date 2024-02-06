@@ -88,14 +88,14 @@ function HOMEINITTEMPLATE ($, undefined) {
         },
 
         counterUpActivation: function () {
-			var _counter = $('.count');
-			if (_counter.length) {
-				_counter.counterUp({
-					delay: 10,
-					time: 1000,
-					triggerOnce: true
-				});
-			}
+            var _counter = $('.count');
+            if (_counter.length) {
+                _counter.counterUp({
+                    delay: 10,
+                    time: 1000,
+                    triggerOnce: true
+                });
+            }
         },
 
         scrollSmoth: function (e) {
@@ -1062,7 +1062,7 @@ function ModalProductDetail() {
 }
 
 function LandingProductDetail() {
-    $('.product-small-thumb-2').slick({
+    /*$('.product-small-thumb-2').slick({
         infinite: true,
         slidesToShow: 6,
         slidesToScroll: 1,
@@ -1084,9 +1084,31 @@ function LandingProductDetail() {
                 }
             }
         ]
+    });*/
+
+    $('.product-small-thumb-3').slick({
+        infinite: false,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        arrows: false,
+        dots: false,
+        focusOnSelect: true,
+        vertical: true,
+        speed: 800,
+        draggable: false,
+        swipe: false,
+        asNavFor: '.product-large-thumbnail-3',
+        responsive: [{
+                breakpoint: 992,
+                settings: {
+                    vertical: false,
+                }
+            }
+        ]
+
     });
 
-    $('.product-large-thumbnail-2').slick({
+    /*$('.product-large-thumbnail-3').slick({
         infinite: true,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -1094,10 +1116,35 @@ function LandingProductDetail() {
         dots: false,
         speed: 800,
         draggable: false,
-        asNavFor: '.product-small-thumb-2',
+        asNavFor: '.product-small-thumb-3',
         prevArrow: '<button class="slide-arrow prev-arrow"><i class="fal fa-long-arrow-left"></i></button>',
         nextArrow: '<button class="slide-arrow next-arrow"><i class="fal fa-long-arrow-right"></i></button>'
+    });*/
+
+    $('.product-large-thumbnail-3').slick({
+        infinite: false,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        dots: false,
+        speed: 800,
+        draggable: false,
+        swipe: false,
+        asNavFor: '.product-small-thumb-3'
     });
+
+    // Zoom
+    if ($('.zoom-gallery').length) {
+        $('.zoom-gallery').each(function() {
+            $('.zoom-gallery').magnificPopup({
+                delegate: 'a.popup-zoom',
+                type: 'image',
+                gallery: {
+                    enabled: true
+                }
+            });
+        });
+        }
 
     $('.landing-product .pro-qty').prepend('<span class="dec qtybtn">-</span>');
     $('.landing-product .pro-qty').append('<span class="inc qtybtn">+</span>');
@@ -1241,9 +1288,9 @@ function alertDanger(TEXT){
       document.getElementById("notification-ecommerce-danger")?.classList.remove("notification-show");
     }, 6000);
 
-    closeBtn.addEventListener("click", () => {
+    /*closeBtn.addEventListener("click", () => {
       document.getElementById("notification-ecommerce-danger")?.classList.remove("notification-show");
-    });
+    });*/
 }
 
 function alertWarning(TEXT){
@@ -1264,9 +1311,10 @@ function alertWarning(TEXT){
     document.getElementById("notification-ecommerce-warning")?.classList.remove("notification-show");
   }, 6000);
 
-  closeBtn.addEventListener("click", () => {
+  
+  /*closeBtn.addEventListener("click", () => {
     document.getElementById("notification-ecommerce-warning")?.classList.remove("notification-show");
-  });
+  });*/
 }
 
 function alertSuccess(TEXT){
@@ -1287,9 +1335,10 @@ function alertSuccess(TEXT){
       document.getElementById("notification-ecommerce-success")?.classList.remove("notification-show");
     }, 6000);
 
-    closeBtn.addEventListener("click", () => {
+
+    /*closeBtn.addEventListener("click", () => {
       document.getElementById("notification-ecommerce-success")?.classList.remove("notification-show");
-    });
+    });*/
 }
 
 function headerIconToggle($) {

@@ -46,6 +46,7 @@ export class CheckoutComponent implements OnInit {
       console.log(resp);
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
     });
 
     paypal.Buttons({

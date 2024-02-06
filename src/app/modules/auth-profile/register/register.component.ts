@@ -46,10 +46,12 @@ export class RegisterComponent implements OnInit {
       !this.password ||
       !this.repeat_password) {
         alertDanger("Todos los campos son requeridos");
+        return;
     }
 
     if(this.password != this.repeat_password) {
       alertDanger("Las contraseñas deben ser iguales");
+      return;
     }
 
     let data = {
@@ -64,6 +66,11 @@ export class RegisterComponent implements OnInit {
     this._authService.register(data).subscribe((resp:any) => {
       console.log(resp);
       alertSuccess("Muy bien! Tus datos se han registrado correctamente.");
+      this.email = '';
+      this.name = '';
+      this.surname = '';
+      this.password = '';
+      this.repeat_password = '';
     });
   }
 }

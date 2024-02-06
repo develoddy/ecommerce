@@ -217,7 +217,7 @@
                 <div class="product-area pb--50">
                     <div class="d-md-flex align-items-end flash-sale-section">
                         <div class="section-title-wrapper">
-                            <span class="title-highlighter highlighter-primary"><i class="fas fa-fire"></i> {{ 'home.today' | translate }}</span>
+                            <span class="title-highlighter highlighter-primary"><i class="fas fa-fire"></i> {{ 'home.today' | translate }} (Hoy)</span>
                             <h2 class="title">{{ 'home.flash_sales' | translate }}</h2>
                         </div>
                         <div class="sale-countdown countdown"></div>
@@ -301,7 +301,7 @@
         <div class="axil-product-area bg-color-white axil-section-gap">
             <div class="container">
                 <div class="section-title-wrapper">
-                    <span class="title-highlighter highlighter-primary"> <i class="far fa-shopping-basket"></i> Our Products</span>
+                    <span class="title-highlighter highlighter-primary"> <i class="far fa-shopping-basket"></i> Our Products (Nuestros productos)</span>
                     <h2 class="title">Explore our Products</h2>
                 </div>
                 <div class="explore-product-activation slick-layout-wrapper slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
@@ -349,6 +349,7 @@
                                                 </div>
                                                 <h5 class="title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', ourProduct.slug]">{{ ourProduct.title }}</a></h5>
                                                 <div class="product-price-variant">
+                                                    
                                                     <span class="price current-price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} USD </span>
                                                     <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} USD</span>
                                                 </div>
@@ -386,8 +387,8 @@
                                             <div class="inner">
                                                 <h5 class="title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]">{{ besProduct.title }}</a></h5>
                                                 <div class="product-price-variant">
-                                                    <span class="price current-price">{{ besProduct.price_usd - getDiscountProduct(besProduct) }} USD</span>
-                                                    <span class="price old-price" *ngIf="besProduct.campaing_discount">{{ besProduct.price_usd }} USD</span>
+                                                    <span class="price current-price">{{ besProduct.price_usd }} USD</span>
+                                                    <!-- <span class="price old-price" *ngIf="besProduct.campaing_discount">{{ besProduct.price_usd }} USD</span> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -508,7 +509,7 @@
             <div class="container">
                 <div class="product-area pb--50">
                     <div class="section-title-wrapper">
-                        <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i>This Week’s</span>
+                        <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i>This Week’s (De esta semana)</span>
                         <h2 class="title">New Arrivals</h2>
                     </div>
                     <div class="new-arrivals-product-activation slick-layout-wrapper--30 axil-slick-arrow  arrow-top-slide">
@@ -565,7 +566,7 @@
             <div class="container">
                 <div class="product-area pb--50">
                     <div class="section-title-wrapper section-title-center">
-                        <span class="title-highlighter highlighter-primary"><i class="fas fa-star"></i> Most Sold</span>
+                        <span class="title-highlighter highlighter-primary"><i class="fas fa-star"></i> Most Sold (Más venido)</span>
                         <h2 class="title">Most Sold in eTrade Store</h2>
                     </div>
                     <div class="row row-cols-xl-2 row-cols-1 row--15">
