@@ -43,8 +43,10 @@ export class ListCartsComponent implements OnInit {
       return;
     }
     cart.cantidad = cart.cantidad - 1;
-    cart.subtotal = cart.price_unitario * cart.cantidad;
-    cart.total = cart.price_unitario * cart.cantidad;
+    // cart.subtotal = cart.price_unitario * cart.cantidad;
+    // cart.total = cart.price_unitario * cart.cantidad;
+    cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+    cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
 
     // AQUI VA LA FUNCION PARA ENVIARLO AL SERVICE O BACKEND
     let data = {
@@ -63,9 +65,12 @@ export class ListCartsComponent implements OnInit {
   inc(cart:any) {
     console.log(cart, "INC");
     cart.cantidad = cart.cantidad + 1;
-    cart.subtotal = cart.price_unitario * cart.cantidad;
-    cart.total = cart.price_unitario * cart.cantidad;
-
+    //cart.subtotal = cart.price_unitario * cart.cantidad;
+    //cart.total = cart.price_unitario * cart.cantidad;
+    // cart.subtotal = Number((cart.price_unitario * cart.cantidad).toFixed(2));
+    cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+    cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+    
     // AQUI VA LA FUNCION PARA ENVIARLO AL SERVICE O BACKEND
     let data = {
       _id: cart._id,

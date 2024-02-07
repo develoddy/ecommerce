@@ -133,6 +133,7 @@ export class LandingProductComponent implements OnInit {
       subtotal: this.product_selected.price_usd - this.getDiscount(),  //*$("#qty-cart").val(),
       total: (this.product_selected.price_usd - this.getDiscount())*$("#qty-cart").val(), // De momento es igual, luego aplicamos el descuento
     }
+
     this._cartService.registerCart(data).subscribe((resp:any) => {
       if (resp.message == 403) {
         alertDanger(resp.message_text);

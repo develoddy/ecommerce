@@ -102,7 +102,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   getDiscountProduct(product:any) {
     if (product.campaing_discount) {
       if (product.campaing_discount.type_discount == 1) { // 1 porcentaje
-        return product.price_usd*product.campaing_discount.discount*0.01;
+        return (product.price_usd*product.campaing_discount.discount*0.01).toFixed(2);
       } else { // 2 es moneda
         return product.campaing_discount.discount;
       }
