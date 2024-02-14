@@ -29,7 +29,18 @@ export class ListCartsComponent implements OnInit {
       sectionCart();
     }, 25);
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
-      console.log(resp);
+      this.listCarts = resp;
+      console.log("debugg: listCarts");
+      console.log(this.listAllCarts);
+      
+      
+      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+    });
+  }
+
+  updateTotalCarts() {
+    this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
@@ -58,7 +69,9 @@ export class ListCartsComponent implements OnInit {
       product: cart.product._id,
     }
     this._cartService.updateCart(data).subscribe((resp:any) => {
+      console.log("Debugg: Decremento");
       console.log(resp);
+      this.updateTotalCarts();
     });
   }
 
@@ -81,7 +94,9 @@ export class ListCartsComponent implements OnInit {
       product: cart.product._id,
     }
     this._cartService.updateCart(data).subscribe((resp:any) => {
+      console.log("Debugg: Incremento");
       console.log(resp);
+      this.updateTotalCarts();
     }); 
   }
 
@@ -100,7 +115,6 @@ export class ListCartsComponent implements OnInit {
     }
 
     this._cartService.apllyCupon(data).subscribe((resp:any) => {
-      console.log(resp);
       if (resp.message == 403) {
         alertDanger(resp.message_text);
       } else {

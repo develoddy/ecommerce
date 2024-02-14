@@ -47,9 +47,6 @@ export class LandingProductComponent implements OnInit {
 
     console.log(this.slug);
     this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
-      console.log("DEBBUG: LanDING resp");
-      console.log(resp);
-
       this.product_selected = resp.product;
       this.related_products = resp.related_products;
       this.SALE_FLASH = resp.SALE_FLASH;
@@ -84,6 +81,26 @@ export class LandingProductComponent implements OnInit {
     }
     return discount;
   }
+
+  // getDiscountProduct(besProduct:any, is_sale_flash:any=null) {
+  //   if (is_sale_flash) {
+  //     if (this.SALE_FLASH.type_discount == 1) { // 1 porcentaje
+  //       return (besProduct.price_usd*this.SALE_FLASH.discount*0.01).toFixed(2);
+  //     } else { // 2 es moneda
+  //       return this.SALE_FLASH.discount;
+  //     }
+  //   } else {
+  //     if (besProduct.campaing_discount) {
+  //       if (besProduct.campaing_discount.type_discount == 1) { // 1 porcentaje
+  //         //return besProduct.price_usd*besProduct.campaing_discount.discount*0.01;
+  //         return (besProduct.price_usd*besProduct.campaing_discount.discount*0.01).toFixed(2);
+  //       } else { // 2 es moneda
+  //         return besProduct.campaing_discount.discount;
+  //       }
+  //     }
+  //   }
+  //   return 0;
+  // }
 
   getCalNewPrice(product:any) {
     // if (this.FlashSale.type_discount == 1) {

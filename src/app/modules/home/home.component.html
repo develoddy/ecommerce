@@ -349,7 +349,6 @@
                                                 </div>
                                                 <h5 class="title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', ourProduct.slug]">{{ ourProduct.title }}</a></h5>
                                                 <div class="product-price-variant">
-                                                    
                                                     <span class="price current-price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} USD </span>
                                                     <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} USD</span>
                                                 </div>

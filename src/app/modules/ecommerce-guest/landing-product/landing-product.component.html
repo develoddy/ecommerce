@@ -1,90 +1,60 @@
 <!-- Main -->
 <main class="main-wrapper" *ngIf="product_selected">
-    <!-- Start Shop Area  -->
-    <div class="axil-single-product-area axil-section-gap pb--0 bg-color-white">
-        <div class="single-product-thumb mb--40">
+    <div class="axil-single-product-area bg-color-white">
+        <div class="single-product-thumb axil-section-gapcommon single-product-modern">
             <div class="container">
-                <div class="row">
-                    
-                    <div class="col-lg-7 mb--40">
+                <div class="row row--20">
+                    <div class="col-lg-6 mb--40">
                         <div class="row">
-                            
-                            <div class="col-lg-10 order-lg-2">
-                                <div class="single-product-thumbnail-wrap zoom-gallery">
-                                    <div class="single-product-thumbnail product-large-thumbnail-3 axil-product">
-                                        <ng-container *ngFor="let item of product_selected.galerias">
-                                            <div class="thumbnail">
-                                                <!-- 584x484 -->
-                                                <a href="assets/images/product/product-big-01.png" class="popup-zoom">
-                                                    <img [src]="item.imagen"  alt="Product Images">
-                                                </a>
-                                            </div>
-                                        </ng-container>
-                                    </div>
-                                    <ng-container *ngIf="SALE_FLASH">
-                                        <div class="label-block label-right" *ngIf="SALE_FLASH.type_discount == 1">
-                                            <div class="product-badget">{{SALE_FLASH.discount}}% OFF</div>
-                                        </div>
-                                        <div class="label-block label-right" *ngIf="SALE_FLASH.type_discount == 2">
-                                            <div class="product-badget">{{SALE_FLASH.discount}} € OFF</div>
+                            <div class="col-lg-12">
+                                <div class="product-large-thumbnail-4 single-product-thumbnail axil-product">
+                                    <ng-container *ngFor="let item of product_selected.galerias">
+                                        <div class="thumbnail">
+                                            <!-- 629x629 -->
+                                            <img [src]="item.imagen" alt="Product Images">
                                         </div>
                                     </ng-container>
-                                    
-                                    <div class="product-quick-view position-view">
-                                        <a href="assets/images/product/product-big-01.png" class="popup-zoom">
-                                            <i class="far fa-search-plus"></i>
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="col-lg-2 order-lg-1">
-                                <div class="product-small-thumb-3 small-thumb-wrapper">
+                            <div class="col-lg-12">
+                                <div class="small-thumb-wrapper product-small-thumb-4 slick-layout-wrapper--10 axil-slick-arrow arrow-both-side">
                                     <ng-container *ngFor="let item of product_selected.galerias">
                                         <div class="small-thumb-img">
-                                            <!-- 213x207 -->
-                                            <img [src]="item.imagen" alt="thumb image">
+                                            <img [src]="item.imagen" alt="samll-thumb">
                                         </div>
                                     </ng-container>
-                                    <!-- <div class="small-thumb-img">
-                                        <img src="assets/images/product/product-thumb/thumb-07.png" alt="thumb image">
-                                    </div>
-                                    <div class="small-thumb-img">
-                                        <img src="assets/images/product/product-thumb/thumb-09.png" alt="thumb image">
-                                    </div>
-                                    <div class="small-thumb-img">
-                                        <img src="assets/images/product/product-thumb/thumb-07.png" alt="thumb image">
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="col-lg-5 mb--40">
+                    <div class="col-lg-6 mb--40">
                         <div class="single-product-content">
                             <div class="inner">
                                 <h2 class="product-title">{{ product_selected.title }}</h2>
-
+                                <!-- <span class="price-amount">$120.00 - $180.00</span> -->
                                 <div class="price-amount price-offer-amount">
-                                    <span class="price current-price">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} <i _ngcontent-xve-c6="" class="fa-solid fa-euro-sign"></i></span>
+                                    <span class="price current-price">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} <i class="fa-solid fa-euro-sign"></i></span>
                                     <ng-container *ngIf="getDiscount() > 0">
-                                        <span class="price old-price">{{ product_selected.price_usd }} <i _ngcontent-xve-c6="" class="fa-solid fa-euro-sign"></i></span>
+                                        <span class="price old-price">{{ product_selected.price_usd }} <i class="fa-solid fa-euro-sign"></i></span>
                                         <ng-container *ngIf="SALE_FLASH">
                                             <div class="offer-badge" *ngIf="SALE_FLASH.type_discount == 1">
                                                 <div class="product-badget">{{SALE_FLASH.discount}}% OFF</div>
                                             </div>
                                             <div class="offer-badge" *ngIf="SALE_FLASH.type_discount == 2">
-                                                <div class="product-badget">{{SALE_FLASH.discount}} <i _ngcontent-xve-c6="" class="fa-solid fa-euro-sign"></i> OFF</div>
+                                                <div class="product-badget">{{SALE_FLASH.discount}} <i class="fa-solid fa-euro-sign"></i> OFF</div>
                                             </div>
                                         </ng-container>
                                     </ng-container>
                                 </div>
-                                <ng-container *ngIf="getDiscount() > 0">
-                                    <div class="price-amount price-offer-amount">
-                                        <small>Descuento por: <b> {{ SALE_FLASH.type_campaign == 1 ? 'Campaña de descuento' : 'Venta flash' }} </b></small>
-                                    </div>
-                                </ng-container>
+                                <div class="price-amount price-offer-amount px-3">
+                                    <ng-container *ngIf="getDiscount() > 0">
+                                        <div class="price-amount price-offer-amount">
+                                            <span class="price current-price">Descuento por: <b> {{ SALE_FLASH.type_campaign == 1 ? 'Campaña de descuento' : 'Venta flash' }} </b></span>
+                                        </div>
+                                    </ng-container>
+                                </div>
                                 
+
                                 <div class="product-rating">
                                     <div class="star-rating">
                                         <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 1}"></i>
@@ -92,60 +62,63 @@
                                         <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 3}"></i>
                                         <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 4}"></i>
                                         <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 5}"></i>
-                                        
                                     </div>
-                                    <div class="review-link">
-                                        <a href="#">(<span>{{ COUNT_REVIEW }}</span> customer reviews)</a>
-                                    </div>
+                                    <div class="review-number">{{ COUNT_REVIEW }}</div>
+                                    <div class="total-answerd">2 answered questions</div>
                                 </div>
-                                <ul class="product-meta">
-                                    <li><i class="fal fa-check"></i>In stock</li>
-                                    <li><i class="fal fa-check"></i>Free delivery available</li>
-                                    <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>
+                                <ul class="description">
+                                    <li>{{ product_selected.resumen }}</li>
                                 </ul>
-                                <p class="description">{{ product_selected.resumen }}</p>
-
                                 <div class="product-variations-wrapper">
 
                                     <!-- Start Product Variation  -->
-                                    <div class="product-variation d-none">
+                                    <div class="product-variation product-size-variation">
+                                        <ul class="product-meta">
+                                            <li><i class="fal fa-check"></i>In stock</li>
+                                            <li><i class="fal fa-check"></i>Free delivery available</li>
+                                            <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>
+                                        </ul>
+                                        <h6 class="title">Size:</h6>
+                                        <ul class="range-variant">
+                                            <li class="active">xs</li>
+                                            <li>s</li>
+                                            <li>m</li>
+                                            <li>l</li>
+                                            <li>xl</li>
+                                        </ul>
+                                    </div>
+                                    <!-- End Product Variation  -->
+                                    <!-- Start Product Variation  -->
+                                    <div class="product-variation">
                                         <h6 class="title">Colors:</h6>
                                         <div class="color-variant-wrapper">
-                                            <ul class="color-variant">
+                                            <ul class="color-variant mt--0">
                                                 <li class="color-extra-01 active"><span><span class="color"></span></span>
                                                 </li>
                                                 <li class="color-extra-02"><span><span class="color"></span></span>
                                                 </li>
                                                 <li class="color-extra-03"><span><span class="color"></span></span>
                                                 </li>
+                                                <li class="color-extra-04"><span><span class="color"></span></span>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <!-- End Product Variation  -->
-
-                                    <div class="product-variation product-size-variation" *ngIf="product_selected.type_inventario == 2">
-                                        <h6 class="title">Size:</h6>
-                                        <ul class="range-variant">
-                                            <ng-container *ngFor="let variedad of product_selected.variedades">
-                                                <li (click)="selectedVariedad(variedad)">{{ variedad.valor }}</li>
-                                            </ng-container>
-                                        </ul>
+                                    <div class="product-variation quantity-variant-wrapper landing-product">
+                                        <h6 class="title">Quantity</h6>
+                                        <div class="pro-qty"><input type="text" id="qty-cart"  value="1"></div>
                                     </div>
-                                    <!-- End Product Variation  -->
-
                                 </div>
 
-                                
                                 <!-- Start Product Action Wrapper  -->
-                                <div class="product-action-wrapper d-flex-center landing-product">
-                                    <!-- Start Quentity Action  -->
-                                    <div class="pro-qty mr--20"><input type="text" id="qty-cart" value="1"></div>
-                                    <!-- End Quentity Action  -->
+                                <div class="product-action-wrapper">
 
                                     <!-- Start Product Action  -->
                                     <ul class="product-action d-flex-center mb--0">
-                                        <li class="add-to-cart"><a href="#" onclick="return false;" (click)="addCart(product_selected)" class="axil-btn btn-bg-primary">Add to Cart</a></li>
-                                        <li class="wishlist"><a href="wishlist.html" class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li>
+                                        <li class="add-to-cart"><a href="checkout.html" onclick="return false;" routerLink="/payment-process" class="axil-btn btn-bg-secondary"><i class="far fa-shopping-bag"></i> Buy Now</a></li>
+                                        <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-primary" onclick="return false;" (click)="addCart(product_selected)" ><i class="far fa-shopping-cart"></i> Add to Cart</a></li>
+
                                     </ul>
                                     <!-- End Product Action  -->
 
@@ -158,267 +131,243 @@
             </div>
         </div>
         <!-- End .single-product-thumb -->
-
-        <div class="woocommerce-tabs wc-tabs-wrapper bg-vista-white">
+        <div class="woocommerce-tabs wc-tabs-wrapper bg-lighter wc-tab-style-two">
             <div class="container">
-                <ul class="nav tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
-                    </li>
-                    <li class="nav-item " role="presentation">
-                        <a id="additional-info-tab" data-bs-toggle="tab" href="#additional-info" role="tab" aria-controls="additional-info" aria-selected="false">Additional Information</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a>
-                    </li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-                        <div class="product-desc-wrapper">
-                            <div class="row">
-                                <div class="col-lg-6 mb--30">
-                                    <div class="single-desc">
-                                        <h5 class="title">Specifications:</h5>
-                                        <p>{{ product_selected.resumen }}</p>
+                <div class="section-title-wrapper section-title-border">
+                    <h2 class="title">About This Product 💥</h2>
+                </div>
+                <div class="tabs-wrap">
+                    <ul class="nav tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Specifications</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                            <div class="product-desc-wrapper">
+                                <div class="single-desc">
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-6" *ngIf="product_selected.variedades.length > 0">
+                                            <h5 class="title">Variedades</h5>
+                                            <ul>
+                                                <ng-container *ngFor="let variedad of product_selected.variedades">
+                                                    <li>variedad.valor</li>
+                                                </ng-container>
+                                            </ul>
+                                        </div>
+                                        <div class="col-lg-6" *ngIf="product_selected.tags.length > 0">
+                                            <h5 class="title">Tags</h5>
+                                            <ul>
+                                                <ng-container *ngFor="let color of product_selected.tags">
+                                                    <li>{{color}}</li>
+                                                </ng-container>
+                                            </ul>
+                                        </div>
                                     </div>
+
                                 </div>
-                                <!-- End .col-lg-6 -->
-                                <div class="col-lg-6 mb--30 d-none">
-                                    <div class="single-desc">
-                                        <h5 class="title">Care & Maintenance:</h5>
-                                        <p>Use warm water to describe us as a product team that creates amazing UI/UX experiences, by crafting top-notch user experience.</p>
-                                    </div>
-                                </div>
-                                <!-- End .col-lg-6 -->
+                                <!-- End .row -->
                             </div>
-                            <!-- End .row -->
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <ul class="pro-des-features">
-                                        <li class="single-features">
-                                            <div class="icon">
-                                                <img src="assets/images/product/product-thumb/icon-3.png" alt="icon">
-                                            </div>
-                                            Easy Returns
-                                        </li>
-                                        <li class="single-features">
-                                            <div class="icon">
-                                                <img src="assets/images/product/product-thumb/icon-2.png" alt="icon">
-                                            </div>
-                                            Quality Service
-                                        </li>
-                                        <li class="single-features">
-                                            <div class="icon">
-                                                <img src="assets/images/product/product-thumb/icon-1.png" alt="icon">
-                                            </div>
-                                            Original Product
-                                        </li>
-                                    </ul>
-                                    <!-- End .pro-des-features -->
-                                </div>
-                            </div>
-                            <!-- End .row -->
+                            <!-- End .product-desc-wrapper -->
                         </div>
-                        <!-- End .product-desc-wrapper -->
-                    </div>
-                    <div class="tab-pane fade" id="additional-info" role="tabpanel" aria-labelledby="additional-info-tab">
-                        <div class="product-additional-info">
-                            <div class="table-responsive">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <th>Stand Up</th>
-                                            <td>35″L x 24″W x 37-45″H(front to back wheel)</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Folded (w/o wheels) </th>
-                                            <td>32.5″L x 18.5″W x 16.5″H</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Folded (w/ wheels) </th>
-                                            <td>32.5″L x 24″W x 18.5″H</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Door Pass Through </th>
-                                            <td>24</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Frame </th>
-                                            <td>Aluminum</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Weight (w/o wheels) </th>
-                                            <td>20 LBS</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Weight Capacity </th>
-                                            <td>60 LBS</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Width</th>
-                                            <td>24″</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Handle height (ground to handle) </th>
-                                            <td>37-45″</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Wheels</th>
-                                            <td>Aluminum</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Size</th>
-                                            <td>S, M, X, XL</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                        <div class="reviews-wrapper">
-                            <div class="row">
-                                <div class="col-lg-6 mb--40">
-                                    <div class="axil-comment-area pro-desc-commnet-area">
-                                        <h5 class="title">01 Review for this product</h5>
-                                        <ul class="comment-list">
-                                            <ng-container *ngFor="let REVIEW of REVIEWS">
-                                                <!-- Start Single Comment  -->
-                                                <li class="comment">
-                                                    <div class="comment-body">
-                                                        <div class="single-comment">
-                                                            <div class="comment-img">
-                                                                <img src="./assets/images/blog/author-image-4.png" alt="Author Images">
-                                                            </div>
-                                                            <div class="comment-inner">
-                                                                <h6 class="commenter">
-                                                                    <a class="hover-flip-item-wrapper" href="#">
-                                                                        <span class="hover-flip-item">
-                                                                            <span data-text="Cameron Williamson">{{ REVIEW.user.name + ' ' + REVIEW.user.surname }}</span>
+                        <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                            <div class="reviews-wrapper">
+                                <div class="row">
+                                    <div class="col-lg-6 mb--40">
+                                        <div class="axil-comment-area pro-desc-commnet-area">
+                                            <h5 class="title">Review for this product</h5>
+                                            <ul class="comment-list">
+                                                <ng-container *ngFor="let REVIEW of REVIEWS">
+                                                    <!-- Start Single Comment  -->
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            <div class="single-comment">
+                                                                <div class="comment-img">
+                                                                    <img src="./assets/images/blog/author-image-4.png" alt="Author Images" style="width: 60px; height: 60px;">
+                                                                </div>
+                                                                <div class="comment-inner">
+                                                                    <h6 class="commenter">
+                                                                        <a class="hover-flip-item-wrapper" href="#">
+                                                                            <span class="hover-flip-item">
+                                                                                <span
+                                                                                    data-text="Cameron Williamson">{{ REVIEW.user.name + ' ' + REVIEW.user.surname }}</span>
+                                                                            </span>
+                                                                        </a>
+                                                                        <span class="commenter-rating ratiing-four-star">
+                                                                            <a href="#"><i class="fas fa-star" [ngClass]="{'start-del': REVIEW.cantidad < 1}"></i></a>
+                                                                            <a href="#"><i class="fas fa-star" [ngClass]="{'start-del': REVIEW.cantidad < 2}"></i></a>
+                                                                            <a href="#"><i class="fas fa-star" [ngClass]="{'start-del': REVIEW.cantidad < 3}"></i></a>
+                                                                            <a href="#"><i class="fas fa-star" [ngClass]="{'start-del': REVIEW.cantidad < 4}"></i></a>
+                                                                            <a href="#"><i class="fas fa-star" [ngClass]="{'start-del': REVIEW.cantidad < 5}"></i></a>
                                                                         </span>
-                                                                    </a>
-                                                                    <span class="commenter-rating ratiing-four-star">
-                                                                        <a href="#"><i class="fas fa-star" [ngClass]="{'start-del': REVIEW.cantidad < 1}"></i></a>
-                                                                        <a href="#"><i class="fas fa-star" [ngClass]="{'start-del': REVIEW.cantidad < 2}"></i></a>
-                                                                        <a href="#"><i class="fas fa-star" [ngClass]="{'start-del': REVIEW.cantidad < 3}"></i></a>
-                                                                        <a href="#"><i class="fas fa-star" [ngClass]="{'start-del': REVIEW.cantidad < 4}"></i></a>
-                                                                        <a href="#"><i class="fas fa-star" [ngClass]="{'start-del': REVIEW.cantidad < 5}"></i></a>
-                                                                    </span>
-                                                                </h6>
-                                                                <div class="comment-text">
-                                                                    <p>{{ REVIEW.description }}</p>
+                                                                    </h6>
+                                                                    <div class="comment-text">
+                                                                        <p>{{ REVIEW.description }}</p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                                <!-- End Single Comment  -->
-                                            </ng-container>
-                                        </ul>
-                                    </div>
-                                    <!-- End .axil-commnet-area -->
-                                </div>
-                                <!-- End .col -->
-                                <div class="col-lg-6 mb--40">
-                                    <!-- Start Comment Respond  -->
-                                    <div class="comment-respond pro-des-commend-respond mt--0">
-                                        <h5 class="title mb--30">Add a Review</h5>
-                                        <p>Your email address will not be published. Required fields are marked *</p>
-                                        <div class="rating-wrapper d-flex-center mb--40">
-                                            Your Rating <span class="require">*</span>
-                                            <div class="reating-inner ml--20">
-                                                <a href="#"><i class="fal fa-star"></i></a>
-                                                <a href="#"><i class="fal fa-star"></i></a>
-                                                <a href="#"><i class="fal fa-star"></i></a>
-                                                <a href="#"><i class="fal fa-star"></i></a>
-                                                <a href="#"><i class="fal fa-star"></i></a>
-                                            </div>
+                                                    </li>
+                                                    <!-- End Single Comment  -->
+                                                </ng-container>
+                                            </ul>
                                         </div>
-
-                                        <form action="#">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="form-group">
-                                                        <label>Other Notes (optional)</label>
-                                                        <textarea name="message" placeholder="Your Comment"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-12">
-                                                    <div class="form-group">
-                                                        <label>Name <span class="require">*</span></label>
-                                                        <input id="name" type="text">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-12">
-                                                    <div class="form-group">
-                                                        <label>Email <span class="require">*</span> </label>
-                                                        <input id="email" type="email">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="form-submit">
-                                                        <button type="submit" id="submit" class="axil-btn btn-bg-primary w-auto">Submit Comment</button>
-                                                    </div>
+                                        <!-- End .axil-commnet-area -->
+                                    </div>
+                                    <!-- End .col -->
+                                    <div class="col-lg-6 mb--40">
+                                        <!-- Start Comment Respond  -->
+                                        <div class="comment-respond pro-des-commend-respond mt--0">
+                                            <h5 class="title mb--30">Add a Review</h5>
+                                            <p>Your email address will not be published. Required fields are marked
+                                                *</p>
+                                            <div class="rating-wrapper d-flex-center mb--40">
+                                                Your Rating <span class="require">*</span>
+                                                <div class="reating-inner ml--20">
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
                                                 </div>
                                             </div>
-                                        </form>
+
+                                            <form action="#">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label>Other Notes (optional)</label>
+                                                            <textarea name="message" placeholder="Your Comment"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label>Name <span class="require">*</span></label>
+                                                            <input id="name" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label>Email <span class="require">*</span> </label>
+                                                            <input id="email" type="email">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-submit">
+                                                            <button type="submit" id="submit" class="axil-btn btn-bg-primary w-auto">Submit
+                                                                Comment</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- End Comment Respond  -->
                                     </div>
-                                    <!-- End Comment Respond  -->
+                                    <!-- End .col -->
                                 </div>
-                                <!-- End .col -->
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="single-product-features">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="single-features">
+                                <div class="icon">
+                                    <i class="far fa-hand-holding-box"></i>
+                                </div>
+                                <div class="content">
+                                    <h6 class="title">Easy Return</h6>
+                                    <p>Anytime you can return the product without any payment</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="single-features">
+                                <div class="icon quality">
+                                    <i class="fal fa-badge-check"></i>
+                                </div>
+                                <div class="content">
+                                    <h6 class="title">Quality Service</h6>
+                                    <p>We are dedicated to give you quality service for your happiness</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="single-features">
+                                <div class="icon original">
+                                    <i class="fal fa-box"></i>
+                                </div>
+                                <div class="content">
+                                    <h6 class="title">Original Product</h6>
+                                    <p>We deliver you each and every prodeuct is original </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
         <!-- woocommerce-tabs -->
 
     </div>
-    <!-- End Shop Area  -->
-
-    <!-- Start Recently Viewed Product Area  -->
-    <div class="axil-product-area bg-color-white axil-section-gap pb--50 pb_sm--30">
-        <div class="container">
-            <div class="section-title-wrapper">
-                <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i> Your Recently -Your Recently</span>
-                <h2 class="title">Viewed Items -Related Products</h2>
+    <!-- Start Expolre Product Area  -->
+    <div class="axil-new-arrivals-product-area fullwidth-container flash-sale-area section-gap-80-35">
+        <div class="container ml--xxl-0">
+            <div class="section-title-border slider-section-title">
+                <h2 class="title">Recently Viewed (Related Products) 💥</h2>
             </div>
-            <div class="recent-product-activation slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
+            <div class="recently-viwed-activation slick-layout-wrapper--15 axil-slick-angle angle-top-slide">
                 <ng-container *ngFor="let related_product of related_products">
                     <div class="slick-single-layout">
-                        <div class="axil-product">
+                        <div class="axil-product product-style-eight">
+                        
                             <div class="thumbnail">
-                                <a [href]="'/landing-product/'+related_product.slug" >
-                                    <img [src]="related_product.imagen" alt="Product Images">
+                                <a [href]="'/landing-product/'+related_product.slug">
+                                    <img data-sal-delay="100" data-sal-duration="800" loading="lazy" class="main-img" [src]="related_product.imagen" alt="Product Images">
                                 </a>
-                                <div class="label-block label-right d-none">
-                                    <div class="product-badget">20% OFF</div>
-                                </div>
+                                <!-- <div class="label-block label-left">
+                                    <div class="product-badget sale">Sale</div>
+                                </div> -->
+                                <ng-container *ngIf="SALE_FLASH">
+                                    <div class="label-block label-right" *ngIf="SALE_FLASH.type_discount == 1">
+                                        <div class="product-badget">{{ SALE_FLASH.discount }} % OFF</div>
+                                    </div>
+                                    <div class="label-block label-right" *ngIf="SALE_FLASH.type_discount == 2">
+                                        <div class="product-badget">{{ SALE_FLASH.discount }} <i class="fa-solid fa-euro-sign"></i> OFF</div>
+                                    </div>
+                                </ng-container>
                                 <div class="product-hover-action">
                                     <ul class="cart-action">
-                                        <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a></li>
-                                        <li class="select-option"><a href="cart.html">Add to Cart</a></li>
-                                        <li class="quickview"><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal" (click)="openModal(related_product)"><i class="far fa-eye"></i></a></li>
+                                        <li class="select-option">
+                                            <a href="single-product-8.html">
+                                                <i class="far fa-shopping-cart"></i> Add to Cart
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="product-content">
                                 <div class="inner">
-                                    <h5 class="title"><a [href]="'/landing-producto/'+related_product.slug">{{related_product.title}}</a></h5>
-                                    <div class="product-price-variant">
-                                        <!-- <span class="price old-price">$30</span> -->
-                                        <span class="price current-price">{{related_product.price_usd}} <i class="fa-solid fa-euro-sign"></i></span>
+                                    <h5 class="title"><a href="single-product-8.html">{{related_product.title}}</a></h5>
+                                    <div class="product-rating">
+                                        <span class="icon">
+                                            <i class="fas fa-star" [ngClass]="{'star-del': related_product.avg_review < 1 }"></i>
+                                            <i class="fas fa-star" [ngClass]="{'star-del': related_product.avg_review < 2 }"></i>
+                                            <i class="fas fa-star" [ngClass]="{'star-del': related_product.avg_review < 3 }"></i>
+                                            <i class="fas fa-star" [ngClass]="{'star-del': related_product.avg_review < 4 }"></i>
+                                            <i class="fas fa-star" [ngClass]="{'star-del': related_product.avg_review < 5 }"></i>
+                                        </span>
+                                        <span class="rating-number">{{ related_product.count_review }}</span>
                                     </div>
-                                    <div class="color-variant-wrapper">
-                                        <ul class="color-variant">
-                                            <li class="color-extra-01 active"><span><span class="color"></span></span>
-                                            </li>
-                                            <li class="color-extra-02"><span><span class="color"></span></span>
-                                            </li>
-                                            <li class="color-extra-03"><span><span class="color"></span></span>
-                                            </li>
-                                        </ul>
+                                    <div class="product-price-variant">
+                                        <!-- <span class="price old-price">{{related_product.price_usd}} <i class="fa-solid fa-euro-sign"></i></span> -->
+                                        <span class="price current-price">{{related_product.price_usd}} <i class="fa-solid fa-euro-sign"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -428,26 +377,67 @@
             </div>
         </div>
     </div>
-    <!-- End Recently Viewed Product Area  -->
-    <!-- Start Axil Newsletter Area  -->
-    <div class="axil-newsletter-area axil-section-gap pt--0">
+    <!-- End Expolre Product Area  -->
+    <div class="sale-banner-area">
         <div class="container">
-            <div class="etrade-newsletter-wrapper bg_image bg_image--5">
-                <div class="newsletter-content">
-                    <span class="title-highlighter highlighter-primary2"><i class="fas fa-envelope-open"></i>Newsletter</span>
-                    <h2 class="title mb--40 mb_sm--30">Get weekly update</h2>
-                    <div class="input-group newsletter-form">
-                        <div class="position-relative newsletter-inner mb--15">
-                            <input placeholder="example@gmail.com" type="text">
+            <div class="sale-banner-thumb">
+                <a href="shop.html"><img src="assets/images/banner/sale_banner.png" alt="Sale Banner"></a>
+            </div>
+        </div>
+    </div>
+    <div class="service-area axil-section-gapcommon">
+        <div class="container">
+            <div class="section-title-wrapper section-title-border">
+                <h2 class="title">Our Service 💥</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="service-box service-style-3">
+                        <div class="icon">
+                            <i class="far fa-truck"></i>
                         </div>
-                        <button type="submit" class="axil-btn mb--15">Subscribe</button>
+                        <div class="content">
+                            <h6 class="title">Fast &amp; Secure Delivery</h6>
+                            <p>Tell about your service.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="service-box service-style-3">
+                        <div class="icon">
+                            <i class="fal fa-badge-check"></i>
+                        </div>
+                        <div class="content">
+                            <h6 class="title">Money Back Guarantee</h6>
+                            <p>Within 10 days.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="service-box service-style-3">
+                        <div class="icon">
+                            <i class="far fa-hand-holding-box"></i>
+                        </div>
+                        <div class="content">
+                            <h6 class="title">24 Hour Return Policy</h6>
+                            <p>No question ask.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="service-box service-style-3">
+                        <div class="icon">
+                            <i class="far fa-headset"></i>
+                        </div>
+                        <div class="content">
+                            <h6 class="title">Pro Quality Support</h6>
+                            <p>24/7 Live support.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- End .container -->
     </div>
-    <!-- End Axil Newsletter Area  -->
 </main>
 
 <!-- Product Quick View Modal Start -->

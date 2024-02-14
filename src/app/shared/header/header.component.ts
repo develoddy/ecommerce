@@ -6,6 +6,10 @@ import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.servi
 import { LanguageService } from 'src/app/services/language.service';
 declare var $:any;
 declare function headerIconToggle([]):any;
+declare function sectionCart():any;
+declare function alertDanger([]):any;
+declare function alertWarning([]):any;
+declare function alertSuccess([]):any;
 
 @Component({
   selector: 'app-header',
@@ -65,6 +69,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       headerIconToggle($);
+      sectionCart();
     }, 50);
   }
 
@@ -82,6 +87,53 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         })
       }
     })
+  }
+
+  dec(cart:any) {
+    if (cart.cantidad - 1 == 0) {
+      alertDanger("No puedes disminur un producto a 0");
+      return;
+    }
+    cart.cantidad = cart.cantidad - 1;
+    // cart.subtotal = cart.price_unitario * cart.cantidad;
+    // cart.total = cart.price_unitario * cart.cantidad;
+    cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+    cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+
+    // AQUI VA LA FUNCION PARA ENVIARLO AL SERVICE O BACKEND
+    let data = {
+      _id: cart._id,
+      cantidad: cart.cantidad,
+      subtotal: cart.subtotal,
+      total: cart.total,
+      variedad: cart.variedad ? cart.variedad._id : null,
+      product: cart.product._id,
+    }
+    this._cartService.updateCart(data).subscribe((resp:any) => {
+      console.log(resp);
+    });
+  }
+
+  inc(cart:any) {
+    cart.cantidad = cart.cantidad + 1;
+    //cart.subtotal = cart.price_unitario * cart.cantidad;
+    //cart.total = cart.price_unitario * cart.cantidad;
+    // cart.subtotal = Number((cart.price_unitario * cart.cantidad).toFixed(2));
+    cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+    cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+    
+    // AQUI VA LA FUNCION PARA ENVIARLO AL SERVICE O BACKEND
+    let data = {
+      _id: cart._id,
+      cantidad: cart.cantidad,
+      subtotal: cart.subtotal,
+      total: cart.total,
+      variedad: cart.variedad ? cart.variedad._id : null,
+      product: cart.product._id,
+    }
+    this._cartService.updateCart(data).subscribe((resp:any) => {
+      console.log(resp);
+    }); 
   }
 
   isHome() {

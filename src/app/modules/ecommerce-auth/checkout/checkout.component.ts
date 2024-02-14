@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
 
+declare function shopFilterWidget():any;
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
 declare function alertSuccess([]):any;
@@ -41,6 +42,10 @@ export class CheckoutComponent implements OnInit {
       //console.log(resp);
       this.listAddressClients = resp.address_client;
     });
+
+    setTimeout(() => {
+      shopFilterWidget();
+    }, 50);
 
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       console.log(resp);

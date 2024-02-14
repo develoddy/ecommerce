@@ -492,6 +492,38 @@ function HOMEINITTEMPLATE ($, undefined) {
                 ]
             });
 
+            $('.recently-viwed-activation').slick({
+                infinite: true,
+                slidesToShow: 4,
+                slidesToScroll: 4,
+                arrows: true,
+                dots: false,
+                prevArrow: '<button class="slide-arrow prev-arrow"><i class="fal fa-angle-left"></i></button>',
+                nextArrow: '<button class="slide-arrow next-arrow"><i class="fal fa-angle-right"></i></button>',
+                responsive: [{
+                        breakpoint: 1199,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 3
+                        }
+                    },
+                    {
+                        breakpoint: 991,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 576,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+
             $('.header-campaign-activation').slick({
                 infinite: true,
                 slidesToShow: 1,
@@ -1062,15 +1094,18 @@ function ModalProductDetail() {
 }
 
 function LandingProductDetail() {
-    /*$('.product-small-thumb-2').slick({
+    // New Page
+    $('.product-small-thumb-4').slick({
         infinite: true,
-        slidesToShow: 6,
+        slidesToShow: 5,
         slidesToScroll: 1,
-        arrows: false,
+        arrows: true,
         dots: false,
         focusOnSelect: true,
         speed: 800,
-        asNavFor: '.product-large-thumbnail-2',
+        asNavFor: '.product-large-thumbnail-4',
+        prevArrow: '<button class="slide-arrow prev-arrow"><i class="fal fa-angle-left"></i></button>',
+        nextArrow: '<button class="slide-arrow next-arrow"><i class="fal fa-angle-right"></i></button>',
         responsive: [{
                 breakpoint: 768,
                 settings: {
@@ -1084,44 +1119,10 @@ function LandingProductDetail() {
                 }
             }
         ]
-    });*/
-
-    $('.product-small-thumb-3').slick({
-        infinite: false,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        arrows: false,
-        dots: false,
-        focusOnSelect: true,
-        vertical: true,
-        speed: 800,
-        draggable: false,
-        swipe: false,
-        asNavFor: '.product-large-thumbnail-3',
-        responsive: [{
-                breakpoint: 992,
-                settings: {
-                    vertical: false,
-                }
-            }
-        ]
 
     });
 
-    /*$('.product-large-thumbnail-3').slick({
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: true,
-        dots: false,
-        speed: 800,
-        draggable: false,
-        asNavFor: '.product-small-thumb-3',
-        prevArrow: '<button class="slide-arrow prev-arrow"><i class="fal fa-long-arrow-left"></i></button>',
-        nextArrow: '<button class="slide-arrow next-arrow"><i class="fal fa-long-arrow-right"></i></button>'
-    });*/
-
-    $('.product-large-thumbnail-3').slick({
+    $('.product-large-thumbnail-4').slick({
         infinite: false,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -1130,7 +1131,7 @@ function LandingProductDetail() {
         speed: 800,
         draggable: false,
         swipe: false,
-        asNavFor: '.product-small-thumb-3'
+        asNavFor: '.product-small-thumb-4'
     });
 
     // Zoom
@@ -1188,6 +1189,38 @@ function LandingProductDetail() {
             },
             {
                 breakpoint: 479,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    });
+
+    $('.recently-viwed-activation').slick({
+        infinite: true,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        arrows: true,
+        dots: false,
+        prevArrow: '<button class="slide-arrow prev-arrow"><i class="fal fa-angle-left"></i></button>',
+        nextArrow: '<button class="slide-arrow next-arrow"><i class="fal fa-angle-right"></i></button>',
+        responsive: [{
+                breakpoint: 1199,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3
+                }
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+            },
+            {
+                breakpoint: 576,
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1
@@ -1345,4 +1378,23 @@ function headerIconToggle($) {
     $('.my-account > a').on('click', function(e) {
         $(this).toggleClass('open').siblings().toggleClass('open');
     })
+}
+
+
+function shopFilterWidget() {
+    $('.toggle-list > .title').on('click', function(e) {
+
+        var target = $(this).parent().children('.shop-submenu');
+        var target2 = $(this).parent();
+        $(target).slideToggle();
+        $(target2).toggleClass('active');
+    });
+
+    $('.toggle-btn').on('click', function(e) {
+
+        var target = $(this).parent().siblings('.toggle-open');
+        var target2 = $(this).parent();
+        $(target).slideToggle();
+        $(target2).toggleClass('active');
+    });
 }

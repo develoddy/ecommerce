@@ -52,10 +52,10 @@
             <div class="container">
                 <div class="header-navbar">
                     <div class="header-brand">
-                        <a href="index.html" class="logo logo-dark">
+                        <a href="index.html" onclick="return false;" routerLink="/" class="logo logo-dark">
                             <img src="assets/images/logo/logo.png" alt="Site Logo">
                         </a>
-                        <a href="index.html" class="logo logo-light">
+                        <a href="index.html" onclick="return false;" routerLink="/" class="logo logo-light">
                             <img src="assets/images/logo/logo-light.png" alt="Site Logo">
                         </a>
                     </div>
@@ -281,10 +281,22 @@
                                 </div>
                                 <h3 class="item-title"><a href="single-product-3.html">{{ cart.product.title }}</a></h3>
                                 <span *ngIf="cart.variedad"><small>VARIEDAD: {{ cart.variedad.valor }}</small></span>
-                                <div class="item-price"><span class="currency-symbol"></span>{{ cart.total}} USD</div>
+                                <div class="item-price"><span class="currency-symbol"></span>{{ cart.total | number: '1.2-2' }} <i class="fa-solid fa-euro-sign"></i></div>
                                 <!-- <div class="item-price"><span class="currency-symbol"></span> {{ (cart.total.toFixed(2) | number: '1.2-2') }} USD</div> -->
-                                <div class="pro-qty item-quantity">
+
+                                <!-- <div class="pro-qty item-quantity">
+                                    <input type="number" class="quantity-input" id="qty-cart" [value]="cart.cantidad">
+                                </div> -->
+                                <!-- <div class="pro-qty item-quantity">
+                                    <span class="dec qtybtn">-</span>
                                     <input type="number" class="quantity-input" [value]="cart.cantidad">
+                                    <span class="inc qtybtn">+</span>
+                                </div> -->
+
+                                <div class="pro-qty item-quantity">
+                                    <span class="dec qtybtn" (click)="dec(cart)">-</span>
+                                    <input type="number" class="quantity-input" [value]="cart.cantidad">
+                                    <span class="inc qtybtn" (click)="inc(cart)">+</span>
                                 </div>
                             </div>
                         </li>
@@ -295,7 +307,7 @@
             <div class="cart-footer">
                 <h3 class="cart-subtotal">
                     <span class="subtotal-title">Subtotal:</span>
-                    <span class="subtotal-amount">{{ totalCarts }} USD</span>
+                    <span class="subtotal-amount">{{ totalCarts | number: '1.2-2' }} <i class="fa-solid fa-euro-sign"></i></span>
                 </h3>
                 <div class="group-btn">
                     <a routerLink="/list-carts" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
