@@ -32,6 +32,9 @@ export class CheckoutComponent implements OnInit {
 
   listCarts:any = [];
   totalCarts:any=null;
+
+  show = false;
+
   constructor(
     public _authEcommerce: EcommerceAuthService,
     public _cartService: CartService,
@@ -226,11 +229,14 @@ export class CheckoutComponent implements OnInit {
   }
 
   newAddress() {
+    this.show = true;
     this.resetForm();
     this.address_client_selected = null;
   }
 
   addressClienteSelected(list_address:any) {
+    this.show = true;
+
     this.address_client_selected = list_address;
     this.name = this.address_client_selected.name;
     this.surname = this.address_client_selected.surname;
@@ -243,5 +249,20 @@ export class CheckoutComponent implements OnInit {
     this.email = this.address_client_selected.email;
     this.pais = this.address_client_selected.pais;
     this.nota = this.address_client_selected.nota;
+  }
+
+  removeAddressSelected(list_address:any) {
+    this._authEcommerce.deleteAddressClient(list_address._id).subscribe((resp:any) => {
+      console.log(resp);
+      //this.listAddressClients = [];
+      let INDEX = this.listAddressClients.findIndex((item:any) => item._id == list_address._id);
+      
+      // Verifica si se encontró el elemento
+      if (INDEX !== -1) { 
+        this.listAddressClients.splice(INDEX, 1); // Elimina 1 elemento a partir del índice INDEX
+      }
+      alertSuccess(resp.message);
+      this.resetForm();
+    });
   }
 }

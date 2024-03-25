@@ -60,7 +60,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
         console.log("DEBUGG: Header  listCarts");
         console.log(resp);
-        
         resp.carts.forEach((cart:any) => {
           this._cartService.changeCart(cart);
         });
@@ -71,6 +70,14 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       headerIconToggle($);
       sectionCart();
     }, 50);
+  }
+
+  updateTotalCarts() {
+    this._cartService.currenteDataCart$.subscribe((resp:any) => {
+      this.listCarts = resp;
+      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+    });
   }
 
   ngAfterViewInit(): void {
@@ -111,6 +118,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     }
     this._cartService.updateCart(data).subscribe((resp:any) => {
       console.log(resp);
+      this.updateTotalCarts();
     });
   }
 
@@ -133,6 +141,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     }
     this._cartService.updateCart(data).subscribe((resp:any) => {
       console.log(resp);
+      this.updateTotalCarts();
     }); 
   }
 

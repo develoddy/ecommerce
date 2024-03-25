@@ -2861,11 +2861,11 @@ button.axil-btn.btn-bg-primary:hover:after {
 a.axil-btn.btn-bg-secondary,
 button.axil-btn.btn-bg-secondary {
   background-color: var(--color-secondary);
-  color: var(--color-white);
+  color: var(--color-white) !important;
 }
 a.axil-btn.btn-bg-secondary i,
 button.axil-btn.btn-bg-secondary i {
-  color: var(--color-white);
+  color: var(--color-white) !important;
 }
 a.axil-btn.btn-bg-secondary:before,
 button.axil-btn.btn-bg-secondary:before {
@@ -12441,6 +12441,9 @@ body.open .closeMask {
 }
 .axil-dashboard-address .address-edit:hover {
   color: var(--color-primary);
+}
+.axil-dashboard-address .address-paymet:hover {
+  color: var(--color-white);
 }
 .axil-dashboard-address ul li {
   font-size: var(--font-size-b2);
