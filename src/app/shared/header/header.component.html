@@ -1,3 +1,4 @@
+<!-- Header -->
     <header class="header axil-header header-style-1">
         <div class="header-top-campaign">
             <div class="container position-relative">
@@ -195,15 +196,16 @@
         </div>
         <!-- End Mainmenu Area -->
     </header>
+<!-- / Header -->
 
-    <!-- Header Search Modal End -->
+<!-- Header Search Modal -->
     <div class="header-search-modal" id="header-search-modal">
         <button class="card-close sidebar-close"><i class="fas fa-times"></i></button>
         <div class="header-search-wrap">
             <div class="card-header">
                 <form action="#">
                     <div class="input-group">
-                        <input type="search" class="form-control" [(ngModel)]="search_product" (keyup.enter)="searchProduct()" #filter name="prod-search" id="prod-search" placeholder="Write Something....">
+                        <input type="search" class="form-control" [(ngModel)]="search_product" (keyup.enter)="searchProduct()" #filter name="prod-search" id="prod-search" placeholder="Buscar">
                         <button type="submit" class="axil-btn btn-bg-primary"><i class="far fa-search"></i></button>
                     </div>
                 </form>
@@ -217,7 +219,7 @@
                     <ng-container *ngFor="let product of products_search">
                         <div class="axil-product-list">
                             <div class="thumbnail">
-                                <a href="single-product.html">
+                                <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', product.slug]" [queryParams]="getRouterDiscount(product)">
                                     <!-- Esta imagen tiene que ser 120x120 -->
                                     <!-- <img src="./assets/images/product/electric/product-09.png" alt="Yantiti Leather Bags"> -->
                                     <img [src]="product.imagen" style="width: 120px; height: 120px;" alt="Yantiti Leather Bags">
@@ -241,7 +243,7 @@
                                 </div>
                                 <div class="product-cart">
                                     <a href="#" onclick="return false;" [routerLink]="['/list-carts']" class="cart-btn"><i class="fal fa-shopping-cart"></i></a>
-                                    <a href="wishlist.html" class="cart-btn"><i class="fal fa-heart"></i></a>
+                                    <a href="wishlist.html" onclick="return false;"  class="cart-btn"><i class="fal fa-heart"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -250,10 +252,10 @@
             </div>
         </div>
     </div>
-    <!-- Header Search Modal End -->
+<!-- / Header Search Modal -->
 
 
-    <!-- My cart -->
+<!-- My cart -->
     <div class="cart-dropdown" id="cart-dropdown">
         <div class="cart-content-wrap">
             <div class="cart-header">
@@ -265,7 +267,7 @@
                     <ng-container *ngFor="let cart of listCarts">
                         <li class="cart-item">
                             <div class="item-img">
-                                <a href="single-product.html"><img [src]="cart.product.imagen" alt="Commodo Blown Lamp"></a>
+                                <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]"><img [src]="cart.product.imagen" alt="Commodo Blown Lamp"></a>
                                 <button class="close-btn" (click)="removeCart(cart)"><i class="fas fa-times"></i></button>
                             </div>
                             <div class="item-content">
@@ -279,7 +281,7 @@
                                 </span>
                                     <span class="rating-number">(64)</span>
                                 </div>
-                                <h3 class="item-title"><a href="single-product-3.html">{{ cart.product.title }}</a></h3>
+                                <h3 class="item-title"><a href="single-product-3.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" >{{ cart.product.title }}</a></h3>
                                 <span *ngIf="cart.variedad"><small>VARIEDAD: {{ cart.variedad.valor }}</small></span>
                                 <div class="item-price"><span class="currency-symbol"></span>{{ cart.total | number: '1.2-2' }} <i class="fa-solid fa-euro-sign"></i></div>
                                 <!-- <div class="item-price"><span class="currency-symbol"></span> {{ (cart.total.toFixed(2) | number: '1.2-2') }} USD</div> -->
@@ -310,9 +312,10 @@
                     <span class="subtotal-amount">{{ totalCarts | number: '1.2-2' }} <i class="fa-solid fa-euro-sign"></i></span>
                 </h3>
                 <div class="group-btn">
-                    <a routerLink="/list-carts" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
-                    <a routerLink="/payment-process" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
+                    <a routerLink="/list-carts" class="axil-btn btn-bg-primary viewcart-btn">Ver cesta</a>
+                    <a routerLink="/payment-process" class="axil-btn btn-bg-secondary checkout-btn">Comenzar pedido</a>
                 </div>
             </div>
         </div>
     </div>
+<!-- / My cart -->

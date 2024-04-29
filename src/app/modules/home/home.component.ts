@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/services/language.service';
 import { Subscription } from 'rxjs';
+
+declare function LandingProductDetail():any;
+
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function ModalProductDetail():any;
@@ -80,7 +83,8 @@ export class HomeComponent implements OnInit {
               });
           }
         }
-        HOMEINITTEMPLATE($)
+        HOMEINITTEMPLATE($);
+        LandingProductDetail();
       }, 50);
     });
   }
@@ -91,6 +95,7 @@ export class HomeComponent implements OnInit {
       this.product_selected = besProduct;
       this.product_selected.FlashSale = FlashSale;
       setTimeout(() => {
+        LandingProductDetail();
         ModalProductDetail();
       }, 50);
     }, 150);
@@ -175,13 +180,13 @@ export class HomeComponent implements OnInit {
       product: product._id,
       type_discount: type_discount,
       discount: discount,
-      cantidad: 1,
+      cantidad: $("#qty-cart").val(), //1,
       variedad: null,
       code_cupon: null,
       code_discount: code_discount,
       price_unitario: product.price_usd,
       subtotal: product.price_usd - this.getDiscountProduct(product, is_sale_flash),  //*1,
-      total: (product.price_usd - this.getDiscountProduct(product, is_sale_flash))*1, // De momento es igual, luego aplicamos el descuento
+      total: (product.price_usd - this.getDiscountProduct(product, is_sale_flash))* $("#qty-cart").val(), //1, // De momento es igual, luego aplicamos el descuento
     }
 
     this._cartService.registerCart(data).subscribe((resp:any) => {

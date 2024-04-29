@@ -1,10 +1,10 @@
 <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
 
-    <!-- Start Header -->
+<!-- Start Header -->
     <app-header></app-header>
+<!-- End Header -->
 
-
-    <!-- Old Mian -->
+<!-- Old Mian -->
     <main class="main-wrapper">
 
         <!-- Start Slider Area -->
@@ -721,10 +721,9 @@
         <!-- End Axil Newsletter Area  -->
 
     </main>
-    <!-- / Old Mian -->
+<!-- End Old Mian -->
 
-
-
+<!-- Service area -->
     <div class="service-area">
         <div class="container">
             <div class="row row-cols-xl-4 row-cols-sm-2 row-cols-1 row--20">
@@ -775,12 +774,13 @@
             </div>
         </div>
     </div>
+<!-- End Service area -->
 
-    <!-- Start Footer Area  -->
+<!-- Start Footer Area  -->
     <app-footer></app-footer>
-    <!-- End Footer Area  -->
+<!-- End Footer Area  -->
 
-    <!-- Product Quick View Modal Start -->
+<!-- Start Product Quick View Modal -->
     <div class="modal fade quick-view-product" id="quick-view-modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -794,7 +794,6 @@
                                 <div class="row">
                                     <div class="col-lg-10 order-lg-2">
                                         <div class="single-product-thumbnail product-large-thumbnail axil-product thumbnail-badge zoom-gallery">
-
                                             <ng-container *ngFor="let gallery of product_selected.galerias">
                                                 <div class="thumbnail">
                                                     <img [src]="gallery.imagen" alt="Product Images">
@@ -905,7 +904,12 @@
                                                 </ul>
                                             </div>
                                             <!-- End Product Variation  -->
-
+                                            
+                                            <!-- End Product Variation  -->
+                                            <div class="product-variation quantity-variant-wrapper landing-product">
+                                                <h6 class="title">Quantity</h6>
+                                                <div class="pro-qty"><input type="text" id="qty-cart"  value="1"></div>
+                                            </div>
                                         </div>
 
                                         <!-- Start Product Action Wrapper  -->
@@ -916,7 +920,7 @@
 
                                             <!-- Start Product Action  -->
                                             <ul class="product-action d-flex-center mb--0">
-                                                <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-primary">Add to Cart</a></li>
+                                                <li class="add-to-cart"><a href="cart.html" onclick="return false;" (click)="addCart(product_selected)" class="axil-btn btn-bg-primary">Add to Cart</a></li>
                                                 <li class="wishlist"><a href="wishlist.html" class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li>
                                             </ul>
                                             <!-- End Product Action  -->
@@ -932,6 +936,6 @@
             </div>
         </div>
     </div>
-    <!-- Product Quick View Modal End -->
+<!-- End Product Quick View Modal -->
 
     

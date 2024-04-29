@@ -6,11 +6,11 @@
                 <div class="col-lg-6 col-md-8">
                     <div class="inner">
                         <ul class="axil-breadcrumb">
-                            <li class="axil-breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="axil-breadcrumb-item"><a href="index.html">Inicio</a></li>
                             <li class="separator"></li>
-                            <li class="axil-breadcrumb-item active" aria-current="page">My Account</li>
+                            <li class="axil-breadcrumb-item active" aria-current="page">Mi cuenta</li>
                         </ul>
-                        <h1 class="title">Explore All Products</h1>
+                        <h1 class="title">Explorar todos los productos</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-4">
@@ -35,7 +35,7 @@
                             <button class="sidebar-close filter-close-btn"><i class="fas fa-times"></i></button>
                         </div>
                         <div class="toggle-list product-categories active">
-                            <h6 class="title">CATEGORIES</h6>
+                            <h6 class="title">Categorías</h6>
                             <div class="shop-submenu">
                                 <ul>
                                     <ng-container *ngFor="let categorie of categories">
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div class="toggle-list product-categories product-gender active">
-                            <h6 class="title">DESCUENTO</h6>
+                            <h6 class="title">Descuento</h6>
                             <div class="shop-submenu">
                                 <ul>
                                     <li [ngClass]="{'chosen': is_discount == 2}"><a href="#" onclick="return false;" (click)="selectedDiscount(2)">DESCUENTO LIMITADO</a></li>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="toggle-list product-size active">
-                            <h6 class="title">VARIEDADES</h6>
+                            <h6 class="title">Variedades</h6>
                             <div class="shop-submenu">
                                 <ul>
                                     <ng-container *ngFor="let variedad of variedades">
@@ -89,7 +89,7 @@
                             </div>
                         </div> -->
                         <div class="toggle-list product-price-range active">
-                            <h6 class="title">PRICE</h6>
+                            <h6 class="title">Precio</h6>
                             <div class="shop-submenu">
                                 <ul>
                                     <li class="chosen"><a href="#">30</a></li>
@@ -116,7 +116,7 @@
                             <div class="axil-shop-top mb--40">
                                 <div class="category-select align-items-center justify-content-lg-end justify-content-between">
                                     <!-- Start Single Select  -->
-                                    <span class="filter-results">Showing 1-12 of 84 results</span>
+                                    <span class="filter-results">Mostrando 1-12 de 84 resultados</span>
                                     <select class="single-select">
                                         <option>Short by Latest</option>
                                         <option>Short by Oldest</option>
@@ -126,7 +126,7 @@
                                     <!-- End Single Select  -->
                                 </div>
                                 <div class="d-lg-none">
-                                    <button class="product-filter-mobile filter-toggle"><i class="fas fa-filter"></i> FILTER</button>
+                                    <button class="product-filter-mobile filter-toggle"><i class="fas fa-filter"></i> Filtrar</button>
                                 </div>
                             </div>
                         </div>
@@ -180,13 +180,13 @@
         <div class="container">
             <div class="etrade-newsletter-wrapper bg_image bg_image--5">
                 <div class="newsletter-content">
-                    <span class="title-highlighter highlighter-primary2"><i class="fas fa-envelope-open"></i>Newsletter</span>
-                    <h2 class="title mb--40 mb_sm--30">Get weekly update</h2>
+                    <span class="title-highlighter highlighter-primary2"><i class="fas fa-envelope-open"></i>Boletin informativo</span>
+                    <h2 class="title mb--40 mb_sm--30">Obtener actualización semanal</h2>
                     <div class="input-group newsletter-form">
                         <div class="position-relative newsletter-inner mb--15">
                             <input placeholder="example@gmail.com" type="text">
                         </div>
-                        <button type="submit" class="axil-btn mb--15">Subscribe</button>
+                        <button type="submit" class="axil-btn mb--15">Suscribir</button>
                     </div>
                 </div>
             </div>
@@ -281,8 +281,8 @@
                                     <span class="price-amount" *ngIf="product_selected.campaing_discount "> <del>{{product_selected.price_usd}} USD</del></span>
                                     <span class="price-amount" *ngIf="product_selected.campaing_discount ">{{ getCalNewPrice(product_selected)}} USD</span>
                                     <ul class="product-meta">
-                                        <li><i class="fal fa-check"></i>In stock</li>
-                                        <li><i class="fal fa-check"></i>Free delivery available</li>
+                                        <li><i class="fal fa-check"></i>En stock</li>
+                                        <li><i class="fal fa-check"></i>Entrega gratuita disponible</li>
                                         <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>
                                     </ul>
                                     <p class="description">
@@ -332,7 +332,7 @@
 
                                         <!-- Start Product Action  -->
                                         <ul class="product-action d-flex-center mb--0">
-                                            <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-primary">Add to Cart</a></li>
+                                            <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-primary">Añadir a la cesta</a></li>
                                             <li class="wishlist"><a href="wishlist.html" class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li>
                                         </ul>
                                         <!-- End Product Action  -->
