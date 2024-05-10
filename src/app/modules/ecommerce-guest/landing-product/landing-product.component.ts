@@ -29,6 +29,8 @@ export class LandingProductComponent implements OnInit {
   AVG_REVIEW:any=null;
   COUNT_REVIEW:any=null;
 
+  activeIndex: number = 0; // Inicializar el índice activo
+
   constructor(
     public _ecommerce_guestService: EcommerceGuestService,
     public _router: Router,
@@ -45,9 +47,13 @@ export class LandingProductComponent implements OnInit {
       this.discount_id = resp["_id"];
     });
 
-    console.log(this.slug);
+    
     this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
       this.product_selected = resp.product;
+      console.log("Debugg: showLandingProduct ---------");
+      
+      console.log(this.product_selected);
+      
       this.related_products = resp.related_products;
       this.SALE_FLASH = resp.SALE_FLASH;
       this.REVIEWS = resp.REVIEWS;
@@ -57,6 +63,11 @@ export class LandingProductComponent implements OnInit {
         LandingProductDetail();
       }, 50);
     });
+  }
+
+  // Función para cambiar el índice activo cuando se hace clic en una variedad
+  setActiveIndex(index: number) {
+    this.activeIndex = index;
   }
 
   openModal(besProduct:any, FlashSale:any=null) {

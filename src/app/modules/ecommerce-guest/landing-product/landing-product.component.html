@@ -78,14 +78,23 @@
                                             <li><i class="fal fa-check"></i>Free delivery available</li>
                                             <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>
                                         </ul>
-                                        <h6 class="title">Size:</h6>
-                                        <ul class="range-variant">
-                                            <li class="active">xs</li>
-                                            <li>s</li>
-                                            <li>m</li>
-                                            <li>l</li>
-                                            <li>xl</li>
-                                        </ul>
+
+                                        <ng-container *ngIf="product_selected.variedades">
+                                            <h6 class="title">Size:</h6>
+                                            <ul class="range-variant">
+                                                <ng-container *ngFor="let variedad of product_selected.variedades; let i = index">
+                                                    <li [ngClass]="{'active': activeIndex === i}" (click)="setActiveIndex(i)">
+                                                        {{ i === 0 ? 'xs' : variedad.valor }}
+                                                    </li>
+                                                </ng-container>
+                                                <!-- <li class="active">xs</li>
+                                                <li>s</li>
+                                                <li>m</li>
+                                                <li>l</li>
+                                                <li>xl</li> -->
+                                            </ul>
+                                        </ng-container>
+                                        
                                     </div>
                                     <!-- End Product Variation  -->
                                     <!-- Start Product Variation  -->
@@ -155,7 +164,7 @@
                                             <h5 class="title">Variedades</h5>
                                             <ul>
                                                 <ng-container *ngFor="let variedad of product_selected.variedades">
-                                                    <li>variedad.valor</li>
+                                                    <li>{{ variedad.valor }}</li>
                                                 </ng-container>
                                             </ul>
                                         </div>
