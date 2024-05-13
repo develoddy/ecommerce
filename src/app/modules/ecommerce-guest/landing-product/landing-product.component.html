@@ -33,9 +33,9 @@
                                 <h2 class="product-title">{{ product_selected.title }}</h2>
                                 <!-- <span class="price-amount">$120.00 - $180.00</span> -->
                                 <div class="price-amount price-offer-amount">
-                                    <span class="price current-price">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} <i class="fa-solid fa-euro-sign"></i></span>
+                                    <span class="price current-price black-color">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} <i class="fa-solid fa-euro-sign"></i></span>
                                     <ng-container *ngIf="getDiscount() > 0">
-                                        <span class="price old-price">{{ product_selected.price_usd }} <i class="fa-solid fa-euro-sign"></i></span>
+                                        <span class="price old-price black-color">{{ product_selected.price_usd }} <i class="fa-solid fa-euro-sign"></i></span>
                                         <ng-container *ngIf="SALE_FLASH">
                                             <div class="offer-badge" *ngIf="SALE_FLASH.type_discount == 1">
                                                 <div class="product-badget">{{SALE_FLASH.discount}}% OFF</div>
@@ -49,7 +49,7 @@
                                 <div class="price-amount price-offer-amount px-3">
                                     <ng-container *ngIf="getDiscount() > 0">
                                         <div class="price-amount price-offer-amount">
-                                            <span class="price current-price">Descuento por: <b> {{ SALE_FLASH.type_campaign == 1 ? 'Campaña de descuento' : 'Venta flash' }} </b></span>
+                                            <span class="price current-price black-color">Descuento por: <b> {{ SALE_FLASH.type_campaign == 1 ? 'Campaña de descuento' : 'Venta flash' }} </b></span>
                                         </div>
                                     </ng-container>
                                 </div>
@@ -74,9 +74,9 @@
                                     <!-- Start Product Variation  -->
                                     <div class="product-variation product-size-variation">
                                         <ul class="product-meta">
-                                            <li><i class="fal fa-check"></i>In stock</li>
-                                            <li><i class="fal fa-check"></i>Free delivery available</li>
-                                            <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>
+                                            <li><i class="fal fa-check black-color"></i><span class="black-color">In stock</span></li>
+                                            <li><i class="fal fa-check black-color"></i><span class="black-color">Free delivery available</span></li>
+                                            <li><i class="fal fa-check black-color"></i><span class="black-color">Sales 30% Off Use Code: MOTIVE30</span></li>
                                         </ul>
 
                                         <ng-container *ngIf="product_selected.variedades">
@@ -125,8 +125,8 @@
 
                                     <!-- Start Product Action  -->
                                     <ul class="product-action d-flex-center mb--0">
-                                        <li class="add-to-cart"><a href="checkout.html" onclick="return false;" routerLink="/payment-process" class="axil-btn btn-bg-secondary"><i class="far fa-shopping-bag"></i> Buy Now</a></li>
-                                        <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-primary" onclick="return false;" (click)="addCart(product_selected)" ><i class="far fa-shopping-cart"></i> Add to Cart</a></li>
+                                        <li class="add-to-cart d-none"><a href="checkout.html" onclick="return false;" routerLink="/payment-process" class="axil-btn btn-bg-secondary"><i class="far fa-shopping-bag"></i> Comprar ahora</a></li>
+                                        <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-black" onclick="return false;" (click)="addCart(product_selected)" ><i class="far fa-shopping-cart"></i> Añadir a la cesta</a></li>
 
                                     </ul>
                                     <!-- End Product Action  -->

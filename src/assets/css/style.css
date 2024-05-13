@@ -2822,6 +2822,12 @@ button.axil-btn.right-icon i {
   position: relative;
   top: 2px;
 }
+
+
+a.axil-btn.btn-bg-black,button.axil-btn.btn-bg-black {background-color: var(--color-black);color: var(--color-white) !important;}a.axil-btn.btn-bg-black i,button.axil-btn.btn-bg-black i {color: var(--color-white) !important;}a.axil-btn.btn-bg-black:before,button.axil-btn.btn-bg-secondary:before {background-color: var(--color-black);}
+/*  */
+
+
 a.axil-btn.btn-bg-white,
 button.axil-btn.btn-bg-white {
   background-color: var(--color-white);
