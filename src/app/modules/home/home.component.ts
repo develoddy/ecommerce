@@ -189,6 +189,9 @@ export class HomeComponent implements OnInit {
       total: (product.price_usd - this.getDiscountProduct(product, is_sale_flash))* $("#qty-cart").val(), //1, // De momento es igual, luego aplicamos el descuento
     }
 
+    console.log("Debugg: ------- register save ---------------");
+    console.log(data);
+
     this._cartService.registerCart(data).subscribe((resp:any) => {
       if (resp.message == 403) {
         alertDanger(resp.message_text);
