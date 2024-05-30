@@ -56,13 +56,20 @@ export class ProfileClientComponent implements OnInit {
   }
 
   showProfileClient() {
+
+    console.log("PRofile");
+    console.log(this._ecommerceAuthService._authService);
+    
+    
     let data = {
-      user_id: this._ecommerceAuthService._authService.user._id,
+      user_id: this._ecommerceAuthService._authService.user.id,
     };
 
+    console.log("DEBUGG: ProfileClientComponent showProfile");
+      console.log(data);
+
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
-      console.log("DEBUGG: ProfileClientComponent showProfile");
-      console.log(resp);
+      
       this.sale_orders = resp.sale_orders;
       this.listAddressClients = resp.address_client;
     });
@@ -105,7 +112,7 @@ export class ProfileClientComponent implements OnInit {
       return;
     }
     let data = {
-        user: this._ecommerceAuthService._authService.user._id,
+        user: this._ecommerceAuthService._authService.user.id,
         name:this.name,
         surname:this.surname,
         pais:this.pais,
@@ -139,8 +146,8 @@ export class ProfileClientComponent implements OnInit {
       return;
     }
     let data = {
-        _id: this.address_client_selected._id,
-        user: this._ecommerceAuthService._authService.user._id,
+        _id: this.address_client_selected.id,
+        user: this._ecommerceAuthService._authService.user.id,
         name:this.name,
         surname:this.surname,
         pais:this.pais,
@@ -154,7 +161,7 @@ export class ProfileClientComponent implements OnInit {
     };
     this._ecommerceAuthService.updateAddressClient(data).subscribe((resp:any) => {
       //console.log(resp);
-      let INDEX = this.listAddressClients.findIndex((item:any) => item._id == this.address_client_selected._id);
+      let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
       this.listAddressClients[INDEX] = resp.address_client;
       alertSuccess(resp.message);
     });
@@ -206,7 +213,7 @@ export class ProfileClientComponent implements OnInit {
     }
 
     let data = {
-      _id: this._ecommerceAuthService._authService.user._id,
+      _id: this._ecommerceAuthService._authService.user.id,
       name: this.name_c,
       surname: this.surname_c,
       email: this.email_c,
@@ -257,9 +264,9 @@ export class ProfileClientComponent implements OnInit {
     }
 
     let data = {
-      product: this.sale_detail_selected.product._id,
-      sale_detail: this.sale_detail_selected._id,
-      user: this._ecommerceAuthService._authService.user._id,
+      product: this.sale_detail_selected.product.id,
+      sale_detail: this.sale_detail_selected.id,
+      user: this._ecommerceAuthService._authService.user.id,
       cantidad: this.cantidad,
       description: this.description,
     };
@@ -278,10 +285,10 @@ export class ProfileClientComponent implements OnInit {
     }
 
     let data = {
-      _id: this.sale_detail_selected.review._id,
-      product: this.sale_detail_selected.product._id,
-      sale_detail: this.sale_detail_selected._id,
-      user: this._ecommerceAuthService._authService.user._id,
+      _id: this.sale_detail_selected.review.id,
+      product: this.sale_detail_selected.product.id,
+      sale_detail: this.sale_detail_selected.id,
+      user: this._ecommerceAuthService._authService.user.id,
       cantidad: this.cantidad,
       description: this.description,
     };

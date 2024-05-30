@@ -83,7 +83,8 @@
                                             <h6 class="title">Size:</h6>
                                             <ul class="range-variant">
                                                 <ng-container *ngFor="let variedad of product_selected.variedades; let i = index">
-                                                    <li [ngClass]="{'active': activeIndex === i}" (click)="setActiveIndex(i)">
+                                                    <!-- <li [ngClass]="{'active': activeIndex === i}" (click)="setActiveIndex(i)"> -->
+                                                    <li [ngClass]="{'active': activeIndex === i}" (click)="selectedVariedad(variedad, i)">
                                                         {{ i === 0 ? 'xs' : variedad.valor }}
                                                     </li>
                                                 </ng-container>

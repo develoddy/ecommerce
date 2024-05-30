@@ -30,8 +30,8 @@ export class ListCartsComponent implements OnInit {
     }, 25);
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
-      console.log("debugg: listCarts");
-      console.log(this.listAllCarts);
+      
+      this.listAllCarts();
       
       
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
@@ -126,12 +126,13 @@ export class ListCartsComponent implements OnInit {
 
   listAllCarts() {
     this._cartService.resetCart();
-        if (this._cartService._authService.user) {
-          this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
-            resp.carts.forEach((cart:any) => {
-              this._cartService.changeCart(cart);
-            });
-          });
-        }
+    
+    if (this._cartService._authService.user) {
+      this._cartService.listCarts(this._cartService._authService.user.id).subscribe((resp:any) => {
+        resp.carts.forEach((cart:any) => {
+          this._cartService.changeCart(cart);
+        });
+      });
+    }
   }
 }

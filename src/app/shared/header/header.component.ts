@@ -57,9 +57,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
     });
     if (this._cartService._authService.user) {
+      
+      
       this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
-        console.log("DEBUGG: Header  listCarts");
-        console.log(resp);
+        
         resp.carts.forEach((cart:any) => {
           this._cartService.changeCart(cart);
         });
@@ -86,6 +87,11 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       let data = {
         search_product: this.search_product,
       }
+
+      console.log("--- admin: search ----");
+      console.log(data);
+      
+      
       if(this.search_product.length > 1){
         this._cartService.searchProduct(data).subscribe((resp:any) => {
           console.log(resp);
@@ -179,6 +185,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   searchProduct() {
-
+    
   }
 }

@@ -71,10 +71,15 @@ export class FilterProductsComponent implements OnInit {
     let data = {
       categories_selecteds: this.categories_selecteds,
       is_discount: this.is_discount,
-      variedad_selected: this.variedad_selected._id ? this.variedad_selected : null,
+      variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
       price_min: $("#amount-min").val(),
       price_max: $("#amount-max").val(),
     }
+
+    console.log("--- Admin: filterProduct  ---");
+    console.log(data);
+    
+    
     this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
       console.log(resp);
       this.products = resp.products;
