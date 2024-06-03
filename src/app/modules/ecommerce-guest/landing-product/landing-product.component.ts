@@ -49,14 +49,7 @@ export class LandingProductComponent implements OnInit {
 
     
     this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
-
-      // console.log("------ Debugg: showLandingProduct ---------");
-      // console.log(resp);
-
-
       this.product_selected = resp.product;
-      
-      
       this.related_products = resp.related_products;
       this.SALE_FLASH = resp.SALE_FLASH;
       this.REVIEWS = resp.REVIEWS;
@@ -155,7 +148,7 @@ export class LandingProductComponent implements OnInit {
     }
 
     let data = {
-      user: this._cartService._authService.user.id,
+      user: this._cartService._authService.user._id,
       product: this.product_selected._id,
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,

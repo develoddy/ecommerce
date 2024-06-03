@@ -43,7 +43,10 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this._authEcommerce.listAddressClient(this._authEcommerce._authService.user._id).subscribe((resp:any) => {
       //console.log(resp);
+      console.log("list address", resp);
       this.listAddressClients = resp.address_client;
+      
+      
     });
 
     setTimeout(() => {
@@ -195,9 +198,14 @@ export class CheckoutComponent implements OnInit {
       alertDanger("Necesitas ingresar los campos obligatorios de la dirección");
       return;
     }
+
+    console.log("--- update : address_client_selected --");
+    console.log(this.address_client_selected);
+    
+    
     let data = {
-        _id: this.address_client_selected._id,
-        user: this._authEcommerce._authService.user._id,
+        _id: this.address_client_selected.id,
+        user: this._authEcommerce._authService.user._id, //this._authEcommerce._authService.user._id,
         name:this.name,
         surname:this.surname,
         pais:this.pais,
@@ -252,10 +260,19 @@ export class CheckoutComponent implements OnInit {
   }
 
   removeAddressSelected(list_address:any) {
-    this._authEcommerce.deleteAddressClient(list_address._id).subscribe((resp:any) => {
+    this._authEcommerce.deleteAddressClient(list_address.id).subscribe((resp:any) => {
       console.log(resp);
       //this.listAddressClients = [];
-      let INDEX = this.listAddressClients.findIndex((item:any) => item._id == list_address._id);
+
+      console.log("--- -front checkout this.listAddressClients.--");
+      console.log(this.listAddressClients);
+
+      console.log("--- -front checkout this.list_address.--");
+      console.log(list_address);
+      
+      
+      
+      let INDEX = this.listAddressClients.findIndex((item:any) => item.id == list_address.id);
       
       // Verifica si se encontró el elemento
       if (INDEX !== -1) { 

@@ -81,7 +81,7 @@
                                             <tbody>
                                                 <ng-container *ngFor="let order of sale_orders">
                                                     <tr>
-                                                        <th scope="row">#{{ order.sale._id }}</th>
+                                                        <th scope="row">#{{ order.sale.id }}</th>
                                                         <td>{{ getDate(order.sale.createdAt) }}</td>
                                                         <td>{{ order.sale.method_payment }}</td>
                                                         <td class="text-primary fw-bold">{{ order.sale.total }} <i class="fa-solid fa-euro-sign"></i></td>

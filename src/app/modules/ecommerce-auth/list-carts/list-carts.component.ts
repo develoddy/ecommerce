@@ -28,12 +28,12 @@ export class ListCartsComponent implements OnInit {
     setTimeout(() => {
       sectionCart();
     }, 25);
+
+
+    this.listAllCarts();
+
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
-      
-      this.listAllCarts();
-      
-      
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
     });
@@ -50,7 +50,7 @@ export class ListCartsComponent implements OnInit {
   dec(cart:any) {
     console.log(cart, "DEC");
     if (cart.cantidad - 1 == 0) {
-      alertDanger("No puedes disminur un producto a 0");
+      alertDanger("Tienes que tener al menos una cantidad de producto");
       return;
     }
     cart.cantidad = cart.cantidad - 1;
@@ -65,7 +65,7 @@ export class ListCartsComponent implements OnInit {
       cantidad: cart.cantidad,
       subtotal: cart.subtotal,
       total: cart.total,
-      variedad: cart.variedad ? cart.variedad._id : null,
+      variedad: cart.variedad ? cart.variedad.id : null,
       product: cart.product._id,
     }
     this._cartService.updateCart(data).subscribe((resp:any) => {
@@ -78,9 +78,7 @@ export class ListCartsComponent implements OnInit {
   inc(cart:any) {
     console.log(cart, "INC");
     cart.cantidad = cart.cantidad + 1;
-    //cart.subtotal = cart.price_unitario * cart.cantidad;
-    //cart.total = cart.price_unitario * cart.cantidad;
-    // cart.subtotal = Number((cart.price_unitario * cart.cantidad).toFixed(2));
+
     cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
     cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
     
@@ -90,12 +88,19 @@ export class ListCartsComponent implements OnInit {
       cantidad: cart.cantidad,
       subtotal: cart.subtotal,
       total: cart.total,
-      variedad: cart.variedad ? cart.variedad._id : null,
+      variedad: cart.variedad ? cart.variedad.id : null,
       product: cart.product._id,
     }
+
     this._cartService.updateCart(data).subscribe((resp:any) => {
-      console.log("Debugg: Incremento");
-      console.log(resp);
+      if (resp.message == 403) {
+        alertDanger(resp.message_text);
+          cart.cantidad = cart.cantidad - 1;
+          cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+          cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+        return;
+      }
+
       this.updateTotalCarts();
     }); 
   }
@@ -126,9 +131,15 @@ export class ListCartsComponent implements OnInit {
 
   listAllCarts() {
     this._cartService.resetCart();
-    
-    if (this._cartService._authService.user) {
-      this._cartService.listCarts(this._cartService._authService.user.id).subscribe((resp:any) => {
+
+    if ( this._cartService._authService.user ) {
+     
+      this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
+
+        console.log("---- listAllCarts ---");
+        console.log(resp);
+        
+        
         resp.carts.forEach((cart:any) => {
           this._cartService.changeCart(cart);
         });
