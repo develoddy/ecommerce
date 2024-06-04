@@ -6,5 +6,5 @@ export const environment = {
 
     URL_BACKEND: 'https://api.lujandev.com/',
     URL_SERVICE: 'https://api.lujandev/api/',
-    URL_FRONTEND: 'https://buy.lujandev.com/',
+    URL_FRONTEND: 'https://tienda.lujandev.com/',
 };
