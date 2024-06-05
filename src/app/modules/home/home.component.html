@@ -308,7 +308,8 @@
                     <div class="slick-single-layout">
                         <div class="row row--15">
                             <ng-container *ngFor="let ourProduct of ourProducts">
-                                <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30">
+                                <!-- <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30"> -->
+                                <div class="col col-6 col-lg-4 mb--30">
                                     <div class="axil-product product-style-one">
                                         <div class="thumbnail">
                                             <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', ourProduct.slug]">
@@ -363,7 +364,8 @@
                     <div class="slick-single-layout">
                         <div class="row row--15">
                             <ng-container *ngFor="let besProduct of besProducts">
-                                <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30">
+                                <!-- <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30"> -->
+                                <div class="col col-6 col-lg-4 mb--30">
                                     <div class="axil-product product-style-one">
                                         <div class="thumbnail">
                                             <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]">
@@ -570,7 +572,8 @@
                     </div>
                     <div class="row row-cols-xl-2 row-cols-1 row--15">
                         <ng-container *ngFor="let besProduct of besProducts">
-                            <div class="col">
+                            <!-- <div class="col"> -->
+                            <div class="col col-6 col-lg-4">
                                 <div class="axil-product-list">
                                     <div class="thumbnail">
                                         <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="getRouterDiscount(besProduct)" >

@@ -4634,7 +4634,7 @@ Slider Style
   margin: 0;
 }
 .main-slider-content .item-rating .thumb ul li {
-  display: inline-block;
+  display: inline-block !important;
   margin-left: -26px;
 }
 .main-slider-content .item-rating .thumb ul li img {
