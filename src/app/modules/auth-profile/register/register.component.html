@@ -1,12 +1,12 @@
 <div class="axil-signin-area">
 
     <!-- Start Header -->
-    <div class="signin-header">
+    <div class="signin-header d-none">
         <div class="row align-items-center">
-            <div class="col-md-6">
+            <div class="col-md-6 d-none">
                 <a href="index.html" class="site-logo"><img src="./assets/images/logo/logo.png" alt="logo"></a>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 offset-md-4">
                 <div class="singin-header-btn">
                     <p class="d-none">Already a member?</p>
                     <a [routerLink]="['/auth/login']" class="axil-btn btn-bg-secondary sign-up-btn">{{ 'auth_profile.register.button_login' | translate }}</a>
@@ -26,75 +26,41 @@
         <div class="col-lg-6 offset-xl-2">
             <div class="axil-signin-form-wrap">
                 <div class="axil-signin-form">
-                    <h3 class="title">I'm New Here</h3>
-                    <p class="b2 mb--55">Enter your detail below</p>
+                    <h3 class="title text-center">Crear cuenta</h3>
+                    <p class="b2 mb--55 d-none">Ingresa tus datos a continuación</p>
                     <form class="singin-form">
                         <div class="form-group">
-                            <label>User Name</label>
+                            <label>Nombre y apellidos</label>
                             <input type="text" class="form-control" name="username" [(ngModel)]="name" value="anniemario">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group d-none">
                             <label>Apellidos</label>
                             <input type="text" class="form-control" name="surname" [(ngModel)]="surname">
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
+                            <label>Correo electrónico</label>
                             <input type="email" class="form-control" name="email" [(ngModel)]="email" value="annie@example.com">
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
+                            <label>Contraseña</label>
                             <input type="password" class="form-control" name="password" [(ngModel)]="password" placeholder="Password">
                         </div>
                         <div class="form-group">
-                            <label>Confirmar password</label>
+                            <label>Confirmar contraseña</label>
                             <input type="password" class="form-control" name="repeat_password" [(ngModel)]="repeat_password" placeholder="Repetir password">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group d-none">
                             <input type="checkbox" class="form-control"><div class="text-dark b2" [innerHTML]="getTranslatedCondition()"></div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="axil-btn btn-bg-primary submit-btn" (click)="register()">Create Account</button>
+                            <button type="submit" class="axil-btn btn-bg-primary submit-btn w-100" (click)="register()">Continuar</button>
+                        </div>
+                        <div class="form-group d-flex align-items-center justify-content-center">
+                            <a [routerLink]="['/auth/login']" class="axil-btn sign-up-btn">{{ 'auth_profile.register.button_login' | translate }}</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-
-        <!-- <div class="col-xl-5 col-lg-6">
-            <div class="axil-signin-form-wrap justify-content-center">
-                <div class="axil-signin-form">
-                    <h3 class="title text-dark">{{ 'auth_profile.register.title' | translate }}</h3>
-                    <p class="b2 mb--35 text-gray">{{ 'auth_profile.register.subtitle' | translate }}</p>
-                    <form class="singin-form">
-                        <div class="form-group">
-                            <label>{{ 'auth_profile.register.first_name' | translate }}Nombre</label>
-                            <input type="text" class="form-control" name="name" [(ngModel)]="name">
-                        </div>
-                        <div class="form-group">
-                            <label>{{ 'auth_profile.register.last_name' | translate }}Apellidos</label>
-                            <input type="text" class="form-control" name="surname" [(ngModel)]="surname">
-                        </div>
-                        <div class="form-group">
-                            <label>{{ 'auth_profile.register.email' | translate }}Email</label>
-                            <input type="email" class="form-control" name="email" [(ngModel)]="email">
-                        </div>
-                        <div class="form-group">
-                            <label>{{ 'auth_profile.register.password' | translate }}Password</label>
-                            <input type="password" class="form-control" name="password" [(ngModel)]="password">
-                        </div>
-                        <div class="form-group">
-                            <label>{{ 'auth_profile.register.password_repeat' | translate }}Confirmar password</label>
-                            <input type="password" class="form-control" name="repeat_password" [(ngModel)]="repeat_password">
-                        </div>
-                        <div class="form-group">
-                            <input type="checkbox" class="form-control"><div class="text-dark b2" [innerHTML]="getTranslatedCondition()"></div>
-                        </div>
-                        <div class="form-group d-flex align-items-center justify-content-between">
-                            <button type="submit" class="axil-btn btn-bg-primary" (click)="register()" >{{ 'auth_profile.register.button_signup' | translate }}</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div> -->
     </div>
 </div>

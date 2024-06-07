@@ -39,7 +39,9 @@
                             <div class="shop-submenu">
                                 <ul>
                                     <ng-container *ngFor="let categorie of categories">
-                                        <li [ngClass]="{'current-cat': categories_selecteds.includes(categorie._id) }" ><a href="#" (click)="addCategorie(categorie)" onclick="return false;">{{ categorie.title }}</a></li>
+                                        <li [ngClass]="{'current-cat': categories_selecteds.includes(categorie.id) }" >
+                                            <a href="#" (click)="addCategorie(categorie)" onclick="return false;">{{ categorie.title }}</a>
+                                        </li>
                                     </ng-container>
                                     <!-- <li class="current-cat"><a href="#">Sun Care</a></li>
                                     <li><a href="#">Night Care</a></li>
@@ -66,7 +68,9 @@
                             <div class="shop-submenu">
                                 <ul>
                                     <ng-container *ngFor="let variedad of variedades">
-                                        <li [ngClass]="{'chosen': variedad_selected._id == variedad._id}" class="chosen"><a href="#" onclick="return false;" (click)="selectedVariedad(variedad)" > {{variedad.valor}} </a></li>
+                                        <li [ngClass]="{'chosen': variedad_selected._id == variedad.id}" class="chosen">
+                                            <a href="#" onclick="return false;" (click)="selectedVariedad(variedad)" > {{variedad.valor}} </a>
+                                        </li>
                                     </ng-container>
                                     
                                 </ul>

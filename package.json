@@ -4,9 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && npm run minify-css",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "minify-css": "cleancss -o src/assets/css/style.min.css src/assets/css/style.css"
   },
   "private": true,
   "dependencies": {

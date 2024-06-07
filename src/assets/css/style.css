@@ -1170,7 +1170,7 @@ Shortcode
 }
 
 .bg_image--9 {
-  background-image: url(../images/bg/bg-image-9.jpg);
+  background-image: url(../images/bg/bg-image-9.png);
 }
 
 .bg_image--10 {
@@ -2777,7 +2777,7 @@ button.axil-btn {
   line-height: var(--line-height-b1);
   font-weight: 700;
   display: inline-block;
-  padding: 16px 38px;
+  padding: 10px 10px;
   position: relative;
   transition: all 0.3s ease-in-out;
   z-index: 1;
@@ -12183,7 +12183,7 @@ body.open .closeMask {
 }
 
 .axil-signin-banner {
-  min-height: 900px;
+  /* min-height: 900px; */
   height: 100vh;
   padding: 200px 50px 0 100px;
 }
@@ -12203,7 +12203,7 @@ body.open .closeMask {
   height: calc(100vh - 180px);
   overflow-y: auto;
   display: flex;
-  margin: 180px -30px -30px;
+  margin: 100px -30px -30px;
 }
 @media only screen and (max-width: 991px) {
   .axil-signin-form-wrap {
@@ -12214,7 +12214,7 @@ body.open .closeMask {
 }
 @media only screen and (max-width: 575px) {
   .axil-signin-form-wrap {
-    margin: 200px 0 0;
+    margin: 100px 0 0;
     height: calc(100vh - 200px);
   }
 }
@@ -12228,20 +12228,20 @@ body.open .closeMask {
   padding-bottom: 30px;
 }
 .axil-signin-form .title {
-  margin-bottom: 16px;
+  margin-bottom: 40px;
 }
 .axil-signin-form p {
   color: var(--color-gray);
 }
 .axil-signin-form .form-group {
-  margin-bottom: 35px;
+  margin-bottom: 17px;
 }
 .axil-signin-form .form-group:last-child {
   margin-bottom: 0;
 }
 .axil-signin-form .form-control {
-  height: 60px;
-  border-color: var(--color-light);
+  height: 50px;
+  border-color: var(--color-black);
   padding: 0 30px;
   color: var(--color-body);
 }
