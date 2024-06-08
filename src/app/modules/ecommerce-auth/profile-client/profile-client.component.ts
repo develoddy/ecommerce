@@ -56,13 +56,19 @@ export class ProfileClientComponent implements OnInit {
   }
 
   showProfileClient() {
+    
     let data = {
       user_id: this._ecommerceAuthService._authService.user._id,
     };
 
+    console.log("DEBUGG: ProfileClientComponent showProfile");
+    console.log(data);
+
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
-      console.log("DEBUGG: ProfileClientComponent showProfile");
-      console.log(resp);
+
+      console.log("---- FRONT show Profile ", resp);
+      
+      
       this.sale_orders = resp.sale_orders;
       this.listAddressClients = resp.address_client;
     });
@@ -76,6 +82,9 @@ export class ProfileClientComponent implements OnInit {
   viewDetailSale(order:any) {
     this.is_detail_sale = true;
     this.order_selected = order;
+
+    console.log("---- order_selected ", this.order_selected);
+    
   }
 
   goHome() {
@@ -105,7 +114,7 @@ export class ProfileClientComponent implements OnInit {
       return;
     }
     let data = {
-        user: this._ecommerceAuthService._authService.user._id,
+        user: this._ecommerceAuthService._authService.user.id,
         name:this.name,
         surname:this.surname,
         pais:this.pais,
@@ -139,8 +148,8 @@ export class ProfileClientComponent implements OnInit {
       return;
     }
     let data = {
-        _id: this.address_client_selected._id,
-        user: this._ecommerceAuthService._authService.user._id,
+        _id: this.address_client_selected.id,
+        user: this._ecommerceAuthService._authService.user.id,
         name:this.name,
         surname:this.surname,
         pais:this.pais,
@@ -154,7 +163,7 @@ export class ProfileClientComponent implements OnInit {
     };
     this._ecommerceAuthService.updateAddressClient(data).subscribe((resp:any) => {
       //console.log(resp);
-      let INDEX = this.listAddressClients.findIndex((item:any) => item._id == this.address_client_selected._id);
+      let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
       this.listAddressClients[INDEX] = resp.address_client;
       alertSuccess(resp.message);
     });
@@ -205,8 +214,35 @@ export class ProfileClientComponent implements OnInit {
       }
     }
 
+    /**
+     * 
+     * {
+        _id: 28,
+        product: {
+          _id: 3,
+          title: 'procut 3',
+          sku: 'R1R2R3R4',
+          slug: 'procut-3',
+          imagen: 'http://localhost:3500/api/products/uploads/product/1717013433853-product-20.jpg',
+          categorie: [categories],
+          price_soles: 10,
+          price_usd: 10
+        },
+        type_discount: 1,
+        discount: 0,
+        cantidad: 3,
+        variedad: undefined,
+        code_cupon: null,
+        code_discount: null,
+        price_unitario: 10,
+        subtotal: 10,
+        total: 30,
+        review: null
+      },
+     */
+
     let data = {
-      _id: this._ecommerceAuthService._authService.user._id,
+      _id: this._ecommerceAuthService._authService.user.id,
       name: this.name_c,
       surname: this.surname_c,
       email: this.email_c,
@@ -243,6 +279,7 @@ export class ProfileClientComponent implements OnInit {
 
 
   save() {
+
     if (this.sale_detail_selected.review) {
       this.updateReview();
     } else {
@@ -255,7 +292,7 @@ export class ProfileClientComponent implements OnInit {
       alertDanger("Todos los campos del formularios son importantes!");
       return;
     }
-
+    
     let data = {
       product: this.sale_detail_selected.product._id,
       sale_detail: this.sale_detail_selected._id,
@@ -277,8 +314,10 @@ export class ProfileClientComponent implements OnInit {
       return;
     }
 
+    console.log("---- FRON: add reviewe", this.sale_detail_selected);
+
     let data = {
-      _id: this.sale_detail_selected.review._id,
+      _id: this.sale_detail_selected.review.id,
       product: this.sale_detail_selected.product._id,
       sale_detail: this.sale_detail_selected._id,
       user: this._ecommerceAuthService._authService.user._id,

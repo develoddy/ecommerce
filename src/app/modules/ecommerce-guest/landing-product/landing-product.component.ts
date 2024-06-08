@@ -50,10 +50,6 @@ export class LandingProductComponent implements OnInit {
     
     this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
       this.product_selected = resp.product;
-      console.log("Debugg: showLandingProduct ---------");
-      
-      console.log(this.product_selected);
-      
       this.related_products = resp.related_products;
       this.SALE_FLASH = resp.SALE_FLASH;
       this.REVIEWS = resp.REVIEWS;
@@ -122,8 +118,10 @@ export class LandingProductComponent implements OnInit {
     return 0;
   }
 
-  selectedVariedad(variedad:any) {
+  selectedVariedad(variedad:any, index: number) {
+    
     this.variedad_selected = variedad;
+    this.activeIndex = index;
   }
 
   addCart(product:any) {
@@ -134,10 +132,11 @@ export class LandingProductComponent implements OnInit {
     if ($("#qty-cart").val() == 0) {
       alertDanger("Necesitas agregar una cantidad mayor a 0 para el carrito");
       return;
-    }
+    }    
+    
     if (this.product_selected.type_inventario == 2) {
       if (!this.variedad_selected) {
-        alertDanger("Necesitas seleccinonar una variedad para el carrito");
+        alertDanger("Necesitas seleccinonar una variedad para el carrito...");
         return;
       }
       if (this.variedad_selected) {
@@ -154,7 +153,7 @@ export class LandingProductComponent implements OnInit {
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
       cantidad: $("#qty-cart").val(),
-      variedad: this.variedad_selected ? this.variedad_selected._id : null,
+      variedad: this.variedad_selected ? this.variedad_selected.id : null,
       code_cupon: null,
       code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
       price_unitario: this.product_selected.price_usd,

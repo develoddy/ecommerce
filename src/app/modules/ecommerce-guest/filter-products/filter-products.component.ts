@@ -25,6 +25,7 @@ export class FilterProductsComponent implements OnInit {
   };
   products:any = [];
   product_selected:any=null;
+  
 
   constructor(
     public _ecommerceGuestService: EcommerceGuestService,
@@ -34,9 +35,19 @@ export class FilterProductsComponent implements OnInit {
   
   ngOnInit(): void {
     this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
-      console.log(resp);
       this.categories = resp.categories;
       this.variedades = resp.variedades;
+
+      const variedadesUnicos = new Set();
+
+      this.variedades = this.variedades.filter((variedad:any) => {
+        if (variedadesUnicos.has(variedad.valor)) {
+          return false;
+        } else {
+          variedadesUnicos.add(variedad.valor);
+          return true;
+        }
+      });
     });
 
     setTimeout(() => {
@@ -47,13 +58,12 @@ export class FilterProductsComponent implements OnInit {
   }
 
   addCategorie(categorie:any) {
-    let index = this.categories_selecteds.findIndex((item:any) => item == categorie._id );
+    let index = this.categories_selecteds.findIndex((item:any) => item == categorie.id );
     if (index != -1) {
       this.categories_selecteds.splice(index, 1);
     } else {
-      this.categories_selecteds.push(categorie._id);
+      this.categories_selecteds.push(categorie.id);
     }
-
     this.filterProduct();
   }
 
@@ -71,12 +81,13 @@ export class FilterProductsComponent implements OnInit {
     let data = {
       categories_selecteds: this.categories_selecteds,
       is_discount: this.is_discount,
-      variedad_selected: this.variedad_selected._id ? this.variedad_selected : null,
+      variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
       price_min: $("#amount-min").val(),
       price_max: $("#amount-max").val(),
     }
+
+   
     this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
-      console.log(resp);
       this.products = resp.products;
     });
   }
@@ -121,7 +132,9 @@ export class FilterProductsComponent implements OnInit {
       //return;
     //}
 
-    console.log("product.type_inventario: " + product.type_inventario);
+    // console.log("product.type_inventario: " + product.type_inventario);
+
+    
     
     if (product.type_inventario == 2) { // Si el producto tiene variedad multiple, entonces redirigir a la landing de product para que de esa manera el cliente pueda seleccionar la variedad (talla)
       let LINK_DISCOUNT = "?_id="+product.campaing_discount._id;
@@ -138,6 +151,9 @@ export class FilterProductsComponent implements OnInit {
       discount = product.campaing_discount.discount;
       code_discount = product.campaing_discount._id;
     }
+
+    
+    
    
     let data = {
       user: this._cartService._authService.user._id,

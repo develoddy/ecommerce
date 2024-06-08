@@ -16,13 +16,13 @@
                             <div class="slider-content-activation-one">
                                 <ng-container *ngFor="let slider of sliders">
                                     <div class="single-slide slick-slide" data-sal="slide-up" data-sal-delay="400" data-sal-duration="800">
-                                        <span class="subtitle"><i class="fas fa-fire"></i> Hot Deal In This Week</span>
+                                        <span class="subtitle"><i class="fas fa-fire"></i> Gran oferta en esta semana</span>
                                         <h1 class="title">{{ slider.title }}</h1>
                                         <div class="slide-action">
                                             <div class="shop-btn">
-                                                <a href="shop.html" onclick="return false;" [href]="slider.link" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i>Shop Now</a>
+                                                <a href="shop.html" onclick="return false;" [href]="slider.link" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i>Compra ahora</a>
                                             </div>
-                                            <div class="item-rating">
+                                            <div class="item-rating d-none">
                                                 <div class="thumb">
                                                     <ul>
                                                         <li><img src="assets/images/others/author1.png" alt="Author"></li>
@@ -39,7 +39,7 @@
                                                     <i class="fas fa-star"></i>
                                                     <i class="fal fa-star"></i>
                                                 </span>
-                                                <span class="review-text"><span>100+</span> Reviews</span>
+                                                <span class="review-text"><span>100+</span> Reseñas</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -191,8 +191,8 @@
         <div class="axil-categorie-area bg-color-white axil-section-gapcommon">
             <div class="container">
                 <div class="section-title-wrapper">
-                    <span class="title-highlighter highlighter-secondary"> <i class="far fa-tags"></i> Categories</span>
-                    <h2 class="title">Browse by Category</h2>
+                    <span class="title-highlighter highlighter-secondary"> <i class="far fa-tags"></i> Categorías</span>
+                    <h2 class="title">Buscar por categoría</h2>
                 </div>
                 <div class="categrie-product-activation slick-layout-wrapper--15 axil-slick-arrow  arrow-top-slide">
                     <ng-container *ngFor="let categorie of categories">
@@ -240,7 +240,7 @@
                                         <div class="product-hover-action">
                                             <ul class="cart-action">
                                                 <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a></li>
-                                                <li class="select-option"><a href="#" onclick="return false;" (click)="addCart(product, 1)">Add to Cart</a></li>
+                                                <li class="select-option"><a href="#" onclick="return false;" (click)="addCart(product, 1)">Añadir a la cesta</a></li>
                                                 <li class="quickview"><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal" (click)="openModal(product, FlashSale)"><i class="far fa-eye"></i></a></li>
                                             </ul>
                                         </div>
@@ -272,11 +272,11 @@
                         <div class="col-xl-5 col-lg-6">
                             <div class="poster-countdown-content">
                                 <div class="section-title-wrapper">
-                                    <span class="title-highlighter highlighter-secondary"> <i class="fal fa-headphones-alt"></i> Don’t Miss!!</span>
-                                    <h2 class="title">Enhance Your Music Experience</h2>
+                                    <span class="title-highlighter highlighter-secondary"> <i class="fal fa-headphones-alt"></i> No te lo pierdas!!</span>
+                                    <h2 class="title">Mejora tu experiencia musical</h2>
                                 </div>
                                 <div class="poster-countdown countdown mb--40"></div>
-                                <a href="#" class="axil-btn btn-bg-primary">Check it Out!</a>
+                                <a href="#" class="axil-btn btn-bg-primary">¡Échale un vistazo!</a>
                             </div>
                         </div>
                         <div class="col-xl-7 col-lg-6">
@@ -301,14 +301,15 @@
         <div class="axil-product-area bg-color-white axil-section-gap">
             <div class="container">
                 <div class="section-title-wrapper">
-                    <span class="title-highlighter highlighter-primary"> <i class="far fa-shopping-basket"></i> Our Products (Nuestros productos)</span>
-                    <h2 class="title">Explore our Products</h2>
+                    <span class="title-highlighter highlighter-primary"> <i class="far fa-shopping-basket"></i>Nuestros productos</span>
+                    <h2 class="title">Explore nuestros productos</h2>
                 </div>
                 <div class="explore-product-activation slick-layout-wrapper slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
                     <div class="slick-single-layout">
                         <div class="row row--15">
                             <ng-container *ngFor="let ourProduct of ourProducts">
-                                <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30">
+                                <!-- <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30"> -->
+                                <div class="col col-6 col-lg-3 mb--30">
                                     <div class="axil-product product-style-one">
                                         <div class="thumbnail">
                                             <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', ourProduct.slug]">
@@ -363,7 +364,8 @@
                     <div class="slick-single-layout">
                         <div class="row row--15">
                             <ng-container *ngFor="let besProduct of besProducts">
-                                <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30">
+                                <!-- <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30"> -->
+                                <div class="col col-6 col-lg-3 mb--30">
                                     <div class="axil-product product-style-one">
                                         <div class="thumbnail">
                                             <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]">
@@ -400,7 +402,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 text-center mt--20 mt_sm--0">
-                        <a href="shop.html" class="axil-btn btn-bg-lighter btn-load-more">View All Products</a>
+                        <a href="shop.html" onclick="return false;" routerLink="/filter-products" class="axil-btn btn-bg-lighter btn-load-more">Ver todos los productos</a>
                     </div>
                 </div>
 
@@ -412,8 +414,8 @@
         <div class="axil-testimoial-area axil-section-gap bg-vista-white">
             <div class="container">
                 <div class="section-title-wrapper">
-                    <span class="title-highlighter highlighter-secondary"> <i class="fal fa-quote-left"></i>Testimonials</span>
-                    <h2 class="title">Users Feedback</h2>
+                    <span class="title-highlighter highlighter-secondary"> <i class="fal fa-quote-left"></i>Testimonios</span>
+                    <h2 class="title">Comentarios de los usuarios</h2>
                 </div>
                 <!-- End .section-title -->
                 <div class="testimonial-slick-activation testimonial-style-one-wrapper slick-layout-wrapper--20 axil-slick-arrow arrow-top-slide">
@@ -508,8 +510,8 @@
             <div class="container">
                 <div class="product-area pb--50">
                     <div class="section-title-wrapper">
-                        <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i>This Week’s (De esta semana)</span>
-                        <h2 class="title">New Arrivals</h2>
+                        <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i>De esta semana</span>
+                        <h2 class="title">Los recién llegados</h2>
                     </div>
                     <div class="new-arrivals-product-activation slick-layout-wrapper--30 axil-slick-arrow  arrow-top-slide">
                         <ng-container *ngFor="let besProduct of besProducts">
@@ -565,12 +567,13 @@
             <div class="container">
                 <div class="product-area pb--50">
                     <div class="section-title-wrapper section-title-center">
-                        <span class="title-highlighter highlighter-primary"><i class="fas fa-star"></i> Most Sold (Más venido)</span>
-                        <h2 class="title">Most Sold in eTrade Store</h2>
+                        <span class="title-highlighter highlighter-primary"><i class="fas fa-star"></i> Más vendido</span>
+                        <h2 class="title">Más vendidos en la tienda Lujanshop</h2>
                     </div>
                     <div class="row row-cols-xl-2 row-cols-1 row--15">
                         <ng-container *ngFor="let besProduct of besProducts">
-                            <div class="col">
+                            <!-- <div class="col"> -->
+                            <div class="col col-6 col-lg-4">
                                 <div class="axil-product-list">
                                     <div class="thumbnail">
                                         <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="getRouterDiscount(besProduct)" >
@@ -612,48 +615,48 @@
         <div class="axil-why-choose-area pb--50 pb_sm--30">
             <div class="container">
                 <div class="section-title-wrapper section-title-center">
-                    <span class="title-highlighter highlighter-secondary"><i class="fal fa-thumbs-up"></i>Why Us</span>
-                    <h2 class="title">Why People Choose Us</h2>
+                    <span class="title-highlighter highlighter-secondary"><i class="fal fa-thumbs-up"></i>Por qué nosotros</span>
+                    <h2 class="title">Por qué la gente nos elige</h2>
                 </div>
                 <div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 row--20">
-                    <div class="col">
+                    <div class="col col-6 col-lg-4">
                         <div class="service-box">
                             <div class="icon">
                                 <img src="./assets/images/icons/service6.png" alt="Service">
                             </div>
-                            <h6 class="title">Fast &amp; Secure Delivery</h6>
+                            <h6 class="title">Entrega rápida y segura</h6>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col col-6 col-lg-4">
                         <div class="service-box">
                             <div class="icon">
                                 <img src="./assets/images/icons/service7.png" alt="Service">
                             </div>
-                            <h6 class="title">100% Guarantee On Product</h6>
+                            <h6 class="title">100% de garantía sobre el producto</h6>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col col-6 col-lg-4">
                         <div class="service-box">
                             <div class="icon">
                                 <img src="./assets/images/icons/service8.png" alt="Service">
                             </div>
-                            <h6 class="title">24 Hour Return Policy</h6>
+                            <h6 class="title">devolución de 24 horas</h6>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col col-6 col-lg-4">
                         <div class="service-box">
                             <div class="icon">
                                 <img src="./assets/images/icons/service9.png" alt="Service">
                             </div>
-                            <h6 class="title">24 Hour Return Policy</h6>
+                            <h6 class="title">Devolución de 24 horas</h6>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col col-6 col-lg-4">
                         <div class="service-box">
                             <div class="icon">
                                 <img src="./assets/images/icons/service10.png" alt="Service">
                             </div>
-                            <h6 class="title">Next Level Pro Quality</h6>
+                            <h6 class="title">Calidad profesional del siguiente nivel</h6>
                         </div>
                     </div>
                 </div>
@@ -705,13 +708,13 @@
             <div class="container">
                 <div class="etrade-newsletter-wrapper bg_image bg_image--5">
                     <div class="newsletter-content">
-                        <span class="title-highlighter highlighter-primary2"><i class="fas fa-envelope-open"></i>Newsletter</span>
-                        <h2 class="title mb--40 mb_sm--30">Get weekly update</h2>
+                        <span class="title-highlighter highlighter-primary2"><i class="fas fa-envelope-open"></i>Boletin informativo</span>
+                        <h2 class="title mb--40 mb_sm--30">Obtener actualización semanal</h2>
                         <div class="input-group newsletter-form">
                             <div class="position-relative newsletter-inner mb--15">
                                 <input placeholder="example@gmail.com" type="text">
                             </div>
-                            <button type="submit" class="axil-btn mb--15">Subscribe</button>
+                            <button type="submit" class="axil-btn mb--15">Suscribirse</button>
                         </div>
                     </div>
                 </div>
