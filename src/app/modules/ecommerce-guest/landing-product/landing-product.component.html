@@ -83,34 +83,40 @@
                                             <h6 class="title">Size:</h6>
                                             <ul class="range-variant">
                                                 <ng-container *ngFor="let variedad of product_selected.variedades; let i = index">
-                                                    <!-- <li [ngClass]="{'active': activeIndex === i}" (click)="setActiveIndex(i)"> -->
                                                     <li [ngClass]="{'active': activeIndex === i}" (click)="selectedVariedad(variedad, i)">
                                                         {{ i === 0 ? 'xs' : variedad.valor }}
                                                     </li>
                                                 </ng-container>
-                                                <!-- <li class="active">xs</li>
-                                                <li>s</li>
-                                                <li>m</li>
-                                                <li>l</li>
-                                                <li>xl</li> -->
                                             </ul>
                                         </ng-container>
                                         
                                     </div>
                                     <!-- End Product Variation  -->
+
                                     <!-- Start Product Variation  -->
                                     <div class="product-variation">
                                         <h6 class="title">Colors:</h6>
                                         <div class="color-variant-wrapper">
                                             <ul class="color-variant mt--0">
-                                                <li class="color-extra-01 active"><span><span class="color"></span></span>
+                                                <!-- <li *ngFor="let color of product_selected.tags; let i = index" [class.active]="i === selectedColorIndex" (click)="selectColor(i)">
+                                                    <span class="color" [style.backgroundColor]="color"></span>
+                                                </li> -->
+
+                                                <li *ngFor="let color of product_selected.tags; let i = index" [class.active]="i === selectedColorIndex" (click)="selectColor(i)">
+                                                    <span class="color" [style.backgroundColor]="getColorHex(color)"></span>
                                                 </li>
-                                                <li class="color-extra-02"><span><span class="color"></span></span>
+                                                <!-- <li class="color-extra-01 active">
+                                                    <span><span class="color"></span></span>
                                                 </li>
-                                                <li class="color-extra-03"><span><span class="color"></span></span>
+                                                <li class="color-extra-02">
+                                                    <span><span class="color"></span></span>
                                                 </li>
-                                                <li class="color-extra-04"><span><span class="color"></span></span>
+                                                <li class="color-extra-03">
+                                                    <span><span class="color"></span></span>
                                                 </li>
+                                                <li class="color-extra-04">
+                                                    <span><span class="color"></span></span>
+                                                </li> -->
                                             </ul>
                                         </div>
                                     </div>

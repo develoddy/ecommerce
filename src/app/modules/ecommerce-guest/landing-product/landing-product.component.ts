@@ -17,6 +17,15 @@ declare function alertSuccess([]):any;
 })
 export class LandingProductComponent implements OnInit {
 
+  // COLOR
+  /*
+  Filtrar por color: 
+  Faded Black #424242
+  Fade Khaki #dbc4a2
+  */
+
+
+
   slug:any=null;
   product_selected:any = null;
   product_selected_modal:any=null;
@@ -30,6 +39,8 @@ export class LandingProductComponent implements OnInit {
   COUNT_REVIEW:any=null;
 
   activeIndex: number = 0; // Inicializar el índice activo
+
+  selectedColorIndex: number = 0; // Índice del color seleccionado
 
   constructor(
     public _ecommerce_guestService: EcommerceGuestService,
@@ -50,6 +61,8 @@ export class LandingProductComponent implements OnInit {
     
     this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
       this.product_selected = resp.product;
+      console.log("_______FRONT: show Landing product: ", this.product_selected);
+      
       this.related_products = resp.related_products;
       this.SALE_FLASH = resp.SALE_FLASH;
       this.REVIEWS = resp.REVIEWS;
@@ -65,6 +78,27 @@ export class LandingProductComponent implements OnInit {
   setActiveIndex(index: number) {
     this.activeIndex = index;
   }
+
+  
+  selectColor(index: number): void {
+    this.selectedColorIndex = index;
+    console.log("----: this.selectedColorIndex ", this.selectedColorIndex );
+    
+    // Aquí puedes agregar lógica adicional si es necesario cuando se seleccione un color
+  }
+
+  getColorHex(color: string): string {
+    // Mapea los nombres de los colores a sus valores hexadecimales correspondientes
+    const colorMap: { [key: string]: string } = {
+        'Faded Black': '#424242',
+        'Faded Khaki': '#dbc4a2'
+        // Puedes agregar más colores aquí según sea necesario
+    };
+
+    // Devuelve el valor hexadecimal correspondiente al color
+    return colorMap[color] || '';
+}
+
 
   openModal(besProduct:any, FlashSale:any=null) {
     this.product_selected_modal = null;

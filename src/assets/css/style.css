@@ -65,7 +65,8 @@ Variables
 -----------------------*/
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap");
 :root {
-  --color-primary: #3577f0;
+  /* --color-primary: #3577f0; */
+  --color-primary: #FF914D;
   --light-primary: #8c71db;
   --color-secondary: #ff497c;
   --color-tertiary: #FAB8C4;
@@ -4759,7 +4760,7 @@ Slider Style
   opacity: 0.5;
 }
 .main-slider-large-thumb .axil-slick-dots .slick-dots li.slick-active button {
-  background-color: var(--color-secondary);
+  background-color: var(--color-primary);
   opacity: 1;
 }
 
@@ -8820,7 +8821,7 @@ body.open .closeMask {
   z-index: 2;
 }
 .axil-product > .thumbnail .label-block .product-badget {
-  background-color: var(--color-primary);
+  background-color: var(--color-black);
   line-height: 1;
   padding: 6px 10px 5px;
   font-size: 12px;
@@ -8958,7 +8959,7 @@ body.open .closeMask {
   font-weight: 700;
   font-size: 14px;
   color: var(--color-white);
-  background-color: var(--color-secondary);
+  background-color: var(--color-black);
   transition: 0.3s;
   box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.06);
   position: relative;
@@ -8968,7 +8969,7 @@ body.open .closeMask {
   content: "";
   height: 100%;
   width: 100%;
-  background-color: var(--color-secondary);
+  background-color: var(--color-black);
   border-radius: 4px;
   position: absolute;
   top: 0;
@@ -8979,7 +8980,7 @@ body.open .closeMask {
   transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .axil-product .cart-action li.select-option a:hover {
-  background-color: var(--color-secondary);
+  background-color: var(--color-black);
   color: var(--color-white);
 }
 .axil-product .cart-action li.select-option a:hover:before {
