@@ -15,6 +15,8 @@ declare var paypal:any;
 })
 export class CheckoutComponent implements OnInit {
 
+  euro = "€";
+
   @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   listAddressClients:any = [];
   name:any=null;
@@ -101,11 +103,11 @@ export class CheckoutComponent implements OnInit {
       onApprove: async (data:any, actions:any) => {
 
           let Order = await actions.order.capture();
-          
+         
           // Order.purchase_units[0].payments.captures[0].id
           let sale = {
             user: this._authEcommerce._authService.user._id,
-            currency_payment: "USD",
+            currency_payment: "EUR",
             method_payment: "PAYPAL",
             n_transaction: Order.purchase_units[0].payments.captures[0].id,
             total: this.totalCarts,
@@ -127,11 +129,15 @@ export class CheckoutComponent implements OnInit {
           };
 
           this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}).subscribe((resp:any) => {
-            console.log("Register order");
+           
+
+            setTimeout(() => {
+              alertSuccess(resp.message); // Muestra el mensaje de éxito
+              setTimeout(() => {
+                  location.reload(); // Recarga la página después de 100 ms
+              }, 3500);
+          }, 100);
             
-            console.log(resp);
-            alertSuccess(resp.message);
-            //location.reload();
           })
           // return actions.order.capture().then(captureOrderHandler);
       },
@@ -199,10 +205,6 @@ export class CheckoutComponent implements OnInit {
       return;
     }
 
-    console.log("--- update : address_client_selected --");
-    console.log(this.address_client_selected);
-    
-    
     let data = {
         _id: this.address_client_selected.id,
         user: this._authEcommerce._authService.user._id, //this._authEcommerce._authService.user._id,

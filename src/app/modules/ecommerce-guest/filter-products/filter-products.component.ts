@@ -26,7 +26,6 @@ export class FilterProductsComponent implements OnInit {
   products:any = [];
   product_selected:any=null;
   
-
   constructor(
     public _ecommerceGuestService: EcommerceGuestService,
     public _cartService: CartService,
@@ -85,8 +84,6 @@ export class FilterProductsComponent implements OnInit {
       price_min: $("#amount-min").val(),
       price_max: $("#amount-max").val(),
     }
-
-   
     this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
       this.products = resp.products;
     });
@@ -151,9 +148,6 @@ export class FilterProductsComponent implements OnInit {
       discount = product.campaing_discount.discount;
       code_discount = product.campaing_discount._id;
     }
-
-    
-    
    
     let data = {
       user: this._cartService._authService.user._id,

@@ -21,6 +21,7 @@ declare function alertSuccess([]):any;
 })
 export class HomeComponent implements OnInit {
 
+  euro = "€";
   sliders:any = [];
   categories:any = [];
   besProducts:any = [];
@@ -31,6 +32,14 @@ export class HomeComponent implements OnInit {
   variedad_selected:any=null;
   translatedText: string = "";
   //private subscription: Subscription;
+
+  activeIndex: number = 0;
+
+  selectedColor: string = '';
+
+  filteredGallery: any[] = [];
+
+  allTags: string[] = [];
 
   constructor(
     public homeService: HomeService,
@@ -48,9 +57,6 @@ export class HomeComponent implements OnInit {
     return 'Texto traducido';
   }
 
-  // ngOnDestroy() {
-  //   this.subscription.unsubscribe();
-  // }
 
   ngOnInit(): void {
 
@@ -58,15 +64,14 @@ export class HomeComponent implements OnInit {
 
     this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
 
-      console.log("DEBUGG: resp");
-      console.log(resp);
-
       this.sliders = resp.sliders;
       this.categories = resp.categories;
       this.besProducts = resp.bes_products;
       this.ourProducts = resp.our_products;
       this.FlashSale = resp.FlashSale;
       this.FlashProductList = resp.campaign_products;
+      
+
       setTimeout(() => {
         if (this.FlashSale) {
           var eventCounter = $(".sale-countdown");
@@ -85,8 +90,21 @@ export class HomeComponent implements OnInit {
         }
         HOMEINITTEMPLATE($);
         LandingProductDetail();
+        this.extractTags();
       }, 50);
     });
+  }
+
+
+  extractTags() {
+    this.besProducts .forEach((product:any) => {
+      if (product.tags && product.tags.length > 0) {
+        this.allTags = [...this.allTags, ...product.tags];
+      }
+    });
+
+    this.selectedColor = this.allTags[0];
+    console.log(this.allTags, this.selectedColor );
   }
 
   openModal(besProduct:any, FlashSale:any=null) {
@@ -99,6 +117,36 @@ export class HomeComponent implements OnInit {
         ModalProductDetail();
       }, 50);
     }, 150);
+  }
+
+  selectColor(index: number): void {
+    console.log("__HOME: index : ", index);
+    this.selectedColor = this.allTags[index];
+    console.log("__HOME: SElectColor : ", this.selectedColor);
+    
+    // this.updateFilteredGallery();
+    // this.reinitializeSliders();
+  }
+
+
+  getColorHex(color: string): string {
+    // Mapea los nombres de los colores a sus valores hexadecimales correspondientes
+    const colorMap: { [key: string]: string } = {
+      'Faded Black': '#424242',
+      'Faded Khaki': '#dbc4a2',
+      'Black': '#080808',
+      'Navy': '#152438',
+      'Maroon': '#6c152b',
+      'Red': '#e41525',
+      'Royal': '#1652ac',
+      'Sport Grey': '#9b969c',
+      'Light blue': '#9dbfe2',
+      'Faded Eucalyptus': '#d1cbad',
+      // Puedes agregar más colores aquí según sea necesario
+    };
+
+    // Devuelve el valor hexadecimal correspondiente al color
+    return colorMap[color] || '';
   }
 
   getCalNewPrice(product:any) {

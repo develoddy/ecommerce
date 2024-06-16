@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
@@ -15,17 +15,9 @@ declare function alertSuccess([]):any;
   templateUrl: './landing-product.component.html',
   styleUrls: ['./landing-product.component.css']
 })
-export class LandingProductComponent implements OnInit {
+export class LandingProductComponent implements OnInit, AfterViewInit {
 
-  // COLOR
-  /*
-  Filtrar por color: 
-  Faded Black #424242
-  Fade Khaki #dbc4a2
-  */
-
-
-
+  euro = "€";
   slug:any=null;
   product_selected:any = null;
   product_selected_modal:any=null;
@@ -38,9 +30,11 @@ export class LandingProductComponent implements OnInit {
   AVG_REVIEW:any=null;
   COUNT_REVIEW:any=null;
 
-  activeIndex: number = 0; // Inicializar el índice activo
+  activeIndex: number = 0;
 
-  selectedColorIndex: number = 0; // Índice del color seleccionado
+  selectedColor: string = '';
+
+  filteredGallery: any[] = [];
 
   constructor(
     public _ecommerce_guestService: EcommerceGuestService,
@@ -48,6 +42,7 @@ export class LandingProductComponent implements OnInit {
     public _routerActived: ActivatedRoute,
     public _cartService: CartService,
   ) {}
+
 
   ngOnInit(): void {
     this._routerActived.params.subscribe((resp:any) => {
@@ -58,47 +53,138 @@ export class LandingProductComponent implements OnInit {
       this.discount_id = resp["_id"];
     });
 
-    
     this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
       this.product_selected = resp.product;
-      console.log("_______FRONT: show Landing product: ", this.product_selected);
-      
       this.related_products = resp.related_products;
       this.SALE_FLASH = resp.SALE_FLASH;
       this.REVIEWS = resp.REVIEWS;
       this.AVG_REVIEW = resp.AVG_REVIEW;
       this.COUNT_REVIEW = resp.COUNT_REVIEW;
+
+      const variedadesUnicos = new Set();
+      this.product_selected.variedades = this.product_selected.variedades.filter((variedad:any) => {
+        if (variedadesUnicos.has(variedad.valor)) {
+          return false;
+        } else {
+          variedadesUnicos.add(variedad.valor);
+          return true;
+        }
+      });
+
+      this.selectedColor = this.product_selected.tags[0];
+      
+      this.variedad_selected = this.product_selected.variedades[0];
+      
+      this.updateFilteredGallery();
+
       setTimeout(() => {
         LandingProductDetail();
+        this.initializeLargeSlider();
+        this.initializeSmallSlider();
       }, 50);
     });
   }
 
-  // Función para cambiar el índice activo cuando se hace clic en una variedad
+  ngAfterViewInit(): void {
+    this.initializeLargeSlider();
+    this.initializeSmallSlider();
+  }
+
   setActiveIndex(index: number) {
     this.activeIndex = index;
   }
 
-  
   selectColor(index: number): void {
-    this.selectedColorIndex = index;
-    console.log("----: this.selectedColorIndex ", this.selectedColorIndex );
-    
-    // Aquí puedes agregar lógica adicional si es necesario cuando se seleccione un color
+    this.selectedColor = this.product_selected.tags[index];
+    this.updateFilteredGallery();
+    this.reinitializeSliders();
   }
+
+  reinitializeSliders(): void {
+    this.destroyLargeSlider();
+    this.destroySmallSlider();
+    setTimeout(() => {
+      LandingProductDetail();
+      this.initializeLargeSlider();
+      this.initializeSmallSlider();
+
+    }, 50);
+  }
+
+  updateFilteredGallery(): void {
+    this.filteredGallery = this.product_selected.galerias.filter(
+      (item: any) => item.color === this.selectedColor
+    );
+  }
+
+  initializeLargeSlider(): void {
+    const largeSlider = $('.product-large-thumbnail-4');
+    if ( largeSlider.hasClass('slick-initialized') ) {
+      largeSlider.slick('setPosition');
+    } else {
+      largeSlider.slick({
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        dots: false,
+        fade: true
+      });
+    }
+  }
+
+  destroyLargeSlider(): void {
+    const largeSlider = $('.product-large-thumbnail-4');
+    if (largeSlider.hasClass('slick-initialized')) {
+      largeSlider.slick('unslick');
+    }
+  }
+
+  initializeSmallSlider(): void {
+    const smallSlider = $('.product-small-thumb-4');
+    if (smallSlider.hasClass('slick-initialized')) {
+      smallSlider.slick('setPosition');
+    } else {
+      smallSlider.slick({
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        arrows: true,
+        dots: false
+      });
+    }
+  }
+
+  destroySmallSlider(): void {
+    const smallSlider = $('.product-small-thumb-4');
+    if (smallSlider.hasClass('slick-initialized')) {
+      smallSlider.slick('unslick');
+    }
+  }
+
 
   getColorHex(color: string): string {
     // Mapea los nombres de los colores a sus valores hexadecimales correspondientes
     const colorMap: { [key: string]: string } = {
-        'Faded Black': '#424242',
-        'Faded Khaki': '#dbc4a2'
-        // Puedes agregar más colores aquí según sea necesario
+      'Faded Black': '#424242',
+      'Faded Khaki': '#dbc4a2',
+      'Black': '#080808',
+      'Navy': '#152438',
+      'Maroon': '#6c152b',
+      'Red': '#e41525',
+      'Royal': '#1652ac',
+      'Sport Grey': '#9b969c',
+      'Light blue': '#9dbfe2',
+      'Faded Eucalyptus': '#d1cbad',
+      'Faded Bone': '#f3ede4',
+      'White': '#ffffff',
+      
+      // Puedes agregar más colores aquí según sea necesario
     };
 
     // Devuelve el valor hexadecimal correspondiente al color
     return colorMap[color] || '';
-}
-
+  }
 
   openModal(besProduct:any, FlashSale:any=null) {
     this.product_selected_modal = null;
@@ -153,7 +239,6 @@ export class LandingProductComponent implements OnInit {
   }
 
   selectedVariedad(variedad:any, index: number) {
-    
     this.variedad_selected = variedad;
     this.activeIndex = index;
   }
@@ -166,17 +251,17 @@ export class LandingProductComponent implements OnInit {
     if ($("#qty-cart").val() == 0) {
       alertDanger("Necesitas agregar una cantidad mayor a 0 para el carrito");
       return;
-    }    
-    
+    }
+
     if (this.product_selected.type_inventario == 2) {
-      if (!this.variedad_selected) {
+      if ( !this.variedad_selected ) {
         alertDanger("Necesitas seleccinonar una variedad para el carrito...");
         return;
       }
       if (this.variedad_selected) {
         if (this.variedad_selected.stock < $("#qty-cart").val()) {
           alertDanger("Necesitas agregar una cantidad menor porque no se tiene el stock suficiente");
-          return; 
+          return;
         }
       }
     }
@@ -207,7 +292,7 @@ export class LandingProductComponent implements OnInit {
       console.log(error);
       if (error.error.message == "EL TOKEN NO ES VALIDO") {
         console.log("el token expiro...");
-        
+
         this._cartService._authService.logout();
       }
     });

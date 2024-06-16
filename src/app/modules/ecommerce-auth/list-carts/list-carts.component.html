@@ -36,7 +36,7 @@
                                         </ng-container>
                                        
                                     </td>
-                                    <td class="product-price" data-title="Price"><span class="currency-symbol"></span>{{ cart.subtotal | number: '1.2-2' }} <i class="fa-solid fa-euro-sign"></i></td>
+                                    <td class="product-price" data-title="Price"><span class="currency-symbol"></span>{{ cart.subtotal | number: '1.2-2' }} {{ euro }} </td>
                                     <td class="section-cart product-quantity" data-title="Qty">
                                         <div class="pro-qty">
                                             <span class="dec qtybtn" (click)="dec(cart)">-</span>
@@ -44,7 +44,7 @@
                                             <span class="inc qtybtn" (click)="inc(cart)">+</span>
                                         </div>
                                     </td>
-                                    <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol"></span>{{ cart.total | number: '1.2-2' }}  <i class="fa-solid fa-euro-sign"></i></td>
+                                    <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol"></span>{{ cart.total | number: '1.2-2' }}  {{ euro }} </td>
                                 </tr>
                             </ng-container>
                         </tbody>
@@ -70,7 +70,7 @@
                                     <tbody>
                                         <tr class="order-subtotal">
                                             <td>Subtotal</td>
-                                            <td>{{ totalCarts | number: '1.2-2' }} <i class="fa-solid fa-euro-sign"></i></td>
+                                            <td>{{ totalCarts | number: '1.2-2' }} {{ euro }}</td>
                                         </tr>
                                         <tr class="order-shipping">
                                             <td>Shipping</td>
@@ -95,7 +95,7 @@
                                         </tr>
                                         <tr class="order-total">
                                             <td>Total</td>
-                                            <td class="order-total-amount">{{ totalCarts | number: '1.2-2' }} <i class="fa-solid fa-euro-sign"></i></td>
+                                            <td class="order-total-amount">{{ totalCarts | number: '1.2-2' }} {{ euro }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -249,8 +249,8 @@
                                         <div class="inner">
                                             <h2 class="title"><a [routerLink]="['/landing-product', product.slug]" [queryParams]="{_id:FlashSale._id}">{{ product.title }}</a></h2>
                                             <div class="product-price-variant">
-                                                <span class="price current-price">{{ getCalNewPrice(product) }} €</span>
-                                                <span class="price old-price">{{ product.price_usd }} €</span>
+                                                <span class="price current-price">{{ getCalNewPrice(product) }} {{ euro }}</span>
+                                                <span class="price old-price">{{ product.price_usd }} {{ euro }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -350,8 +350,8 @@
                                                 </div>
                                                 <h5 class="title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', ourProduct.slug]">{{ ourProduct.title }}</a></h5>
                                                 <div class="product-price-variant">
-                                                    <span class="price current-price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} USD </span>
-                                                    <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} USD</span>
+                                                    <span class="price current-price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} {{ euro }}</span>
+                                                    <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} {{ euro }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -367,14 +367,14 @@
                                 <!-- <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30"> -->
                                 <div class="col col-6 col-lg-3 mb--30">
                                     <div class="axil-product product-style-one">
-                                        <div class="thumbnail">
+                                        <div class="thumbnail"> 
                                             <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]">
                                                 <!-- 276 x 276 -->
                                                 <img [src]="besProduct.imagen" alt="Product Images">
                                             </a>
                                             <div class="label-block label-right" *ngIf="besProduct.campaing_discount">
                                                 <div class="product-badget" *ngIf="besProduct.campaing_discount.type_discount == 1">{{ besProduct.campaing_discount.discount }}% Off</div>
-                                                <div class="product-badget" *ngIf="besProduct.campaing_discount.type_discount == 2">-{{ besProduct.campaing_discount.discount }}USD Off</div>
+                                                <div class="product-badget" *ngIf="besProduct.campaing_discount.type_discount == 2">-{{ besProduct.campaing_discount.discount }}{{ euro }} Off</div>
                                             </div>
                                             <div class="product-hover-action">
                                                 <ul class="cart-action">
@@ -388,7 +388,7 @@
                                             <div class="inner">
                                                 <h5 class="title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]">{{ besProduct.title }}</a></h5>
                                                 <div class="product-price-variant">
-                                                    <span class="price current-price">{{ besProduct.price_usd }} USD</span>
+                                                    <span class="price current-price">{{ besProduct.price_usd }} {{ euro }}</span>
                                                     <!-- <span class="price old-price" *ngIf="besProduct.campaing_discount">{{ besProduct.price_usd }} USD</span> -->
                                                 </div>
                                             </div>
@@ -531,18 +531,21 @@
                                         <div class="inner">
                                             <div class="color-variant-wrapper">
                                                 <ul class="color-variant">
-                                                    <li class="color-extra-01 active"><span><span class="color"></span></span>
+                                                    <li *ngFor="let color of allTags; let i = index" [class.active]="color === selectedColor" (click)="selectColor(i)">
+                                                        <span><span class="color" [style.backgroundColor]="getColorHex(color)"></span></span>
+                                                    </li>
+                                                    <!-- <li class="color-extra-01 active"><span><span class="color"></span></span>
                                                     </li>
                                                     <li class="color-extra-02"><span><span class="color"></span></span>
                                                     </li>
                                                     <li class="color-extra-03"><span><span class="color"></span></span>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                             <h5 class="title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]">{{ besProduct.title }}</a></h5>
                                             <div class="product-price-variant">
-                                                <span class="price old-price" *ngIf="besProduct.campaing_discount">{{ besProduct.price_usd }} USD</span>
-                                                <span class="price current-price">{{ besProduct.price_usd - getDiscountProduct(besProduct) }} USD</span>
+                                                <span class="price old-price" *ngIf="besProduct.campaing_discount">{{ besProduct.price_usd }} {{ euro }}</span>
+                                                <span class="price current-price">{{ besProduct.price_usd - getDiscountProduct(besProduct) }} {{ euro }}</span>
                                             </div>
                                             <div class="product-hover-action">
                                                 <ul class="cart-action">
@@ -573,7 +576,7 @@
                     <div class="row row-cols-xl-2 row-cols-1 row--15">
                         <ng-container *ngFor="let besProduct of besProducts">
                             <!-- <div class="col"> -->
-                            <div class="col col-12 col-lg-4">
+                            <div class="col col-12 col-lg-6">
                                 <div class="axil-product-list">
                                     <div class="thumbnail">
                                         <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="getRouterDiscount(besProduct)" >
@@ -594,8 +597,8 @@
                                         </div>
                                         <h6 class="product-title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="getRouterDiscount(besProduct)">{{ besProduct.title }} </a></h6>
                                         <div class="product-price-variant">
-                                            <span class="price current-price">{{ besProduct.price_usd - getDiscountProduct(besProduct) }} USD</span>
-                                            <span class="price old-price" *ngIf="besProduct.campaing_discount">{{ besProduct.price_usd }} USD</span>
+                                            <span class="price current-price">{{ besProduct.price_usd - getDiscountProduct(besProduct) }} {{ euro }}</span>
+                                            <span class="price old-price" *ngIf="besProduct.campaing_discount">{{ besProduct.price_usd }} {{ euro }}</span>
                                         </div>
                                         <div class="product-cart">
                                             <a href="cart.html" class="cart-btn" onclick="return false;" (click)="addCart(besProduct)"><i class="fal fa-shopping-cart"></i></a>

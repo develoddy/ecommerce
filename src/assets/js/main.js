@@ -1145,7 +1145,12 @@ function LandingProductDetail() {
                 }
             });
         });
-        }
+    }
+
+    // Eliminar cualquier botón de cantidad previo
+    $('.landing-product .pro-qty .dec').remove();
+    $('.landing-product .pro-qty .inc').remove();
+
 
     $('.landing-product .pro-qty').prepend('<span class="dec qtybtn">-</span>');
     $('.landing-product .pro-qty').append('<span class="inc qtybtn">+</span>');

@@ -8,21 +8,20 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="product-large-thumbnail-4 single-product-thumbnail axil-product">
-                                    <ng-container *ngFor="let item of product_selected.galerias">
+                                    <ng-container *ngFor="let item of filteredGallery">
                                         <div class="thumbnail">
-                                            <!-- 629x629 -->
-                                            <img [src]="item.imagen" alt="Product Images">
+                                          <img [src]="item.imagen" alt="Product Images">
                                         </div>
-                                    </ng-container>
+                                      </ng-container> 
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="small-thumb-wrapper product-small-thumb-4 slick-layout-wrapper--10 axil-slick-arrow arrow-both-side">
-                                    <ng-container *ngFor="let item of product_selected.galerias">
+                                    <ng-container *ngFor="let item of filteredGallery">
                                         <div class="small-thumb-img">
-                                            <img [src]="item.imagen" alt="samll-thumb">
+                                          <img [src]="item.imagen" alt="small-thumb">
                                         </div>
-                                    </ng-container>
+                                      </ng-container>
                                 </div>
                             </div>
                         </div>
@@ -31,17 +30,16 @@
                         <div class="single-product-content">
                             <div class="inner">
                                 <h2 class="product-title">{{ product_selected.title }}</h2>
-                                <!-- <span class="price-amount">$120.00 - $180.00</span> -->
                                 <div class="price-amount price-offer-amount">
-                                    <span class="price current-price black-color">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} <i class="fa-solid fa-euro-sign"></i></span>
+                                    <span class="price current-price black-color">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} {{ euro }}</span>
                                     <ng-container *ngIf="getDiscount() > 0">
-                                        <span class="price old-price black-color">{{ product_selected.price_usd }} <i class="fa-solid fa-euro-sign"></i></span>
+                                        <span class="price old-price black-color">{{ product_selected.price_usd }} {{ euro }}</span>
                                         <ng-container *ngIf="SALE_FLASH">
                                             <div class="offer-badge" *ngIf="SALE_FLASH.type_discount == 1">
                                                 <div class="product-badget">{{SALE_FLASH.discount}}% OFF</div>
                                             </div>
                                             <div class="offer-badge" *ngIf="SALE_FLASH.type_discount == 2">
-                                                <div class="product-badget">{{SALE_FLASH.discount}} <i class="fa-solid fa-euro-sign"></i> OFF</div>
+                                                <div class="product-badget">{{SALE_FLASH.discount}} {{ euro }} OFF</div>
                                             </div>
                                         </ng-container>
                                     </ng-container>
@@ -54,7 +52,6 @@
                                     </ng-container>
                                 </div>
                                 
-
                                 <div class="product-rating">
                                     <div class="star-rating">
                                         <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 1}"></i>
@@ -64,9 +61,9 @@
                                         <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 5}"></i>
                                     </div>
                                     <div class="review-number">{{ COUNT_REVIEW }}</div>
-                                    <div class="total-answerd">2 answered questions</div>
+                                    <div class="total-answerd">Reseñas</div>
                                 </div>
-                                <ul class="description">
+                                <ul class="description" style="list-style: none;padding-left: 0px;">
                                     <li>{{ product_selected.resumen }}</li>
                                 </ul>
                                 <div class="product-variations-wrapper">
@@ -74,70 +71,49 @@
                                     <!-- Start Product Variation  -->
                                     <div class="product-variation product-size-variation">
                                         <ul class="product-meta">
-                                            <li><i class="fal fa-check black-color"></i><span class="black-color">In stock</span></li>
-                                            <li><i class="fal fa-check black-color"></i><span class="black-color">Free delivery available</span></li>
-                                            <li><i class="fal fa-check black-color"></i><span class="black-color">Sales 30% Off Use Code: MOTIVE30</span></li>
+                                            <li><i class="fal fa-check black-color"></i><span class="black-color">En stock</span></li>
+                                            <li><i class="fal fa-check black-color"></i><span class="black-color">Entrega gratuita disponible</span></li>
+                                            <li><i class="fal fa-check black-color"></i><span class="black-color">Ventas 30% de descuento Use el código: MOTIVE30</span></li>
                                         </ul>
-
                                         <ng-container *ngIf="product_selected.variedades">
-                                            <h6 class="title">Size:</h6>
+                                            <h6 class="title">Talla</h6>
                                             <ul class="range-variant">
                                                 <ng-container *ngFor="let variedad of product_selected.variedades; let i = index">
                                                     <li [ngClass]="{'active': activeIndex === i}" (click)="selectedVariedad(variedad, i)">
-                                                        {{ i === 0 ? 'xs' : variedad.valor }}
+                                                        {{ i === 0 ? 's' : variedad.valor }}
                                                     </li>
                                                 </ng-container>
                                             </ul>
                                         </ng-container>
-                                        
                                     </div>
                                     <!-- End Product Variation  -->
 
                                     <!-- Start Product Variation  -->
                                     <div class="product-variation">
-                                        <h6 class="title">Colors:</h6>
+                                        <h6 class="title">Color</h6>
                                         <div class="color-variant-wrapper">
                                             <ul class="color-variant mt--0">
-                                                <!-- <li *ngFor="let color of product_selected.tags; let i = index" [class.active]="i === selectedColorIndex" (click)="selectColor(i)">
-                                                    <span class="color" [style.backgroundColor]="color"></span>
-                                                </li> -->
-
-                                                <li *ngFor="let color of product_selected.tags; let i = index" [class.active]="i === selectedColorIndex" (click)="selectColor(i)">
-                                                    <span class="color" [style.backgroundColor]="getColorHex(color)"></span>
+                                                <li *ngFor="let color of product_selected.tags; let i = index" [class.active]="color === selectedColor" (click)="selectColor(i)">
+                                                    <span><span class="color" [style.backgroundColor]="getColorHex(color)"></span></span>
                                                 </li>
-                                                <!-- <li class="color-extra-01 active">
-                                                    <span><span class="color"></span></span>
-                                                </li>
-                                                <li class="color-extra-02">
-                                                    <span><span class="color"></span></span>
-                                                </li>
-                                                <li class="color-extra-03">
-                                                    <span><span class="color"></span></span>
-                                                </li>
-                                                <li class="color-extra-04">
-                                                    <span><span class="color"></span></span>
-                                                </li> -->
                                             </ul>
                                         </div>
                                     </div>
                                     <!-- End Product Variation  -->
                                     <div class="product-variation quantity-variant-wrapper landing-product">
-                                        <h6 class="title">Quantity</h6>
+                                        <h6 class="title">Cantidad</h6>
                                         <div class="pro-qty"><input type="text" id="qty-cart"  value="1"></div>
                                     </div>
                                 </div>
 
                                 <!-- Start Product Action Wrapper  -->
                                 <div class="product-action-wrapper">
-
                                     <!-- Start Product Action  -->
                                     <ul class="product-action d-flex-center mb--0">
                                         <li class="add-to-cart d-none"><a href="checkout.html" onclick="return false;" routerLink="/payment-process" class="axil-btn btn-bg-secondary"><i class="far fa-shopping-bag"></i> Comprar ahora</a></li>
                                         <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-black" onclick="return false;" (click)="addCart(product_selected)" ><i class="far fa-shopping-cart"></i> Añadir a la cesta</a></li>
-
                                     </ul>
                                     <!-- End Product Action  -->
-
                                 </div>
                                 <!-- End Product Action Wrapper  -->
                             </div>
@@ -150,15 +126,15 @@
         <div class="woocommerce-tabs wc-tabs-wrapper bg-lighter wc-tab-style-two">
             <div class="container">
                 <div class="section-title-wrapper section-title-border">
-                    <h2 class="title">About This Product 💥</h2>
+                    <h2 class="title">Acerca de este producto💥</h2>
                 </div>
                 <div class="tabs-wrap">
                     <ul class="nav tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a class="active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Specifications</a>
+                            <a class="active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Especificaciones</a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a>
+                            <a id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reseñas</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -195,7 +171,7 @@
                                 <div class="row">
                                     <div class="col-lg-6 mb--40">
                                         <div class="axil-comment-area pro-desc-commnet-area">
-                                            <h5 class="title">Review for this product</h5>
+                                            <h5 class="title">Revisión de este producto</h5>
                                             <ul class="comment-list">
                                                 <ng-container *ngFor="let REVIEW of REVIEWS">
                                                     <!-- Start Single Comment  -->
@@ -238,9 +214,8 @@
                                     <div class="col-lg-6 mb--40">
                                         <!-- Start Comment Respond  -->
                                         <div class="comment-respond pro-des-commend-respond mt--0">
-                                            <h5 class="title mb--30">Add a Review</h5>
-                                            <p>Your email address will not be published. Required fields are marked
-                                                *</p>
+                                            <h5 class="title mb--30">Agrega una reseña</h5>
+                                            <p>Su dirección de correo electrónico no será publicada. Los campos obligatorios están marcados *</p>
                                             <div class="rating-wrapper d-flex-center mb--40">
                                                 Your Rating <span class="require">*</span>
                                                 <div class="reating-inner ml--20">
@@ -256,26 +231,25 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="form-group">
-                                                            <label>Other Notes (optional)</label>
+                                                            <label>Otras notas (opcional)</label>
                                                             <textarea name="message" placeholder="Your Comment"></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-12">
                                                         <div class="form-group">
-                                                            <label>Name <span class="require">*</span></label>
+                                                            <label>Nombre <span class="require">*</span></label>
                                                             <input id="name" type="text">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6 col-md-6 col-12">
                                                         <div class="form-group">
-                                                            <label>Email <span class="require">*</span> </label>
+                                                            <label>Correo electrónico <span class="require">*</span> </label>
                                                             <input id="email" type="email">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <div class="form-submit">
-                                                            <button type="submit" id="submit" class="axil-btn btn-bg-primary w-auto">Submit
-                                                                Comment</button>
+                                                            <button type="submit" id="submit" class="axil-btn btn-bg-primary w-auto">Enviar comentario</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -355,7 +329,7 @@
                                         <div class="product-badget">{{ SALE_FLASH.discount }} % OFF</div>
                                     </div>
                                     <div class="label-block label-right" *ngIf="SALE_FLASH.type_discount == 2">
-                                        <div class="product-badget">{{ SALE_FLASH.discount }} <i class="fa-solid fa-euro-sign"></i> OFF</div>
+                                        <div class="product-badget">{{ SALE_FLASH.discount }} {{ euro }} OFF</div>
                                     </div>
                                 </ng-container>
                                 <div class="product-hover-action">
@@ -382,8 +356,8 @@
                                         <span class="rating-number">{{ related_product.count_review }}</span>
                                     </div>
                                     <div class="product-price-variant">
-                                        <!-- <span class="price old-price">{{related_product.price_usd}} <i class="fa-solid fa-euro-sign"></i></span> -->
-                                        <span class="price current-price">{{related_product.price_usd}} <i class="fa-solid fa-euro-sign"></i></span>
+                                        <!-- <span class="price old-price">{{related_product.price_usd}} {{ euro }}</span> -->
+                                        <span class="price current-price">{{related_product.price_usd}} {{ euro }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -479,7 +453,7 @@
                                                         <div class="product-badget">{{product_selected_modal.FlashSale.discount}} % OFF</div>
                                                     </div>
                                                     <div class="label-block label-right" *ngIf="product_selected_modal.FlashSale.type_discount == 2">
-                                                        <div class="product-badget">{{product_selected_modal.FlashSale.discount}} <i class="fa-solid fa-euro-sign"></i> OFF</div>
+                                                        <div class="product-badget">{{product_selected_modal.FlashSale.discount}} {{ euro }} OFF</div>
                                                     </div>
                                                 </ng-container>
                                                 
@@ -515,9 +489,9 @@
                                         </div>
                                     </div>
                                     <h3 class="product-title">{{product_selected_modal.title}}</h3>
-                                    <span class="price-amount" *ngIf="!product_selected_modal.FlashSale ">{{product_selected_modal.price_usd}} <i class="fa-solid fa-euro-sign"></i></span>
-                                    <span class="price-amount" *ngIf="product_selected_modal.FlashSale "> <del>{{product_selected_modal.price_usd}} <i class="fa-solid fa-euro-sign"></i></del></span>
-                                    <span class="price-amount" *ngIf="product_selected_modal.FlashSale ">{{ getCalNewPrice(product_selected_modal)}} <i class="fa-solid fa-euro-sign"></i></span>
+                                    <span class="price-amount" *ngIf="!product_selected_modal.FlashSale ">{{product_selected_modal.price_usd}} {{ euro }}</span>
+                                    <span class="price-amount" *ngIf="product_selected_modal.FlashSale "> <del>{{product_selected_modal.price_usd}} {{ euro }}</del></span>
+                                    <span class="price-amount" *ngIf="product_selected_modal.FlashSale ">{{ getCalNewPrice(product_selected_modal)}} {{ euro }}</span>
                                     <ul class="product-meta">
                                         <li><i class="fal fa-check"></i>In stock</li>
                                         <li><i class="fal fa-check"></i>Free delivery available</li>

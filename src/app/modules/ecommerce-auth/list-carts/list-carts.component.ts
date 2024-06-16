@@ -13,7 +13,7 @@ declare function alertSuccess([]):any;
   styleUrls: ['./list-carts.component.css']
 })
 export class ListCartsComponent implements OnInit {
-
+  euro = "€";
   listCarts:any=[];
   totalCarts:any=0;
   code_cupon:any=null;

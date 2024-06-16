@@ -9403,6 +9403,9 @@ body.open .closeMask {
   border-radius: 50%;
   border: none;
 }
+.color-variant li.active span {
+  border-color: var(--color-black);
+}
 .color-variant li.color-extra-01 span .color {
   background: #AAE6F8;
 }
@@ -11344,6 +11347,7 @@ body.open .closeMask {
 .single-product-modern .single-product-content .inner .range-variant li:hover, .single-product-modern .single-product-content .inner .range-variant li.active {
   color: var(--color-white);
   background-color: var(--color-primary);
+  border: 2px solid var(--color-black);
 }
 @media (max-width: 575px) {
   .single-product-modern .single-product-content .inner .color-variant {
@@ -11352,16 +11356,16 @@ body.open .closeMask {
 }
 .single-product-modern .single-product-content .inner .color-variant li > span {
   border: 1px solid;
-  height: 24px;
-  width: 24px;
+  height: 26px;
+  width: 26px;
 }
 .single-product-modern .single-product-content .inner .color-variant li > span .color {
   height: 24px;
   width: 24px;
 }
 .single-product-modern .single-product-content .inner .color-variant li.active > span .color {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
 }
 .single-product-modern .single-product-content .inner .color-variant li.color-extra-01 > span {
   border-color: #AAE6F8;

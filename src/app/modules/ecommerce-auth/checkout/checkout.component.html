@@ -171,19 +171,19 @@
                                                 </td>
                                                 <td>
                                                     <div><span class="fw-bold"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="fw-bold text-dark">{{cart.product.title}}</a></span> <span class="quantity"></span></div>
-                                                    <div><span class="fw-bold">{{ cart.product.price_usd }} <i class="fa-solid fa-euro-sign"></i></span></div>
+                                                    <div><span class="fw-bold">{{ cart.product.price_usd }} {{ euro }}</span></div>
                                                     <ng-container *ngIf="cart.variedad">
                                                         <div><span class="">Size: {{cart.variedad.valor}}</span></div>
                                                     </ng-container>
                                                     <div>Cantidad: {{ cart.cantidad }} </div>
                                                 </td>
-                                                <td>{{ cart.total }} <i class="fa-solid fa-euro-sign"></i></td>
+                                                <td>{{ cart.total }} {{ euro }}</td>
                                             </tr>
                                         </ng-container>
                                         <tr class="order-subtotal">
                                             <td class="fw-bold">Subtotal</td>
                                             <td></td>
-                                            <td class="fw-bold">{{totalCarts}} <i class="fa-solid fa-euro-sign"></i></td>
+                                            <td class="fw-bold">{{totalCarts}} {{ euro }}</td>
                                         </tr>
                                         <tr class="order-shipping d-none">
                                             <td colspan="2">
@@ -255,12 +255,12 @@
                                         <ng-container *ngFor="let cart of listCarts">
                                             <tr class="order-product">
                                                 <td><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="fw-bold text-dark px-3">{{cart.product.title}}</a> <span class="quantity text-secondary"><i class="fa-solid fa-xmark"></i>{{ cart.cantidad }}</span></td>
-                                                <td>{{ cart.total }} <i class="fa-solid fa-euro-sign"></i></td>
+                                                <td>{{ cart.total }} {{ euro }}</td>
                                             </tr>
                                         </ng-container>
                                         <tr class="order-subtotal">
                                             <td>Subtotal</td>
-                                            <td>{{totalCarts}} <i class="fa-solid fa-euro-sign"></i></td>
+                                            <td>{{totalCarts}} {{ euro }}</td>
                                         </tr>
                                         <tr class="order-shipping">
                                             <td colspan="2">
@@ -284,7 +284,7 @@
                                         </tr>
                                         <tr class="order-total">
                                             <td>Total</td>
-                                            <td class="order-total-amount">{{ totalCarts }} <i class="fa-solid fa-euro-sign"></i></td>
+                                            <td class="order-total-amount">{{ totalCarts }} {{ euro }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
