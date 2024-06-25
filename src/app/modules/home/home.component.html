@@ -20,7 +20,7 @@
                                         <h1 class="title">{{ slider.title }}</h1>
                                         <div class="slide-action">
                                             <div class="shop-btn">
-                                                <a href="shop.html" onclick="return false;" [href]="slider.link" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i>Compra ahora</a>
+                                                <a href="#" onclick="return false;" [href]="slider.link" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i>Compra ahora</a>
                                             </div>
                                             <div class="item-rating d-none">
                                                 <div class="thumb">
@@ -192,23 +192,54 @@
             <div class="container">
                 <div class="section-title-wrapper">
                     <span class="title-highlighter highlighter-secondary"> <i class="far fa-tags"></i> Categorías</span>
-                    <h2 class="title">Buscar por categoría</h2>
+                    <h2 class="title ls-1">Shop by categories</h2>
                 </div>
                 <div class="categrie-product-activation slick-layout-wrapper--15 axil-slick-arrow  arrow-top-slide">
                     <ng-container *ngFor="let categorie of categories">
-                        <div class="slick-single-layout">
+                        <div class="slick-single-layout ">
                             <div class="categrie-product" data-sal="zoom-out" data-sal-delay="200" data-sal-duration="500">
-                                <a href="#">
-                                    <img class="img-fluid" [src]="categorie.imagen_home" style="width: 64px; height: 64;" alt="product categorie">
-                                    <h6 class="cat-title">{{ categorie.title }}</h6>
+                                <a href="#"  onclick="return false;" [routerLink]="['/filter-products', categorie.title, categorie._id ]">
+                                    <img class="img-fluid" [src]="categorie.imagen_home" style="width: 250px;height: 250px;" alt="product categorie">
+                                    <h6 class="cat-title fw-bold">{{ categorie.title }}</h6>
                                 </a>
                             </div>
-                            <!-- End .categrie-product -->
                         </div>
                     </ng-container>
                 </div>
             </div>
-        </div>
+        </div> 
+        
+        <!-- NEW  -->
+        <!-- <div class="axil-new-arrivals-product-area bg-color-white axil-section-gap pb--0">
+            <div class="container">
+                <div class="product-area pb--50">
+                    <div class="section-title-wrapper">
+                        <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i>This Week’s</span>
+                        <h2 class="title ls-1">Shop by categories</h2>
+                    </div>
+                    <div class="new-arrivals-product-activation slick-layout-wrapper--30 axil-slick-arrow  arrow-top-slide">
+                        <ng-container *ngFor="let categorie of categories">
+                            <div class="slick-single-layout">
+                                <div class="axil-product product-style-two">
+                                    <div class="thumbnail">
+                                        <a href="single-product.html" onclick="return false;" [routerLink]="['/filter-products', categorie.title, categorie._id ]" style="border-radius: 0 !important; height: 400px; ">
+                                            <img data-sal="zoom-out" data-sal-delay="200" data-sal-duration="500" [src]="categorie.imagen_home" alt="Product Images" style="height: 100%;" >
+                                        </a>
+                                    </div>
+                                    <div class="product-content">
+                                        <div class="inner">
+                                            <h5 class="title fw-bold">
+                                                <a href="single-product.html" onclick="return false;" [routerLink]="['/filter-products', categorie.title, categorie._id ]">{{ categorie.title }}</a>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div> -->
         <!-- End Categorie Area  -->
 
         <!-- Start Flash Sale Area  -->
@@ -217,8 +248,8 @@
                 <div class="product-area pb--50">
                     <div class="d-md-flex align-items-end flash-sale-section">
                         <div class="section-title-wrapper">
-                            <span class="title-highlighter highlighter-primary"><i class="fas fa-fire"></i> {{ 'home.today' | translate }} (Hoy)</span>
-                            <h2 class="title">{{ 'home.flash_sales' | translate }}</h2>
+                            <span class="title-highlighter highlighter-primary"><i class="fas fa-fire"></i> {{ 'home.today' | translate }}</span>
+                            <h2 class="title ls-1">{{ 'home.flash_sales' | translate }}</h2>
                         </div>
                         <div class="sale-countdown countdown"></div>
                     </div>
@@ -228,11 +259,12 @@
                             <div class="slick-single-layout">
                                 <div class="axil-product product-style-four" >
                                     <div class="thumbnail ">
-                                        <a [routerLink]="['/landing-product', product.slug]" [queryParams]="{_id:FlashSale._id}" class="rounded-0">
-                                            <img data-sal="zoom-out" style="height: 330px;" class="rounded-0" data-sal-delay="100" data-sal-duration="1500"  [src]="product.imagen" alt="Product Images">
+                                        <a [routerLink]="['/landing-product', product.slug]" [queryParams]="{_id:FlashSale.id}" class="rounded-0">
+                                            <!-- <img data-sal="zoom-out" style="height: 330px;" class="rounded-0" data-sal-delay="100" data-sal-duration="1500"  [src]="product.imagen" alt="Product Images"> -->
+                                            <img data-sal="zoom-out" class="rounded-0" data-sal-delay="100" data-sal-duration="1500"  [src]="product.imagen" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right" *ngIf="FlashSale.type_discount == 1">
-                                            <div class="product-badget">{{FlashSale.discount}}% OFF</div>
+                                            <div class="product-badget">{{FlashSale.discount}} % OFF</div>
                                         </div>
                                         <div class="label-block label-right" *ngIf="FlashSale.type_discount == 2">
                                             <div class="product-badget">{{FlashSale.discount}} € OFF</div>
@@ -247,7 +279,7 @@
                                     </div>
                                     <div class="product-content">
                                         <div class="inner">
-                                            <h2 class="title"><a [routerLink]="['/landing-product', product.slug]" [queryParams]="{_id:FlashSale._id}">{{ product.title }}</a></h2>
+                                            <h2 class="title"><a [routerLink]="['/landing-product', product.slug]" [queryParams]="{_id:FlashSale.id}">{{ product.title }}</a></h2>
                                             <div class="product-price-variant">
                                                 <span class="price current-price">{{ getCalNewPrice(product) }} {{ euro }}</span>
                                                 <span class="price old-price">{{ product.price_usd }} {{ euro }}</span>
@@ -265,7 +297,7 @@
         <!-- End Flash Sale Area  -->
 
         <!-- Poster Countdown Area  -->
-        <div class="axil-poster-countdown">
+        <div class="axil-poster-countdown d-none">
             <div class="container">
                 <div class="poster-countdown-wrap bg-lighter">
                     <div class="row">
@@ -273,7 +305,7 @@
                             <div class="poster-countdown-content">
                                 <div class="section-title-wrapper">
                                     <span class="title-highlighter highlighter-secondary"> <i class="fal fa-headphones-alt"></i> No te lo pierdas!!</span>
-                                    <h2 class="title">Mejora tu experiencia musical</h2>
+                                    <h2 class="title ls-1">Mejora tu experiencia musical</h2>
                                 </div>
                                 <div class="poster-countdown countdown mb--40"></div>
                                 <a href="#" class="axil-btn btn-bg-primary">¡Échale un vistazo!</a>
@@ -298,21 +330,22 @@
         <!-- End Poster Countdown Area  -->
 
         <!-- Start Expolre our Product Area  -->
-        <div class="axil-product-area bg-color-white axil-section-gap">
+        <div class="axil-product-area bg-color-white axil-section-gap"> 
             <div class="container">
                 <div class="section-title-wrapper">
-                    <span class="title-highlighter highlighter-primary"> <i class="far fa-shopping-basket"></i>Nuestros productos</span>
-                    <h2 class="title">Explore nuestros productos</h2>
+                    <span class="title-highlighter highlighter-primary"> <i class="far fa-shopping-basket"></i>Our Products</span>
+                    <h2 class="title ls-1">Our Bestseller</h2>
                 </div>
                 <div class="explore-product-activation slick-layout-wrapper slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
                     <div class="slick-single-layout">
                         <div class="row row--15">
                             <ng-container *ngFor="let ourProduct of ourProducts">
                                 <!-- <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30"> -->
-                                <div class="col col-6 col-lg-3 mb--30">
+                                <div class="col col-6 col-lg-3 mb--30 p-2">
                                     <div class="axil-product product-style-one">
                                         <div class="thumbnail">
                                             <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', ourProduct.slug]">
+                                                <!-- <a href="single-product.html" onclick="return false;" (click)="addCart(ourProduct)"> -->
                                                 <!-- 276 x 276 -->
                                                 <img data-sal="zoom-out" data-sal-delay="200" data-sal-duration="800" loading="lazy" class="main-img" [src]="ourProduct.imagen" alt="Product Images">
                                                 <!-- 630 x 630 -->
@@ -322,21 +355,23 @@
                                             </a>
                                             <div class="label-block label-right" *ngIf="ourProduct.campaing_discount">
                                                 <div class="product-badget" *ngIf="ourProduct.campaing_discount.type_discount == 1">{{ ourProduct.campaing_discount.discount }}% Off</div>
-                                                <div class="product-badget" *ngIf="ourProduct.campaing_discount.type_discount == 2">-{{ ourProduct.campaing_discount.discount }}USD Off</div>
+                                                <div class="product-badget" *ngIf="ourProduct.campaing_discount.type_discount == 2">-{{ ourProduct.campaing_discount.discount }}{{ euro }} Off</div>
                                             </div>
                                             <div class="product-hover-action">
                                                 <ul class="cart-action">
-                                                    <li class="quickview"><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal" (click)="openModal(ourProduct)"><i class="far fa-eye"></i></a></li>
+                                                    <li class="quickview">
+                                                        <a href="#" onclick="return false;" data-bs-toggle="modal" data-bs-target="#quick-view-modal" (click)="openModal(ourProduct)"><i class="far fa-eye"></i></a>
+                                                    </li>
                                                     <li class="select-option">
                                                         <a href="single-product.html" onclick="return false;" (click)="addCart(ourProduct)">
-                                                            Add to Cart
+                                                            Añadir a la cesta
                                                         </a>
                                                     </li>
                                                     <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a></li>
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="product-content">
+                                        <div class="product-content text-start">
                                             <div class="inner">
                                                 <div class="product-rating">
                                                     <span class="icon">
@@ -348,7 +383,7 @@
                                                     </span>
                                                     <span class="rating-number">{{ ourProduct.count_review }}</span>
                                                 </div>
-                                                <h5 class="title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', ourProduct.slug]">{{ ourProduct.title }}</a></h5>
+                                                <h5 class="title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}">{{ ourProduct.title }}</a></h5>
                                                 <div class="product-price-variant">
                                                     <span class="price current-price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} {{ euro }}</span>
                                                     <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} {{ euro }}</span>
@@ -402,10 +437,9 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 text-center mt--20 mt_sm--0">
-                        <a href="shop.html" onclick="return false;" routerLink="/filter-products" class="axil-btn btn-bg-lighter btn-load-more">Ver todos los productos</a>
+                        <a href="shop.html" onclick="return false;" routerLink="/filter-products" class="axil-btn btn-bg-black btn-load-more">Ver todos los productos</a>
                     </div>
                 </div>
-
             </div>
         </div>
         <!-- End Expolre Product Area  -->
@@ -415,7 +449,7 @@
             <div class="container">
                 <div class="section-title-wrapper">
                     <span class="title-highlighter highlighter-secondary"> <i class="fal fa-quote-left"></i>Testimonios</span>
-                    <h2 class="title">Comentarios de los usuarios</h2>
+                    <h2 class="title ls-1">Comentarios de los usuarios</h2>
                 </div>
                 <!-- End .section-title -->
                 <div class="testimonial-slick-activation testimonial-style-one-wrapper slick-layout-wrapper--20 axil-slick-arrow arrow-top-slide">
@@ -510,15 +544,17 @@
             <div class="container">
                 <div class="product-area pb--50">
                     <div class="section-title-wrapper">
-                        <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i>De esta semana</span>
-                        <h2 class="title">Los recién llegados</h2>
+                        <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i>This Week’s</span>
+                        <!-- <h2 class="title ls-1">Los recién llegados</h2> -->
+                        <h2 class="title ls-1">New Arrivals</h2>
                     </div>
                     <div class="new-arrivals-product-activation slick-layout-wrapper--30 axil-slick-arrow  arrow-top-slide">
                         <ng-container *ngFor="let besProduct of besProducts">
                             <div class="slick-single-layout">
                                 <div class="axil-product product-style-two">
                                     <div class="thumbnail">
-                                        <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]">
+                                        <!-- product.campaing_discount.id -->
+                                        <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="{_id:besProduct.campaing_discount?.id }">
                                             <!-- 276x276 -->
                                             <img data-sal="zoom-out" data-sal-delay="200" data-sal-duration="500" [src]="besProduct.imagen" alt="Product Images">
                                         </a>
@@ -531,18 +567,12 @@
                                         <div class="inner">
                                             <div class="color-variant-wrapper">
                                                 <ul class="color-variant">
-                                                    <li *ngFor="let color of allTags; let i = index" [class.active]="color === selectedColor" (click)="selectColor(i)">
+                                                    <li *ngFor="let color of besProduct.tags; let i = index" [class.active]="color === selectedColor" (click)="selectColor(color)">
                                                         <span><span class="color" [style.backgroundColor]="getColorHex(color)"></span></span>
                                                     </li>
-                                                    <!-- <li class="color-extra-01 active"><span><span class="color"></span></span>
-                                                    </li>
-                                                    <li class="color-extra-02"><span><span class="color"></span></span>
-                                                    </li>
-                                                    <li class="color-extra-03"><span><span class="color"></span></span>
-                                                    </li> -->
                                                 </ul>
                                             </div>
-                                            <h5 class="title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]">{{ besProduct.title }}</a></h5>
+                                            <h5 class="title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="{_id:besProduct.campaing_discount?.id }">{{ besProduct.title }}</a></h5>
                                             <div class="product-price-variant">
                                                 <span class="price old-price" *ngIf="besProduct.campaing_discount">{{ besProduct.price_usd }} {{ euro }}</span>
                                                 <span class="price current-price">{{ besProduct.price_usd - getDiscountProduct(besProduct) }} {{ euro }}</span>
@@ -550,7 +580,7 @@
                                             <div class="product-hover-action">
                                                 <ul class="cart-action">
                                                     <li class="quickview"><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal" (click)="openModal(besProduct)"><i class="far fa-eye"></i></a></li>
-                                                    <li class="select-option"><a href="single-product.html" onclick="return false;" (click)="addCart(besProduct)">Add to Cart</a></li>
+                                                    <li class="select-option"><a href="single-product.html" onclick="return false;" (click)="addCart(besProduct)">Añadir a la cesta</a></li>
                                                     <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a></li>
                                                 </ul>
                                             </div>
@@ -570,8 +600,9 @@
             <div class="container">
                 <div class="product-area pb--50">
                     <div class="section-title-wrapper section-title-center">
-                        <span class="title-highlighter highlighter-primary"><i class="fas fa-star"></i> Más vendido</span>
-                        <h2 class="title">Más vendidos en la tienda Lujanshop</h2>
+                        <span class="title-highlighter highlighter-primary"><i class="fas fa-star"></i>Most Sold</span>
+                        <!-- <h2 class="title ls-1">Más vendidos en la tienda Lujanshop</h2> -->
+                        <h2 class="title ls-1">Most Sold in eTrade Store</h2>
                     </div>
                     <div class="row row-cols-xl-2 row-cols-1 row--15">
                         <ng-container *ngFor="let besProduct of besProducts">
@@ -579,12 +610,22 @@
                             <div class="col col-12 col-lg-6">
                                 <div class="axil-product-list">
                                     <div class="thumbnail">
-                                        <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="getRouterDiscount(besProduct)" >
+                                        <!-- <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="getRouterDiscount(besProduct)"> -->
+                                        <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="{_id:besProduct.campaing_discount?.id }">
                                             <!-- 120x120 -->
-                                            <img data-sal="zoom-in" data-sal-delay="100" data-sal-duration="1500" [src]="besProduct.imagen" alt="Yantiti Leather Bags" style="width: 120px; height: 120px;">
+                                            <!-- <img data-sal="zoom-in" data-sal-delay="100" data-sal-duration="1500" [src]="besProduct.imagen" alt="Yantiti Leather Bags" style="width: 120px; height: 120px;"> -->
+                                            <img 
+                                            data-sal="zoom-in" 
+                                            data-sal-delay="100" 
+                                            data-sal-duration="1500" 
+                                            [src]="besProduct.imagen" 
+                                            alt="Yantiti Leather Bags" 
+                                            [ngClass]="{'mobile-image': !isDesktop()}" 
+                                            [ngStyle]="isDesktop() ? {'width.px': 120, 'height.px': 120} : {}">
+
                                         </a>
                                     </div>
-                                    <div class="product-content">
+                                    <div class="product-content text-start">
                                         <div class="product-rating">
                                             <span class="rating-icon">
                                                 <i class="fas fa-star" [ngClass]="{'star-del': besProduct.avg_review < 1 }"></i>
@@ -619,7 +660,7 @@
             <div class="container">
                 <div class="section-title-wrapper section-title-center">
                     <span class="title-highlighter highlighter-secondary"><i class="fal fa-thumbs-up"></i>Por qué nosotros</span>
-                    <h2 class="title">Por qué la gente nos elige</h2>
+                    <h2 class="title ls-1">Por qué la gente nos elige</h2>
                 </div>
                 <div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 row--20">
                     <div class="col col-6 col-lg-4">
@@ -654,7 +695,7 @@
                             <h6 class="title">Devolución de 24 horas</h6>
                         </div>
                     </div>
-                    <div class="col col-6 col-lg-4">
+                    <div class="col col-12 col-lg-4">
                         <div class="service-box">
                             <div class="icon">
                                 <img src="./assets/images/icons/service10.png" alt="Service">
@@ -712,7 +753,7 @@
                 <div class="etrade-newsletter-wrapper bg_image bg_image--5">
                     <div class="newsletter-content">
                         <span class="title-highlighter highlighter-primary2"><i class="fas fa-envelope-open"></i>Boletin informativo</span>
-                        <h2 class="title mb--40 mb_sm--30">Obtener actualización semanal</h2>
+                        <h2 class="title mb--40 mb_sm--30 ls-1">Obtener actualización semanal</h2>
                         <div class="input-group newsletter-form">
                             <div class="position-relative newsletter-inner mb--15">
                                 <input placeholder="example@gmail.com" type="text">
@@ -800,7 +841,25 @@
                                 <div class="row">
                                     <div class="col-lg-10 order-lg-2">
                                         <div class="single-product-thumbnail product-large-thumbnail axil-product thumbnail-badge zoom-gallery">
-                                            <ng-container *ngFor="let gallery of product_selected.galerias">
+                                            <ng-container *ngFor="let item of filteredGallery">
+                                                <div class="thumbnail">
+                                                <img [src]="item.imagen" alt="Product Images">
+                                                <ng-container *ngIf="product_selected.FlashSale">
+                                                    <div class="label-block label-right" *ngIf="product_selected.FlashSale.type_discount == 1">
+                                                        <div class="product-badget">{{product_selected.FlashSale.discount}} % OFF</div>
+                                                    </div>
+                                                    <div class="label-block label-right" *ngIf="product_selected.FlashSale.type_discount == 2">
+                                                        <div class="product-badget">{{product_selected.FlashSale.discount}} USD OFF</div>
+                                                    </div>
+                                                </ng-container>
+                                                <div class="product-quick-view position-view">
+                                                    <a [href]="item.imagen" class="popup-zoom">
+                                                        <i class="far fa-search-plus"></i>
+                                                    </a>
+                                                </div>
+                                                </div>
+                                            </ng-container> 
+                                            <!-- <ng-container *ngFor="let gallery of product_selected.galerias">
                                                 <div class="thumbnail">
                                                     <img [src]="gallery.imagen" alt="Product Images">
                                                     <ng-container *ngIf="product_selected.FlashSale">
@@ -818,7 +877,7 @@
                                                         </a>
                                                     </div>
                                                 </div>
-                                            </ng-container>
+                                            </ng-container> -->
                                             <!-- <div class="thumbnail">
                                                 <img src="assets/images/product/product-big-02.png" alt="Product Images">
                                                 <div class="label-block label-right">
@@ -845,9 +904,14 @@
                                     </div>
                                     <div class="col-lg-2 order-lg-1">
                                         <div class="product-small-thumb small-thumb-wrapper">
-                                            <ng-container *ngFor="let gallery of product_selected.galerias">
+                                            <!-- <ng-container *ngFor="let gallery of product_selected.galerias">
                                                 <div class="small-thumb-img">
                                                     <img [src]="gallery.imagen" alt="thumb image">
+                                                </div>
+                                            </ng-container> -->
+                                            <ng-container *ngFor="let item of filteredGallery">
+                                                <div class="small-thumb-img">
+                                                  <img [src]="item.imagen" alt="small-thumb">
                                                 </div>
                                             </ng-container>
                                         </div>
@@ -857,7 +921,7 @@
                             <div class="col-lg-5 mb--40">
                                 <div class="single-product-content">
                                     <div class="inner">
-                                        <div class="product-rating">
+                                        <div class="product-rating d-none">
                                             <div class="star-rating">
                                                 <img src="assets/images/icons/rate.png" alt="Rate Images">
                                             </div>
@@ -866,10 +930,21 @@
                                             </div>
                                         </div>
                                         <h3 class="product-title">{{product_selected.title}}</h3>
-                                        <span class="price-amount" *ngIf="!product_selected.FlashSale ">{{product_selected.price_usd}} USD</span>
-                                        <span class="price-amount" *ngIf="product_selected.FlashSale "> <del>{{product_selected.price_usd}} USD</del></span>
-                                        <span class="price-amount" *ngIf="product_selected.FlashSale ">{{ getCalNewPrice(product_selected)}} USD</span>
-                                        <ul class="product-meta">
+                                        <div class="product-rating">
+                                            <div class="star-rating">
+                                                <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 1}"></i>
+                                                <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 2}"></i>
+                                                <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 3}"></i>
+                                                <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 4}"></i>
+                                                <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 5}"></i>
+                                            </div>
+                                            <div class="review-number">{{ COUNT_REVIEW }}</div>
+                                            <div class="total-answerd">Reseñas</div>
+                                        </div>
+                                        <span class="price-amount" *ngIf="!product_selected.FlashSale ">{{product_selected.price_usd}} {{ euro }}</span>
+                                        <span class="price-amount" *ngIf="product_selected.FlashSale "> <del>{{product_selected.price_usd}} {{ euro }}</del></span>
+                                        <span class="price-amount" *ngIf="product_selected.FlashSale ">{{ getCalNewPrice(product_selected)}} {{ euro }}</span>
+                                        <ul class="product-meta d-none">
                                             <li><i class="fal fa-check"></i>In stock</li>
                                             <li><i class="fal fa-check"></i>Free delivery available</li>
                                             <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>
@@ -879,41 +954,38 @@
                                         </p>
 
                                         <div class="product-variations-wrapper">
-
                                             <!-- Start Product Variation  -->
-                                            <!-- <div class="product-variation">
-                                                <h6 class="title">Colors:</h6>
+                                            <div class="product-variation">
+                                                <h6 class="title fw-bold">Color</h6>
                                                 <div class="color-variant-wrapper">
                                                     <ul class="color-variant mt--0">
-                                                        <li class="color-extra-01 active"><span><span class="color"></span></span>
-                                                        </li>
-                                                        <li class="color-extra-02"><span><span class="color"></span></span>
-                                                        </li>
-                                                        <li class="color-extra-03"><span><span class="color"></span></span>
+                                                        <li *ngFor="let color of product_selected.tags; let i = index" [class.active]="color === selectedColor" (click)="selectColor(i)">
+                                                            <span><span class="color" [style.backgroundColor]="getColorHex(color)"></span></span>
                                                         </li>
                                                     </ul>
                                                 </div>
-                                            </div> -->
+                                            </div>
                                             <!-- End Product Variation  -->
 
-                                            <!-- Start Product Variation  -->
+                                            <!-- Start Product Variation Talla  -->
                                             <div class="product-variation" *ngIf="product_selected.type_inventario == 2">
-                                                <h6 class="title">Tamaños:</h6>
+                                                <h6 class="title">Talla:</h6>
                                                 <ul class="range-variant">
-                                                    <ng-container *ngFor="let variedad of product_selected.variedades">
-                                                        <li>{{variedad.valor}}</li>
+                                                    <ng-container *ngFor="let variedad of product_selected.variedades; let i = index">
+                                                        <li [ngClass]="{'active': activeIndex === i}" (click)="selectedVariedad(variedad, i)">
+                                                            {{ i === 0 ? 's' : variedad.valor }}
+                                                        </li>
                                                     </ng-container>
-                                                    <!-- <li>s</li>
-                                                    <li>m</li>
-                                                    <li>l</li>
-                                                    <li>xl</li> -->
+                                                    <!-- <ng-container *ngFor="let variedad of product_selected.variedades">
+                                                        <li>{{variedad.valor}}</li>
+                                                    </ng-container> -->
                                                 </ul>
                                             </div>
                                             <!-- End Product Variation  -->
                                             
                                             <!-- End Product Variation  -->
                                             <div class="product-variation quantity-variant-wrapper landing-product">
-                                                <h6 class="title">Quantity</h6>
+                                                <h6 class="title">Cantidad</h6>
                                                 <div class="pro-qty"><input type="text" id="qty-cart"  value="1"></div>
                                             </div>
                                         </div>
@@ -926,8 +998,12 @@
 
                                             <!-- Start Product Action  -->
                                             <ul class="product-action d-flex-center mb--0">
-                                                <li class="add-to-cart"><a href="cart.html" onclick="return false;" (click)="addCart(product_selected)" class="axil-btn btn-bg-primary">Add to Cart</a></li>
-                                                <li class="wishlist"><a href="wishlist.html" class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li>
+                                                <li class="add-to-cart">
+                                                    <a href="cart.html" onclick="return false;" (click)="addCart(product_selected)" class="axil-btn btn-bg-primary">Añadir a la cesta</a>
+                                                </li>
+                                                <li class="wishlist">
+                                                    <a href="wishlist.html" class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a>
+                                                </li>
                                             </ul>
                                             <!-- End Product Action  -->
 

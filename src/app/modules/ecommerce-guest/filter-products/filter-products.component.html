@@ -6,11 +6,16 @@
                 <div class="col-lg-6 col-md-8">
                     <div class="inner">
                         <ul class="axil-breadcrumb">
-                            <li class="axil-breadcrumb-item"><a href="index.html">Inicio</a></li>
+                            <li class="axil-breadcrumb-item"><a href="index.html">Shop</a></li>
                             <li class="separator"></li>
-                            <li class="axil-breadcrumb-item active" aria-current="page">Mi cuenta</li>
+                            <li class="axil-breadcrumb-item active" aria-current="page">All Products</li>
                         </ul>
-                        <h1 class="title">Explorar todos los productos</h1>
+                        <ng-container *ngIf="this.slug; else allProducts">
+                            <h1 class="title fw-bold">{{ this.slug }}</h1>
+                        </ng-container>
+                        <ng-template #allProducts>
+                            <h1 class="title fw-bold">Explorar todos los productos</h1>
+                        </ng-template>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-4">
@@ -29,7 +34,7 @@
     <div class="axil-shop-area axil-section-gap bg-color-white">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-3" *ngIf="noneSidebar">
                     <div class="axil-shop-sidebar">
                         <div class="d-lg-none">
                             <button class="sidebar-close filter-close-btn"><i class="fas fa-times"></i></button>
@@ -58,8 +63,8 @@
                             <h6 class="title">Descuento</h6>
                             <div class="shop-submenu">
                                 <ul>
-                                    <li [ngClass]="{'chosen': is_discount == 2}"><a href="#" onclick="return false;" (click)="selectedDiscount(2)">DESCUENTO LIMITADO</a></li>
-                                    <li [ngClass]="{'chosen': is_discount == 1}"><a href="#" onclick="return false;" (click)="selectedDiscount(1)">TODOS</a></li>
+                                    <li [ngClass]="{'chosen': is_discount == 2}"><a href="#" onclick="return false;" (click)="selectedDiscount(2)">Descuento limitado</a></li>
+                                    <li [ngClass]="{'chosen': is_discount == 1}"><a href="#" onclick="return false;" (click)="selectedDiscount(1)">Todos</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -102,7 +107,7 @@
                                 <form action="#" class="mt--25">
                                     <div id="slider-range"></div>
                                     <div class="flex-center mt--20">
-                                        <span class="input-range">Price: </span>
+                                        <span class="input-range">Precio: </span>
                                         <input type="text" id="amount" class="amount-range" readonly>
                                         <input type="hidden" id="amount-min" value="">
                                         <input type="hidden" id="amount-max" value="">
@@ -110,58 +115,71 @@
                                 </form>
                             </div>
                         </div>
-                        <button class="axil-btn btn-bg-primary" (click)="filterProduct()">Buscar</button>
+                        <button class="axil-btn btn-bg-black text-uppercase" (click)="filterProduct()">Buscar</button>
                     </div>
                     <!-- End .axil-shop-sidebar -->
                 </div>
-                <div class="col-lg-9">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="axil-shop-top mb--40">
-                                <div class="category-select align-items-center justify-content-lg-end justify-content-between">
-                                    <!-- Start Single Select  -->
-                                    <span class="filter-results">Mostrando 1-12 de 84 resultados</span>
-                                    <select class="single-select">
-                                        <option>Short by Latest</option>
-                                        <option>Short by Oldest</option>
-                                        <option>Short by Name</option>
-                                        <option>Short by Price</option>
-                                    </select>
-                                    <!-- End Single Select  -->
-                                </div>
-                                <div class="d-lg-none">
-                                    <button class="product-filter-mobile filter-toggle"><i class="fas fa-filter"></i> Filtrar</button>
+                <!-- <div class="col-lg-9"> -->
+                <div [ngClass]="{'col-lg-9': !this.slug, 'col-lg-12': this.slug}">
+                    <ng-container *ngIf="!this.slug">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="axil-shop-top mb--40">
+                                    <div class="category-select align-items-center justify-content-lg-end justify-content-between">
+                                        <!-- Start Single Select  -->
+                                        <span class="filter-results">Mostrando 1-12 de 84 resultados</span>
+                                        <select class="single-select">
+                                            <option>Short by Latest</option>
+                                            <option>Short by Oldest</option>
+                                            <option>Short by Name</option>
+                                            <option>Short by Price</option>
+                                        </select>
+                                        <!-- End Single Select  -->
+                                    </div>
+                                    <div class="d-lg-none">
+                                        <button class="product-filter-mobile filter-toggle"><i class="fas fa-filter"></i> Filtrar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </ng-container>
+                    
                     <!-- End .row -->
                     <div class="row row--15">
                         <ng-container *ngFor="let product of products">
-                            <div class="col-xl-4 col-sm-6">
+                            <!-- <div class="col-xl-4 col-sm-6"> -->
+                            <!-- <div [ngClass]="{'col-xl-4 col-sm-6': !this.slug, 'col-lg-3 col-6': this.slug}"> -->
+                            <!-- <div [ngClass]="{'col-xl-4 col-sm-6': !this.slug, 'col-lg-3 col-6': this.slug}"> -->
+                            <div [ngClass]="{ 'col-lg-3 col-6': isMobile(), 'col-xl-4 col-sm-6': !isMobile() && !slug, 'col-lg-3': !isMobile() && slug}"> 
+                                
                                 <div class="axil-product product-style-one mb--30">
                                     <div class="thumbnail">
                                         <a [routerLink]="['/landing-product', product.slug]" [queryParams]="getRouterDiscount(product)">
-                                            <img [src]="product.imagen" style="width: 300px; height: 300px" alt="Product Images">
+                                            <!-- <img [src]="product.imagen" style="width: 300px; height: 300px" alt="Product Images"> -->
+                                            <img 
+                                            [src]="product.imagen" 
+                                            [ngStyle]="isDesktop() ? {'width.px': slug ? 200 : 300, 'height.px': slug ? 150 : 300} : {}" 
+                                            [ngClass]="{'full-size-image': isDesktop()}" 
+                                            alt="Product Images">
                                         </a>
                                         <div class="label-block label-right" *ngIf="product.campaing_discount">
                                             <div class="product-badget" *ngIf="product.campaing_discount.type_discount == 1">{{ product.campaing_discount.discount }}% Off</div>
-                                            <div class="product-badget" *ngIf="product.campaing_discount.type_discount == 2">-{{ product.campaing_discount.discount }}USD Off</div>
+                                            <div class="product-badget" *ngIf="product.campaing_discount.type_discount == 2">-{{ product.campaing_discount.discount }}€ Off</div>
                                         </div>
                                         <div class="product-hover-action">
                                             <ul class="cart-action">
                                                 <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a></li>
-                                                <li class="select-option"><a href="#" onclick="return false;" (click)="addCart(product)">Add to Cart</a></li>
+                                                <li class="select-option"><a href="#" onclick="return false;" (click)="addCart(product)">Añadir a la cesta</a></li>
                                                 <li class="quickview"><a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal" (click)="openModal(product)"><i class="far fa-eye"></i></a></li>
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="product-content">
+                                    <div class="product-content text-start">
                                         <div class="inner">
                                             <h5 class="title"><a [routerLink]="['/landing-product', product.slug]" [queryParams]="getRouterDiscount(product)">{{ product.title }}</a></h5>
                                             <div class="product-price-variant">
-                                                <span class="price old-price" *ngIf="product.campaing_discount"> {{ product.price_usd }} USD</span>
-                                                <span class="price current-price"> {{ product.price_usd - getDiscountProduct(product) }} USD </span>
+                                                <span class="price old-price" *ngIf="product.campaing_discount"> {{ product.price_usd }} €</span>
+                                                <span class="price current-price"> {{ product.price_usd - getDiscountProduct(product) }} € </span>
                                             </div>
                                         </div>
                                     </div>
@@ -170,7 +188,7 @@
                         </ng-container>
                     </div>
                     <div class="text-center pt--20">
-                        <a href="#" class="axil-btn btn-bg-lighter btn-load-more">Load more</a>
+                        <a href="#" class="axil-btn btn-bg-lighter btn-load-more">Ver más</a>
                     </div>
                 </div>
             </div>

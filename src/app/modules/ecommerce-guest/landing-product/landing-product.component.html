@@ -1,5 +1,25 @@
 <!-- Main -->
 <main class="main-wrapper" *ngIf="product_selected">
+    <!-- Start Breadcrumb Area  -->
+    <div class="axil-breadcrumb-area d-none">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="inner">
+                        <ul class="axil-breadcrumb">
+                            <li class="axil-breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="separator"></li>
+                            <li class="axil-breadcrumb-item active" aria-current="page">Shop</li>
+                            <li class="separator"></li>
+                            <li class="axil-breadcrumb-item active" aria-current="page">{{ product_selected.title }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumb Area  -->
+
     <div class="axil-single-product-area bg-color-white">
         <div class="single-product-thumb axil-section-gapcommon single-product-modern">
             <div class="container">
@@ -12,7 +32,7 @@
                                         <div class="thumbnail">
                                           <img [src]="item.imagen" alt="Product Images">
                                         </div>
-                                      </ng-container> 
+                                    </ng-container> 
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -21,7 +41,7 @@
                                         <div class="small-thumb-img">
                                           <img [src]="item.imagen" alt="small-thumb">
                                         </div>
-                                      </ng-container>
+                                    </ng-container>
                                 </div>
                             </div>
                         </div>
@@ -30,28 +50,6 @@
                         <div class="single-product-content">
                             <div class="inner">
                                 <h2 class="product-title">{{ product_selected.title }}</h2>
-                                <div class="price-amount price-offer-amount">
-                                    <span class="price current-price black-color">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} {{ euro }}</span>
-                                    <ng-container *ngIf="getDiscount() > 0">
-                                        <span class="price old-price black-color">{{ product_selected.price_usd }} {{ euro }}</span>
-                                        <ng-container *ngIf="SALE_FLASH">
-                                            <div class="offer-badge" *ngIf="SALE_FLASH.type_discount == 1">
-                                                <div class="product-badget">{{SALE_FLASH.discount}}% OFF</div>
-                                            </div>
-                                            <div class="offer-badge" *ngIf="SALE_FLASH.type_discount == 2">
-                                                <div class="product-badget">{{SALE_FLASH.discount}} {{ euro }} OFF</div>
-                                            </div>
-                                        </ng-container>
-                                    </ng-container>
-                                </div>
-                                <div class="price-amount price-offer-amount px-3">
-                                    <ng-container *ngIf="getDiscount() > 0">
-                                        <div class="price-amount price-offer-amount">
-                                            <span class="price current-price black-color">Descuento por: <b> {{ SALE_FLASH.type_campaign == 1 ? 'Campaña de descuento' : 'Venta flash' }} </b></span>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                                
                                 <div class="product-rating">
                                     <div class="star-rating">
                                         <i class="fas fa-star" [ngClass]="{'start-del': AVG_REVIEW < 1}"></i>
@@ -63,20 +61,56 @@
                                     <div class="review-number">{{ COUNT_REVIEW }}</div>
                                     <div class="total-answerd">Reseñas</div>
                                 </div>
+                                <div class="price-amount price-offer-amount">
+                                    <span class="price current-price black-color">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} {{ euro }}</span>
+                                    <ng-container *ngIf="getDiscount() > 0">
+                                        <span class="price old-price black-color">{{ product_selected.price_usd }} {{ euro }}</span>
+                                        <ng-container *ngIf="SALE_FLASH">
+                                            <div class="offer-badge text-center" *ngIf="SALE_FLASH.type_discount == 1">
+                                                <div class="product-badget d-flex flex-column">
+                                                    <div class="p">{{SALE_FLASH.discount}}% OFF</div>
+                                                    <div class="p" style="font-size: 10px;"><span class="price current-price">{{ SALE_FLASH.type_campaign == 1 ? 'Campaña de descuento' : 'Venta flash' }}</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="offer-badge" *ngIf="SALE_FLASH.type_discount == 2">
+                                                <div class="product-badget">{{SALE_FLASH.discount}} {{ euro }} OFF</div>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+                                    
+                                </div>
+                                <div class="price-amount price-offer-amount px-3 d-none">
+                                    <ng-container *ngIf="getDiscount() > 0">
+                                        <div class="price-amount price-offer-amount">
+                                            <span class="price current-price black-color">Descuento por: <b> {{ SALE_FLASH.type_campaign == 1 ? 'Campaña de descuento' : 'Venta flash' }} </b></span>
+                                        </div>
+                                    </ng-container>
+                                </div>
                                 <ul class="description" style="list-style: none;padding-left: 0px;">
                                     <li>{{ product_selected.resumen }}</li>
                                 </ul>
                                 <div class="product-variations-wrapper">
-
+                                    <!-- Start Product Variation  -->
+                                    <div class="product-variation">
+                                        <h6 class="title fw-bold">Color</h6>
+                                        <div class="color-variant-wrapper">
+                                            <ul class="color-variant mt--0">
+                                                <li *ngFor="let color of product_selected.tags; let i = index" [class.active]="color === selectedColor" (click)="selectColor(i)">
+                                                    <span><span class="color" [style.backgroundColor]="getColorHex(color)"></span></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- End Product Variation  -->
                                     <!-- Start Product Variation  -->
                                     <div class="product-variation product-size-variation">
-                                        <ul class="product-meta">
+                                        <ul class="product-meta d-none">
                                             <li><i class="fal fa-check black-color"></i><span class="black-color">En stock</span></li>
                                             <li><i class="fal fa-check black-color"></i><span class="black-color">Entrega gratuita disponible</span></li>
                                             <li><i class="fal fa-check black-color"></i><span class="black-color">Ventas 30% de descuento Use el código: MOTIVE30</span></li>
                                         </ul>
                                         <ng-container *ngIf="product_selected.variedades">
-                                            <h6 class="title">Talla</h6>
+                                            <h6 class="title fw-bold">Talla</h6>
                                             <ul class="range-variant">
                                                 <ng-container *ngFor="let variedad of product_selected.variedades; let i = index">
                                                     <li [ngClass]="{'active': activeIndex === i}" (click)="selectedVariedad(variedad, i)">
@@ -87,31 +121,21 @@
                                         </ng-container>
                                     </div>
                                     <!-- End Product Variation  -->
-
-                                    <!-- Start Product Variation  -->
-                                    <div class="product-variation">
-                                        <h6 class="title">Color</h6>
-                                        <div class="color-variant-wrapper">
-                                            <ul class="color-variant mt--0">
-                                                <li *ngFor="let color of product_selected.tags; let i = index" [class.active]="color === selectedColor" (click)="selectColor(i)">
-                                                    <span><span class="color" [style.backgroundColor]="getColorHex(color)"></span></span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!-- End Product Variation  -->
                                     <div class="product-variation quantity-variant-wrapper landing-product">
-                                        <h6 class="title">Cantidad</h6>
+                                        <h6 class="title fw-bold">Cantidad</h6>
                                         <div class="pro-qty"><input type="text" id="qty-cart"  value="1"></div>
                                     </div>
                                 </div>
-
                                 <!-- Start Product Action Wrapper  -->
                                 <div class="product-action-wrapper">
                                     <!-- Start Product Action  -->
                                     <ul class="product-action d-flex-center mb--0">
-                                        <li class="add-to-cart d-none"><a href="checkout.html" onclick="return false;" routerLink="/payment-process" class="axil-btn btn-bg-secondary"><i class="far fa-shopping-bag"></i> Comprar ahora</a></li>
-                                        <li class="add-to-cart"><a href="cart.html" class="axil-btn btn-bg-black" onclick="return false;" (click)="addCart(product_selected)" ><i class="far fa-shopping-cart"></i> Añadir a la cesta</a></li>
+                                        <li class="add-to-cart">
+                                            <a href="checkout.html" onclick="return false;" routerLink="/payment-process" class="axil-btn btn-bg-secondary"><i class="far fa-shopping-bag"></i> Comprar ahora</a>
+                                        </li>
+                                        <li class="add-to-cart">
+                                            <a href="cart.html" class="axil-btn btn-bg-black" onclick="return false;" (click)="addCart(product_selected)"><i class="far fa-shopping-cart"></i> Añadir a la cesta</a>
+                                        </li>
                                     </ul>
                                     <!-- End Product Action  -->
                                 </div>

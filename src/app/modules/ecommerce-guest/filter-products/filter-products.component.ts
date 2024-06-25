@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 declare function alertDanger([]):any;
 declare function alertSuccess([]):any;
@@ -25,14 +25,30 @@ export class FilterProductsComponent implements OnInit {
   };
   products:any = [];
   product_selected:any=null;
+  slug:any=null;
+  isDesktopSize: boolean = window.innerWidth >= 992; // Inicialización
+  isMobileSize: boolean = window.innerWidth < 768;
+  idCategorie:any=null;
+  noneSidebar = true;
+  nameCategorie = null;
   
   constructor(
     public _ecommerceGuestService: EcommerceGuestService,
     public _cartService: CartService,
     public _router: Router,
+    public _routerActived: ActivatedRoute,
   ) {}
   
   ngOnInit(): void {
+    this._routerActived.params.subscribe((resp:any) => {
+      this.slug = resp["slug"];
+      this.idCategorie = resp["idCategorie"];
+    });
+
+    if (this.idCategorie) {
+      this.filterForCategorie(this.idCategorie); 
+    }
+
     this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
       this.variedades = resp.variedades;
@@ -53,6 +69,36 @@ export class FilterProductsComponent implements OnInit {
       priceRangeSlider();
     }, 50);
 
+    this.filterProduct();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.isDesktopSize = event.target.innerWidth >= 992;
+  }
+
+  isDesktop(): boolean {
+    return this.isDesktopSize;
+  }
+
+  checkWindowSize() {
+    this.isMobileSize = window.innerWidth < 768; // Ajusta el valor del tamaño móvil según sea necesario
+  }
+
+  isMobile(): boolean {
+    return this.isMobileSize;
+  }
+
+  filterForCategorie(idCategorie:any) {
+    
+    let index = this.categories_selecteds.findIndex((item:any) => item == idCategorie );
+    if (index != -1) {
+      this.categories_selecteds.splice(index, 1);
+    } else {
+      this.categories_selecteds.push(idCategorie);
+    }
+    this.nameCategorie = this.slug;
+    this.noneSidebar = false;
     this.filterProduct();
   }
 

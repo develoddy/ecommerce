@@ -17,7 +17,7 @@ declare function alertSuccess([]):any;
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
-  
+  euro = "€";
   selectedLanguage: string = 'ES';
   listCarts:any=[];
   totalCarts:any=0;

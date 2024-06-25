@@ -60,7 +60,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit {
       this.REVIEWS = resp.REVIEWS;
       this.AVG_REVIEW = resp.AVG_REVIEW;
       this.COUNT_REVIEW = resp.COUNT_REVIEW;
-
       const variedadesUnicos = new Set();
       this.product_selected.variedades = this.product_selected.variedades.filter((variedad:any) => {
         if (variedadesUnicos.has(variedad.valor)) {
@@ -289,10 +288,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit {
         alertSuccess("El producto se ha agregado correctamente al carrito")
       }
     }, error => {
-      console.log(error);
       if (error.error.message == "EL TOKEN NO ES VALIDO") {
-        console.log("el token expiro...");
-
         this._cartService._authService.logout();
       }
     });

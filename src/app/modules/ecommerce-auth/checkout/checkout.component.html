@@ -14,7 +14,7 @@
                                     <p class="notice-text">
                                         ¿La dirección que desea utilizar se muestra a continuación? Si es así, haga clic en el botón correspondiente "Entrega a esta dirección". O puede ingresar una nueva dirección de entrega.
                                     </p>
-                                    <a href="#" class="axil-btn btn-bg-primary checkout-btn" onclick="return false;" (click)="newAddress()">Nueva dirección +</a>
+                                    <a href="#" class="axil-btn btn-bg-black checkout-btn" onclick="return false;" (click)="newAddress()">Nueva dirección +</a>
                                     <div class="row row--30">
                                         <ng-container *ngFor="let list_address of listAddressClients; let i=index">
                                             <div class="col-lg-6 mb-5">
@@ -91,7 +91,7 @@
                         </div>
 
                         <div class="axil-checkout-billing" *ngIf="show">
-                            <h3 class="title mb--40">Billing details</h3>
+                            <h3 class="title mb--40">Detalles de facturación</h3>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -107,7 +107,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Pais<span>*</span></label>
+                                <label>Pais <span>*</span></label>
                                 <select id="Region" [(ngModel)]="pais" name="pais">
                                     <option value="" disabled selected>Seleccionar</option>
                                     <option value="spain">España</option>
@@ -142,10 +142,10 @@
                           
                             <div class="form-group">
                                 <label>Notas (optional)</label>
-                                <textarea id="notes" rows="2" [(ngModel)]="nota" name="nota" placeholder="Notes about your order, e.g. speacial notes for delivery."></textarea>
+                                <textarea id="notes" rows="2" [(ngModel)]="nota" name="nota" placeholder="Notas sobre su pedido, p.e. Notas especiales para la entrega."></textarea>
                             </div>
-                            <button type="button" *ngIf="!address_client_selected" (click)="store()" class="axil-btn btn-bg-primary checkout-btn">Registar dirección</button>
-                            <button type="button" *ngIf="address_client_selected" (click)="store()" class="axil-btn btn-bg-primary checkout-btn">Guardar cambios</button>
+                            <button type="button" *ngIf="!address_client_selected" (click)="store()" class="axil-btn btn-bg-black checkout-btn">Registar dirección</button>
+                            <button type="button" *ngIf="address_client_selected" (click)="store()" class="axil-btn btn-bg-black checkout-btn">Guardar cambios</button>
                         </div>
                     </div>
 
@@ -242,31 +242,38 @@
                         </div> -->
                         
                         <div class="axil-order-summery order-checkout-summery">
-                            <h5 class="title mb--20">Su pedido</h5>
+                            <h5 class="title mb--20 fw-bold">Su pedido</h5>
                             <div class="summery-table-wrap">
                                 <table class="table summery-table">
                                     <thead>
                                         <tr>
                                             <th>Producto</th>
+                                            <th class="text-center">Nombre</th>
                                             <th>Subtotal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <ng-container *ngFor="let cart of listCarts">
                                             <tr class="order-product">
-                                                <td><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="fw-bold text-dark px-3">{{cart.product.title}}</a> <span class="quantity text-secondary"><i class="fa-solid fa-xmark"></i>{{ cart.cantidad }}</span></td>
+                                                <td>
+                                                    <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="fw-bold text-dark px-3">
+                                                        <img src="{{cart.product.imagen}}" style="width: 80px; height: 80px;" alt="">
+                                                    </a>
+                                                </td>
+                                                <td class="text-end"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="fw-bold text-dark px-3">{{cart.product.title}}</a> <span class="quantity text-secondary"><i class="fa-solid fa-xmark"></i>{{ cart.cantidad }}</span></td>
                                                 <td>{{ cart.total }} {{ euro }}</td>
                                             </tr>
                                         </ng-container>
                                         <tr class="order-subtotal">
                                             <td>Subtotal</td>
+                                            <td></td>
                                             <td>{{totalCarts}} {{ euro }}</td>
                                         </tr>
-                                        <tr class="order-shipping">
-                                            <td colspan="2">
+                                        <tr class="order-shipping d-none">
+                                            <td colspan="3">
                                                 <div class="shipping-amount">
                                                     <span class="title">Método de envío</span>
-                                                    <span class="amount">$00.00</span>
+                                                    <span class="amount">€00.00</span>
                                                 </div>
                                                 <div class="input-group">
                                                     <input type="radio" id="radio1" name="shipping" checked>
@@ -284,6 +291,7 @@
                                         </tr>
                                         <tr class="order-total">
                                             <td>Total</td>
+                                            <td></td>
                                             <td class="order-total-amount">{{ totalCarts }} {{ euro }}</td>
                                         </tr>
                                     </tbody>

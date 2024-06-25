@@ -5,105 +5,132 @@
         <div class="container">
             <div class="axil-product-cart-wrap">
                 <div class="product-table-heading">
-                    <h4 class="title">Your Cart</h4>
-                    <a href="#" class="cart-clear">Clear Shoping Cart</a>
+                    <h4 class="title fw-bold">Tu cesta</h4>
+                    <a href="#" class="cart-clear" *ngIf="listCarts.length != 0">Borrar cesta de compras</a>
                 </div>
-                <div class="table-responsive">
-                    <table class="table axil-product-table axil-cart-table mb--40">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="product-remove"></th>
-                                <th scope="col" class="product-thumbnail">Product</th>
-                                <th scope="col" class="product-title"></th>
-                                <th scope="col" class="product-price">Price</th>
-                                <th scope="col" class="product-quantity">Quantity</th>
-                                <th scope="col" class="product-subtotal">Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <ng-container *ngFor="let cart of listCarts">
-                                <tr>
-                                    <td class="product-remove"><a href="#" onclick="return false;" class="remove-wishlist" (click)="removeCart(cart)"><i class="fal fa-times"></i></a></td>
-                                    <td class="product-thumbnail">
-                                        <a href="single-product.html">
-                                            <img [src]="cart.product.imagen" alt="" class="img-fluid">
-                                        </a>
-                                    </td>
-                                    <td class="product-title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="fw-bold text-dark">{{cart.product.title}}</a>
-                                        <ng-container *ngIf="cart.variedad">
-                                            <br>
-                                            <small class="">Variedad: {{cart.variedad.valor}}</small>
-                                        </ng-container>
-                                       
-                                    </td>
-                                    <td class="product-price" data-title="Price"><span class="currency-symbol"></span>{{ cart.subtotal | number: '1.2-2' }} {{ euro }} </td>
-                                    <td class="section-cart product-quantity" data-title="Qty">
-                                        <div class="pro-qty">
-                                            <span class="dec qtybtn" (click)="dec(cart)">-</span>
-                                            <input type="number" class="quantity-input" [value]="cart.cantidad">
-                                            <span class="inc qtybtn" (click)="inc(cart)">+</span>
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol"></span>{{ cart.total | number: '1.2-2' }}  {{ euro }} </td>
-                                </tr>
-                            </ng-container>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="cart-update-btn-area">
-                    <div class="input-group product-cupon">
-                        <input placeholder="Enter coupon code" type="text" [(ngModel)]="code_cupon">
-                        <div class="product-cupon-btn">
-                            <button type="submit" class="axil-btn btn-outline" (click)="apllyCupon()">Apply</button>
+                <ng-container *ngIf="listCarts.length == 0; else allCarts">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="p-2 text-center">
+                            <div class="inner mb-3">
+                                <div class="bradcrumb-thumb">
+                                    <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
+                                </div>
+                            </div>
+                            <h5 class="header-title mb-0">Tu cesta está vacía</h5>
+                            <small>Empieza a añadir productos :)</small>
                         </div>
                     </div>
-                    <div class="update-btn d-none">
-                        <a href="#" onclick="return false;" class="axil-btn btn-outline" (click)="listAllCarts()" >Update Cart</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-5 col-lg-7 offset-xl-7 offset-lg-5">
-                        <div class="axil-order-summery mt--80">
-                            <h5 class="title mb--20">Order Summary</h5>
-                            <div class="summery-table-wrap">
-                                <table class="table summery-table mb--30">
+                 </ng-container>
+
+                <ng-template #allCarts>
+                    <div class="row">
+                        <div class="col col-12 col-lg-8 mb-5">
+                            <div class="table-responsive">
+                                <table class="table axil-product-table axil-cart-table mb--40">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="product-remove"></th>
+                                            <th scope="col" class="product-thumbnail">Producto</th>
+                                            <th scope="col" class="product-title"></th>
+                                            <th scope="col" class="product-price">Precio</th>
+                                            <th scope="col" class="product-quantity">Cantidad</th>
+                                            <th scope="col" class="product-subtotal">Subtotal</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
-                                        <tr class="order-subtotal">
-                                            <td>Subtotal</td>
-                                            <td>{{ totalCarts | number: '1.2-2' }} {{ euro }}</td>
-                                        </tr>
-                                        <tr class="order-shipping">
-                                            <td>Shipping</td>
-                                            <td>
-                                                <!-- <div class="input-group">
-                                                    <input type="radio" id="radio1" name="shipping" checked>
-                                                    <label for="radio1">Free Shippping</label>
-                                                </div>
-                                                <div class="input-group">
-                                                    <input type="radio" id="radio2" name="shipping">
-                                                    <label for="radio2">Local: $35.00</label>
-                                                </div>
-                                                <div class="input-group">
-                                                    <input type="radio" id="radio3" name="shipping">
-                                                    <label for="radio3">Flat rate: $12.00</label>
-                                                </div> -->
-                                            </td>
-                                        </tr>
-                                        <tr class="order-tax">
-                                            <td>State Tax</td>
-                                            <td>0.00</td>
-                                        </tr>
-                                        <tr class="order-total">
-                                            <td>Total</td>
-                                            <td class="order-total-amount">{{ totalCarts | number: '1.2-2' }} {{ euro }}</td>
-                                        </tr>
+                                        <ng-container *ngFor="let cart of listCarts">
+                                            <tr>
+                                                <td class="product-remove"><a href="#" onclick="return false;" class="remove-wishlist" (click)="removeCart(cart)"><i class="fal fa-times"></i></a></td>
+                                                <td class="product-thumbnail">
+                                                    <a href="single-product.html">
+                                                        <img [src]="cart.product.imagen" alt="" class="img-fluid">
+                                                    </a>
+                                                </td>
+                                                <td class="product-title"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="fw-bold text-dark">{{cart.product.title}}</a>
+                                                    <ng-container *ngIf="cart.variedad">
+                                                        <br>
+                                                        <small class="">Talla: {{cart.variedad.valor}}</small>
+                                                    </ng-container>
+                                                
+                                                </td>
+                                                <td class="product-price" data-title="Price"><span class="currency-symbol"></span>{{ cart.subtotal | number: '1.2-2' }} {{ euro }} </td>
+                                                <td class="section-cart product-quantity" data-title="Qty">
+                                                    <div class="pro-qty">
+                                                        <span class="dec qtybtn" (click)="dec(cart)">-</span>
+                                                        <input type="number" class="quantity-input" [value]="cart.cantidad">
+                                                        <span class="inc qtybtn" (click)="inc(cart)">+</span>
+                                                    </div>
+                                                </td>
+                                                <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol"></span>{{ cart.total | number: '1.2-2' }}  {{ euro }} </td>
+                                            </tr>
+                                        </ng-container>
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="checkout.html" onclick="return false;" routerLink="/payment-process" class="axil-btn btn-bg-primary checkout-btn">Proceso de pago</a>
+                            <div class="cart-update-btn-area">
+                                <div class="input-group product-cupon">
+                                    <input placeholder="Introduzca el código de descuento" type="text" [(ngModel)]="code_cupon">
+                                    <div class="product-cupon-btn">
+                                        <button type="submit" class="axil-btn btn-outline" (click)="apllyCupon()">Aplicar</button>
+                                    </div>
+                                </div>
+                                <div class="update-btn d-none">
+                                    <a href="#" onclick="return false;" class="axil-btn btn-outline" (click)="listAllCarts()">Actualización de la compra</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-12 col-lg-4">
+                            <!-- <div class="row border border-success">
+                                <div class="col-xl-5 col-lg-7 offset-xl-7 offset-lg-5"> -->
+                                    <div class="axil-order-summery"> <!--mt--80-->
+                                        <h5 class="title mb--20">Resumen del pedido</h5>
+                                        <div class="summery-table-wrap">
+                                            <table class="table summery-table mb--30">
+                                                <tbody>
+                                                    <tr class="order-subtotal">
+                                                        <td>Subtotal</td>
+                                                        <td>{{ totalCarts | number: '1.2-2' }} {{ euro }}</td>
+                                                    </tr>
+                                                    <tr class="order-shipping">
+                                                        <td>Envío</td>
+                                                        <td>
+                                                            <!-- <div class="input-group">
+                                                                <input type="radio" id="radio1" name="shipping" checked>
+                                                                <label for="radio1">Free Shippping</label>
+                                                            </div>
+                                                            <div class="input-group">
+                                                                <input type="radio" id="radio2" name="shipping">
+                                                                <label for="radio2">Local: $35.00</label>
+                                                            </div>
+                                                            <div class="input-group">
+                                                                <input type="radio" id="radio3" name="shipping">
+                                                                <label for="radio3">Flat rate: $12.00</label>
+                                                            </div> -->
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="order-tax">
+                                                        <td>State Tax</td>
+                                                        <td>0.00</td>
+                                                    </tr>
+                                                    <tr class="order-total">
+                                                        <td class="order-total-amount">Total</td>
+                                                        <td class="order-total-amount">{{ totalCarts | number: '1.2-2' }} {{ euro }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <a href="checkout.html" onclick="return false;" routerLink="/payment-process" class="axil-btn btn-bg-black checkout-btn">Proceder al Pago</a>
+                                    </div>
+                                <!-- </div>
+                            </div> -->
                         </div>
                     </div>
-                </div>
+
+                    
+
+
+                   
+                </ng-template>
             </div>
         </div>
     </div>
