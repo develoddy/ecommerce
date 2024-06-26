@@ -2778,7 +2778,7 @@ About Us
 -----------------------*/
 a.axil-btn,
 button.axil-btn {
-  border-radius: 27px;
+  border-radius: 7px;
   font-size: var(--font-size-b2);
   line-height: var(--line-height-b1);
   font-weight: 700;
@@ -2793,7 +2793,7 @@ button.axil-btn:before {
   content: "";
   height: 100%;
   width: 100%;
-  border-radius: 27px;
+  border-radius: 7px;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -2854,6 +2854,19 @@ a.axil-btn.btn-bg-lighter:before,
 button.axil-btn.btn-bg-lighter:before {
   background-color: var(--color-lighter);
 }
+
+a.axil-btn.btn-bg-lightest,
+button.axil-btn.btn-bg-lightest {
+  background-color: var(--color-lightest);
+  color: var(--color-white);
+}
+a.axil-btn.btn-bg-lightest:before,
+button.axil-btn.btn-bg-lightest:before {
+  background-color: var(--color-lightest);
+}
+
+
+
 a.axil-btn.btn-bg-primary,
 button.axil-btn.btn-bg-primary {
   background-color: var(--color-primary);
@@ -2884,6 +2897,18 @@ a.axil-btn.btn-bg-secondary:before,
 button.axil-btn.btn-bg-secondary:before {
   background-color: var(--color-secondary);
 }
+
+a.axil-btn.btn-bg-youtube,
+button.axil-btn.btn-bg-youtube {
+  background-color: var(--color-youtube);
+  color: var(--color-white) !important;
+}
+a.axil-btn.btn-bg-youtube:before,
+button.axil-btn.btn-bg-youtube:before {
+  background-color: var(--color-youtube);
+}
+
+
 a.axil-btn.btn-outline,
 button.axil-btn.btn-outline {
   border: 2px solid var(--color-heading);
@@ -11577,7 +11602,7 @@ body.open .closeMask {
   border-bottom: 2px solid var(--color-lighter);
   vertical-align: middle;
   padding: 15px;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 500;
   color: var(--color-body);
   min-width: 150px;
@@ -11789,6 +11814,7 @@ body.open .closeMask {
   border-width: 2px;
   border-color: #efefef;
   background-color: transparent;
+  margin-top: 14px;
 }
 .axil-product-cart-wrap .product-cupon .axil-btn:hover {
   border-color: var(--color-black);
@@ -11812,7 +11838,7 @@ body.open .closeMask {
 
 .axil-order-summery {
   /* background-color: #f9f3f0; */
-  border-radius: 6px;
+  border-radius: 0px;
   padding: 40px;
   border: 1px solid #cccccc6e;
 }
@@ -11872,8 +11898,8 @@ body.open .closeMask {
 .axil-order-summery.order-checkout-summery .summery-table-wrap {
   background-color: var(--color-white);
   border-radius: 6px;
-  padding: 30px;
-  margin-bottom: 45px;
+  padding: 10px;
+  margin-bottom: 40px;
 }
 @media only screen and (max-width: 479px) {
   .axil-order-summery.order-checkout-summery .summery-table-wrap {
@@ -11886,6 +11912,7 @@ body.open .closeMask {
   color: var(--color-heading);
   text-transform: capitalize;
   padding: 15px 0;
+  font-weight: 900;
 }
 .axil-order-summery.order-checkout-summery .summery-table td {
   padding: 18px 0;

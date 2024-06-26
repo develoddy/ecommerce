@@ -11,7 +11,7 @@
                             <div class="tab-pane" id="nav-address" role="tabpanel">
                                 <div class="axil-dashboard-address">
                                     <h3 class="text-dark mb-0">Dirección de envío</h3>
-                                    <p class="notice-text">
+                                    <p class="notice-text" style="color: #777777;">
                                         ¿La dirección que desea utilizar se muestra a continuación? Si es así, haga clic en el botón correspondiente "Entrega a esta dirección". O puede ingresar una nueva dirección de entrega.
                                     </p>
                                     <a href="#" class="axil-btn btn-bg-black checkout-btn" onclick="return false;" (click)="newAddress()">Nueva dirección +</a>
@@ -34,13 +34,13 @@
                                                         </ul>
                                                     </div>
                                                     <div class="p-0 d-flex flex-row justify-content-between">
-                                                        <a href="#" onclick="return false;" (click)="addressClienteSelected(list_address)" class="address-paymet fw-bold p-2 axil-btn btn-bg-primary">
-                                                            <div class="p-2 background-gray-200 text-center b-r-8">                                                                
+                                                        <a href="#" onclick="return false;" (click)="addressClienteSelected(list_address)" class="address-paymet fw-bold axil-btn btn-bg-lightest">
+                                                            <div class="background-gray-200 text-center b-r-8">                                                                
                                                                 <span>Editar</span>
                                                             </div>
                                                         </a>
-                                                        <a href="#" onclick="return false;" (click)="removeAddressSelected(list_address)" class="address-paymet fw-bold p-2 axil-btn btn-bg-secondary">
-                                                            <div class="p-2 background-tertiary-100 text-center b-r-8">
+                                                        <a href="#" onclick="return false;" (click)="removeAddressSelected(list_address)" class="address-paymet fw-bold axil-btn btn-bg-youtube">
+                                                            <div class="background-tertiary-100 text-center b-r-8">
                                                                 <span>Eliminar</span>
                                                             </div>
                                                         </a>
@@ -107,6 +107,39 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label>Dirección <span>*</span></label>
+                                <input type="text" id="address1" class="mb--15" [(ngModel)]="address" name="address" placeholder="House number and street name">
+                                <input type="text" id="address2" [(ngModel)]="referencia" name="referencia" placeholder="Apartment, suite, unit, etc. (optonal)">
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Region</label>
+                                        <input type="text" [(ngModel)]="region" name="region" id="country">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Ciudad <span>*</span></label>
+                                        <input type="text" [(ngModel)]="ciudad" name="ciudad" id="town">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Telefono <span>*</span></label>
+                                        <input type="tel" [(ngModel)]="telefono" name="telefono" id="phone">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Email <span>*</span></label>
+                                        <input type="email" [(ngModel)]="email" name="email" id="email">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label>Pais <span>*</span></label>
                                 <select id="Region" [(ngModel)]="pais" name="pais">
                                     <option value="" disabled selected>Seleccionar</option>
@@ -118,28 +151,6 @@
                                     <option value="eeuu">Estados Unidos</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>Dirección <span>*</span></label>
-                                <input type="text" id="address1" class="mb--15" [(ngModel)]="address" name="address" placeholder="House number and street name">
-                                <input type="text" id="address2" [(ngModel)]="referencia" name="referencia" placeholder="Apartment, suite, unit, etc. (optonal)">
-                            </div>
-                            <div class="form-group">
-                                <label>Region</label>
-                                <input type="text" [(ngModel)]="region" name="region" id="country">
-                            </div>
-                            <div class="form-group">
-                                <label>Ciudad <span>*</span></label>
-                                <input type="text" [(ngModel)]="ciudad" name="ciudad" id="town">
-                            </div>
-                            <div class="form-group">
-                                <label>Telefono <span>*</span></label>
-                                <input type="tel" [(ngModel)]="telefono" name="telefono" id="phone">
-                            </div>
-                            <div class="form-group">
-                                <label>Email <span>*</span></label>
-                                <input type="email" [(ngModel)]="email" name="email" id="email">
-                            </div>
-                          
                             <div class="form-group">
                                 <label>Notas (optional)</label>
                                 <textarea id="notes" rows="2" [(ngModel)]="nota" name="nota" placeholder="Notas sobre su pedido, p.e. Notas especiales para la entrega."></textarea>
@@ -242,7 +253,7 @@
                         </div> -->
                         
                         <div class="axil-order-summery order-checkout-summery">
-                            <h5 class="title mb--20 fw-bold">Su pedido</h5>
+                            <h3 class="title mb--20 fw-bold">Revise su orden</h3>
                             <div class="summery-table-wrap">
                                 <table class="table summery-table">
                                     <thead>
@@ -256,11 +267,15 @@
                                         <ng-container *ngFor="let cart of listCarts">
                                             <tr class="order-product">
                                                 <td>
-                                                    <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="fw-bold text-dark px-3">
+                                                    <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="fw-bold">
                                                         <img src="{{cart.product.imagen}}" style="width: 80px; height: 80px;" alt="">
                                                     </a>
                                                 </td>
-                                                <td class="text-end"><a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="fw-bold text-dark px-3">{{cart.product.title}}</a> <span class="quantity text-secondary"><i class="fa-solid fa-xmark"></i>{{ cart.cantidad }}</span></td>
+                                                <td class="text-start">
+                                                    <a href="single-product.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" >{{cart.product.title}}</a> <br>
+                                                    <span class="quantity">Cantidad: {{ cart.cantidad }}</span><br>
+                                                    <span class="quantity">Talla:  {{cart.variedad.valor}}</span>
+                                                </td>
                                                 <td>{{ cart.total }} {{ euro }}</td>
                                             </tr>
                                         </ng-container>
@@ -298,14 +313,14 @@
                                 </table>
                             </div>
                             <div class="order-payment-method">
-                                <div class="single-payment">
+                                <div class="single-payment d-none">
                                     <div class="input-group">
                                         <input type="radio" id="radio4" name="payment">
                                         <label for="radio4">Transferencia bancaria directa</label>
                                     </div>
                                     <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
                                 </div>
-                                <div class="single-payment">
+                                <div class="single-payment d-none">
                                     <div class="input-group">
                                         <input type="radio" id="radio5" name="payment">
                                         <label for="radio5">Contra reembolso</label>
@@ -315,7 +330,7 @@
                                 <div class="single-payment">
                                     <div class="input-group justify-content-between align-items-center">
                                         <input type="radio" id="radio6" name="payment" checked>
-                                        <label for="radio6">Paypal</label>
+                                        <label for="radio6" style="font-weight: 900;">Paypal / Tarjeta de Crédito o Débito</label>
                                         <img src="./assets/images/others/payment.png" alt="Paypal payment">
                                     </div>
                                     <p>Pague a través de PayPal; Puedes pagar con tu tarjeta de crédito si no tienes una cuenta PayPal.</p>
