@@ -44,11 +44,7 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     this._authEcommerce.listAddressClient(this._authEcommerce._authService.user._id).subscribe((resp:any) => {
-      //console.log(resp);
-      console.log("list address", resp);
       this.listAddressClients = resp.address_client;
-      
-      
     });
 
     setTimeout(() => {
@@ -56,7 +52,6 @@ export class CheckoutComponent implements OnInit {
     }, 50);
 
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
-      console.log(resp);
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
@@ -184,7 +179,6 @@ export class CheckoutComponent implements OnInit {
         nota:this.nota,
     };
     this._authEcommerce.registerAddressClient(data).subscribe((resp:any) => {
-      console.log(resp);
       this.listAddressClients.push(resp.address_client);
       alertSuccess(resp.message);
       this.resetForm();
@@ -220,7 +214,6 @@ export class CheckoutComponent implements OnInit {
         nota:this.nota,
     };
     this._authEcommerce.updateAddressClient(data).subscribe((resp:any) => {
-      //console.log(resp);
       let INDEX = this.listAddressClients.findIndex((item:any) => item._id == this.address_client_selected._id);
       this.listAddressClients[INDEX] = resp.address_client;
       alertSuccess(resp.message);
@@ -262,20 +255,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   removeAddressSelected(list_address:any) {
-    this._authEcommerce.deleteAddressClient(list_address.id).subscribe((resp:any) => {
-      console.log(resp);
-      //this.listAddressClients = [];
-
-      console.log("--- -front checkout this.listAddressClients.--");
-      console.log(this.listAddressClients);
-
-      console.log("--- -front checkout this.list_address.--");
-      console.log(list_address);
-      
-      
-      
+    this._authEcommerce.deleteAddressClient(list_address.id).subscribe((resp:any) => {      
       let INDEX = this.listAddressClients.findIndex((item:any) => item.id == list_address.id);
-      
       // Verifica si se encontró el elemento
       if (INDEX !== -1) { 
         this.listAddressClients.splice(INDEX, 1); // Elimina 1 elemento a partir del índice INDEX

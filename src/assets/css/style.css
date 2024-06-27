@@ -10786,7 +10786,7 @@ body.open .closeMask {
     margin: 0 -10px;
   }
   .small-thumb-wrapper .slick-list .slick-slide {
-    margin: 10px;
+    margin: 0 0px;
   }
 }
 .small-thumb-wrapper .small-thumb-img {
@@ -11478,7 +11478,7 @@ body.open .closeMask {
   font-size: 20px;
 }
 .single-product-modern .single-product-thumbnail {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 .single-product-modern .single-product-thumbnail .thumbnail img {
   border-radius: 0px;
