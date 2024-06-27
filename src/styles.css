@@ -2,11 +2,11 @@
 
 .notification-ecommerce-warning {
   position: fixed;
-  left: 70%;
+  left: 0%;
   top: 10%;
-  background-color: var(--color-warning);
-  border: 1px solid #ffecb5;
-  color: #664d03;
+  background-color: #fff3cd;
+  border: 1px solid #fff3cd;
+  color: #856404;
   /* #ffebeb; */
   border-radius: 0.2rem;
   overflow: hidden;
@@ -14,15 +14,17 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  z-index: 1;
+  /* width: calc(100% - 20px); */
 }
 
 .notification-ecommerce-success {
   position: fixed;
-  left: 70%;
+  left: 0%;
   top: 10%;
-  color: #0f5132;
-  background-color: var(--color-success);
-  border: 1px solid #badbcc;
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #d4edda;
   /* #ffebeb; */
   border-radius: 0.2rem;
   overflow: hidden;
@@ -30,14 +32,16 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  z-index: 1;
+  /* width: calc(100% - 20px); */
 }
 
 .notification-ecommerce {
   position: fixed;
-  left: 70%;
+  left: 0%;
   top: 10%;
-  background-color: var(--color-tertiary);
-  border: 1px solid #f5c2c7;
+  background-color: #f8d7da;
+  border: 1px solid #f8d7da;
   color: #842029;
   /* #ffebeb; */
   border-radius: 0.2rem;
@@ -46,7 +50,17 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  z-index: 1;
+  /* width: calc(100% - 20px); */
 }
+@media only screen and (max-width: 575px) {
+
+  .text-message-notification {
+    font-size: 12px;
+  }
+}
+
+
   .notification__warning {
     width: 1.5rem;
     margin-left: 1rem;

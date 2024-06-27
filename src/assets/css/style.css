@@ -10776,9 +10776,13 @@ body.open .closeMask {
     bottom: 20px;
     right: 40px;
   }
+  .text-message-notification {
+    font-size: 12px;
+  }
 }
 
 @media only screen and (max-width: 991px) {
+  
   .small-thumb-wrapper {
     margin-top: 10px;
   }

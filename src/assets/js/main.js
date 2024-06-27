@@ -1316,7 +1316,7 @@ function alertDanger(TEXT){
 
     var SECONDS = 0;
     var showTime = () => {
-    SECONDS ++;
+        SECONDS ++;
         $("#notification-ecommerce-danger .btn-secondary").text(SECONDS);
     };
     $("#notification-ecommerce-danger .text-message-notification").text(TEXT);

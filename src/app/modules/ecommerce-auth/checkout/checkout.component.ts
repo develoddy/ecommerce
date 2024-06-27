@@ -125,7 +125,6 @@ export class CheckoutComponent implements OnInit {
 
           this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}).subscribe((resp:any) => {
            
-
             setTimeout(() => {
               alertSuccess(resp.message); // Muestra el mensaje de éxito
               setTimeout(() => {

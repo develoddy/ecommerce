@@ -244,22 +244,22 @@ export class LandingProductComponent implements OnInit, AfterViewInit {
 
   addCart(product:any) {
     if (!this._cartService._authService.user) {
-      alertDanger("Necesitas autenticarte para poder agregar el producto al carrito");
+      alertDanger("Por favor, autentifíquese para poder añadir el producto a la cesta.");
       return;
     }
     if ($("#qty-cart").val() == 0) {
-      alertDanger("Necesitas agregar una cantidad mayor a 0 para el carrito");
+      alertDanger("Por favor, ingrese una cantidad mayor a 0 para añadir a la cesta.");
       return;
     }
 
     if (this.product_selected.type_inventario == 2) {
       if ( !this.variedad_selected ) {
-        alertDanger("Necesitas seleccinonar una variedad para el carrito...");
+        alertDanger("Por favor, seleccione una variedad antes de añadir a la cesta.");
         return;
       }
       if (this.variedad_selected) {
         if (this.variedad_selected.stock < $("#qty-cart").val()) {
-          alertDanger("Necesitas agregar una cantidad menor porque no se tiene el stock suficiente");
+          alertDanger("Por favor, reduzca la cantidad. Stock insuficiente.");
           return;
         }
       }
@@ -285,7 +285,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit {
           return;
       } else {
         this._cartService.changeCart(resp.cart);
-        alertSuccess("El producto se ha agregado correctamente al carrito")
+        alertSuccess("El producto ha sido añadido correctamente a la cesta.")
       }
     }, error => {
       if (error.error.message == "EL TOKEN NO ES VALIDO") {
