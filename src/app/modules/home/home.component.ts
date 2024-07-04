@@ -328,8 +328,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       alertDanger("Necesitas agregar una cantidad mayor a 0 para el carrito");
       return;
     }
-
-    if (this.product_selected.type_inventario == 2) {
+    /*if (product.type_inventario == 2) {
       if ( !this.variedad_selected ) {
         alertDanger("Necesitas seleccinonar una variedad para el carrito...");
         return;
@@ -340,8 +339,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
           return;
         }
       }
-    }
+    }*/
     
+    console.log("___FRONT: ", product);
     if (product.type_inventario == 2) { // Si el producto tiene variedad multiple, entonces redirigir a la landing de product para que de esa manera el cliente pueda seleccionar la variedad (talla)
       let LINK_DISCOUNT = "";
       if (is_sale_flash) {
@@ -351,8 +351,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           LINK_DISCOUNT = "?_id="+product.campaing_discount.id;
         }
       }
-      //this._router.navigateByUrl("/landing-product/"+product.slug+LINK_DISCOUNT);
-      //return;
+      this._router.navigateByUrl("/landing-product/"+product.slug+LINK_DISCOUNT);
     }
 
     let type_discount = null;
@@ -370,18 +369,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     }
 
+    const valoresUnitarios = ['S', 'M', 'L', 'XL'];
+    const isProductUnitario = this.esProductoUnitario(product.variedades, valoresUnitarios);
+
     let data = {
       user: this._cartService._authService.user._id,
       product: product._id,
       type_discount: type_discount,
       discount: discount,
-      cantidad: $("#qty-cart").val(), //1,
-      variedad: this.variedad_selected ? this.variedad_selected.id : null,
+      cantidad: 1,
+      variedad: isProductUnitario ? null : "multiple", //product.variedades ? product.variedades : null,
       code_cupon: null,
       code_discount: code_discount,
       price_unitario: product.price_usd,
       subtotal: product.price_usd - this.getDiscountProduct(product, is_sale_flash),  //*1,
-      total: (product.price_usd - this.getDiscountProduct(product, is_sale_flash))* $("#qty-cart").val(), //1, // De momento es igual, luego aplicamos el descuento
+      total: (product.price_usd - this.getDiscountProduct(product, is_sale_flash))*1, //1, // De momento es igual, luego aplicamos el descuento
     }
 
     this._cartService.registerCart(data).subscribe((resp:any) => {
@@ -390,7 +392,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           return;
       } else {
         this._cartService.changeCart(resp.cart);
-        alertSuccess("El producto se ha agregado correctamente al carrito");
+        alertSuccess("El producto se ha agregado correctamente al cesta de compra.");
       }
     }, error => {
       console.log(error);
@@ -399,5 +401,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this._cartService._authService.logout();
       }
     });
+  }
+
+
+  esProductoUnitario(variedades:any, valoresUnitarios:any)  {
+      for (const variedad of variedades) {
+          if (valoresUnitarios.includes(variedad.valor)) {
+              return false; // Si encuentra alguna de las variedades en valoresUnitarios, no es un producto unitario
+          }
+      }
+      return true; // Si no encuentra ninguna de las variedades en valoresUnitarios, es un producto unitario
   }
 }

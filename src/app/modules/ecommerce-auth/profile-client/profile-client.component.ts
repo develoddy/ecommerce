@@ -61,14 +61,8 @@ export class ProfileClientComponent implements OnInit {
       user_id: this._ecommerceAuthService._authService.user._id,
     };
 
-    console.log("DEBUGG: ProfileClientComponent showProfile");
-    console.log(data);
-
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
-
       console.log("---- FRONT show Profile ", resp);
-      
-      
       this.sale_orders = resp.sale_orders;
       this.listAddressClients = resp.address_client;
     });
@@ -82,9 +76,6 @@ export class ProfileClientComponent implements OnInit {
   viewDetailSale(order:any) {
     this.is_detail_sale = true;
     this.order_selected = order;
-
-    console.log("---- order_selected ", this.order_selected);
-    
   }
 
   goHome() {
@@ -213,33 +204,6 @@ export class ProfileClientComponent implements OnInit {
         return;
       }
     }
-
-    /**
-     * 
-     * {
-        _id: 28,
-        product: {
-          _id: 3,
-          title: 'procut 3',
-          sku: 'R1R2R3R4',
-          slug: 'procut-3',
-          imagen: 'http://localhost:3500/api/products/uploads/product/1717013433853-product-20.jpg',
-          categorie: [categories],
-          price_soles: 10,
-          price_usd: 10
-        },
-        type_discount: 1,
-        discount: 0,
-        cantidad: 3,
-        variedad: undefined,
-        code_cupon: null,
-        code_discount: null,
-        price_unitario: 10,
-        subtotal: 10,
-        total: 30,
-        review: null
-      },
-     */
 
     let data = {
       _id: this._ecommerceAuthService._authService.user.id,

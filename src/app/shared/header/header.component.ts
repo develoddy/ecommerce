@@ -57,10 +57,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
     });
     if (this._cartService._authService.user) {
-      
-      
       this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
-        
         resp.carts.forEach((cart:any) => {
           this._cartService.changeCart(cart);
         });
@@ -119,16 +116,22 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       cantidad: cart.cantidad,
       subtotal: cart.subtotal,
       total: cart.total,
-      variedad: cart.variedad ? cart.variedad._id : null,
+      variedad: cart.variedad ? cart.variedad.id : null,
       product: cart.product._id,
     }
     this._cartService.updateCart(data).subscribe((resp:any) => {
-      console.log(resp);
+      if (resp.message == 403) {
+        alertDanger(resp.message_text);
+          return;
+      } 
+      
+      alertSuccess(resp.message_text);
       this.updateTotalCarts();
     });
   }
 
   inc(cart:any) {
+    console.log("FRONT ___ ", cart);
     cart.cantidad = cart.cantidad + 1;
     //cart.subtotal = cart.price_unitario * cart.cantidad;
     //cart.total = cart.price_unitario * cart.cantidad;
@@ -142,11 +145,17 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       cantidad: cart.cantidad,
       subtotal: cart.subtotal,
       total: cart.total,
-      variedad: cart.variedad ? cart.variedad._id : null,
+      variedad: cart.variedad ? cart.variedad.id : null,
       product: cart.product._id,
     }
     this._cartService.updateCart(data).subscribe((resp:any) => {
-      console.log(resp);
+      if (resp.message == 403) {
+        alertDanger(resp.message_text);
+          return;
+      } 
+      
+      alertSuccess(resp.message_text);
+      
       this.updateTotalCarts();
     }); 
   }
