@@ -2,6 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
 
+declare var $:any;
+declare function HOMEINITTEMPLATE([]):any;
+declare function actionNetxCheckout([]):any;
+
 declare function shopFilterWidget():any;
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -43,12 +47,18 @@ export class CheckoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    this.reloadPage();//window.location.reload();
+    
     this._authEcommerce.listAddressClient(this._authEcommerce._authService.user._id).subscribe((resp:any) => {
       this.listAddressClients = resp.address_client;
     });
 
     setTimeout(() => {
-      shopFilterWidget();
+      HOMEINITTEMPLATE($);
+      actionNetxCheckout($);
+      
+      //shopFilterWidget();
     }, 50);
 
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
@@ -141,6 +151,17 @@ export class CheckoutComponent implements OnInit {
           console.error('An error prevented the buyer from checking out with PayPal');
       }
     }).render(this.paypalElement?.nativeElement);
+  }
+
+
+  private reloadPage(): void {
+    const reloaded = sessionStorage.getItem('reloaded');
+    if (!reloaded) {
+      sessionStorage.setItem('reloaded', 'true');
+      window.location.reload();
+    } else {
+      sessionStorage.removeItem('reloaded');
+    }
   }
 
   store() {

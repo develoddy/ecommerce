@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-// declare var $:any;
-// declare function HOMEINITTEMPLATE([]):any;
+import { BodyClassService } from './services/body-class.service';
+declare var $:any;
+declare function HOMEINITTEMPLATE([]):any;
+declare function pswp([]):any;
 
-declare function sideOffcanvasToggle([],[]):any;
+//declare function sideOffcanvasToggle([],[]):any;
 
 @Component({
   selector: 'app-root',
@@ -14,7 +16,7 @@ declare function sideOffcanvasToggle([],[]):any;
 export class AppComponent implements OnInit {
   title = 'ecommerce';
 
-  constructor(private translate: TranslateService, private titleService: Title) {
+  constructor(private translate: TranslateService, private titleService: Title, private bodyClassService: BodyClassService) {
     // translate.addLangs(['en', 'es']);
     // const lang = translate.getBrowserLang();
     // if ( (lang !== 'es') && (lang !== 'en') ) {
@@ -31,11 +33,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // setTimeout(() => {
-    //   HOMEINITTEMPLATE($)
-    // }, 50);
     setTimeout(() => {
-      sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');
+       HOMEINITTEMPLATE($);
+       pswp($);
     }, 50);
+    
+    // setTimeout(() => {
+    //   sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');
+    // }, 50);
   }
 }

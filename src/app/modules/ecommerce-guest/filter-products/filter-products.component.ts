@@ -3,11 +3,13 @@ import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
+declare var $:any;
+declare function HOMEINITTEMPLATE([]):any;
 declare function alertDanger([]):any;
 declare function alertSuccess([]):any;
 declare function priceRangeSlider():any;
 declare function ModalProductDetail():any;
-declare var $:any;
+
 
 @Component({
   selector: 'app-filter-products',
@@ -40,7 +42,7 @@ export class FilterProductsComponent implements OnInit {
   ) {}
   
   ngOnInit(): void {
-    this._routerActived.params.subscribe((resp:any) => {
+    /*this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
       this.idCategorie = resp["idCategorie"];
     });
@@ -63,23 +65,24 @@ export class FilterProductsComponent implements OnInit {
           return true;
         }
       });
-    });
+    });*/
 
     setTimeout(() => {
-      priceRangeSlider();
+      HOMEINITTEMPLATE($);
+      //priceRangeSlider();
     }, 50);
 
-    this.filterProduct();
+    //this.filterProduct();
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.isDesktopSize = event.target.innerWidth >= 992;
-  }
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event: any) {
+  //   this.isDesktopSize = event.target.innerWidth >= 992;
+  // }
 
-  isDesktop(): boolean {
-    return this.isDesktopSize;
-  }
+  // isDesktop(): boolean {
+  //   return this.isDesktopSize;
+  // }
 
   checkWindowSize() {
     this.isMobileSize = window.innerWidth < 768; // Ajusta el valor del tamaño móvil según sea necesario

@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/services/language.service';
 import { Subscription } from 'rxjs';
 
-declare function LandingProductDetail():any;
+//declare function LandingProductDetail():any;
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -93,7 +93,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           }
         }
         HOMEINITTEMPLATE($);
-        LandingProductDetail();
+        //LandingProductDetail();
 
         //this.initializeLargeSlider();
         //this.initializeSmallSlider();
@@ -167,7 +167,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.reinitializeSliders();
 
       setTimeout(() => {
-        LandingProductDetail();
+        //LandingProductDetail();
         ModalProductDetail();
         this.updateFilteredGallery(this.product_selected);
         this.initializeLargeSlider();
@@ -187,7 +187,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.destroyLargeSlider();
     this.destroySmallSlider();
     setTimeout(() => {
-      LandingProductDetail();
+      //LandingProductDetail();
       this.initializeLargeSlider();
       this.initializeSmallSlider();
 

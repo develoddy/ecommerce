@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
-
+declare var $:any;
+declare function HOMEINITTEMPLATE([]):any;
 declare function sectionCart():any;
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -25,18 +26,32 @@ export class ListCartsComponent implements OnInit {
 
   }
   ngOnInit() {
+
+    this.reloadPage();//window.location.reload();
+    
     setTimeout(() => {
-      sectionCart();
-    }, 25);
+      HOMEINITTEMPLATE($);
+      //sectionCart();
+    }, 50);
 
 
-    this.listAllCarts();
+    /*this.listAllCarts();
 
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-    });
+    });*/
+  }
+
+  private reloadPage(): void {
+    const reloaded = sessionStorage.getItem('reloaded');
+    if (!reloaded) {
+      sessionStorage.setItem('reloaded', 'true');
+      window.location.reload();
+    } else {
+      sessionStorage.removeItem('reloaded');
+    }
   }
 
   updateTotalCarts() {

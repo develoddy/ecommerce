@@ -4,6 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
 
 declare var $:any;
+declare function HOMEINITTEMPLATE([]):any;
+declare function pswp([]):any;
+declare function productZoom([]):any;
+
+
 declare function LandingProductDetail():any;
 declare function ModalProductDetail():any;
 declare function alertDanger([]):any;
@@ -15,7 +20,7 @@ declare function alertSuccess([]):any;
   templateUrl: './landing-product.component.html',
   styleUrls: ['./landing-product.component.css']
 })
-export class LandingProductComponent implements OnInit, AfterViewInit {
+export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
 
   euro = "€";
   slug:any=null;
@@ -31,10 +36,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit {
   COUNT_REVIEW:any=null;
 
   activeIndex: number = 0;
-
   selectedColor: string = '';
-
-  filteredGallery: any[] = [];
+  uniqueGalerias: any[] = [];
+  firstImage: string = '';
+  coloresDisponibles: { color: string, imagen: string }[] = [];
+  variedades: any[] = [];
 
   constructor(
     public _ecommerce_guestService: EcommerceGuestService,
@@ -43,124 +49,71 @@ export class LandingProductComponent implements OnInit, AfterViewInit {
     public _cartService: CartService,
   ) {}
 
-
   ngOnInit(): void {
     this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
     });
-
     this._routerActived.queryParams.subscribe((resp:any) => {
       this.discount_id = resp["_id"];
     });
-
     this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
       this.product_selected = resp.product;
+      console.log("___DEBBUG: ", this.product_selected);
       this.related_products = resp.related_products;
       this.SALE_FLASH = resp.SALE_FLASH;
       this.REVIEWS = resp.REVIEWS;
       this.AVG_REVIEW = resp.AVG_REVIEW;
       this.COUNT_REVIEW = resp.COUNT_REVIEW;
-      const variedadesUnicos = new Set();
-      this.product_selected.variedades = this.product_selected.variedades.filter((variedad:any) => {
-        if (variedadesUnicos.has(variedad.valor)) {
-          return false;
-        } else {
-          variedadesUnicos.add(variedad.valor);
-          return true;
-        }
-      });
 
-      this.selectedColor = this.product_selected.tags[0];
+      // Filtrar tallas duplicadas y eliminar tallas no disponibles
+      this.variedades = resp.product.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1); // Ordenar por valor de menor a mayor
       
-      this.variedad_selected = this.product_selected.variedades[0];
-      
-      this.updateFilteredGallery();
+      // Seleccionar automáticamente la primera talla si hay alguna disponible
+      this.variedad_selected = this.variedades[0] || null;
+      this.activeIndex = 0;
 
-      setTimeout(() => {
-        LandingProductDetail();
-        this.initializeLargeSlider();
-        this.initializeSmallSlider();
-      }, 50);
+      this.filterUniqueGalerias();
+      this.setFirstImage();
+      this.setColoresDisponibles();
+
+      this.selectedColor = this.coloresDisponibles[0]?.color || '';
+      
+        setTimeout(() => {
+          HOMEINITTEMPLATE($);
+          pswp($);
+          productZoom($);
+        }, 50);
+    });    
+  }
+
+  filterUniqueGalerias() {
+    const uniqueImages = new Set();
+    this.uniqueGalerias = this.product_selected.galerias.filter((galeria:any) => {
+      const isDuplicate = uniqueImages.has(galeria.imagen);
+      uniqueImages.add(galeria.imagen);
+      return !isDuplicate;
     });
   }
 
-  ngAfterViewInit(): void {
-    this.initializeLargeSlider();
-    this.initializeSmallSlider();
-  }
-
-  setActiveIndex(index: number) {
-    this.activeIndex = index;
-  }
-
-  selectColor(index: number): void {
-    this.selectedColor = this.product_selected.tags[index];
-    this.updateFilteredGallery();
-    this.reinitializeSliders();
-  }
-
-  reinitializeSliders(): void {
-    this.destroyLargeSlider();
-    this.destroySmallSlider();
-    setTimeout(() => {
-      LandingProductDetail();
-      this.initializeLargeSlider();
-      this.initializeSmallSlider();
-
-    }, 50);
-  }
-
-  updateFilteredGallery(): void {
-    this.filteredGallery = this.product_selected.galerias.filter(
-      (item: any) => item.color === this.selectedColor
-    );
-  }
-
-  initializeLargeSlider(): void {
-    const largeSlider = $('.product-large-thumbnail-4');
-    if ( largeSlider.hasClass('slick-initialized') ) {
-      largeSlider.slick('setPosition');
-    } else {
-      largeSlider.slick({
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: true,
-        dots: false,
-        fade: true
-      });
+  setFirstImage() {
+    if (this.uniqueGalerias.length > 0) {
+      this.firstImage = this.uniqueGalerias[0].imagen;
     }
   }
 
-  destroyLargeSlider(): void {
-    const largeSlider = $('.product-large-thumbnail-4');
-    if (largeSlider.hasClass('slick-initialized')) {
-      largeSlider.slick('unslick');
-    }
+  setColoresDisponibles() {
+    const uniqueColors = new Map();
+    this.product_selected.galerias.forEach((galeria: any) => {
+      if (!uniqueColors.has(galeria.color)) {
+        uniqueColors.set(galeria.color, { imagen: galeria.imagen, hex: this.getColorHex(galeria.color) });
+      }
+    });
+    this.coloresDisponibles = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
   }
 
-  initializeSmallSlider(): void {
-    const smallSlider = $('.product-small-thumb-4');
-    if (smallSlider.hasClass('slick-initialized')) {
-      smallSlider.slick('setPosition');
-    } else {
-      smallSlider.slick({
-        infinite: true,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        arrows: true,
-        dots: false
-      });
-    }
+  updateZoomImage(newImage: string) {
+    this.firstImage = newImage;
   }
-
-  destroySmallSlider(): void {
-    const smallSlider = $('.product-small-thumb-4');
-    if (smallSlider.hasClass('slick-initialized')) {
-      smallSlider.slick('unslick');
-    }
-  }
-
 
   getColorHex(color: string): string {
     // Mapea los nombres de los colores a sus valores hexadecimales correspondientes
@@ -177,12 +130,35 @@ export class LandingProductComponent implements OnInit, AfterViewInit {
       'Faded Eucalyptus': '#d1cbad',
       'Faded Bone': '#f3ede4',
       'White': '#ffffff',
-      
-      // Puedes agregar más colores aquí según sea necesario
+      'Leaf': '#5c9346',
+      'Autumn': '#c85313',
     };
+    return colorMap[color] || ''; // Devuelve el valor hexadecimal correspondiente al color
+  }
 
-    // Devuelve el valor hexadecimal correspondiente al color
-    return colorMap[color] || '';
+  getSwatchClass(imagen: string, color: string): any {
+    return {
+      'active': imagen === this.firstImage,
+      [color.toLowerCase()]: true,
+      'color-swatch': true
+    };
+  }
+
+  setActiveIndex(index: number) {
+    this.activeIndex = index;
+  }
+
+  selectColor(color: { color: string, imagen: string }) {
+    this.selectedColor = color.color;
+    this.firstImage = color.imagen;
+    // console.log(`Color seleccionado: ${this.selectedColor}`);
+  }
+
+  selectedVariedad(variedad:any, index: number) {
+    console.log(`Variedad antes de la actualización: ${this.variedad_selected?.valor}`);
+    this.variedad_selected = variedad;
+    this.activeIndex = index;
+    //console.log(`Talla seleccionada: ${this.variedad_selected.valor}`);
   }
 
   openModal(besProduct:any, FlashSale:any=null) {
@@ -235,11 +211,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit {
     //   return product.price_soles - this.FlashSale.discount;
     // }
     return 0;
-  }
-
-  selectedVariedad(variedad:any, index: number) {
-    this.variedad_selected = variedad;
-    this.activeIndex = index;
   }
 
   addCart(product:any) {

@@ -10,6 +10,8 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ProfileClientComponent } from './profile-client/profile-client.component';
+import { WishlistComponent } from './wishlist/wishlist.component';
+import { CompareComponent } from './compare/compare.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { ProfileClientComponent } from './profile-client/profile-client.componen
     EcommerceAuthComponent,
     ListCartsComponent,
     CheckoutComponent,
-    ProfileClientComponent
+    ProfileClientComponent,
+    WishlistComponent,
+    CompareComponent
   ],
   imports: [
     CommonModule,

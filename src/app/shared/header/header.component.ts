@@ -5,7 +5,7 @@ import { debounceTime, fromEvent } from 'rxjs';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { LanguageService } from 'src/app/services/language.service';
 declare var $:any;
-declare function headerIconToggle([]):any;
+//declare function headerIconToggle([]):any;
 declare function sectionCart():any;
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -16,7 +16,7 @@ declare function alertSuccess([]):any;
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, AfterViewInit {
+export class HeaderComponent implements OnInit /*, AfterViewInit*/ {
   euro = "€";
   selectedLanguage: string = 'ES';
   listCarts:any=[];
@@ -64,10 +64,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       });
     }
 
-    setTimeout(() => {
-      headerIconToggle($);
-      sectionCart();
-    }, 50);
+    // setTimeout(() => {
+    //   headerIconToggle($);
+    //   sectionCart();
+    // }, 50);
   }
 
   updateTotalCarts() {
@@ -78,7 +78,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
+  /*ngAfterViewInit(): void {
     this.source = fromEvent(this.filter?.nativeElement, "keyup");
     this.source.pipe(debounceTime(500)).subscribe((c:any) => {
       let data = {
@@ -97,7 +97,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         })
       }
     })
-  }
+  }*/
 
   dec(cart:any) {
     if (cart.cantidad - 1 == 0) {

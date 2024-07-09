@@ -1,66 +1,91 @@
-<div class="axil-signin-area">
+<!--Page Wrapper-->
+<div class="page-wrapper">
+   
+    <!--Header-->
+    <app-header></app-header>
+    <!--End Header-->
 
-    <!-- Start Header -->
-    <div class="signin-header d-none">
-        <div class="row align-items-center">
-            <div class="col-md-6 d-none">
-                <a href="index.html" class="site-logo"><img src="./assets/images/logo/logo.png" alt="logo"></a>
-            </div>
-            <div class="col-md-6 offset-md-4">
-                <div class="singin-header-btn">
-                    <p class="d-none">Already a member?</p>
-                    <a [routerLink]="['/auth/login']" class="axil-btn btn-bg-secondary sign-up-btn">{{ 'auth_profile.register.button_login' | translate }}</a>
+    <!-- Body Container -->
+    <div id="page-content">
+        <!--Page Header-->
+        <div class="page-header text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
+                        <div class="page-title"><h1>Create an Account</h1></div>
+                        <!--Breadcrumbs-->
+                        <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Home</a><span class="title"><i class="icon anm anm-angle-right-l"></i>My Account</span><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Create an Account</span></div>
+                        <!--End Breadcrumbs-->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- End Header -->
+        <!--End Page Header-->
 
-    <div class="row">
-        <div class="col-xl-4 col-lg-6">
-            <div class="axil-signin-banner bg_image bg_image--10">
-                <h3 class="title d-none">We Offer the Best Products</h3>
-            </div>
-        </div>
+        <!--Main Content-->
+        <div class="container">   
+            <div class="login-register pt-2">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                        <div class="inner h-100">
+                            <form method="post" action="#" class="customer-form">	
+                                <h2 class="text-center fs-4 mb-4">Register here if you are a new customer</h2>
+                                <div class="form-row">
+                                    <div class="form-group col-12">
+                                        <label for="CustomerUsername" class="d-none">Username <span class="required">*</span></label>
+                                        <input type="text" name="customer[Username]" placeholder="Username" id="CustomerUsername" value="" required />
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label for="CustomerEmail" class="d-none">Email <span class="required">*</span></label>
+                                        <input type="email" name="customer[email]" placeholder="Email" id="CustomerEmail" value="" required />
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label for="CustomerPassword" class="d-none">Password <span class="required">*</span></label>
+                                        <input type="password" name="customer[password]" placeholder="Password" id="CustomerPassword" value="" required />                        	
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label for="CustomerConfirmPassword" class="d-none">Confirm Password <span class="required">*</span></label>
+                                        <input id="CustomerConfirmPassword" type="Password" name="customer[ConfirmPassword]" placeholder="Confirm Password" required />                         	
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <div class="login-remember-forgot d-flex justify-content-between align-items-center">
+                                            <div class="agree-check customCheckbox">
+                                                <input id="agree" name="agree" type="checkbox" value="agree" required />
+                                                <label for="agree"> I agree to terms & Policy.</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-12 mb-0">
+                                        <input type="submit" class="btn btn-primary btn-lg w-100" value="Register" />
+                                    </div>
+                                </div>
 
-        <div class="col-lg-6 offset-xl-2">
-            <div class="axil-signin-form-wrap">
-                <div class="axil-signin-form">
-                    <h3 class="title text-center">Crear cuenta</h3>
-                    <p class="b2 mb--55 d-none">Ingresa tus datos a continuación</p>
-                    <form class="singin-form">
-                        <div class="form-group">
-                            <label>Nombre y apellidos</label>
-                            <input type="text" class="form-control" name="username" [(ngModel)]="name" value="anniemario">
+                                <div class="login-divide"><span class="login-divide-text">OR</span></div>
+
+                                <p class="text-center fs-6 text-muted mb-3">Or Sign up with</p>
+                                <div class="login-social d-flex-justify-center">
+                                    <a class="social-link facebook rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-facebook-f me-2"></i> Facebook</a>
+                                    <a class="social-link google rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-google-plus-g me-2"></i> Google</a>
+                                    <a class="social-link twitter rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-twitter me-2"></i> Twitter</a>
+                                </div>
+
+                                <div class="login-signup-text mt-4 mb-2 fs-6 text-center text-muted">Already have an account? <a href="login.html" onclick="return false;" [routerLink]="['/auth/login']" class="btn-link">Login now</a></div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label>Apellidos</label>
-                            <input type="text" class="form-control" name="surname" [(ngModel)]="surname">
-                        </div>
-                        <div class="form-group">
-                            <label>Correo electrónico</label>
-                            <input type="email" class="form-control" name="email" [(ngModel)]="email" value="annie@example.com">
-                        </div>
-                        <div class="form-group">
-                            <label>Contraseña</label>
-                            <input type="password" class="form-control" name="password" [(ngModel)]="password" placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                            <label>Confirmar contraseña</label>
-                            <input type="password" class="form-control" name="repeat_password" [(ngModel)]="repeat_password" placeholder="Repetir password">
-                        </div>
-                        <div class="form-group d-none">
-                            <input type="checkbox" class="form-control"><div class="text-dark b2" [innerHTML]="getTranslatedCondition()"></div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="axil-btn btn-bg-primary submit-btn w-100" (click)="register()">Continuar</button>
-                        </div>
-                        <div class="form-group d-flex align-items-center justify-content-center">
-                            <a [routerLink]="['/auth/login']" class="axil-btn sign-up-btn">{{ 'auth_profile.register.button_login' | translate }}</a>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
+        <!--End Main Content-->
     </div>
+    <!-- End Body Container -->
+
+    <!--Footer-->
+    <app-footer></app-footer>
+    <!--End Footer-->
+
+    <!--Scoll Top-->
+    <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
+    <!--End Scoll Top-->
 </div>
+<!--End Page Wrapper-->

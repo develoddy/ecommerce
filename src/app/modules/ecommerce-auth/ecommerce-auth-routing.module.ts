@@ -4,6 +4,8 @@ import { EcommerceAuthComponent } from './ecommerce-auth.component';
 import { ListCartsComponent } from './list-carts/list-carts.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ProfileClientComponent } from './profile-client/profile-client.component';
+import { WishlistComponent } from './wishlist/wishlist.component';
+import { CompareComponent } from './compare/compare.component';
 
 const routes: Routes = [{
   path: '',
@@ -20,6 +22,14 @@ const routes: Routes = [{
     {
       path: "profile",
       component: ProfileClientComponent,
+    },
+    {
+      path: "wishlist",
+      component: WishlistComponent,
+    },
+    {
+      path: "compare",
+      component: CompareComponent,
     }
   ]
 }];
