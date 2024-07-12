@@ -17,7 +17,7 @@ declare function ModalProductDetail():any;
   styleUrls: ['./filter-products.component.css']
 })
 export class FilterProductsComponent implements OnInit {
-  
+  euro = "€";
   categories:any=[];
   variedades:any=[];
   categories_selecteds:any = [];
@@ -42,7 +42,8 @@ export class FilterProductsComponent implements OnInit {
   ) {}
   
   ngOnInit(): void {
-    /*this._routerActived.params.subscribe((resp:any) => {
+
+    this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
       this.idCategorie = resp["idCategorie"];
     });
@@ -53,6 +54,7 @@ export class FilterProductsComponent implements OnInit {
 
     this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
+      console.log("Debbbug: this.categories >> ", this.categories);
       this.variedades = resp.variedades;
 
       const variedadesUnicos = new Set();
@@ -65,14 +67,15 @@ export class FilterProductsComponent implements OnInit {
           return true;
         }
       });
-    });*/
+    });
 
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       //priceRangeSlider();
     }, 50);
+    
 
-    //this.filterProduct();
+    this.filterProduct();
   }
 
   // @HostListener('window:resize', ['$event'])
@@ -135,6 +138,7 @@ export class FilterProductsComponent implements OnInit {
     }
     this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
       this.products = resp.products;
+      console.log("debug: products : ", this.products);
     });
   }
 
