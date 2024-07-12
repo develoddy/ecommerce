@@ -40,6 +40,8 @@ export class CheckoutComponent implements OnInit {
   totalCarts:any=null;
 
   show = false;
+  user:any;
+  code_cupon:any=null;
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
@@ -47,8 +49,8 @@ export class CheckoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
-    this.reloadPage();//window.location.reload();
+    this.reloadPage();
+    this.user = this._cartService._authService.user;
     
     this._authEcommerce.listAddressClient(this._authEcommerce._authService.user._id).subscribe((resp:any) => {
       this.listAddressClients = resp.address_client;
@@ -57,7 +59,6 @@ export class CheckoutComponent implements OnInit {
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
-      
       //shopFilterWidget();
     }, 50);
 
@@ -87,7 +88,7 @@ export class CheckoutComponent implements OnInit {
           }
 
           if (!this.address_client_selected) {
-            alertDanger("Necesitas seleccionar una direccion de envio");
+            alertDanger("Por favor, seleccione una dirección de envío.");
             return;
           }
           const createOrderPayload = {
@@ -153,6 +154,39 @@ export class CheckoutComponent implements OnInit {
     }).render(this.paypalElement?.nativeElement);
   }
 
+  removeCart(cart:any) {
+    this._cartService.deleteCart(cart._id).subscribe((resp:any) => {
+      this._cartService.removeItemCart(cart);
+    });
+  }
+
+  // CUpon
+  apllyCupon() {
+    let data = {
+      code: this.code_cupon,
+      user_id: this._cartService._authService.user._id,
+    }
+
+    this._cartService.apllyCupon(data).subscribe((resp:any) => {
+      if (resp.message == 403) {
+        alertDanger(resp.message_text);
+      } else {
+        alertSuccess(resp.message_text);
+        this.listAllCarts();
+      }
+    });
+  }
+
+  listAllCarts() {
+    this._cartService.resetCart();
+    if ( this._cartService._authService.user ) {
+      this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
+        resp.carts.forEach((cart:any) => {
+          this._cartService.changeCart(cart);
+        });
+      });
+    }
+  }
 
   private reloadPage(): void {
     const reloaded = sessionStorage.getItem('reloaded');
@@ -165,6 +199,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   store() {
+    console.log("debugg this.address_client_selected", this.address_client_selected);
     if (this.address_client_selected) {
       this.updateAddress();
     } else {
@@ -182,7 +217,7 @@ export class CheckoutComponent implements OnInit {
         !this.telefono ||
         !this.email
     ) {
-      alertDanger("Necesitas ingresar los campos obligatorios de la dirección");
+      alertDanger("Por favor, complete los campos obligatorios de la dirección.");
       return;
     }
     let data = {
@@ -215,7 +250,7 @@ export class CheckoutComponent implements OnInit {
       !this.telefono ||
       !this.email
     ) {
-      alertDanger("Necesitas ingresar los campos obligatorios de la dirección");
+      alertDanger("Por favor, complete los campos obligatorios de la dirección.");
       return;
     }
 
@@ -258,6 +293,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   addressClienteSelected(list_address:any) {
+    console.log("DEbugg: Selected Address: ", list_address);
     this.show = true;
 
     this.address_client_selected = list_address;
@@ -272,6 +308,14 @@ export class CheckoutComponent implements OnInit {
     this.email = this.address_client_selected.email;
     this.pais = this.address_client_selected.pais;
     this.nota = this.address_client_selected.nota;
+  }
+
+  onAddressChange(event:any) {
+    const selectedIndex = event.target.value;
+    if (selectedIndex !== "") {
+      const selectedAddress = this.listAddressClients[selectedIndex];
+      this.addressClienteSelected(selectedAddress);
+    }
   }
 
   removeAddressSelected(list_address:any) {

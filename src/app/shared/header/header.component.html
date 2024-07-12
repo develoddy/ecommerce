@@ -396,7 +396,7 @@
                 <!--End Wishlist-->
                 <!--Minicart-->
                 <div class="header-cart iconset" *ngIf="user" title="Cart">
-                    <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer"><i class="hdr-icon icon anm anm-cart-l"></i><span class="cart-count">2</span></a>
+                    <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer"><i class="hdr-icon icon anm anm-cart-l"></i><span class="cart-count">{{ listCarts.length }}</span></a>
                 </div>
                 <!--End Minicart-->
                 <!--Mobile Toggle-->
@@ -594,60 +594,54 @@
     <!--End MiniCart Empty-->
 
     <!--MiniCart Content-->
-    <div id="cart-drawer" class="block block-cart">
+    <div id="cart-drawer" class="block block-cart" *ngIf="listCarts">
         <div class="minicart-header">
             <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i></button>
-            <h4 class="fs-6">Your cart (2 Items)</h4>
+            <h4 class="fs-6">Your cart ({{ listCarts.length }} Items)</h4>
         </div>
         <div class="minicart-content">
-            <ul class="m-0 clearfix">
-                <li class="item d-flex justify-content-center align-items-center">
-                    <a class="product-image rounded-3" href="product-layout1.html">
-                        <img class="blur-up lazyload" data-src="assets/images/products/cart-product-img1.jpg" src="assets/images/products/cart-product-img1.jpg" alt="product" title="Product" width="120" height="170" />
-                    </a>
-                    <div class="product-details">
-                        <a class="product-title" href="product-layout1.html">Women Sandals</a>
-                        <div class="variant-cart my-2">Black / XL</div>
-                        <div class="priceRow">
-                            <div class="product-price">
-                                <span class="price">$54.00</span>
+            <ng-container *ngIf="listCarts.length == 0; else allCarts">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="p-2 text-center">
+                        <div class="inner mb-3">
+                            <div class="bradcrumb-thumb">
+                                <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
                             </div>
                         </div>
+                        <h5 class="header-title mb-0">Tu cesta está vacía</h5>
+                        <small>Empieza a añadir productos :)</small>
                     </div>
-                    <div class="qtyDetail text-center">
-                        <div class="qtyField">
-                            <a class="qtyBtn minus" href="#;"><i class="icon anm anm-minus-r"></i></a>
-                            <input type="text" name="quantity" value="1" class="qty">
-                            <a class="qtyBtn plus" href="#;"><i class="icon anm anm-plus-r"></i></a>
-                        </div>
-                        <a href="#" class="edit-i remove"><i class="icon anm anm-pencil-ar" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
-                        <a href="#" class="remove"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove"></i></a>
-                    </div>
-                </li>
-                <li class="item d-flex justify-content-center align-items-center">
-                    <a class="product-image rounded-3" href="product-layout1.html">
-                        <img class="blur-up lazyload" data-src="assets/images/products/cart-product-img1.jpg" src="assets/images/products/cart-product-img1.jpg" alt="product" title="Product" width="120" height="170" />
-                    </a>
-                    <div class="product-details">
-                        <a class="product-title" href="product-layout1.html">Sleeve Round T-Shirt</a>
-                        <div class="variant-cart my-2">Yellow / M</div>
-                        <div class="priceRow">
-                            <div class="product-price">
-                                <span class="price old-price">$114.00</span><span class="price">$99.00</span>
+               </div>
+            </ng-container>
+            <ng-template #allCarts>
+                <ul class="m-0 clearfix">
+                    <ng-container *ngFor="let cart of listCarts">
+                        <li class="item d-flex justify-content-center align-items-center">
+                            <a class="product-image rounded-3" href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">
+                                <img class="blur-up lazyload" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="Product" width="120" height="170" />
+                            </a>
+                            <div class="product-details">
+                                <a class="product-title" href="product-layout1.html"  href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">Women Sandals</a>
+                                <div class="variant-cart my-2" *ngIf="cart.variedad">Black / {{ cart.variedad.valor }}</div>
+                                <div class="priceRow">
+                                    <div class="product-price">
+                                        <span class="price">{{ euro }}{{ cart.total | number: '1.2-2' }}</span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="qtyDetail text-center">
-                        <div class="qtyField">
-                            <a class="qtyBtn minus" href="#;"><i class="icon anm anm-minus-r"></i></a>
-                            <input type="text" name="quantity" value="1" class="qty">
-                            <a class="qtyBtn plus" href="#;"><i class="icon anm anm-plus-r"></i></a>
-                        </div>
-                        <a href="#" class="edit-i remove"><i class="icon anm anm-pencil-ar" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
-                        <a href="#" class="remove"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove"></i></a>
-                    </div>
-                </li>
-            </ul>
+                            <div class="qtyDetail text-center">
+                                <div class="qtyField">
+                                    <a class="qtyBtn minus" href="#;" onclick="return false;" (click)="dec(cart)"><i class="icon anm anm-minus-r"></i></a>
+                                    <input type="text" name="quantity" [value]="cart.cantidad" class="qty">
+                                    <a class="qtyBtn plus" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r"></i></a>
+                                </div>
+                                <a href="#" class="edit-i remove"><i class="icon anm anm-pencil-ar" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
+                                <a href="#" class="remove" onclick="return false;" (click)="removeCart(cart)"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove"></i></a>
+                            </div>
+                        </li>
+                    </ng-container>
+                </ul>
+            </ng-template>
         </div>
         <div class="minicart-bottom">
             <div class="shipinfo">
@@ -658,7 +652,7 @@
             <div class="subtotal clearfix my-3">
                 <div class="totalInfo clearfix mb-1 d-none"><span>Shipping:</span><span class="item product-price">$10.00</span></div>
                 <div class="totalInfo clearfix mb-1 d-none"><span>Tax:</span><span class="item product-price">$0.00</span></div>
-                <div class="totalInfo clearfix"><span>Total:</span><span class="item product-price">$163.00</span></div>
+                <div class="totalInfo clearfix"><span>Total:</span><span class="item product-price">{{ euro }}{{ totalCarts | number: '1.2-2' }}</span></div>
 
             </div>
             <div class="agree-check customCheckbox">

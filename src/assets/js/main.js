@@ -1623,3 +1623,60 @@ function productZoom($) {
         cursor: "crosshair"
     });
 }
+
+function alertDanger(TEXT){
+    const notification = document.getElementById("notification-ecommerce-danger");
+    const closeBtn = document.getElementById("close");
+
+    notification?.classList.add("notification-show");
+
+    var SECONDS = 0;
+    var showTime = () => {
+        SECONDS ++;
+        $("#notification-ecommerce-danger .btn-secondary").text(SECONDS);
+    };
+    $("#notification-ecommerce-danger .text-message-notification").text(TEXT);
+    var timer = setInterval(showTime, 1000);
+    setTimeout(() => {
+      clearInterval(timer);
+      document.getElementById("notification-ecommerce-danger")?.classList.remove("notification-show");
+    }, 6000);
+}
+
+function alertWarning(TEXT){
+  const notification = document.getElementById("notification-ecommerce-warning");
+  const closeBtn = document.getElementById("close");
+
+  notification?.classList.add("notification-show");
+
+  var SECONDS = 0;
+  var showTime = () => {
+    SECONDS ++;
+    $("#notification-ecommerce-warning .btn-secondary").text(SECONDS);
+  };
+  $("#notification-ecommerce-warning .text-message-notification").text(TEXT);
+  var timer = setInterval(showTime, 1000);
+  setTimeout(() => {
+    clearInterval(timer);
+    document.getElementById("notification-ecommerce-warning")?.classList.remove("notification-show");
+  }, 6000);
+}
+
+function alertSuccess(TEXT){
+  const notification = document.getElementById("notification-ecommerce-success");
+    const closeBtn = document.getElementById("close");
+
+    notification?.classList.add("notification-show");
+
+    var SECONDS = 0;
+    var showTime = () => {
+      SECONDS ++;
+      $("#notification-ecommerce-success .btn-secondary").text(SECONDS);
+    };
+    $("#notification-ecommerce-success .text-message-notification").text(TEXT);
+    var timer = setInterval(showTime, 1000);
+    setTimeout(() => {
+      clearInterval(timer);
+      document.getElementById("notification-ecommerce-success")?.classList.remove("notification-show");
+    }, 6000);
+}

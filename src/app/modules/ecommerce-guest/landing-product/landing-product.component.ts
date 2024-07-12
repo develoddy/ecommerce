@@ -50,6 +50,9 @@ export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
   ) {}
 
   ngOnInit(): void {
+
+    //this.reloadPage();
+    
     this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
     });
@@ -77,15 +80,26 @@ export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
       this.setColoresDisponibles();
 
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
-      
+      //this.reloadPage();
         setTimeout(() => {
           HOMEINITTEMPLATE($);
           pswp($);
           productZoom($);
+          
         }, 50);
     });    
   }
 
+  private reloadPage(): void {
+    const reloaded = sessionStorage.getItem('reloaded');
+    if (!reloaded) {
+      sessionStorage.setItem('reloaded', 'true');
+      window.location.reload();
+    } else {
+      sessionStorage.removeItem('reloaded');
+    }
+  }
+  
   filterUniqueGalerias() {
     const uniqueImages = new Set();
     this.uniqueGalerias = this.product_selected.galerias.filter((galeria:any) => {
@@ -155,10 +169,10 @@ export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
   }
 
   selectedVariedad(variedad:any, index: number) {
-    console.log(`Variedad antes de la actualización: ${this.variedad_selected?.valor}`);
+    //console.log(`Variedad antes de la actualización: ${this.variedad_selected?.valor}`);
     this.variedad_selected = variedad;
     this.activeIndex = index;
-    //console.log(`Talla seleccionada: ${this.variedad_selected.valor}`);
+    console.log(`Talla seleccionada: ${this.variedad_selected.valor}`);
   }
 
   openModal(besProduct:any, FlashSale:any=null) {
@@ -214,16 +228,18 @@ export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
   }
 
   addCart(product:any) {
-    if (!this._cartService._authService.user) {
+
+    
+    if ( !this._cartService._authService.user ) {
       alertDanger("Por favor, autentifíquese para poder añadir el producto a la cesta.");
       return;
     }
-    if ($("#qty-cart").val() == 0) {
+    if ( $("#qty-cart").val() == 0 ) {
       alertDanger("Por favor, ingrese una cantidad mayor a 0 para añadir a la cesta.");
       return;
     }
-
-    if (this.product_selected.type_inventario == 2) {
+  
+    if ( this.product_selected.type_inventario == 2 ) {
       if ( !this.variedad_selected ) {
         alertDanger("Por favor, seleccione una variedad antes de añadir a la cesta.");
         return;
@@ -235,6 +251,9 @@ export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
         }
       }
     }
+    
+    console.log("Debugg: cantidad: ", product,  this.variedad_selected, $("#qty-cart").val());
+    //return;
 
     let data = {
       user: this._cartService._authService.user._id,

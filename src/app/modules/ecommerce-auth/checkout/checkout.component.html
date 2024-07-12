@@ -40,7 +40,6 @@
                         </ul>
                     </div>
                     <!--End Nav step checkout-->
-
                     <!--Tab checkout content-->
                     <div class="tab-content checkout-form">
                         <div class="tab-pane active" id="steps1">
@@ -118,31 +117,31 @@
                                         <div class="row">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label for="firstname" class="form-label">First Name <span class="required">*</span></label>
-                                                <input name="firstname" value="" id="firstname" type="text" required="" class="form-control">
+                                                <input name="firstname" value="" id="firstname" type="text" [(ngModel)]="name" required="" class="form-control">
                                             </div>
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label for="lastname" class="form-label">Last Name <span class="required">*</span></label>
-                                                <input name="lastname" value="" id="lastname" type="text" required="" class="form-control">
+                                                <input name="lastname" value="" id="lastname" type="text" [(ngModel)]="surname" required="" class="form-control">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label for="email" class="form-label">E-Mail <span class="required">*</span></label>
-                                                <input name="email" value="" id="email" type="email" required="" class="form-control">
+                                                <input name="email" value="" id="email" type="email" required="" [(ngModel)]="email" class="form-control">
                                             </div>
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label for="phone" class="form-label">Phone <span class="required">*</span></label>
-                                                <input name="phone" value="" id="phone" type="tel" required="" class="form-control">
+                                                <input name="phone" value="" id="phone" type="tel" required="" [(ngModel)]="telefono" class="form-control">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label for="address-1" class="form-label">Address <span class="required">*</span></label>
-                                                <input name="address_1" value="" id="address-1" type="text" required="" placeholder="Street address" class="form-control">
+                                                <input name="address_1" value="" id="address-1" type="text" required="" [(ngModel)]="address" placeholder="Street address" class="form-control">
                                             </div>
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label for="address-1" class="form-label d-none d-sm-block">&nbsp;</label>
-                                                <input name="address_2" value="" id="address-2" type="text" required="" placeholder="Apartment, suite, unit etc. (optional)" class="form-control">
+                                                <input name="address_2" value="" id="address-2" type="text" required="" [(ngModel)]="referencia" placeholder="Apartment, suite, unit etc. (optional)" class="form-control">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -152,7 +151,7 @@
                                             </div>
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label for="address_country1" class="form-label">Country <span class="required">*</span></label>
-                                                <select id="address_country1" name="address[country]" data-default="United States" class="form-control">
+                                                <select id="address_country1" name="address[country]" [(ngModel)]="pais" data-default="United States" class="form-control">
                                                     <option value="0" label="Select a country" selected="selected">Select a country</option>
                                                     <optgroup id="country-optgroup-Africa" label="Africa">
                                                         <option value="DZ" label="Algeria">Algeria</option>
@@ -422,7 +421,7 @@
                                         <div class="row">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label for="address_State" class="form-label">State <span class="required">*</span></label>
-                                                <select id="address_State" name="address[State]" data-default="" class="form-control">
+                                                <select id="address_State" name="address[State]" data-default="" [(ngModel)]="region" class="form-control">
                                                     <option value="0" label="Select a state" selected="selected">Select a state</option>
                                                     <option value="AL">Alabama</option>
                                                     <option value="AK">Alaska</option>
@@ -479,7 +478,7 @@
                                             </div>
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label for="address_province" class="form-label">Town / City <span class="required">*</span></label>
-                                                <select id="address_province" name="address[province]" data-default="" class="form-control">
+                                                <select id="address_province" name="address[province]" data-default="" [(ngModel)]="ciudad" class="form-control">
                                                     <option value="0" label="Select a city" selected="selected">Select a city</option>
                                                     <option value="AR">Arkansas</option>
                                                     <option value="CA">California</option>
@@ -505,9 +504,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-md-12 col-lg-12 mb-0">
-                                                <div class="checkout-tearm customCheckbox">
+                                                <a _ngcontent-tjs-c2="" href="#" onclick="return false;" class="ms-1 text-link text-decoration" (click)="store()">Registrar dirección</a>
+                                                <div class="checkout-tearm customCheckbox d-none">
                                                     <input id="checkout_tearm" name="tearm" type="checkbox" value="checkout tearm" required />
                                                     <label for="checkout_tearm"> Save address to my account</label>
+                                                    <!-- <button type="button" *ngIf="!address_client_selected" (click)="store()" class="axil-btn btn btn-success checkout-btn">Registar dirección</button> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -516,7 +517,7 @@
                             </div>
                             <!--End Shipping Address-->
                             <!--Billing Address-->
-                            <div class="block billing-address mb-4">
+                            <div class="block billing-address mb-4 d-none">
                                 <div class="block-content">
                                     <h3 class="title mb-3">Billing Address</h3>
                                     <fieldset>
@@ -926,36 +927,27 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td class="text-center cart-delete"><a href="#" class="btn btn-secondary cart-remove remove-icon position-static" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Cart"><i class="icon anm anm-times-r"></i></a></td>
-                                                            <td class="text-start"><a href="product-layout1.html" class="thumb"><img class="rounded-0 blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" alt="product" title="product" width="120" height="170" /></a></td>
-                                                            <td class="text-start proName">
-                                                                <div class="list-view-item-title">
-                                                                    <a href="product-layout1.html">Oxford Cuban Shirt</a>
-                                                                </div>
-                                                                <div class="cart-meta-text">
-                                                                    Color: Black<br>Size: Small
-                                                                </div>
-                                                            </td>
-                                                            <td class="text-center">2</td>
-                                                            <td class="text-center">$99.00</td>
-                                                            <td class="text-center"><strong>$198.00</strong></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="text-center cart-delete"><a href="#" class="btn btn-secondary cart-remove remove-icon position-static" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Cart"><i class="icon anm anm-times-r"></i></a></td>
-                                                            <td class="text-start"><a href="product-layout1.html" class="thumb"><img class="rounded-0 blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" alt="product" title="product" width="120" height="170" /></a></td>
-                                                            <td class="text-start proName">
-                                                                <div class="list-view-item-title">
-                                                                    <a href="product-layout1.html">Cuff Beanie Cap</a>
-                                                                </div>
-                                                                <div class="cart-meta-text">
-                                                                    Color: Black<br>Size: Small
-                                                                </div>
-                                                            </td>
-                                                            <td class="text-center">1</td>
-                                                            <td class="text-center">$128.00</td>
-                                                            <td class="text-center"><strong>$128.00</strong></td>
-                                                        </tr>
+                                                        <ng-container *ngFor="let cart of listCarts">
+                                                            <tr>
+                                                                <td class="text-center cart-delete"><a href="#" onclick="return false;" (click)="removeCart(cart)" class="btn btn-secondary cart-remove remove-icon position-static" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Cart"><i class="icon anm anm-times-r"></i></a></td>
+                                                                <td class="text-start">
+                                                                    <a href="product-layout1.html" class="thumb">
+                                                                        <img class="rounded-0 blur-up lazyload"  [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="product" width="120" height="170" />
+                                                                    </a>
+                                                                </td>
+                                                                <td class="text-start proName">
+                                                                    <div class="list-view-item-title">
+                                                                        <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">{{cart.product.title}}</a>
+                                                                    </div>
+                                                                    <div class="cart-meta-text">
+                                                                        Color: Black<br>Size: {{cart.variedad.valor}}
+                                                                    </div>
+                                                                </td>
+                                                                <td class="text-center">{{ cart.cantidad }}</td>
+                                                                <td class="text-center">{{ euro }}{{ cart.subtotal | number: '1.2-2' }}</td> <!--{{ euro }}{{ cart.total }} -->
+                                                                <td class="text-center"><strong>{{ euro }}{{ cart.total | number: '1.2-2' }}</strong></td>
+                                                            </tr>
+                                                        </ng-container>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -986,8 +978,8 @@
                                             <div id="coupon" class="coupon-dec">
                                                 <p>Got a promo code? Then you're a few randomly combined numbers & letters away from fab savings!</p>
                                                 <div class="input-group mb-0 d-flex">
-                                                    <input id="coupon-code" required="" type="text" class="form-control" placeholder="Promotion/Discount Code">
-                                                    <button class="coupon-btn btn btn-primary" type="submit">Apply</button>
+                                                    <input id="coupon-code" [(ngModel)]="code_cupon" required="" type="text" class="form-control" placeholder="Promotion/Discount Code">
+                                                    <button class="coupon-btn btn btn-primary" (click)="apllyCupon()" type="submit">Apply</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -998,7 +990,7 @@
                                         <div class="cart-order-detail cart-col">
                                             <div class="row g-0 border-bottom pb-2">
                                                 <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Subtotal</strong></span>
-                                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">$326.00</span></span>
+                                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ euro }}{{totalCarts}} </span></span>
                                             </div>
                                             <div class="row g-0 border-bottom py-2">
                                                 <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Coupon Discount</strong></span>
@@ -1014,14 +1006,13 @@
                                             </div>
                                             <div class="row g-0 pt-2">
                                                 <span class="col-6 col-sm-6 cart-subtotal-title fs-6"><strong>Total</strong></span>
-                                                <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end text-primary"><b class="money">$311.00</b></span>
+                                                <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end text-primary"><b class="money">{{ euro }}{{ totalCarts | number: '1.2-2' }}</b></span>
                                             </div>
                                         </div>                               
                                     </div>
                                     <!--Cart Summary-->
                                 </div>
                             </div>
-
                             <div class="d-flex justify-content-between">
                                 <button type="button" class="btn btn-secondary me-1 btnPrevious">Back to Order Summary</button>
                                 <button type="button" class="btn btn-primary ms-1 btnNext">Next Proceed to Payment</button>
@@ -1031,7 +1022,7 @@
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-7 col-lg-8">
                                     <!--Delivery Methods-->
-                                    <div class="block mb-3 delivery-methods mb-4">
+                                    <div class="block mb-3 delivery-methods mb-4 d-none">
                                         <div class="block-content">
                                             <h3 class="title mb-3">Delivery Methods</h3>
                                             <div class="delivery-methods-content">
@@ -1051,15 +1042,54 @@
                                         </div>
                                     </div>
                                     <!--End Delivery Methods-->
+
+                                    <!--Shipping address-->
+                                    <div class="block mb-3 payment-methods mb-4">
+                                        <div class="block-content">
+                                            <h3 class="title mb-3">Shipping address</h3>                                     
+                                            <div class="payment-accordion-radio">
+                                                <div class="accordion" id="accordionExample">
+                                                    <div class="accordion-item card mb-2">
+                                                        <div class="card-header d-none" id="headingShippingOne">
+                                                            <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShippingOne" aria-expanded="true" aria-controls="collapseShippingOne">
+                                                                <span class="customRadio clearfix mb-0">
+                                                                    <input id="paymentRadioShipping1" value="" name="shipping" type="radio" class="radio" checked="checked" /> 
+                                                                    <label for="paymentRadioShipping1" class="mb-0">Shipping Address</label>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                        <div id="collapseShippingOne">
+                                                            <div class="card-body px-0">
+                                                                <fieldset>
+                                                                    <div class="row">
+                                                                        <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
+                                                                            <label>Shipping Selected <span class="required">*</span></label>
+                                                                            <select name="country_id" class="form-control" (change)="onAddressChange($event)">
+                                                                                <option value="">Please Select</option>
+                                                                                <ng-container *ngFor="let list_address of listAddressClients; let i=index">
+                                                                                    <option [value]="i">{{ list_address.name +' '+ list_address.surname +' | '+ list_address.address }}</option> 
+                                                                                </ng-container>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End Shipping address-->
                                     <!--Payment Methods-->
                                     <div class="block mb-3 payment-methods mb-4">
                                         <div class="block-content">
                                             <h3 class="title mb-3">Payment Methods</h3>                                     
                                             <div class="payment-accordion-radio">
                                                 <div class="accordion" id="accordionExample">
-                                                    <div class="accordion-item card mb-2">
+                                                    <div class="accordion-item card mb-2 d-none">
                                                         <div class="card-header" id="headingOne">
-                                                            <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                            <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                                                 <span class="customRadio clearfix mb-0">
                                                                     <input id="paymentRadio1" value="" name="payment" type="radio" class="radio" checked="checked" /> 
                                                                     <label for="paymentRadio1" class="mb-0">Pay with credit card</label>
@@ -1106,7 +1136,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="accordion-item card mb-2">
+                                                    <div class="accordion-item card mb-2 d-none">
                                                         <div class="card-header" id="headingTwo">
                                                             <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                                 <span class="customRadio clearfix mb-0">
@@ -1125,7 +1155,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="accordion-item card mb-2">
+                                                    <div class="accordion-item card mb-2 d-none">
                                                         <div class="card-header" id="headingThree">
                                                             <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                                                 <span class="customRadio clearfix mb-0">
@@ -1140,7 +1170,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="accordion-item card mb-0">
+                                                    <div class="accordion-item card mb-2 d-none">
                                                         <div class="card-header" id="headingFour">
                                                             <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                                                 <span class="customRadio clearfix mb-0">
@@ -1152,6 +1182,22 @@
                                                         <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample"> 
                                                             <div class="card-body px-0">
                                                                 <p>Cash on delivery refers to an arrangement in which payment for a purchase is made directly by the purchaser to the person who delivers the item.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="accordion-item card mb-0">
+                                                        <div class="card-header" id="headingFive">
+                                                            <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                                                                <span class="customRadio clearfix mb-0">
+                                                                    <input id="paymentRadio5" value="" name="payment" type="radio" class="radio" checked="checked" /> 
+                                                                    <label for="paymentRadio5" class="mb-0">Paypal / Tarjeta de Crédito o Débito</label>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                        <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingFive" data-bs-parent="#accordionExample"> 
+                                                            <div class="card-body px-0">
+                                                                <p>Pague a través de PayPal; Puedes pagar con tu tarjeta de crédito si no tienes una cuenta PayPal.</p>
+                                                                <div class="mt-3" #paypal></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1167,7 +1213,7 @@
                                         <div class="cart-order-detail cart-col">
                                             <div class="row g-0 border-bottom pb-2">
                                                 <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Subtotal</strong></span>
-                                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">$226.00</span></span>
+                                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ euro }}{{ totalCarts }}</span></span>
                                             </div>
                                             <div class="row g-0 border-bottom py-2">
                                                 <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Coupon Discount</strong></span>
@@ -1183,25 +1229,11 @@
                                             </div>
                                             <div class="row g-0 pt-2">
                                                 <span class="col-6 col-sm-6 cart-subtotal-title fs-6"><strong>Total</strong></span>
-                                                <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end text-primary"><b class="money">$311.00</b></span>
+                                                <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end text-primary"><b class="money">{{ euro }}{{ totalCarts }}</b></span>
                                             </div>
 
                                             <a href="order-success.html" id="cartCheckout" class="btn btn-lg my-4 checkout w-100">Place order</a>
                                             <div class="paymnet-img text-center"><img src="assets/images/icons/safepayment.png" alt="Payment" width="299" height="28" /></div>
-
-                                            <div class="order-payment-method mt-3">
-                                                <div class="single-payment">
-                                                    <div class="input-group justify-content-between align-items-center">
-                                                        <input type="radio" id="radio6" name="payment" checked>
-                                                        <label for="radio6">Paypal / Tarjeta de Crédito o Débito</label>
-                                                    </div>
-                                                    <p>Pague a través de PayPal; Puedes pagar con tu tarjeta de crédito si no tienes una cuenta PayPal.</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="mt-3" #paypal>
-                                                <!-- <button type="submit" class="axil-btn btn-bg-primary checkout-btn">Process to Checkout</button> -->
-                                            </div>
                                         </div>                               
                                     </div>
                                     <!--Cart Summary-->

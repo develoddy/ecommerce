@@ -188,8 +188,14 @@ export class HeaderComponent implements OnInit /*, AfterViewInit*/ {
 
   removeCart(cart:any) {
     this._cartService.deleteCart(cart._id).subscribe((resp:any) => {
-      console.log(resp);
       this._cartService.removeItemCart(cart);
+
+      if (resp.message == 403) {
+        alertDanger(resp.message_text);
+          return;
+      } else {
+        alertSuccess("El producto ha sido eliminado correctamente de la cesta.")
+      }
     });
   }
 

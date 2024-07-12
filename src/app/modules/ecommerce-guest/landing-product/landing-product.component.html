@@ -1,5 +1,5 @@
 <!--Page Wrapper-->
-<div class="page-wrapper"  *ngIf="product_selected">
+<div class="page-wrapper" *ngIf="product_selected">
     
     <!-- Body Container -->
     <div id="page-content"> 
@@ -79,7 +79,14 @@
                             <h2 class="product-main-title">{{ product_selected.title }}</h2>
                             <!-- Product Reviews -->
                             <div class="product-review d-flex-center mb-3">
-                                <div class="reviewStar d-flex-center"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><span class="caption ms-2">{{ COUNT_REVIEW }} Reviews</span></div>
+                                <div class="reviewStar d-flex-center">
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
+                                    <span class="caption ms-2">{{ COUNT_REVIEW }} Reviews</span>
+                                </div>
                                 <a class="reviewLink d-flex-center" href="#reviews">Write a Review</a>
                             </div>
                             <!-- End Product Reviews -->
@@ -154,15 +161,15 @@
                                 <!-- Product Quantity -->
                                 <div class="product-form-quantity d-flex-center">
                                     <div class="qtyField">
-                                        <a class="qtyBtn minus" href="#;"><i class="icon anm anm-minus-r"></i></a>
-                                        <input type="text" name="quantity" value="1" class="product-form-input qty" />
-                                        <a class="qtyBtn plus" href="#;"><i class="icon anm anm-plus-r"></i></a>
+                                        <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
+                                        <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty" />
+                                        <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
                                     </div>
                                 </div>
                                 <!-- End Product Quantity -->
                                 <!-- Product Add -->
                                 <div class="product-form-submit addcart fl-1 ms-3">
-                                    <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit">
+                                    <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit" (click)="addCart(product_selected)">
                                         <span>Add to cart</span>
                                     </button>
                                     <button type="submit" name="add" class="btn btn-secondary product-form-sold-out d-none" disabled="disabled">
@@ -175,7 +182,7 @@
                                 <!-- Product Add -->
                                 <!-- Product Buy -->
                                 <div class="product-form-submit buyit fl-1 ms-3">
-                                    <button type="submit" class="btn btn-primary proceed-to-checkout"><span>Buy it now</span></button>
+                                    <button type="submit" class="btn btn-primary proceed-to-checkout" onclick="return false;" routerLink="/payment-process" ><span>Buy it now</span></button>
                                 </div>
                                 <!-- End Product Buy -->
                             </div>
@@ -600,8 +607,77 @@
                 </div>
 
                 <!--Product Grid-->
-                <div class="product-slider-4items gp10 arwOut5 grid-products">
-                    <div class="item col-item">
+                <div class="product-slider-4items gp10 arwOut5 grid-product">
+                    <ng-container *ngFor="let related_product of related_products">
+                        <div class="item col-item">
+                            <div class="product-box">
+                                <!-- Start Product Image -->
+                                <div class="product-image">
+                                    <!-- Start Product Image -->
+                                    <a [href]="'/landing-product/'+related_product.slug" class="product-img">
+                                        <img class="blur-up lazyload" [src]="related_product.imagen" alt="Product" title="Product" width="625" height="808" />
+                                    </a>
+                                    <!-- End Product Image -->
+                                    <!-- Product label -->
+                                    <div class="product-labels"><span class="lbl on-sale">Sale</span></div>
+                                    <!-- End Product label -->                                        
+                                    <!--Product Button-->
+                                    <div class="button-set style1">
+                                        <!--Cart Button-->
+                                        <a href="#quickshop-modal" class="btn-icon addtocart quick-shop-modal" data-bs-toggle="modal" data-bs-target="#quickshop_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick Shop"><i class="icon anm anm-cart-l"></i><span class="text">Quick Shop</span></span>
+                                        </a>
+                                        <!--End Cart Button-->
+                                        <!--Quick View Button-->
+                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                        </a>
+                                        <!--End Quick View Button-->
+                                        <!--Wishlist Button-->
+                                        <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                        <!--End Wishlist Button-->
+                                        <!--Compare Button-->
+                                        <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                        <!--End Compare Button-->
+                                    </div>
+                                    <!--End Product Button-->
+                                </div>
+                                <!-- End Product Image -->
+                                <!-- Start Product Details -->
+                                <div class="product-details text-left">
+                                    <!-- Product Name -->
+                                    <div class="product-name">
+                                        <a [href]="'/landing-product/'+related_product.slug">{{related_product.title}}</a>
+                                    </div>
+                                    <!-- End Product Name -->
+                                    <!-- Product Price -->
+                                    <div class="product-price">
+                                        <ng-container *ngIf="getDiscount() > 0">
+                                            <span class="price old-price">{{ euro }}{{ product_selected.price_usd }}</span>
+                                        </ng-container>
+                                        <span class="price">{{ euro }}{{ (product_selected.price_usd - getDiscount()).toFixed(2) }}</span>
+                                    </div>
+                                    <!-- End Product Price -->
+                                    <!-- Product Review -->
+                                    <div class="product-review">
+                                        <div class="reviewStar d-flex-center">
+                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
+                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
+                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
+                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
+                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
+                                        </div>
+                                        <span class="caption hidden ms-1">3 Reviews</span>
+                                    </div>
+                                    <!-- End Product Review -->
+                                </div>
+                                <!-- End product details -->
+                            </div>
+                        </div>
+                    </ng-container>
+
+
+                    <div class="item col-item d-none">
                         <div class="product-box">
                             <!-- Start Product Image -->
                             <div class="product-image">
@@ -655,7 +731,7 @@
                             <!-- End product details -->
                         </div>
                     </div>
-                    <div class="item col-item">
+                    <div class="item col-item d-none">
                         <div class="product-box">
                             <!-- Start Product Image -->
                             <div class="product-image">
@@ -713,7 +789,7 @@
                             <!-- End product details -->
                         </div>
                     </div>
-                    <div class="item col-item">
+                    <div class="item col-item d-none">
                         <div class="product-box">
                             <!-- Start Product Image -->
                             <div class="product-image">
@@ -774,7 +850,7 @@
                             <!-- End product details -->
                         </div>
                     </div>
-                    <div class="item col-item">
+                    <div class="item col-item d-none">
                         <div class="product-box">
                             <!-- Start Product Image -->
                             <div class="product-image">
@@ -832,7 +908,7 @@
                             <!-- End product details -->
                         </div>
                     </div>
-                    <div class="item col-item">
+                    <div class="item col-item d-none">
                         <div class="product-box">
                             <!-- Start Product Image -->
                             <div class="product-image">
@@ -900,7 +976,7 @@
         <!--End Related Products-->
 
         <!--Recently Viewed Products-->
-        <section class="section product-slider pb-0">
+        <section class="section product-slider pb-0 d-none">
             <div class="container">
                 <div class="section-header">
                     <p class="mb-1 mt-0">Browse Bestseller</p>
@@ -1701,26 +1777,21 @@
     <!--End Product Video Modal-->
 
     <!-- Sticky Cart -->
-    <div class="stickyCart">
+    <div class="stickyCart" *ngIf="variedades">
         <div class="container">
             <form method="post" action="#" id="stickycart-form" class="d-flex-center justify-content-center">
-                <div class="product-featured-img"><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" alt="product" width="120" height="170" /></div>
-                <div class="sticky-title ms-2 ps-1 pe-5">Oxford Cuban Shirt</div>
+                <div class="product-featured-img">
+                    <img class="blur-up lazyload" [attr.data-src]="firstImage" [src]="firstImage" alt="product" width="120" height="170" />
+                </div>
+                <div class="sticky-title ms-2 ps-1 pe-5">{{ product_selected.title }}</div>
                 <div class="stickyOptions position-relative">
                     <div class="selectedOpt">Red / S - <span class="money">$130.00</span></div>
                     <ul>
-                        <li class="vrOpt" data-val="31677941252156" data-no="0">Red / S - $130.00</li>
-                        <li class="vrOpt" data-val="31677941383228" data-no="1">Red / M - $130.00</li>
-                        <li class="vrOpt" data-val="31677941514300" data-no="2">Green / L - $130.00</li>
-                        <li class="vrOpt" data-val="31677941678140" data-no="3">Green / XL - $130.00</li>
-                        <li class="vrOpt" data-val="31677941284924" data-no="4">Pink / S - $104.00</li>
-                        <li class="vrOpt" data-val="31677941415996" data-no="5">Pink / M - $130.00</li>
-                        <li class="vrOpt" data-val="31677941579836" data-no="6">Peach / L - $130.00</li>
-                        <li class="vrOpt" data-val="31677941710908" data-no="7">Peach / XL - $130.00</li>
-                        <li class="soldout">White / S - Sold out</li>
-                        <li class="vrOpt" data-val="31677941481532" data-no="9">White / M - $130.00</li>
-                        <li class="vrOpt" data-val="31677941612604" data-no="10">Blue / L - $130.00</li>
-                        <li class="vrOpt" data-val="31677941776444" data-no="11">Blue / XL - $130.00</li>
+                        <ng-container *ngFor="let variedad of variedades; let i = index">
+                            <li class="vrOpt" data-val="31677941252156" data-no="0" [ngClass]="{ 'available': variedad.stock > 0, 'soldout': variedad.stock === 0, 'active': variedad.valor === variedad_selected?.valor}" (click)="selectedVariedad(variedad, i)">
+                                Red / {{variedad.valor}} - {{ euro }}{{ product_selected.price_usd }}
+                            </li>
+                        </ng-container>
                     </ul>
                 </div>
                 <select name="id" id="variantOptions1" class="product-form__variants selectbox no-js d-none ms-3">
@@ -1737,13 +1808,12 @@
                     <option value="31677941612604">Blue / L</option>
                     <option value="31677941776444">Blue / XL</option>
                 </select>
-
                 <div class="qtyField mx-2">
-                    <a class="qtyBtn minus" href="#;"><i class="icon anm anm-minus-r"></i></a>
-                    <input type="text" name="quantity" value="1" class="product-form-input qty" />
-                    <a class="qtyBtn plus" href="#;"><i class="icon anm anm-plus-r"></i></a>
+                    <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
+                    <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty" />
+                    <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
                 </div>
-                <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit">
+                <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit" (click)="addCart(product_selected)">
                     <span>Add to cart</span>
                 </button>                  
             </form>

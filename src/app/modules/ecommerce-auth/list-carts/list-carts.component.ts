@@ -27,7 +27,7 @@ export class ListCartsComponent implements OnInit {
   }
   ngOnInit() {
 
-    this.reloadPage();//window.location.reload();
+    this.reloadPage();
     
     setTimeout(() => {
       HOMEINITTEMPLATE($);
@@ -35,13 +35,13 @@ export class ListCartsComponent implements OnInit {
     }, 50);
 
 
-    /*this.listAllCarts();
+    this.listAllCarts();
 
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-    });*/
+    });
   }
 
   private reloadPage(): void {
@@ -146,15 +146,8 @@ export class ListCartsComponent implements OnInit {
 
   listAllCarts() {
     this._cartService.resetCart();
-
     if ( this._cartService._authService.user ) {
-     
       this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
-
-        console.log("---- listAllCarts ---");
-        console.log(resp);
-        
-        
         resp.carts.forEach((cart:any) => {
           this._cartService.changeCart(cart);
         });
