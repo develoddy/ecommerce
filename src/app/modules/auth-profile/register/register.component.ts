@@ -19,6 +19,7 @@ export class RegisterComponent implements OnInit {
   surname:string = "";
   password:string = "";
   repeat_password:string = "";
+  success:boolean=false;
 
   constructor(
     public _authService: AuthService,
@@ -45,12 +46,12 @@ export class RegisterComponent implements OnInit {
       !this.surname ||
       !this.password ||
       !this.repeat_password) {
-        alertDanger("Todos los campos son requeridos");
+        alertDanger("Todos los campos son requeridos.");
         return;
     }
 
     if(this.password != this.repeat_password) {
-      alertDanger("Las contraseñas deben ser iguales");
+      alertDanger("Ambas contraseñas deben ser iguales.");
       return;
     }
 
@@ -63,14 +64,31 @@ export class RegisterComponent implements OnInit {
       rol: "cliente"
     };
 
-    this._authService.register(data).subscribe((resp:any) => {
-      console.log(resp);
-      alertSuccess("Muy bien! Tus datos se han registrado correctamente.");
-      this.email = '';
-      this.name = '';
-      this.surname = '';
-      this.password = '';
-      this.repeat_password = '';
-    });
+    this._authService.register(data).subscribe(
+      (resp:any) => {
+        if ( resp.status === 200 ) {
+          //alertSuccess("Tus datos se han registrado correctamente.");
+          this.email = '';
+          this.name = '';
+          this.surname = '';
+          this.password = '';
+          this.repeat_password = '';
+          this.success = true;
+        } else {
+          alertDanger("Hubo un problema al registrar tus datos. Por favor, intentalo nuevamente.");
+        }
+      
+      },
+      (error) => {
+        // Manejo de errores específicos del backend
+        if ( error.status === 400 ) {
+          // Manejo de error por duplicidad de correo electrónico
+          alertDanger("Este correo electrónico ya está registrado en nuestro sistema.");
+        } else {
+          // Otros errores
+          alertDanger("Hubo un problema al registrar tus datos. Por favor, intenta nuevamente.");
+        }
+      }
+    );
   }
 }

@@ -23,31 +23,44 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container">   
+        <div class="container">
+            <!--Order success-->
+            <div class="success-text checkout-card text-center mb-4 mb-md-5" *ngIf="success">
+                <i class="icon anm anm-shield-check"></i>
+                <h2>¡Gracias por registrarte!</h2>
+                <p class="mb-1">Su cuenta ha sido creada satisfactoriamente</p>
+                <p class="mb-1 d-none">Se ha enviado un correo electrónico de confirmación a la dirección de correo electrónico proporcionada con más detalles.</p>  
+                <p class="mb-1">Por favor revise su correo electrónico para verificar su cuenta y completar el proceso de registro.</p>
+            </div>
+            <!--End Order success-->
             <div class="login-register pt-2">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                         <div class="inner h-100">
-                            <form method="post" action="#" class="customer-form">	
+                            <form class="customer-form">	
                                 <h2 class="text-center fs-4 mb-4">Register here if you are a new customer</h2>
                                 <div class="form-row">
                                     <div class="form-group col-12">
                                         <label for="CustomerUsername" class="d-none">Username <span class="required">*</span></label>
-                                        <input type="text" name="customer[Username]" placeholder="Username" id="CustomerUsername" value="" required />
+                                        <input type="text" name="name" [(ngModel)]="name" placeholder="Username" id="CustomerUsername" value="" required />
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerEmail" class="d-none">Email <span class="required">*</span></label>
-                                        <input type="email" name="customer[email]" placeholder="Email" id="CustomerEmail" value="" required />
+                                        <label for="CustomerSurname"  class="d-none">Lastname <span class="required">*</span></label>
+                                        <input type="text" name="surname" [(ngModel)]="surname" placeholder="Lastname" id="CustomerSurname" value="" required />
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerPassword" class="d-none">Password <span class="required">*</span></label>
-                                        <input type="password" name="customer[password]" placeholder="Password" id="CustomerPassword" value="" required />                        	
+                                        <label for="CustomerEmail"  class="d-none">Email <span class="required">*</span></label>
+                                        <input type="email" name="email" [(ngModel)]="email" placeholder="Email" id="CustomerEmail" value="" required />
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerConfirmPassword" class="d-none">Confirm Password <span class="required">*</span></label>
-                                        <input id="CustomerConfirmPassword" type="Password" name="customer[ConfirmPassword]" placeholder="Confirm Password" required />                         	
+                                        <label for="CustomerPassword"  class="d-none">Password <span class="required">*</span></label>
+                                        <input type="password" name="password"[(ngModel)]="password" placeholder="Password" id="CustomerPassword" value="" required />                        	
                                     </div>
                                     <div class="form-group col-12">
+                                        <label for="CustomerConfirmPassword"  class="d-none">Confirm Password <span class="required">*</span></label>
+                                        <input id="CustomerConfirmPassword" type="Password" name="repeat_password" [(ngModel)]="repeat_password" placeholder="Confirm Password" required />                         	
+                                    </div>
+                                    <div class="form-group col-12 d-none">
                                         <div class="login-remember-forgot d-flex justify-content-between align-items-center">
                                             <div class="agree-check customCheckbox">
                                                 <input id="agree" name="agree" type="checkbox" value="agree" required />
@@ -56,7 +69,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-12 mb-0">
-                                        <input type="submit" class="btn btn-primary btn-lg w-100" value="Register" />
+                                        <input type="submit" class="btn btn-primary btn-lg w-100" (click)="register()" value="Register" />
                                     </div>
                                 </div>
 
