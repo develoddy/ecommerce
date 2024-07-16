@@ -6,6 +6,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { ProfileClientComponent } from './profile-client/profile-client.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { CompareComponent } from './compare/compare.component';
+import { OrderSuccessComponent } from './order-success/order-success.component';
 
 const routes: Routes = [{
   path: '',
@@ -30,6 +31,10 @@ const routes: Routes = [{
     {
       path: "compare",
       component: CompareComponent,
+    },
+    {
+      path: "order-success",
+      component: OrderSuccessComponent,
     }
   ]
 }];

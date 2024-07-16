@@ -26,10 +26,10 @@
                     <div class="dashboard-sidebar bg-block">
                         <div class="profile-top text-center mb-4 px-3">
                             <div class="profile-image mb-3">
-                                <img class="rounded-circle blur-up lazyload" data-src="assets/images/users/user-img1.jpg" src="assets/images/users/user-img1.jpg" alt="user" width="130" />
+                                <img class="rounded-circle blur-up lazyload" data-src="assets/images/users/user-img3.jpg" src="assets/images/users/user-img3.jpg" alt="user" width="130" />
                             </div>
                             <div class="profile-detail">
-                                <h3 class="mb-1">Jecno Janesen</h3>
+                                <h3 class="mb-1">{{ name_c }} {{surname_c}}</h3>
                                 <p class="text-muted">infoexample.com</p>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                                 <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#payment" class="nav-link">Saved Cards</a></li>
                                 <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#profile" class="nav-link">Profile</a></li>
                                 <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#security" class="nav-link">Settings</a> </li>
-                                <li class="nav-item"><a href="login.html" class="nav-link">Log Out</a> </li>
+                                <li class="nav-item"><a href="login.html" onclick="return false;" (click)="logout()" class="nav-link">Log Out</a> </li>
                             </ul>
                         </div>
                     </div>
@@ -55,14 +55,14 @@
                         <div class="tab-pane fade h-100 show active" id="info">
                             <div class="account-info h-100">
                                 <div class="welcome-msg mb-4">
-                                    <h2>Hello, <span class="text-primary">Jecno Janesen</span></h2>
+                                    <h2>Hello, <span class="text-primary">{{ name_c }} {{surname_c}}</span></h2>
                                     <p>From your My Account Dashboard you have the ability to view a snapshot of your recent account activity and update your account information. Select a link below to view or edit information.</p>
                                 </div>
 
                                 <div class="row g-3 row-cols-lg-3 row-cols-md-3 row-cols-sm-3 row-cols-1 mb-4">
                                     <div class="counter-box">
                                         <div class="bg-block d-flex-center flex-nowrap">
-                                            <img class="blur-up lazyload" data-src="assets/images/icons/64x64.png" src="assets/images/icons/64x64.png" alt="icon" width="64" height="64" />
+                                            <img class="blur-up lazyload" data-src="assets/images/icons/order.png" src="assets/images/icons/order.png" alt="icon" width="64" height="64" />
                                             <div class="content">
                                                 <h3 class="fs-5 mb-1 text-primary">238</h3>
                                                 <p>Total Order</p>
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="counter-box">
                                         <div class="bg-block d-flex-center flex-nowrap">
-                                            <img class="blur-up lazyload" data-src="assets/images/icons/64x64.png" src="assets/images/icons/64x64.png" alt="icon" width="64" height="64" />
+                                            <img class="blur-up lazyload" data-src="assets/images/icons/homework.png" src="assets/images/icons/homework.png" alt="icon" width="64" height="64" />
                                             <div class="content">
                                                 <h3 class="fs-5 mb-1 text-primary">124</h3>
                                                 <p>Pending Orders</p>
@@ -80,7 +80,7 @@
                                     </div>
                                     <div class="counter-box">
                                         <div class="bg-block d-flex-center flex-nowrap">
-                                            <img class="blur-up lazyload" data-src="assets/images/icons/64x64.png" src="assets/images/icons/64x64.png" alt="icon" width="64" height="64" />
+                                            <img class="blur-up lazyload" data-src="assets/images/icons/sale.png" src="assets/images/icons/sale.png" alt="icon" width="64" height="64" />
                                             <div class="content">
                                                 <h3 class="fs-5 mb-1 text-primary">102</h3>
                                                 <p>Awaiting Payments</p>
@@ -116,6 +116,14 @@
                                             <h4>Address Book</h4> <a href="#" class="btn-link ms-auto">Edit</a>
                                         </div>
                                         <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
+                                            <ng-container *ngFor="let list_address of listAddressClients; let i=index">
+                                                <div class="box-content mt-3">
+                                                    <h5>Default Billing Address</h5>
+                                                    <address class="mb-2">{{ list_address.address }}, <br/>{{ list_address.ciudad }}, <br/>State name and Zip code.</address>
+                                                    <p><a href="#" onclick="return false;" class="btn-link">Edit Address</a></p>
+                                                </div>
+                                            </ng-container>
+                                            <!-- 
                                             <div class="box-content mt-3">
                                                 <h5>Default Billing Address</h5>
                                                 <address class="mb-2">123, The Company Name Inc, <br/>Street Road City name, <br/>State name and Zip code.</address>
@@ -125,7 +133,7 @@
                                                 <h5>Default Shipping Address</h5>
                                                 <address class="mb-2">You have not set a default shipping address.</address>
                                                 <p><a href="#" class="btn-link">Edit Address</a></p>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -227,10 +235,31 @@
                                     </div>
                                     <!-- End New Address Modal -->
                                 </div>
-
                                 <div class="address-book-section">
                                     <div class="row g-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1">
-                                        <div class="address-select-box active">
+                                        <ng-container *ngFor="let list_address of listAddressClients; let i=index">
+                                            <div class="address-select-box active">
+                                                <div class="address-box bg-block">
+                                                    <div class="top d-flex-justify-center justify-content-between mb-3">
+                                                        <h5 class="m-0">{{ list_address.name +' '+ list_address.surname }}</h5>
+                                                        <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Home</span></span>
+                                                    </div>
+                                                    <div class="middle">
+                                                        <div class="address mb-2 text-muted">
+                                                            <address class="m-0">{{ list_address.address }}, <br/>{{ list_address.ciudad }} City name, <br/>State name and Zip code.</address>
+                                                        </div>
+                                                        <div class="number">
+                                                            <p>Mobile: <a href="tel:401234567890">(+34) {{ list_address.telefono }}</a></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="bottom d-flex-justify-center justify-content-between">
+                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm" data-bs-toggle="modal" data-bs-target="#addEditModal">Edit</button>
+                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm">Remove</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <div class="address-select-box active d-none">
                                             <div class="address-box bg-block">
                                                 <div class="top d-flex-justify-center justify-content-between mb-3">
                                                     <h5 class="m-0">Hema Jecno</h5>
@@ -250,7 +279,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="address-select-box">
+                                        <div class="address-select-box d-none">
                                             <div class="address-box bg-block">
                                                 <div class="top d-flex-justify-center justify-content-between mb-3">
                                                     <h5 class="m-0">Hema Jecno</h5>
@@ -271,7 +300,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- Edit Address Modal -->
                                     <div class="modal fade" id="addEditModal" tabindex="-1" aria-labelledby="addEditModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
@@ -384,7 +412,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <ng-container *ngFor="let order of sale_orders">
+                                                <tr>
+                                                    <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
+                                                    <td><span class="id">#{{ order.sale.id }}</span></td>
+                                                    <td><span class="name">Oxford Cuban Shirt</span></td>
+                                                    <td><span class="price fw-500">{{ euro }}{{ order.sale.total }}</span></td>
+                                                    <td><span class="badge rounded-pill bg-success custom-badge">Shipped</span></td>
+                                                    <td><a href="product-layout1.html" onclick="return false" (click)="viewDetailSale(order)" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                </tr>
+                                            </ng-container>
+                                            <tr class="d-none">
                                                 <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
                                                 <td><span class="id">#12301</span></td>
                                                 <td><span class="name">Oxford Cuban Shirt</span></td>
@@ -392,7 +430,7 @@
                                                 <td><span class="badge rounded-pill bg-success custom-badge">Shipped</span></td>
                                                 <td><a href="product-layout1.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
                                             </tr>
-                                            <tr>
+                                            <tr class="d-none">
                                                 <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
                                                 <td><span class="id">#12302</span></td>
                                                 <td><span class="name">Cuff Beanie Cap</span></td>
@@ -400,7 +438,7 @@
                                                 <td><span class="badge rounded-pill bg-danger custom-badge">Pending</span></td>
                                                 <td><a href="product-layout2.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
                                             </tr>
-                                            <tr>
+                                            <tr class="d-none">
                                                 <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
                                                 <td><span class="id">#12303</span></td>
                                                 <td><span class="name">Flannel Collar Shirt</span></td>
@@ -408,7 +446,7 @@
                                                 <td><span class="badge rounded-pill bg-dark custom-badge">Processing</span></td>
                                                 <td><a href="product-layout3.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
                                             </tr>
-                                            <tr>
+                                            <tr class="d-none">
                                                 <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
                                                 <td><span class="id">#12304</span></td>
                                                 <td><span class="name">Cotton Hooded Hoodie</span></td>
@@ -832,7 +870,7 @@
                                             <h6 class="mb-0 body-font fw-500">Email address</h6>
                                         </div>
                                         <div class="right">
-                                            <p>infoexample.com</p>
+                                            <p>{{ email_c }}</p>
                                         </div>
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">

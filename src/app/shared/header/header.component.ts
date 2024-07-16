@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { debounceTime, fromEvent } from 'rxjs';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
+import { EcommerceGuestService } from 'src/app/modules/ecommerce-guest/_service/ecommerce-guest.service';
 import { LanguageService } from 'src/app/services/language.service';
 declare var $:any;
 //declare function headerIconToggle([]):any;
@@ -16,7 +17,7 @@ declare function alertSuccess([]):any;
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit /*, AfterViewInit*/ {
+export class HeaderComponent implements OnInit , AfterViewInit {
   euro = "€";
   selectedLanguage: string = 'ES';
   listCarts:any=[];
@@ -25,6 +26,7 @@ export class HeaderComponent implements OnInit /*, AfterViewInit*/ {
   //
   search_product:any=null;
   products_search:any=[];
+  categories:any=[];
 
   source:any;
   @ViewChild("filter") filter?:ElementRef;
@@ -34,6 +36,7 @@ export class HeaderComponent implements OnInit /*, AfterViewInit*/ {
     public _cartService: CartService,
     public translate: TranslateService,
     private languageService: LanguageService,
+    public _ecommerceGuestService: EcommerceGuestService,
   ) {
     translate.setDefaultLang('es');
   }
@@ -64,6 +67,10 @@ export class HeaderComponent implements OnInit /*, AfterViewInit*/ {
       });
     }
 
+    this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
+      this.categories = resp.categories;
+    });
+
     // setTimeout(() => {
     //   headerIconToggle($);
     //   sectionCart();
@@ -78,7 +85,7 @@ export class HeaderComponent implements OnInit /*, AfterViewInit*/ {
     });
   }
 
-  /*ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.source = fromEvent(this.filter?.nativeElement, "keyup");
     this.source.pipe(debounceTime(500)).subscribe((c:any) => {
       let data = {
@@ -97,7 +104,7 @@ export class HeaderComponent implements OnInit /*, AfterViewInit*/ {
         })
       }
     })
-  }*/
+  }
 
   dec(cart:any) {
     if (cart.cantidad - 1 == 0) {

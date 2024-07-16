@@ -12,6 +12,7 @@ declare function alertSuccess([]):any;
 })
 export class ProfileClientComponent implements OnInit {
 
+  euro = "€";
   sale_orders:any = [];
   is_detail_sale:any = false;
   order_selected:any=null;
@@ -62,8 +63,9 @@ export class ProfileClientComponent implements OnInit {
     };
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
-      console.log("---- FRONT show Profile ", resp);
+      
       this.sale_orders = resp.sale_orders;
+      console.log("---- FRONT show Profile ", this.sale_orders);
       this.listAddressClients = resp.address_client;
     });
   }
@@ -240,7 +242,6 @@ export class ProfileClientComponent implements OnInit {
   addCantidad(cantidad:number) {
     this.cantidad = cantidad; 
   }
-
 
   save() {
 

@@ -54,11 +54,8 @@ export class FilterProductsComponent implements OnInit {
 
     this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
-      console.log("Debbbug: this.categories >> ", this.categories);
       this.variedades = resp.variedades;
-
       const variedadesUnicos = new Set();
-
       this.variedades = this.variedades.filter((variedad:any) => {
         if (variedadesUnicos.has(variedad.valor)) {
           return false;

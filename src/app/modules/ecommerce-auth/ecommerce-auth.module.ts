@@ -12,6 +12,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { ProfileClientComponent } from './profile-client/profile-client.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { CompareComponent } from './compare/compare.component';
+import { OrderSuccessComponent } from './order-success/order-success.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { CompareComponent } from './compare/compare.component';
     CheckoutComponent,
     ProfileClientComponent,
     WishlistComponent,
-    CompareComponent
+    CompareComponent,
+    OrderSuccessComponent
   ],
   imports: [
     CommonModule,
