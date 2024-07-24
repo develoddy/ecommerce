@@ -3,6 +3,7 @@ import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
 import { Subscription } from 'rxjs';
+import { MinicartService } from 'src/app/services/minicartService.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -52,6 +53,7 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     public _router: Router,
     public _routerActived: ActivatedRoute,
     public _cartService: CartService,
+    private minicartService: MinicartService,
   ) {}
 
   ngOnInit(): void {
@@ -253,9 +255,6 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
         }
       }
     }
-    
-    console.log("Debugg: cantidad: ", product,  this.variedad_selected, $("#qty-cart").val());
-    //return;
 
     let data = {
       user: this._cartService._authService.user._id,
@@ -277,7 +276,8 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
           return;
       } else {
         this._cartService.changeCart(resp.cart);
-        alertSuccess("El producto ha sido añadido correctamente a la cesta.")
+        alertSuccess("El producto ha sido añadido correctamente a la cesta.");
+        this.minicartService.openMinicart();
       }
     }, error => {
       if (error.error.message == "EL TOKEN NO ES VALIDO") {
