@@ -33,10 +33,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-       HOMEINITTEMPLATE($);
-       pswp($);
-    }, 50);
+    // setTimeout(() => {
+    //    HOMEINITTEMPLATE($);
+    //    pswp($);
+    // }, 50);
     
     // setTimeout(() => {
     //   sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');

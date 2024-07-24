@@ -49,7 +49,7 @@ export class CheckoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.reloadPage();
+    //this.reloadPage();
     this.user = this._cartService._authService.user;
     
     this._authEcommerce.listAddressClient(this._authEcommerce._authService.user._id).subscribe((resp:any) => {

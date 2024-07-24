@@ -279,7 +279,7 @@
             <!--Right Icon-->
             <div class="col-7 col-sm-9 col-md-9 col-lg-2 align-self-center icons-col text-right">
                 <!--Search-->
-                <div class="search-parent iconset">
+                <div class="search-parent iconset" *ngIf="user">
                     <div class="site-search" title="Search">
                         <a href="#;" class="search-icon clr-none" data-bs-toggle="offcanvas" data-bs-target="#search-drawer"><i class="hdr-icon icon anm anm-search-l"></i></a>
                     </div>
@@ -294,9 +294,10 @@
                                     <!--Search Field-->
                                     <div class="d-flex searchField">
                                         <div class="search-category">
-                                            <select class="rgsearch-category rounded-end-0" *ngFor="let categorie of categories">
+                                            <select class="rgsearch-category rounded-end-0">
                                                 <option value="0">All Categories</option>
-                                                <option value="1">- {{ categorie.title }}</option>
+                                                <option *ngFor="let categorie of categories" [value]="categorie.id">- {{ categorie.title }}</option>
+                                                <!-- <option value="1">- {{ categorie.title }}</option> -->
                                                 <!-- <option value="2">- Fashion</option>
                                                 <option value="3">- Shoes</option>
                                                 <option value="4">- Electronic</option>
@@ -316,9 +317,12 @@
                                     <div class="popular-searches d-flex-justify-center mt-3">
                                         <span class="title fw-600">Trending Now:</span>
                                         <div class="d-flex-wrap searches-items">
-                                            <a class="text-link ms-2" href="#" onclick="return false;">T-Shirt,</a>
-                                            <a class="text-link ms-2" href="#" onclick="return false;">Shoes,</a>
-                                            <a class="text-link ms-2" href="#" onclick="return false;">Bags</a>
+                                            <ng-container *ngFor="let categorie of categories">
+                                                <a class="text-link ms-2" href="#" onclick="return false;">{{ categorie.title }},</a>
+                                            </ng-container>
+                                            <a class="text-link ms-2 d-none" href="#" onclick="return false;">T-Shirt,</a>
+                                            <a class="text-link ms-2 d-none" href="#" onclick="return false;">Shoes,</a>
+                                            <a class="text-link ms-2 d-none" href="#" onclick="return false;">Bags</a>
                                         </div>
                                     </div>
                                     <!--End Search popular-->
@@ -421,7 +425,9 @@
                 <!--End Wishlist-->
                 <!--Minicart-->
                 <div class="header-cart iconset" *ngIf="user" title="Cart">
-                    <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer"><i class="hdr-icon icon anm anm-cart-l"></i><span class="cart-count">{{ listCarts.length }}</span></a>
+                    <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
+                        <i class="hdr-icon icon anm anm-cart-l"></i><span class="cart-count">{{ listCarts.length }}</span>
+                    </a>
                 </div>
                 <!--End Minicart-->
                 <!--Mobile Toggle-->

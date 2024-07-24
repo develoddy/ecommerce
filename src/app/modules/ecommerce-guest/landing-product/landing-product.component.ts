@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
+import { Subscription } from 'rxjs';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -20,7 +21,7 @@ declare function alertSuccess([]):any;
   templateUrl: './landing-product.component.html',
   styleUrls: ['./landing-product.component.css']
 })
-export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
+export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewInit*/ {
 
   euro = "€";
   slug:any=null;
@@ -42,6 +43,10 @@ export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
   coloresDisponibles: { color: string, imagen: string }[] = [];
   variedades: any[] = [];
 
+  private routeParamsSubscription: Subscription | undefined;
+  private queryParamsSubscription: Subscription | undefined;
+  private productSubscription: Subscription | undefined;
+
   constructor(
     public _ecommerce_guestService: EcommerceGuestService,
     public _router: Router,
@@ -50,18 +55,17 @@ export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
   ) {}
 
   ngOnInit(): void {
-
     //this.reloadPage();
-    
-    this._routerActived.params.subscribe((resp:any) => {
+    this.routeParamsSubscription = this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
     });
-    this._routerActived.queryParams.subscribe((resp:any) => {
+
+    this.queryParamsSubscription = this._routerActived.queryParams.subscribe((resp:any) => {
       this.discount_id = resp["_id"];
     });
-    this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
+
+    this.productSubscription = this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
       this.product_selected = resp.product;
-      console.log("___DEBBUG: ", this.product_selected);
       this.related_products = resp.related_products;
       this.SALE_FLASH = resp.SALE_FLASH;
       this.REVIEWS = resp.REVIEWS;
@@ -81,11 +85,11 @@ export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
 
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
       //this.reloadPage();
+
         setTimeout(() => {
           HOMEINITTEMPLATE($);
           pswp($);
           productZoom($);
-          
         }, 50);
     });    
   }
@@ -228,8 +232,6 @@ export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
   }
 
   addCart(product:any) {
-
-    
     if ( !this._cartService._authService.user ) {
       alertDanger("Por favor, autentifíquese para poder añadir el producto a la cesta.");
       return;
@@ -283,4 +285,18 @@ export class LandingProductComponent implements OnInit/*, AfterViewInit*/ {
       }
     });
   }
+
+  ngOnDestroy(): void {
+    if (this.routeParamsSubscription) {
+      this.routeParamsSubscription.unsubscribe();
+    }
+    if (this.queryParamsSubscription) {
+      this.queryParamsSubscription.unsubscribe();
+    }
+    if (this.productSubscription) {
+      this.productSubscription.unsubscribe();
+    }
+    console.log('____Debbug: El componente del Landing de producto ha sido destruido..');
+  }
+
 }

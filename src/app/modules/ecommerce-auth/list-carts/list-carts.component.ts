@@ -27,7 +27,7 @@ export class ListCartsComponent implements OnInit {
   }
   ngOnInit() {
 
-    this.reloadPage();
+    //this.reloadPage();
     
     setTimeout(() => {
       HOMEINITTEMPLATE($);

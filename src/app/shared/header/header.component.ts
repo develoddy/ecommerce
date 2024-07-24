@@ -1,12 +1,14 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { debounceTime, fromEvent } from 'rxjs';
+import { debounceTime, fromEvent, Subscription } from 'rxjs';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { EcommerceGuestService } from 'src/app/modules/ecommerce-guest/_service/ecommerce-guest.service';
 import { LanguageService } from 'src/app/services/language.service';
+import { MinicartService } from 'src/app/services/minicartService.service';
 declare var $:any;
 //declare function headerIconToggle([]):any;
+declare function HOMEINITTEMPLATE([]):any;
 declare function sectionCart():any;
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -17,7 +19,7 @@ declare function alertSuccess([]):any;
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit , AfterViewInit {
+export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
   euro = "€";
   selectedLanguage: string = 'ES';
   listCarts:any=[];
@@ -31,12 +33,17 @@ export class HeaderComponent implements OnInit , AfterViewInit {
   source:any;
   @ViewChild("filter") filter?:ElementRef;
 
+  private cartSubscription: Subscription | undefined;
+  private ecommerceSubscription: Subscription | undefined;
+  private searchSubscription: Subscription | undefined;
+
   constructor(
     public _router: Router,
     public _cartService: CartService,
     public translate: TranslateService,
     private languageService: LanguageService,
     public _ecommerceGuestService: EcommerceGuestService,
+    private minicartService: MinicartService,
   ) {
     translate.setDefaultLang('es');
   }
@@ -54,8 +61,9 @@ export class HeaderComponent implements OnInit , AfterViewInit {
    }
 
   ngOnInit() {
+    this.reloadPage();
     this.user = this._cartService._authService.user;
-    this._cartService.currenteDataCart$.subscribe((resp:any) => {
+    this.cartSubscription = this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
     });
@@ -67,7 +75,7 @@ export class HeaderComponent implements OnInit , AfterViewInit {
       });
     }
 
-    this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
+    this.ecommerceSubscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
     });
 
@@ -77,8 +85,18 @@ export class HeaderComponent implements OnInit , AfterViewInit {
     // }, 50);
   }
 
+  private reloadPage(): void {
+    const reloaded = sessionStorage.getItem('reloaded');
+    if (!reloaded) {
+      sessionStorage.setItem('reloaded', 'true');
+      window.location.reload();
+    } else {
+      sessionStorage.removeItem('reloaded');
+    }
+  }
+
   updateTotalCarts() {
-    this._cartService.currenteDataCart$.subscribe((resp:any) => {
+    this.cartSubscription = this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
@@ -86,24 +104,23 @@ export class HeaderComponent implements OnInit , AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.source = fromEvent(this.filter?.nativeElement, "keyup");
-    this.source.pipe(debounceTime(500)).subscribe((c:any) => {
-      let data = {
-        search_product: this.search_product,
-      }
-
-      console.log("--- admin: search ----");
-      console.log(data);
-      
-      
-      if(this.search_product.length > 1){
-        this._cartService.searchProduct(data).subscribe((resp:any) => {
-          console.log(resp);
-          
-          this.products_search = resp.products;
-        })
-      }
-    })
+    if (this.filter) {
+      this.source = fromEvent(this.filter?.nativeElement, "keyup");
+      this.source.pipe(debounceTime(500)).subscribe((c:any) => {
+        let data = {
+          search_product: this.search_product,
+        }
+        if(this.search_product.length > 1){
+          this._cartService.searchProduct(data).subscribe((resp:any) => {
+            console.log(resp);
+            
+            this.products_search = resp.products;
+          })
+        }
+      });
+    } else {
+      console.error("filter is undefined");
+    }
   }
 
   dec(cart:any) {
@@ -206,7 +223,22 @@ export class HeaderComponent implements OnInit , AfterViewInit {
     });
   }
 
-  searchProduct() {
-    
+  searchProduct() {}
+
+  closeMinicart() {
+    this.minicartService.closeMinicart();
+  }
+
+  ngOnDestroy(): void {
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
+    }
+    if (this.ecommerceSubscription) {
+      this.ecommerceSubscription.unsubscribe();
+    }
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+    console.log('HeaderComponent has been destroyed.');
   }
 }
