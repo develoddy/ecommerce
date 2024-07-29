@@ -158,7 +158,7 @@
         <!--End Service Section-->
 
         <!--Collection banner-->
-        <section class="section collection-banners pb-0">
+        <section class="section collection-banners pb-0 d-none">
             <div class="container">                      
                 <div class="collection-banner-grid">
                     <div class="row sp-row">
@@ -295,7 +295,7 @@
                                                         </a>
                                                         <!--End Cart Button-->
                                                         <!--Quick View Button-->
-                                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModal(ourProduct, FlashSale)">
                                                             <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
                                                         </a>
                                                         <!--End Quick View Button-->
@@ -328,7 +328,7 @@
                                                     </div>
                                                     <!-- End Product Review -->
                                                     <!-- Variant -->
-                                                    <ul class="variants-clr swatches">
+                                                    <ul class="variants-clr swatches d-none">
                                                         <li class="swatch medium radius red"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="red"></span></li>
                                                         <li class="swatch medium radius orange"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="orange"></span></li>
                                                         <li class="swatch medium radius yellow"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="yellow"></span></li>
@@ -2300,10 +2300,10 @@
     <!-- End Product Addtocart Modal -->
 
     <!-- Product Quickview Modal-->
-    <div class="quickview-modal modal fade" id="quickview_modal" tabindex="-1" aria-hidden="true">           
+    <div class="quickview-modal modal fade" id="quickview_modal" tabindex="-1" aria-hidden="true" >           
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-body" *ngIf="product_selected">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 mb-3 mb-md-0">
@@ -2311,48 +2311,22 @@
                             <div id="quickView" class="carousel slide">
                                 <!-- Image Slide carousel items -->
                                 <div class="carousel-inner">
-                                    <div class="item carousel-item active" data-bs-slide-number="0">
-                                        <img class="blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="product" title="Product" width="625" height="808" />
-                                    </div>
-                                    <div class="item carousel-item" data-bs-slide-number="1">
-                                        <img class="blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
-                                    </div>
-                                    <div class="item carousel-item" data-bs-slide-number="2">
-                                        <img class="blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
-                                    </div>
-                                    <div class="item carousel-item" data-bs-slide-number="3">
-                                        <img class="blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
-                                    </div>
-                                    <div class="item carousel-item" data-bs-slide-number="4">
-                                        <img class="blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
-                                    </div>
-                                    <div class="item carousel-item" data-bs-slide-number="5">
-                                        <img class="blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
-                                    </div>
+                                    <ng-container *ngFor="let item of filteredGallery">
+                                        <div class="item carousel-item active" data-bs-slide-number="0">
+                                            <img class="blur-up lazyload" [attr.data-src]="item.imagen" [src]="item.imagen" alt="product" title="Product" width="625" height="808" />
+                                        </div>
+                                    </ng-container>
                                 </div>
                                 <!-- End Image Slide carousel items -->
                                 <!-- Thumbnail image -->
                                 <div class="model-thumbnail-img">
                                     <!-- Thumbnail slide -->
                                     <div class="carousel-indicators list-inline">
-                                        <div class="list-inline-item active" id="carousel-selector-0" data-bs-slide-to="0" data-bs-target="#quickView">
-                                            <img class="blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="product" title="Product" width="625" height="808" />
-                                        </div>
-                                        <div class="list-inline-item" id="carousel-selector-1" data-bs-slide-to="1" data-bs-target="#quickView">
-                                            <img class="blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
-                                        </div>
-                                        <div class="list-inline-item" id="carousel-selector-2" data-bs-slide-to="2" data-bs-target="#quickView">
-                                            <img class="blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
-                                        </div>
-                                        <div class="list-inline-item" id="carousel-selector-3" data-bs-slide-to="3" data-bs-target="#quickView">
-                                            <img class="blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
-                                        </div>
-                                        <div class="list-inline-item" id="carousel-selector-4" data-bs-slide-to="4" data-bs-target="#quickView">
-                                            <img class="blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
-                                        </div>
-                                        <div class="list-inline-item" id="carousel-selector-5" data-bs-slide-to="5" data-bs-target="#quickView">
-                                            <img class="blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
-                                        </div>
+                                        <ng-container *ngFor="let item of filteredGallery">
+                                            <div class="list-inline-item active" id="carousel-selector-0" data-bs-slide-to="0" data-bs-target="#quickView">
+                                                <img class="blur-up lazyload" [attr.data-src]="item.imagen" [src]="item.imagen" alt="product" title="Product" width="625" height="808" />
+                                            </div>
+                                        </ng-container>
                                     </div>
                                     <!-- End Thumbnail slide -->
                                     <!-- Carousel arrow button -->
@@ -2363,16 +2337,22 @@
                                 <!-- End Thumbnail image -->
                             </div>
                             <!-- End Model Thumbnail -->
-                            <div class="text-center mt-3"><a href="product-layout1.html" class="text-link">View More Details</a></div>
+                            <div class="text-center mt-3 d-none"><a href="product-layout1.html"  class="text-link">View More Details</a></div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6">
 
                             <div class="product-arrow d-flex justify-content-between">
-                                <h2 class="product-title">Product Quick View Popup</h2>
+                                <h2 class="product-title">{{product_selected.title}}</h2>
                             </div>
                             <div class="product-review d-flex mt-0 mb-2">
-                                <div class="rating"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i></div>
-                                <div class="reviews ms-2"><a href="#">6 Reviews</a></div>
+                                <div class="rating">
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
+                                </div>
+                                <div class="reviews ms-2"><a href="#">{{ COUNT_REVIEW }} Reviews</a></div>
                             </div>
                             <div class="product-info">
                                 <p class="product-vendor">Vendor:<span class="text"><a href="#">Sparx</a></span></p>  
@@ -2386,41 +2366,42 @@
                                 <span class="d-flex-center stockLbl lowstock" data-qty="15"><i class="icon anm anm-exclamation-cir"></i><span> Order now, Only  <span class="items">10</span>  left!</span></span>
                             </div>
                             <div class="product-price d-flex-center my-3">
-                                <span class="price old-price">$135.00</span><span class="price">$99.00</span>
+                                <span class="price">{{ euro }}{{product_selected.price_usd}}</span>
                             </div>
                             <div class="sort-description">The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.</div>
-                            <form method="post" action="#" id="product_form--option" class="product-form">
+                            <form id="product_form--option" class="product-form">
                                 <div class="product-options d-flex-wrap">
                                     <div class="product-item swatches-image w-100 mb-3 swatch-0 option1" data-option-index="0">
-                                        <label class="label d-flex align-items-center">Color:<span class="slVariant ms-1 fw-bold">Blue</span></label>
-                                        <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
-                                            <li class="swatch large radius available active"><img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80" height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Blue" /></li>
-                                            <li class="swatch large radius available"><img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80" height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Black" /></li>
-                                            <li class="swatch large radius available"><img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80" height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Pink" /></li>
-                                            <li class="swatch large radius available green"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Green"></span></li>
-                                            <li class="swatch large radius soldout yellow"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Yellow"></span></li>
+                                        <label class="label d-flex align-items-center">Color:<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label>
+                                        <ul class="variants-clr swatches d-flex-center pt-1 clearfix"> 
+                                            <ng-container *ngFor="let color of coloresDisponibles">
+                                                <li class="swatch x-large available" [ngClass]="getSwatchClass(color.imagen, color.color)" (click)="selectColor(color)">
+                                                    <img [src]="color.imagen" alt="image" width="80" height="80" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="color.color" />
+                                                    <div class="color-swatch-indicator" [ngStyle]="{'background-color': getColorHex(color.color)}"></div>
+                                                </li>
+                                            </ng-container>
                                         </ul>
                                     </div>
                                     <div class="product-item swatches-size w-100 mb-3 swatch-1 option2" data-option-index="1">
                                         <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">S</span></label>
                                         <ul class="variants-size size-swatches d-flex-center pt-1 clearfix">
-                                            <li class="swatch large radius soldout"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XS">XS</span></li>
-                                            <li class="swatch large radius available active"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="S">S</span></li>
-                                            <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="M">M</span></li>
-                                            <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="L">L</span></li>
-                                            <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XL">XL</span></li>
+                                            <ng-container *ngFor="let variedad of variedades; let i = index">
+                                                <li  class="swatch x-large" [ngClass]="{ 'available': variedad.stock > 0, 'soldout': variedad.stock === 0, 'active': variedad.valor === variedad_selected?.valor}" (click)="selectedVariedad(variedad, i)">
+                                                    <span class="swatchLbl" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="variedad.valor">{{variedad.valor}}</span>
+                                                </li>
+                                            </ng-container>
                                         </ul>
                                     </div>
                                     <div class="product-action d-flex-wrap w-100 pt-1 mb-3 clearfix">
                                         <div class="quantity">
-                                            <div class="qtyField rounded">
-                                                <a class="qtyBtn minus" href="#;"><i class="icon anm anm-minus-r" aria-hidden="true"></i></a>
-                                                <input type="text" name="quantity" value="1" class="product-form__input qty">
-                                                <a class="qtyBtn plus" href="#;"><i class="icon anm anm-plus-l" aria-hidden="true"></i></a>
+                                            <div class="qtyField">
+                                                <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
+                                                <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty" />
+                                                <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
                                             </div>
                                         </div>                                
                                         <div class="addtocart ms-3 fl-1">
-                                            <button type="submit" name="add" class="btn product-cart-submit w-100"><span>Add to cart</span></button>
+                                            <button type="submit" name="add" class="btn product-cart-submit w-100" (click)="addCart(product_selected)"><span>Add to cart</span></button>
                                         </div>
                                     </div>
                                 </div>

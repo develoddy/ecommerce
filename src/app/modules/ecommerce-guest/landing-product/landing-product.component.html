@@ -61,12 +61,9 @@
 
                             <!-- Product Gallery -->
                             <div class="lightboximages">
-                                <a href="assets/images/products/product1.jpg" data-size="1000x1280"></a>
-                                <a href="assets/images/products/product1-1.jpg" data-size="1000x1280"></a>
-                                <a href="assets/images/products/product1-1.jpg" data-size="1000x1280"></a>
-                                <a href="assets/images/products/product1-1.jpg" data-size="1000x1280"></a>
-                                <a href="assets/images/products/product1-1.jpg" data-size="1000x1280"></a>
-                                <a href="assets/images/products/product1-1.jpg" data-size="1000x1280"></a>
+                                <ng-container *ngFor="let item of uniqueGalerias">
+                                    <a [href]="item.imagen" data-size="1000x1280" [attr.data-image]="item.imagen"></a>
+                                </ng-container>
                             </div>
                             <!-- End Product Gallery -->
                         </div>

@@ -86,7 +86,6 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
       this.setColoresDisponibles();
 
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
-      //this.reloadPage();
 
         setTimeout(() => {
           HOMEINITTEMPLATE($);

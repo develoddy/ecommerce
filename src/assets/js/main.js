@@ -1680,3 +1680,19 @@ function alertSuccess(TEXT){
       document.getElementById("notification-ecommerce-success")?.classList.remove("notification-show");
     }, 6000);
 }
+
+function LandingProductDetail() {
+    $(".qtyBtn").on("click", function() {
+        var qtyField = $(this).parent(".qtyField"),
+                oldValue = $(qtyField).find(".qty").val(),
+                newVal = 1;
+
+        if ($(this).is(".plus")) {
+            newVal = parseInt(oldValue) + 1;
+        } else if (oldValue > 1) {
+            newVal = parseInt(oldValue) - 1;
+        }
+        $(qtyField).find(".qty").val(newVal);
+    });
+    
+}

@@ -6,10 +6,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/services/language.service';
 import { Subscription } from 'rxjs';
 
-//declare function LandingProductDetail():any;
+declare function LandingProductDetail():any;
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
+declare function pswp([]):any;
+declare function productZoom([]):any;
 declare function ModalProductDetail():any;
 declare function alertDanger([]):any;
 declare function alertSuccess([]):any;
@@ -46,22 +48,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   isDesktopSize: boolean = window.innerWidth >= 992; // Inicialización
 
+  firstImage: string = '';
+  coloresDisponibles: { color: string, imagen: string }[] = [];
+
+  variedades: any[] = [];
+
   constructor(
     public homeService: HomeService,
     public _cartService: CartService,
     public _router: Router,
     public translate: TranslateService,
     //private languageService: LanguageService,
-  ) {
-    //translate.setDefaultLang('es');
-   
-  }
+  ) { }
 
   private translateTextAccordingToLanguage(language: string): string {
     // Lógica para traducir el texto según el idioma
     return 'Texto traducido';
   }
-
 
   ngOnInit(): void {
     this.checkWindowSize();
@@ -93,11 +96,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
           }
         }
         HOMEINITTEMPLATE($);
-        //LandingProductDetail();
-
-        //this.initializeLargeSlider();
-        //this.initializeSmallSlider();
-        
         this.extractTags();
       }, 50);
     });
@@ -125,6 +123,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.checkWindowSize();
   }
 
+  getSwatchClass(imagen: string, color: string): any {
+    return {
+      'active': imagen === this.firstImage,
+      [color.toLowerCase()]: true,
+      'color-swatch': true
+    };
+  }
+
   checkWindowSize() {
     this.isDesktopSize = window.innerWidth >= 992;
   }
@@ -150,38 +156,44 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.selectedColor = this.allTags[0][0]; // Seleccionar el primer color del primer producto
     }
   }
-    
-
+  
   openModal(besProduct:any, FlashSale:any=null) {
-    this.product_selected = null;
+    this.product_selected = besProduct;
+    //this.product_selected = null;
 
     setTimeout(() => {
-      this.product_selected = besProduct;
       
-      this.sizesUnicos( this.product_selected );
-      this.selectedColor = this.product_selected.tags[0];
-      this.variedad_selected = this.product_selected.variedades[0];
-      this.product_selected.FlashSale = FlashSale;
+      this.filterUniqueGalerias(this.product_selected);
 
-      this.updateFilteredGallery(this.product_selected);
-      this.reinitializeSliders();
+      // Filtrar tallas duplicadas y eliminar tallas no disponibles
+      this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1); // Ordenar por valor de menor a mayor
+      
+      // Seleccionar automáticamente la primera talla si hay alguna disponible
+      this.variedad_selected = this.variedades[0] || null;
+      this.activeIndex = 0;
+
+      this.setColoresDisponibles();
+      this.selectedColor = this.coloresDisponibles[0]?.color || '';
 
       setTimeout(() => {
-        //LandingProductDetail();
-        ModalProductDetail();
-        this.updateFilteredGallery(this.product_selected);
-        this.initializeLargeSlider();
-        this.initializeSmallSlider();
+        LandingProductDetail();
+        pswp($);
+        productZoom($);
       }, 50);
     }, 150);
   }
 
-  selectColor(index: number): void {
-    this.selectedColor = this.product_selected.tags[index];
-    console.log("this.selectedColor: ", this.selectedColor );
-    this.updateFilteredGallery(this.product_selected);
-    this.reinitializeSliders();
+  selectColor(color: { color: string, imagen: string }) {
+    this.selectedColor = color.color;
+    this.firstImage = color.imagen;
   }
+
+  // selectColor(index: number): void {
+  //   this.selectedColor = this.product_selected.tags[index];
+  //   console.log("this.selectedColor: ", this.selectedColor );
+  //   this.filterUniqueGalerias(this.product_selected);
+  //   this.reinitializeSliders();
+  // }
 
   reinitializeSliders(): void {
     this.destroyLargeSlider();
@@ -194,13 +206,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }, 50);
   }
 
-  updateFilteredGallery(product_selected:any): void {
-    console.log("___FRONT updateFilteredGallery", product_selected);
-    
-    this.filteredGallery = product_selected.galerias.filter(
-      (item: any) => item.color === this.selectedColor
-    );
+  filterUniqueGalerias(product_selected:any) {
+    const uniqueImages = new Set();
+    this.filteredGallery = product_selected.galerias.filter((galeria:any) => {
+      const isDuplicate = uniqueImages.has(galeria.imagen);
+      uniqueImages.add(galeria.imagen);
+      return !isDuplicate;
+    });
   }
+
   
   initializeLargeSlider(): void {
     const largeSlider = $('.single-product-thumbnail');
@@ -261,11 +275,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
       'Sport Grey': '#9b969c',
       'Light blue': '#9dbfe2',
       'Faded Eucalyptus': '#d1cbad',
-      // Puedes agregar más colores aquí según sea necesario
+      'Faded Bone': '#f3ede4',
+      'White': '#ffffff',
+      'Leaf': '#5c9346',
+      'Autumn': '#c85313',
     };
+    return colorMap[color] || ''; // Devuelve el valor hexadecimal correspondiente al color
+  }
 
-    // Devuelve el valor hexadecimal correspondiente al color
-    return colorMap[color] || '';
+  setColoresDisponibles() {
+    const uniqueColors = new Map();
+    this.product_selected.galerias.forEach((galeria: any) => {
+      if (!uniqueColors.has(galeria.color)) {
+        uniqueColors.set(galeria.color, { imagen: galeria.imagen, hex: this.getColorHex(galeria.color) });
+      }
+    });
+    this.coloresDisponibles = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
   }
 
   getCalNewPrice(product:any) {
@@ -315,9 +340,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return {};
   }
 
-  //...
-  //...
-  // VerificaR!
 
   addCart(product:any, is_sale_flash:any=null) {
     if (!this._cartService._authService.user) {
@@ -341,7 +363,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     }*/
     
-    console.log("___FRONT: ", product);
     if (product.type_inventario == 2) { // Si el producto tiene variedad multiple, entonces redirigir a la landing de product para que de esa manera el cliente pueda seleccionar la variedad (talla)
       let LINK_DISCOUNT = "";
       if (is_sale_flash) {

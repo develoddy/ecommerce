@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
   private cartSubscription: Subscription | undefined;
   private ecommerceSubscription: Subscription | undefined;
   private searchSubscription: Subscription | undefined;
+  private miniCartSubscription: Subscription | undefined;
 
   constructor(
     public _router: Router,
@@ -61,7 +62,7 @@ export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
    }
 
   ngOnInit() {
-    this.reloadPage();
+    //this.reloadPage();
     this.user = this._cartService._authService.user;
     this.cartSubscription = this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
@@ -83,6 +84,10 @@ export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
     //   headerIconToggle($);
     //   sectionCart();
     // }, 50);
+
+    setTimeout(() => {
+      this.reloadPage();
+    }, 50);
   }
 
   private reloadPage(): void {
@@ -239,6 +244,10 @@ export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
     if (this.searchSubscription) {
       this.searchSubscription.unsubscribe();
     }
+    if (this.miniCartSubscription) {
+      this.miniCartSubscription.unsubscribe();
+    }
+    
     console.log('HeaderComponent has been destroyed.');
   }
 }

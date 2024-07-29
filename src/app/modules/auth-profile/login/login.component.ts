@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
     public _router: Router,
     public translate: TranslateService
   ) { 
-    translate.setDefaultLang('es');
+    //translate.setDefaultLang('es');
   }
 
   ngOnInit(): void {
@@ -34,12 +34,12 @@ export class LoginComponent implements OnInit {
   // Se cambia el idioma a Español
   changeLanguageToSpanish(): void {
     this.translate.use('es');
-    console.log('Idioma cambiado al Español');
+    //console.log('Idioma cambiado al Español');
   }
   // Se cambia el idioma a Inglés
   changeLanguageToEnglish(): void {
     this.translate.use('en');
-    console.log('Idioma cambiado al Inglés');
+    //console.log('Idioma cambiado al Inglés');
   }
 
   login() {
@@ -55,8 +55,8 @@ export class LoginComponent implements OnInit {
       // SI NO TIENE UN ERROR Y LA RESPUESTA ES VERDADERA
       // SIGNIFICA QUE EL USUARIO SE LOGUEO CORRECTAMENTE
        if (!resp.error && resp) {
-        //this._router.navigate(["/"]); 
-        location.reload();
+        this._router.navigate(["/"]); 
+        //location.reload();
       } else {
         alertDanger(resp.error.message)
       }
