@@ -21,12 +21,13 @@
         <!--Main Content-->
         <div class="container">
             <!--Category Slider-->
-            <div class="collection-slider-6items gp10 slick-arrow-dots sub-collection section pt-0" *ngIf="categories">
+            <div class="collection-slider-6items gp10 slick-arrow-dots sub-collection section pt-0 d-none">
                 <ng-container *ngFor="let categorie of categories">
                     <div class="category-item zoomscal-hov">
-                        <a href="shop-left-sidebar.html" class="category-link clr-none">
+                        <a href="shop-left-sidebar.html" onclick="return false;" class="category-link clr-none">
                             <div class="zoom-scal zoom-scal-nopb rounded-0">
-                                <img class="rounded-0 blur-up lazyload" [attr.data-src]="categorie.imagen" [src]="categorie.imagen" alt="{{ categorie.title }}" title="{{ categorie.title }}" width="365" height="365" />
+                                <!-- <img class="rounded-0 blur-up lazyload" [attr.data-src]="categorie.imagen" [src]="categorie.imagen" alt="{{ categorie.title }}" title="{{ categorie.title }}" width="365" height="365" /> -->
+                                <img class="rounded-0 blur-up lazyloaded" data-src="assets/images/collection/sub-collection5.jpg" src="assets/images/collection/sub-collection5.jpg" alt="T-Shirts" title="T-Shirts" width="365" height="365">
                             </div>
                             <div class="details text-center">
                                 <h4 class="category-title mb-0">{{ categorie.title }}</h4>
@@ -172,7 +173,7 @@
                             <div class="widget-title"><h2>Categories</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="sidebar-categories scrollspy morelist clearfix">
-                                    <li class="lvl1 sub-level more-item"><a href="#;" class="site-nav">Clothing</a>
+                                    <li class="lvl1 sub-level more-item d-none"><a href="#;" class="site-nav">Clothing</a>
                                         <ul class="sublinks">
                                             <li class="lvl2 sub-level sub-sub-level"><a href="#;" class="site-nav">Men</a>
                                                 <ul class="sublinks">
@@ -185,17 +186,20 @@
                                             <li class="lvl2"><a href="#" class="site-nav">Child <span class="count">(26)</span></a></li>
                                         </ul>
                                     </li>
-                                    <li class="lvl1 sub-level more-item"><a href="#;" class="site-nav">Jewellery</a>
+                                    <li class="lvl1 sub-level more-item d-none"><a href="#;" class="site-nav">Jewellery</a>
                                         <ul class="sublinks">
                                             <li class="lvl2"><a href="#" class="site-nav">Ring <span class="count">(12)</span></a></li>
                                             <li class="lvl2"><a href="#" class="site-nav">Neckalses <span class="count">(15)</span></a></li>
                                             <li class="lvl2"><a href="#" class="site-nav">Eaarings <span class="count">(18)</span></a></li>
                                         </ul>
                                     </li>
-                                    <li class="lvl1 more-item"><a href="#" class="site-nav">Accessories <span class="count">(14)</span></a></li>
-                                    <li class="lvl1 more-item"><a href="#" class="site-nav">Shoes <span class="count">(18)</span></a></li>
-                                    <li class="lvl1 more-item"><a href="#" class="site-nav">Electronic <span class="count">(22)</span></a></li>
-                                    <li class="lvl1 more-item"><a href="#" class="site-nav">Cosmetics <span class="count">(27)</span></a></li>
+                                    <li class="lvl1 more-item d-none"><a href="#" class="site-nav">Accessories <span class="count">(14)</span></a></li>
+                                    <li class="lvl1 more-item d-none"><a href="#" class="site-nav">Shoes <span class="count">(18)</span></a></li>
+                                    <li class="lvl1 more-item d-none"><a href="#" class="site-nav">Electronic <span class="count">(22)</span></a></li>
+                                    <li class="lvl1 more-item d-none"><a href="#" class="site-nav">Cosmetics <span class="count">(27)</span></a></li>
+                                    <ng-container *ngFor="let categorie of categories">
+                                        <li class="lvl1 more-item"><a href="#" onclick="return false;" (click)="addCategorie(categorie)" class="site-nav">{{ categorie.title }} <span class="count">(27)</span></a></li>
+                                    </ng-container>
                                 </ul>
                             </div>
                         </div>
@@ -314,11 +318,10 @@
                 <!--End Sidebar-->
 
                 <!--Products-->
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-9 main-col">
                     <!--Product Grid-->
                     <div class="grid-products grid-view-items">
-                        <div class="row col-row product-options row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">  
-                            
+                        <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">  
                             <ng-container *ngFor="let product of products">
                                 <div class="item col-item">
                                     <div class="product-box">

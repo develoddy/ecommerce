@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
+import { Router } from '@angular/router';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -46,6 +47,7 @@ export class CheckoutComponent implements OnInit {
   constructor(
     public _authEcommerce: EcommerceAuthService,
     public _cartService: CartService,
+    public _router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -139,7 +141,8 @@ export class CheckoutComponent implements OnInit {
             setTimeout(() => {
               alertSuccess(resp.message); // Muestra el mensaje de éxito
               setTimeout(() => {
-                  location.reload(); // Recarga la página después de 100 ms
+                  //location.reload(); // Recarga la página después de 100 ms
+                  this._router.navigate(['/order-success'], { state: { sale: resp.sale, saleDetails: resp.saleDetails } });
               }, 3500);
           }, 100);
             

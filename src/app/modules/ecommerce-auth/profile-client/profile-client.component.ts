@@ -63,9 +63,7 @@ export class ProfileClientComponent implements OnInit {
     };
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
-      
       this.sale_orders = resp.sale_orders;
-      console.log("---- FRONT show Profile ", this.sale_orders);
       this.listAddressClients = resp.address_client;
     });
   }

@@ -76,21 +76,21 @@ export class FilterProductsComponent implements OnInit {
   }
 
   // @HostListener('window:resize', ['$event'])
-  // onResize(event: any) {
-  //   this.isDesktopSize = event.target.innerWidth >= 992;
+  //  onResize(event: any) {
+  //    this.isDesktopSize = event.target.innerWidth >= 992;
+  //  }
+
+  //  isDesktop(): boolean {
+  //    return this.isDesktopSize;
+  //  }
+
+  // checkWindowSize() {
+  //   this.isMobileSize = window.innerWidth < 768; 
   // }
 
-  // isDesktop(): boolean {
-  //   return this.isDesktopSize;
+  // isMobile(): boolean {
+  //   return this.isMobileSize;
   // }
-
-  checkWindowSize() {
-    this.isMobileSize = window.innerWidth < 768; // Ajusta el valor del tamaño móvil según sea necesario
-  }
-
-  isMobile(): boolean {
-    return this.isMobileSize;
-  }
 
   filterForCategorie(idCategorie:any) {
     
@@ -135,7 +135,6 @@ export class FilterProductsComponent implements OnInit {
     }
     this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
       this.products = resp.products;
-      console.log("debug: products : ", this.products);
     });
   }
 

@@ -159,22 +159,33 @@ export class HomeComponent implements OnInit, AfterViewInit {
   
   openModal(besProduct:any, FlashSale:any=null) {
     this.product_selected = besProduct;
-    //this.product_selected = null;
-
     setTimeout(() => {
-      
       this.filterUniqueGalerias(this.product_selected);
-
       // Filtrar tallas duplicadas y eliminar tallas no disponibles
-      this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1); // Ordenar por valor de menor a mayor
-      
+      this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
       // Seleccionar automáticamente la primera talla si hay alguna disponible
       this.variedad_selected = this.variedades[0] || null;
       this.activeIndex = 0;
-
       this.setColoresDisponibles();
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
+      setTimeout(() => {
+        LandingProductDetail();
+        pswp($);
+        productZoom($);
+      }, 50);
+    }, 150);
+  }
 
+  openModalToCart(besProduct:any) {
+    this.product_selected = besProduct;
+    setTimeout(() => {  
+      // Filtrar tallas duplicadas y eliminar tallas no disponibles
+      this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
+      // Seleccionar automáticamente la primera talla si hay alguna disponible
+      this.variedad_selected = this.variedades[0] || null;
+      this.activeIndex = 0;
+      this.setColoresDisponibles();
+      this.selectedColor = this.coloresDisponibles[0]?.color || '';
       setTimeout(() => {
         LandingProductDetail();
         pswp($);
@@ -187,13 +198,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
   }
-
-  // selectColor(index: number): void {
-  //   this.selectedColor = this.product_selected.tags[index];
-  //   console.log("this.selectedColor: ", this.selectedColor );
-  //   this.filterUniqueGalerias(this.product_selected);
-  //   this.reinitializeSliders();
-  // }
 
   reinitializeSliders(): void {
     this.destroyLargeSlider();
@@ -215,7 +219,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  
   initializeLargeSlider(): void {
     const largeSlider = $('.single-product-thumbnail');
     if ( largeSlider.hasClass('slick-initialized') ) {
@@ -260,7 +263,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       smallSlider.slick('unslick');
     }
   }
-
 
   getColorHex(color: string): string {
     // Mapea los nombres de los colores a sus valores hexadecimales correspondientes
@@ -339,7 +341,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
     return {};
   }
-
 
   addCart(product:any, is_sale_flash:any=null) {
     if (!this._cartService._authService.user) {
@@ -423,7 +424,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
 
   esProductoUnitario(variedades:any, valoresUnitarios:any)  {
       for (const variedad of variedades) {
