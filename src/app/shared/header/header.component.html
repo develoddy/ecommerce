@@ -649,11 +649,11 @@
                     <ng-container *ngFor="let cart of listCarts">
                         <li class="item d-flex justify-content-center align-items-center">
                             <a class="product-image rounded-3" href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">
-                                <img class="blur-up lazyload" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="Product" width="120" height="170" />
+                                <img class="blur-up lazyload" [attr.data-src]="cart.variedad.files[1].preview_url" [src]="cart.variedad.files[1].preview_url" alt="product" title="Product" width="120" height="170" />
                             </a>
                             <div class="product-details">
                                 <a class="product-title" href="product-layout1.html"  href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">Women Sandals</a>
-                                <div class="variant-cart my-2" *ngIf="cart.variedad">Black / {{ cart.variedad.valor }}</div>
+                                <div class="variant-cart my-2" *ngIf="cart.variedad">{{ cart.variedad.color }} / {{ cart.variedad.valor }}</div>
                                 <div class="priceRow">
                                     <div class="product-price">
                                         <span class="price">{{ euro }}{{ cart.total | number: '1.2-2' }}</span>

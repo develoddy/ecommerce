@@ -80,11 +80,6 @@ export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
       this.categories = resp.categories;
     });
 
-    // setTimeout(() => {
-    //   headerIconToggle($);
-    //   sectionCart();
-    // }, 50);
-
     setTimeout(() => {
       this.reloadPage();
     }, 50);

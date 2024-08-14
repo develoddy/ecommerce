@@ -167,18 +167,7 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     this.activeIndex = index;
   }
 
-  selectColor(color: { color: string, imagen: string }) {
-    this.selectedColor = color.color;
-    this.firstImage = color.imagen;
-    // console.log(`Color seleccionado: ${this.selectedColor}`);
-  }
-
-  selectedVariedad(variedad:any, index: number) {
-    //console.log(`Variedad antes de la actualización: ${this.variedad_selected?.valor}`);
-    this.variedad_selected = variedad;
-    this.activeIndex = index;
-    console.log(`Talla seleccionada: ${this.variedad_selected.valor}`);
-  }
+  
 
   openModal(besProduct:any, FlashSale:any=null) {
     this.product_selected_modal = null;
@@ -232,6 +221,20 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     return 0;
   }
 
+
+  selectColor(color: { color: string, imagen: string }) {
+    this.selectedColor = color.color;
+    this.firstImage = color.imagen;
+    console.log(`Color seleccionado: ${this.selectedColor}`);
+  }
+
+  selectedVariedad(variedad:any, index: number) {
+    //console.log(`Variedad antes de la actualización: ${this.variedad_selected?.valor}`);
+    this.variedad_selected = variedad;
+    this.activeIndex = index;
+    console.log(`Talla seleccionada: ${this.variedad_selected.valor}`);
+  }
+  
   addCart(product:any) {
     if ( !this._cartService._authService.user ) {
       alertDanger("Por favor, autentifíquese para poder añadir el producto a la cesta.");

@@ -65,6 +65,7 @@ export class CheckoutComponent implements OnInit {
     }, 50);
 
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
+      console.log("Debugg: Checkout productos list: ", resp);
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));

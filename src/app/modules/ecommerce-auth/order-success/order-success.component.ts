@@ -20,13 +20,9 @@ export class OrderSuccessComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     const state = history.state;
-
     this.sale = state.sale;
     this.saleDetails = state.saleDetails;
-
-    console.log("___DEbugg order-success.component load : ",this.sale, this.saleDetails);
   }
 
 }
