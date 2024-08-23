@@ -138,13 +138,17 @@ export class CheckoutComponent implements OnInit {
           };
 
           this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}).subscribe((resp:any) => {
-           
             setTimeout(() => {
-              alertSuccess(resp.message); // Muestra el mensaje de éxito
-              setTimeout(() => {
-                  //location.reload(); // Recarga la página después de 100 ms
-                  this._router.navigate(['/order-success'], { state: { sale: resp.sale, saleDetails: resp.saleDetails } });
-              }, 3500);
+              if (resp.code === 403 ) {
+                alertDanger(resp.message); // Muestra de error
+                return;
+              } else {
+                alertSuccess(resp.message); // Muestra el mensaje de éxito
+                setTimeout(() => {
+                    //location.reload(); // Recarga la página después de 100 ms
+                    this._router.navigate(['/order-success'], { state: { sale: resp.sale, saleDetails: resp.saleDetails } });
+                }, 3500);
+              }
           }, 100);
             
           })

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
 import { Subscription } from 'rxjs';
 import { MinicartService } from 'src/app/services/minicartService.service';
+import { EcommerceAuthService } from '../../ecommerce-auth/_services/ecommerce-auth.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -33,9 +34,20 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
   discount_id:any;
   SALE_FLASH:any = null;
 
+  order_selected:any=null;
+  sale_orders:any = [];
+  sale_details:any = [];
+
+  // Review
+  cantidad:any=0;
+  title:any=null;
+  description:any=null;
+  sale_detail_selected:any=null;
+
   REVIEWS:any=null;
   AVG_REVIEW:any=null;
   COUNT_REVIEW:any=null;
+  exist_review:any=null;
 
   activeIndex: number = 0;
   selectedColor: string = '';
@@ -43,6 +55,8 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
   firstImage: string = '';
   coloresDisponibles: { color: string, imagen: string }[] = [];
   variedades: any[] = [];
+
+  availableSizes = ['S', 'M', 'L', 'XL'];  // Lista de todas las tallas posibles
 
   private routeParamsSubscription: Subscription | undefined;
   private queryParamsSubscription: Subscription | undefined;
@@ -54,10 +68,10 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     public _routerActived: ActivatedRoute,
     public _cartService: CartService,
     private minicartService: MinicartService,
+    public _ecommerceAuthService: EcommerceAuthService,
   ) {}
 
   ngOnInit(): void {
-    //this.reloadPage();
     this.routeParamsSubscription = this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
     });
@@ -66,6 +80,10 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
       this.discount_id = resp["_id"];
     });
 
+    this.initLandingProduct();
+  }
+
+  initLandingProduct() {
     this.productSubscription = this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
       this.product_selected = resp.product;
       this.related_products = resp.related_products;
@@ -74,25 +92,114 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
       this.AVG_REVIEW = resp.AVG_REVIEW;
       this.COUNT_REVIEW = resp.COUNT_REVIEW;
 
+      /// Verifica si el usuario está autenticado antes de llamar a showProfileClient
+      if (this._ecommerceAuthService._authService.user) {
+        this.showProfileClient();
+      }
+
       // Filtrar tallas duplicadas y eliminar tallas no disponibles
       this.variedades = resp.product.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1); // Ordenar por valor de menor a mayor
       
-      // Seleccionar automáticamente la primera talla si hay alguna disponible
-      this.variedad_selected = this.variedades[0] || null;
-      this.activeIndex = 0;
-
       this.filterUniqueGalerias();
       this.setFirstImage();
       this.setColoresDisponibles();
 
+      // Seleccionar automáticamente el primer color
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
+
+      // Filtrar las tallas disponibles para el primer color seleccionado
+      this.variedades = this.product_selected.variedades
+          .filter((variedad: any) => variedad.color === this.selectedColor)
+          .sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
+
+      // Mapear las variedades para indicar disponibilidad
+      this.variedades = this.availableSizes.map(size => {
+          const foundVariedad = this.variedades.find(variedad => variedad.valor === size);
+          return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
+      });
+
+      this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
+      this.activeIndex = 0;
 
         setTimeout(() => {
           HOMEINITTEMPLATE($);
           pswp($);
           productZoom($);
         }, 50);
-    });    
+    }); 
+  }
+
+  showProfileClient() {
+    let data = {
+      user_id: this._ecommerceAuthService._authService.user._id,
+    };
+  
+    this._ecommerceAuthService.showProfileClient(data).subscribe((resp: any) => {
+      this.sale_orders = resp.sale_orders;
+      this.sale_details = [];
+  
+      this.sale_orders.forEach((order: any) => {
+        if (order && order.sale_details && Array.isArray(order.sale_details)) {
+          order.sale_details.forEach((sale_detail: any) => {
+            this.sale_details.push(sale_detail);
+          });
+        }
+      });
+  
+      // Encontrar el sale_detail que coincide con el product_selected
+      const matchingSaleDetail = this.sale_details.find(
+        (sale_detail: any) => sale_detail.product._id === this.product_selected._id
+      );
+  
+      // Verificar si existe una review para el product_selected
+      const matchingReview = this.REVIEWS.find(
+        (review: any) => review.productId === this.product_selected._id
+      );
+  
+      if (matchingSaleDetail && matchingReview) {
+        // Si existen ambos, sale_detail y review, mostrar formulario para editar la review
+        console.log("Se encontró un sale_detail y una review coincidentes:", matchingSaleDetail, matchingReview);
+        this.viewReview(matchingSaleDetail);
+      } else if (matchingSaleDetail && !matchingReview) {
+        // Si existe sale_detail pero no hay review, mostrar formulario para agregar una nueva review
+        console.log("Se encontró un sale_detail pero no hay review. Mostrar formulario para agregar review.", matchingSaleDetail);
+        this.viewReview(matchingSaleDetail); // Pasar un objeto vacío para iniciar un formulario en blanco
+      } else {
+        // Si no se encuentra ningún sale_detail ni review, no mostrar el formulario
+        console.log("No se encontró ningún sale_detail ni review.");
+        //this.viewReview(null); // O cualquier otro comportamiento que desees
+
+        // Mostrar reseñas de otros usuarios para el producto seleccionado
+        const otherReviews = this.REVIEWS.filter(
+          (review: any) => review.productId === this.product_selected._id
+        );
+
+        if (otherReviews.length > 0) {
+          console.log("Mostrando reseñas de otros usuarios:", otherReviews);
+          // Aquí podrías mostrar estas reseñas en el UI
+          // Por ejemplo, podrías asignarlas a una variable en el componente para renderizar en el template
+          //this.displayOtherReviews(otherReviews);
+        } else {
+          console.log("No hay reseñas disponibles para este producto.");
+          this.viewReview(null); // O cualquier otro comportamiento que desees
+        }
+      }
+    });
+  }
+
+  viewReview(sale_detail:any) {
+    if (sale_detail) {
+      this.sale_detail_selected = sale_detail;
+      if (this.sale_detail_selected.review) {
+        this.title = this.sale_detail_selected.review.title;
+        this.cantidad = this.sale_detail_selected.review.cantidad;
+        this.description = this.sale_detail_selected.review.description;
+      } else {
+        this.title = null;
+        this.cantidad = null;
+        this.description = null;
+      }
+    }
   }
 
   private reloadPage(): void {
@@ -165,9 +272,7 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
 
   setActiveIndex(index: number) {
     this.activeIndex = index;
-  }
-
-  
+  }  
 
   openModal(besProduct:any, FlashSale:any=null) {
     this.product_selected_modal = null;
@@ -226,16 +331,35 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
     console.log(`Color seleccionado: ${this.selectedColor}`);
+
+    // Filtrar las tallas disponibles para el color seleccionado
+    const filteredVariedades = this.product_selected.variedades
+        .filter((variedad: any) => variedad.color === this.selectedColor)
+        .sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1); // Ordenar las tallas de menor a mayor
+
+    // Mapear las tallas generales y marcar las no disponibles
+    this.variedades = this.availableSizes.map(size => {
+        const foundVariedad = filteredVariedades.find( (variedad:any) => variedad.valor === size);
+        return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
+    });
+
+    // Seleccionar automáticamente la primera talla disponible
+    this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
+    this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
+
+    //console.log(`Talla seleccionada: ${this.variedad_selected?.valor || 'Ninguna disponible'}`);
   }
 
   selectedVariedad(variedad:any, index: number) {
     //console.log(`Variedad antes de la actualización: ${this.variedad_selected?.valor}`);
     this.variedad_selected = variedad;
+    
     this.activeIndex = index;
-    console.log(`Talla seleccionada: ${this.variedad_selected.valor}`);
+    //console.log(`Talla seleccionada: ${this.variedad_selected.valor}`);
   }
-  
+
   addCart(product:any) {
+
     if ( !this._cartService._authService.user ) {
       alertDanger("Por favor, autentifíquese para poder añadir el producto a la cesta.");
       return;
@@ -246,8 +370,10 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     }
   
     if ( this.product_selected.type_inventario == 2 ) {
+
       if ( !this.variedad_selected ) {
-        alertDanger("Por favor, seleccione una variedad antes de añadir a la cesta.");
+        //alertDanger("Por favor, seleccione una variedad antes de añadir a la cesta.");
+        alertDanger("No hay stock disponible para este color.");
         return;
       }
       if (this.variedad_selected) {
@@ -275,7 +401,7 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     this._cartService.registerCart(data).subscribe((resp:any) => {
       if (resp.message == 403) {
         alertDanger(resp.message_text);
-          return;
+        return;
       } else {
         this._cartService.changeCart(resp.cart);
         alertSuccess("El producto ha sido añadido correctamente a la cesta.");
@@ -301,4 +427,62 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     console.log('____Debbug: El componente del Landing de producto ha sido destruido..');
   }
 
+  addCantidad(cantidad:number) {
+    this.cantidad = cantidad; 
+  }
+
+  save() {
+    if (this.sale_detail_selected.review) {
+      this.updateReview();
+    } else {
+      this.saveReview();
+    }
+  }
+
+  // REGISTER review
+  saveReview() {
+    if ( !this.title || !this.cantidad || !this.description) {
+      alertDanger("Todos los campos del formularios son importantes!");
+      return;
+    }
+    
+    let data = {
+      product: this.sale_detail_selected.product._id,
+      sale_detail: this.sale_detail_selected._id,
+      user: this._ecommerceAuthService._authService.user._id,
+      cantidad: this.cantidad,
+      title: this.title,
+      description: this.description,
+    };
+
+    this._ecommerceAuthService.registerProfileClientReview(data).subscribe((resp:any) => {
+      this.sale_detail_selected.review = resp.review;
+      this.REVIEWS = [resp.review];
+      alertSuccess(resp.message);
+    });
+  }
+
+  // UPDATE review
+  updateReview() {
+    if ( !this.cantidad || !this.description) {
+      alertDanger("Todos los campos del formularios son importantes!");
+      return;
+    }
+
+    let data = {
+      _id: this.sale_detail_selected.review.id,
+      product: this.sale_detail_selected.product._id,
+      sale_detail: this.sale_detail_selected._id,
+      user: this._ecommerceAuthService._authService.user._id,
+      cantidad: this.cantidad,
+      title: this.title,
+      description: this.description,
+    };
+
+    this._ecommerceAuthService.updateProfileClientReview(data).subscribe((resp:any) => {
+      this.sale_detail_selected.review = resp.review;
+      this.REVIEWS = [resp.review];
+      alertSuccess(resp.message);
+    });
+  }
 }

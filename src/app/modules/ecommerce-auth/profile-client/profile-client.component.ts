@@ -14,6 +14,7 @@ export class ProfileClientComponent implements OnInit {
 
   euro = "€";
   sale_orders:any = [];
+  sale_details:any = [];
   is_detail_sale:any = false;
   order_selected:any=null;
 
@@ -52,8 +53,7 @@ export class ProfileClientComponent implements OnInit {
     this.showProfileClient();
     this.name_c = this._ecommerceAuthService._authService.user.name;
     this.surname_c = this._ecommerceAuthService._authService.user.surname;
-    this.email_c = this._ecommerceAuthService._authService.user.email;
-    
+    this.email_c = this._ecommerceAuthService._authService.user.email; 
   }
 
   showProfileClient() {
@@ -64,6 +64,20 @@ export class ProfileClientComponent implements OnInit {
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
       this.sale_orders = resp.sale_orders;
+
+      this.sale_details = [];
+
+      // Recorremos cada objeto en sale_orders
+      this.sale_orders.forEach((order: any) => {
+        // Verificamos si existe la propiedad sale_details y si es un array
+        if (order && order.sale_details && Array.isArray(order.sale_details)) {
+          // Añadimos cada detalle de venta a sale_details
+          order.sale_details.forEach((detail: any) => {
+            this.sale_details.push(detail);
+          });
+        }
+      });
+
       this.listAddressClients = resp.address_client;
     });
   }

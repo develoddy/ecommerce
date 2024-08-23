@@ -72,11 +72,11 @@
                                                     <a href="product-layout1.html">{{ cart.product.title }}</a>
                                                 </div>
                                                 <div class="cart-meta-text">
-                                                    Color: Black<br>
+                                                    Color: {{ cart.variedad.color }}<br>
                                                     <ng-container *ngIf="cart.variedad">
-                                                        Size: {{ cart.variedad.valor }}<br>
+                                                        Talla: {{ cart.variedad.valor }}<br>
                                                     </ng-container>
-                                                    Qty: {{ cart.cantidad }}
+                                                    Cantidad: {{ cart.cantidad }}
                                                 </div>
                                                 <div class="cart-price d-md-none">
                                                     <span class="money fw-500">{{ euro }}{{ cart.subtotal | number: '1.2-2' }}</span>

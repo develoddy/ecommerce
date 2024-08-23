@@ -82,21 +82,21 @@
                                     <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
                                     <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
                                     <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
-                                    <span class="caption ms-2">{{ COUNT_REVIEW }} Reviews</span>
+                                    <span class="caption ms-2">{{ COUNT_REVIEW }} Reseñas</span>
                                 </div>
-                                <a class="reviewLink d-flex-center" href="#reviews">Write a Review</a>
+                                <a class="reviewLink d-flex-center" href="#reviews">Escribe una reseña</a>
                             </div>
                             <!-- End Product Reviews -->
                             <!-- Product Info -->
                             <div class="product-info">
-                                <p class="product-stock d-flex">Availability:
+                                <p class="product-stock d-flex">Disponibilidad:
                                     <span class="pro-stockLbl ps-0">
-                                        <span class="d-flex-center stockLbl instock text-uppercase">In stock</span>
+                                        <span class="d-flex-center stockLbl instock text-uppercase">En stock</span>
                                     </span>
                                 </p>
-                                <p class="product-vendor">Vendor:<span class="text"><a href="#">HVL</a></span></p>  
-                                <p class="product-type">Product Type:<span class="text">Tops</span></p> 
-                                <p class="product-sku">SKU:<span class="text">RF104</span></p>
+                                <p class="product-vendor">Proveedor:<span class="text"><a href="#">HVL</a></span></p>  
+                                <p class="product-type">Tipo de producto:<span class="text">Tops</span></p> 
+                                <p class="product-sku">SKU:<span class="text">{{ product_selected.sku }}</span></p>
                             </div>
                             <!-- End Product Info -->
                             <!-- Product Price -->
@@ -111,12 +111,12 @@
                             <!-- End Product Price -->
                             <hr>
                             <!-- Sort Description -->
-                            <div class="sort-description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</div>
+                            <div class="sort-description">{{ product_selected.resumen }}</div>
                             <!-- End Sort Description -->
                             <hr>
                             <!-- Countdown -->
-                            <h3 class="text-uppercase mb-0">Hurry up! Sales Ends In</h3>
-                            <div class="product-countdown d-flex-center text-center my-3" data-countdown="2028/12/12"></div>                                           
+                            <h3 class="text-uppercase mb-0">Date prisa! las rebajas terminan en</h3>
+                            <div class="product-countdown d-flex-center text-center my-3" data-countdown="2024/08/26"></div>                                           
                             <!-- End Countdown -->
                         </div>
                         <!-- End Product Details -->
@@ -143,8 +143,30 @@
                                     <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">{{ variedad_selected?.valor || 'Select Size' }}</span> <a href="#sizechart-modal" class="text-link sizelink text-muted size-chart-modal" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Size Guide</a></label>
                                     <ul class="variants-size size-swatches d-flex-center pt-1 clearfix">
                                         <ng-container *ngFor="let variedad of variedades; let i = index">
+                                            <!-- <li class="swatch x-large soldout"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="S">S</span></li>
+                                            <li class="swatch x-large soldout"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="S">L</span></li>
+
+                                            
                                             <li  class="swatch x-large" [ngClass]="{ 'available': variedad.stock > 0, 'soldout': variedad.stock === 0, 'active': variedad.valor === variedad_selected?.valor}" (click)="selectedVariedad(variedad, i)">
                                                 <span class="swatchLbl" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="variedad.valor">{{variedad.valor}}</span>
+                                            </li> -->
+
+                                            <li class="swatch x-large" 
+                                                [ngClass]="{ 
+                                                    'available': variedad.stock > 0, 
+                                                    'soldout': variedad.stock === 0, 
+                                                    'active': variedad.valor === variedad_selected?.valor 
+                                                }" 
+                                                [class.text-muted]="variedad.stock === 0"
+                                                (click)="variedad.stock > 0 && selectedVariedad(variedad, i)">
+                                                
+                                                <span class="swatchLbl" 
+                                                    [attr.data-bs-toggle]="'tooltip'" 
+                                                    [attr.data-bs-placement]="'top'" 
+                                                    [attr.title]="variedad.valor" 
+                                                    [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'">
+                                                    {{variedad.valor}}
+                                                </span>
                                             </li>
                                         </ng-container>
                                     </ul>
@@ -167,7 +189,7 @@
                                 <!-- Product Add -->
                                 <div class="product-form-submit addcart fl-1 ms-3">
                                     <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit" (click)="addCart(product_selected)">
-                                        <span>Add to cart</span>
+                                        <span>Añadir a la cesta</span>
                                     </button>
                                     <button type="submit" name="add" class="btn btn-secondary product-form-sold-out d-none" disabled="disabled">
                                         <span>Out of stock</span>
@@ -179,7 +201,7 @@
                                 <!-- Product Add -->
                                 <!-- Product Buy -->
                                 <div class="product-form-submit buyit fl-1 ms-3">
-                                    <button type="submit" class="btn btn-primary proceed-to-checkout" onclick="return false;" routerLink="/payment-process"><span>Buy it now</span></button>
+                                    <button type="submit" class="btn btn-primary proceed-to-checkout" onclick="return false;" routerLink="/payment-process"><span>Compre ya</span></button>
                                 </div>
                                 <!-- End Product Buy -->
                             </div>
@@ -187,24 +209,24 @@
 
                             <!-- Product Info link -->
                             <p class="infolinks d-flex-center justify-content-between">
-                                <a class="text-link wishlist" href="wishlist-style1.html"><i class="icon anm anm-heart-l me-2"></i> <span>Add to Wishlist</span></a>
-                                <a class="text-link compare" href="compare-style1.html"><i class="icon anm anm-sync-ar me-2"></i> <span>Add to Compare</span></a>
-                                <a href="#shippingInfo-modal" class="text-link shippingInfo" data-bs-toggle="modal" data-bs-target="#shippingInfo_modal"><i class="icon anm anm-paper-l-plane me-2"></i> <span>Delivery &amp; Returns</span></a>
-                                <a href="#productInquiry-modal" class="text-link emaillink me-0" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Enquiry</span></a>
+                                <a class="text-link wishlist" href="wishlist-style1.html"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a la lista de deseos</span></a>
+                                <a class="text-link compare d-none" href="compare-style1.html"><i class="icon anm anm-sync-ar me-2"></i> <span>Añadir para comparar</span></a>
+                                <a href="#shippingInfo-modal" class="text-link shippingInfo" data-bs-toggle="modal" data-bs-target="#shippingInfo_modal"><i class="icon anm anm-paper-l-plane me-2"></i> <span>Envío y devoluciones</span></a>
+                                <a href="#productInquiry-modal" class="text-link emaillink me-0" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>
                             </p>
                             <!-- End Product Info link -->
                         </form>
                         <!-- End Product Form -->
 
                         <!-- Product Info -->
-                        <div class="userViewMsg featureText" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> People are Looking for this Product</div> 
-                        <div class="shippingMsg featureText"><i class="icon anm anm-clock-r"></i>Estimated Delivery Between <b id="fromDate">Wed, May 1</b> and <b id="toDate">Tue, May 7</b>.</div>                             
-                        <div class="freeShipMsg featureText" data-price="199"><i class="icon anm anm-truck-r"></i>Spent <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">$199.00</span></b> More for Free shipping</div>
+                        <div class="userViewMsg featureText" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div> 
+                        <div class="shippingMsg featureText"><i class="icon anm anm-clock-r"></i>Entrega estimada entre <b id="fromDate">Lunes, 26 de agosto</b> y <b id="toDate">Viernes, 30 de agosto</b>.</div>                             
+                        <div class="freeShipMsg featureText" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}50.00</span></b> Más para envío gratis</div>
                         <!-- End Product Info -->
 
                         <!-- Social Sharing -->
                         <div class="social-sharing d-flex-center mt-2 lh-lg">
-                            <span class="sharing-lbl fw-600">Share :</span>
+                            <span class="sharing-lbl fw-600">Compartir :</span>
                             <a href="#" class="d-flex-center btn btn-link btn--share share-facebook"><i class="icon anm anm-facebook-f"></i><span class="share-title">Facebook</span></a>
                             <a href="#" class="d-flex-center btn btn-link btn--share share-twitter"><i class="icon anm anm-twitter"></i><span class="share-title">Tweet</span></a>
                             <a href="#" class="d-flex-center btn btn-link btn--share share-pinterest"><i class="icon anm anm-pinterest-p"></i> <span class="share-title">Pin it</span></a>
@@ -237,21 +259,20 @@
             <!--Product Tabs-->
             <div class="tabs-listing section pb-0">
                 <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-center d-none d-md-flex">
-                    <li rel="description" class="active"><a class="tablink">Description</a></li>
-                    <li rel="additionalInformation"><a class="tablink">Additional Information</a></li>
-                    <li rel="size-chart"><a class="tablink">Size Chart</a></li>
-                    <li rel="shipping-return"><a class="tablink">Shipping &amp; Return</a></li>
-                    <li rel="reviews"><a class="tablink">Reviews</a></li>
+                    <li rel="description" class="active"><a class="tablink">Descripción</a></li>
+                    <li rel="additionalInformation"><a class="tablink">Información adicional</a></li>
+                    <li rel="size-chart"><a class="tablink">Tabla de tallas</a></li>
+                    <li rel="shipping-return"><a class="tablink">Envío y devolución</a></li>
+                    <li rel="reviews"><a class="tablink">Reseñas</a></li>
                 </ul>
-
                 <div class="tab-container">
                     <!--Description-->
-                    <h3 class="tabs-ac-style d-md-none active" rel="description">Description</h3>
+                    <h3 class="tabs-ac-style d-md-none active" rel="description">Descripción</h3>
                     <div id="description" class="tab-content">
                         <div class="product-description">
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-md-8 col-lg-8">
-                                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
+                                <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description">
+                                    <!-- <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
                                     <h4 class="mb-3">Features</h4>
                                     <ul class="checkmark-info">
                                         <li>High quality fabric, very comfortable to touch and wear.</li>
@@ -259,9 +280,8 @@
                                         <li>It can tie in front-is forgiving to you belly or tie behind.</li>
                                         <li>Light weight and perfect for layering.</li>
                                     </ul>
-                                    <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+                                    <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p> -->
                                 </div>
-
                                 <div class="col-12 col-sm-12 col-md-4 col-lg-4">
                                     <img data-src="assets/images/content/product-detail-img.jpg" src="assets/images/content/product-detail-img.jpg" alt="image" width="600" height="600" />
                                 </div>
@@ -271,31 +291,37 @@
                     <!--End Description-->
 
                     <!--Additional Information-->
-                    <h3 class="tabs-ac-style d-md-none" rel="additionalInformation">Additional Information</h3>
+                    <h3 class="tabs-ac-style d-md-none" rel="additionalInformation">Información adicional</h3>
                     <div id="additionalInformation" class="tab-content">
                         <div class="product-description">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-4 mb-md-0">
                                     <div class="table-responsive">
                                         <table class="table table-bordered align-middle table-part mb-0">
+                                            <!-- <ng-container *ngFor="let variedad of product_selected.variedades"></ng-container> -->
                                             <tr>
                                                 <th>Color</th>
-                                                <td>Black, White, Blue, Red, Gray</td>
+                                                <!-- <td **ngFor="let color of coloresDisponibles">{{ Black, White, Blue, Red, Gray }}</td> -->
+                                                <td>
+                                                    <ng-container *ngFor="let item of coloresDisponibles">
+                                                        {{ item.color }},
+                                                    </ng-container>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <th>Product Dimensions</th>
+                                                <th>Dimensiones del producto</th>
                                                 <td>15 x 15 x 3 cm; 250 Grams</td>
                                             </tr>
                                             <tr>
-                                                <th>Date First Available</th>
+                                                <th>Fecha de primera disponibilidad</th>
                                                 <td>14 May 2023</td>
                                             </tr>
                                             <tr>
-                                                <th>Manufacturer</th>
+                                                <th>Fabricante</th>
                                                 <td>Fashion and Retail Limited</td>
                                             </tr>
                                             <tr>
-                                                <th>Department</th>
+                                                <th>Departamento</th>
                                                 <td>Men Shirt</td>
                                             </tr>
                                         </table>
@@ -307,7 +333,7 @@
                     <!--End Additional Information-->
 
                     <!--Size Chart-->
-                    <h3 class="tabs-ac-style d-md-none" rel="size-chart">Size Chart</h3>
+                    <h3 class="tabs-ac-style d-md-none" rel="size-chart">Tabla de tallas</h3>
                     <div id="size-chart" class="tab-content">
                         <h4 class="mb-2">Ready to Wear Clothing</h4>
                         <p class="mb-4">This is a standardised guide to give you an idea of what size you will need, however some brands may vary from these conversions.</p>
@@ -440,7 +466,7 @@
                     <!--End Size Chart-->
 
                     <!--Shipping &amp; Return-->
-                    <h3 class="tabs-ac-style d-md-none" rel="shipping-return">Shipping &amp; Return</h3>
+                    <h3 class="tabs-ac-style d-md-none" rel="shipping-return">Envío y devolución</h3>
                     <div id="shipping-return" class="tab-content">
                         <h4>Shipping &amp; Return</h4>
                         <ul class="checkmark-info">
@@ -458,17 +484,17 @@
                     </div>
                     <!--End Shipping &amp; Return-->
                     <!--Review-->
-                    <h3 class="tabs-ac-style d-md-none" rel="reviews">Review</h3>
+                    <h3 class="tabs-ac-style d-md-none" rel="reviews">Reseñas</h3>
                     <div id="reviews" class="tab-content">
                         <div class="row">
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-4">
-                                <div class="ratings-main">
+                            <div [ngClass]="{'col-12 col-sm-12 col-md-12': true, 'col-lg-6': this.sale_detail_selected, 'col-lg-12': !this.sale_detail_selected }" class="mb-4">
+                                <div class="ratings-main" *ngIf="this.REVIEWS.length > 0;">
                                     <div class="avg-rating d-flex-center mb-3">
                                         <h4 class="avg-mark">5.0</h4>
                                         <div class="avg-content ms-3">
-                                            <p class="text-rating">Average Rating</p>
+                                            <p class="text-rating">Puntuación media</p>
                                             <div class="ratings-full product-review">
-                                                <a class="reviewLink d-flex-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><span class="caption ms-2">24 Ratings</span></a>
+                                                <a class="reviewLink d-flex-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><span class="caption ms-2">24 Calificaciones</span></a>
                                             </div>
                                         </div>
                                     </div>
@@ -513,79 +539,128 @@
                                 </div>
                                 <hr />
                                 <div class="spr-reviews">
-                                    <h3 class="spr-form-title">Customer Reviews</h3>
-                                    <div class="review-inner">
-                                        <div class="spr-review d-flex w-100">
-                                            <div class="spr-review-profile flex-shrink-0">
-                                                <img class="blur-up lazyload" data-src="assets/images/users/user-img1.jpg" src="assets/images/users/user-img1.jpg" alt="" width="200" height="200" />
-                                            </div>
-                                            <div class="spr-review-content flex-grow-1">
-                                                <div class="d-flex justify-content-between flex-column mb-2">
-                                                    <div class="title-review d-flex align-items-center justify-content-between">
-                                                        <h5 class="spr-review-header-title text-transform-none mb-0">Eleanor Pena</h5>
-                                                        <span class="product-review spr-starratings m-0"><span class="reviewLink"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i></span></span>
+                                    <ng-container *ngIf="this.REVIEWS.length == 0; else showReview">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <div class="p-2 text-center">
+                                                <div class="inner mb-3">
+                                                    <div class="bradcrumb-thumb">
+                                                        <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
                                                     </div>
                                                 </div>
-                                                <b class="head-font">Good and High quality</b>
-                                                <p class="spr-review-body">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
+                                                <h5 class="header-title mb-0">Reseñas</h5>
+                                                <p>Este producto no tiene reseñas por ahora.</p>
                                             </div>
                                         </div>
-                                        <div class="spr-review d-flex w-100">
-                                            <div class="spr-review-profile flex-shrink-0">
-                                                <img class="blur-up lazyload" data-src="assets/images/users/user-img1.jpg" src="assets/images/users/user-img1.jpg" alt="" width="200" height="200" />
-                                            </div>
-                                            <div class="spr-review-content flex-grow-1">
-                                                <div class="d-flex justify-content-between flex-column mb-2">
-                                                    <div class="title-review d-flex align-items-center justify-content-between">
-                                                        <h5 class="spr-review-header-title text-transform-none mb-0">Courtney Henry</h5>
-                                                        <span class="product-review spr-starratings m-0"><span class="reviewLink"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i></span></span>
+                                    </ng-container>
+                                    <ng-template #showReview>
+                                        <h3 class="spr-form-title">Reseñas de clientes</h3>
+                                        <div class="review-inner">
+                                            <ng-container *ngFor="let REVIEW of REVIEWS">
+                                                <div class="spr-review d-flex w-100">
+                                                    <div class="spr-review-profile flex-shrink-0">
+                                                        <img class="blur-up lazyload" data-src="assets/images/users/user-img1.jpg" src="assets/images/users/user-img1.jpg" alt="" width="200" height="200" />
+                                                    </div>
+                                                    <div class="spr-review-content flex-grow-1">
+                                                        <div class="d-flex justify-content-between flex-column mb-2">
+                                                            <div class="title-review d-flex align-items-center justify-content-between">
+                                                                <!-- <h5 class="spr-review-header-title text-transform-none mb-0">{{ REVIEW.user.name + ' ' + REVIEW.user.surname }}</h5> -->
+                                                                <span class="product-review spr-starratings m-0">
+                                                                    <span class="product-review spr-starratings m-0">
+                                                                        <span class="reviewLink">
+                                                                            <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 1 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(1)"></a>
+                                                                            <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 2 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(2)"></a>
+                                                                            <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 3 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(3)"></a>
+                                                                            <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 4 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(4)"></a>
+                                                                            <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 5 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(5)"></a>
+                                                                        </span>
+                                                                    </span>
+                                                                </span>
+                                                            </div>
+
+                                                        </div>
+                                                        <b class="head-font">{{ REVIEW.title }}</b>
+                                                        <p class="spr-review-body">{{ REVIEW.description }}</p>
                                                     </div>
                                                 </div>
-                                                <b class="head-font">Feature Availability</b>
-                                                <p class="spr-review-body">The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33</p>
+                                            </ng-container>
+
+                                            <div class="spr-review d-flex w-100 d-none">
+                                                <div class="spr-review-profile flex-shrink-0">
+                                                    <img class="blur-up lazyload" data-src="assets/images/users/user-img1.jpg" src="assets/images/users/user-img1.jpg" alt="" width="200" height="200" />
+                                                </div>
+                                                <div class="spr-review-content flex-grow-1">
+                                                    <div class="d-flex justify-content-between flex-column mb-2">
+                                                        <div class="title-review d-flex align-items-center justify-content-between">
+                                                            <h5 class="spr-review-header-title text-transform-none mb-0">Eleanor Pena</h5>
+                                                            <span class="product-review spr-starratings m-0"><span class="reviewLink"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i></span></span>
+                                                        </div>
+                                                    </div>
+                                                    <b class="head-font">Good and High quality</b>
+                                                    <p class="spr-review-body">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.</p>
+                                                </div>
+                                            </div>
+                                            <div class="spr-review d-flex w-100 d-none">
+                                                <div class="spr-review-profile flex-shrink-0">
+                                                    <img class="blur-up lazyload" data-src="assets/images/users/user-img1.jpg" src="assets/images/users/user-img1.jpg" alt="" width="200" height="200" />
+                                                </div>
+                                                <div class="spr-review-content flex-grow-1">
+                                                    <div class="d-flex justify-content-between flex-column mb-2">
+                                                        <div class="title-review d-flex align-items-center justify-content-between">
+                                                            <h5 class="spr-review-header-title text-transform-none mb-0">Courtney Henry</h5>
+                                                            <span class="product-review spr-starratings m-0"><span class="reviewLink"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i></span></span>
+                                                        </div>
+                                                    </div>
+                                                    <b class="head-font">Feature Availability</b>
+                                                    <p class="spr-review-body">The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </ng-template>
                                 </div>
                             </div>
-
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-4">
-                                <form method="post" action="#" class="product-review-form new-review-form">
-                                    <h3 class="spr-form-title">Write a Review</h3>
-                                    <p>Your email address will not be published. Required fields are marked *</p>
-                                    <fieldset class="row spr-form-contact">
-                                        <div class="col-sm-6 spr-form-contact-name form-group">
-                                            <label class="spr-form-label" for="nickname">Name <span class="required">*</span></label>
-                                            <input class="spr-form-input spr-form-input-text" id="nickname" type="text" name="name" required />
-                                        </div>
-                                        <div class="col-sm-6 spr-form-contact-email form-group">
-                                            <label class="spr-form-label" for="email">Email <span class="required">*</span></label>
-                                            <input class="spr-form-input spr-form-input-email " id="email" type="email" name="email" required />
-                                        </div>
-                                        <div class="col-sm-6 spr-form-review-title form-group">
-                                            <label class="spr-form-label" for="review">Review Title </label>
-                                            <input class="spr-form-input spr-form-input-text " id="review" type="text" name="review" />
-                                        </div>
-                                        <div class="col-sm-6 spr-form-review-rating form-group">
-                                            <label class="spr-form-label">Rating</label>
-                                            <div class="product-review pt-1">
-                                                <div class="review-rating">
-                                                    <a href="#;"><i class="icon anm anm-star-o"></i></a><a href="#;"><i class="icon anm anm-star-o"></i></a><a href="#;"><i class="icon anm anm-star-o"></i></a><a href="#;"><i class="icon anm anm-star-o"></i></a><a href="#;"><i class="icon anm anm-star-o"></i></a>
+                            <ng-container *ngIf="this.sale_detail_selected">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-4">
+                                    <form method="post" action="#" class="product-review-form new-review-form">
+                                        <h3 class="spr-form-title">Escribe una reseña</h3>
+                                        <p>Tu dirección de correo electrónico no será publicada. Los campos obligatorios están marcados con *</p>
+                                        <fieldset class="row spr-form-contact">
+                                            <div class="col-sm-6 spr-form-contact-name form-group d-none">
+                                                <label class="spr-form-label" for="nickname">Nombre <span class="required">*</span></label>
+                                                <input class="spr-form-input spr-form-input-text" id="nickname" type="text" name="name" required />
+                                            </div>
+                                            <div class="col-sm-6 spr-form-contact-email form-group d-none">
+                                                <label class="spr-form-label" for="email">Correo electrónico <span class="required">*</span></label>
+                                                <input class="spr-form-input spr-form-input-email" id="email" type="email" name="email" required />
+                                            </div>
+                                            <div class="col-sm-6 spr-form-review-title form-group">
+                                                <label class="spr-form-label" for="review">Título de la reseña </label>
+                                                <input class="spr-form-input spr-form-input-text" [(ngModel)]="title" id="title" type="text" name="title" />
+                                            </div>
+                                            <div class="col-sm-6 spr-form-review-rating form-group">
+                                                <label class="spr-form-label">Clasificación</label>
+                                                <div class="product-review pt-1">
+                                                    <div class="review-rating">
+                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 1 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(1)"></a>
+                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 2 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(2)"></a>
+                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 3 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(3)"></a>
+                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 4 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(4)"></a>
+                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 5 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(5)"></a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-12 spr-form-review-body form-group">
-                                            <label class="spr-form-label" for="message">Body of Review <span class="spr-form-review-body-charactersremaining">(1500) characters remaining</span></label>
-                                            <div class="spr-form-input">
-                                                <textarea class="spr-form-input spr-form-input-textarea" id="message" name="message" rows="3"></textarea>
+                                            <div class="col-12 spr-form-review-body form-group">
+                                                <label class="spr-form-label" for="message">Cuerpo de la reseña <span class="spr-form-review-body-charactersremaining">(1500) caracteres restantes</span></label>
+                                                <div class="spr-form-input">
+                                                    <textarea class="spr-form-input spr-form-input-textarea" [(ngModel)]="description" id="description" name="description" rows="3"></textarea>
+                                                </div>
                                             </div>
+                                        </fieldset>
+                                        <div class="spr-form-actions clearfix">
+                                            <input type="submit" class="btn btn-primary spr-button spr-button-primary" (click)="save()" value="Enviar reseña" />
                                         </div>
-                                    </fieldset>
-                                    <div class="spr-form-actions clearfix">
-                                        <input type="submit" class="btn btn-primary spr-button spr-button-primary" value="Submit Review" />
-                                    </div>
-                                </form>
-                            </div>
+                                    </form>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
                     <!--End Review-->
@@ -599,8 +674,8 @@
         <section class="section product-slider pb-0">
             <div class="container">
                 <div class="section-header">
-                    <p class="mb-1 mt-0">Discover Similar</p>
-                    <h2>Related Products</h2>
+                    <p class="mb-1 mt-0">Descubra similares</p>
+                    <h2>Productos relacionados</h2>
                 </div>
 
                 <!--Product Grid-->

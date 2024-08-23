@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                        <div class="page-title"><h1>My Account</h1></div>
+                        <div class="page-title"><h1>Mi cuenta</h1></div>
                         <!--Breadcrumbs-->
                         <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Home</a><span class="title"><i class="icon anm anm-angle-right-l"></i>Pages</span><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>My Account</span></div>
                         <!--End Breadcrumbs-->
@@ -30,20 +30,20 @@
                             </div>
                             <div class="profile-detail">
                                 <h3 class="mb-1">{{ name_c }} {{surname_c}}</h3>
-                                <p class="text-muted">infoexample.com</p>
+                                <p class="text-muted"> {{email_c}}</p>
                             </div>
                         </div>
                         <div class="dashboard-tab">
                             <ul class="nav nav-tabs flex-lg-column border-bottom-0" id="top-tab" role="tablist">
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#info" class="nav-link active">Account Info</a></li>
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#address" class="nav-link">Address Book</a></li>
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#orders" class="nav-link">My Orders</a></li>
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#orderstracking" class="nav-link">Orders tracking</a></li>
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#wishlist" class="nav-link">My Wishlist</a></li>
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#payment" class="nav-link">Saved Cards</a></li>
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#profile" class="nav-link">Profile</a></li>
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#security" class="nav-link">Settings</a> </li>
-                                <li class="nav-item"><a href="login.html" onclick="return false;" (click)="logout()" class="nav-link">Log Out</a> </li>
+                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#info" class="nav-link active">Información de la cuenta</a></li>
+                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#address" class="nav-link">Libreta de direcciones</a></li>
+                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#orders" class="nav-link">Mis pedidos</a></li>
+                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#orderstracking" class="nav-link">Seguimiento de pedidos</a></li>
+                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#wishlist" class="nav-link">Mi lista de deseos</a></li>
+                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#payment" class="nav-link">Tarjetas guardadas</a></li>
+                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#profile" class="nav-link">Perfil</a></li>
+                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#security" class="nav-link">Configuración</a></li>
+                                <li class="nav-item"><a href="login.html" onclick="return false;" (click)="logout()" class="nav-link">Cerrar sesión</a></li>
                             </ul>
                         </div>
                     </div>
@@ -55,8 +55,8 @@
                         <div class="tab-pane fade h-100 show active" id="info">
                             <div class="account-info h-100">
                                 <div class="welcome-msg mb-4">
-                                    <h2>Hello, <span class="text-primary">{{ name_c }} {{surname_c}}</span></h2>
-                                    <p>From your My Account Dashboard you have the ability to view a snapshot of your recent account activity and update your account information. Select a link below to view or edit information.</p>
+                                    <h2>Hola, <span class="text-primary">{{ name_c }} {{surname_c}}</span></h2>
+                                    <p>Desde el Panel de control de Mi cuenta, puede ver una instantánea de la actividad reciente de su cuenta y actualizar la información de la misma. Seleccione uno de los enlaces a continuación para ver o editar la información.</p>
                                 </div>
 
                                 <div class="row g-3 row-cols-lg-3 row-cols-md-3 row-cols-sm-3 row-cols-1 mb-4">
@@ -65,7 +65,7 @@
                                             <img class="blur-up lazyload" data-src="assets/images/icons/order.png" src="assets/images/icons/order.png" alt="icon" width="64" height="64" />
                                             <div class="content">
                                                 <h3 class="fs-5 mb-1 text-primary">238</h3>
-                                                <p>Total Order</p>
+                                                <p>Pedido total</p>
                                             </div>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@
                                             <img class="blur-up lazyload" data-src="assets/images/icons/homework.png" src="assets/images/icons/homework.png" alt="icon" width="64" height="64" />
                                             <div class="content">
                                                 <h3 class="fs-5 mb-1 text-primary">124</h3>
-                                                <p>Pending Orders</p>
+                                                <p>Pedidos pendientes</p>
                                             </div>
                                         </div>
                                     </div>
@@ -83,44 +83,44 @@
                                             <img class="blur-up lazyload" data-src="assets/images/icons/sale.png" src="assets/images/icons/sale.png" alt="icon" width="64" height="64" />
                                             <div class="content">
                                                 <h3 class="fs-5 mb-1 text-primary">102</h3>
-                                                <p>Awaiting Payments</p>
+                                                <p>Esperando pagos</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="account-box">
-                                    <h3 class="mb-3">Account Information</h3>
+                                    <h3 class="mb-3">Información de la cuenta</h3>
                                     <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
                                         <div class="box-info mb-4">
                                             <div class="box-title d-flex-center">
-                                                <h4>Contact Information</h4> <a href="#" class="btn-link ms-auto">Edit</a>
+                                                <h4>Información del contacto</h4> <a href="#" class="btn-link ms-auto">Editar</a>
                                             </div>
                                             <div class="box-content mt-3">
-                                                <h5>Hema Jecno</h5>
-                                                <p class="mb-2">infoexample.com</p>
-                                                <p><a href="#" class="btn-link">Change Password</a></p>
+                                                <h5>{{ name_c }} {{surname_c}}</h5>
+                                                <p class="mb-2">{{email_c}}</p>
+                                                <p><a href="#" onclick="return false;" onclick="return false;" class="btn-link">Cambiar la contraseña</a></p>
                                             </div>
                                         </div>
                                         <div class="box-info mb-4">
                                             <div class="box-title d-flex-center">
-                                                <h4>Newsletters</h4> <a href="#" class="btn-link ms-auto">Edit</a>
+                                                <h4>Boletines informativos</h4> <a href="#" onclick="return false;" class="btn-link ms-auto">Editar</a>
                                             </div>
                                             <div class="box-content mt-3">
-                                                <p>You are currently not subscribed to any newsletter.</p>
+                                                <p>Actualmente no estás suscrito a ningún boletín.</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="box-info mb-4">
                                         <div class="box-title d-flex-center">
-                                            <h4>Address Book</h4> <a href="#" class="btn-link ms-auto">Edit</a>
+                                            <h4>Libreta de direcciones</h4> <a href="#" onclick="return false;" class="btn-link ms-auto">Editar</a>
                                         </div>
                                         <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
                                             <ng-container *ngFor="let list_address of listAddressClients; let i=index">
                                                 <div class="box-content mt-3">
-                                                    <h5>Default Billing Address</h5>
-                                                    <address class="mb-2">{{ list_address.address }}, <br/>{{ list_address.ciudad }}, <br/>State name and Zip code.</address>
-                                                    <p><a href="#" onclick="return false;" class="btn-link">Edit Address</a></p>
+                                                    <h5>Dirección de facturación predeterminada</h5>
+                                                    <address class="mb-2">{{ list_address.address }}, <br/>{{ list_address.ciudad }}, <br/></address>
+                                                    <p><a href="#" onclick="return false;" class="btn-link">Editar dirección</a></p>
                                                 </div>
                                             </ng-container>
                                             <!-- 
@@ -145,14 +145,14 @@
                         <div class="tab-pane fade h-100" id="address">
                             <div class="address-card mt-0 h-100">                                   
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
-                                    <h2 class="mb-0">Address Book</h2>
-                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addNewModal"><i class="icon anm anm-plus-r me-1"></i> Add New</button>
+                                    <h2 class="mb-0">Libreta de direcciones</h2>
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addNewModal"><i class="icon anm anm-plus-r me-1"></i> Agregar nuevo</button>
                                     <!-- New Address Modal -->
                                     <div class="modal fade" id="addNewModal" tabindex="-1" aria-labelledby="addNewModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h2 class="modal-title" id="addNewModalLabel">Address details</h2>
+                                                    <h2 class="modal-title" id="addNewModalLabel">Detalles de la dirección</h2>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
@@ -228,7 +228,7 @@
                                                     </form>
                                                 </div>
                                                 <div class="modal-footer justify-content-center">
-                                                    <button type="submit" class="btn btn-primary m-0"><span>Add Address</span></button>
+                                                    <button type="submit" class="btn btn-primary m-0"><span>Agregar dirección</span></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -246,15 +246,15 @@
                                                     </div>
                                                     <div class="middle">
                                                         <div class="address mb-2 text-muted">
-                                                            <address class="m-0">{{ list_address.address }}, <br/>{{ list_address.ciudad }} City name, <br/>State name and Zip code.</address>
+                                                            <address class="m-0">{{ list_address.address }}, <br/>{{ list_address.ciudad }} City name, <br/></address>
                                                         </div>
                                                         <div class="number">
-                                                            <p>Mobile: <a href="tel:401234567890">(+34) {{ list_address.telefono }}</a></p>
+                                                            <p>Móvil: <a href="tel:401234567890">(+34) {{ list_address.telefono }}</a></p>
                                                         </div>
                                                     </div>
                                                     <div class="bottom d-flex-justify-center justify-content-between">
-                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm" data-bs-toggle="modal" data-bs-target="#addEditModal">Edit</button>
-                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm">Remove</button>
+                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm" data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button>
+                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm">Eliminar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -403,23 +403,27 @@
                                     <table class="table align-middle text-center order-table">
                                         <thead>
                                             <tr class="table-head text-nowrap">
-                                                <th scope="col">image</th>
-                                                <th scope="col">Order Id</th>
-                                                <th scope="col">Product Details</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col">View</th>
+                                                <th scope="col">imagen</th>
+                                                <th scope="col">ID del pedido</th>
+                                                <th scope="col">Detalles del producto</th>
+                                                <th scope="col">Precio</th>
+                                                <th scope="col">Estado</th>
+                                                <th scope="col">Ver</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <ng-container *ngFor="let order of sale_orders">
+                                            <ng-container *ngFor="let order of sale_details">
                                                 <tr>
-                                                    <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
-                                                    <td><span class="id">#{{ order.sale.id }}</span></td>
-                                                    <td><span class="name">Oxford Cuban Shirt</span></td>
-                                                    <td><span class="price fw-500">{{ euro }}{{ order.sale.total }}</span></td>
-                                                    <td><span class="badge rounded-pill bg-success custom-badge">Shipped</span></td>
-                                                    <td><a href="product-layout1.html" onclick="return false" (click)="viewDetailSale(order)" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                    <td><img class="blur-up lazyload" [attr.data-src]="order.product.imagen" [src]="order.product.imagen" width="50" alt="product" title="product" /></td>
+                                                    <td><span class="id">#{{ order._id }}</span></td>
+                                                    <td><span class="name">{{ order.product.title }}</span></td>
+                                                    <td><span class="price fw-500">{{ euro }}{{ order.total }}</span></td>
+                                                    <!-- <td><span class="badge rounded-pill bg-success custom-badge">Enviado</span></td> -->
+                                                    <!-- <td><span class="badge rounded-pill bg-danger custom-badge">Pendiente</span></td> -->
+                                                    <td><span class="badge rounded-pill bg-dark custom-badge">Processing</span></td>
+                                                    <!-- <td><span class="badge rounded-pill bg-secondary custom-badge">Cancelada</span></td> -->
+                                                    <td><a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', order.product.slug]" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                    <!-- <td><a href="product-layout1.html" onclick="return false" (click)="viewDetailSale(order)" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td> -->
                                                 </tr>
                                             </ng-container>
                                             <tr class="d-none">
