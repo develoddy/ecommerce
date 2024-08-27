@@ -21,37 +21,54 @@ export class RegisterComponent implements OnInit {
   repeat_password:string = "";
   success:boolean=false;
 
+  errorRegister:boolean=false;
+  errorMessage:string="";
+  CURRENT_USER_AUTHENTICATED:any=null;
+
   constructor(
     public _authService: AuthService,
     public _router: Router,
     public translate: TranslateService
-  ){
+  ) {
     translate.setDefaultLang('es');
   }
 
   ngOnInit(): void {
-    if (this._authService.user) {
-      this._router.navigate(['/']);
-    }
+     this.verifyAuthenticatedUser();
   }
 
   getTranslatedCondition(): string {
     return this.translate.instant('auth_profile.register.condition');
   }
 
+  private verifyAuthenticatedUser(): void {
+    this._authService.user.subscribe( user => {
+      if ( user ) {
+        this._router.navigate(['/']);
+        this.CURRENT_USER_AUTHENTICATED = user;
+      } else {
+        this.CURRENT_USER_AUTHENTICATED = null;
+      }
+    });
+  }
+
   register() {
     if(
       !this.email ||
       !this.name ||
-      !this.surname ||
+      //!this.surname ||
       !this.password ||
       !this.repeat_password) {
-        alertDanger("Todos los campos son requeridos.");
+        //alertDanger("Todos los campos son requeridos.");
+        this.errorRegister = true;
+        this.errorMessage = "Completa todos los campos para continuar";
         return;
     }
 
-    if(this.password != this.repeat_password) {
-      alertDanger("Ambas contraseñas deben ser iguales.");
+    if( this.password != this.repeat_password ) {
+      //alertDanger("Ambas contraseñas deben ser iguales.");
+      this.errorRegister = true;
+      this.errorMessage = "Ambas contraseñas deben ser iguales";
       return;
     }
 
@@ -75,7 +92,9 @@ export class RegisterComponent implements OnInit {
           this.repeat_password = '';
           this.success = true;
         } else {
-          alertDanger("Hubo un problema al registrar tus datos. Por favor, intentalo nuevamente.");
+          //alertDanger("Hubo un problema al registrar tus datos. Por favor, intentalo nuevamente.");
+          this.errorRegister = true;
+          this.errorMessage = "Hubo un problema al registrar tus datos. Por favor, intentalo nuevamente";
         }
       
       },
@@ -83,10 +102,14 @@ export class RegisterComponent implements OnInit {
         // Manejo de errores específicos del backend
         if ( error.status === 400 ) {
           // Manejo de error por duplicidad de correo electrónico
-          alertDanger("Este correo electrónico ya está registrado en nuestro sistema.");
+          //alertDanger("Este correo electrónico ya está registrado en nuestro sistema.");
+          this.errorRegister = true;
+          this.errorMessage = "Este correo electrónico ya está registrado en nuestro sistema";
         } else {
           // Otros errores
-          alertDanger("Hubo un problema al registrar tus datos. Por favor, intenta nuevamente.");
+          //alertDanger("Hubo un problema al registrar tus datos. Por favor, intenta nuevamente.");
+          this.errorRegister = true;
+          this.errorMessage = "Hubo un problema al registrar tus datos. Por favor, intenta nuevamente";
         }
       }
     );

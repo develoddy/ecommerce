@@ -8,13 +8,13 @@
     <!-- Body Container -->
     <div id="page-content"> 
         <!--Page Header-->
-        <div class="page-header text-center">
+        <div class="page-header text-center d-none">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                        <div class="page-title"><h1>Login</h1></div>
+                        <div class="page-title"><h1>Inicia sesión</h1></div>
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Home</a><span class="title"><i class="icon anm anm-angle-right-l"></i>My Account</span><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Login</span></div>
+                        <div class="breadcrumbs"><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Login</span></div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -29,41 +29,52 @@
                     <div class="col-12 col-sm-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                         <div class="inner h-100">
                             <form class="customer-form">	
-                                <h2 class="text-center fs-4 mb-3">Registered Customers</h2>
-                                <p class="text-center mb-4">If you have an account with us, please log in.</p>
+                                <h2 class="text-center fs-4 mb-3">Inicia sesión</h2>
+                                <p class="text-center mb-4">Si tiene una cuenta con nosotros, inicie sesión.</p>
                                 <div class="form-row">
                                     <div class="form-group col-12">
-                                        <label for="CustomerEmail" class="d-none">Email <span class="required">*</span></label>
-                                        <input type="email" name="email" [(ngModel)]="email" placeholder="Email" id="CustomerEmail" value="" required />
+                                        <label for="CustomerEmail" class="d-none">E-mail <span class="required">*</span></label>
+                                        <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" id="CustomerEmail" value="" required />
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerPassword" class="d-none">Password <span class="required">*</span></label>
-                                        <input type="password" name="password" [(ngModel)]="password" placeholder="Password" id="CustomerPassword" value="" required />                        	
+                                        <label for="CustomerPassword" class="d-none">Contraseña <span class="required">*</span></label>
+                                        <input type="password" name="password" [(ngModel)]="password" placeholder="Contraseña" id="CustomerPassword" value="" required />                        	
                                     </div>
                                     <div class="form-group col-12">
                                         <div class="login-remember-forgot d-flex justify-content-between align-items-center">
                                             <div class="remember-check customCheckbox">
                                                 <input id="remember" name="remember" type="checkbox" value="remember" required />
-                                                <label for="remember"> Remember me</label>
+                                                <label for="remember"> Mantener la sesión iniciada</label>
                                             </div>
-                                            <a href="forgot-password.html" onclick="return false;" [routerLink]="['/auth/forgot-password']">Forgot your password?</a>
+                                            <a href="forgot-password.html" class="d-none" onclick="return false;" [routerLink]="['/auth/forgot-password']">¿Has olvidado tu contraseña?</a>
                                         </div>
                                     </div>
-                                    <div class="form-group col-12 mb-0">
-                                        <input type="submit" class="btn btn-primary btn-lg w-100" (click)="login()" value="Sign In" />
+                                    
+                                    <div class="form-group col-12 mt-3" *ngIf="this.errorAutenticate">
+                                        <p class="text-danger">{{ this.errorMessageAutenticate }}</p>
+                                    </div>
+
+                                    <div class="form-group col-12 mt-3 mb-3">
+                                        <input type="submit" class="btn btn-secondary btn-lg w-100" (click)="login()" value="Iniciar sesión" />
+                                    </div>
+                                    <div class="form-group col-12 ">
+                                        <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="btn-link">
+                                            <input type="submit" class="btn btn-primary btn-lg w-100" value="Crear cuenta" />
+                                        </a>
                                     </div>
                                 </div>
 
-                                <div class="login-divide"><span class="login-divide-text">OR</span></div>
+                                <div class="login-divide d-none"><span class="login-divide-text">OR</span></div>
 
-                                <p class="text-center fs-6 text-muted mb-3">Sign in with social account</p>
-                                <div class="login-social d-flex-justify-center">
+                                <p class="text-center fs-6 text-muted mb-3 d-none">Sign in with social account</p>
+                                <div class="login-social d-flex-justify-center d-none">
                                     <a class="social-link facebook rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-facebook-f me-2"></i> Facebook</a>
                                     <a class="social-link google rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-google-plus-g me-2"></i> Google</a>
                                     <a class="social-link twitter rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-twitter me-2"></i> Twitter</a>
                                 </div>
 
-                                <div class="login-signup-text mt-4 mb-2 fs-6 text-center text-muted">Don,t have an account? <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="btn-link">Sign up now</a></div>
+                                <!-- <div class="login-signup-text mt-4 mb-2 fs-6 text-center text-muted">¿No tienes una cuenta? <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="btn-link">Regístrate ahora</a></div> -->
+                                <div class="login-signup-text mt-4 mb-2 fs-6 text-center text-muted"><a href="register.html" onclick="return false;" [routerLink]="['/auth/forgot-password']">¿Has olvidado tu contraseña?</a></div>
                             </form>
                         </div>
                     </div>

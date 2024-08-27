@@ -10,8 +10,6 @@ declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function pswp([]):any;
 declare function productZoom([]):any;
-
-
 declare function LandingProductDetail():any;
 declare function ModalProductDetail():any;
 declare function alertDanger([]):any;
@@ -38,7 +36,7 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
   sale_orders:any = [];
   sale_details:any = [];
 
-  // Review
+  // REVIEWS
   cantidad:any=0;
   title:any=null;
   description:any=null;
@@ -56,7 +54,12 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
   coloresDisponibles: { color: string, imagen: string }[] = [];
   variedades: any[] = [];
 
-  availableSizes = ['S', 'M', 'L', 'XL'];  // Lista de todas las tallas posibles
+  errorResponse:boolean=false;
+  errorMessage:any="";
+
+  availableSizes = ['S', 'M', 'L', 'XL'];  // LISTA DE TODAS LAS TALLAS POSIBLES
+
+  CURRENT_USER_AUTHENTICATED:any=null;
 
   private routeParamsSubscription: Subscription | undefined;
   private queryParamsSubscription: Subscription | undefined;
@@ -72,53 +75,89 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
   ) {}
 
   ngOnInit(): void {
-    this.routeParamsSubscription = this._routerActived.params.subscribe((resp:any) => {
-      this.slug = resp["slug"];
-    });
 
-    this.queryParamsSubscription = this._routerActived.queryParams.subscribe((resp:any) => {
-      this.discount_id = resp["_id"];
-    });
+    this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
 
-    this.initLandingProduct();
+    this.subscribeToRouteParams(); // Suscripción a los parámetros de la ruta
+    this.subscribeToQueryParams(); // Suscripción a los parámetros de consulta
+
+    this.initLandingProduct(); // Inicializa el producto en la landing page
   }
 
-  initLandingProduct() {
-    this.productSubscription = this._ecommerce_guestService.showLandingProduct(this.slug, this.discount_id).subscribe((resp:any) => {
-      this.product_selected = resp.product;
-      this.related_products = resp.related_products;
-      this.SALE_FLASH = resp.SALE_FLASH;
-      this.REVIEWS = resp.REVIEWS;
-      this.AVG_REVIEW = resp.AVG_REVIEW;
-      this.COUNT_REVIEW = resp.COUNT_REVIEW;
+  private verifyAuthenticatedUser(): void {
+    this._ecommerceAuthService._authService.user.subscribe( user => {
+      if ( user ) {
+        this.CURRENT_USER_AUTHENTICATED = user;
+      } else {
+        this.CURRENT_USER_AUTHENTICATED = null;
+      }
+    });
+  }
 
-      /// Verifica si el usuario está autenticado antes de llamar a showProfileClient
-      if (this._ecommerceAuthService._authService.user) {
+  private subscribeToRouteParams(): void {
+    this.routeParamsSubscription = this._routerActived.params.subscribe(
+      ( resp: any ) => {
+        this.slug = resp["slug"];
+      });
+  }
+  
+  private subscribeToQueryParams(): void {
+    this.queryParamsSubscription = this._routerActived.queryParams.subscribe(
+      ( resp: any ) => {
+        this.discount_id = resp["_id"];
+      });
+  }
+  
+  private initLandingProduct() {
+    this.productSubscription  = this._ecommerce_guestService.showLandingProduct(
+      this.slug, 
+      this.discount_id
+    ).subscribe( ( resp:any ) => {
+      
+      this.product_selected   = resp.product;
+      this.related_products   = resp.related_products;
+      this.SALE_FLASH         = resp.SALE_FLASH;
+      this.REVIEWS            = resp.REVIEWS;
+      this.AVG_REVIEW         = resp.AVG_REVIEW;
+      this.COUNT_REVIEW       = resp.COUNT_REVIEW;
+
+      // VERIFICA SI EL USUARIO ESTÁ AUTENTICADO ANTES DE LLAMAR AL METODO showProfileClient
+      if( this.CURRENT_USER_AUTHENTICATED ) {
         this.showProfileClient();
       }
 
-      // Filtrar tallas duplicadas y eliminar tallas no disponibles
-      this.variedades = resp.product.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1); // Ordenar por valor de menor a mayor
+      // FILTRAR TALLAS DUPLICADAS Y ELIMINAR TALLAS NO DISPONIBLES
+      // ORDENAR POR VALOR DE MENOR A MAYOR
+      this.variedades = resp.product.variedades.filter(
+        ( item: any, 
+          index: number, 
+          self: any[]
+        ) => index === self.findIndex(
+          ( t: any ) => t.valor === item.valor && t.stock > 0
+        )
+      ).sort(
+        ( a: any, b: any ) => ( a.valor > b.valor ) ? 1 : -1
+      ); 
       
       this.filterUniqueGalerias();
       this.setFirstImage();
       this.setColoresDisponibles();
 
-      // Seleccionar automáticamente el primer color
-      this.selectedColor = this.coloresDisponibles[0]?.color || '';
+      // SELECCIONAR AUTOMÁTICAMENTE EL PRIMER COLOR
+      this.selectedColor = this.coloresDisponibles[ 0 ]?.color || '';
 
-      // Filtrar las tallas disponibles para el primer color seleccionado
+      // FILTRAR LAS TALLAS DISPONIBLES PARA EL PRIMER COLOR SELECCIONADO
       this.variedades = this.product_selected.variedades
           .filter((variedad: any) => variedad.color === this.selectedColor)
           .sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
 
-      // Mapear las variedades para indicar disponibilidad
+      // MAPEAR LAS VARIEDADES PARA INDICAR DISPONIBILIDAD
       this.variedades = this.availableSizes.map(size => {
-          const foundVariedad = this.variedades.find(variedad => variedad.valor === size);
+          const foundVariedad = this.variedades.find( variedad => variedad.valor === size );
           return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
       });
 
-      this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
+      this.variedad_selected = this.variedades.find( v => v.stock > 0 ) || null;
       this.activeIndex = 0;
 
         setTimeout(() => {
@@ -129,12 +168,12 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     }); 
   }
 
-  showProfileClient() {
+  private showProfileClient() {
     let data = {
-      user_id: this._ecommerceAuthService._authService.user._id,
+      user_id: this.CURRENT_USER_AUTHENTICATED._id, //this._ecommerceAuthService._authService.user._id,
     };
   
-    this._ecommerceAuthService.showProfileClient(data).subscribe((resp: any) => {
+    this._ecommerceAuthService.showProfileClient( data ).subscribe( ( resp: any ) => {
       this.sale_orders = resp.sale_orders;
       this.sale_details = [];
   
@@ -146,40 +185,45 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
         }
       });
   
-      // Encontrar el sale_detail que coincide con el product_selected
+      // ENCONTRAR EL SALE_DETAIL QUE COINCIDE CON EL PRODUCT_SELECTED
       const matchingSaleDetail = this.sale_details.find(
         (sale_detail: any) => sale_detail.product._id === this.product_selected._id
       );
   
-      // Verificar si existe una review para el product_selected
+      // VERIFICAR SI EXISTE UNA REVIEW PARA EL PRODUCT_SELECTED
       const matchingReview = this.REVIEWS.find(
         (review: any) => review.productId === this.product_selected._id
       );
   
-      if (matchingSaleDetail && matchingReview) {
-        // Si existen ambos, sale_detail y review, mostrar formulario para editar la review
+      if ( matchingSaleDetail && matchingReview ) {
+        // SI EXISTEN AMBOS, SALE_DETAIL Y REVIEW, MOSTRAR FORMULARIO PARA EDITAR LA REEVIEW
         console.log("Se encontró un sale_detail y una review coincidentes:", matchingSaleDetail, matchingReview);
         this.viewReview(matchingSaleDetail);
-      } else if (matchingSaleDetail && !matchingReview) {
-        // Si existe sale_detail pero no hay review, mostrar formulario para agregar una nueva review
-        console.log("Se encontró un sale_detail pero no hay review. Mostrar formulario para agregar review.", matchingSaleDetail);
-        this.viewReview(matchingSaleDetail); // Pasar un objeto vacío para iniciar un formulario en blanco
-      } else {
-        // Si no se encuentra ningún sale_detail ni review, no mostrar el formulario
-        console.log("No se encontró ningún sale_detail ni review.");
-        //this.viewReview(null); // O cualquier otro comportamiento que desees
 
-        // Mostrar reseñas de otros usuarios para el producto seleccionado
+      } else if ( matchingSaleDetail && !matchingReview ) {
+
+        // SI EXISTE SALE_DETAIL PERO NO HAY REVIEW, MOSTRAR FORMULARIO PARA AGREGAR UNA NUEVA REVIEW
+        console.log("Se encontró un sale_detail pero no hay review. Mostrar formulario para agregar review.", matchingSaleDetail);
+        this.viewReview(matchingSaleDetail); // PASAR UN OBJETO VACIO PARA INICIAR UN FORMULARIO EN BLANCO
+
+      } else {
+
+        // SI NO SE ENCUENTRA NINGÚN SALE_DETAIL NI REVIEW, NO MOSTRAR EL FORMULARIO
+        console.log("No se encontró ningún sale_detail ni review.");
+ 
+        // MOSTRAR RESEÑAS DE OTROS USUARIOS PARA EL PRODUCTO SELECCIONADO
         const otherReviews = this.REVIEWS.filter(
           (review: any) => review.productId === this.product_selected._id
         );
 
         if (otherReviews.length > 0) {
+
           console.log("Mostrando reseñas de otros usuarios:", otherReviews);
-          // Aquí podrías mostrar estas reseñas en el UI
-          // Por ejemplo, podrías asignarlas a una variable en el componente para renderizar en el template
-          //this.displayOtherReviews(otherReviews);
+          // AQUI PODRÍAS MOSTRAR ESTAS RESEÑAS EN EL UI
+          // POR EJEMPLO, PODRÍAS ASIGNAR A UNA VARIABLE EN EL COMPONENTE PARA RENDERIZAR EN EL TEMPLATE
+          // this.displayOtherReviews(otherReviews);
         } else {
+
           console.log("No hay reseñas disponibles para este producto.");
           this.viewReview(null); // O cualquier otro comportamiento que desees
         }
@@ -187,53 +231,57 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     });
   }
 
-  viewReview(sale_detail:any) {
-    if (sale_detail) {
+  private viewReview(sale_detail:any) {
+
+    if ( sale_detail ) {
       this.sale_detail_selected = sale_detail;
-      if (this.sale_detail_selected.review) {
-        this.title = this.sale_detail_selected.review.title;
-        this.cantidad = this.sale_detail_selected.review.cantidad;
-        this.description = this.sale_detail_selected.review.description;
+
+      if ( this.sale_detail_selected.review ) {
+
+        this.title        = this.sale_detail_selected.review.title;
+        this.cantidad     = this.sale_detail_selected.review.cantidad;
+        this.description  = this.sale_detail_selected.review.description;
+
       } else {
-        this.title = null;
-        this.cantidad = null;
-        this.description = null;
+
+        this.title        = null;
+        this.cantidad     = null;
+        this.description  = null;
+
       }
     }
   }
 
-  private reloadPage(): void {
-    const reloaded = sessionStorage.getItem('reloaded');
-    if (!reloaded) {
-      sessionStorage.setItem('reloaded', 'true');
-      window.location.reload();
-    } else {
-      sessionStorage.removeItem('reloaded');
-    }
-  }
-  
   filterUniqueGalerias() {
     const uniqueImages = new Set();
-    this.uniqueGalerias = this.product_selected.galerias.filter((galeria:any) => {
-      const isDuplicate = uniqueImages.has(galeria.imagen);
-      uniqueImages.add(galeria.imagen);
-      return !isDuplicate;
-    });
+    this.uniqueGalerias = this.product_selected.galerias.filter( 
+      ( galeria:any ) => {
+        const isDuplicate = uniqueImages.has(galeria.imagen);
+        uniqueImages.add(galeria.imagen);
+        return !isDuplicate;
+      });
   }
 
   setFirstImage() {
-    if (this.uniqueGalerias.length > 0) {
-      this.firstImage = this.uniqueGalerias[0].imagen;
+    if ( this.uniqueGalerias.length > 0 ) {
+      this.firstImage = this.uniqueGalerias[ 0 ].imagen;
     }
   }
 
   setColoresDisponibles() {
     const uniqueColors = new Map();
-    this.product_selected.galerias.forEach((galeria: any) => {
-      if (!uniqueColors.has(galeria.color)) {
-        uniqueColors.set(galeria.color, { imagen: galeria.imagen, hex: this.getColorHex(galeria.color) });
-      }
-    });
+    this.product_selected.galerias.forEach(
+      ( galeria: any ) => {
+        if ( !uniqueColors.has( galeria.color ) ) {
+          uniqueColors.set(
+            galeria.color, 
+            { 
+              imagen: galeria.imagen, 
+              hex: this.getColorHex(galeria.color) 
+            }
+          );
+        }
+      });
     this.coloresDisponibles = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
   }
 
@@ -242,8 +290,9 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
   }
 
   getColorHex(color: string): string {
-    // Mapea los nombres de los colores a sus valores hexadecimales correspondientes
-    const colorMap: { [key: string]: string } = {
+
+    // MAPEA LOS NOMBRES DE LOS COLORES A SUS VALORES HEXADECIMALES CORRESPONDIENTES
+    const colorMap: { [ key: string ]: string } = {
       'Faded Black': '#424242',
       'Faded Khaki': '#dbc4a2',
       'Black': '#080808',
@@ -259,7 +308,7 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
       'Leaf': '#5c9346',
       'Autumn': '#c85313',
     };
-    return colorMap[color] || ''; // Devuelve el valor hexadecimal correspondiente al color
+    return colorMap[color] || ''; 
   }
 
   getSwatchClass(imagen: string, color: string): any {
@@ -277,7 +326,7 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
   openModal(besProduct:any, FlashSale:any=null) {
     this.product_selected_modal = null;
     setTimeout(() => {
-      this.product_selected_modal = besProduct;
+      this.product_selected_modal           = besProduct;
       this.product_selected_modal.FlashSale = FlashSale;
       setTimeout(() => {
         ModalProductDetail();
@@ -287,7 +336,7 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
 
   getDiscount() {
     let discount = 0;
-    if (this.SALE_FLASH) {
+    if ( this.SALE_FLASH ) {
       if (this.SALE_FLASH.type_discount == 1) {
         return (this.SALE_FLASH.discount*this.product_selected.price_usd*0.01).toFixed(2);
       } else {
@@ -296,26 +345,6 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     }
     return discount;
   }
-
-  // getDiscountProduct(besProduct:any, is_sale_flash:any=null) {
-  //   if (is_sale_flash) {
-  //     if (this.SALE_FLASH.type_discount == 1) { // 1 porcentaje
-  //       return (besProduct.price_usd*this.SALE_FLASH.discount*0.01).toFixed(2);
-  //     } else { // 2 es moneda
-  //       return this.SALE_FLASH.discount;
-  //     }
-  //   } else {
-  //     if (besProduct.campaing_discount) {
-  //       if (besProduct.campaing_discount.type_discount == 1) { // 1 porcentaje
-  //         //return besProduct.price_usd*besProduct.campaing_discount.discount*0.01;
-  //         return (besProduct.price_usd*besProduct.campaing_discount.discount*0.01).toFixed(2);
-  //       } else { // 2 es moneda
-  //         return besProduct.campaing_discount.discount;
-  //       }
-  //     }
-  //   }
-  //   return 0;
-  // }
 
   getCalNewPrice(product:any) {
     // if (this.FlashSale.type_discount == 1) {
@@ -326,11 +355,9 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     return 0;
   }
 
-
   selectColor(color: { color: string, imagen: string }) {
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
-    console.log(`Color seleccionado: ${this.selectedColor}`);
 
     // Filtrar las tallas disponibles para el color seleccionado
     const filteredVariedades = this.product_selected.variedades
@@ -360,12 +387,17 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
 
   addCart(product:any) {
 
-    if ( !this._cartService._authService.user ) {
-      alertDanger("Por favor, autentifíquese para poder añadir el producto a la cesta.");
+    //if ( !this._cartService._authService.user ) {
+    if( !this.CURRENT_USER_AUTHENTICATED ) {
+      //alertDanger("Por favor, autentifíquese para poder añadir el producto a la cesta.");
+      this.errorResponse = true;
+      this.errorMessage = "Por favor, autentifíquese para poder añadir el producto a la cesta";
       return;
     }
     if ( $("#qty-cart").val() == 0 ) {
-      alertDanger("Por favor, ingrese una cantidad mayor a 0 para añadir a la cesta.");
+      //alertDanger("Por favor, ingrese una cantidad mayor a 0 para añadir a la cesta.");
+      this.errorResponse = true;
+      this.errorMessage = "Por favor, ingrese una cantidad mayor a 0 para añadir a la cesta";
       return;
     }
   
@@ -373,19 +405,23 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
 
       if ( !this.variedad_selected ) {
         //alertDanger("Por favor, seleccione una variedad antes de añadir a la cesta.");
-        alertDanger("No hay stock disponible para este color.");
+        //alertDanger("No hay stock disponible para este color.");
+        this.errorResponse = true;
+        this.errorMessage = "No hay stock disponible para este color";
         return;
       }
       if (this.variedad_selected) {
         if (this.variedad_selected.stock < $("#qty-cart").val()) {
-          alertDanger("Por favor, reduzca la cantidad. Stock insuficiente.");
+          //alertDanger("Por favor, reduzca la cantidad. Stock insuficiente.");
+          this.errorResponse = true;
+          this.errorMessage = "Por favor, reduzca la cantidad. Stock insuficiente";
           return;
         }
       }
     }
 
     let data = {
-      user: this._cartService._authService.user._id,
+      user: this.CURRENT_USER_AUTHENTICATED._id,//this._cartService._authService.user._id,
       product: this.product_selected._id,
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
@@ -400,14 +436,18 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
 
     this._cartService.registerCart(data).subscribe((resp:any) => {
       if (resp.message == 403) {
-        alertDanger(resp.message_text);
+        //alertDanger(resp.message_text);
+        this.errorResponse = true;
+        this.errorMessage = resp.message_text;
         return;
       } else {
         this._cartService.changeCart(resp.cart);
-        alertSuccess("El producto ha sido añadido correctamente a la cesta.");
+        //alertSuccess("El producto ha sido añadido correctamente a la cesta.");
         this.minicartService.openMinicart();
       }
     }, error => {
+
+      console.log("linea 424: ", error.error.message);
       if (error.error.message == "EL TOKEN NO ES VALIDO") {
         this._cartService._authService.logout();
       }
@@ -439,7 +479,6 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     }
   }
 
-  // REGISTER review
   saveReview() {
     if ( !this.title || !this.cantidad || !this.description) {
       alertDanger("Todos los campos del formularios son importantes!");
@@ -449,7 +488,7 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     let data = {
       product: this.sale_detail_selected.product._id,
       sale_detail: this.sale_detail_selected._id,
-      user: this._ecommerceAuthService._authService.user._id,
+      user: this.CURRENT_USER_AUTHENTICATED._id,//this._ecommerceAuthService._authService.user._id,
       cantidad: this.cantidad,
       title: this.title,
       description: this.description,
@@ -462,7 +501,6 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     });
   }
 
-  // UPDATE review
   updateReview() {
     if ( !this.cantidad || !this.description) {
       alertDanger("Todos los campos del formularios son importantes!");
@@ -473,7 +511,7 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
       _id: this.sale_detail_selected.review.id,
       product: this.sale_detail_selected.product._id,
       sale_detail: this.sale_detail_selected._id,
-      user: this._ecommerceAuthService._authService.user._id,
+      user: this.CURRENT_USER_AUTHENTICATED._id,//this._ecommerceAuthService._authService.user._id,
       cantidad: this.cantidad,
       title: this.title,
       description: this.description,
@@ -485,4 +523,24 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
       alertSuccess(resp.message);
     });
   }
+
+  // getDiscountProduct(besProduct:any, is_sale_flash:any=null) {
+  //   if (is_sale_flash) {
+  //     if (this.SALE_FLASH.type_discount == 1) { // 1 porcentaje
+  //       return (besProduct.price_usd*this.SALE_FLASH.discount*0.01).toFixed(2);
+  //     } else { // 2 es moneda
+  //       return this.SALE_FLASH.discount;
+  //     }
+  //   } else {
+  //     if (besProduct.campaing_discount) {
+  //       if (besProduct.campaing_discount.type_discount == 1) { // 1 porcentaje
+  //         //return besProduct.price_usd*besProduct.campaing_discount.discount*0.01;
+  //         return (besProduct.price_usd*besProduct.campaing_discount.discount*0.01).toFixed(2);
+  //       } else { // 2 es moneda
+  //         return besProduct.campaing_discount.discount;
+  //       }
+  //     }
+  //   }
+  //   return 0;
+  // }
 }

@@ -19,7 +19,8 @@ declare function alertSuccess([]):any;
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
+export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
+
   euro = "€";
   selectedLanguage: string = 'ES';
   listCarts:any=[];
@@ -29,6 +30,8 @@ export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
   search_product:any=null;
   products_search:any=[];
   categories:any=[];
+
+  CURRENT_USER_AUTHENTICATED:any=null;
 
   source:any;
   @ViewChild("filter") filter?:ElementRef;
@@ -49,52 +52,45 @@ export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
     translate.setDefaultLang('es');
   }
 
-  changeLanguageToSpanish(language: string): void {
-    this.selectedLanguage = language.toUpperCase();
-    this.translate.use('es');
-     //this.languageService.setLanguage(language);
-   }
-  
-  changeLanguageToEnglish(language: string): void {
-    this.selectedLanguage = language.toUpperCase();
-    this.translate.use('en');
-     //this.languageService.setLanguage(language);
-   }
 
   ngOnInit() {
-    //this.reloadPage();
-    this.user = this._cartService._authService.user;
-    this.cartSubscription = this._cartService.currenteDataCart$.subscribe((resp:any) => {
+    this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
+    this.subscribeToCartData(); // Suscripción a los datos del carrito
+    this.subscribeToEcommerceConfig(); // Suscripción a la configuración inicial de eCommerce
+  }
+
+
+  private verifyAuthenticatedUser(): void {
+    this._cartService._authService.user.subscribe((user:any) => {
+      this.user = user;
+      if ( user ) {
+        this._cartService.listCarts(user._id).subscribe((resp: any) => {
+          resp.carts.forEach((cart: any) => {
+            this._cartService.changeCart(cart);
+          });
+        });
+      } else {
+        this.listCarts = [];
+        this.totalCarts = 0;
+      }
+    });
+  }
+
+  private subscribeToCartData(): void {
+    this.cartSubscription = this._cartService.currenteDataCart$.subscribe((resp: any) => {
       this.listCarts = resp;
+      console.log(this.listCarts);
+      
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
     });
-    if (this._cartService._authService.user) {
-      this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
-        resp.carts.forEach((cart:any) => {
-          this._cartService.changeCart(cart);
-        });
-      });
-    }
+  }
 
-    this.ecommerceSubscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
+  private subscribeToEcommerceConfig(): void {
+    this.ecommerceSubscription = this._ecommerceGuestService.configInitial().subscribe((resp: any) => {
       this.categories = resp.categories;
     });
-
-    setTimeout(() => {
-      this.reloadPage();
-    }, 50);
   }
-
-  private reloadPage(): void {
-    const reloaded = sessionStorage.getItem('reloaded');
-    if (!reloaded) {
-      sessionStorage.setItem('reloaded', 'true');
-      window.location.reload();
-    } else {
-      sessionStorage.removeItem('reloaded');
-    }
-  }
-
+  
   updateTotalCarts() {
     this.cartSubscription = this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
@@ -118,9 +114,9 @@ export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
           })
         }
       });
-    } else {
+    } /*else {
       console.error("filter is undefined");
-    }
+    }*/
   }
 
   dec(cart:any) {
@@ -229,7 +225,7 @@ export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
     this.minicartService.closeMinicart();
   }
 
-  ngOnDestroy(): void {
+  /*ngOnDestroy(): void {
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
     }
@@ -244,5 +240,5 @@ export class HeaderComponent implements OnInit , AfterViewInit, OnDestroy {
     }
     
     console.log('HeaderComponent has been destroyed.');
-  }
+  }*/
 }

@@ -18,6 +18,7 @@ export class ListCartsComponent implements OnInit {
   listCarts:any=[];
   totalCarts:any=0;
   code_cupon:any=null;
+  userId: any;
 
   constructor(
     public _router: Router,
@@ -28,6 +29,12 @@ export class ListCartsComponent implements OnInit {
   ngOnInit() {
 
     //this.reloadPage();
+
+    this._cartService._authService.user.subscribe(user => {
+      if (user) {
+        this.userId = user._id;
+      }
+    });
     
     setTimeout(() => {
       HOMEINITTEMPLATE($);
@@ -130,7 +137,7 @@ export class ListCartsComponent implements OnInit {
   apllyCupon() {
     let data = {
       code: this.code_cupon,
-      user_id: this._cartService._authService.user._id,
+      user_id: this.userId,//this._cartService._authService.user._id,
 
     }
 
@@ -147,7 +154,7 @@ export class ListCartsComponent implements OnInit {
   listAllCarts() {
     this._cartService.resetCart();
     if ( this._cartService._authService.user ) {
-      this._cartService.listCarts(this._cartService._authService.user._id).subscribe((resp:any) => {
+      this._cartService.listCarts(/*this._cartService._authService.user._id*/this.userId).subscribe((resp:any) => {
         resp.carts.forEach((cart:any) => {
           this._cartService.changeCart(cart);
         });

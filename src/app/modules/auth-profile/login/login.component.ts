@@ -16,50 +16,59 @@ export class LoginComponent implements OnInit {
 
   email:string = "";
   password:string = "";
+
+  errorAutenticate:boolean=false;
+  errorMessageAutenticate:string="";
+  CURRENT_USER_AUTHENTICATED:any=null;
   
   constructor(
     public _authService: AuthService,
     public _router: Router,
     public translate: TranslateService
-  ) { 
-    //translate.setDefaultLang('es');
-  }
+  ) { }
 
   ngOnInit(): void {
-    if (this._authService.user) {
-      this._router.navigate(['/']);
-    }
+    this.verifyAuthenticatedUser(); // VERIFICA EL USUARIO AUTENTICADO
   }
 
-  // Se cambia el idioma a Español
-  changeLanguageToSpanish(): void {
-    this.translate.use('es');
-    //console.log('Idioma cambiado al Español');
-  }
-  // Se cambia el idioma a Inglés
-  changeLanguageToEnglish(): void {
-    this.translate.use('en');
-    //console.log('Idioma cambiado al Inglés');
+  private verifyAuthenticatedUser(): void {
+    this._authService.user.subscribe( user => {
+      if ( user ) {
+        this._router.navigate(['/']);
+        this.CURRENT_USER_AUTHENTICATED = user;
+      } else {
+        this.CURRENT_USER_AUTHENTICATED = null;
+      }
+    });
   }
 
-  login() {
-    if (!this.email) {
+  public login() {
+    if ( !this.email ) {
       alertDanger("Es necesario ingresar el email");
     }
 
-    if (!this.password) {
+    if ( !this.password ) {
       alertDanger("Es necesario ingresar el password");
     }
 
     this._authService.login(this.email, this.password).subscribe((resp:any) => {
-      // SI NO TIENE UN ERROR Y LA RESPUESTA ES VERDADERA
-      // SIGNIFICA QUE EL USUARIO SE LOGUEO CORRECTAMENTE
-       if (!resp.error && resp) {
+      // SI NO TIENE UN ERROR Y LA RESPUESTA ES VERDADERA SIGNIFICA QUE EL USUARIO SE LOGUEO CORRECTAMENTE
+       if ( !resp.error && resp ) {
         this._router.navigate(["/"]); 
-        //location.reload();
       } else {
-        alertDanger(resp.error.message)
+        //alertDanger(resp.error.message);
+        this.errorAutenticate = true;
+        this.errorMessageAutenticate = resp.error.message;
+        
       }
     });
+  }
+
+  changeLanguageToSpanish(): void {
+    this.translate.use('es');
+  }
+  
+  changeLanguageToEnglish(): void {
+    this.translate.use('en');
   }
 }

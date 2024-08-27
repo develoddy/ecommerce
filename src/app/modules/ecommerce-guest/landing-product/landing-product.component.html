@@ -4,7 +4,7 @@
     <!-- Body Container -->
     <div id="page-content"> 
         <!--Page Header-->
-        <div class="page-header text-center">
+        <div class="page-header text-center d-none">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
@@ -201,15 +201,19 @@
                                 <!-- Product Add -->
                                 <!-- Product Buy -->
                                 <div class="product-form-submit buyit fl-1 ms-3">
-                                    <button type="submit" class="btn btn-primary proceed-to-checkout" onclick="return false;" routerLink="/payment-process"><span>Compre ya</span></button>
+                                    <button type="submit" class="btn btn-outline-secondary proceed-to-checkout" onclick="return false;" routerLink="/payment-process"><span>Compre ya</span></button>
                                 </div>
                                 <!-- End Product Buy -->
                             </div>
                             <!-- End Product Action -->
 
+                            <ng-container *ngIf="errorResponse">
+                                <p class="text-danger">{{ errorMessage }}</p>
+                            </ng-container>
+
                             <!-- Product Info link -->
                             <p class="infolinks d-flex-center justify-content-between">
-                                <a class="text-link wishlist" href="wishlist-style1.html"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a la lista de deseos</span></a>
+                                <a class="text-link wishlist" href="wishlist-style1.html"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
                                 <a class="text-link compare d-none" href="compare-style1.html"><i class="icon anm anm-sync-ar me-2"></i> <span>Añadir para comparar</span></a>
                                 <a href="#shippingInfo-modal" class="text-link shippingInfo" data-bs-toggle="modal" data-bs-target="#shippingInfo_modal"><i class="icon anm anm-paper-l-plane me-2"></i> <span>Envío y devoluciones</span></a>
                                 <a href="#productInquiry-modal" class="text-link emaillink me-0" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>

@@ -1,7 +1,7 @@
 
 
 <!--Top Header-->
-<div class="top-header">
+<div class="top-header d-none">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-left">
@@ -628,7 +628,7 @@
     <div id="cart-drawer" class="block block-cart" *ngIf="listCarts">
         <div class="minicart-header">
             <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i></button>
-            <h4 class="fs-6">Your cart ({{ listCarts.length }} Items)</h4>
+            <h4 class="fs-6">Tu carrito ({{ listCarts.length }} Elementos)</h4>
         </div>
         <div class="minicart-content">
             <ng-container *ngIf="listCarts.length == 0; else allCarts">
@@ -652,7 +652,7 @@
                                 <img class="blur-up lazyload" [attr.data-src]="cart.variedad.files[1].preview_url" [src]="cart.variedad.files[1].preview_url" alt="product" title="Product" width="120" height="170" />
                             </a>
                             <div class="product-details">
-                                <a class="product-title" href="product-layout1.html"  href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">Women Sandals</a>
+                                <a class="product-title" href="product-layout1.html"  href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">{{ cart.product.title }}</a>
                                 <div class="variant-cart my-2" *ngIf="cart.variedad">{{ cart.variedad.color }} / {{ cart.variedad.valor }}</div>
                                 <div class="priceRow">
                                     <div class="product-price">
@@ -666,8 +666,9 @@
                                     <input type="text" name="quantity" [value]="cart.cantidad" class="qty">
                                     <a class="qtyBtn plus" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r"></i></a>
                                 </div>
-                                <a href="#" class="edit-i remove"><i class="icon anm anm-pencil-ar" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>
-                                <a href="#" class="remove" onclick="return false;" (click)="removeCart(cart)"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove"></i></a>
+                                <a href="#" class="edit-i remove d-none"><i class="icon anm anm-pencil-ar" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"></i></a>
+                                <a href="#" class="edit-i edit"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Comprar mas tarde"></i></a>
+                                <a href="#" class="remove" onclick="return false;" (click)="removeCart(cart)"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"></i></a>
                             </div>
                         </li>
                     </ng-container>
@@ -675,24 +676,33 @@
             </ng-template>
         </div>
         <div class="minicart-bottom">
+            <!--
+                La frase "Only $199.00 away from Free Shipping" significa que el cliente necesita gastar $199.00 más para calificar para el envío gratuito en su compra. 
+                Esta es una estrategia común en el comercio electrónico para incentivar a los clientes a agregar más productos a su carrito con el fin de alcanzar un umbral 
+                específico de gasto que les permitirá obtener el envío gratuito.
+
+                Por ejemplo, si el umbral para el envío gratuito es de $300.00 y el cliente tiene actualmente $101.00 en su carrito, se le indicará que solo necesita gastar $199.00 más 
+                para obtener el envío sin costo adicional. Esta técnica suele aumentar el valor promedio de los pedidos, ya que los clientes están motivados a agregar más artículos para 
+                evitar los gastos de envío.
+            -->
             <div class="shipinfo">
                 <div class="progress mb-2"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div></div>
-                <div class="freeShipMsg"><i class="icon anm anm-truck-l fs-6 me-2 align-middle"></i>Only <span class="money" data-currency-usd="$199.00" data-currency="USD">$199.00</span> away from <b>Free Shipping</b></div>
+                <div class="freeShipMsg"><i class="icon anm anm-truck-l fs-6 me-2 align-middle"></i>A solo <span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}10.00</span> de envío<b> gratis</b></div>
                 <div class="freeShipMsg d-none"><i class="icon anm anm-truck-l fs-6 me-2 align-middle"></i>Congrats! You are eligible for <b>Free Shipping</b></div>
             </div>
             <div class="subtotal clearfix my-3">
-                <div class="totalInfo clearfix mb-1 d-none"><span>Shipping:</span><span class="item product-price">$10.00</span></div>
+                <div class="totalInfo clearfix mb-1"><span>Envío:</span><span class="item product-price">{{ euro }}3.50</span></div>
                 <div class="totalInfo clearfix mb-1 d-none"><span>Tax:</span><span class="item product-price">$0.00</span></div>
                 <div class="totalInfo clearfix"><span>Total:</span><span class="item product-price">{{ euro }}{{ totalCarts | number: '1.2-2' }}</span></div>
 
             </div>
-            <div class="agree-check customCheckbox">
+            <div class="agree-check customCheckbox d-none">
                 <input id="prTearm" name="tearm" type="checkbox" value="tearm" required />
                 <label for="prTearm"> I agree with the </label><a href="#" class="ms-1 text-link">Terms &amp; conditions</a>
             </div>
             <div class="minicart-action d-flex mt-3">
-                <a href="checkout-style1.html" onclick="return false;" [routerLink]="['/payment-process']" class="proceed-to-checkout btn btn-primary w-50 me-1">Check Out</a>
-                <a href="cart-style1.html" onclick="return false;" [routerLink]="['/list-carts']" class="cart-btn btn btn-secondary w-50 ms-1">View Cart</a>
+                <a href="cart-style1.html" onclick="return false;" [routerLink]="['/list-carts']" class="cart-btn btn btn-outline-secondary w-50 me-1 ">Ver carrito</a>
+                <a href="checkout-style1.html" onclick="return false;" [routerLink]="['/payment-process']" class="proceed-to-checkout btn btn-secondary w-50 ms-1">Comenzar pedido</a>
             </div>
         </div>
     </div>

@@ -33,6 +33,7 @@ export class FilterProductsComponent implements OnInit {
   idCategorie:any=null;
   noneSidebar = true;
   nameCategorie = null;
+  userId: any;
   
   constructor(
     public _ecommerceGuestService: EcommerceGuestService,
@@ -42,7 +43,11 @@ export class FilterProductsComponent implements OnInit {
   ) {}
   
   ngOnInit(): void {
-
+    this._ecommerceGuestService._authService.user.subscribe(user => {
+      if (user) {
+        this.userId = user._id;
+      }
+    });
     this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
       this.idCategorie = resp["idCategorie"];
@@ -199,7 +204,7 @@ export class FilterProductsComponent implements OnInit {
     }
    
     let data = {
-      user: this._cartService._authService.user._id,
+      user: this.userId,//this._cartService._authService.user._id,
       product: product._id,
       type_discount: type_discount,
       discount: discount,

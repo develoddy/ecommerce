@@ -53,6 +53,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   variedades: any[] = [];
 
+
+  userId: any;
+
   constructor(
     public homeService: HomeService,
     public _cartService: CartService,
@@ -67,6 +70,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this._cartService._authService.user.subscribe(user => {
+      if (user) {
+        this.userId = user._id;
+      }
+    });
     this.checkWindowSize();
 
     let TIME_NOW = new Date().getTime();
@@ -80,6 +88,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.FlashProductList = resp.campaign_products;
 
       setTimeout(() => {
+        console.log("loadd...");
         if (this.FlashSale) {
           var eventCounter = $(".sale-countdown");
           let PARSE_DATE = new Date(this.FlashSale.end_date);
@@ -395,7 +404,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const isProductUnitario = this.esProductoUnitario(product.variedades, valoresUnitarios);
 
     let data = {
-      user: this._cartService._authService.user._id,
+      user: this.userId,//this._cartService._authService.user._id,
       product: product._id,
       type_discount: type_discount,
       discount: discount,

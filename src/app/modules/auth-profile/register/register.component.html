@@ -8,13 +8,13 @@
     <!-- Body Container -->
     <div id="page-content">
         <!--Page Header-->
-        <div class="page-header text-center">
+        <div class="page-header text-center d-none">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                        <div class="page-title"><h1>Create an Account</h1></div>
+                        <div class="page-title"><h1>Crear una cuenta</h1></div>
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Home</a><span class="title"><i class="icon anm anm-angle-right-l"></i>My Account</span><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Create an Account</span></div>
+                        <div class="breadcrumbs"><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Crear una cuenta</span></div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -38,51 +38,56 @@
                     <div class="col-12 col-sm-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                         <div class="inner h-100">
                             <form class="customer-form">	
-                                <h2 class="text-center fs-4 mb-4">Register here if you are a new customer</h2>
+                                <h2 class="text-center fs-4 mb-4">Crea tu cuenta</h2>
                                 <div class="form-row">
                                     <div class="form-group col-12">
-                                        <label for="CustomerUsername" class="d-none">Username <span class="required">*</span></label>
-                                        <input type="text" name="name" [(ngModel)]="name" placeholder="Username" id="CustomerUsername" value="" required />
+                                        <label for="CustomerUsername" class="d-none">Nombre <span class="required">*</span></label>
+                                        <input type="text" name="name" [(ngModel)]="name" placeholder="Nombre" id="CustomerUsername" value="" required />
                                     </div>
-                                    <div class="form-group col-12">
+                                    <div class="form-group col-12 d-none">
                                         <label for="CustomerSurname"  class="d-none">Lastname <span class="required">*</span></label>
                                         <input type="text" name="surname" [(ngModel)]="surname" placeholder="Lastname" id="CustomerSurname" value="" required />
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerEmail"  class="d-none">Email <span class="required">*</span></label>
-                                        <input type="email" name="email" [(ngModel)]="email" placeholder="Email" id="CustomerEmail" value="" required />
+                                        <label for="CustomerEmail"  class="d-none">E-mail <span class="required">*</span></label>
+                                        <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" id="CustomerEmail" value="" required />
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerPassword"  class="d-none">Password <span class="required">*</span></label>
-                                        <input type="password" name="password"[(ngModel)]="password" placeholder="Password" id="CustomerPassword" value="" required />                        	
+                                        <label for="CustomerPassword"  class="d-none">Contraseña <span class="required">*</span></label>
+                                        <input type="password" name="password"[(ngModel)]="password" placeholder="Contraseña" id="CustomerPassword" value="" required />                        	
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerConfirmPassword"  class="d-none">Confirm Password <span class="required">*</span></label>
-                                        <input id="CustomerConfirmPassword" type="Password" name="repeat_password" [(ngModel)]="repeat_password" placeholder="Confirm Password" required />                         	
+                                        <label for="CustomerConfirmPassword"  class="d-none">Confirmar Contraseña<span class="required">*</span></label>
+                                        <input id="CustomerConfirmPassword" type="Password" name="repeat_password" [(ngModel)]="repeat_password" placeholder="Confirmar Contraseña" required />                         	
                                     </div>
-                                    <div class="form-group col-12 d-none">
+                                    <div class="form-group col-12">
                                         <div class="login-remember-forgot d-flex justify-content-between align-items-center">
                                             <div class="agree-check customCheckbox">
                                                 <input id="agree" name="agree" type="checkbox" value="agree" required />
-                                                <label for="agree"> I agree to terms & Policy.</label>
+                                                <label for="agree"> Acepto los términos y la política.</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group col-12 mb-0">
-                                        <input type="submit" class="btn btn-primary btn-lg w-100" (click)="register()" value="Register" />
+
+                                    <div class="form-group col-12 mt-3" *ngIf="this.errorRegister">
+                                        <p class="text-danger">{{ this.errorMessage }}</p>
+                                    </div>
+                                    
+                                    <div class="form-group col-12 mt-3">
+                                        <input type="submit" class="btn btn-secondary btn-lg w-100" (click)="register()" value="Crear cuenta" />
                                     </div>
                                 </div>
 
-                                <div class="login-divide"><span class="login-divide-text">OR</span></div>
+                                <div class="login-divide d-none"><span class="login-divide-text">OR</span></div>
 
-                                <p class="text-center fs-6 text-muted mb-3">Or Sign up with</p>
-                                <div class="login-social d-flex-justify-center">
+                                <p class="text-center fs-6 text-muted mb-3 d-none">Or Sign up with</p>
+                                <div class="login-social d-flex-justify-center d-none">
                                     <a class="social-link facebook rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-facebook-f me-2"></i> Facebook</a>
                                     <a class="social-link google rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-google-plus-g me-2"></i> Google</a>
                                     <a class="social-link twitter rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-twitter me-2"></i> Twitter</a>
                                 </div>
 
-                                <div class="login-signup-text mt-4 mb-2 fs-6 text-center text-muted">Already have an account? <a href="login.html" onclick="return false;" [routerLink]="['/auth/login']" class="btn-link">Login now</a></div>
+                                <div class="login-signup-text mt-4 mb-2 fs-6 text-center text-muted">¿Ya tienes cuenta? <a href="login.html" onclick="return false;" [routerLink]="['/auth/login']" class="fw-bold">Inicia sesión</a></div>
                             </form>
                         </div>
                     </div>
