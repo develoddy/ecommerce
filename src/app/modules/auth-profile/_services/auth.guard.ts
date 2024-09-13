@@ -22,11 +22,7 @@ export class AuthGuard implements CanActivate {
       }
 
       let token = this._authService.token;
-      console.log("DEBUGG auth.guarda:");
-      console.log(token);
-      
-      
-
+  
       let expiration = (JSON.parse(atob(token.split('.')[1]))).exp;
       if (Math.floor((new Date).getTime() / 1000) >= expiration) {
         this._authService.logout();

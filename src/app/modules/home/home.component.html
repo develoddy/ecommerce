@@ -37,28 +37,39 @@
     <!--Header-->
     <app-header></app-header>
     <!--End Header-->
+
+    <div *ngIf="loading" class="loading-spinner">
+        <!-- Aquí puedes poner tu spinner -->
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only"></span>
+            </div>
+            <h4>Cargando</h4>
+        </div>
+    </div>
     
     <!-- Body Container -->
-    <div id="page-content" class="mb-0">
+    <div id="page-content" class="mb-0" [class.d-none]="loading">
         <!--Home Slideshow-->
         <section class="slideshow slideshow-wrapper">
             <div class="home-slideshow slick-arrow-dots">
                 <div class="slide">
                     <div class="slideshow-wrap">
                         <picture>
-                            <source media="(max-width:767px)" srcset="assets/images/slideshow/demo1-banner1-mbl.jpg" width="1150" height="800">
-                            <img class="blur-up lazyload" src="assets/images/slideshow/demo1-banner1.jpg" alt="slideshow" title="" width="1920" height="795" />
+                            <source media="(max-width:767px)" srcset="assets/images/slideshow/demo1-banner1-mbl.png" width="1150" height="800">
+                            <img class="blur-up lazyload" src="assets/images/slideshow/demo1-banner0.png" alt="slideshow" title="" width="1920" height="795" />
                         </picture> 
-                        <div class="container">
+                        <div class="container d-none">
                             <div class="slideshow-content slideshow-overlay middle-left">
                                 <div class="slideshow-content-in">
                                     <div class="wrap-caption animation style1">
-                                        <p class="ss-small-title">Elegant design</p>
-                                        <h2 class="ss-mega-title">Making someone feel <br>pretty is an art</h2>
-                                        <p class="ss-sub-title xs-hide">Perfectly designed to ensures ultimate comfort and style</p>
+                                        <p class="ss-small-title">Diseño elegante</p>
+                                        <h2 class="ss-mega-title">Hacer sentir a alguien <br>Lo bonito es un arte</h2>
+                                        <p class="ss-sub-title xs-hide">Perfectamente diseñado para garantizar la máxima comodidad y estilo</p>
                                         <div class="ss-btnWrap">
-                                            <a class="btn btn-primary" href="shop-grid-view.html">Shop Women</a>
-                                            <a class="btn btn-secondary" href="shop-grid-view.html">Shop Men</a>
+                                            <a class="btn btn-secondary" href="shop-grid-view.html" onclick="return false;">Hombres</a>
+                                            <a class="btn btn-primary" href="shop-grid-view.html" onclick="return false;">Mujeres</a>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -66,7 +77,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="slide">
+                <!-- <div class="slide d-none">
                     <div class="slideshow-wrap">
                         <picture>
                             <source media="(max-width:767px)" srcset="assets/images/slideshow/demo1-banner2-mbl.jpg" width="1150" height="800">
@@ -76,10 +87,10 @@
                             <div class="slideshow-content slideshow-overlay middle-right">
                                 <div class="slideshow-content-in">
                                     <div class="wrap-caption animation style1">
-                                        <h2 class="ss-mega-title">Spread Positive <br>Energy With Hema</h2>
-                                        <p class="ss-sub-title xs-hide">The must-have closet essential women wardrobe for the year</p>
+                                        <h2 class="ss-mega-title">Difundir positividad <br>Energía con Hema</h2>
+                                        <p class="ss-sub-title xs-hide">El armario imprescindible que las mujeres deben tener en su armario este año</p>
                                         <div class="ss-btnWrap d-flex-justify-start">
-                                            <a class="btn btn-primary" href="shop-grid-view.html">Explore Now!</a>
+                                            <a class="btn btn-primary" href="shop-grid-view.html">Explorar ahora!</a>
                                         </div>
                                     </div>
                                 </div>
@@ -87,7 +98,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="slide">
+                <div class="slide d-none">
                     <div class="slideshow-wrap">
                         <picture>
                             <source media="(max-width:767px)" srcset="assets/images/slideshow/demo1-banner3-mbl.jpg" width="1150" height="800">
@@ -97,17 +108,17 @@
                             <div class="slideshow-content slideshow-overlay middle-right">
                                 <div class="slideshow-content-in">
                                     <div class="wrap-caption animation style1">
-                                        <h2 class="ss-mega-title">Design Your Next <br>Favourite Wear</h2>
-                                        <p class="ss-sub-title xs-hide">The outfit that blend elegance and style for your casual wear</p>
+                                        <h2 class="ss-mega-title">Diseña tu próximo <br>Prenda favorita</h2>
+                                        <p class="ss-sub-title xs-hide">El atuendo que combina elegancia y estilo para tu ropa casual.</p>
                                         <div class="ss-btnWrap">
-                                            <a class="btn btn-primary" href="shop-grid-view.html">Shop now</a>
+                                            <a class="btn btn-primary" href="shop-grid-view.html">Compra ahora</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </section>
         <!--End Home Slideshow-->
@@ -121,8 +132,8 @@
                             <i class="icon anm anm-phone-call-l"></i>
                         </div>
                         <div class="service-content">
-                            <h3 class="title mb-2">Call us any time</h3>
-                            <span class="text-muted">Contact us 24/7 hours a day</span>
+                            <h3 class="title mb-2">Llámanos en cualquier momento</h3>
+                            <span class="text-muted">Contáctenos las 24 horas del día, los 7 días de la semana.</span>
                         </div>
                     </div>
                     <div class="service-wrap col-item">
@@ -130,8 +141,8 @@
                             <i class="icon anm anm-truck-l"></i>
                         </div>
                         <div class="service-content">
-                            <h3 class="title mb-2">Pickup At Any Store</h3>
-                            <span class="text-muted">Free shipping on orders over $65</span>
+                            <h3 class="title mb-2">Recogida en cualquier tienda</h3>
+                            <span class="text-muted">Envío gratuito en pedidos superiores a {{ euro }}20.99</span>
                         </div>
                     </div>
                     <div class="service-wrap col-item">
@@ -139,8 +150,8 @@
                             <i class="icon anm anm-credit-card-l"></i>
                         </div>
                         <div class="service-content">
-                            <h3 class="title mb-2">Secured Payment</h3>
-                            <span class="text-muted">We accept all major credit cards</span>
+                            <h3 class="title mb-2">Pago seguro</h3>
+                            <span class="text-muted">Aceptamos todas las principales tarjetas de crédito.</span>
                         </div>
                     </div>
                     <div class="service-wrap col-item">
@@ -148,8 +159,8 @@
                             <i class="icon anm anm-redo-l"></i>
                         </div>
                         <div class="service-content">
-                            <h3 class="title mb-2">Free Returns</h3>
-                            <span class="text-muted">30-days free return policy</span>
+                            <h3 class="title mb-2">Devoluciones gratuitas</h3>
+                            <span class="text-muted">Política de devolución gratuita de 30 días</span>
                         </div>
                     </div>
                 </div>
@@ -218,8 +229,8 @@
         <section class="section collection-slider pb-0">
             <div class="container">
                 <div class="section-header">
-                    <p class="mb-2 mt-0">Shop by category</p>
-                    <h2>Popular Collections</h2>
+                    <p class="mb-2 mt-0">Comprar por categoría</p>
+                    <h2>Colecciones populares</h2>
                 </div>
 
                 <div class="collection-slider-5items gp15 arwOut5 hov-arrow">
@@ -227,11 +238,11 @@
                         <div class="category-item zoomscal-hov">
                             <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/filter-products', categorie.title, categorie._id ]" class="category-link clr-none">
                                 <div class="zoom-scal zoom-scal-nopb rounded-3">
-                                    <img class="blur-up lazyload" [attr.data-src]="categorie.imagen_home" [src]="categorie.imagen_home" alt="Men's Jakets" title="Men's Jakets" width="365" height="365" />
+                                    <img class="blur-up lazyload" [attr.data-src]="categorie.imagen_home" [src]="categorie.imagen_home" alt="{{ categorie.title }}" title="{{ categorie.title }}" width="365" height="365" />
                                 </div>
                                 <div class="details mt-3 text-center">
                                     <h4 class="category-title mb-0">{{ categorie.title }}</h4>
-                                    <p class="counts">20 Products</p>
+                                    <p class="counts">20 Productos</p>
                                 </div>
                             </a>
                         </div>
@@ -252,13 +263,13 @@
                 <div class="tabs-listing">
                     <ul class="nav nav-tabs style1 justify-content-center" id="productTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link head-font active" id="bestsellers-tab" data-bs-toggle="tab" data-bs-target="#bestsellers" type="button" role="tab" aria-controls="bestsellers" aria-selected="true">Bestseller</button>
+                            <button class="nav-link head-font active" id="bestsellers-tab" data-bs-toggle="tab" data-bs-target="#bestsellers" type="button" role="tab" aria-controls="bestsellers" aria-selected="true">Mejor vendido</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link head-font" id="newarrivals-tab" data-bs-toggle="tab" data-bs-target="#newarrivals" type="button" role="tab" aria-controls="newarrivals" aria-selected="false">New Arrivals</button>
+                            <button class="nav-link head-font" id="newarrivals-tab" data-bs-toggle="tab" data-bs-target="#newarrivals" type="button" role="tab" aria-controls="newarrivals" aria-selected="false">Nuevas llegadas</button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link head-font" id="toprated-tab" data-bs-toggle="tab" data-bs-target="#toprated" type="button" role="tab" aria-controls="toprated" aria-selected="false">Top Rated</button>
+                        <li class="nav-item d-none" role="presentation">
+                            <button class="nav-link head-font" id="toprated-tab" data-bs-toggle="tab" data-bs-target="#toprated" type="button" role="tab" aria-controls="toprated" aria-selected="false">Los mejor valorados</button>
                         </li>
                     </ul>
 
@@ -301,7 +312,7 @@
                                                         </a>
                                                         <!--End Quick View Button-->
                                                         <!--Wishlist Button-->
-                                                        <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                                        <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a la lista de deseos" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a la lista de deseos</span></a>
                                                         <!--End Wishlist Button-->
                                                         <!--Compare Button-->
                                                         <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
@@ -344,7 +355,7 @@
                                 </div>  
 
                                 <div class="view-collection text-center mt-4 mt-md-5">
-                                    <a href="shop-left-sidebar.html" class="btn btn-secondary btn-lg">View Collection</a>
+                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/filter-products']" class="btn btn-secondary btn-lg">Ver colección</a>
                                 </div>
                             </div>
                             <!--End Product Grid-->
@@ -902,7 +913,7 @@
                                 </div>
 
                                 <div class="view-collection text-center mt-4 mt-md-5">
-                                    <a href="shop-left-sidebar.html" class="btn btn-secondary btn-lg">View Collection</a>
+                                    <a href="shop-left-sidebar.html" class="btn btn-secondary btn-lg">Ver colección</a>
                                 </div>
                             </div>
                             <!--End Product Grid-->
@@ -1418,7 +1429,7 @@
                                 </div>
 
                                 <div class="view-collection text-center mt-4 mt-md-5">
-                                    <a href="shop-left-sidebar.html" class="btn btn-secondary btn-lg">View Collection</a>
+                                    <a href="shop-left-sidebar.html" class="btn btn-secondary btn-lg">Ver colección</a>
                                 </div>
                             </div>
                             <!--End Product Grid-->

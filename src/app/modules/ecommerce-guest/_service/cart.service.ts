@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, finalize } from 'rxjs';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
@@ -9,6 +9,9 @@ import { URL_SERVICE } from 'src/app/config/config';
 })
 export class CartService {
 
+  private loadingSubject = new BehaviorSubject<boolean>(false); // Para manejar el estado de carga
+  public loading$ = this.loadingSubject.asObservable();
+
   public cart = new BehaviorSubject<Array<any>>([]);
   public currenteDataCart$ = this.cart.asObservable();
   constructor(
@@ -16,6 +19,7 @@ export class CartService {
     public _http: HttpClient,
   ) { }
 
+  // ------ CART -------------
   changeCart(DATACART:any) {
     let listCart = this.cart.getValue();
     let INDEX = listCart.findIndex((item:any) => item._id == DATACART._id);
@@ -54,9 +58,15 @@ export class CartService {
   }
 
   listCarts(user_id:any) {
+    // Inicia el loading
+    this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cart/list?user_id="+user_id;
-    return this._http.get(URL, {headers: headers});
+    
+    // Retorna la petición HTTP y finaliza el loading al terminar
+    return this._http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+    );
   }
 
   deleteCart(cart_id:any) {

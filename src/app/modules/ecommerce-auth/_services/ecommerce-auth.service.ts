@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EcommerceAuthService {
+
+  private loadingSubject = new BehaviorSubject<boolean>(false); // Para manejar el estado de carga
+  public loading$ = this.loadingSubject.asObservable();
 
   constructor(
     public _authService: AuthService,

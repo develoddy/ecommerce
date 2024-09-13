@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -34,6 +35,9 @@ export class FilterProductsComponent implements OnInit {
   noneSidebar = true;
   nameCategorie = null;
   userId: any;
+
+  private productSubscription: Subscription | undefined;
+  loading: boolean = false;
   
   constructor(
     public _ecommerceGuestService: EcommerceGuestService,
@@ -57,7 +61,12 @@ export class FilterProductsComponent implements OnInit {
       this.filterForCategorie(this.idCategorie); 
     }
 
-    this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
+
+    this.productSubscription =  this._ecommerceGuestService.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
+
+    this.productSubscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
       this.variedades = resp.variedades;
       const variedadesUnicos = new Set();
@@ -253,5 +262,12 @@ export class FilterProductsComponent implements OnInit {
       }
     }
     return 0;
+  }
+
+  ngOnDestroy(): void {
+    if (this.productSubscription) {
+      console.log("Debbug: productSubscription se destruye y se sale de filter.componente");
+      this.productSubscription.unsubscribe();
+    }
   }
 }

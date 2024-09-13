@@ -20,6 +20,8 @@ export class LoginComponent implements OnInit {
   errorAutenticate:boolean=false;
   errorMessageAutenticate:string="";
   CURRENT_USER_AUTHENTICATED:any=null;
+
+  public loading: boolean = false;
   
   constructor(
     public _authService: AuthService,
@@ -28,6 +30,11 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this._authService.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
+
     this.verifyAuthenticatedUser(); // VERIFICA EL USUARIO AUTENTICADO
   }
 

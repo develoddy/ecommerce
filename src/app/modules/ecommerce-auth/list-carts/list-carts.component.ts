@@ -19,16 +19,18 @@ export class ListCartsComponent implements OnInit {
   totalCarts:any=0;
   code_cupon:any=null;
   userId: any;
+  loading: boolean = false;
 
   constructor(
     public _router: Router,
     public _cartService: CartService,
-  ) {
-
-  }
+  ) {}
+  
   ngOnInit() {
 
-    //this.reloadPage();
+    this._cartService.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
 
     this._cartService._authService.user.subscribe(user => {
       if (user) {

@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
-import { catchError, map, of, BehaviorSubject } from 'rxjs';
+import { catchError, map, of, BehaviorSubject, finalize } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  private loadingSubject = new BehaviorSubject<boolean>(false); // Para manejar el estado de carga
+  public loading$ = this.loadingSubject.asObservable();
 
   private userSubject = new BehaviorSubject<any>(null);
   user= this.userSubject.asObservable();
@@ -66,6 +69,10 @@ export class AuthService {
   }*/
 
     login(email: string, password: string) {
+
+      // Inicia el loading
+      this.loadingSubject.next(true);
+
       const URL = URL_SERVICE + "users/login";
       return this._http.post(URL, { email, password }).pipe(
         map((resp: any) => {
@@ -79,6 +86,10 @@ export class AuthService {
         catchError((error: any) => {
           console.error(error);
           return of(error);
+        }),
+        finalize(() => {
+          // Finaliza el loading cuando termina la llamada
+          this.loadingSubject.next(false);
         })
       );
     }

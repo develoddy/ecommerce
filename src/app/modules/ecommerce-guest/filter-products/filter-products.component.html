@@ -1,16 +1,18 @@
  <!--Page Wrapper-->
  <div class="page-wrapper">
 
+    
+
     <!-- Body Container -->
-    <div id="page-content">
+    <div id="page-content" >
         <!--Page Header-->
         <div class="page-header text-center">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                        <div class="page-title"><h1>Shop Grid View</h1></div>
+                        <div class="page-title"><h1>Filtro de productos</h1></div>
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Home</a><span class="title"><i class="icon anm anm-angle-right-l"></i>Shop</span><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Shop Grid View</span></div>
+                        <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Home</a><span class="title"><i class="icon anm anm-angle-right-l"></i>Shop</span><span class="main-title"><i class="icon anm anm-angle-right-l"></i>filtro de productos</span></div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -18,8 +20,18 @@
         </div>
         <!--End Page Header-->
 
+        <div *ngIf="loading" class="loading-spinner">
+            <!-- Aquí puedes poner tu spinner -->
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only"></span>
+                </div>
+                <h4>Cargando</h4>
+            </div>
+        </div>
+
         <!--Main Content-->
-        <div class="container">
+        <div class="container" [class.d-none]="loading">
             <!--Category Slider-->
             <div class="collection-slider-6items gp10 slick-arrow-dots sub-collection section pt-0 d-none">
                 <ng-container *ngFor="let categorie of categories">
@@ -31,7 +43,7 @@
                             </div>
                             <div class="details text-center">
                                 <h4 class="category-title mb-0">{{ categorie.title }}</h4>
-                                <p class="counts">20 Items</p>
+                                <p class="counts">20 Elementos</p>
                             </div>
                         </a>
                     </div>
@@ -106,9 +118,9 @@
             <div class="toolbar toolbar-wrapper shop-toolbar">
                 <div class="row align-items-center">
                     <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0">
-                        <button type="button" class="btn btn-filter text icon anm anm-sliders-hr d-inline-flex me-2 me-lg-3"> Filter</button>
+                        <button type="button" class="btn btn-filter text icon anm anm-sliders-hr d-inline-flex me-2 me-lg-3"> Filtrar</button>
                         <div class="filters-item d-flex align-items-center">
-                            <label class="mb-0 me-2 d-none d-lg-inline-block">View as:</label>
+                            <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label>
                             <div class="grid-options view-mode d-flex">
                                 <a class="icon-mode mode-list d-block" data-col="1"></a>
                                 <a class="icon-mode mode-grid grid-2 d-block" data-col="2"></a>
@@ -119,11 +131,11 @@
                         </div>
                     </div>
                     <div class="col-12 col-sm-4 col-md-4 col-lg-4 text-center product-count order-0 order-md-1 mb-3 mb-sm-0">
-                        <span class="toolbar-product-count">Showing: 15 products</span>
+                        <span class="toolbar-product-count">Demostración: 15 productos</span>
                     </div>
                     <div class="col-8 col-sm-6 col-md-4 col-lg-4 text-right filters-toolbar-item d-flex justify-content-end order-2 order-sm-2">
                         <div class="filters-item d-flex align-items-center">
-                            <label for="ShowBy" class="mb-0 me-2 text-nowrap d-none d-sm-inline-flex">Show:</label>
+                            <label for="ShowBy" class="mb-0 me-2 text-nowrap d-none d-sm-inline-flex">Mostrar:</label>
                             <select name="ShowBy" id="ShowBy" class="filters-toolbar-show">
                                 <option value="title-ascending" selected="selected">10</option>
                                 <option>15</option>
@@ -133,7 +145,7 @@
                             </select>
                         </div>
                         <div class="filters-item d-flex align-items-center ms-2 ms-lg-3">
-                            <label for="SortBy" class="mb-0 me-2 text-nowrap d-none">Sort by:</label>
+                            <label for="SortBy" class="mb-0 me-2 text-nowrap d-none">Ordenar por:</label>
                             <select name="SortBy" id="SortBy" class="filters-toolbar-sort">
                                 <option value="featured" selected="selected">Featured</option>
                                 <option value="best-selling">Best selling</option>
@@ -157,46 +169,22 @@
                     <div class="sidebar-tags clearfix">
                         <!--Filter By-->
                         <div class="sidebar-widget filterBox filter-widget">
-                            <div class="widget-title"><h2>Filter By</h2></div>
+                            <div class="widget-title"><h2>Filtrar por</h2></div>
                             <div class="widget-content filterby filterDD">
                                 <ul class="items tags-list d-flex-wrap">
                                     <li class="item"><a href="#;" class="rounded-5"><span class="filter-value">Women</span><i class="icon anm anm-times-r"></i></a></li>
                                     <li class="item"><a href="#;" class="rounded-5"><span class="filter-value">Blue</span><i class="icon anm anm-times-r"></i></a></li>
                                     <li class="item"><a href="#;" class="rounded-5"><span class="filter-value">XL</span><i class="icon anm anm-times-r"></i></a></li>
                                 </ul>
-                                <a href="#;" class="btn btn-sm brd-link">Clear All</a>
+                                <a href="#;" class="btn btn-sm brd-link">Limpiar todo</a>
                             </div>
                         </div>
                         <!--End Filter By-->
                         <!--Categories-->
                         <div class="sidebar-widget clearfix categories filterBox filter-widget">
-                            <div class="widget-title"><h2>Categories</h2></div>
+                            <div class="widget-title"><h2>Categorías</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="sidebar-categories scrollspy morelist clearfix">
-                                    <li class="lvl1 sub-level more-item d-none"><a href="#;" class="site-nav">Clothing</a>
-                                        <ul class="sublinks">
-                                            <li class="lvl2 sub-level sub-sub-level"><a href="#;" class="site-nav">Men</a>
-                                                <ul class="sublinks">
-                                                    <li class="lvl3"><a href="#" class="site-nav">Shirt <span class="count">(25)</span></a></li>
-                                                    <li class="lvl3"><a href="#" class="site-nav">Jeans <span class="count">(6)</span></a></li>
-                                                    <li class="lvl3"><a href="#" class="site-nav">Shoes <span class="count">(9)</span></a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="lvl2"><a href="#" class="site-nav">Women <span class="count">(14)</span></a></li>
-                                            <li class="lvl2"><a href="#" class="site-nav">Child <span class="count">(26)</span></a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="lvl1 sub-level more-item d-none"><a href="#;" class="site-nav">Jewellery</a>
-                                        <ul class="sublinks">
-                                            <li class="lvl2"><a href="#" class="site-nav">Ring <span class="count">(12)</span></a></li>
-                                            <li class="lvl2"><a href="#" class="site-nav">Neckalses <span class="count">(15)</span></a></li>
-                                            <li class="lvl2"><a href="#" class="site-nav">Eaarings <span class="count">(18)</span></a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="lvl1 more-item d-none"><a href="#" class="site-nav">Accessories <span class="count">(14)</span></a></li>
-                                    <li class="lvl1 more-item d-none"><a href="#" class="site-nav">Shoes <span class="count">(18)</span></a></li>
-                                    <li class="lvl1 more-item d-none"><a href="#" class="site-nav">Electronic <span class="count">(22)</span></a></li>
-                                    <li class="lvl1 more-item d-none"><a href="#" class="site-nav">Cosmetics <span class="count">(27)</span></a></li>
                                     <ng-container *ngFor="let categorie of categories">
                                         <li class="lvl1 more-item"><a href="#" onclick="return false;" (click)="addCategorie(categorie)" class="site-nav">{{ categorie.title }} <span class="count">(27)</span></a></li>
                                     </ng-container>
@@ -206,12 +194,12 @@
                         <!--Categories-->
                         <!--Price Filter-->
                         <div class="sidebar-widget filterBox filter-widget">
-                            <div class="widget-title"><h2>Price</h2></div>
+                            <div class="widget-title"><h2>Precio</h2></div>
                             <form class="widget-content price-filter filterDD" action="#" method="post">
                                 <div id="slider-range" class="mt-2"></div>
                                 <div class="row">
                                     <div class="col-6"><input id="amount" type="text" /></div>
-                                    <div class="col-6 text-right"><button class="btn btn-sm">filter</button></div>
+                                    <div class="col-6 text-right"><button class="btn btn-sm">filtrar</button></div>
                                 </div>
                             </form>
                         </div>
@@ -239,7 +227,7 @@
                         <!--End Color Swatches-->
                         <!--Size Swatches-->
                         <div class="sidebar-widget filterBox filter-widget">
-                            <div class="widget-title"><h2>Size</h2></div>
+                            <div class="widget-title"><h2>Talla</h2></div>
                             <div class="widget-content filter-size filterDD">
                                 <ul class="swacth-list size-swatches d-flex-center clearfix">
                                     <li class="swatch large radius soldout"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XS">XS</span></li>
@@ -259,19 +247,19 @@
                         <!--End Size Swatches-->
                         <!--Product type-->
                         <div class="sidebar-widget filterBox filter-widget product-type">
-                            <div class="widget-title"><h2>Product type</h2></div>
+                            <div class="widget-title"><h2>Tipo de producto</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="clearfix">
-                                    <li><input type="checkbox" value="fashion" id="fashion"><label for="fashion"><span></span>Fashion</label></li>
-                                    <li><input type="checkbox" value="electronic" id="electronic"><label for="electronic"><span></span>Electronic</label></li>
-                                    <li><input type="checkbox" value="shoes" id="shoes"><label for="shoes"><span></span>Shoes</label></li>
+                                    <li><input type="checkbox" value="fashion" id="fashion"><label for="fashion"><span></span>Moda</label></li>
+                                    <li><input type="checkbox" value="electronic" id="electronic"><label for="electronic"><span></span>Electrónica</label></li>
+                                    <li><input type="checkbox" value="shoes" id="shoes"><label for="shoes"><span></span>Zapatos</label></li>
                                 </ul>
                             </div>
                         </div>
                         <!--End Product type-->
                         <!--Brand-->
                         <div class="sidebar-widget filterBox filter-widget brand-filter">
-                            <div class="widget-title"><h2>Brands</h2></div>
+                            <div class="widget-title"><h2>Marcas</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="clearfix">
                                     <li><input type="checkbox" value="avone" id="avone"><label for="avone"><span></span>Avone</label></li>
@@ -283,18 +271,18 @@
                         <!--End Brand-->
                         <!--Availability-->
                         <div class="sidebar-widget filterBox filter-widget availability">
-                            <div class="widget-title"><h2>Availability</h2></div>
+                            <div class="widget-title"><h2>Disponibilidad</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="clearfix">
-                                    <li><input type="checkbox" value="instock" id="instock"><label for="instock"><span></span>In stock</label></li>
-                                    <li><input type="checkbox" value="outofstock" id="outofstock"><label for="outofstock"><span></span>Out of stock</label></li>
+                                    <li><input type="checkbox" value="instock" id="instock"><label for="instock"><span></span>En stock</label></li>
+                                    <li><input type="checkbox" value="outofstock" id="outofstock"><label for="outofstock"><span></span>Agotado</label></li>
                                 </ul>
                             </div>
                         </div>
                         <!--End Availability-->
                         <!--Product Tags-->
                         <div class="sidebar-widget filterBox filter-widget product-tag">
-                            <div class="widget-title"><h2>Product Tags</h2></div>
+                            <div class="widget-title"><h2>Etiquetas de productos</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="tags-list product-tags d-flex-wrap clearfix">
                                     <li class="item active"><a class="rounded-5" href="#">Women</a></li>
@@ -338,25 +326,25 @@
                                             </a>
                                             <!-- End Product Image -->
                                             <!-- Product label -->
-                                            <div class="product-labels"><span class="lbl pr-label3">Trending</span></div>
+                                            <div class="product-labels"><span class="lbl pr-label3">Tendencias</span></div>
                                             <!-- End Product label -->
                                             <!--Product Button-->
                                             <div class="button-set style1">
                                                 <!--Cart Button-->
                                                 <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
                                                 </a>
                                                 <!--End Cart Button-->
                                                 <!--Quick View Button-->
                                                 <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Vista rápida</span></span>
                                                 </a>
                                                 <!--End Quick View Button-->
                                                 <!--Wishlist Button-->
-                                                <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                                <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a>
                                                 <!--End Wishlist Button-->
                                                 <!--Compare Button-->
-                                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Añadir para comparar</span></a>
                                                 <!--End Compare Button-->
                                             </div>
                                             <!--End Product Button-->

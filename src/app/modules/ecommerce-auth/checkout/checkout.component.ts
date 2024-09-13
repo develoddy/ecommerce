@@ -53,21 +53,14 @@ export class CheckoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //this.reloadPage();
-    //this.user = this._cartService._authService.user;
-
-    
-
     this._authEcommerce._authService.user.subscribe(user => {
       if (user) {
         this.userId = user._id;
       }
     });
-
-
     
     //this._authEcommerce.listAddressClient(this._authEcommerce._authService.user._id).subscribe((resp:any) => {
-  this._authEcommerce.listAddressClient(this.userId).subscribe((resp:any) => {
+    this._authEcommerce.listAddressClient(this.userId).subscribe((resp:any) => {
       this.listAddressClients = resp.address_client;
     });
 
@@ -78,7 +71,7 @@ export class CheckoutComponent implements OnInit {
     }, 50);
 
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
-      console.log("Debugg: Checkout productos list: ", resp);
+      
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
@@ -208,16 +201,6 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  private reloadPage(): void {
-    const reloaded = sessionStorage.getItem('reloaded');
-    if (!reloaded) {
-      sessionStorage.setItem('reloaded', 'true');
-      window.location.reload();
-    } else {
-      sessionStorage.removeItem('reloaded');
-    }
-  }
-
   store() {
     console.log("debugg this.address_client_selected", this.address_client_selected);
     if (this.address_client_selected) {
@@ -313,7 +296,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   addressClienteSelected(list_address:any) {
-    console.log("DEbugg: Selected Address: ", list_address);
     this.show = true;
 
     this.address_client_selected = list_address;

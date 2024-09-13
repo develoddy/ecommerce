@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { debounceTime, fromEvent, Subscription } from 'rxjs';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { EcommerceGuestService } from 'src/app/modules/ecommerce-guest/_service/ecommerce-guest.service';
+import { WishlistService } from 'src/app/modules/ecommerce-guest/_service/wishlist.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 declare var $:any;
@@ -24,8 +25,10 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
   euro = "€";
   selectedLanguage: string = 'ES';
   listCarts:any=[];
+  listWishlist:any=[];
   totalCarts:any=0;
-  user:any;
+  totalWishlist:any=0;
+  //user:any;
   //
   search_product:any=null;
   products_search:any=[];
@@ -44,6 +47,7 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
   constructor(
     public _router: Router,
     public _cartService: CartService,
+    public _wishlistService: WishlistService,
     public translate: TranslateService,
     private languageService: LanguageService,
     public _ecommerceGuestService: EcommerceGuestService,
@@ -57,21 +61,34 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
     this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
     this.subscribeToCartData(); // Suscripción a los datos del carrito
     this.subscribeToEcommerceConfig(); // Suscripción a la configuración inicial de eCommerce
+
+    this.subscribeToWishlistData(); // Suscripción a los datos del cla lista de deseos
   }
 
 
   private verifyAuthenticatedUser(): void {
     this._cartService._authService.user.subscribe((user:any) => {
-      this.user = user;
+      this.CURRENT_USER_AUTHENTICATED = user;
       if ( user ) {
-        this._cartService.listCarts(user._id).subscribe((resp: any) => {
+        this._cartService.listCarts(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
           resp.carts.forEach((cart: any) => {
             this._cartService.changeCart(cart);
           });
         });
+
+        this._wishlistService.listWishlist(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
+
+          resp.wishlists.forEach((wishlist: any) => {
+            this._wishlistService.changeWishlist(wishlist);
+          });
+        });
+
       } else {
         this.listCarts = [];
         this.totalCarts = 0;
+
+        this.listWishlist = [];
+        this.totalWishlist = 0;
       }
     });
   }
@@ -79,9 +96,14 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
   private subscribeToCartData(): void {
     this.cartSubscription = this._cartService.currenteDataCart$.subscribe((resp: any) => {
       this.listCarts = resp;
-      console.log(this.listCarts);
-      
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+    });
+  }
+
+  private subscribeToWishlistData(): void {
+    this.cartSubscription = this._wishlistService.currenteDataWishlist$.subscribe((resp: any) => {
+      this.listWishlist = resp;
+      this.totalWishlist = this.listWishlist.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
     });
   }
 

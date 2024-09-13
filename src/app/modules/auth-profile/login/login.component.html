@@ -33,12 +33,12 @@
                                 <p class="text-center mb-4">Si tiene una cuenta con nosotros, inicie sesión.</p>
                                 <div class="form-row">
                                     <div class="form-group col-12">
-                                        <label for="CustomerEmail" class="d-none">E-mail <span class="required">*</span></label>
-                                        <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" id="CustomerEmail" value="" required />
+                                        <label for="CustomerEmail" class="">Correo electrónico <span class="required">*</span></label>
+                                        <input type="email" name="email" [(ngModel)]="email" placeholder="Correo electrónico" id="CustomerEmail" value="" required />
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerPassword" class="d-none">Contraseña <span class="required">*</span></label>
-                                        <input type="password" name="password" [(ngModel)]="password" placeholder="Contraseña" id="CustomerPassword" value="" required />                        	
+                                        <label for="CustomerPassword" class="">Contraseña <span class="required">*</span></label>
+                                        <input type="password" name="password" [(ngModel)]="password" placeholder="Introduzca su contraseña" id="CustomerPassword" value="" required />                        	
                                     </div>
                                     <div class="form-group col-12">
                                         <div class="login-remember-forgot d-flex justify-content-between align-items-center">
@@ -49,14 +49,17 @@
                                             <a href="forgot-password.html" class="d-none" onclick="return false;" [routerLink]="['/auth/forgot-password']">¿Has olvidado tu contraseña?</a>
                                         </div>
                                     </div>
-                                    
                                     <div class="form-group col-12 mt-3" *ngIf="this.errorAutenticate">
                                         <p class="text-danger">{{ this.errorMessageAutenticate }}</p>
                                     </div>
-
                                     <div class="form-group col-12 mt-3 mb-3">
-                                        <input type="submit" class="btn btn-secondary btn-lg w-100" (click)="login()" value="Iniciar sesión" />
-                                    </div>
+                                        <button type="submit" class="btn btn-secondary btn-lg w-100" (click)="login()" [disabled]="loading">
+                                            <ng-container *ngIf="!loading">Iniciar sesión</ng-container>
+                                            <ng-container *ngIf="loading">
+                                                <div class="spinner-border text-light" role="status"></div>
+                                          </ng-container>
+                                        </button>
+                                    </div>                                      
                                     <div class="form-group col-12 ">
                                         <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="btn-link">
                                             <input type="submit" class="btn btn-primary btn-lg w-100" value="Crear cuenta" />

@@ -46,29 +46,43 @@ export class ProfileClientComponent implements OnInit {
   sale_detail_selected:any=null;
   user:any;
 
+
+  CURRENT_USER_AUTHENTICATED:any=null;
   constructor(
     public _ecommerceAuthService: EcommerceAuthService,
   ) {}
 
   ngOnInit(): void {
 
-    this._ecommerceAuthService._authService.user.subscribe(user => {
-      if (user) {
-        console.log("Profile.cliente.componente: ", user);
-        this.user = user._id;
-      }
-    });
+    // this._ecommerceAuthService._authService.user.subscribe(user => {
+    //   if (user) {
+    //     console.log("Profile.cliente.componente: ", user);
+    //     this.user = user._id;
+    //   }
+    // });
+
+    this.verifyAuthenticatedUser();
 
     this.showProfileClient();
-    this.name_c = this.user.name; //this._ecommerceAuthService._authService.user.name;
-    this.surname_c = this.user.surname; //this._ecommerceAuthService._authService.user.surname;
-    this.email_c = this.user.email; //this._ecommerceAuthService._authService.user.email; 
+    this.name_c = this.CURRENT_USER_AUTHENTICATED.name,//this.user.name; //this._ecommerceAuthService._authService.user.name;
+    this.surname_c = this.CURRENT_USER_AUTHENTICATED.surname; //this._ecommerceAuthService._authService.user.surname;
+    this.email_c = this.CURRENT_USER_AUTHENTICATED.email; //this._ecommerceAuthService._authService.user.email; 
+  }
+
+  private verifyAuthenticatedUser(): void {
+    this._ecommerceAuthService._authService.user.subscribe( user => {
+      if ( user ) {
+        this.CURRENT_USER_AUTHENTICATED = user;
+      } else {
+        this.CURRENT_USER_AUTHENTICATED = null;
+      }
+    });
   }
 
   showProfileClient() {
     
     let data = {
-      user_id: this.user._id, //this._ecommerceAuthService._authService.user._id,
+      user_id: this.CURRENT_USER_AUTHENTICATED._id, //this.user._id, //this._ecommerceAuthService._authService.user._id,
     };
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
@@ -128,7 +142,7 @@ export class ProfileClientComponent implements OnInit {
       return;
     }
     let data = {
-        user: this.user.id,//this._ecommerceAuthService._authService.user.id,
+        user: this.CURRENT_USER_AUTHENTICATED._id,//this.user.id,//this._ecommerceAuthService._authService.user.id,
         name: this.name,
         surname:this.surname,
         pais:this.pais,
@@ -163,7 +177,7 @@ export class ProfileClientComponent implements OnInit {
     }
     let data = {
         _id: this.address_client_selected.id,
-        user: this.user.id,//this._ecommerceAuthService._authService.user.id,
+        user: this.CURRENT_USER_AUTHENTICATED._id,//this.user.id,//this._ecommerceAuthService._authService.user.id,
         name:this.name,
         surname:this.surname,
         pais:this.pais,
@@ -282,7 +296,7 @@ export class ProfileClientComponent implements OnInit {
     let data = {
       product: this.sale_detail_selected.product._id,
       sale_detail: this.sale_detail_selected._id,
-      user: this.user._id,//this._ecommerceAuthService._authService.user._id,
+      user: this.CURRENT_USER_AUTHENTICATED._id,//this.user._id,//this._ecommerceAuthService._authService.user._id,
       cantidad: this.cantidad,
       description: this.description,
     };
@@ -306,7 +320,7 @@ export class ProfileClientComponent implements OnInit {
       _id: this.sale_detail_selected.review.id,
       product: this.sale_detail_selected.product._id,
       sale_detail: this.sale_detail_selected._id,
-      user: this.user._id,//this._ecommerceAuthService._authService.user._id,
+      user: this.CURRENT_USER_AUTHENTICATED._id,//this.user._id,//this._ecommerceAuthService._authService.user._id,
       cantidad: this.cantidad,
       description: this.description,
     };

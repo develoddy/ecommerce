@@ -5,6 +5,7 @@ import { CartService } from '../_service/cart.service';
 import { Subscription } from 'rxjs';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { EcommerceAuthService } from '../../ecommerce-auth/_services/ecommerce-auth.service';
+import { WishlistService } from '../_service/wishlist.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -61,6 +62,8 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
 
   CURRENT_USER_AUTHENTICATED:any=null;
 
+  loading: boolean = false;
+
   private routeParamsSubscription: Subscription | undefined;
   private queryParamsSubscription: Subscription | undefined;
   private productSubscription: Subscription | undefined;
@@ -70,11 +73,16 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     public _router: Router,
     public _routerActived: ActivatedRoute,
     public _cartService: CartService,
+    public _wishlistService: WishlistService,
     private minicartService: MinicartService,
     public _ecommerceAuthService: EcommerceAuthService,
   ) {}
 
   ngOnInit(): void {
+
+    this._ecommerce_guestService.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
 
     this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
 
@@ -209,7 +217,6 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
       } else {
 
         // SI NO SE ENCUENTRA NINGÚN SALE_DETAIL NI REVIEW, NO MOSTRAR EL FORMULARIO
-        console.log("No se encontró ningún sale_detail ni review.");
  
         // MOSTRAR RESEÑAS DE OTROS USUARIOS PARA EL PRODUCTO SELECCIONADO
         const otherReviews = this.REVIEWS.filter(
@@ -218,13 +225,13 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
 
         if (otherReviews.length > 0) {
 
-          console.log("Mostrando reseñas de otros usuarios:", otherReviews);
+          //console.log("Mostrando reseñas de otros usuarios:", otherReviews);
           // AQUI PODRÍAS MOSTRAR ESTAS RESEÑAS EN EL UI
           // POR EJEMPLO, PODRÍAS ASIGNAR A UNA VARIABLE EN EL COMPONENTE PARA RENDERIZAR EN EL TEMPLATE
           // this.displayOtherReviews(otherReviews);
         } else {
-
-          console.log("No hay reseñas disponibles para este producto.");
+          
+          //console.log("No hay reseñas disponibles para este producto.");
           this.viewReview(null); // O cualquier otro comportamiento que desees
         }
       }
@@ -385,13 +392,60 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     //console.log(`Talla seleccionada: ${this.variedad_selected.valor}`);
   }
 
+  // AÑADIR PRODUCTOS A FAVORITOS
+  //
+  //
+  addWishlist(product:any) {
+    if( !this.CURRENT_USER_AUTHENTICATED ) {
+      this.errorResponse = true;
+      this.errorMessage = "Por favor, autentifíquese para poder añadir el producto a favoritos";
+      return;
+    }
+
+    let data = {
+      user          : this.CURRENT_USER_AUTHENTICATED._id                                             ,
+      product       : this.product_selected._id                                                       ,
+      type_discount : this.SALE_FLASH ? this.SALE_FLASH.type_discount : null                          ,
+      discount      : this.SALE_FLASH ? this.SALE_FLASH.discount : 0                                  ,
+      cantidad      : $("#qty-cart").val()                                                            ,
+      variedad      : this.variedad_selected ? this.variedad_selected.id : null                       ,
+      code_cupon    : null                                                                            ,
+      code_discount : this.SALE_FLASH ? this.SALE_FLASH._id : null                                    ,
+      price_unitario: this.product_selected.price_usd                                                 ,
+      subtotal      : this.product_selected.price_usd - this.getDiscount()                            ,  
+      total         : (this.product_selected.price_usd - this.getDiscount())*$("#qty-cart").val()     , 
+    }
+
+    this._wishlistService.registerWishlist( data ).subscribe( ( resp:any ) => {
+      
+      if ( resp.message == 403 ) {
+        this.errorResponse = true;
+        this.errorMessage = resp.message_text;
+        return;
+      } else {
+        this._wishlistService.changeWishlist(resp.wishlist);
+        alertSuccess( resp.message_text );
+      }
+    }, error => {
+      console.log("__ Debbug > Error Register Wishlist 431: ", error.error.message);
+      if (error.error.message == "EL TOKEN NO ES VALIDO") {
+        this._wishlistService._authService.logout();
+      }
+    });
+  }
+
+
+
+  // AÑADITOS PRODUCTOS AL CARRITO DE COMPRAS
+  //
+  //
   addCart(product:any) {
 
     //if ( !this._cartService._authService.user ) {
     if( !this.CURRENT_USER_AUTHENTICATED ) {
       //alertDanger("Por favor, autentifíquese para poder añadir el producto a la cesta.");
       this.errorResponse = true;
-      this.errorMessage = "Por favor, autentifíquese para poder añadir el producto a la cesta";
+      this.errorMessage = "Por favor, autentifíquese para poder añadir el producto al carrito de compras";
       return;
     }
     if ( $("#qty-cart").val() == 0 ) {
@@ -447,7 +501,6 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
       }
     }, error => {
 
-      console.log("linea 424: ", error.error.message);
       if (error.error.message == "EL TOKEN NO ES VALIDO") {
         this._cartService._authService.logout();
       }
@@ -464,7 +517,23 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     if (this.productSubscription) {
       this.productSubscription.unsubscribe();
     }
-    console.log('____Debbug: El componente del Landing de producto ha sido destruido..');
+
+    // Destruir elevateZoom
+    // Verificar si el zoom está inicializado antes de intentar destruirlo
+    // const elevateZoomInstance = $('.zoompro').data('elevateZoom');
+    // if (elevateZoomInstance && typeof elevateZoomInstance.destroy === 'function') {
+    //   elevateZoomInstance.destroy();  // Destruye el zoom cuando cambias de componente
+    // } else {
+    //   console.warn('elevateZoomInstance no tiene el método destroy o no está inicializado');
+    // }
+
+    const elevateZoomInstance = $('.zoompro').data('elevateZoom');
+    if (elevateZoomInstance) {
+      // Eliminar manualmente los atributos del zoom
+      $('.zoomContainer').remove(); // Eliminar el contenedor del zoom
+      $('.zoompro').off('.elevateZoom'); // Eliminar eventos asociados al zoom
+      $('.zoompro').removeData('elevateZoom'); // Limpiar los datos del zoom
+    }
   }
 
   addCantidad(cantidad:number) {

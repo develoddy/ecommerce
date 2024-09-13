@@ -1,10 +1,20 @@
 <!--Page Wrapper-->
+<!-- <div class="page-wrapper" *ngIf="product_selected"> -->
 <div class="page-wrapper" *ngIf="product_selected">
+    <div *ngIf="loading" class="loading-spinner">
+        <!-- Aquí puedes poner tu spinner -->
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only"></span>
+            </div>
+            <h4>Cargando</h4>
+        </div>
+    </div>
     
     <!-- Body Container -->
-    <div id="page-content"> 
+    <div id="page-content"  [class.d-none]="loading"> 
         <!--Page Header-->
-        <div class="page-header text-center d-none">
+        <div class="page-header text-center">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
@@ -18,7 +28,7 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container">     
+        <div class="container" >     
             <!--Product Content-->
             <div class="product-single">
                 <div class="row">
@@ -143,14 +153,6 @@
                                     <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">{{ variedad_selected?.valor || 'Select Size' }}</span> <a href="#sizechart-modal" class="text-link sizelink text-muted size-chart-modal" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Size Guide</a></label>
                                     <ul class="variants-size size-swatches d-flex-center pt-1 clearfix">
                                         <ng-container *ngFor="let variedad of variedades; let i = index">
-                                            <!-- <li class="swatch x-large soldout"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="S">S</span></li>
-                                            <li class="swatch x-large soldout"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="S">L</span></li>
-
-                                            
-                                            <li  class="swatch x-large" [ngClass]="{ 'available': variedad.stock > 0, 'soldout': variedad.stock === 0, 'active': variedad.valor === variedad_selected?.valor}" (click)="selectedVariedad(variedad, i)">
-                                                <span class="swatchLbl" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="variedad.valor">{{variedad.valor}}</span>
-                                            </li> -->
-
                                             <li class="swatch x-large" 
                                                 [ngClass]="{ 
                                                     'available': variedad.stock > 0, 
@@ -213,7 +215,7 @@
 
                             <!-- Product Info link -->
                             <p class="infolinks d-flex-center justify-content-between">
-                                <a class="text-link wishlist" href="wishlist-style1.html"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
+                                <a class="text-link wishlist" href="wishlist-style1.html" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
                                 <a class="text-link compare d-none" href="compare-style1.html"><i class="icon anm anm-sync-ar me-2"></i> <span>Añadir para comparar</span></a>
                                 <a href="#shippingInfo-modal" class="text-link shippingInfo" data-bs-toggle="modal" data-bs-target="#shippingInfo_modal"><i class="icon anm anm-paper-l-plane me-2"></i> <span>Envío y devoluciones</span></a>
                                 <a href="#productInquiry-modal" class="text-link emaillink me-0" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>

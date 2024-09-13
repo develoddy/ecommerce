@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/services/language.service';
 import { Subscription } from 'rxjs';
+import { WishlistService } from '../ecommerce-guest/_service/wishlist.service';
 
 declare function LandingProductDetail():any;
 
@@ -53,14 +54,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   variedades: any[] = [];
 
+  errorResponse:boolean=false;
+  errorMessage:any="";
 
-  userId: any;
+  loading: boolean = false;
+
+  //userId: any;
+  CURRENT_USER_AUTHENTICATED:any=null;
+
 
   constructor(
     public homeService: HomeService,
     public _cartService: CartService,
     public _router: Router,
     public translate: TranslateService,
+    public _wishlistService: WishlistService,
     //private languageService: LanguageService,
   ) { }
 
@@ -70,15 +78,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this._cartService._authService.user.subscribe(user => {
-      if (user) {
-        this.userId = user._id;
-      }
+    // this._cartService._authService.user.subscribe(user => {
+    //   if (user) {
+    //     this.userId = user._id;
+    //   }
+    // });
+
+    // Suscribirse al observable para saber cuando mostrar u ocultar el loading
+    this.homeService.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
     });
+
+    this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
+
     this.checkWindowSize();
 
     let TIME_NOW = new Date().getTime();
-
+    
     this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
       this.sliders = resp.sliders;
       this.categories = resp.categories;
@@ -88,7 +104,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.FlashProductList = resp.campaign_products;
 
       setTimeout(() => {
-        console.log("loadd...");
         if (this.FlashSale) {
           var eventCounter = $(".sale-countdown");
           let PARSE_DATE = new Date(this.FlashSale.end_date);
@@ -107,6 +122,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
         HOMEINITTEMPLATE($);
         this.extractTags();
       }, 50);
+    });
+  }
+
+  private verifyAuthenticatedUser(): void {
+    this._cartService._authService.user.subscribe( user => {
+      if ( user ) {
+        this.CURRENT_USER_AUTHENTICATED = user;
+      } else {
+        this.CURRENT_USER_AUTHENTICATED = null;
+      }
     });
   }
 
@@ -166,43 +191,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
   
-  openModal(besProduct:any, FlashSale:any=null) {
-    this.product_selected = besProduct;
-    setTimeout(() => {
-      this.filterUniqueGalerias(this.product_selected);
-      // Filtrar tallas duplicadas y eliminar tallas no disponibles
-      this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
-      // Seleccionar automáticamente la primera talla si hay alguna disponible
-      this.variedad_selected = this.variedades[0] || null;
-      this.activeIndex = 0;
-      this.setColoresDisponibles();
-      this.selectedColor = this.coloresDisponibles[0]?.color || '';
-      setTimeout(() => {
-        LandingProductDetail();
-        pswp($);
-        productZoom($);
-      }, 50);
-    }, 150);
-  }
-
-  openModalToCart(besProduct:any) {
-    this.product_selected = besProduct;
-    setTimeout(() => {  
-      // Filtrar tallas duplicadas y eliminar tallas no disponibles
-      this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
-      // Seleccionar automáticamente la primera talla si hay alguna disponible
-      this.variedad_selected = this.variedades[0] || null;
-      this.activeIndex = 0;
-      this.setColoresDisponibles();
-      this.selectedColor = this.coloresDisponibles[0]?.color || '';
-      setTimeout(() => {
-        LandingProductDetail();
-        pswp($);
-        productZoom($);
-      }, 50);
-    }, 150);
-  }
-
   selectColor(color: { color: string, imagen: string }) {
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
@@ -404,7 +392,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const isProductUnitario = this.esProductoUnitario(product.variedades, valoresUnitarios);
 
     let data = {
-      user: this.userId,//this._cartService._authService.user._id,
+      user: this.CURRENT_USER_AUTHENTICATED._id, //this.userId,//this._cartService._authService.user._id,
       product: product._id,
       type_discount: type_discount,
       discount: discount,
@@ -441,5 +429,105 @@ export class HomeComponent implements OnInit, AfterViewInit {
           }
       }
       return true; // Si no encuentra ninguna de las variedades en valoresUnitarios, es un producto unitario
+  }
+
+
+  openModalToCart(besProduct:any) {
+    this.product_selected = besProduct;
+    setTimeout(() => {  
+      // Filtrar tallas duplicadas y eliminar tallas no disponibles
+      this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
+      // Seleccionar automáticamente la primera talla si hay alguna disponible
+      this.variedad_selected = this.variedades[0] || null;
+      this.activeIndex = 0;
+      this.setColoresDisponibles();
+      this.selectedColor = this.coloresDisponibles[0]?.color || '';
+      setTimeout(() => {
+        LandingProductDetail();
+        pswp($);
+        productZoom($);
+      }, 50);
+    }, 150);
+  }
+
+  // open model
+  openModal(besProduct:any, FlashSale:any=null) {
+    this.product_selected = besProduct;
+    setTimeout(() => {
+      this.filterUniqueGalerias(this.product_selected);
+      // Filtrar tallas duplicadas y eliminar tallas no disponibles
+      this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
+      // Seleccionar automáticamente la primera talla si hay alguna disponible
+      this.variedad_selected = this.variedades[0] || null;
+      this.activeIndex = 0;
+      this.setColoresDisponibles();
+      this.selectedColor = this.coloresDisponibles[0]?.color || '';
+      setTimeout(() => {
+        LandingProductDetail();
+        pswp($);
+        productZoom($);
+      }, 50);
+    }, 150);
+  }
+
+
+  getDiscount(FlashSale:any=null) {
+
+    console.log("__Debbug > getDiscount > FlashSale:", FlashSale);
+    let discount = 0;
+    if ( FlashSale ) {
+      if (FlashSale.type_discount == 1) {
+        return (FlashSale.discount*this.product_selected.price_usd*0.01).toFixed(2);
+      } else {
+        return FlashSale.discount;
+      }
+    }
+    return discount;
+  }
+
+  // Wishlist
+  addWishlist(product:any,  FlashSale:any=null) {
+
+    if( !this.CURRENT_USER_AUTHENTICATED ) {
+      this.errorResponse = true;
+      this.errorMessage = "Por favor, autentifíquese para poder añadir el producto a favoritos";
+      return;
+    }
+
+    let variedad_selected = product.variedades.find( (v:any) => v.stock > 0 ) || null;
+
+    let data = {
+      user          : this.CURRENT_USER_AUTHENTICATED._id                               ,
+      product       : product._id                                                       ,
+      type_discount : FlashSale ? FlashSale.type_discount : null                        ,
+      discount      : FlashSale ? FlashSale.discount : 0                                ,
+      cantidad      : 1                                                                 ,
+      variedad      : variedad_selected ? variedad_selected.id : null                   ,
+      code_cupon    : null                                                              ,
+      code_discount : FlashSale ? FlashSale._id : null                                  ,
+      price_unitario: product.price_usd                                                 ,
+      subtotal      : product.price_usd - this.getDiscount(FlashSale)                   ,  
+      total         : (product.price_usd - this.getDiscount(FlashSale))*1               , 
+    }
+
+    this._wishlistService.registerWishlist( data ).subscribe( ( resp:any ) => {
+      
+      if ( resp.message == 403 ) {
+        this.errorResponse = true;
+        alertDanger( resp.message_text );
+        this.errorMessage = resp.message_text;
+        return;
+      } else {
+        this._wishlistService.changeWishlist(resp.wishlist);
+        //this.minicartService.openMinicart();
+        // Aqui puedes decidir, si redrigir a la pangila de favoritos.
+        alertSuccess( resp.message_text );
+      }
+    }, error => {
+      console.log("__ Debbug > Error Register Wishlist 431: ", error);
+      if (error.error.message == "EL TOKEN NO ES VALIDO") {
+        this._wishlistService._authService.logout();
+      }
+    });
   }
 }
