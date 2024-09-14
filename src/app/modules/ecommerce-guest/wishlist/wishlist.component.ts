@@ -147,12 +147,15 @@ export class WishlistComponent implements OnInit {
     //   }
     // }
 
+    console.log("this.CURRENT_USER_AUTHENTICATED._id: ", this.CURRENT_USER_AUTHENTICATED._id);
     console.log("Selected variedad o talla: ", this.variedad_selected ? this.variedad_selected.id : null);
     console.log("Cantidad: ", $("#qty-cart").val());
+    //console.log("type_discount: ", this.SALE_FLASH ? this.SALE_FLASH.discount : 0);
+    
     
 
     // let data = {
-    //   user: this.CURRENT_USER_AUTHENTICATED._id,//this._cartService._authService.user._id,
+    //   user: this.CURRENT_USER_AUTHENTICATED._id,
     //   product: this.product_selected._id,
     //   type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
     //   discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
