@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ProfileClientComponent } from './profile-client/profile-client.component';
-import { WishlistComponent } from './wishlist/wishlist.component';
+//import { WishlistComponent } from '../ecommerce-guest/wishlist/wishlist.component';
 import { CompareComponent } from './compare/compare.component';
 import { OrderSuccessComponent } from './order-success/order-success.component';
 
@@ -21,7 +21,7 @@ import { OrderSuccessComponent } from './order-success/order-success.component';
     ListCartsComponent,
     CheckoutComponent,
     ProfileClientComponent,
-    WishlistComponent,
+    //WishlistComponent,
     CompareComponent,
     OrderSuccessComponent
   ],

@@ -9,12 +9,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FilterProductsComponent } from './filter-products/filter-products.component';
+import { WishlistComponent } from '../ecommerce-guest/wishlist/wishlist.component';
 
 @NgModule({
   declarations: [
     EcommerceGuestComponent,
     LandingProductComponent,
-    FilterProductsComponent
+    FilterProductsComponent,
+    WishlistComponent,
   ],
   imports: [
     CommonModule,

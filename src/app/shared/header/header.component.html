@@ -344,10 +344,11 @@
                 </div>
                 <!--End Account-->
                 <!--Wishlist-->
-                <div class="wishlist-link iconset" *ngIf="CURRENT_USER_AUTHENTICATED" title="Wishlist">
+                <div class="wishlist-link iconset" title="Wishlist">
                     <a href="wishlist-style1.html" onclick="return false;" [routerLink]="['/wishlist']">
                         <i class="hdr-icon icon anm anm-heart-l"></i>
-                        <span class="wishlist-count">{{ listWishlist.length }}</span>
+                        <!-- <span class="wishlist-count" >{{ listWishlists.length > 0 ? listWishlists.length : 'Sin productos en la wishlist' }}</span> -->
+                        <span class="wishlist-count" >{{ listWishlists.length }}</span>
                     </a>
                     <!-- <span class="Icons_text__HOyk8">Favoritos</span> -->
                 </div>

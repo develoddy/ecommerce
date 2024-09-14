@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
   euro = "€";
   selectedLanguage: string = 'ES';
   listCarts:any=[];
-  listWishlist:any=[];
+  listWishlists:any=[];
   totalCarts:any=0;
   totalWishlist:any=0;
   //user:any;
@@ -59,10 +59,15 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
 
   ngOnInit() {
     this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
+    
+
     this.subscribeToCartData(); // Suscripción a los datos del carrito
+    this.subscribeToWishlistData(); // Suscripción a los datos del cla lista de deseos
+    
+
     this.subscribeToEcommerceConfig(); // Suscripción a la configuración inicial de eCommerce
 
-    this.subscribeToWishlistData(); // Suscripción a los datos del cla lista de deseos
+    
   }
 
 
@@ -76,7 +81,7 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
           });
         });
 
-        this._wishlistService.listWishlist(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
+        this._wishlistService.listWishlists(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
 
           resp.wishlists.forEach((wishlist: any) => {
             this._wishlistService.changeWishlist(wishlist);
@@ -87,12 +92,13 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
         this.listCarts = [];
         this.totalCarts = 0;
 
-        this.listWishlist = [];
+        this.listWishlists = [];
         this.totalWishlist = 0;
       }
     });
   }
 
+ 
   private subscribeToCartData(): void {
     this.cartSubscription = this._cartService.currenteDataCart$.subscribe((resp: any) => {
       this.listCarts = resp;
@@ -100,12 +106,26 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
     });
   }
 
+  // -- Wishlist
   private subscribeToWishlistData(): void {
-    this.cartSubscription = this._wishlistService.currenteDataWishlist$.subscribe((resp: any) => {
-      this.listWishlist = resp;
-      this.totalWishlist = this.listWishlist.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
-    });
+
+    if ( this.CURRENT_USER_AUTHENTICATED ) {
+      
+      this.cartSubscription = this._wishlistService.currenteDataWishlist$.subscribe((resp: any) => {
+        this.listWishlists = resp;
+        this.totalWishlist = this.listWishlists.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+      });
+    } else {
+      
+      const localWishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      this.listWishlists = localWishlist;
+      this.totalWishlist = this.listWishlists;
+    }
   }
+
+
+  
+  
 
   private subscribeToEcommerceConfig(): void {
     this.ecommerceSubscription = this._ecommerceGuestService.configInitial().subscribe((resp: any) => {

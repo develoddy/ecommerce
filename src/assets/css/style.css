@@ -2986,7 +2986,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
   29. Addtocart Modal
 ========================================================================*/
 .addtocart-modal .modal-dialog { max-width:630px; }
-.addtocart-modal .price { color: #231F20; font-size: 20px; font-weight: 600; line-height: 1; margin-left: 10px; }
+.addtocart-modal .price { color: #231F20; font-size: 20px; font-weight: 600; line-height: 1; margin-left: 0px; }
 .addtocart-modal .addcart-total { background: #f7f7f7; margin: 15px 0; padding: 10px; }
 #product-form-addtocart .title { text-transform: uppercase; }
 #product-form-addtocart .product-details { text-align: left; }

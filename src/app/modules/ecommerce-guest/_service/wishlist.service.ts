@@ -37,16 +37,44 @@ export class WishlistService {
     this.wishlist.next(listCart);
   }
 
-  listWishlist( user_id:any ) {
+  listWishlists(user_id: any, productIds: any[] = []) {
     this.loadingSubject.next(true);
-    let headers = new HttpHeaders({'token': this._authService.token});
-    let URL = URL_SERVICE+"wishlist/list?user_id="+user_id;
     
-    // Retorna la petición HTTP y finaliza el loading al terminar
+    let headers = new HttpHeaders();
+    let URL = URL_SERVICE + "wishlist/list";
+
+    // Si hay un user_id, significa que el usuario está autenticado
+    if (user_id) {
+        URL += "?user_id=" + user_id;
+
+        // Añadimos el token si el usuario está autenticado
+        if (this._authService.token) {
+            headers = headers.set('token', this._authService.token);
+        }
+    } else if (productIds.length > 0) {
+        // Si no hay user_id, enviamos los productIds desde el localStorage
+        URL += "?productIds=" + productIds.join(",");
+    }
+
+    // Realizamos la petición HTTP
     return this._http.get(URL, { headers: headers }).pipe(
       finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
     );
   }
+
+
+
+
+  // listWishlist( user_id:any ) {
+  //   this.loadingSubject.next(true);
+  //   let headers = new HttpHeaders({'token': this._authService.token});
+  //   let URL = URL_SERVICE+"wishlist/list?user_id="+user_id;
+    
+  //   // Retorna la petición HTTP y finaliza el loading al terminar
+  //   return this._http.get(URL, { headers: headers }).pipe(
+  //     finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+  //   );
+  // }
 
   removeItemWishlist(WISHLIST:any) {
     let listWishlist = this.wishlist.getValue();

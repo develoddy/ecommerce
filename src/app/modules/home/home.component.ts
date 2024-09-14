@@ -453,6 +453,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   // open model
   openModal(besProduct:any, FlashSale:any=null) {
     this.product_selected = besProduct;
+    console.log("product_selected: ", this.product_selected);
     setTimeout(() => {
       this.filterUniqueGalerias(this.product_selected);
       // Filtrar tallas duplicadas y eliminar tallas no disponibles
@@ -488,15 +489,42 @@ export class HomeComponent implements OnInit, AfterViewInit {
   // Wishlist
   addWishlist(product:any,  FlashSale:any=null) {
 
-    if( !this.CURRENT_USER_AUTHENTICATED ) {
-      this.errorResponse = true;
-      this.errorMessage = "Por favor, autentifíquese para poder añadir el producto a favoritos";
+    let data: any = {};
+
+    // if( !this.CURRENT_USER_AUTHENTICATED ) {
+    //   this.errorResponse = true;
+    //   this.errorMessage = "Por favor, autentifíquese para poder añadir el producto a favoritos";
+    //   alertDanger("Por favor, autentifíquese para poder añadir el producto a favoritos");
+    //   return;
+    // }
+
+    if (!this.CURRENT_USER_AUTHENTICATED) {
+      
+      
+      // Guardar el producto en LocalStorage (sin userId)
+      data = {
+          product: product._id,
+          type_discount: FlashSale ? FlashSale.type_discount : null,
+          discount: FlashSale ? FlashSale.discount : 0,
+          cantidad: 1,
+          variedad: product.variedades.find((v: any) => v.stock > 0)?.id || null,
+          price_unitario: product.price_usd,
+          subtotal: product.price_usd - this.getDiscount(FlashSale),
+          total: (product.price_usd - this.getDiscount(FlashSale)) * 1,
+      };
+
+      // Usuario no autenticado: Guardar en LocalStorage
+      let wishlistLocal = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      wishlistLocal.push(data);
+      localStorage.setItem('wishlist', JSON.stringify(wishlistLocal));
+
+      alertSuccess("Producto añadido a favoritos temporalmente. Por favor, inicie sesión para guardarlo permanentemente.");
       return;
     }
 
     let variedad_selected = product.variedades.find( (v:any) => v.stock > 0 ) || null;
 
-    let data = {
+    data = {
       user          : this.CURRENT_USER_AUTHENTICATED._id                               ,
       product       : product._id                                                       ,
       type_discount : FlashSale ? FlashSale.type_discount : null                        ,
