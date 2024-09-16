@@ -8,9 +8,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                        <div class="page-title"><h1>Carrito de compras</h1></div>
+                        <div class="page-title"><h1>Carrito de la compra</h1></div>
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Home</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Carrito de compras</span></div>
+                        <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Lujandev.com</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Carrito de la compra</span></div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -84,11 +84,25 @@
                                                     <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">{{ cart.product.title }}</a>
                                                 </div>
                                                 <div class="cart-meta-text">
-                                                    Color: {{ cart.variedad.color }}<br>
+                                                    <!-- Color {{ cart.variedad.color }}<br>
                                                     <ng-container *ngIf="cart.variedad">
-                                                        Talla: {{ cart.variedad.valor }}<br>
+                                                        Talla {{ cart.variedad.valor }}<br>
                                                     </ng-container>
-                                                    Cantidad: {{ cart.cantidad }}
+                                                    Cantidad {{ cart.cantidad }} -->
+                                                    <ul class="list-group">
+                                                        <li class="list-group-item d-flex p-0 border-0">
+                                                            <span class="flex-grow-1">Color</span>
+                                                            <span class="">{{ cart.variedad.color }}</span>
+                                                        </li>
+                                                        <li class="list-group-item d-flex p-0 border-0" *ngIf="cart.variedad">
+                                                            <span class="flex-grow-1">Talla</span>
+                                                            <span class="">{{ cart.variedad.valor }}</span>
+                                                        </li>
+                                                        <li class="list-group-item d-flex p-0 border-0">
+                                                            <span class="flex-grow-1">Cantidad</span>
+                                                            <span class="">{{ cart.cantidad}}</span>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                                 <div class="cart-price d-md-none">
                                                     <span class="money fw-500">{{ euro }}{{ cart.subtotal | number: '1.2-2' }}</span>
@@ -517,16 +531,16 @@
                                 </div>
                                 <div class="row g-0 pt-2">
                                     <span class="col-6 col-sm-6 cart-subtotal-title fs-6"><strong>Total</strong></span>
-                                    <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end text-primary"><b class="money">{{ euro }}{{ totalCarts | number: '1.2-2' }}</b></span>
+                                    <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ euro }}{{ totalCarts | number: '1.2-2' }}</b></span>
                                 </div>
 
-                                <p class="cart-shipping mt-3">Envío &amp; Impuestos calculados al finalizar la compra</p>
-                                <p class="cart-shipping fst-normal freeShipclaim"><i class="me-2 align-middle icon anm anm-truck-l"></i><b>ENVÍO GRATIS</b> ELEGIBLE</p>
-                                <div class="customCheckbox cart-tearm">
+                                <p class="cart-shipping mt-3 d-none">Envío &amp; Impuestos calculados al finalizar la compra</p>
+                                <p class="cart-shipping fst-normal freeShipclaim d-none"><i class="me-2 align-middle icon anm anm-truck-l"></i><b>ENVÍO GRATIS</b> ELEGIBLE</p>
+                                <div class="customCheckbox cart-tearm d-none">
                                     <input type="checkbox" value="allen-vela" id="cart-tearm">
                                     <label for="cart-tearm">Estoy de acuerdo con los términos y condiciones</label>
                                 </div>
-                                <a href="checkout-style1.html" onclick="return false;" [routerLink]="['/payment-process']" id="cartCheckout" class="btn btn-lg my-4 checkout w-100">Proceder con la compra</a>
+                                <a href="checkout-style1.html" onclick="return false;" [routerLink]="['/payment-process']" id="cartCheckout" class="btn btn-secondary btn-lg my-4 checkout w-100">Continuar con el pago</a>
                                 <div class="paymnet-img text-center"><img src="assets/images/icons/safepayment.png" alt="Payment" width="299" height="28" /></div>
                             </div>                               
                         </div>

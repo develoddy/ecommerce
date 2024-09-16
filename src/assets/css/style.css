@@ -551,7 +551,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 #cart-drawer .minicart-bottom { font-size: 13px; }
 .minicart-header { border-bottom:1px solid #e8e8e8; margin:0 0 15px; padding:0 0 15px; }
 .minicart-header > h4 { color:#171717; font-weight:700; text-align:left; margin:0 0; text-transform: uppercase; }
-.minicart-content { padding:0 20px; margin:0; z-index:1001; position:absolute; left:0; overflow:hidden auto; width:100%; height:calc(100% - 295px); bottom: 0;}
+.minicart-content { padding:0 20px; margin:0; z-index:1001; position:absolute; left:0; overflow:hidden auto; width:100%; height:calc(100% - 295px);}
 .minicart-content .item { padding:0 0 15px; margin:0 0 15px; line-height:normal; display:block; border-bottom:solid 1px #eee; }
 .minicart-content .item .product-image { max-width:23%; flex:1; -webkit-flex:1; -ms-flex:1; }
 .minicart-content .item .product-details { width:75%; flex:1; -webkit-flex:1; -ms-flex:1; padding-left:15px; padding-right:10px; text-align:left; }
@@ -568,7 +568,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .minicart-bottom .shipinfo { background-color:#f6f6f6; padding:15px 20px; margin-left:-20px; margin-right:-20px; }
 .minicart-bottom .shipinfo .progress-bar { width:50%; background-color:rgba(41,51,85,.7); }
 .minicart-bottom .subtotal .totalInfo span { float:left; text-transform:uppercase; font-size:16px; text-align:left; font-weight:700; margin:0; }
-.minicart-bottom .subtotal .totalInfo .product-price { float:right; color:#03a1fe; }
+.minicart-bottom .subtotal .totalInfo .product-price { float:right; color:#231F20; }
 
 /*----- Minicart Model Style 2 -----*/
 .minicart-modal-style .minicart-right-drawer .modal-dialog { max-width:770px; }
@@ -590,7 +590,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 
 .product-price { margin: 0px 0; }
 .product-price .old-price { opacity:0.6; text-decoration:line-through; }
-.product-price .old-price + .price { padding-left:10px; color:#03a1fe; }
+.product-price .old-price + .price { padding-left:10px; color:#231F20; }
 
 .qtyField { position:relative; display:flex; align-items:center; width:86px; margin:0; }
 .qtyField input { margin:0; padding:0 25px; width:86px; height:40px; text-align:center; }
@@ -2409,7 +2409,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 
 .step-checkout .step-items { margin: -5px -15px; padding-bottom: 30px; justify-content: center; border: none; }
 .step-checkout .nav-link { width: auto; text-align: center; padding: 10px 30px; border-radius: 0; margin: 5px 15px; background-color: #03a1fe; color: #ffffff; border-color: #03a1fe; font-size: 15px; font-weight: 600; text-transform: uppercase; cursor: pointer; position: relative; z-index: 1; transition: all 150ms ease-in-out 0s; }
-.step-checkout .nav-link.active, .step-checkout .nav-link:focus, .step-checkout .nav-link:hover { background-color: #03a1fe; color: #ffffff; border-color: #03a1fe; }
+.step-checkout .nav-link.active, .step-checkout .nav-link:focus, .step-checkout .nav-link:hover { background-color: #231F20; color: #ffffff; border-color: #231F20; }
 .step-checkout .nav-link:after { content: ""; cursor: default; width: 31px; height: 4px; background-color: #03a1fe; display: block; position: absolute; top: 50%; margin-top: -2px; right: 100%; z-index: -1; }
 .step-checkout .nav-item:first-child .nav-link:after { content: none; }
 .step-checkout .nav-item.onactive ~ .nav-item .nav-link { background-color: #ebebeb; color: #888; border-color: #ebebeb; }

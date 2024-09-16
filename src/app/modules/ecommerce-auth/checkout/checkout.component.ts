@@ -46,6 +46,11 @@ export class CheckoutComponent implements OnInit {
 
   userId: any;
 
+  isAddressSameAsShipping: boolean = false;
+  isSuccessRegisteredAddredd : boolean = false;
+
+  public loading: boolean = false;
+
   constructor(
     public _authEcommerce: EcommerceAuthService,
     public _cartService: CartService,
@@ -53,11 +58,20 @@ export class CheckoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    this._authEcommerce.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
+
     this._authEcommerce._authService.user.subscribe(user => {
       if (user) {
         this.userId = user._id;
       }
     });
+
+    
+
+    
     
     //this._authEcommerce.listAddressClient(this._authEcommerce._authService.user._id).subscribe((resp:any) => {
     this._authEcommerce.listAddressClient(this.userId).subscribe((resp:any) => {
@@ -167,6 +181,10 @@ export class CheckoutComponent implements OnInit {
     }).render(this.paypalElement?.nativeElement);
   }
 
+  onCheckboxChange(event: any) {
+    this.isAddressSameAsShipping = event.target.checked;
+  }
+
   removeCart(cart:any) {
     this._cartService.deleteCart(cart._id).subscribe((resp:any) => {
       this._cartService.removeItemCart(cart);
@@ -202,7 +220,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   store() {
-    console.log("debugg this.address_client_selected", this.address_client_selected);
     if (this.address_client_selected) {
       this.updateAddress();
     } else {
@@ -211,6 +228,15 @@ export class CheckoutComponent implements OnInit {
   }
 
   registerAddress() {
+
+    console.log("this.name: ", this.name);
+    console.log("this.surname: ", this.surname);
+    console.log("this.pais: ", this.pais);
+    console.log("this.address: ", this.address);
+    console.log("this.ciudad: ", this.ciudad);
+    console.log("this.telefono: ", this.telefono);
+    console.log("this.email: ", this.email);
+    
     if (!this.name ||
         !this.surname ||
         !this.pais ||
@@ -220,7 +246,7 @@ export class CheckoutComponent implements OnInit {
         !this.telefono ||
         !this.email
     ) {
-      alertDanger("Por favor, complete los campos obligatorios de la dirección.");
+      alertDanger("Por favor, complete los campos obligatorios de la dirección");
       return;
     }
     let data = {
@@ -237,9 +263,13 @@ export class CheckoutComponent implements OnInit {
         nota:this.nota,
     };
     this._authEcommerce.registerAddressClient(data).subscribe((resp:any) => {
-      this.listAddressClients.push(resp.address_client);
-      alertSuccess(resp.message);
-      this.resetForm();
+      //if (resp.address_client) {
+        this.listAddressClients.push(resp.address_client);
+        alertSuccess(resp.message);
+        this.resetForm();
+        this.isSuccessRegisteredAddredd = true;
+      //}
+      
     });
   }
 
@@ -248,7 +278,7 @@ export class CheckoutComponent implements OnInit {
       !this.surname ||
       !this.pais ||
       !this.address ||
-      !this.region ||
+      //!this.region ||
       !this.ciudad ||
       !this.telefono ||
       !this.email
@@ -265,7 +295,7 @@ export class CheckoutComponent implements OnInit {
         pais:this.pais,
         address:this.address,
         referencia:this.referencia,
-        region:this.region,
+        //region:this.region,
         ciudad:this.ciudad,
         telefono:this.telefono,
         email:this.email,

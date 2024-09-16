@@ -37,15 +37,17 @@ export class WishlistService {
     this.wishlist.next(listCart);
   }
 
-  listWishlists(user_id: any, productIds: any[] = []) {
-    this.loadingSubject.next(true);
+  listWishlists(user_id: any, TIME_NOW:any = "", productIds: any[] = [] ) {
+
+     // Inicia el loading
+     this.loadingSubject.next(true);
     
     let headers = new HttpHeaders();
     let URL = URL_SERVICE + "wishlist/list";
 
     // Si hay un user_id, significa que el usuario está autenticado
     if (user_id) {
-        URL += "?user_id=" + user_id;
+        URL += "?user_id=" + user_id + "&TIME_NOW="+TIME_NOW;
 
         // Añadimos el token si el usuario está autenticado
         if (this._authService.token) {
@@ -53,7 +55,7 @@ export class WishlistService {
         }
     } else if (productIds.length > 0) {
         // Si no hay user_id, enviamos los productIds desde el localStorage
-        URL += "?productIds=" + productIds.join(",");
+        URL += "?productIds=" + productIds.join(",")+ "&TIME_NOW="+TIME_NOW;;
     }
 
     // Realizamos la petición HTTP

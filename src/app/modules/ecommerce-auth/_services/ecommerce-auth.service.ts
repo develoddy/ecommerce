@@ -3,6 +3,7 @@ import { AuthService } from '../../auth-profile/_services/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { finalize } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,15 +21,29 @@ export class EcommerceAuthService {
   // ADDRESS FROM CLIENT
   
   listAddressClient(user_id:any) {
+    // Inicia el loading
+    this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"address_client/list?user_id="+user_id;
-    return this._http.get(URL, {headers: headers});
+    //return this._http.get(URL, {headers: headers});
+    
+    // Realizamos la petición HTTP
+    return this._http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+    );
   }
 
   registerAddressClient(data:any) {
+    // Inicia el loading
+    this.loadingSubject.next(true);
+
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"address_client/register";
-    return this._http.post(URL, data, {headers: headers});
+    // return this._http.post(URL, data, {headers: headers});
+
+    return this._http.post(URL, data, { headers: headers }).pipe(
+      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+    );
   }
 
   updateAddressClient(data:any) {

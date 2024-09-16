@@ -8,9 +8,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                        <div class="page-title"><h1>Lista de deseos</h1></div>
+                        <div class="page-title fw-bold text-uppercase"><h1>Favoritos</h1></div>
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Home</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Lista de deseos</span></div>
+                        <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Lujandev.com</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Favoritos</span></div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -49,13 +49,13 @@
                 <!--Toolbar-->
                 <div class="toolbar toolbar-wrapper shop-toolbar">
                     <div class="row align-items-center">
-                        <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0">
+                        <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 d-none">
                             <button type="button" name="add" class="btn btn-secondary"><span>Todo Añadir al carrito</span></button>
                         </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-4 text-center product-count order-0 order-md-1 mb-3 mb-sm-0">
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-4 text-center product-count order-0 order-md-1 mb-3 mb-sm-0 d-none">
                             <span class="toolbar-product-count">Mostrando: 5 productos</span>
                         </div>
-                        <div class="col-8 col-sm-6 col-md-4 col-lg-4 text-right filters-toolbar-item d-flex justify-content-end order-2 order-sm-2">
+                        <div class="col-8 col-sm-6 col-md-4 col-lg-4 text-right filters-toolbar-item d-flex justify-content-end order-2 order-sm-2 d-none">
                             <div class="filters-item d-flex align-items-center">
                                 <label for="ShowBy" class="mb-0 me-2 text-nowrap d-none d-sm-inline-flex">Ver:</label>
                                 <select name="ShowBy" id="ShowBy" class="filters-toolbar-show">
@@ -92,16 +92,16 @@
                             <ng-container *ngFor="let wishlist of listWishlists">
                                 <div class="item col-item">
                                     <div class="product-box position-relative">
-                                        <button type="button" class="btn remove-icon close-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove" (click)="removeWishlist(wishlist)"><i class="icon anm anm-times-r"></i></button>
+                                        <button type="button" class="btn remove-icon close-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar" (click)="removeWishlist(wishlist)"><i class="icon anm anm-times-r"></i></button>
                                         <!-- Start Product Image -->
                                         <div class="product-image">
                                             <!-- Start Product Image -->                                                              
                                             <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', wishlist.product ? wishlist.product.slug : wishlist.slug]" class="product-img rounded-0">
                                                 <!-- Image wishlist.variedad.files[1].preview_url -->
-                                                <img class="primary rounded-0 blur-up lazyload" [attr.data-src]="wishlist.product ? wishlist.variedad.files[1].preview_url  : wishlist.imagen" [src]="wishlist.product ? wishlist.variedad.files[1].preview_url  : wishlist.imagen" alt="{{ wishlist.product ? wishlist.product.title : wishlist.title }}" title="{{ wishlist.product ? wishlist.product.title : wishlist.title }}" width="625" height="808" />
+                                                <img class="primary rounded-0 blur-up lazyload" [attr.data-src]="wishlist.product ? wishlist.product.imagen  : wishlist.imagen" [src]="wishlist.product ? wishlist.product.imagen  : wishlist.imagen" alt="{{ wishlist.product ? wishlist.product.title : wishlist.title }}" title="{{ wishlist.product ? wishlist.product.title : wishlist.title }}" width="625" height="808" />
                                                 <!-- End Image -->
                                                 <!-- Hover Image -->
-                                                <img class="hover rounded-0 blur-up lazyload" [attr.data-src]="wishlist.product ? wishlist.variedad.files[1].preview_url  : wishlist.imagen" [src]="wishlist.product ? wishlist.variedad.files[1].preview_url  : wishlist.imagen" alt="{{ wishlist.product ? wishlist.product.title : wishlist.title }}" title="{{ wishlist.product ? wishlist.product.title : wishlist.title }}" width="625" height="808" />
+                                                <img class="hover rounded-0 blur-up lazyload" [attr.data-src]="wishlist.product ? wishlist.product.imagen_two  : wishlist.imagen" [src]="wishlist.product ? wishlist.product.imagen_two  : wishlist.imagen" alt="{{ wishlist.product ? wishlist.product.title : wishlist.title }}" title="{{ wishlist.product ? wishlist.product.title : wishlist.title }}" width="625" height="808" />
                                                 <!-- End Hover Image -->
                                             </a>
                                             <!-- End Product Image -->
@@ -111,15 +111,15 @@
                                             <!--Product Button-->
                                             <div class="button-set style2">
                                                 <!--Quick View Button-->
-                                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal">
                                                     <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="top" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
                                                 </a>
                                                 <!--End Quick View Button-->
                                                 <!--Wishlist Button-->
-                                                <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="top" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                                <a href="wishlist-style2.html" class="btn-icon wishlist d-none" data-bs-toggle="tooltip" data-bs-placement="top" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
                                                 <!--End Wishlist Button-->
                                                 <!--Compare Button-->
-                                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                                <a href="compare-style2.html" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
                                                 <!--End Compare Button-->
                                             </div>
                                             <!--End Product Button-->
@@ -140,7 +140,7 @@
                                             </div>
                                             <!-- End Product Price -->
                                             <!-- Product Review -->
-                                            <div class="product-review">
+                                            <div class="product-review d-none">
                                                 <i [ngClass]="AVG_REVIEW >= 1 ? 'icon anm anm-star' : 'icon anm anm-star-o'"></i>
                                                 <i [ngClass]="AVG_REVIEW >= 2 ? 'icon anm anm-star' : 'icon anm anm-star-o'"></i>
                                                 <i [ngClass]="AVG_REVIEW >= 3 ? 'icon anm anm-star' : 'icon anm anm-star-o'"></i>
@@ -153,8 +153,8 @@
                                             <div class="button-action mt-3">
                                                 <div class="addtocart-btn">
                                                     <form class="addtocart" action="#" method="post">
-                                                        <a href="#addtocart-modal" class="btn btn-md add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal" (click)="showModalSelectedProduct(wishlist)" >
-                                                            <span class="text">Añadir al Carrito</span>
+                                                        <a href="#addtocart-modal" class="btn btn-outline-secondary btn-md add-to-cart-modal w-100" data-bs-toggle="modal" data-bs-target="#addtocart_modal" (click)="showModalSelectedProduct(wishlist)" >
+                                                            <span class="text">Añadir</span>
                                                         </a>
                                                     </form>
                                                 </div>
@@ -511,7 +511,7 @@
                     </div>
 
                     <!-- Pagination -->
-                    <nav class="clearfix pagination-bottom">
+                    <nav class="clearfix pagination-bottom d-none">
                         <ul class="pagination justify-content-center">
                             <li class="page-item disabled"><a class="page-link" href="#"><i class="icon anm anm-angle-left-l"></i></a></li>
                             <li class="page-item active"><a class="page-link" href="#">1</a></li>
@@ -603,8 +603,15 @@
 
 
 
+
+
+
+
+
+    <!-- MODIFICAR -->
      <!-- Product Quickview Modal-->
-     <div class="addtocart-modal modal fade" id="addtocart_modal" tabindex="-1" aria-hidden="true" >           
+     <!-- <div class="addtocart-modal modal fade" id="addtocart_modal" tabindex="-1" aria-hidden="true" >            -->
+    <div class="quickview-modal modal fade" id="addtocart_modal" tabindex="-1" aria-hidden="true">  
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body" *ngIf="product_selected">
@@ -670,13 +677,13 @@
                                 <span class="d-flex-center stockLbl lowstock d-none" data-qty="15"><i class="icon anm anm-exclamation-cir"></i><span> Order now, Only  <span class="items">10</span>  left!</span></span>
                             </div>
                             <div class="product-price d-flex-center my-3">
-                                <span class="price">Total: {{ euro }}{{product_selected.price_usd}}</span>
+                                <span class="price">{{ euro }}{{product_selected.price_usd}}</span>
                             </div>
                             <div class="sort-description d-none">The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.</div>
                             <form id="product_form--option" class="product-form">
                                 <div class="product-options d-flex-wrap">
                                     <div class="product-item swatches-image w-100 mb-3 swatch-0 option1" data-option-index="0">
-                                        <label class="label d-flex align-items-center">Color<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label>
+                                        <label class="label d-flex align-items-center text-uppercase">Seleccionar color<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label>
                                         <ul class="variants-clr swatches d-flex-center pt-1 clearfix"> 
                                             <ng-container *ngFor="let color of coloresDisponibles">
                                                 <li class="swatch x-large available" [ngClass]="getSwatchClass(color.imagen, color.color)" (click)="selectColor(color)">
@@ -688,7 +695,7 @@
                                     </div>
                                     <div class="product-item swatches-size w-100 mb-3 swatch-1 option2" data-option-index="1">
                                         <!-- <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">S</span></label> -->
-                                        <label class="label d-flex align-items-center">Talla<span class="slVariant ms-1 fw-bold">{{ variedad_selected?.valor || 'Select Size' }}</span></label>
+                                        <label class="label d-flex align-items-center text-uppercase">Seleccionar talla<span class="slVariant ms-1 fw-bold">{{ variedad_selected?.valor || 'Select Size' }}</span></label>
                                         <ul class="variants-size size-swatches d-flex-center pt-1 clearfix">
                                             <ng-container *ngFor="let variedad of variedades; let i = index">
                                                 <li  class="swatch x-large" [ngClass]="{ 'available': variedad.stock > 0, 'soldout': variedad.stock === 0, 'active': variedad.valor === variedad_selected?.valor}" (click)="selectedVariedad(variedad, i)">
@@ -706,13 +713,21 @@
                                             </div>
                                         </div>                                
                                         <div class="addtocart ms-3 fl-1">
-                                            <button type="submit" name="add" class="btn product-cart-submit w-100" (click)="addCart(product_selected)"><span>Añadir</span></button>
+                                            <button type="submit" name="add" class="btn btn-secondary  product-cart-submit w-100" (click)="addCart(product_selected)"><span>Añadir</span></button>
                                         </div>
                                         <div *ngIf="this.validad_error">
                                             <small class="text-danger">{{ this.message_error }}</small>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Product Action -->
+                                <div class="product-form-submit d-flex-justify-center d-none">
+                                    <a href="#" class="btn btn-outline-primary product-continue w-100">Seguir comprando</a>
+                                    <a href="cart-style1.html" class="btn btn-secondary product-viewcart w-100 my-2 my-md-3">Ir al producto</a>
+                                    <a href="checkout-style1.html" class="btn btn-primary product-checkout w-100">Proceder al pago</a>
+                                </div>
+                                <!-- End Product Action -->
                             </form>
                             <div class="wishlist-btn d-flex-center">
                                 <a class="add-wishlist d-flex-center me-3 d-none" href="wishlist-style1.html" title="Add to Wishlist"><i class="icon anm anm-heart-l me-1"></i> <span>Add to Wishlist</span></a>
@@ -737,6 +752,11 @@
     </div>
     <!--End Product Quickview Modal-->
 
+
+
+
+
+
     <!-- Product Addtocart Modal-->
     <div class="quickview-modal modal fade" id="quickview_modal" tabindex="-1" aria-hidden="true" >           
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -745,7 +765,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <form method="post" action="#" id="product-form-addtocart" class="product-form align-items-center">
                         <!-- <h3 class="title mb-3 text-success text-center">Añadido al carrito correctamente!</h3> -->
-                        <h3 class="title mb-3 text-secondary text-center">Añadir</h3>
+                        <h3 class="title mb-3 text-secondary text-center">Añadir 1</h3>
                         <div class="row d-flex-center text-center">
                             <div class="col-md-6">
                                 <!-- Product Image -->

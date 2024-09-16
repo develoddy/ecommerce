@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { WishlistService } from '../_service/wishlist.service';
+import { CartService } from '../_service/cart.service';
+import { MinicartService } from 'src/app/services/minicartService.service';
 
 declare var $:any;
 declare function pswp([]):any;
@@ -8,6 +10,7 @@ declare function productZoom([]):any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function alertDanger([]):any;
 declare function alertSuccess([]):any;
+declare var bootstrap: any;  // Declarar Bootstrap para usar sus métodos
 
 @Component({
   selector: 'app-wishlist',
@@ -37,10 +40,18 @@ export class WishlistComponent implements OnInit {
   coloresDisponibles: { color: string, imagen: string }[] = [];
   selectedColor: string = '';
   firstImage: string = '';
+  availableSizes = ['S', 'M', 'L', 'XL'];
+
+  errorResponse:boolean=false;
+  errorMessage:any="";
+
+ 
 
   constructor(
     public _router: Router,
     public _wishlistService: WishlistService,
+    public _cartService: CartService,
+    private minicartService: MinicartService,
   ) {}
 
   ngOnInit(): void {
@@ -69,15 +80,17 @@ export class WishlistComponent implements OnInit {
   }
 
   listAllCarts() {
+
     this._wishlistService.resetWishlist();
 
     let productIds = this.getProductIdsFromLocalStorage(); // Obtener IDs del LocalStorage
-    //console.log("DEBBUG: getProductIdsFromLocalStorage", productIds);
+   
 
     this._wishlistService._authService.user.subscribe(user => {
       if (user) {
+        let TIME_NOW = new Date().getTime();
         this.userId = user._id;
-        this._wishlistService.listWishlists(this.userId).subscribe((resp: any) => {
+        this._wishlistService.listWishlists(this.userId, TIME_NOW).subscribe((resp: any) => {
 
           if (Array.isArray(resp.wishlists)) {
             resp.wishlists.forEach((wishlistItem: any) => {
@@ -115,7 +128,16 @@ export class WishlistComponent implements OnInit {
 
   addCart(product:any) {
 
-    if (!this._wishlistService._authService.user) {
+    console.log("Wishlist Product selected: ", product);
+    
+
+    this._wishlistService._authService.user.subscribe( user => {
+      if ( user ) {
+        this.CURRENT_USER_AUTHENTICATED = user;
+      }
+    });
+
+    if ( !this.CURRENT_USER_AUTHENTICATED ) {
       alertDanger("Por favor, autentifíquese para poder añadir el producto a la cesta.");
       this.errorResponse = true;
       this.errorMessage = "Por favor, autentifíquese para poder añadir el producto al carrito de compras";
@@ -147,55 +169,51 @@ export class WishlistComponent implements OnInit {
     //   }
     // }
 
-    console.log("this.CURRENT_USER_AUTHENTICATED._id: ", this.CURRENT_USER_AUTHENTICATED._id);
-    console.log("Selected variedad o talla: ", this.variedad_selected ? this.variedad_selected.id : null);
-    console.log("Cantidad: ", $("#qty-cart").val());
-    //console.log("type_discount: ", this.SALE_FLASH ? this.SALE_FLASH.discount : 0);
-    
-    
 
-    // let data = {
-    //   user: this.CURRENT_USER_AUTHENTICATED._id,
-    //   product: this.product_selected._id,
-    //   type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
-    //   discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
-    //   cantidad: $("#qty-cart").val(),
-    //   variedad: this.variedad_selected ? this.variedad_selected.id : null,
-    //   code_cupon: null,
-    //   code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
-    //   price_unitario: this.product_selected.price_usd,
-    //   subtotal: this.product_selected.price_usd - this.getDiscount(),  //*$("#qty-cart").val(),
-    //   total: (this.product_selected.price_usd - this.getDiscount())*$("#qty-cart").val(), // De momento es igual, luego aplicamos el descuento
-    // }
+    let data = {
+       user: this.CURRENT_USER_AUTHENTICATED._id,
+       product: product._id,
+       type_discount: null,//this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
+       discount: 0, //this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
+       cantidad: $("#qty-cart").val(),
+       variedad: this.variedad_selected ? this.variedad_selected.id : null,
+       code_cupon: null,
+       code_discount: 0,//this.SALE_FLASH ? this.SALE_FLASH._id : null,
+       price_unitario: product.price_usd,
+       subtotal: product.price_usd - 0,//this.getDiscount(),
+       total: (product.price_usd - /*this.getDiscount()*/0 )*$("#qty-cart").val(), // De momento es igual, luego aplicamos el descuento
+    }
 
-    // this._cartService.registerCart(data).subscribe((resp:any) => {
-    //   if (resp.message == 403) {
-    //     //alertDanger(resp.message_text);
-    //     this.errorResponse = true;
-    //     this.errorMessage = resp.message_text;
-    //     return;
-    //   } else {
-    //     this._cartService.changeCart(resp.cart);
-    //     //alertSuccess("El producto ha sido añadido correctamente a la cesta.");
-    //     this.minicartService.openMinicart();
-    //   }
-    // }, error => {
+    this._cartService.registerCart(data).subscribe((resp:any) => {
 
-    //   if (error.error.message == "EL TOKEN NO ES VALIDO") {
-    //     this._cartService._authService.logout();
-    //   }
-    // });
+      if ( resp.message == 403 ) {
+
+        alertDanger(resp.message_text);
+        this.errorResponse = true;
+        this.errorMessage = resp.message_text;
+        return;
+
+      } else {
+
+        this._cartService.changeCart(resp.cart);
+        alertSuccess("El producto ha sido añadido correctamente a la cesta.");
+        this.minicartService.openMinicart();
+
+        // Cerrar el modal después de añadir el producto
+        let addtocartModal = document.getElementById('addtocart_modal');
+        let modalInstance = bootstrap.Modal.getInstance(addtocartModal); // Obtener instancia del modal
+        modalInstance.hide();  // Cerrar el modal
+      }
+    }, error => {
+      if ( error.error.message == "EL TOKEN NO ES VALIDO" ) {
+        this._cartService._authService.logout();
+      }
+    });
   }
 
-
-
-
-
-  errorResponse:boolean=false;
-  errorMessage:any="";
-  showModalSelectedProduct(product:any) {
-    console.log("Agregar al carrito: ", product);
-    this.product_selected = product;
+  showModalSelectedProduct(wishlist:any) {
+    console.log("Agregar al carrito: ", wishlist);
+    this.product_selected = wishlist.product;
 
     setTimeout(() => {
 
@@ -207,6 +225,7 @@ export class WishlistComponent implements OnInit {
       this.activeIndex = 0;
       this.setColoresDisponibles();
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
+      console.log("Selected color: ", this.selectedColor);
 
       setTimeout(() => {
         HOMEINITTEMPLATE($);
@@ -218,8 +237,6 @@ export class WishlistComponent implements OnInit {
 
   }
 
-
-
   filterUniqueGalerias(product_selected:any) {
     const uniqueImages = new Set();
     this.filteredGallery = product_selected.galerias.filter((galeria:any) => {
@@ -227,8 +244,6 @@ export class WishlistComponent implements OnInit {
       uniqueImages.add(galeria.imagen);
       return !isDuplicate;
     });
-
-    console.log("Debbug  filteredGallery : ", this.filteredGallery);
   }
 
 
@@ -274,29 +289,44 @@ export class WishlistComponent implements OnInit {
   }
 
 
+  // selectColor(color: { color: string, imagen: string }) {
+  //   console.log("New Selected color: ", color);
+    
+  //   this.selectedColor = color.color;
+  //   this.firstImage = color.imagen;
+  // }
+
   selectColor(color: { color: string, imagen: string }) {
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
+    console.log("Select color Proudct: ", this.product_selected.variedades);
+    
+
+
+    // Filtrar las tallas disponibles para el color seleccionado
+    const filteredVariedades = this.product_selected.variedades
+        .filter((variedad: any) => variedad.color === this.selectedColor)
+        .sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1); // Ordenar las tallas de menor a mayor
+
+    // Mapear las tallas generales y marcar las no disponibles
+    this.variedades = this.availableSizes.map(size => {
+        const foundVariedad = filteredVariedades.find( (variedad:any) => variedad.valor === size);
+        return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
+    });
+
+    console.log(`New Selected color: ${this.variedades}`);
+
+    // Seleccionar automáticamente la primera talla disponible
+    this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
+    this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
+
+    //console.log(`New Selected color: ${this.variedad_selected?.valor || 'Ninguna disponible'}`);
   }
 
   selectedVariedad(variedad:any, index: number) {
     this.variedad_selected = variedad;
-    console.log("this.variedad_selected: ", this.variedad_selected);
-    
     this.activeIndex = index;
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
   // Obtener los IDs de productos del LocalStorage
   getProductIdsFromLocalStorage() {
@@ -305,6 +335,9 @@ export class WishlistComponent implements OnInit {
   }
 
   removeWishlist(wishlist:any) {
+
+    console.log("Remove wishlist: ", wishlist);
+    
     this._wishlistService.deleteWishlist(wishlist._id).subscribe((resp:any) => {
       this._wishlistService.removeItemWishlist(wishlist);
     });
