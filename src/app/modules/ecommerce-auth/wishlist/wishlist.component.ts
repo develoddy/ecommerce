@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { WishlistService } from '../_service/wishlist.service';
-import { CartService } from '../_service/cart.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
+import { WishlistService } from '../../ecommerce-guest/_service/wishlist.service';
+import { CartService } from '../../ecommerce-guest/_service/cart.service';
 
 declare var $:any;
 declare function pswp([]):any;
@@ -45,8 +45,6 @@ export class WishlistComponent implements OnInit {
   errorResponse:boolean=false;
   errorMessage:any="";
 
- 
-
   constructor(
     public _router: Router,
     public _wishlistService: WishlistService,
@@ -83,7 +81,7 @@ export class WishlistComponent implements OnInit {
 
     this._wishlistService.resetWishlist();
 
-    let productIds = this.getProductIdsFromLocalStorage(); // Obtener IDs del LocalStorage
+    //let productIds = this.getProductIdsFromLocalStorage(); // Obtener IDs del LocalStorage
    
 
     this._wishlistService._authService.user.subscribe(user => {
@@ -92,33 +90,25 @@ export class WishlistComponent implements OnInit {
         this.userId = user._id;
         this._wishlistService.listWishlists(this.userId, TIME_NOW).subscribe((resp: any) => {
 
-          if (Array.isArray(resp.wishlists)) {
-            resp.wishlists.forEach((wishlistItem: any) => {
-              // Procesar wishlist autenticado
-              console.log("Debbug > Productos de BBDD con usuario SI autenticado : ", wishlistItem);
-              this._wishlistService.changeWishlist(wishlistItem);
-            });
-          } else {
-            console.error("Error: 'wishlists' no es un array o está indefinido", resp);
-          }
+          resp.wishlists.forEach((wishlistItem:any) => {
+            this._wishlistService.changeWishlist(wishlistItem);
+          });
+
+          // if (Array.isArray(resp.wishlists)) {
+          //   resp.wishlists.forEach((wishlistItem: any) => {
+          //     // Procesar wishlist autenticado
+          //     console.log("Debbug > Productos de BBDD con usuario SI autenticado : ", wishlistItem);
+          //     this._wishlistService.changeWishlist(wishlistItem);
+          //   });
+          // } else {
+          //   console.error("Error: 'wishlists' no es un array o está indefinido", resp);
+          // }
+
+
         }, error => {
           console.error("Error en la petición de wishlist:", error);
         });
-      } else if (productIds.length > 0) {
-        this._wishlistService.listWishlists(null, productIds).subscribe((resp: any) => {
-          if (Array.isArray(resp.products)) {
-            resp.products.forEach((wishlistItem: any) => {
-              // Procesar wishlist desde localStorage
-              console.log("Debbug > Productos de localstorage con usuario NO autenticado : ", wishlistItem);
-              this._wishlistService.changeWishlist(wishlistItem);
-            });
-          } else {
-            console.error("Error: 'products' no es un array o está indefinido", resp);
-          }
-        }, error => {
-          console.error("Error en la petición de wishlist:", error);
-        });
-      }
+      } 
     });
   }
 

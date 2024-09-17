@@ -24,13 +24,13 @@
 
         <!--Main Content-->
         <div class="container">   
-            <div class="login-register pt-2">
+            <div class="login-register pt-3">
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                    <div class="col-12 col-sm-12 col-md-8 offset-md-2 col-lg-4 offset-lg-4">
                         <div class="inner h-100">
                             <form class="customer-form">	
                                 <h2 class="text-center fs-4 mb-3">Inicia sesión</h2>
-                                <p class="text-center mb-4">Si tiene una cuenta con nosotros, inicie sesión.</p>
+                                <p class="text-center mb-4 d-none">Si tiene una cuenta con nosotros, inicie sesión.</p>
                                 <div class="form-row">
                                     <div class="form-group col-12">
                                         <label for="CustomerEmail" class="">Correo electrónico <span class="required">*</span></label>
@@ -62,7 +62,7 @@
                                     </div>                                      
                                     <div class="form-group col-12 ">
                                         <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="btn-link">
-                                            <input type="submit" class="btn btn-primary btn-lg w-100" value="Crear cuenta" />
+                                            <input type="submit" class="btn btn-outline-secondary btn-lg w-100" value="Crear cuenta" />
                                         </a>
                                     </div>
                                 </div>

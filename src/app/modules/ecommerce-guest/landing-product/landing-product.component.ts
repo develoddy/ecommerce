@@ -440,10 +440,6 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
   //
   //
   addCart(product:any) {
-
-    console.log("Landing Product selected: ", product);
-    
-
     //if ( !this._cartService._authService.user ) {
     if( !this.CURRENT_USER_AUTHENTICATED ) {
       //alertDanger("Por favor, autentifíquese para poder añadir el producto a la cesta.");

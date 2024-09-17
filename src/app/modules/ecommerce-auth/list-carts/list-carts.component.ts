@@ -53,16 +53,6 @@ export class ListCartsComponent implements OnInit {
     });
   }
 
-  private reloadPage(): void {
-    const reloaded = sessionStorage.getItem('reloaded');
-    if (!reloaded) {
-      sessionStorage.setItem('reloaded', 'true');
-      window.location.reload();
-    } else {
-      sessionStorage.removeItem('reloaded');
-    }
-  }
-
   updateTotalCarts() {
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;

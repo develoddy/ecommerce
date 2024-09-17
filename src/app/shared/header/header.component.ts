@@ -75,6 +75,7 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
     this._cartService._authService.user.subscribe((user:any) => {
       this.CURRENT_USER_AUTHENTICATED = user;
       if ( user ) {
+        
         this._cartService.listCarts(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
           resp.carts.forEach((cart: any) => {
             this._cartService.changeCart(cart);
@@ -107,25 +108,12 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
   }
 
   // -- Wishlist
-  private subscribeToWishlistData(): void {
-
-    if ( this.CURRENT_USER_AUTHENTICATED ) {
-      
-      this.cartSubscription = this._wishlistService.currenteDataWishlist$.subscribe((resp: any) => {
-        this.listWishlists = resp;
-        this.totalWishlist = this.listWishlists.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
-      });
-    } else {
-      
-      const localWishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-      this.listWishlists = localWishlist;
-      this.totalWishlist = this.listWishlists;
-    }
+  private subscribeToWishlistData(): void {      
+    this.cartSubscription = this._wishlistService.currenteDataWishlist$.subscribe((resp: any) => {
+      this.listWishlists = resp;
+      this.totalWishlist = this.listWishlists.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+    }); 
   }
-
-
-  
-  
 
   private subscribeToEcommerceConfig(): void {
     this.ecommerceSubscription = this._ecommerceGuestService.configInitial().subscribe((resp: any) => {

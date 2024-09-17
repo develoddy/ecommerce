@@ -474,7 +474,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   getDiscount(FlashSale:any=null) {
 
-    console.log("__Debbug > getDiscount > FlashSale:", FlashSale);
     let discount = 0;
     if ( FlashSale ) {
       if (FlashSale.type_discount == 1) {
@@ -491,34 +490,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     let data: any = {};
 
-    // if( !this.CURRENT_USER_AUTHENTICATED ) {
-    //   this.errorResponse = true;
-    //   this.errorMessage = "Por favor, autentifíquese para poder añadir el producto a favoritos";
-    //   alertDanger("Por favor, autentifíquese para poder añadir el producto a favoritos");
-    //   return;
-    // }
-
-    if (!this.CURRENT_USER_AUTHENTICATED) {
+    if( !this.CURRENT_USER_AUTHENTICATED ) {
+      this.errorResponse = true;
+      this.errorMessage = "Por favor, autentifíquese para poder añadir el producto a favoritos";
+      alertDanger("Por favor, autentifíquese para poder añadir el producto a favoritos");
+      this._router.navigate(['/auth/login']);
+      //this._router.navigateByUrl("/landing-product/"+product.slug+LINK_DISCOUNT);
       
-      
-      // Guardar el producto en LocalStorage (sin userId)
-      data = {
-          product: product._id,
-          type_discount: FlashSale ? FlashSale.type_discount : null,
-          discount: FlashSale ? FlashSale.discount : 0,
-          cantidad: 1,
-          variedad: product.variedades.find((v: any) => v.stock > 0)?.id || null,
-          price_unitario: product.price_usd,
-          subtotal: product.price_usd - this.getDiscount(FlashSale),
-          total: (product.price_usd - this.getDiscount(FlashSale)) * 1,
-      };
-
-      // Usuario no autenticado: Guardar en LocalStorage
-      let wishlistLocal = JSON.parse(localStorage.getItem('wishlist') || '[]');
-      wishlistLocal.push(data);
-      localStorage.setItem('wishlist', JSON.stringify(wishlistLocal));
-
-      alertSuccess("Producto añadido a favoritos temporalmente. Por favor, inicie sesión para guardarlo permanentemente.");
       return;
     }
 
@@ -546,6 +524,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.errorMessage = resp.message_text;
         return;
       } else {
+
+        console.log("ADD WISHLIST: ----- ", resp);
         this._wishlistService.changeWishlist(resp.wishlist);
         //this.minicartService.openMinicart();
         // Aqui puedes decidir, si redrigir a la pangila de favoritos.

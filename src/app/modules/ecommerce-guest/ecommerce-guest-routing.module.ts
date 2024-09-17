@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { EcommerceGuestComponent } from './ecommerce-guest.component';
 import { LandingProductComponent } from './landing-product/landing-product.component';
 import { FilterProductsComponent } from './filter-products/filter-products.component';
-import { WishlistComponent } from './wishlist/wishlist.component';
+
 
 const routes: Routes = [
   {
@@ -21,10 +21,6 @@ const routes: Routes = [
       {
         path: 'filter-products/:slug/:idCategorie',
         component: FilterProductsComponent,
-      },
-      {
-        path: "wishlist",
-        component: WishlistComponent,
       },
     ]
   }

@@ -220,7 +220,7 @@ p:last-child { margin-bottom:0; }
   4. Buttons
 ========================================================================*/
 .btn, .btn-primary {  
-    font-family:'Poppins', sans-serif; background-color:#03a1fe; color:#ffffff; border:1px solid #03a1fe; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; 
+    font-family:'Poppins', sans-serif; background-color:#231F20; color:#ffffff; border:1px solid #231F20; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; 
     font-size:14px; font-weight:600; line-height:normal; text-transform:uppercase; white-space:normal; opacity:1; outline:none !important; box-shadow:none !important; -ms-transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; transition:all 0.3s ease-in-out; 
 }
 .btn:hover, .btn:focus { background-color:#231F20; color:#ffffff; border-color:#231F20; text-decoration:none; opacity:1; }
@@ -352,8 +352,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 
 .slick-dots { margin:0; width:auto; padding:0; list-style:none; position:absolute; bottom:-10px; text-align:center; left:50%; -webkit-transform:translateX(-50%); -ms-transform:translateX(-50%); transform:translateX(-50%); }
 .slick-dots li { position:relative; display:inline-block; padding:0; cursor:pointer; margin:0 4px; }
-.slick-dots li button { color:transparent; line-height:0; font-size:0; background:transparent; display:block; cursor:pointer; color:#ffffff; width:14px; height:14px; text-indent:-9999px; padding:0; border-radius:50px; border:1px solid #03a1fe; transition:all 0.2s; -webkit-transition:all 0.2s; -ms-transition:all 0.2s; opacity:1; }
-.slick-dots li.slick-active button { background:#03a1fe; border-color: #03a1fe; }
+.slick-dots li button { color:transparent; line-height:0; font-size:0; background:transparent; display:block; cursor:pointer; color:#ffffff; width:14px; height:14px; text-indent:-9999px; padding:0; border-radius:50px; border:1px solid #231F20; transition:all 0.2s; -webkit-transition:all 0.2s; -ms-transition:all 0.2s; opacity:1; }
+.slick-dots li.slick-active button { background:#231F20; border-color: #231F20; }
 
 .slick-arrow-dots .slick-arrow { opacity:0; visibility:hidden; width:35px; height:35px; background-color:rgba(255,255,255,0.7); border-radius: 100%; }
 .slick-arrow-dots .slick-arrow:before { font-size: 16px; }
@@ -525,7 +525,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .iconset .hdr-icon { color:#171717; font-size:18px; vertical-align:middle; text-decoration:none; -webkit-transition: all .3s ease-in-out; transition: all .3s ease-in-out; }
 .iconset .hdr-icon:hover { color:#03a1fe; }
 
-.wishlist-count, .cart-count { font-size:10px; display:inline-block; color:#ffffff; background-color:#03a1fe; border-radius:50%; text-align:center; width:15px; height:15px; line-height:15px; position:absolute; right:0; top:-4px; }
+.wishlist-count, .cart-count { font-size:10px; display:inline-block; color:#ffffff; background-color:#231F20; border-radius:50%; text-align:center; width:15px; height:15px; line-height:15px; position:absolute; right:0; top:-4px; }
 
 #settingsBox, #accountBox, #cart-drawer { color: #171717; text-align:left; background-color:#ffffff; box-shadow:0 0 15px rgba(5,0,0,0.1); -ms-transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; transition:all 0.3s ease-in-out; }
 #settingsBox, #accountBox { visibility:hidden; opacity:0; padding:20px; margin:10px 0 0; width:170px; border-radius:0; position:absolute; top:130%; left:50%; -webkit-transform:translateX(-50%); transform:translateX(-50%); z-index:99; }
@@ -2471,7 +2471,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 
 .product-single-meta .product-review .icon { font-size: 15px; }
 .product-single-meta .reviewLink:before { content: "|"; margin: 0 10px; color: #6c757d; }
-.product-single-meta .product-price .price { font-size: 22px; font-weight: 600; line-height: 1; color: #f50000; }
+.product-single-meta .product-price .price { font-size: 22px; font-weight: 600; line-height: 1; color: #231F20; }
 .product-single-meta .product-price .old-price { font-size: 18px; color: #4c4c4c; font-weight: 500; }
 .product-single-meta .product-availability .progress { margin:12px 0 20px; }
 .product-single-meta .orderMsg .icon { color:#231F20; font-size:18px; margin-right:10px; -webkit-animation-name:blinker; -webkit-animation-iteration-count:infinite; -webkit-animation-timing-function:cubic-bezier(.6, 0, 1, 1); -webkit-animation-duration:0.8s; }
