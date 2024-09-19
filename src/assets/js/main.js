@@ -386,6 +386,8 @@ function HOMEINITTEMPLATE ($, undefined) {
      12. Show hide Product Filters
      ----------------------------------*/
     $('.btn-filter').on("click", function() {
+        console.log('entra fuera el clock filter');
+        
         $(".filterbar").toggleClass("active");
     });
     $('.closeFilter').on("click", function() {

@@ -33,13 +33,13 @@
         <!--Main Content-->
         <div class="container" [class.d-none]="loading">
             <!--Category Slider-->
-            <div class="collection-slider-6items gp10 slick-arrow-dots sub-collection section pt-0 d-none">
+            <div class="collection-slider-6items gp10 slick-arrow-dots sub-collection section pt-0">
                 <ng-container *ngFor="let categorie of categories">
                     <div class="category-item zoomscal-hov">
                         <a href="shop-left-sidebar.html" onclick="return false;" class="category-link clr-none">
                             <div class="zoom-scal zoom-scal-nopb rounded-0">
-                                <!-- <img class="rounded-0 blur-up lazyload" [attr.data-src]="categorie.imagen" [src]="categorie.imagen" alt="{{ categorie.title }}" title="{{ categorie.title }}" width="365" height="365" /> -->
-                                <img class="rounded-0 blur-up lazyloaded" data-src="assets/images/collection/sub-collection5.jpg" src="assets/images/collection/sub-collection5.jpg" alt="T-Shirts" title="T-Shirts" width="365" height="365">
+                                <img class="rounded-0 blur-up lazyload" [attr.data-src]="categorie.imagen_home" [src]="categorie.imagen_home" alt="{{ categorie.title }}" title="{{ categorie.title }}" width="365" height="365" />
+                                <!-- <img class="rounded-0 blur-up lazyloaded" data-src="assets/images/collection/sub-collection5.jpg" src="assets/images/collection/sub-collection5.jpg" alt="T-Shirts" title="T-Shirts" width="365" height="365"> -->
                             </div>
                             <div class="details text-center">
                                 <h4 class="category-title mb-0">{{ categorie.title }}</h4>
@@ -48,7 +48,7 @@
                         </a>
                     </div>
                 </ng-container>
-                <!-- <div class="category-item zoomscal-hov">
+                <!--<div class="category-item zoomscal-hov">
                     <a href="shop-left-sidebar.html" class="category-link clr-none">
                         <div class="zoom-scal zoom-scal-nopb rounded-0"><img class="rounded-0 blur-up lazyload" data-src="assets/images/collection/sub-collection1.jpg" src="assets/images/collection/sub-collection1.jpg" alt="Men's" title="Men's" width="365" height="365" /></div>
                         <div class="details text-center">

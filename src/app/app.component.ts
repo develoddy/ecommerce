@@ -16,14 +16,18 @@ declare function pswp([]):any;
 export class AppComponent implements OnInit {
   title = 'ecommerce';
 
-  constructor(private translate: TranslateService, private titleService: Title, private bodyClassService: BodyClassService) {
+  constructor(
+    private translate: TranslateService, 
+    private titleService: Title, 
+    private bodyClassService: BodyClassService,
+  ) {
     // translate.addLangs(['en', 'es']);
     // const lang = translate.getBrowserLang();
     // if ( (lang !== 'es') && (lang !== 'en') ) {
     //   translate.setDefaultLang('es');
     // }
-    translate.setDefaultLang('es');
-    translate.use('es');
+    // translate.setDefaultLang('es');
+    // translate.use('es');
 
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translate.get('app.title').subscribe((res: string) => {
@@ -33,6 +37,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    // Initialize body class based on the current route
+    this.bodyClassService.updateBodyClass("index-demo1");
     // setTimeout(() => {
     //    HOMEINITTEMPLATE($);
     //    pswp($);
