@@ -68,8 +68,7 @@
                                         <p class="ss-sub-title xs-hide">Ropa diseñada para los que crean el futuro, con el máximo confort y personalidad</p>
                                         <div class="ss-btnWrap">
                                             <a class="btn btn-secondary" href="shop-grid-view.html" onclick="return false;">Hombres</a>
-                                            <a class="btn btn-primary" href="shop-grid-view.html" onclick="return false;">Mujeres</a>
-                                            
+                                            <a class="btn btn-primary d-none" href="shop-grid-view.html" onclick="return false;">Mujeres</a>
                                         </div>
                                     </div>
                                 </div>
@@ -169,7 +168,7 @@
         <!--End Service Section-->
 
         <!--Collection banner-->
-        <section class="section collection-banners pb-0">
+        <section class="section collection-banners pb-0 d-none">
             <div class="container">                      
                 <div class="collection-banner-grid">
                     <div class="row sp-row">
@@ -301,18 +300,18 @@
                                                     <!--Product Button-->
                                                     <div class="button-set style1">
                                                         <!--Cart Button-->
-                                                        <a href="#quickshop-modal" class="btn-icon addtocart quick-shop-modal" data-bs-toggle="modal" data-bs-target="#quickshop_modal" (click)="openModalToCart(ourProduct)">
+                                                        <a href="#quickshop-modal" class="btn-icon addtocart quick-shop-modal d-none" data-bs-toggle="modal" data-bs-target="#quickshop_modal" (click)="openModalToCart(ourProduct)">
                                                         <!-- <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal" (click)="openModalToCart(ourProduct)"> -->
                                                             <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
                                                         </a>
                                                         <!--End Cart Button-->
                                                         <!--Quick View Button-->
-                                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModal(ourProduct, FlashSale)">
+                                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModal(ourProduct, FlashSale)">
                                                             <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
                                                         </a>
                                                         <!--End Quick View Button-->
                                                         <!--Wishlist Button-->
-                                                        <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a la lista de deseos" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a la lista de deseos</span></a>
+                                                        <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a favoritos" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a>
                                                         <!--End Wishlist Button-->
                                                         <!--Compare Button-->
                                                         <a href="compare-style2.html" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>

@@ -1,8 +1,6 @@
  <!--Page Wrapper-->
  <div class="page-wrapper">
 
-    
-
     <!-- Body Container -->
     <div id="page-content" >
         <!--Page Header-->
@@ -131,33 +129,35 @@
                         </div>
                     </div>
                     <div class="col-12 col-sm-4 col-md-4 col-lg-4 text-center product-count order-0 order-md-1 mb-3 mb-sm-0">
-                        <span class="toolbar-product-count">Demostración: 15 productos</span>
+                        <span class="toolbar-product-count">Demostración: {{ products.length }} productos</span>
                     </div>
-                    <div class="col-8 col-sm-6 col-md-4 col-lg-4 text-right filters-toolbar-item d-flex justify-content-end order-2 order-sm-2">
-                        <div class="filters-item d-flex align-items-center">
-                            <label for="ShowBy" class="mb-0 me-2 text-nowrap d-none d-sm-inline-flex">Mostrar:</label>
-                            <select name="ShowBy" id="ShowBy" class="filters-toolbar-show">
-                                <option value="title-ascending" selected="selected">10</option>
-                                <option>15</option>
-                                <option>20</option>
-                                <option>25</option>
-                                <option>30</option>
-                            </select>
+                    <ng-container *ngIf=" products.length > 10 ">
+                        <div class="col-8 col-sm-6 col-md-4 col-lg-4 text-right filters-toolbar-item d-flex justify-content-end order-2 order-sm-2">
+                            <div class="filters-item d-flex align-items-center">
+                                <label for="ShowBy" class="mb-0 me-2 text-nowrap d-none d-sm-inline-flex">Mostrar:</label>
+                                <select name="ShowBy" id="ShowBy" class="filters-toolbar-show">
+                                    <option value="title-ascending" selected="selected">10</option>
+                                    <option>15</option>
+                                    <option>20</option>
+                                    <option>25</option>
+                                    <option>30</option>
+                                </select>
+                            </div>
+                            <div class="filters-item d-flex align-items-center ms-2 ms-lg-3">
+                                <label for="SortBy" class="mb-0 me-2 text-nowrap d-none">Ordenar por:</label>
+                                <select name="SortBy" id="SortBy" class="filters-toolbar-sort">
+                                    <option value="featured" selected="selected">Featured</option>
+                                    <option value="best-selling">Best selling</option>
+                                    <option value="title-ascending">Alphabetically, A-Z</option>
+                                    <option value="title-descending">Alphabetically, Z-A</option>
+                                    <option value="price-ascending">Price, low to high</option>
+                                    <option value="price-descending">Price, high to low</option>
+                                    <option value="created-ascending">Date, old to new</option>
+                                    <option value="created-descending">Date, new to old</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="filters-item d-flex align-items-center ms-2 ms-lg-3">
-                            <label for="SortBy" class="mb-0 me-2 text-nowrap d-none">Ordenar por:</label>
-                            <select name="SortBy" id="SortBy" class="filters-toolbar-sort">
-                                <option value="featured" selected="selected">Featured</option>
-                                <option value="best-selling">Best selling</option>
-                                <option value="title-ascending">Alphabetically, A-Z</option>
-                                <option value="title-descending">Alphabetically, Z-A</option>
-                                <option value="price-ascending">Price, low to high</option>
-                                <option value="price-descending">Price, high to low</option>
-                                <option value="created-ascending">Date, old to new</option>
-                                <option value="created-descending">Date, new to old</option>
-                            </select>
-                        </div>
-                    </div>
+                    </ng-container>                    
                 </div>
             </div>
             <!--End Toolbar-->
@@ -331,12 +331,12 @@
                                             <!--Product Button-->
                                             <div class="button-set style1">
                                                 <!--Cart Button-->
-                                                <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                                <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal d-none" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
                                                     <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
                                                 </a>
                                                 <!--End Cart Button-->
                                                 <!--Quick View Button-->
-                                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal">
                                                     <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Vista rápida</span></span>
                                                 </a>
                                                 <!--End Quick View Button-->
@@ -344,7 +344,7 @@
                                                 <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a>
                                                 <!--End Wishlist Button-->
                                                 <!--Compare Button-->
-                                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Añadir para comparar</span></a>
+                                                <a href="compare-style2.html" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Añadir para comparar</span></a>
                                                 <!--End Compare Button-->
                                             </div>
                                             <!--End Product Button-->
