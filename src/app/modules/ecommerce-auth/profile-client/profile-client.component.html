@@ -10,7 +10,7 @@
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
                         <div class="page-title"><h1>Mi cuenta</h1></div>
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Home</a><span class="title"><i class="icon anm anm-angle-right-l"></i>Pages</span><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>My Account</span></div>
+                        <div class="breadcrumbs"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Mi cuenta</span></div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -18,8 +18,18 @@
         </div>
         <!--End Page Header-->
 
+        <div *ngIf="loading" class="loading-spinner">
+            <!-- Aquí puedes poner tu spinner -->
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only"></span>
+                </div>
+                <h4>Cargando</h4>
+            </div>
+        </div>
+
         <!--Main Content-->
-        <div class="container">
+        <div class="container" [class.d-none]="loading">
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-3 mb-4 mb-lg-0">
                     <!-- Dashboard sidebar -->
@@ -964,19 +974,19 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Companyname" class="d-none">Company name</label>
+                                                            <label for="editProfile-Companyname" class="d-none">Nombre de empresa</label>
                                                             <input name="editProfile-Companyname" placeholder="Company name" value="" id="editProfile-Companyname" type="text" />
                                                         </div>
                                                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Emailaddress" class="d-none">Email address</label>
+                                                            <label for="editProfile-Emailaddress" class="d-none">Dirección de correo electrónico</label>
                                                             <input name="editProfile-Emailaddress" placeholder="Email address" value="" id="editProfile-Emailaddress" type="email" />
                                                         </div>
                                                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Phonenumber" class="d-none">Phone number</label>
+                                                            <label for="editProfile-Phonenumber" class="d-none">Número de teléfono</label>
                                                             <input name="editProfile-Phonenumber" placeholder="Phone number" value="" id="editProfile-Phonenumber" type="text" />
                                                         </div>
                                                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-zone" class="d-none">City / State <span class="required">*</span></label>
+                                                            <label for="editProfile-zone" class="d-none">Ciudad / Estado <span class="required">*</span></label>
                                                             <select name="editProfile_zone_id" id="editProfile-zone">
                                                                 <option value="">Select Region / State</option>
                                                                 <option value="AL">Alabama</option>
@@ -990,9 +1000,9 @@
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-country" class="d-none">Country / Region <span class="required">*</span></label>
+                                                            <label for="editProfile-country" class="d-none">País / Región <span class="required">*</span></label>
                                                             <select name="editProfile_country_id" id="editProfile-country">
-                                                                <option value="">Select Country / Region</option>
+                                                                <option value="">Seleccione país/región</option>
                                                                 <option value="AI" label="Anguilla">Anguilla</option>
                                                                 <option value="AG" label="Antigua and Barbuda">Antigua and Barbuda</option>
                                                                 <option value="AR" label="Argentina">Argentina</option>
@@ -1006,30 +1016,30 @@
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Streetaddress" class="d-none">Street address</label>
+                                                            <label for="editProfile-Streetaddress" class="d-none">Dirección de la calle</label>
                                                             <input name="editProfile-Streetaddress" placeholder="Street address" value="" id="editProfile-Streetaddress" type="text" />
                                                         </div>
                                                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Zipcode" class="d-none">Zip code</label>
+                                                            <label for="editProfile-Zipcode" class="d-none">Código postal</label>
                                                             <input name="editProfile-Zipcode" placeholder="Zip code" value="" id="editProfile-Zipcode" type="text" />
                                                         </div>
                                                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Category" class="d-none">Category</label>
+                                                            <label for="editProfile-Category" class="d-none">Categoría</label>
                                                             <input name="editProfile-Category" placeholder="Phone number" value="" id="editProfile-Category" type="text" />
                                                         </div>
                                                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12 mb-md-0">
-                                                            <label for="editProfile-YearEstablished" class="d-none">Year Established</label>
+                                                            <label for="editProfile-YearEstablished" class="d-none">Año de fundación</label>
                                                             <input name="editProfile-YearEstablished" placeholder="YearEstablished" value="" id="editProfile-YearEstablished" type="text" />
                                                         </div>
                                                         <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12 mb-0">
-                                                            <label for="editProfile-TotalEmployees" class="d-none">Zip code</label>
+                                                            <label for="editProfile-TotalEmployees" class="d-none">Código postal</label>
                                                             <input name="editProfile-TotalEmployees" placeholder="Zip code" value="" id="editProfile-TotalEmployees" type="text" />
                                                         </div>
                                                     </div>
                                                 </form>
                                             </div>
                                             <div class="modal-footer justify-content-center">
-                                                <button type="submit" class="btn btn-primary m-0"><span>Save Profile</span></button>
+                                                <button type="submit" class="btn btn-primary m-0"><span>Guardar perfil</span></button>
                                             </div>
                                         </div>
                                     </div>
@@ -1043,7 +1053,7 @@
                                 <div class="profile-login-section">
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Email address</h6>
+                                            <h6 class="mb-0 body-font fw-500">Dirección de correo electrónico</h6>
                                         </div>
                                         <div class="right">
                                             <p>infoexample.com</p>
@@ -1051,7 +1061,7 @@
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Phone number</h6>
+                                            <h6 class="mb-0 body-font fw-500">Número de teléfono</h6>
                                         </div>
                                         <div class="right">
                                             <p>(+40) 123 456 7890</p>
@@ -1059,7 +1069,7 @@
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Password</h6>
+                                            <h6 class="mb-0 body-font fw-500">Contraseña</h6>
                                         </div>
                                         <div class="right">
                                             <p>xxxxxxx</p>
@@ -1118,7 +1128,7 @@
                         <div class="tab-pane fade h-100" id="security">
                             <div class="settings-card mt-0 h-100">                                   
                                 <div class="dashboard-title d-flex-justify-center justify-content-between mb-4">
-                                    <h2 class="mb-0">Settings</h2>                                         
+                                    <h2 class="mb-0">Ajustes</h2>                                         
                                 </div>
 
                                 <div class="settings-book-section dashboard-detail">
@@ -1152,41 +1162,41 @@
                                         </div>
                                         <div class="col-12 col-sm-12 col-md-6">
                                             <div class="account-setting">
-                                                <h4 class="mb-3">Deactivate account</h4>
+                                                <h4 class="mb-3">Desactivar cuenta</h4>
                                                 <div class="account-detail form-group">
                                                     <div class="customRadio clearfix mb-2">
                                                         <input name="DeactivateAC" id="d1" value="1" checked="checked" type="radio" />
-                                                        <label for="d1" class="mb-0">I have a privacy concern</label>
+                                                        <label for="d1" class="mb-0">Tengo una preocupación sobre la privacidad</label>
                                                     </div>
                                                     <div class="customRadio clearfix mb-2">
                                                         <input name="DeactivateAC" id="d2" value="2" type="radio" />
-                                                        <label for="d2" class="mb-0">This is temporary</label>
+                                                        <label for="d2" class="mb-0">Esto es temporal</label>
                                                     </div>
                                                     <div class="customRadio clearfix mb-2">
                                                         <input name="DeactivateAC" id="d3" value="3" type="radio" />
-                                                        <label for="d3" class="mb-0">Other</label>
+                                                        <label for="d3" class="mb-0">Otra</label>
                                                     </div>
-                                                    <button type="button" class="btn btn-sm my-2">Deactivate Account</button>
+                                                    <button type="button" class="btn btn-sm my-2">Desactivar cuenta</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="account-setting">
-                                        <h4 class="mb-3">Delete account</h4>
+                                        <h4 class="mb-3">Eliminar cuenta</h4>
                                         <div class="account-detail form-group">
                                             <div class="customRadio clearfix mb-2">
                                                 <input name="DeleteAC" id="da1" value="1" checked="checked" type="radio" />
-                                                <label for="da1" class="mb-0">No longer usable</label>
+                                                <label for="da1" class="mb-0">Ya no se puede utilizar</label>
                                             </div>
                                             <div class="customRadio clearfix mb-2">
                                                 <input name="DeleteAC" id="da2" value="2" type="radio" />
-                                                <label for="da2" class="mb-0">Want to switch on other account</label>
+                                                <label for="da2" class="mb-0">¿Quieres activar otra cuenta?</label>
                                             </div>
                                             <div class="customRadio clearfix mb-2">
                                                 <input name="DeleteAC" id="da3" value="3" type="radio" />
-                                                <label for="da3" class="mb-0">Other</label>
+                                                <label for="da3" class="mb-0">Otra</label>
                                             </div>
-                                            <button type="button" class="btn btn-sm my-2">Delete Account</button>
+                                            <button type="button" class="btn btn-sm my-2">Eliminar cuenta</button>
                                         </div>
                                     </div>                                              
                                 </div>                                     

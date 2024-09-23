@@ -98,6 +98,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
       this.sliders = resp.sliders;
       this.categories = resp.categories;
+      
+
       this.besProducts = resp.bes_products;
       this.ourProducts = resp.our_products;
       this.FlashSale = resp.FlashSale;
@@ -303,8 +305,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   selectedVariedad(variedad:any, index: number) {
     this.variedad_selected = variedad;
-    console.log("this.variedad_selected: ", this.variedad_selected);
-    
     this.activeIndex = index;
   }
 
@@ -453,7 +453,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   // open model
   openModal(besProduct:any, FlashSale:any=null) {
     this.product_selected = besProduct;
-    console.log("product_selected: ", this.product_selected);
     setTimeout(() => {
       this.filterUniqueGalerias(this.product_selected);
       // Filtrar tallas duplicadas y eliminar tallas no disponibles
@@ -524,15 +523,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.errorMessage = resp.message_text;
         return;
       } else {
-
-        console.log("ADD WISHLIST: ----- ", resp);
         this._wishlistService.changeWishlist(resp.wishlist);
         //this.minicartService.openMinicart();
         // Aqui puedes decidir, si redrigir a la pangila de favoritos.
         alertSuccess( resp.message_text );
       }
     }, error => {
-      console.log("__ Debbug > Error Register Wishlist 431: ", error);
       if (error.error.message == "EL TOKEN NO ES VALIDO") {
         this._wishlistService._authService.logout();
       }

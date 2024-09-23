@@ -12,14 +12,18 @@
     </div>
     
     <!-- Body Container -->
-    <div id="page-content"  [class.d-none]="loading"> 
+    <div id="page-content"> 
+
+        
+
+
         <!--Page Header-->
         <div class="page-header text-center">
             <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12  d-flex justify-content-between align-items-center">
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Lujandev.com</a><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>{{ product_selected.title }}</span></div>
+                        <div class="breadcrumbs"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>{{ product_selected.title }}</span></div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -28,7 +32,7 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container" >     
+        <div class="container" [class.d-none]="loading">     
             <!--Product Content-->
             <div class="product-single">
                 <div class="row">
@@ -246,14 +250,14 @@
             <!--Product Content-->
 
             <!--Product Nav-->
-            <a href="product-layout7.html" class="product-nav prev-pro clr-none d-flex-center justify-content-between" title="Previous Product">
+            <a href="product-layout7.html" class="product-nav prev-pro clr-none d-flex-center justify-content-between d-none" title="Previous Product">
                 <span class="details">
                     <span class="name">Oxford Cuban Shirt</span>
                     <span class="price">$99.00</span>
                 </span>
                 <span class="img"><img src="assets/images/products/120x170.jpg" alt="product" width="120" height="170" /></span>
             </a>
-            <a href="product-layout2.html" class="product-nav next-pro clr-none d-flex-center justify-content-between" title="Next Product">
+            <a href="product-layout2.html" class="product-nav next-pro clr-none d-flex-center justify-content-between d-none" title="Next Product">
                 <span class="img"><img src="assets/images/products/120x170.jpg" alt="product" width="120" height="170" /></span>
                 <span class="details">
                     <span class="name">Cuff Beanie Cap</span>

@@ -67,7 +67,7 @@
                                         <h2 class="ss-mega-title">Vístete como <br>piensas: con lógica</h2>
                                         <p class="ss-sub-title xs-hide">Ropa diseñada para los que crean el futuro, con el máximo confort y personalidad</p>
                                         <div class="ss-btnWrap">
-                                            <a class="btn btn-secondary" href="shop-grid-view.html" onclick="return false;">Hombres</a>
+                                            <a class="btn btn-secondary" href="shop-grid-view.html" onclick="return false;" [routerLink]="['/filter-products']"  >Descúbrelas ahora!</a>
                                             <a class="btn btn-primary d-none" href="shop-grid-view.html" onclick="return false;">Mujeres</a>
                                         </div>
                                     </div>
@@ -89,7 +89,7 @@
                                         <h2 class="ss-mega-title">Sudaderas tech <br>Comodidad en cada línea</h2>
                                         <p class="ss-sub-title xs-hide">La mejor compañía para tus largas sesiones de programación</p>
                                         <div class="ss-btnWrap d-flex-justify-start">
-                                            <a class="btn btn-primary" href="shop-grid-view.html">Descúbrelas ahora!</a>
+                                            <a class="btn btn-primary" href="shop-grid-view.html" onclick="return false;" [routerLink]="['/filter-products']">Descúbrelas ahora!</a>
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +97,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="slide">
+                <!-- <div class="slide d-none">
                     <div class="slideshow-wrap">
                         <picture>
                             <source media="(max-width:767px)" srcset="assets/images/slideshow/demo1-banner3-mbl.jpg" width="1150" height="800">
@@ -117,7 +117,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </section>
         <!--End Home Slideshow-->
@@ -241,7 +241,7 @@
                                 </div>
                                 <div class="details mt-3 text-center">
                                     <h4 class="category-title mb-0">{{ categorie.title }}</h4>
-                                    <p class="counts">20 Productos</p>
+                                    <p class="counts d-none">20 Productos</p>
                                 </div>
                             </a>
                         </div>

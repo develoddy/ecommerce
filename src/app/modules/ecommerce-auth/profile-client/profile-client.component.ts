@@ -46,6 +46,8 @@ export class ProfileClientComponent implements OnInit {
   sale_detail_selected:any=null;
   user:any;
 
+  loading: boolean = false;
+
 
   CURRENT_USER_AUTHENTICATED:any=null;
   constructor(
@@ -60,6 +62,11 @@ export class ProfileClientComponent implements OnInit {
     //     this.user = user._id;
     //   }
     // });
+
+    // Suscribirse al observable para saber cuando mostrar u ocultar el loading
+    this._ecommerceAuthService.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
 
     this.verifyAuthenticatedUser();
 
