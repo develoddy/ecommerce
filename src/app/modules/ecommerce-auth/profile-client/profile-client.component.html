@@ -36,7 +36,7 @@
                     <div class="dashboard-sidebar bg-block">
                         <div class="profile-top text-center mb-4 px-3">
                             <div class="profile-image mb-3">
-                                <img class="rounded-circle blur-up lazyload" data-src="assets/images/users/user-img3.jpg" src="assets/images/users/user-img3.jpg" alt="user" width="130" />
+                                <img class="rounded-circle blur-up lazyload" data-src="assets/images/users/profile.png" src="assets/images/users/profile.png" alt="user" width="130" />
                             </div>
                             <div class="profile-detail">
                                 <h3 class="mb-1">{{ name_c }} {{surname_c}}</h3>
@@ -48,12 +48,12 @@
                                 <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#info" class="nav-link active">Información de la cuenta</a></li>
                                 <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#address" class="nav-link">Libreta de direcciones</a></li>
                                 <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#orders" class="nav-link">Mis pedidos</a></li>
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#orderstracking" class="nav-link">Seguimiento de pedidos</a></li>
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#wishlist" class="nav-link">Mi lista de deseos</a></li>
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#payment" class="nav-link">Tarjetas guardadas</a></li>
+                                <li class="nav-item d-none"><a href="#" data-bs-toggle="tab" data-bs-target="#orderstracking" class="nav-link">Seguimiento de pedidos</a></li>
+                                <li class="nav-item d-none"><a href="#" data-bs-toggle="tab" data-bs-target="#wishlist" class="nav-link">Mi lista de deseos</a></li>
+                                <li class="nav-item d-none"><a href="#" data-bs-toggle="tab" data-bs-target="#payment" class="nav-link">Tarjetas guardadas</a></li>
                                 <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#profile" class="nav-link">Perfil</a></li>
-                                <li class="nav-item"><a href="#" data-bs-toggle="tab" data-bs-target="#security" class="nav-link">Configuración</a></li>
-                                <li class="nav-item"><a href="login.html" onclick="return false;" (click)="logout()" class="nav-link">Cerrar sesión</a></li>
+                                <li class="nav-item d-none"><a href="#" data-bs-toggle="tab" data-bs-target="#security" class="nav-link">Configuración</a></li>
+                                <li class="nav-item d-none"><a href="login.html" onclick="return false;" (click)="logout()" class="nav-link">Cerrar sesión</a></li>
                             </ul>
                         </div>
                     </div>
@@ -101,18 +101,18 @@
 
                                 <div class="account-box">
                                     <h3 class="mb-3">Información de la cuenta</h3>
-                                    <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
+                                    <div class="row row-cols-lg-1 row-cols-md-2 row-cols-sm-1 row-cols-1">
                                         <div class="box-info mb-4">
                                             <div class="box-title d-flex-center">
-                                                <h4>Información del contacto</h4> <a href="#" class="btn-link ms-auto">Editar</a>
+                                                <h4>Información del contacto</h4> <a href="#" class="btn-link ms-auto d-none">Editar</a>
                                             </div>
                                             <div class="box-content mt-3">
                                                 <h5>{{ name_c }} {{surname_c}}</h5>
                                                 <p class="mb-2">{{email_c}}</p>
-                                                <p><a href="#" onclick="return false;" onclick="return false;" class="btn-link">Cambiar la contraseña</a></p>
+                                                <p class="d-none"><a href="#" onclick="return false;" onclick="return false;" class="btn-link">Cambiar la contraseña</a></p>
                                             </div>
                                         </div>
-                                        <div class="box-info mb-4">
+                                        <div class="box-info mb-4 d-none">
                                             <div class="box-title d-flex-center">
                                                 <h4>Boletines informativos</h4> <a href="#" onclick="return false;" class="btn-link ms-auto">Editar</a>
                                             </div>
@@ -123,14 +123,14 @@
                                     </div>
                                     <div class="box-info mb-4">
                                         <div class="box-title d-flex-center">
-                                            <h4>Libreta de direcciones</h4> <a href="#" onclick="return false;" class="btn-link ms-auto">Editar</a>
+                                            <h4>Libreta de direcciones</h4> <a href="#" onclick="return false;" class="btn-link ms-auto d-none">Editar</a>
                                         </div>
                                         <div class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
                                             <ng-container *ngFor="let list_address of listAddressClients; let i=index">
                                                 <div class="box-content mt-3">
                                                     <h5>Dirección de facturación predeterminada</h5>
                                                     <address class="mb-2">{{ list_address.address }}, <br/>{{ list_address.ciudad }}, <br/></address>
-                                                    <p><a href="#" onclick="return false;" class="btn-link">Editar dirección</a></p>
+                                                    <p class="d-none"><a href="#" onclick="return false;" class="btn-link">Editar dirección</a></p>
                                                 </div>
                                             </ng-container>
                                             <!-- 
@@ -153,251 +153,267 @@
 
                         <!-- Address Book -->
                         <div class="tab-pane fade h-100" id="address">
-                            <div class="address-card mt-0 h-100">                                   
-                                <div class="top-sec d-flex-justify-center justify-content-between mb-4">
-                                    <h2 class="mb-0">Libreta de direcciones</h2>
-                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addNewModal"><i class="icon anm anm-plus-r me-1"></i> Agregar nuevo</button>
-                                    <!-- New Address Modal -->
-                                    <div class="modal fade" id="addNewModal" tabindex="-1" aria-labelledby="addNewModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h2 class="modal-title" id="addNewModalLabel">Detalles de la dirección</h2>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="address-card mt-0 h-100">
+                                <ng-container *ngIf="listAddressClients.length == 0; else allShowListAddressClients">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <div class="p-2 text-center">
+                                            <div class="inner mb-3">
+                                                <div class="bradcrumb-thumb">
+                                                    <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
                                                 </div>
-                                                <div class="modal-body">
-                                                    <form class="add-address-from" method="post" action="#">  
-                                                        <div class="form-row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
-                                                            <div class="form-group">
-                                                                <label for="new-name" class="d-none">Name</label>
-                                                                <input name="name" placeholder="Name" value="" id="new-name" type="text" />
+                                            </div>
+                                            <h5 class="header-title mb-0">Libreta de direcciones</h5>
+                                            <small>De momento ninguna dirección registrada</small>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-template #allShowListAddressClients>
+                                    <div class="top-sec d-flex-justify-center justify-content-between mb-4">
+                                        <h2 class="mb-0">Libreta de direcciones</h2>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addNewModal"><i class="icon anm anm-plus-r me-1"></i> Agregar nuevo</button>
+                                        <!-- New Address Modal -->
+                                        <div class="modal fade" id="addNewModal" tabindex="-1" aria-labelledby="addNewModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 class="modal-title text-uppercase ls-2" id="addNewModalLabel">Detalles de la dirección</h2>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form class="add-address-from" method="post" action="#">  
+                                                            <div class="form-row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
+                                                                <div class="form-group">
+                                                                    <label for="new-name">Nombre completo <span class="required">*</span></label>
+                                                                    <input name="name" placeholder="Nombre" value="" id="new-name" type="text" />
+                                                                </div>
+                                                                <div class="form-group d-none">
+                                                                    <label for="new-type" class="d-none">Seleccione el tipo de dirección <span class="required">*</span></label>
+                                                                    <select name="new_type_id" id="new-type">
+                                                                        <option value="">Seleccionar</option>
+                                                                        <option value="home">Home</option>
+                                                                        <option value="office">Office</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="new-email" class="">E-Mail <span class="required">*</span></label>
+                                                                    <input name="email" placeholder="Introduzca su E-Mail" value="" id="new-email" type="text" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="new-apartment">Apartamento (opcional)</label>
+                                                                    <input name="apartment" placeholder="Apartamento, bloque, piso, código de portal, etc." value="" id="new-apartment" type="text" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="new-street-address">Dirección <span class="required">*</span></label>
+                                                                    <input name="street_address" placeholder="Dirección de la calle" value="" id="new-street-address" type="text" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="new-city">Ciudad <span class="required">*</span></label>
+                                                                    <input name="city" placeholder="Introduzca la ciudad" value="" id="new-city" type="text" />
+                                                                </div>  
+                                                                <div class="form-group">
+                                                                    <label for="new-postcode">Código postal <span class="required">*</span></label>
+                                                                    <input name="postcode" placeholder="Introduzca su código postal. P.ej. 28701" value="" id="new-postcode" type="text" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="new-telephone">Teléfono <span class="required">*</span></label>
+                                                                    <input name="telephone" placeholder="Introduzca su número de telefono" value="" id="new-telephone" type="tel">
+                                                                </div>
+                                                                <div class="form-group mb-md-0 d-none">
+                                                                    <label for="new-zone" >Región / Estado <span class="required">*</span></label>
+                                                                    <select name="new_zone_id" id="new-zone">
+                                                                        <option value="">Seleccione región/estado</option>
+                                                                        <option value="AL">Alabama</option>
+                                                                        <option value="AK">Alaska</option>
+                                                                        <option value="AZ">Arizona</option>
+                                                                        <option value="AR">Arkansas</option>
+                                                                        <option value="CA">California</option>
+                                                                        <option value="CO">Colorado</option>
+                                                                        <option value="CT">Connecticut</option>
+                                                                        <option value="DE">Delaware</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group mb-0">
+                                                                    <label for="new-country">País <span class="required">*</span></label>
+                                                                    <select name="new_country_id" id="new-country">
+                                                                        <option value="">Seleccione país</option>
+                                                                        <option value="AI" label="Anguilla">Anguilla</option>
+                                                                        <option value="AG" label="Antigua and Barbuda">Antigua and Barbuda</option>
+                                                                        <option value="AR" label="Argentina">Argentina</option>
+                                                                        <option value="AW" label="Aruba">Aruba</option>
+                                                                        <option value="BS" label="Bahamas">Bahamas</option>
+                                                                        <option value="BB" label="Barbados">Barbados</option>
+                                                                        <option value="BZ" label="Belize">Belize</option>
+                                                                        <option value="BM" label="Bermuda">Bermuda</option>
+                                                                        <option value="BO" label="Bolivia">Bolivia</option>
+                                                                        <option value="BR" label="Brazil">Brazil</option>
+                                                                        <option value="ES" label="España">España</option>
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label for="new-type" class="d-none">Address type <span class="required">*</span></label>
-                                                                <select name="new_type_id" id="new-type">
-                                                                    <option value="">Select Address type</option>
-                                                                    <option value="home">Home</option>
-                                                                    <option value="office">Office</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="new-company" class="d-none">Company</label>
-                                                                <input name="company" placeholder="Company" value="" id="new-company" type="text" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="new-apartment" class="d-none">Apartment <span class="required">*</span></label>
-                                                                <input name="apartment" placeholder="Apartment" value="" id="new-apartment" type="text" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="new-street-address" class="d-none">Street Address <span class="required">*</span></label>
-                                                                <input name="street_address" placeholder="Street Address" value="" id="new-street-address" type="text" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="new-city" class="d-none">City <span class="required">*</span></label>
-                                                                <input name="city" placeholder="City" value="" id="new-city" type="text" />
-                                                            </div>  
-                                                            <div class="form-group">
-                                                                <label for="new-postcode" class="d-none">Post Code <span class="required">*</span></label>
-                                                                <input name="postcode" placeholder="Post Code" value="" id="new-postcode" type="text" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="new-telephone" class="d-none">Telephone <span class="required">*</span></label>
-                                                                <input name="telephone" placeholder="Telephone" value="" id="new-telephone" type="tel">
-                                                            </div>
-                                                            <div class="form-group mb-md-0">
-                                                                <label for="new-zone" class="d-none">Region / State <span class="required">*</span></label>
-                                                                <select name="new_zone_id" id="new-zone">
-                                                                    <option value="">Select Region / State</option>
-                                                                    <option value="AL">Alabama</option>
-                                                                    <option value="AK">Alaska</option>
-                                                                    <option value="AZ">Arizona</option>
-                                                                    <option value="AR">Arkansas</option>
-                                                                    <option value="CA">California</option>
-                                                                    <option value="CO">Colorado</option>
-                                                                    <option value="CT">Connecticut</option>
-                                                                    <option value="DE">Delaware</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group mb-0">
-                                                                <label for="new-country" class="d-none">Country <span class="required">*</span></label>
-                                                                <select name="new_country_id" id="new-country">
-                                                                    <option value="">Select Country</option>
-                                                                    <option value="AI" label="Anguilla">Anguilla</option>
-                                                                    <option value="AG" label="Antigua and Barbuda">Antigua and Barbuda</option>
-                                                                    <option value="AR" label="Argentina">Argentina</option>
-                                                                    <option value="AW" label="Aruba">Aruba</option>
-                                                                    <option value="BS" label="Bahamas">Bahamas</option>
-                                                                    <option value="BB" label="Barbados">Barbados</option>
-                                                                    <option value="BZ" label="Belize">Belize</option>
-                                                                    <option value="BM" label="Bermuda">Bermuda</option>
-                                                                    <option value="BO" label="Bolivia">Bolivia</option>
-                                                                    <option value="BR" label="Brazil">Brazil</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer justify-content-center">
-                                                    <button type="submit" class="btn btn-primary m-0"><span>Agregar dirección</span></button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center py-3">
+                                                        <button type="submit" class="btn btn-primary m-0"><span>Agregar dirección</span></button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- End New Address Modal -->
                                     </div>
-                                    <!-- End New Address Modal -->
-                                </div>
-                                <div class="address-book-section">
-                                    <div class="row g-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1">
-                                        <ng-container *ngFor="let list_address of listAddressClients; let i=index">
-                                            <div class="address-select-box active">
+                                    <div class="address-book-section">
+                                        <div class="row g-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1">
+                                            <ng-container *ngFor="let list_address of listAddressClients; let i=index">
+                                                <div class="address-select-box active">
+                                                    <div class="address-box bg-block">
+                                                        <div class="top d-flex-justify-center justify-content-between mb-3">
+                                                            <h5 class="m-0">{{ list_address.name +' '+ list_address.surname }}</h5>
+                                                            <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Home</span></span>
+                                                        </div>
+                                                        <div class="middle">
+                                                            <div class="address mb-2 text-muted">
+                                                                <address class="m-0">{{ list_address.address }}, <br/>{{ list_address.ciudad }} City name, <br/></address>
+                                                            </div>
+                                                            <div class="number">
+                                                                <p>Móvil: <a href="tel:401234567890">(+34) {{ list_address.telefono }}</a></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="bottom d-flex-justify-center justify-content-between">
+                                                            <button type="button" class="bottom-btn btn btn-gray btn-sm" data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button>
+                                                            <button type="button" class="bottom-btn btn btn-gray btn-sm">Eliminar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                            <div class="address-select-box active d-none">
                                                 <div class="address-box bg-block">
                                                     <div class="top d-flex-justify-center justify-content-between mb-3">
-                                                        <h5 class="m-0">{{ list_address.name +' '+ list_address.surname }}</h5>
+                                                        <h5 class="m-0">Hema Jecno</h5>
                                                         <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Home</span></span>
                                                     </div>
                                                     <div class="middle">
                                                         <div class="address mb-2 text-muted">
-                                                            <address class="m-0">{{ list_address.address }}, <br/>{{ list_address.ciudad }} City name, <br/></address>
+                                                            <address class="m-0">123, The Company Name Inc, <br/>Street Road City name, <br/>State name and Zip code.</address>
                                                         </div>
                                                         <div class="number">
-                                                            <p>Móvil: <a href="tel:401234567890">(+34) {{ list_address.telefono }}</a></p>
+                                                            <p>Mobile: <a href="tel:401234567890">(+40) 123 456 7890</a></p>
                                                         </div>
                                                     </div>
                                                     <div class="bottom d-flex-justify-center justify-content-between">
-                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm" data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button>
-                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm">Eliminar</button>
+                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm" data-bs-toggle="modal" data-bs-target="#addEditModal">Edit</button>
+                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm">Remove</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </ng-container>
-                                        <div class="address-select-box active d-none">
-                                            <div class="address-box bg-block">
-                                                <div class="top d-flex-justify-center justify-content-between mb-3">
-                                                    <h5 class="m-0">Hema Jecno</h5>
-                                                    <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Home</span></span>
-                                                </div>
-                                                <div class="middle">
-                                                    <div class="address mb-2 text-muted">
-                                                        <address class="m-0">123, The Company Name Inc, <br/>Street Road City name, <br/>State name and Zip code.</address>
+                                            <div class="address-select-box d-none">
+                                                <div class="address-box bg-block">
+                                                    <div class="top d-flex-justify-center justify-content-between mb-3">
+                                                        <h5 class="m-0">Hema Jecno</h5>
+                                                        <span class="product-labels start-auto end-0"><span class="lbl pr-label4">Office</span></span>
                                                     </div>
-                                                    <div class="number">
-                                                        <p>Mobile: <a href="tel:401234567890">(+40) 123 456 7890</a></p>
-                                                    </div>
-                                                </div>
-                                                <div class="bottom d-flex-justify-center justify-content-between">
-                                                    <button type="button" class="bottom-btn btn btn-gray btn-sm" data-bs-toggle="modal" data-bs-target="#addEditModal">Edit</button>
-                                                    <button type="button" class="bottom-btn btn btn-gray btn-sm">Remove</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="address-select-box d-none">
-                                            <div class="address-box bg-block">
-                                                <div class="top d-flex-justify-center justify-content-between mb-3">
-                                                    <h5 class="m-0">Hema Jecno</h5>
-                                                    <span class="product-labels start-auto end-0"><span class="lbl pr-label4">Office</span></span>
-                                                </div>
-                                                <div class="middle">
-                                                    <div class="address mb-2 text-muted">
-                                                        <address class="m-0">123, The Company Name Inc, <br/>Street Road City name, <br/>State name and Zip code.</address>
-                                                    </div>
-                                                    <div class="number">
-                                                        <p>Mobile: <a href="tel:401234567890">(+40) 123 456 7890</a></p>
-                                                    </div>
-                                                </div>
-                                                <div class="bottom d-flex-justify-center justify-content-between">
-                                                    <button type="button" class="bottom-btn btn btn-gray btn-sm" data-bs-toggle="modal" data-bs-target="#addEditModal">Edit</button>
-                                                    <button type="button" class="bottom-btn btn btn-gray btn-sm">Remove</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Edit Address Modal -->
-                                    <div class="modal fade" id="addEditModal" tabindex="-1" aria-labelledby="addEditModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h2 class="modal-title" id="addEditModalLabel">Edit Address details</h2>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form class="edit-address-from" method="post" action="#">                                                               
-                                                        <div class="form-row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
-                                                            <div class="form-group">
-                                                                <label for="edit-name" class="d-none">Name</label>
-                                                                <input name="name" placeholder="Name" value="" id="edit-name" type="text" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="edit-type" class="d-none">Address type <span class="required">*</span></label>
-                                                                <select name="edit_type_id" id="edit-type">
-                                                                    <option value="">Select Address type</option>
-                                                                    <option value="home">Home</option>
-                                                                    <option value="office">Office</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="edit-company" class="d-none">Company</label>
-                                                                <input name="company" placeholder="Company" value="" id="edit-company" type="text" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="edit-apartment" class="d-none">Apartment <span class="required">*</span></label>
-                                                                <input name="apartment" placeholder="Apartment" value="" id="edit-apartment" type="text" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="edit-street-address" class="d-none">Street Address <span class="required">*</span></label>
-                                                                <input name="street_address" placeholder="Street Address" value="" id="edit-street-address" type="text" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="edit-city" class="d-none">City <span class="required">*</span></label>
-                                                                <input name="city" placeholder="City" value="" id="edit-city" type="text" />
-                                                            </div> 
-                                                            <div class="form-group">
-                                                                <label for="edit-postcode" class="d-none">Post Code <span class="required">*</span></label>
-                                                                <input name="postcode" placeholder="Post Code" value="" id="edit-postcode" type="text" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="edit-telephone" class="d-none">Telephone <span class="required">*</span></label>
-                                                                <input name="telephone" placeholder="Telephone" value="" id="edit-telephone" type="tel">
-                                                            </div>
-                                                            <div class="form-group mb-md-0">
-                                                                <label for="edit-zone" class="d-none">Region / State <span class="required">*</span></label>
-                                                                <select name="edit_zone_id" id="edit-zone">
-                                                                    <option value="">Select Region / State</option>
-                                                                    <option value="AL">Alabama</option>
-                                                                    <option value="AK">Alaska</option>
-                                                                    <option value="AZ">Arizona</option>
-                                                                    <option value="AR">Arkansas</option>
-                                                                    <option value="CA">California</option>
-                                                                    <option value="CO">Colorado</option>
-                                                                    <option value="CT">Connecticut</option>
-                                                                    <option value="DE">Delaware</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group mb-0">
-                                                                <label for="edit-country" class="d-none">Country <span class="required">*</span></label>
-                                                                <select name="edit_country_id" id="edit-country">
-                                                                    <option value="">Select Country</option>
-                                                                    <option value="AI" label="Anguilla">Anguilla</option>
-                                                                    <option value="AG" label="Antigua and Barbuda">Antigua and Barbuda</option>
-                                                                    <option value="AR" label="Argentina">Argentina</option>
-                                                                    <option value="AW" label="Aruba">Aruba</option>
-                                                                    <option value="BS" label="Bahamas">Bahamas</option>
-                                                                    <option value="BB" label="Barbados">Barbados</option>
-                                                                    <option value="BZ" label="Belize">Belize</option>
-                                                                    <option value="BM" label="Bermuda">Bermuda</option>
-                                                                    <option value="BO" label="Bolivia">Bolivia</option>
-                                                                    <option value="BR" label="Brazil">Brazil</option>
-                                                                </select>
-                                                            </div>
+                                                    <div class="middle">
+                                                        <div class="address mb-2 text-muted">
+                                                            <address class="m-0">123, The Company Name Inc, <br/>Street Road City name, <br/>State name and Zip code.</address>
                                                         </div>
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer justify-content-center">
-                                                    <button type="submit" class="btn btn-primary m-0"><span>Save Address</span></button>
+                                                        <div class="number">
+                                                            <p>Mobile: <a href="tel:401234567890">(+40) 123 456 7890</a></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="bottom d-flex-justify-center justify-content-between">
+                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm" data-bs-toggle="modal" data-bs-target="#addEditModal">Edit</button>
+                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm">Remove</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- End Edit Address Modal -->
-                                </div>                                     
+                                        <!-- Edit Address Modal -->
+                                        <div class="modal fade" id="addEditModal" tabindex="-1" aria-labelledby="addEditModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h2 class="modal-title" id="addEditModalLabel">Edit Address details</h2>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form class="edit-address-from" method="post" action="#">                                                               
+                                                            <div class="form-row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
+                                                                <div class="form-group">
+                                                                    <label for="edit-name" class="d-none">Name</label>
+                                                                    <input name="name" placeholder="Name" value="" id="edit-name" type="text" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="edit-type" class="d-none">Address type <span class="required">*</span></label>
+                                                                    <select name="edit_type_id" id="edit-type">
+                                                                        <option value="">Select Address type</option>
+                                                                        <option value="home">Home</option>
+                                                                        <option value="office">Office</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="edit-company" class="d-none">Company</label>
+                                                                    <input name="company" placeholder="Company" value="" id="edit-company" type="text" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="edit-apartment" class="d-none">Apartment <span class="required">*</span></label>
+                                                                    <input name="apartment" placeholder="Apartment" value="" id="edit-apartment" type="text" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="edit-street-address" class="d-none">Street Address <span class="required">*</span></label>
+                                                                    <input name="street_address" placeholder="Street Address" value="" id="edit-street-address" type="text" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="edit-city" class="d-none">City <span class="required">*</span></label>
+                                                                    <input name="city" placeholder="City" value="" id="edit-city" type="text" />
+                                                                </div> 
+                                                                <div class="form-group">
+                                                                    <label for="edit-postcode" class="d-none">Post Code <span class="required">*</span></label>
+                                                                    <input name="postcode" placeholder="Post Code" value="" id="edit-postcode" type="text" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="edit-telephone" class="d-none">Telephone <span class="required">*</span></label>
+                                                                    <input name="telephone" placeholder="Telephone" value="" id="edit-telephone" type="tel">
+                                                                </div>
+                                                                <div class="form-group mb-md-0">
+                                                                    <label for="edit-zone" class="d-none">Region / State <span class="required">*</span></label>
+                                                                    <select name="edit_zone_id" id="edit-zone">
+                                                                        <option value="">Select Region / State</option>
+                                                                        <option value="AL">Alabama</option>
+                                                                        <option value="AK">Alaska</option>
+                                                                        <option value="AZ">Arizona</option>
+                                                                        <option value="AR">Arkansas</option>
+                                                                        <option value="CA">California</option>
+                                                                        <option value="CO">Colorado</option>
+                                                                        <option value="CT">Connecticut</option>
+                                                                        <option value="DE">Delaware</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group mb-0">
+                                                                    <label for="edit-country" class="d-none">Country <span class="required">*</span></label>
+                                                                    <select name="edit_country_id" id="edit-country">
+                                                                        <option value="">Select Country</option>
+                                                                        <option value="AI" label="Anguilla">Anguilla</option>
+                                                                        <option value="AG" label="Antigua and Barbuda">Antigua and Barbuda</option>
+                                                                        <option value="AR" label="Argentina">Argentina</option>
+                                                                        <option value="AW" label="Aruba">Aruba</option>
+                                                                        <option value="BS" label="Bahamas">Bahamas</option>
+                                                                        <option value="BB" label="Barbados">Barbados</option>
+                                                                        <option value="BZ" label="Belize">Belize</option>
+                                                                        <option value="BM" label="Bermuda">Bermuda</option>
+                                                                        <option value="BO" label="Bolivia">Bolivia</option>
+                                                                        <option value="BR" label="Brazil">Brazil</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center">
+                                                        <button type="submit" class="btn btn-primary m-0"><span>Save Address</span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End Edit Address Modal -->
+                                    </div>  
+                                </ng-template>
                             </div>
                         </div>
                         <!-- End Address Book -->
@@ -405,78 +421,92 @@
                         <!-- My Orders -->
                         <div class="tab-pane fade h-100" id="orders">
                             <div class="orders-card mt-0 h-100">    
-                                <div class="top-sec d-flex-justify-center justify-content-between mb-4">
-                                    <h2 class="mb-0">My Orders</h2>
-                                </div>
-
-                                <div class="table-bottom-brd table-responsive">
-                                    <table class="table align-middle text-center order-table">
-                                        <thead>
-                                            <tr class="table-head text-nowrap">
-                                                <th scope="col">imagen</th>
-                                                <th scope="col">ID del pedido</th>
-                                                <th scope="col">Detalles del producto</th>
-                                                <th scope="col">Precio</th>
-                                                <th scope="col">Estado</th>
-                                                <th scope="col">Ver</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <ng-container *ngFor="let order of sale_details">
-                                                <tr>
-                                                    <td><img class="blur-up lazyload" [attr.data-src]="order.product.imagen" [src]="order.product.imagen" width="50" alt="product" title="product" /></td>
-                                                    <td><span class="id">#{{ order._id }}</span></td>
-                                                    <td><span class="name">{{ order.product.title }}</span></td>
-                                                    <td><span class="price fw-500">{{ euro }}{{ order.total }}</span></td>
-                                                    <!-- <td><span class="badge rounded-pill bg-success custom-badge">Enviado</span></td> -->
-                                                    <!-- <td><span class="badge rounded-pill bg-danger custom-badge">Pendiente</span></td> -->
-                                                    <td><span class="badge rounded-pill bg-dark custom-badge">Processing</span></td>
-                                                    <!-- <td><span class="badge rounded-pill bg-secondary custom-badge">Cancelada</span></td> -->
-                                                    <td><a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', order.product.slug]" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
-                                                    <!-- <td><a href="product-layout1.html" onclick="return false" (click)="viewDetailSale(order)" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td> -->
+                                <ng-container *ngIf="sale_details.length == 0; else allShowOrders">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <div class="p-2 text-center">
+                                            <div class="inner mb-3">
+                                                <div class="bradcrumb-thumb">
+                                                    <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
+                                                </div>
+                                            </div>
+                                            <h5 class="header-title mb-0 text-uppercase ls-2">Mis pedidos</h5>
+                                            <small>De momento no tienes pedidos</small>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-template #allShowOrders>
+                                    <div class="top-sec d-flex-justify-center justify-content-between mb-4">
+                                        <h2 class="mb-0">Mis pedidos</h2>
+                                    </div>
+                                    <div class="table-bottom-brd table-responsive">
+                                        <table class="table align-middle text-center order-table">
+                                            <thead>
+                                                <tr class="table-head text-nowrap">
+                                                    <th scope="col">imagen</th>
+                                                    <th scope="col">ID del pedido</th>
+                                                    <th scope="col">Detalles del producto</th>
+                                                    <th scope="col">Precio</th>
+                                                    <th scope="col">Estado</th>
+                                                    <th scope="col">Ver</th>
                                                 </tr>
-                                            </ng-container>
-                                            <tr class="d-none">
-                                                <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
-                                                <td><span class="id">#12301</span></td>
-                                                <td><span class="name">Oxford Cuban Shirt</span></td>
-                                                <td><span class="price fw-500">$99.00</span></td>
-                                                <td><span class="badge rounded-pill bg-success custom-badge">Shipped</span></td>
-                                                <td><a href="product-layout1.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
-                                            </tr>
-                                            <tr class="d-none">
-                                                <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
-                                                <td><span class="id">#12302</span></td>
-                                                <td><span class="name">Cuff Beanie Cap</span></td>
-                                                <td><span class="price fw-500">$128.00</span></td>
-                                                <td><span class="badge rounded-pill bg-danger custom-badge">Pending</span></td>
-                                                <td><a href="product-layout2.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
-                                            </tr>
-                                            <tr class="d-none">
-                                                <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
-                                                <td><span class="id">#12303</span></td>
-                                                <td><span class="name">Flannel Collar Shirt</span></td>
-                                                <td><span class="price fw-500">$114.00</span></td>
-                                                <td><span class="badge rounded-pill bg-dark custom-badge">Processing</span></td>
-                                                <td><a href="product-layout3.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
-                                            </tr>
-                                            <tr class="d-none">
-                                                <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
-                                                <td><span class="id">#12304</span></td>
-                                                <td><span class="name">Cotton Hooded Hoodie</span></td>
-                                                <td><span class="price fw-500">$198.00</span></td>
-                                                <td><span class="badge rounded-pill bg-secondary custom-badge">Canceled</span></td>
-                                                <td><a href="product-layout4.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>                                               
+                                            </thead>
+                                            <tbody>
+                                                <ng-container *ngFor="let order of sale_details">
+                                                    <tr>
+                                                        <td><img class="blur-up lazyload" [attr.data-src]="order.product.imagen" [src]="order.product.imagen" width="50" alt="product" title="product" /></td>
+                                                        <td><span class="id">#{{ order._id }}</span></td>
+                                                        <td><span class="name">{{ order.product.title }}</span></td>
+                                                        <td><span class="price fw-500">{{ euro }}{{ order.total }}</span></td>
+                                                        <!-- <td><span class="badge rounded-pill bg-success custom-badge">Enviado</span></td> -->
+                                                        <!-- <td><span class="badge rounded-pill bg-danger custom-badge">Pendiente</span></td> -->
+                                                        <td><span class="badge rounded-pill bg-dark custom-badge">Processing</span></td>
+                                                        <!-- <td><span class="badge rounded-pill bg-secondary custom-badge">Cancelada</span></td> -->
+                                                        <td><a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', order.product.slug]" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                        <!-- <td><a href="product-layout1.html" onclick="return false" (click)="viewDetailSale(order)" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td> -->
+                                                    </tr>
+                                                </ng-container>
+                                                <tr class="d-none">
+                                                    <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
+                                                    <td><span class="id">#12301</span></td>
+                                                    <td><span class="name">Oxford Cuban Shirt</span></td>
+                                                    <td><span class="price fw-500">$99.00</span></td>
+                                                    <td><span class="badge rounded-pill bg-success custom-badge">Shipped</span></td>
+                                                    <td><a href="product-layout1.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                </tr>
+                                                <tr class="d-none">
+                                                    <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
+                                                    <td><span class="id">#12302</span></td>
+                                                    <td><span class="name">Cuff Beanie Cap</span></td>
+                                                    <td><span class="price fw-500">$128.00</span></td>
+                                                    <td><span class="badge rounded-pill bg-danger custom-badge">Pending</span></td>
+                                                    <td><a href="product-layout2.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                </tr>
+                                                <tr class="d-none">
+                                                    <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
+                                                    <td><span class="id">#12303</span></td>
+                                                    <td><span class="name">Flannel Collar Shirt</span></td>
+                                                    <td><span class="price fw-500">$114.00</span></td>
+                                                    <td><span class="badge rounded-pill bg-dark custom-badge">Processing</span></td>
+                                                    <td><a href="product-layout3.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                </tr>
+                                                <tr class="d-none">
+                                                    <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
+                                                    <td><span class="id">#12304</span></td>
+                                                    <td><span class="name">Cotton Hooded Hoodie</span></td>
+                                                    <td><span class="price fw-500">$198.00</span></td>
+                                                    <td><span class="badge rounded-pill bg-secondary custom-badge">Canceled</span></td>
+                                                    <td><a href="product-layout4.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>  
+                                </ng-template>                                             
                             </div>
                         </div>
                         <!-- End My Orders -->
 
                         <!-- Orders tracking -->
-                        <div class="tab-pane fade h-100" id="orderstracking">
+                        <div class="tab-pane fade h-100 d-none" id="orderstracking">
                             <div class="orders-card mt-0 h-100">    
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
                                     <h2 class="mb-0">Orders tracking</h2>
@@ -599,7 +629,7 @@
                         <!-- End Orders tracking -->
 
                         <!-- My Wishlist -->
-                        <div class="tab-pane fade h-100" id="wishlist">
+                        <div class="tab-pane fade h-100 d-none" id="wishlist">
                             <div class="orders-card mt-0 h-100">    
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
                                     <h2 class="mb-0">My Wishlist</h2>
@@ -653,7 +683,7 @@
                         <!-- End My Wishlist -->
 
                         <!-- Saved Cards -->
-                        <div class="tab-pane fade h-100" id="payment">
+                        <div class="tab-pane fade h-100 d-none" id="payment">
                             <div class="banks-card mt-0 h-100">                                   
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
                                     <h2 class="mb-0">Saved Cards</h2>
@@ -867,13 +897,13 @@
                         <div class="tab-pane fade h-100" id="profile">
                             <div class="profile-card mt-0 h-100">                                   
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
-                                    <h2 class="mb-0">Profile</h2>
+                                    <h2 class="mb-0">Perfil</h2>
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="icon anm anm-plus-r me-1"></i> Edit</button>                                         
                                 </div>
                                 <div class="profile-book-section mb-4">
-                                    <div class="details d-flex align-items-center mb-2">
+                                    <div class="details d-flex align-items-center mb-2 d-none">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Company name</h6>
+                                            <h6 class="mb-0 body-font fw-500">Nombre de empresa</h6>
                                         </div>
                                         <div class="right">
                                             <p>Fashion Store</p>
@@ -881,7 +911,7 @@
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Email address</h6>
+                                            <h6 class="mb-0 body-font fw-500">Dirección de correo electrónico</h6>
                                         </div>
                                         <div class="right">
                                             <p>{{ email_c }}</p>
@@ -889,7 +919,7 @@
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Phone number</h6>
+                                            <h6 class="mb-0 body-font fw-500">Número de teléfono</h6>
                                         </div>
                                         <div class="right">
                                             <p>(+40) 123 456 7890</p>
@@ -897,7 +927,7 @@
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">City / State</h6>
+                                            <h6 class="mb-0 body-font fw-500">Ciudad</h6>
                                         </div>
                                         <div class="right">
                                             <p>California, Barbados</p>
@@ -905,15 +935,15 @@
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Country / Region</h6>
+                                            <h6 class="mb-0 body-font fw-500">País / Región</h6>
                                         </div>
                                         <div class="right">
-                                            <p>United States Of America</p>
+                                            <p>Estados Unidos de América</p>
                                         </div>
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Street address</h6>
+                                            <h6 class="mb-0 body-font fw-500">Dirección de la calle</h6>
                                         </div>
                                         <div class="right">
                                             <p>The Company Name Inc</p>
@@ -921,31 +951,31 @@
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Zip code</h6>
+                                            <h6 class="mb-0 body-font fw-500">Código postal</h6>
                                         </div>
                                         <div class="right">
                                             <p>2356830</p>
                                         </div>
                                     </div>
-                                    <div class="details d-flex align-items-center mb-2">
+                                    <div class="details d-flex align-items-center mb-2 d-none">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Category</h6>
+                                            <h6 class="mb-0 body-font fw-500">Categoría</h6>
                                         </div>
                                         <div class="right">
                                             <p>Clothing</p>
                                         </div>
                                     </div>
-                                    <div class="details d-flex align-items-center mb-2">
+                                    <div class="details d-flex align-items-center mb-2 d-none">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Year established</h6>
+                                            <h6 class="mb-0 body-font fw-500">Año de fundación</h6>
                                         </div>
                                         <div class="right">
                                             <p>2023</p>
                                         </div>
                                     </div>
-                                    <div class="details d-flex align-items-center mb-2">
+                                    <div class="details d-flex align-items-center mb-2 d-none">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Total employees</h6>
+                                            <h6 class="mb-0 body-font fw-500">Total de empleados</h6>
                                         </div>
                                         <div class="right">
                                             <p>58 - 100 People</p>
@@ -955,10 +985,10 @@
 
                                 <!-- Edit Profile Modal -->
                                 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-dialog modal-xl modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h2 class="modal-title" id="editProfileModalLabel">Edit Profile details</h2>
+                                                <h2 class="modal-title text-uppercase ls-2" id="editProfileModalLabel">Editar detalles del perfil</h2>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -1038,7 +1068,7 @@
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div class="modal-footer justify-content-center">
+                                            <div class="modal-footer justify-content-center py-3">
                                                 <button type="submit" class="btn btn-primary m-0"><span>Guardar perfil</span></button>
                                             </div>
                                         </div>
@@ -1047,7 +1077,7 @@
                                 <!-- End Edit Profile Modal -->
 
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
-                                    <h2 class="mb-0">Login details</h2>
+                                    <h2 class="mb-0">Datos de inicio de sesión</h2>
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLoginModal"><i class="icon anm anm-plus-r me-1"></i> Edit</button>                                         
                                 </div>
                                 <div class="profile-login-section">
@@ -1056,7 +1086,7 @@
                                             <h6 class="mb-0 body-font fw-500">Dirección de correo electrónico</h6>
                                         </div>
                                         <div class="right">
-                                            <p>infoexample.com</p>
+                                            <p>{{email_c}}</p>
                                         </div>
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
@@ -1125,7 +1155,7 @@
                         <!-- End Profile -->
 
                         <!-- Security -->
-                        <div class="tab-pane fade h-100" id="security">
+                        <div class="tab-pane fade h-100 d-none" id="security">
                             <div class="settings-card mt-0 h-100">                                   
                                 <div class="dashboard-title d-flex-justify-center justify-content-between mb-4">
                                     <h2 class="mb-0">Ajustes</h2>                                         

@@ -22,9 +22,7 @@ export class CartService {
   // ------ CART -------------
   changeCart(DATACART:any) {
     let listCart = this.cart.getValue();
-  console.log("DEBBUG listCart: ", listCart);
     let INDEX = listCart.findIndex((item:any) => item._id == DATACART._id);
-      console.log("DEBBUG listCart INDEX: ", INDEX);
     if (INDEX != -1) {
       listCart[INDEX] = DATACART;
     } else {

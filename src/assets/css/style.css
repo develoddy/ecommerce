@@ -2201,6 +2201,13 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
   box-shadow: 7px 0 0 #231F20, 14px 0 0 #231F20, 21px 0 0 #231F20, 28px 0 0 #231F20; 
 }
 
+/* Espaciado entre letras */
+.ls-1 {letter-spacing: 1px;}
+.ls-2 {letter-spacing: 2px;}
+.ls-3 {letter-spacing: 3px;}
+.ls-4 {letter-spacing: 4px;}
+.ls-5 {letter-spacing: 5px;}
+
 
 /* .toolbar .view-mode .icon-mode.active.mode-list:before { box-shadow: 0 7px 0 #03a1fe,0 14px 0 #03a1fe; }
 .toolbar .view-mode .icon-mode.active.grid-2:before { box-shadow: 7px 0 0 #03a1fe; }

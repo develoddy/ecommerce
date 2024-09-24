@@ -22,16 +22,8 @@ export class WishlistService {
   // ----- WISHLIST ---------
 
   changeWishlist(WISHLIST:any) {
-
-    console.log("DEBBUG WISHLIST: ", WISHLIST);
-
     let listWishlist = this.wishlist.getValue();
-    console.log("DEBBUG changeWishlist: ", listWishlist);
-    
     let INDEX = listWishlist.findIndex((item:any) => item._id == WISHLIST._id);
-    console.log("DEBBUG changeWishlist INDEX: ", INDEX);
-
-    
     if (INDEX != -1) {
       listWishlist[INDEX] = WISHLIST;
     } else {

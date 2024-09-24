@@ -73,7 +73,7 @@ export class EcommerceAuthService {
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"home/profile_client";
     //return this._http.post(URL, data, {headers: headers});
-    return this._http.post(URL, { headers: headers }).pipe(
+    return this._http.post(URL, data, { headers: headers }).pipe(
       finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
     );
   }

@@ -56,21 +56,14 @@ export class ProfileClientComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // this._ecommerceAuthService._authService.user.subscribe(user => {
-    //   if (user) {
-    //     console.log("Profile.cliente.componente: ", user);
-    //     this.user = user._id;
-    //   }
-    // });
-
     // Suscribirse al observable para saber cuando mostrar u ocultar el loading
     this._ecommerceAuthService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
 
     this.verifyAuthenticatedUser();
-
     this.showProfileClient();
+
     this.name_c = this.CURRENT_USER_AUTHENTICATED.name,//this.user.name; //this._ecommerceAuthService._authService.user.name;
     this.surname_c = this.CURRENT_USER_AUTHENTICATED.surname; //this._ecommerceAuthService._authService.user.surname;
     this.email_c = this.CURRENT_USER_AUTHENTICATED.email; //this._ecommerceAuthService._authService.user.email; 
@@ -80,6 +73,7 @@ export class ProfileClientComponent implements OnInit {
     this._ecommerceAuthService._authService.user.subscribe( user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;
+        
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
       }
@@ -93,6 +87,8 @@ export class ProfileClientComponent implements OnInit {
     };
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
+
+      
       this.sale_orders = resp.sale_orders;
 
       this.sale_details = [];
@@ -109,6 +105,8 @@ export class ProfileClientComponent implements OnInit {
       });
 
       this.listAddressClients = resp.address_client;
+      console.log("Data listAddressClients: ", this.listAddressClients);
+      
     });
   }
 
