@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
+import { Subscription } from 'rxjs';
+
+declare var $:any;
 
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -25,6 +28,7 @@ export class ProfileClientComponent implements OnInit {
   pais:any="Spain";
   address:any=null;
   referencia:any=null;
+  zipcode:any=null;
   region:any=null;
   ciudad:any=null;
   telefono:any=null;
@@ -48,6 +52,8 @@ export class ProfileClientComponent implements OnInit {
 
   loading: boolean = false;
 
+  loadingSubscription: Subscription = new Subscription();
+
 
   CURRENT_USER_AUTHENTICATED:any=null;
   constructor(
@@ -57,7 +63,7 @@ export class ProfileClientComponent implements OnInit {
   ngOnInit(): void {
 
     // Suscribirse al observable para saber cuando mostrar u ocultar el loading
-    this._ecommerceAuthService.loading$.subscribe(isLoading => {
+    this.loadingSubscription = this._ecommerceAuthService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
 
@@ -126,63 +132,101 @@ export class ProfileClientComponent implements OnInit {
   }
 
   store() {
+
     if (this.address_client_selected) {
       this.updateAddress();
     } else {
+      
       this.registerAddress();
     }
   }
 
+  errorOrSuccessMessage:any="";
+  validMessage:boolean=false;
+  status:boolean=false;
   registerAddress() {
     if (!this.name ||
-        !this.surname ||
+        //!this.surname ||
         !this.pais ||
         !this.address ||
-        !this.region ||
+        //!this.region ||
+        !this.zipcode ||
         !this.ciudad ||
         !this.telefono ||
         !this.email
     ) {
-      alertDanger("Necesitas ingresar los campos obligatorios de la dirección");
+      this.status = false;
+      this.validMessage = true;
+      this.errorOrSuccessMessage = "Por favor, complete los campos obligatorios de la dirección de envío.";
+      this.hideMessageAfterDelay();
+      alertDanger("Por favor, complete los campos obligatorios de la dirección de envío.");
       return;
     }
     let data = {
-        user: this.CURRENT_USER_AUTHENTICATED._id,//this.user.id,//this._ecommerceAuthService._authService.user.id,
+        user: this.CURRENT_USER_AUTHENTICATED._id,
         name: this.name,
-        surname:this.surname,
+        surname: "No hay surname",
         pais:this.pais,
         address:this.address,
         referencia:this.referencia,
-        region:this.region,
+        zipcode:this.zipcode,
+        region:"No hay region",
         ciudad:this.ciudad,
         telefono:this.telefono,
         email:this.email,
         nota:this.nota,
     };
     this._ecommerceAuthService.registerAddressClient(data).subscribe((resp:any) => {
-      console.log(resp);
-      this.listAddressClients.push(resp.address_client);
-      alertSuccess(resp.message);
-      this.resetForm();
+      
+      if (resp.status == 200) {
+      
+        this.listAddressClients.push(resp.address_client);
+        this.status = true;
+        this.validMessage = true;
+        this.errorOrSuccessMessage = resp.message;
+        this.hideMessageAfterDelay();
+        alertSuccess(resp.message);
+        
+        this.newAddress();
+
+        $('#addNewModal').modal('hide'); // Para Bootstrap
+  
+        //this.resetForm();
+      }else {
+        this.status = false;
+        this.errorOrSuccessMessage = "Error al registrar la dirección.";
+        this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+      }
+    }, error => {
+      this.status = false;
+      this.errorOrSuccessMessage = "Error al registrar la dirección.";
+      this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
     });
   }
 
   updateAddress() {
+    
     if (!this.name ||
-      !this.surname ||
-      !this.pais ||
-      !this.address ||
-      !this.region ||
-      !this.ciudad ||
-      !this.telefono ||
-      !this.email
+        //!this.surname ||
+        !this.pais ||
+        !this.address ||
+        //!this.region ||
+        !this.zipcode ||
+        !this.ciudad ||
+        !this.telefono ||
+        !this.email
     ) {
-      alertDanger("Necesitas ingresar los campos obligatorios de la dirección");
+      this.status = false;
+      this.validMessage = true;
+      this.errorOrSuccessMessage = "Por favor, complete los campos obligatorios de la dirección de envío.";
+      this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+      alertDanger("Por favor, complete los campos obligatorios de la dirección de envío.");
       return;
     }
+
     let data = {
         _id: this.address_client_selected.id,
-        user: this.CURRENT_USER_AUTHENTICATED._id,//this.user.id,//this._ecommerceAuthService._authService.user.id,
+        user: this.CURRENT_USER_AUTHENTICATED._id,
         name:this.name,
         surname:this.surname,
         pais:this.pais,
@@ -195,36 +239,71 @@ export class ProfileClientComponent implements OnInit {
         nota:this.nota,
     };
     this._ecommerceAuthService.updateAddressClient(data).subscribe((resp:any) => {
-      //console.log(resp);
-      let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
-      this.listAddressClients[INDEX] = resp.address_client;
-      alertSuccess(resp.message);
+
+      if (resp.status == 200) {
+        let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
+        this.listAddressClients[INDEX] = resp.address_client;
+
+        this.status = true;
+        this.validMessage = true;
+        this.errorOrSuccessMessage = resp.message;
+        this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+        alertSuccess(resp.message);
+        this.resetForm();
+
+        $('#addEditModal').modal('hide'); // Para Bootstrap
+      } else {
+        this.status = false;
+        this.errorOrSuccessMessage = "Error al actualizar la dirección.";
+        this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+      }
+      
+    }, error => {
+      this.status = false;
+      this.errorOrSuccessMessage = "Error al actualizar la dirección.";
+      this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
     });
   }
+
+  // Función para ocultar el mensaje después de unos segundos
+hideMessageAfterDelay() {
+  setTimeout(() => {
+    this.validMessage = false;
+  }, 6000); // Desaparece después de 3 segundos
+}
 
   resetForm() {
     this.name = null;
     this.surname = null;
     this.pais = null;
     this.address = null;
+    this.zipcode = null;
+    this.referencia = null;
     this.region = null;
     this.ciudad = null;
     this.telefono = null;
     this.email = null;
+
+    
   }
 
   newAddress() {
     this.resetForm();
-    this.address_client_selected = null;
+    //this.address_client_selected = null;
   }
 
   addressClienteSelected(list_address:any) {
     this.address_client_selected = list_address;
+
+    this.errorOrSuccessMessage = null;
+    this.validMessage = false;
+
     this.name = this.address_client_selected.name;
     this.surname = this.address_client_selected.surname;
     this.pais = this.address_client_selected.pais;
     this.address = this.address_client_selected.address;
     this.referencia = this.address_client_selected.referencia;
+    this.zipcode = this.address_client_selected.zipcode;
     this.region = this.address_client_selected.region;
     this.ciudad = this.address_client_selected.ciudad;
     this.telefono = this.address_client_selected.telefono;
@@ -261,6 +340,20 @@ export class ProfileClientComponent implements OnInit {
       if (resp.user) {
         localStorage.setItem("user", JSON.stringify(resp.user));
       }
+    });
+  }
+
+  removeAddressSelected(list_address:any) {
+    console.log(list_address);
+    
+    this._ecommerceAuthService.deleteAddressClient(list_address.id).subscribe((resp:any) => {      
+      let INDEX = this.listAddressClients.findIndex((item:any) => item.id == list_address.id);
+      // Verifica si se encontró el elemento
+      if (INDEX !== -1) { 
+        this.listAddressClients.splice(INDEX, 1); // Elimina 1 elemento a partir del índice INDEX
+      }
+      alertSuccess(resp.message);
+      this.resetForm();
     });
   }
 
@@ -339,5 +432,12 @@ export class ProfileClientComponent implements OnInit {
 
   logout() {
     this._ecommerceAuthService._authService.logout();
+  }
+
+  ngOnDestroy(): void {
+    // Desuscribirse al destruir el componente
+    if (this.loadingSubscription) {
+      this.loadingSubscription.unsubscribe();
+    }
   }
 }

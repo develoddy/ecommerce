@@ -67,10 +67,15 @@ Table of Content:
 @import url('//fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,400;1,500;1,600&display=swap');
 @import url('//fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400;500;600;700&display=swap');
 
+
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap');
+
 /*======================================================================
   2. Basic Styles
 ========================================================================*/
-body { font-family:'Poppins', sans-serif; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; }
+/* body { font-family:'Poppins', sans-serif; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; } */
+body { font-family: "Zen Kaku Gothic Antique", sans-serif; font-style: normal; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; }
+
 article, aside, details, figcaption, figure, footer, header, nav, section, summary { display: block; }
 audio, canvas, video { display: inline-block; }
 audio:not([controls]) { display:none; height:0; }
@@ -79,7 +84,7 @@ img { max-width:100%; height:auto; border:0; -ms-interpolation-mode:bicubic; }
 label { margin-bottom:5px; }
 html, button, input, select, textarea { font-family:'Poppins', sans-serif; }
 input, textarea, .form-control { padding:10px 15px; }
-input, button, select, textarea, .form-control { font-size:14px; font-family: 'Poppins', sans-serif; color:#171717; background-color: #ffffff; border:1px solid #dddddd; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
+input, button, select, textarea, .form-control { font-size:14px; font-family: "Zen Kaku Gothic Antique", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #dddddd; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
 input:focus, input:active, button:focus, button:active, select:focus, select:active, textarea:focus, textarea:active, .form-control:focus { outline:none; border-color:#bdbdbd; }
 input, select, textarea { width: 100%; }
 input, select { height:45px; }
@@ -191,7 +196,7 @@ hr { margin:20px 0; border:0; opacity:1; border-bottom:1px solid #ececec; }
 /*======================================================================
   3. Typography
 ========================================================================*/
-h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 { color:#000000; margin:0 0 20px; font-family: 'Heebo',sans-serif; font-weight:700; line-height:1.2; letter-spacing:0; overflow-wrap:break-word; }
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 { color:#000000; margin:0 0 20px; font-family: "Zen Kaku Gothic Antique", sans-serif; font-weight:700; line-height:1.2; letter-spacing:0; overflow-wrap:break-word; }
 h1, .h1 { font-size:24px; }
 h2, .h2 { font-size:20px; }
 h3, .h3 { font-size:18px; }
@@ -217,10 +222,10 @@ p:last-child { margin-bottom:0; }
 .fw-800 { font-weight:800 !important; }
 
 /*======================================================================
-  4. Buttons
+  4. Buttons 
 ========================================================================*/
 .btn, .btn-primary {  
-    font-family:'Poppins', sans-serif; background-color:#231F20; color:#ffffff; border:1px solid #231F20; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; 
+    font-family: "Zen Kaku Gothic Antique", sans-serif; background-color:#231F20; color:#ffffff; border:1px solid #231F20; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; 
     font-size:14px; font-weight:600; line-height:normal; text-transform:uppercase; white-space:normal; opacity:1; outline:none !important; box-shadow:none !important; -ms-transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; transition:all 0.3s ease-in-out; 
 }
 .btn:hover, .btn:focus { background-color:#231F20; color:#ffffff; border-color:#231F20; text-decoration:none; opacity:1; }
@@ -430,7 +435,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 ========================================================================*/
 .breadcrumbs-wrapper { background:#f9f9f9; margin:0 0 30px; }
 .breadcrumbs-wrapper .container { padding-top:10px; padding-bottom:10px; }
-.breadcrumbs a, .breadcrumbs span, .breadcrumbs .icon { color:#171717; display:inline-block; padding:0; margin:0; font-size:13px; text-transform: uppercase; }
+.breadcrumbs a, .breadcrumbs span, .breadcrumbs .icon { color:#171717; display:inline-block; padding:0; margin:0; font-size:13px; }
 .breadcrumbs span.main-title { padding-right: 0; margin-right: 0; }
 .breadcrumbs .icon { font-size:15px; position:relative; top:0; padding: 0 5px; margin: 0 5px; }
 .breadcrumbs .main-title { font-weight: 700; }
@@ -550,7 +555,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 #minicart-drawer .close-cart { color:#050000; font-size:17px; float:right; margin-top:-10px; opacity:0.8; text-decoration:none; }
 #cart-drawer .minicart-bottom { font-size: 13px; }
 .minicart-header { border-bottom:1px solid #e8e8e8; margin:0 0 15px; padding:0 0 15px; }
-.minicart-header > h4 { color:#171717; font-weight:700; text-align:left; margin:0 0; text-transform: uppercase; }
+.minicart-header > h4 { color:#171717; font-weight:700; text-align:left; margin:0 0; }
 .minicart-content { padding:0 20px; margin:0; z-index:1001; position:absolute; left:0; overflow:hidden auto; width:100%; height:calc(100% - 295px);}
 .minicart-content .item { padding:0 0 15px; margin:0 0 15px; line-height:normal; display:block; border-bottom:solid 1px #eee; }
 .minicart-content .item .product-image { max-width:23%; flex:1; -webkit-flex:1; -ms-flex:1; }
@@ -626,7 +631,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
     #siteNav a { text-decoration:none; font-size:15px; display:block; opacity:1; -webkit-font-smoothing: antialiased; letter-spacing:0.04em; position:relative; }
     #siteNav > li { display:inline-block; text-align:left; }
     .header-9 #siteNav > li { margin: 0 10px; }
-    #siteNav > li > a { color:#171717; line-height: 60px; padding:8px 15px; text-transform:uppercase; display:inline-flex; align-items:center; }
+    #siteNav > li > a { color:#171717; line-height: 60px; padding:8px 15px; display:inline-flex; align-items:center; }
     #siteNav.medium > li a { font-weight:600; }
     .classicHeader #siteNav.medium > li a { font-size: 14px; }
     #siteNav.hidearrow > li > a .icon { display:none; }
@@ -903,7 +908,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 /* 8.03 Products With Tabs */
 .tab-slider-product .section-header { margin-bottom: 20px; }
 .tab-slider-product .nav-tabs { border: 0; text-align: center; padding: 0; margin: 0 0 40px; }
-.tab-slider-product .nav-tabs .nav-link { background-color: transparent; color: #000000; font-size: 20px; font-weight: 600; border-radius: 0; position: relative; padding: 0; margin: 0 20px; border: none; text-transform: uppercase; }
+.tab-slider-product .nav-tabs .nav-link { background-color: transparent; color: #000000; font-size: 20px; font-weight: 600; border-radius: 0; position: relative; padding: 0; margin: 0 20px; border: none; }
 .tab-slider-product .nav-tabs.style1 .nav-link:after { width:0; content:""; display:block; height:2px; position:absolute; bottom:-6px; left:0; z-index:1; background:#111111; transition:all .3s ease-in-out; -webkit-transition:all .3s ease-in-out; -ms-transition:all .3s ease-in-out; }
 .tab-slider-product .nav-tabs.style1 .nav-link.active:after { width:100%; }
 .tab-slider-product .nav-tabs.style1 .nav-link:hover:after { width:100%; opacity:1; }
@@ -2067,7 +2072,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 
 .product-labels .lbl { display: block; white-space:nowrap; color:#ffffff; font-size:10px; font-weight:600; text-transform:uppercase; text-align:center; padding:3px 10px; margin-bottom:5px; }
 .product-labels .on-sale { right:0px; background:#f54337; }
-.product-labels .pr-label1, .product-labels .new { background:#01bad4; }
+.product-labels .pr-label1, .product-labels .new { background:#03a1fe; }
 .product-labels .pr-label2, .product-labels .hot { background:#e9a400; }
 .product-labels .pr-label3 { left:0px; background:#81d53d; }
 .product-labels .pr-label4 { left:0px; background:#fb6c3e; }
@@ -2417,7 +2422,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
   16. Checkout Pages
 ========================================================================*/
 .checkout-form .block { border: 1px solid #dddddd; border-radius: 0; padding: 20px; }
-.checkout-form .block .title { text-transform: uppercase; }
+.checkout-form .block .title { text-transform: lowercase; }
 .card { background-color:#ffffff; border-color:#f7f7f7; border-radius:0; margin-bottom:10px; }
 .card-header { position:relative; padding:10px 15px; border-color:#f7f7f7; }
 .card-header .card-link { position:relative; text-decoration: none; }

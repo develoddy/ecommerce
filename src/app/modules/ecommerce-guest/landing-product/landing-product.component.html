@@ -87,7 +87,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-info">
                         <!-- Product Details -->
                         <div class="product-single-meta">
-                            <h2 class="product-main-title text-uppercase ">{{ product_selected.title }}</h2>
+                            <h2 class="product-main-title">{{ product_selected.title }}</h2>
                             <!-- Product Reviews -->
                             <div class="product-review d-flex-center mb-3">
                                 <div class="reviewStar d-flex-center">
@@ -105,7 +105,7 @@
                             <div class="product-info">
                                 <p class="product-stock d-flex">Disponibilidad:
                                     <span class="pro-stockLbl ps-0">
-                                        <span class="d-flex-center stockLbl instock text-uppercase">En stock</span>
+                                        <span class="d-flex-center stockLbl instock ">En stock</span>
                                     </span>
                                 </p>
                                 <p class="product-vendor">Proveedor:<span class="text"><a href="#">HVL</a></span></p>  
@@ -129,7 +129,7 @@
                             <!-- End Sort Description -->
                             <hr class="d-none">
                             <!-- Countdown -->
-                            <h3 class="text-uppercase mb-0 d-none">Date prisa! las rebajas terminan en</h3>
+                            <h3 class=" mb-0 d-none">Date prisa! las rebajas terminan en</h3>
                             <div class="product-countdown d-flex-center text-center my-3  d-none" data-countdown="2024/08/26"></div>                                           
                             <!-- End Countdown -->
                         </div>
@@ -141,7 +141,7 @@
                             <div class="product-swatches-option">
                                 <!-- Swatches Color -->
                                 <div class="product-item swatches-image w-100 mb-4 swatch-0 option1" data-option-index="0">
-                                    <label class="label d-flex align-items-center text-uppercase">Seleccionar color<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label>
+                                    <label class="label d-flex align-items-center ">Seleccionar color<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label>
                                     <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
                                         <ng-container *ngFor="let color of coloresDisponibles">
                                             <li class="swatch x-large available" [ngClass]="getSwatchClass(color.imagen, color.color)" (click)="selectColor(color)">
@@ -154,7 +154,7 @@
                                 <!-- End Swatches Color -->
                                 <!-- Swatches Size -->
                                 <div class="product-item swatches-size w-100 mb-4 swatch-1 option2" data-option-index="1">
-                                    <label class="label d-flex align-items-center text-uppercase ">Seleccionar talla<span class="slVariant ms-1 fw-bold">{{ variedad_selected?.valor || 'Select Size' }}</span> <a href="#sizechart-modal" class="text-link sizelink text-muted size-chart-modal" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Guía de tallas</a></label>
+                                    <label class="label d-flex align-items-center  ">Seleccionar talla<span class="slVariant ms-1 fw-bold">{{ variedad_selected?.valor || 'Select Size' }}</span> <a href="#sizechart-modal" class="text-link sizelink text-muted size-chart-modal" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Guía de tallas</a></label>
                                     <ul class="variants-size size-swatches d-flex-center pt-1 clearfix">
                                         <ng-container *ngFor="let variedad of variedades; let i = index">
                                             <li class="swatch x-large" 

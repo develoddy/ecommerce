@@ -29,6 +29,7 @@ export class CheckoutComponent implements OnInit {
   pais:any="Spain";
   address:any=null;
   referencia:any=null;
+  zipcode:any=null;
   region:any=null;
   ciudad:any=null;
   telefono:any=null;
@@ -69,10 +70,6 @@ export class CheckoutComponent implements OnInit {
       }
     });
 
-    
-
-    
-    
     //this._authEcommerce.listAddressClient(this._authEcommerce._authService.user._id).subscribe((resp:any) => {
     this._authEcommerce.listAddressClient(this.userId).subscribe((resp:any) => {
       this.listAddressClients = resp.address_client;
@@ -241,12 +238,13 @@ export class CheckoutComponent implements OnInit {
         !this.surname ||
         !this.pais ||
         !this.address ||
-        !this.region ||
+        //!this.region ||
+        !this.zipcode ||
         !this.ciudad ||
         !this.telefono ||
         !this.email
     ) {
-      alertDanger("Por favor, complete los campos obligatorios de la dirección");
+      alertDanger("Por favor, complete los campos obligatorios de la dirección de envío.");
       return;
     }
     let data = {
@@ -256,7 +254,8 @@ export class CheckoutComponent implements OnInit {
         pais:this.pais,
         address:this.address,
         referencia:this.referencia,
-        region:this.region,
+        zipcode:this.zipcode,
+        region:"No hay region",
         ciudad:this.ciudad,
         telefono:this.telefono,
         email:this.email,

@@ -49,15 +49,26 @@ export class EcommerceAuthService {
   }
 
   updateAddressClient(data:any) {
+     // Inicia el loading
+     this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"address_client/update";
-    return this._http.put(URL, data, {headers: headers});
+    //return this._http.put(URL, data, {headers: headers});
+
+    return this._http.put(URL, data, { headers: headers }).pipe(
+      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+    );
   }
 
   deleteAddressClient(address_cliente_id:any) {
+    // Inicia el loading
+    this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"address_client/delete/"+address_cliente_id;
-    return this._http.delete(URL, {headers: headers});
+    //return this._http.delete(URL, {headers: headers});
+    return this._http.delete(URL, { headers: headers }).pipe(
+      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+    );
   }
   // END SERVICE
 

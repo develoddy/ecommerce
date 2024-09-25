@@ -251,7 +251,7 @@
     .mobile-nav-wrapper { display:block; width:270px; height:100%;position:fixed; left:-270px; top:0; z-index:10000; background-color:#ffffff; box-shadow:0 0 5px rgba(0,0,0,0.3); opacity:0; visibility:hidden;-ms-transition:all 0.4s ease-in-out; -webkit-transition:all 0.4s ease-in-out; transition:all 0.4s ease-in-out; }
     .mobile-nav-wrapper.active { left:0; opacity:1; visibility:visible; }
     #MobileNav li { border-top:1px solid #f0f0f0; position:relative }
-    #MobileNav li a { color:#333333; font-size:14px; text-decoration:none; display:block; padding:10px 30px 10px 10px; opacity:1; -webkit-font-smoothing:antialiased; font-weight:400; text-transform:uppercase; position:relative }
+    #MobileNav li a { color:#333333; font-size:14px; text-decoration:none; display:block; padding:10px 30px 10px 10px; opacity:1; -webkit-font-smoothing:antialiased; font-weight:400; position:relative }
     #MobileNav li a .icon { color:#333333; font-size:20px; display:block; width:40px; height:40px; line-height:37px; position:absolute; right:0; top:3px; text-align:center  }
     #MobileNav li a:hover, #MobileNav li a:hover .icon { color:#293355; }
     #MobileNav li a .lbl { color:#ffffff; background-color:#0a9339; font-size:10px; font-weight:400; letter-spacing:0; line-height:1; text-transform:uppercase; display:inline-block; padding:4px 5px; border-radius:2px; box-shadow:0 0 1px rgba(0,0,0,0.3); position:relative; vertical-align:middle; margin-left:5px; }

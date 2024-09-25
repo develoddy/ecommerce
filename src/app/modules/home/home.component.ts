@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
         HOMEINITTEMPLATE($);
         this.extractTags();
-      }, 50);
+      }, 150);
     });
   }
 
