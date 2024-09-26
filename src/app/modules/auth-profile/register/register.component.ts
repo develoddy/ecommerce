@@ -47,6 +47,8 @@ export class RegisterComponent implements OnInit {
   errorMessage:string="";
   CURRENT_USER_AUTHENTICATED:any=null;
 
+  public loading: boolean = false;
+
   constructor(
     public _authService: AuthService,
     public _router: Router,
@@ -56,6 +58,11 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this._authService.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
+
      this.verifyAuthenticatedUser();
   }
 
@@ -114,10 +121,6 @@ export class RegisterComponent implements OnInit {
   }
 
 
-
-
-
-
   register() {
 
     // Resetear errores antes de la validación
@@ -136,13 +139,6 @@ export class RegisterComponent implements OnInit {
         this.errorMessage = "Por favor, complete todos los campos obligatorios para continuar con el proceso.";
         return;
     }
-
-
-    // if( !this.name ||  !this.email || !this.zipcode || !this.phone || !this.birthday || !this.password || !this.repeat_password ) {
-    //     this.errorRegister = true;
-    //     this.errorMessage = "Por favor, complete todos los campos obligatorios para continuar con el proceso.";
-    //     return;
-    // }
 
     if( this.password != this.repeat_password ) {
       //alertDanger("Ambas contraseñas deben ser iguales.");

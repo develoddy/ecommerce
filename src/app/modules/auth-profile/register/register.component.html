@@ -59,7 +59,7 @@
                                         <label for="CustomerMovil" class="d-none">Móvil<span class="required">*</span></label>
                                         <input type="tel" name="phone" [(ngModel)]="phone" placeholder="Movil" [ngClass]="{'border border-danger': errorPhone}" (input)="onInputChange('phone')" id="CustomerMovil" value="" required />
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['phone'] && !phone">Completa este campo para continuar</div>
-                                        <div class="form-text text-danger mt-0" *ngIf="errorPhone && phone">Revisa el formato de tu móvil (ej. 6xxxxxxxx / 7xxxxxxxx)</div>
+                                        <div class="form-text text-danger mt-0" *ngIf="errorPhone && phone">Revisa el formato de tu móvil (ej. +346xxxxxxxx / 6xxxxxxxx)</div>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerBirthday" class="d-none">Fecha de nacimiento<span class="required">*</span></label>
@@ -76,9 +76,14 @@
                                         <input id="CustomerConfirmPassword" type="Password" name="repeat_password" [(ngModel)]="repeat_password" [ngClass]="{'border border-danger': errorRepeatPassword}" (input)="onInputChange('repeat_password')" placeholder="Confirmar Contraseña" required />                         	
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['repeat_password'] && !repeat_password">Completa este campo para continuar</div>
                                     </div>
-                                    <div class="form-group col-12 mt-3">
-                                        <input type="submit" class="btn btn-secondary btn-lg w-100" (click)="register()" value="Crear cuenta" />
-                                    </div>
+                                    <div class="form-group col-12 mt-3 mb-3">
+                                        <button type="submit" class="btn btn-secondary btn-lg w-100" (click)="register()" [disabled]="loading">
+                                            <ng-container *ngIf="!loading">Crear cuenta</ng-container>
+                                            <ng-container *ngIf="loading">
+                                                <div class="spinner-border text-light" role="status"></div>
+                                          </ng-container>
+                                        </button>
+                                    </div>  
                                     <div class="form-group col-12" *ngIf="this.errorRegister">
                                         <p class="text-danger">{{ this.errorMessage }}</p>
                                     </div>
@@ -93,7 +98,14 @@
                                     <a class="social-link twitter rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-twitter me-2"></i> Twitter</a>
                                 </div>
 
-                                <div class="login-signup-text mt-4 mb-2 fs-6 text-center text-muted">¿Ya tienes cuenta? <a href="login.html" onclick="return false;" [routerLink]="['/auth/login']" class="fw-bold">Inicia sesión</a></div>
+                                <div class="login-signup-text mb-4 fs-6 text-center text-secondary">¿Ya tienes cuenta? <a href="login.html" onclick="return false;" [routerLink]="['/auth/login']" class="fw-bold text-decoration-underline">Inicia sesión</a></div>
+
+                                <div class="login-signup-text text-center text-secondary">
+                                    <p id="registry">Al crear una cuenta, confirmas que has leído la  <br>
+                                        <a class="text-decoration-underline fw-bold" href="#" onclick="return false;">Política de privacidad</a> y aceptas las 
+                                        <a class="text-decoration-underline fw-bold" href="#" onclick="return false;">Condiciones de venta</a>.
+                                    </p>
+                                </div>
                             </form>
                         </div>
                     </div>

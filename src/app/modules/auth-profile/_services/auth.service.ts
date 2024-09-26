@@ -78,8 +78,13 @@ export class AuthService {
     }
 
   register(data:any) {
+    // Inicia el loading
+    this.loadingSubject.next(true);
     let URL = URL_SERVICE + "users/register";
-    return this._http.post(URL, data);
+    //return this._http.post(URL, data);
+    return this._http.post(URL, data).pipe(
+      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+    );
   }
 
 
