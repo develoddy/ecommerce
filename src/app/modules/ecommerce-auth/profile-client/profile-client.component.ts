@@ -34,6 +34,7 @@ export class ProfileClientComponent implements OnInit {
   telefono:any=null;
   email:any=null;
   nota:any=null;
+  birthday:any=null;
 
   address_client_selected:any = null;
 
@@ -43,6 +44,9 @@ export class ProfileClientComponent implements OnInit {
   email_c: any = null;
   password: any = null;
   password_repeat: any = null;
+  phone_c:any=null;
+  zipcode_c:any=null;
+  birthday_c:any=null;
 
   // Review
   cantidad:any=0;
@@ -69,6 +73,7 @@ export class ProfileClientComponent implements OnInit {
 
     this.verifyAuthenticatedUser();
     this.showProfileClient();
+    this.detailUser();
 
     this.name_c = this.CURRENT_USER_AUTHENTICATED.name,//this.user.name; //this._ecommerceAuthService._authService.user.name;
     this.surname_c = this.CURRENT_USER_AUTHENTICATED.surname; //this._ecommerceAuthService._authService.user.surname;
@@ -86,6 +91,26 @@ export class ProfileClientComponent implements OnInit {
     });
   }
 
+  userDetail:any=null;
+  detailUser() {
+    let data = {
+      email: this.CURRENT_USER_AUTHENTICATED.email,
+    }
+    this._ecommerceAuthService.detail_user(data).subscribe((resp:any) => {
+      console.log(resp);
+      
+      if (resp.status = 200) {
+        this.userDetail = resp.user;
+
+        this.name_c  =  resp.user.name;
+        this.surname_c  =  resp.user.surname;
+        this.email_c  =  resp.user.email;
+        this.phone_c = resp.user.phone;
+        this.zipcode_c = resp.user.zipcode;
+      }
+    });
+  }
+
   showProfileClient() {
     
     let data = {
@@ -94,7 +119,6 @@ export class ProfileClientComponent implements OnInit {
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
 
-      
       this.sale_orders = resp.sale_orders;
 
       this.sale_details = [];
@@ -266,11 +290,11 @@ export class ProfileClientComponent implements OnInit {
   }
 
   // Función para ocultar el mensaje después de unos segundos
-hideMessageAfterDelay() {
-  setTimeout(() => {
-    this.validMessage = false;
-  }, 6000); // Desaparece después de 3 segundos
-}
+  hideMessageAfterDelay() {
+    setTimeout(() => {
+      this.validMessage = false;
+    }, 6000); // Desaparece después de 3 segundos
+  }
 
   resetForm() {
     this.name = null;
@@ -314,24 +338,29 @@ hideMessageAfterDelay() {
 
   updateProfileClient() {
 
-    if ( this.password == null || this.password == ""  || this.password_repeat == null ) {
-      alertWarning("Es obligatorio ingresar ambas contraseñeas para modificar sus datos.");
+ 
+    if( this.name_c ||  this.email_c || this.phone_c || this.birthday_c  ) {
+    //if ( this.password == null || this.password == ""  || this.password_repeat == null ) {
+      alertWarning("Es obligatorio ingresar todos los campos.");
+      //alertWarning("Es obligatorio ingresar ambas contraseñeas para modificar sus datos.");
       return;
     }
 
-    if (this.password) {
-      if (this.password != this.password_repeat) {
-        alertDanger("Ambas contraseñas son incorrectas. Intentalo denuevo.");
-        return;
-      }
-    }
+    // if (this.password) {
+    //   if (this.password != this.password_repeat) {
+    //     alertDanger("Ambas contraseñas son incorrectas. Intentalo denuevo.");
+    //     return;
+    //   }
+    // }
 
     let data = {
-      _id: this.user.id,//this._ecommerceAuthService._authService.user.id,
+      _id: this.CURRENT_USER_AUTHENTICATED._id,//this.user.id,
       name: this.name_c,
-      surname: this.surname_c,
+      surname: "",
       email: this.email_c,
-      password: this.password,
+      phone: this.phone_c,
+      birthday: this.birthday_c,
+      //password: this.password,
     };
 
     this._ecommerceAuthService.updateProfileClient(data).subscribe((resp:any) => {

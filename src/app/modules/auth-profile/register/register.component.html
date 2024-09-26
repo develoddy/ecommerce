@@ -42,39 +42,45 @@
                                 <div class="form-row">
                                     <div class="form-group col-12">
                                         <label for="CustomerUsername" class="d-none">Nombre <span class="required">*</span></label>
-                                        <input type="text" name="name" [(ngModel)]="name" placeholder="Nombre" id="CustomerUsername" value="" required />
-                                    </div>
-                                    <div class="form-group col-12 d-none">
-                                        <label for="CustomerSurname"  class="d-none">Lastname <span class="required">*</span></label>
-                                        <input type="text" name="surname" [(ngModel)]="surname" placeholder="Lastname" id="CustomerSurname" value="" required />
+                                        <input type="text" name="name" [(ngModel)]="name" placeholder="Nombre" [ngClass]="{'border border-danger': errorName}" (input)="onInputChange('name')"   id="CustomerUsername" value=""  required />
+                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['name'] && !name">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerEmail"  class="d-none">E-mail <span class="required">*</span></label>
-                                        <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" id="CustomerEmail" value="" required />
+                                        <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" [ngClass]="{'border border-danger': errorEmail}" (input)="onInputChange('email')" id="CustomerEmail" value="" required />
+                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['email'] && !email">Completa este campo para continuar</div>
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label for="CustomerZipcode" class="d-none">Código postal <span class="required">*</span></label>
+                                        <input type="text" name="zipcode" [(ngModel)]="zipcode" placeholder="Código postal" [ngClass]="{'border border-danger': errorZipcode}" (input)="onInputChange('zipcode')" id="CustomerZipcode" value="" required />
+                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['zipcode'] && !zipcode">Completa este campo para continuar</div>
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label for="CustomerMovil" class="d-none">Móvil<span class="required">*</span></label>
+                                        <input type="tel" name="phone" [(ngModel)]="phone" placeholder="Movil" [ngClass]="{'border border-danger': errorPhone}" (input)="onInputChange('phone')" id="CustomerMovil" value="" required />
+                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['phone'] && !phone">Completa este campo para continuar</div>
+                                        <div class="form-text text-danger mt-0" *ngIf="errorPhone && phone">Revisa el formato de tu móvil (ej. 6xxxxxxxx / 7xxxxxxxx)</div>
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label for="CustomerBirthday" class="d-none">Fecha de nacimiento<span class="required">*</span></label>
+                                        <input type="date" name="birthday" [(ngModel)]="birthday" placeholder="Fecha de nacimiento" [ngClass]="{'border border-danger': errorBirthday}" (input)="onInputChange('birthday')" id="CustomerBirthday" value="" required />
+                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['birthday'] && !birthday">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerPassword"  class="d-none">Contraseña <span class="required">*</span></label>
-                                        <input type="password" name="password"[(ngModel)]="password" placeholder="Contraseña" id="CustomerPassword" value="" required />                        	
+                                        <input type="password" name="password"[(ngModel)]="password" placeholder="Contraseña" [ngClass]="{'border border-danger': errorPassword}" (input)="onInputChange('password')" id="CustomerPassword" value="" required />                        	
+                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['password'] && !password">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerConfirmPassword"  class="d-none">Confirmar Contraseña<span class="required">*</span></label>
-                                        <input id="CustomerConfirmPassword" type="Password" name="repeat_password" [(ngModel)]="repeat_password" placeholder="Confirmar Contraseña" required />                         	
+                                        <input id="CustomerConfirmPassword" type="Password" name="repeat_password" [(ngModel)]="repeat_password" [ngClass]="{'border border-danger': errorRepeatPassword}" (input)="onInputChange('repeat_password')" placeholder="Confirmar Contraseña" required />                         	
+                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['repeat_password'] && !repeat_password">Completa este campo para continuar</div>
                                     </div>
-                                    <div class="form-group col-12">
-                                        <div class="login-remember-forgot d-flex justify-content-between align-items-center">
-                                            <div class="agree-check customCheckbox">
-                                                <input id="agree" name="agree" type="checkbox" value="agree" required />
-                                                <label for="agree"> Acepto los términos y la política.</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group col-12 mt-3" *ngIf="this.errorRegister">
-                                        <p class="text-danger">{{ this.errorMessage }}</p>
-                                    </div>
-                                    
                                     <div class="form-group col-12 mt-3">
                                         <input type="submit" class="btn btn-secondary btn-lg w-100" (click)="register()" value="Crear cuenta" />
+                                    </div>
+                                    <div class="form-group col-12" *ngIf="this.errorRegister">
+                                        <p class="text-danger">{{ this.errorMessage }}</p>
                                     </div>
                                 </div>
 

@@ -10,8 +10,6 @@ import { finalize } from 'rxjs';
 })
 export class EcommerceAuthService {
 
-  
-
   private loadingSubject = new BehaviorSubject<boolean>(false); // Para manejar el estado de carga
   public loading$ = this.loadingSubject.asObservable();
 
@@ -106,6 +104,16 @@ export class EcommerceAuthService {
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"review/update";
     return this._http.put(URL, data, {headers: headers});
+  }
+
+  detail_user(data:any) {
+    // Inicia el loading
+    this.loadingSubject.next(true);
+    let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE+"users/detail_user";
+    return this._http.post(URL, data, { headers: headers }).pipe(
+      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+    );
   }
 
 }

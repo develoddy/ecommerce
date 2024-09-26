@@ -84,8 +84,8 @@ img { max-width:100%; height:auto; border:0; -ms-interpolation-mode:bicubic; }
 label { margin-bottom:5px; }
 html, button, input, select, textarea { font-family:'Poppins', sans-serif; }
 input, textarea, .form-control { padding:10px 15px; }
-input, button, select, textarea, .form-control { font-size:14px; font-family: "Zen Kaku Gothic Antique", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #dddddd; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
-input:focus, input:active, button:focus, button:active, select:focus, select:active, textarea:focus, textarea:active, .form-control:focus { outline:none; border-color:#bdbdbd; }
+input, button, select, textarea, .form-control { font-size:14px; font-family: "Zen Kaku Gothic Antique", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #b8b8b8; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
+input:focus, input:active, button:focus, button:active, select:focus, select:active, textarea:focus, textarea:active, .form-control:focus { outline:none; border-color:#231F20; }
 input, select, textarea { width: 100%; }
 input, select { height:45px; }
 input[type="checkbox"], input[type="radio"] { width:auto; height:auto; }
@@ -226,7 +226,7 @@ p:last-child { margin-bottom:0; }
 ========================================================================*/
 .btn, .btn-primary {  
     font-family: "Zen Kaku Gothic Antique", sans-serif; background-color:#231F20; color:#ffffff; border:1px solid #231F20; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; 
-    font-size:14px; font-weight:600; line-height:normal; text-transform:uppercase; white-space:normal; opacity:1; outline:none !important; box-shadow:none !important; -ms-transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; transition:all 0.3s ease-in-out; 
+    font-size:14px; font-weight:600; line-height:normal; white-space:normal; opacity:1; outline:none !important; box-shadow:none !important; -ms-transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; transition:all 0.3s ease-in-out; 
 }
 .btn:hover, .btn:focus { background-color:#231F20; color:#ffffff; border-color:#231F20; text-decoration:none; opacity:1; }
 

@@ -211,7 +211,8 @@
                                                     <div class="address-box bg-block">
                                                         <div class="top d-flex-justify-center justify-content-between mb-3">
                                                             <h5 class="m-0">{{ list_address.name +' '+ list_address.surname }}</h5>
-                                                            <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Home</span></span>
+                                                            <!-- Puede ser casa, office, work -->
+                                                            <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Casa</span></span>
                                                         </div>
                                                         <div class="middle">
                                                             <div class="address mb-2 text-muted">
@@ -868,24 +869,24 @@
                         <!-- End Saved Cards -->
 
                         <!-- Profile -->
-                        <div class="tab-pane fade h-100" id="profile">
+                        <div class="tab-pane fade h-100" id="profile" *ngIf="userDetail">
                             <div class="profile-card mt-0 h-100">                                   
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
                                     <h2 class="mb-0">Perfil</h2>
-                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="icon anm anm-plus-r me-1"></i> Edit</button>                                         
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="icon anm anm-plus-r me-1"></i> Editar</button>                                         
                                 </div>
                                 <div class="profile-book-section mb-4">
-                                    <div class="details d-flex align-items-center mb-2 d-none">
+                                    <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Nombre de empresa</h6>
+                                            <h6 class="mb-0 body-font fw-500">Nombre</h6>
                                         </div>
                                         <div class="right">
-                                            <p>Fashion Store</p>
+                                            <p>{{ name_c }}</p>
                                         </div>
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Dirección de correo electrónico</h6>
+                                            <h6 class="mb-0 body-font fw-500">E-mail</h6>
                                         </div>
                                         <div class="right">
                                             <p>{{ email_c }}</p>
@@ -893,34 +894,10 @@
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Número de teléfono</h6>
+                                            <h6 class="mb-0 body-font fw-500">Móvil</h6>
                                         </div>
                                         <div class="right">
-                                            <p>(+40) 123 456 7890</p>
-                                        </div>
-                                    </div>
-                                    <div class="details d-flex align-items-center mb-2">
-                                        <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Ciudad</h6>
-                                        </div>
-                                        <div class="right">
-                                            <p>California, Barbados</p>
-                                        </div>
-                                    </div>
-                                    <div class="details d-flex align-items-center mb-2">
-                                        <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">País / Región</h6>
-                                        </div>
-                                        <div class="right">
-                                            <p>Estados Unidos de América</p>
-                                        </div>
-                                    </div>
-                                    <div class="details d-flex align-items-center mb-2">
-                                        <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Dirección de la calle</h6>
-                                        </div>
-                                        <div class="right">
-                                            <p>The Company Name Inc</p>
+                                            <p>(+34) {{ phone_c }}</p>
                                         </div>
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
@@ -928,122 +905,55 @@
                                             <h6 class="mb-0 body-font fw-500">Código postal</h6>
                                         </div>
                                         <div class="right">
-                                            <p>2356830</p>
-                                        </div>
-                                    </div>
-                                    <div class="details d-flex align-items-center mb-2 d-none">
-                                        <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Categoría</h6>
-                                        </div>
-                                        <div class="right">
-                                            <p>Clothing</p>
-                                        </div>
-                                    </div>
-                                    <div class="details d-flex align-items-center mb-2 d-none">
-                                        <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Año de fundación</h6>
-                                        </div>
-                                        <div class="right">
-                                            <p>2023</p>
-                                        </div>
-                                    </div>
-                                    <div class="details d-flex align-items-center mb-2 d-none">
-                                        <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Total de empleados</h6>
-                                        </div>
-                                        <div class="right">
-                                            <p>58 - 100 People</p>
+                                            <p>{{ zipcode_c }}</p>
                                         </div>
                                     </div>
                                 </div>  
 
-                                <!-- Edit Profile Modal -->
                                 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                                    <div class="modal-dialog  modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h2 class="modal-title text-uppercase ls-2" id="editProfileModalLabel">Editar detalles del perfil</h2>
+                                                <h2 class="modal-title ls-2" id="editProfileModalLabel">Datos personales</h2>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <form class="edit-profile-from" method="post" action="#"> 
                                                     <div class="form-row">
-                                                        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 mb-4">
+                                                        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 mb-4 d-none">
                                                             <div class="profileImg img-thumbnail shadow bg-white rounded-circle d-flex-justify-center position-relative mx-auto">
                                                                 <img src="assets/images/users/user-img1.jpg" class="rounded-circle" alt="profile" width="200" height="200" />
                                                                 <div class="thumb-edit">
-                                                                    <label for="profileUpload" class="d-flex-center justify-content-center position-absolute top-0 start-100 translate-middle p-2 rounded-circle shadow btn btn-secondary mt-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="icon anm anm-pencil-ar an-1x"></i></label>
+                                                                    <label for="profileUpload" class="d-flex-center justify-content-center position-absolute top-0 start-100 translate-middle p-2 rounded-circle shadow btn btn-secondary mt-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"><i class="icon anm anm-pencil-ar an-1x"></i></label>
                                                                     <input type="file" id="profileUpload" class="image-upload d-none" />
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Companyname" class="d-none">Nombre de empresa</label>
-                                                            <input name="editProfile-Companyname" placeholder="Company name" value="" id="editProfile-Companyname" type="text" />
+                                                        <div class="form-group col-lg-12 col-md-6 col-sm-12 col-12">
+                                                            <label for="CustomerUsername" class="d-none">Dirección de correo electrónico</label>
+                                                            <input type="text" name="name" [(ngModel)]="name_c" placeholder="Nombre" id="CustomerUsername" value="" required />
                                                         </div>
-                                                        <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Emailaddress" class="d-none">Dirección de correo electrónico</label>
-                                                            <input name="editProfile-Emailaddress" placeholder="Email address" value="" id="editProfile-Emailaddress" type="email" />
+                                                        <div class="form-group col-lg-12 col-md-6 col-sm-12 col-12">
+                                                            <label for="editProfile" class="d-none">Dirección de correo electrónico</label>
+                                                            <input type="email" name="email" [(ngModel)]="email_c" placeholder="E-mail" id="editProfile" value="" required />
                                                         </div>
-                                                        <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Phonenumber" class="d-none">Número de teléfono</label>
-                                                            <input name="editProfile-Phonenumber" placeholder="Phone number" value="" id="editProfile-Phonenumber" type="text" />
+                                                        <div class="form-group col-lg-12 col-md-6 col-sm-12 col-12 mb-md-0">
+                                                            <label for="CustomerMovil" class="d-none">Número de teléfono</label>
+                                                            <input type="tel" name="phone" [(ngModel)]="phone_c" placeholder="Movil" id="CustomerMovil" value="" required />
                                                         </div>
-                                                        <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-zone" class="d-none">Ciudad / Estado <span class="required">*</span></label>
-                                                            <select name="editProfile_zone_id" id="editProfile-zone">
-                                                                <option value="">Select Region / State</option>
-                                                                <option value="AL">Alabama</option>
-                                                                <option value="AK">Alaska</option>
-                                                                <option value="AZ">Arizona</option>
-                                                                <option value="AR">Arkansas</option>
-                                                                <option value="CA">California</option>
-                                                                <option value="CO">Colorado</option>
-                                                                <option value="CT">Connecticut</option>
-                                                                <option value="DE">Delaware</option>
-                                                            </select>
+                                                        <div class="form-group col-lg-12 col-md-6 col-sm-12 col-12 mb-md-0 pt-4">
+                                                            <h2 for="CustomerPassword">Fecha de nacimiento</h2>
+                                                            <input type="date" name="birthday" [(ngModel)]="birthday_c" placeholder="Fecha de nacimiento" id="CustomerBirthday" value="" required />
                                                         </div>
-                                                        <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-country" class="d-none">País / Región <span class="required">*</span></label>
-                                                            <select name="editProfile_country_id" id="editProfile-country">
-                                                                <option value="">Seleccione país/región</option>
-                                                                <option value="AI" label="Anguilla">Anguilla</option>
-                                                                <option value="AG" label="Antigua and Barbuda">Antigua and Barbuda</option>
-                                                                <option value="AR" label="Argentina">Argentina</option>
-                                                                <option value="AW" label="Aruba">Aruba</option>
-                                                                <option value="BS" label="Bahamas">Bahamas</option>
-                                                                <option value="BB" label="Barbados">Barbados</option>
-                                                                <option value="BZ" label="Belize">Belize</option>
-                                                                <option value="BM" label="Bermuda">Bermuda</option>
-                                                                <option value="BO" label="Bolivia">Bolivia</option>
-                                                                <option value="BR" label="Brazil">Brazil</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Streetaddress" class="d-none">Dirección de la calle</label>
-                                                            <input name="editProfile-Streetaddress" placeholder="Street address" value="" id="editProfile-Streetaddress" type="text" />
-                                                        </div>
-                                                        <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Zipcode" class="d-none">Código postal</label>
-                                                            <input name="editProfile-Zipcode" placeholder="Zip code" value="" id="editProfile-Zipcode" type="text" />
-                                                        </div>
-                                                        <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12">
-                                                            <label for="editProfile-Category" class="d-none">Categoría</label>
-                                                            <input name="editProfile-Category" placeholder="Phone number" value="" id="editProfile-Category" type="text" />
-                                                        </div>
-                                                        <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12 mb-md-0">
-                                                            <label for="editProfile-YearEstablished" class="d-none">Año de fundación</label>
-                                                            <input name="editProfile-YearEstablished" placeholder="YearEstablished" value="" id="editProfile-YearEstablished" type="text" />
-                                                        </div>
-                                                        <div class="form-group col-lg-6 col-md-6 col-sm-12 col-12 mb-0">
-                                                            <label for="editProfile-TotalEmployees" class="d-none">Código postal</label>
-                                                            <input name="editProfile-TotalEmployees" placeholder="Zip code" value="" id="editProfile-TotalEmployees" type="text" />
-                                                        </div>
+                                                        <!-- <div class="form-group col-lg-12 col-md-6 col-sm-12 col-12 pt-4">
+                                                            <h2 for="CustomerPassword">Contraseña</h2>
+                                                            <input type="password" name="password"[(ngModel)]="password" placeholder="Contraseña" id="CustomerPassword" value="" required />
+                                                        </div> -->
                                                     </div>
                                                 </form>
                                             </div>
                                             <div class="modal-footer justify-content-center py-3">
-                                                <button type="submit" class="btn btn-primary m-0"><span>Guardar perfil</span></button>
+                                                <button type="submit" class="btn btn-primary m-0" (click)="updateProfileClient()"><span>Guardar cambios</span></button>
                                             </div>
                                         </div>
                                     </div>
@@ -1057,18 +967,18 @@
                                 <div class="profile-login-section">
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Dirección de correo electrónico</h6>
+                                            <h6 class="mb-0 body-font fw-500">E-mail</h6>
                                         </div>
                                         <div class="right">
-                                            <p>{{email_c}}</p>
+                                            <p>{{ userDetail.email }}</p>
                                         </div>
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
-                                            <h6 class="mb-0 body-font fw-500">Número de teléfono</h6>
+                                            <h6 class="mb-0 body-font fw-500">Móvil</h6>
                                         </div>
                                         <div class="right">
-                                            <p>(+40) 123 456 7890</p>
+                                            <p>(+34) {{ userDetail.phone }}</p>
                                         </div>
                                     </div>
                                     <div class="details d-flex align-items-center mb-2">
@@ -1076,7 +986,7 @@
                                             <h6 class="mb-0 body-font fw-500">Contraseña</h6>
                                         </div>
                                         <div class="right">
-                                            <p>xxxxxxx</p>
+                                            <p>********</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1086,30 +996,26 @@
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h2 class="modal-title" id="editLoginModalLabel">Edit Login details</h2>
+                                                <h2 class="modal-title" id="editLoginModalLabel">Editar datos de inicio de sesión</h2>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <form class="edit-Loginprofile-from" method="post" action="#"> 
                                                     <div class="form-row row-cols-lg-1 row-cols-md-1 row-cols-sm-1 row-cols-1">
                                                         <div class="form-group">
-                                                            <label for="editLogin-Emailaddress" class="d-none">Email address <span class="required">*</span></label>
-                                                            <input name="editLogin-Emailaddress" placeholder="Email address" value="" id="editLogin-Emailaddress" type="email" />
+                                                            <label for="editLogin-Emailaddress" class="d-none">E-mail <span class="required">*</span></label>
+                                                            <input name="editLogin-Emailaddress" placeholder="E-mail" value="" id="editLogin-Emailaddress" type="email" />
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="editLogin-Phonenumber" class="d-none">Phone number <span class="required">*</span></label>
-                                                            <input name="editLogin-Phonenumber" placeholder="Phone number" value="" id="editLogin-Phonenumber" type="text" />
+                                                            <label for="editLogin-Password" class="d-none">Contraseña actual <span class="required">*</span></label>
+                                                            <input name="editLogin-Password" placeholder="Contraseña actual" value="" id="editLogin-Password" type="password" />
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="editLogin-Password" class="d-none">Current Password <span class="required">*</span></label>
-                                                            <input name="editLogin-Password" placeholder="Current Password" value="" id="editLogin-Password" type="password" />
+                                                            <label for="editLogin-NewPassword" class="d-none">Nueva contraseña <span class="required">*</span></label>
+                                                            <input name="editLogin-NewPassword" placeholder="Nueva contraseña" value="" id="editLogin-NewPassword" type="password" />
+                                                            <p class="form-text text-muted lh-sm">Su contraseña debe tener entre 8 y 20 caracteres, contener letras y números y no debe contener espacios ni caracteres especiales.</p>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label for="editLogin-NewPassword" class="d-none">New Password <span class="required">*</span></label>
-                                                            <input name="editLogin-NewPassword" placeholder="New Password" value="" id="editLogin-NewPassword" type="password" />
-                                                            <small class="form-text text-muted">Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters.</small>
-                                                        </div>
-                                                        <div class="form-group mb-0">
+                                                        <div class="form-group mb-0 d-none">
                                                             <label for="editLogin-Verify" class="d-none">Verify <span class="required">*</span></label>
                                                             <input name="editLogin-Verify" placeholder="Verify" value="" id="editLogin-Verify" type="text" />
                                                             <small class="form-text text-muted">To confirm, type the new password again.</small>
@@ -1118,7 +1024,7 @@
                                                 </form>
                                             </div>
                                             <div class="modal-footer justify-content-center">
-                                                <button type="submit" class="btn btn-primary m-0"><span>Save changes</span></button>
+                                                <button type="submit" class="btn btn-primary m-0" (click)="updateProfileClient()"><span>Guardar cambios</span></button>
                                             </div>
                                         </div>
                                     </div>

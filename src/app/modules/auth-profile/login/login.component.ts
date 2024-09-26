@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
 
     this._authService.login(this.email, this.password).subscribe((resp:any) => {
       // SI NO TIENE UN ERROR Y LA RESPUESTA ES VERDADERA SIGNIFICA QUE EL USUARIO SE LOGUEO CORRECTAMENTE
-       if ( !resp.error && resp ) {
+      if ( !resp.error && resp ) {
         this._router.navigate(["/"]); 
       } else {
         //alertDanger(resp.error.message);
