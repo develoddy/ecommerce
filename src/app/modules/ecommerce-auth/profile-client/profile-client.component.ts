@@ -244,7 +244,7 @@ export class ProfileClientComponent implements OnInit {
       this.validMessage = true;
       this.errorOrSuccessMessage = "Por favor, complete los campos obligatorios de la dirección de envío.";
       this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
-      alertDanger("Por favor, complete los campos obligatorios de la dirección de envío.");
+      //alertDanger("Por favor, complete los campos obligatorios de la dirección de envío.");
       return;
     }
 
@@ -338,11 +338,17 @@ export class ProfileClientComponent implements OnInit {
 
   updateProfileClient() {
 
- 
-    if( this.name_c ||  this.email_c || this.phone_c || this.birthday_c  ) {
+    // validMessage
+    // status
+
+    if( !this.name_c ||  !this.email_c || !this.phone_c || !this.birthday_c  ) {
     //if ( this.password == null || this.password == ""  || this.password_repeat == null ) {
-      alertWarning("Es obligatorio ingresar todos los campos.");
-      //alertWarning("Es obligatorio ingresar ambas contraseñeas para modificar sus datos.");
+
+      this.status = false;
+      this.validMessage = true;
+      this.errorOrSuccessMessage = "Por favor, asegúrese de completar todos los campos requeridos en su perfil.";
+      //alertWarning("Por favor, asegúrese de completar todos los campos requeridos en su perfil.");
+      this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
       return;
     }
 
@@ -364,11 +370,29 @@ export class ProfileClientComponent implements OnInit {
     };
 
     this._ecommerceAuthService.updateProfileClient(data).subscribe((resp:any) => {
-      console.log(resp);
-      alertSuccess(resp.message);
-      if (resp.user) {
-        localStorage.setItem("user", JSON.stringify(resp.user));
+      if (resp.status == 200) {
+
+        console.log(resp);
+        //alertSuccess(resp.message);
+        this.status = true;
+        this.validMessage = true;
+        this.errorOrSuccessMessage = resp.message;
+        $('#editProfileModal').modal('hide'); // Para Bootstrap
+        this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+  
+        if (resp.user) {
+          localStorage.setItem("user", JSON.stringify(resp.user));
+        }
+      } else {
+        this.status = false;
+        this.errorOrSuccessMessage = "Error al actualizar los datos del perfil.";
+        this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+        
       }
+    }, error => {
+      this.status = false;
+      this.errorOrSuccessMessage = "Error al actualizar los datos del perfil.";
+      this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
     });
   }
 

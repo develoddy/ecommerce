@@ -169,16 +169,8 @@
                                     </div>
                                 </ng-container>
                                 <ng-template #allShowListAddressClients>
-
-
-                                    <!-- Alert para mensajes de éxito -->
-                                    <!-- <div *ngIf="validMessage && status" class="alert alert-success py-2 alert-dismissible fade show cart-alert">
-                                        <strong class="text-uppercase">¡Felicidades!</strong> {{ errorOrSuccessMessage }}
-                                        <button type="button" data-bs-dismiss="alert" aria-label="Close" class="btn-close"></button>
-                                    </div> -->
-
+                                    <!-- Spinner -->
                                     <div *ngIf="loading" class="loading-spinner d-flex justify-content-center h-100 align-items-center">
-                                        <!-- Aquí puedes poner tu spinner -->
                                         <div class="text-center">
                                             <div class="spinner-border text-muted" role="status">
                                               <span class="sr-only"></span>
@@ -186,23 +178,14 @@
                                             <h4 class="text-muted">Cargando</h4>
                                         </div>
                                     </div>
-
-                                    <!-- Mensaje de error o éxito -->
-                                    <!-- <p [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="validMessage">{{ errorOrSuccessMessage }}</p> -->
-
-                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" style="width:25px;fill: #0f5132 !important;" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path></svg> -->
-                                   
-
+                                    <!-- Message error o success -->
                                     <div *ngIf="validMessage && status" class="alert alert-success py-2 alert-dismissible fade show cart-alert">
                                         <strong class="text-uppercase"> <i class="align-middle icon anm anm-check icon-large me-2"></i>¡Felicidades!</strong> {{ errorOrSuccessMessage }}
                                     </div>
-
-
                                     <div class="top-sec d-flex-justify-center justify-content-between mb-4" [class.d-none]="loading">
                                         <h2 class="mb-0">Libreta de direcciones</h2>
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addNewModal"><i class="icon anm anm-plus-r me-1"></i> Agregar nuevo</button>
                                     </div>
-
                                     <!-- Mostrar la lista de direcciones -->
                                     <div class="address-book-section" [class.d-none]="loading">
                                         <div class="row g-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1">
@@ -373,13 +356,6 @@
                                                         <button type="submit" class="btn btn-primary mb-3" (click)="store()">
                                                             <span>Agregar dirección</span>
                                                         </button>
-                                                        <!-- Alert para mensajes de error -->
-                                                        <!-- <div *ngIf="validMessage && !status" class="alert alert-danger py-2 alert-dismissible fade show cart-alert">
-                                                            <strong class="text-uppercase">Error!</strong> 
-                                                            {{ errorOrSuccessMessage }}
-                                                            <button type="button" data-bs-dismiss="alert" aria-label="Close" class="btn-close"></button>
-                                                        </div> -->
-
                                                         <p [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p> 
                                                     </div>
                                                 </div>
@@ -871,10 +847,26 @@
                         <!-- Profile -->
                         <div class="tab-pane fade h-100" id="profile" *ngIf="userDetail">
                             <div class="profile-card mt-0 h-100">                                   
+                                <!-- Spinner -->
+                                <div *ngIf="loading" class="loading-spinner d-flex justify-content-center h-100 align-items-center">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-muted" role="status">
+                                          <span class="sr-only"></span>
+                                        </div>
+                                        <h4 class="text-muted">Cargando</h4>
+                                    </div>
+                                </div>
+
+                                <!-- Message error o success -->
+                                <div *ngIf="validMessage && status" class="alert alert-success py-2 alert-dismissible fade show cart-alert">
+                                    <strong class="text-uppercase"> <i class="align-middle icon anm anm-check icon-large me-2"></i>¡Felicidades!</strong> {{ errorOrSuccessMessage }}
+                                </div>
+
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
                                     <h2 class="mb-0">Perfil</h2>
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="icon anm anm-plus-r me-1"></i> Editar</button>                                         
                                 </div>
+
                                 <div class="profile-book-section mb-4">
                                     <div class="details d-flex align-items-center mb-2">
                                         <div class="left">
@@ -910,6 +902,7 @@
                                     </div>
                                 </div>  
 
+                                <!-- Edit Profile Modal -->
                                 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
                                     <div class="modal-dialog  modal-dialog-centered">
                                         <div class="modal-content">
@@ -954,6 +947,7 @@
                                             </div>
                                             <div class="modal-footer justify-content-center py-3">
                                                 <button type="submit" class="btn btn-primary m-0" (click)="updateProfileClient()"><span>Guardar cambios</span></button>
+                                                <p class="text-center mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p> 
                                             </div>
                                         </div>
                                     </div>
