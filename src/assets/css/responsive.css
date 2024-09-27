@@ -1162,7 +1162,8 @@
 }
 
 @media only screen and (max-width: 480px) {
-    .iconset { padding:0 5px; }
+    .iconset { padding:0 10px; }
+    .menubar-label, #accountBox { display: none; }
     .select-wrap { margin-left: 10px; }
     .select-wrap .option .icon { margin-right: 5px; }
 

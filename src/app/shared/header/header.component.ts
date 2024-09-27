@@ -36,6 +36,8 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
 
   CURRENT_USER_AUTHENTICATED:any=null;
 
+  isMobile: boolean = false;
+
   source:any;
   @ViewChild("filter") filter?:ElementRef;
 
@@ -66,10 +68,18 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
     
 
     this.subscribeToEcommerceConfig(); // Suscripción a la configuración inicial de eCommerce
+    this.checkIfMobile();
 
     
   }
 
+  checkIfMobile() {
+    console.log("window.innerWidth: ", window.innerWidth);
+    
+    this.isMobile = window.innerWidth <= 480; // Ajusta según tus necesidades
+
+    console.log("window.innerWidth this.isMobile: ", this.isMobile);
+  }
 
   private verifyAuthenticatedUser(): void {
     this._cartService._authService.user.subscribe((user:any) => {
