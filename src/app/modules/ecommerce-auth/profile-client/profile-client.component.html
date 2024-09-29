@@ -1,8 +1,18 @@
 <!--Page Wrapper-->
 <div class="page-wrapper">
 
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="sp sp-bars"></div>
+            </div>
+        </div>
+    </div>
+    <!-- End Loading -->
+
     <!-- Body Container -->
-    <div id="page-content"> 
+    <div id="page-content" [class.d-none]="loading"> 
         <!--Page Header-->
         <div class="page-header text-center">
             <div class="container">
@@ -18,18 +28,10 @@
         </div>
         <!--End Page Header-->
 
-        <div *ngIf="loading" class="loading-spinner">
-            <!-- Aquí puedes poner tu spinner -->
-            <div class="text-center">
-                <div class="spinner-border" role="status">
-                  <span class="sr-only"></span>
-                </div>
-                <h4>Cargando</h4>
-            </div>
-        </div>
+        
 
         <!--Main Content-->
-        <div class="container" [class.d-none]="loading">
+        <div class="container">
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-3 mb-4 mb-lg-0">
                     <!-- Dashboard sidebar -->

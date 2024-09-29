@@ -2,13 +2,11 @@
  <div class="page-wrapper">
 
     <!-- Loading -->
-    <div *ngIf="loading" class="loading-spinner">
-        <!-- Aquí puedes poner tu spinner -->
-        <div class="text-center">
-            <div class="spinner-border" role="status">
-              <span class="sr-only"></span>
+    <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="sp sp-bars"></div>
             </div>
-            <h4>Cargando</h4>
         </div>
     </div>
     <!-- End Loading -->

@@ -77,10 +77,10 @@
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['repeat_password'] && !repeat_password">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12 mt-3 mb-3">
-                                        <button type="submit" class="btn btn-secondary btn-lg w-100" (click)="register()" [disabled]="loading">
+                                        <button type="submit" class="btn btn-secondary btn-lg py-3 w-100" (click)="register()" [disabled]="loading">
                                             <ng-container *ngIf="!loading">Crear cuenta</ng-container>
                                             <ng-container *ngIf="loading">
-                                                <div class="spinner-border text-light" role="status"></div>
+                                                <div class="sp sp-bars bg-light" style="width: 7px !important; height: 21px !important; margin: 0px auto !important;"></div>
                                           </ng-container>
                                         </button>
                                     </div>  
