@@ -38,7 +38,9 @@
     <app-header></app-header>
     <!--End Header-->
 
-    <div *ngIf="loading" class="loading-spinner">
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-spinner d-flex vh-100 justify-content-center align-items-center">
         <!-- Aquí puedes poner tu spinner -->
         <div class="text-center">
             <div class="spinner-border" role="status">
@@ -47,6 +49,7 @@
             <h4>Cargando</h4>
         </div>
     </div>
+    <!-- End Loading -->
     
     <!-- Body Container -->
     <div id="page-content" class="mb-0" [class.d-none]="loading">
@@ -123,7 +126,7 @@
         <!--End Home Slideshow-->
 
         <!--Service Section-->
-        <section class="section service-section pb-0">
+        <section class="section service-section pb-0 d-none">
             <div class="container">
                 <div class="service-info row col-row row-cols-lg-4 row-cols-md-4 row-cols-sm-2 row-cols-2 text-center">
                     <div class="service-wrap col-item">
@@ -253,7 +256,7 @@
 
         <!--Products With Tabs-->
         <section class="section product-slider tab-slider-product">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="section-header d-none">
                     <h2>Special Offers</h2>
                     <p>Browse the huge variety of our best seller</p>
@@ -278,24 +281,24 @@
                             <div class="grid-products grid-view-items">
                                 <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
                                     <ng-container *ngFor="let ourProduct of ourProducts">
-                                        <div class="item col-item">
+                                        <div class="item col-item px-1">
                                             <div class="product-box">
                                                 <!-- Start Product Image -->
                                                 <div class="product-image">
                                                     <!-- Start Product Image -->
-                                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}" class="product-img rounded-3">
+                                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}" class="product-img rounded-0">
                                                         <!-- Image -->
-                                                        <img class="primary blur-up lazyload" data-src="{{ ourProduct.imagen }}"  src="{{ ourProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
+                                                        <img class="primary blur-up lazyload rounded-0" data-src="{{ ourProduct.imagen }}"  src="{{ ourProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
                                                         <!-- End Image -->
                                                         <!-- Hover Image -->
                                                         <ng-container *ngIf="ourProduct.imagen_two">
-                                                            <img class="hover blur-up lazyload" data-src="{{ ourProduct.imagen_two }}" src="{{ ourProduct.imagen_two }}" alt="Product" title="Product" width="625" height="808" />
+                                                            <img class="hover blur-up lazyload rounded-0" data-src="{{ ourProduct.imagen_two }}" src="{{ ourProduct.imagen_two }}" alt="Product" title="Product" width="625" height="808" />
                                                         </ng-container>
                                                         <!-- End Hover Image -->
                                                     </a>
                                                     <!-- End Product Image -->
                                                     <!-- Product label -->
-                                                    <div class="product-labels"><span class="lbl pr-label3">New</span></div>
+                                                    <div class="product-labels d-none"><span class="lbl pr-label3">New</span></div>
                                                     <!-- End Product label -->
                                                     <!--Product Button-->
                                                     <div class="button-set style1">
@@ -334,16 +337,16 @@
                                                     </div>
                                                     <!-- End Product Price -->
                                                     <!-- Product Review -->
-                                                    <div class="product-review">
+                                                    <div class="product-review d-none">
                                                         <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
                                                         <span class="caption hidden ms-1">10 Reviews</span>
                                                     </div>
                                                     <!-- End Product Review -->
                                                     <!-- Variant -->
-                                                    <ul class="variants-clr swatches d-none">
-                                                        <li class="swatch medium radius red"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="red"></span></li>
-                                                        <li class="swatch medium radius orange"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="orange"></span></li>
-                                                        <li class="swatch medium radius yellow"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="yellow"></span></li>
+                                                    <ul class="variants-clr swatches">
+                                                        <li class="swatch medium rounded gray"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="gray"></span></li>
+                                                        <li class="swatch medium rounded orange"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="orange"></span></li>
+                                                        <li class="swatch medium rounded black"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black"></span></li>
                                                     </ul>
                                                     <!-- End Variant -->
                                                 </div>
@@ -365,17 +368,17 @@
                             <div class="grid-products grid-view-items">
                                 <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
                                     <ng-container *ngFor="let besProduct of besProducts">
-                                        <div class="item col-item">
+                                        <div class="item col-item px-1">
                                             <div class="product-box">
                                                 <!-- Start Product Image -->
                                                 <div class="product-image">
                                                     <!-- Start Product Image -->
-                                                    <a href="product-layout1.html" class="product-img rounded-3">
+                                                    <a href="product-layout1.html" class="product-img rounded-0">
                                                         <!-- Image -->
-                                                        <img class="primary blur-up lazyload" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
+                                                        <img class="primary blur-up lazyload rounded-0" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
                                                         <!-- End Image -->
                                                         <!-- Hover Image -->
-                                                        <img class="hover blur-up lazyload" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
+                                                        <img class="hover blur-up lazyload rounded-0" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
                                                         <!-- End Hover Image -->
                                                     </a>
                                                     <!-- End Product Image -->

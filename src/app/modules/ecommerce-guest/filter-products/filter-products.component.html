@@ -1,10 +1,22 @@
  <!--Page Wrapper-->
  <div class="page-wrapper">
 
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-spinner">
+        <!-- Aquí puedes poner tu spinner -->
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only"></span>
+            </div>
+            <h4>Cargando</h4>
+        </div>
+    </div>
+    <!-- End Loading -->
+
     <!-- Body Container -->
-    <div id="page-content" >
+    <div id="page-content" [class.d-none]="loading">
         <!--Page Header-->
-        <div class="page-header text-center">
+        <div class="page-header text-center d-none">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
@@ -18,20 +30,12 @@
         </div>
         <!--End Page Header-->
 
-        <div *ngIf="loading" class="loading-spinner">
-            <!-- Aquí puedes poner tu spinner -->
-            <div class="text-center">
-                <div class="spinner-border" role="status">
-                  <span class="sr-only"></span>
-                </div>
-                <h4>Cargando</h4>
-            </div>
-        </div>
+        
 
         <!--Main Content-->
-        <div class="container" [class.d-none]="loading">
+        <div class="container-fluid py-5">
             <!--Category Slider-->
-            <div class="collection-slider-6items gp10 slick-arrow-dots sub-collection section pt-0">
+            <div class="collection-slider-6items gp10 slick-arrow-dots sub-collection section pt-0 d-none">
                 <ng-container *ngFor="let categorie of categories">
                     <div class="category-item zoomscal-hov">
                         <a href="shop-left-sidebar.html" onclick="return false;" class="category-link clr-none">
@@ -115,10 +119,10 @@
             <!--Toolbar-->
             <div class="toolbar toolbar-wrapper shop-toolbar">
                 <div class="row align-items-center">
-                    <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0">
+                    <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-between">
                         <button type="button" class="btn btn-filter text icon anm anm-sliders-hr d-inline-flex me-2 me-lg-3"> Filtrar</button>
                         <div class="filters-item d-flex align-items-center">
-                            <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label>
+                            <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
                             <div class="grid-options view-mode d-flex">
                                 <a class="icon-mode mode-list d-block" data-col="1"></a>
                                 <a class="icon-mode mode-grid grid-2 d-block" data-col="2"></a>
@@ -128,7 +132,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-4 col-md-4 col-lg-4 text-center product-count order-0 order-md-1 mb-3 mb-sm-0">
+                    <div class="col-12 col-sm-4 col-md-4 col-lg-4 text-center product-count order-0 order-md-1 mb-3 mb-sm-0 d-none">
                         <span class="toolbar-product-count">Demostración: {{ products.length }} productos</span>
                     </div>
                     <ng-container *ngIf=" products.length > 10 ">
@@ -306,12 +310,12 @@
                 <!--End Sidebar-->
 
                 <!--Products-->
-                <div class="col-12 col-sm-12 col-md-12 col-lg-9 main-col">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
                     <!--Product Grid-->
                     <div class="grid-products grid-view-items">
                         <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">  
                             <ng-container *ngFor="let product of products">
-                                <div class="item col-item">
+                                <div class="item col-item px-1">
                                     <div class="product-box">
                                         <!-- Start Product Image -->
                                         <div class="product-image">
@@ -326,7 +330,7 @@
                                             </a>
                                             <!-- End Product Image -->
                                             <!-- Product label -->
-                                            <div class="product-labels"><span class="lbl pr-label3">Tendencias</span></div>
+                                            <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div>
                                             <!-- End Product label -->
                                             <!--Product Button-->
                                             <div class="button-set style1">
@@ -367,7 +371,7 @@
                                             </div>
                                             <!-- End Product Price -->
                                             <!-- Product Review -->
-                                            <div class="product-review">
+                                            <div class="product-review d-none">
                                                 <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
                                                 <span class="caption hidden ms-1">10 Reviews</span>
                                             </div>
@@ -377,9 +381,9 @@
                                             <!--End Sort Description-->
                                             <!-- Variant -->
                                             <ul class="variants-clr swatches">
-                                                <li class="swatch medium radius red"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="red"></span></li>
-                                                <li class="swatch medium radius orange"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="orange"></span></li>
-                                                <li class="swatch medium radius yellow"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="yellow"></span></li>
+                                                <li class="swatch medium rounded gray"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="gray"></span></li>
+                                                <li class="swatch medium rounded orange"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="orange"></span></li>
+                                                <li class="swatch medium rounded black"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black"></span></li>
                                             </ul>
                                             <!-- End Variant -->
                                             <!-- Product Button -->

@@ -62,6 +62,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   //userId: any;
   CURRENT_USER_AUTHENTICATED:any=null;
 
+  private subscription: Subscription | undefined;
+
 
   constructor(
     public homeService: HomeService,
@@ -78,14 +80,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // this._cartService._authService.user.subscribe(user => {
-    //   if (user) {
-    //     this.userId = user._id;
-    //   }
-    // });
+   
 
     // Suscribirse al observable para saber cuando mostrar u ocultar el loading
-    this.homeService.loading$.subscribe(isLoading => {
+    this.subscription = this.homeService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
 
@@ -95,7 +93,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     let TIME_NOW = new Date().getTime();
     
-    this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
+    this.subscription = this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
       this.sliders = resp.sliders;
       this.categories = resp.categories;
       
@@ -128,7 +126,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private verifyAuthenticatedUser(): void {
-    this._cartService._authService.user.subscribe( user => {
+    this.subscription  = this._cartService._authService.user.subscribe( user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;
       } else {
@@ -405,7 +403,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       total: (product.price_usd - this.getDiscountProduct(product, is_sale_flash))*1, //1, // De momento es igual, luego aplicamos el descuento
     }
 
-    this._cartService.registerCart(data).subscribe((resp:any) => {
+    this.subscription = this._cartService.registerCart(data).subscribe((resp:any) => {
       if (resp.message == 403) {
         alertDanger(resp.message_text);
           return;
@@ -515,7 +513,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       total         : (product.price_usd - this.getDiscount(FlashSale))*1               , 
     }
 
-    this._wishlistService.registerWishlist( data ).subscribe( ( resp:any ) => {
+    this.subscription = this._wishlistService.registerWishlist( data ).subscribe( ( resp:any ) => {
       
       if ( resp.message == 403 ) {
         this.errorResponse = true;
@@ -533,5 +531,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this._wishlistService._authService.logout();
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

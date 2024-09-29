@@ -89,13 +89,13 @@ export class FilterProductsComponent implements OnInit {
 
     this.filterProduct();
 
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
+    //setTimeout(() => {
+      //HOMEINITTEMPLATE($);
       //filtersSidebar($);
       //productZoom($);
       //pswp($);
       //priceRangeSlider();
-    }, 150);
+    //}, 150);
     
 
     

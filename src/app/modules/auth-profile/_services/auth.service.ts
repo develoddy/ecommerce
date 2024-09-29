@@ -95,5 +95,7 @@ export class AuthService {
       this.token = null;
       this.userSubject.next(null);  // Emitir null para indicar que el usuario ha cerrado sesión
       //this._router.navigate(["/auth/login"]);
+
+      this._router.navigate(["/"]);
     }
 }

@@ -85,6 +85,27 @@
 
 
 <footer class="FullFooter_footer__S2GEp">
+
+    <!-- Subcripcion -->
+    <div *ngIf="CURRENT_USER_AUTHENTICATED">
+        <div class="Footer_footer__e2Uo_">
+            <h2 class="texts_titleL__HgQ5x Footer_title__adPZq fw-bold">Recibe promociones exclusivas, ventas privadas y novedades</h2>
+            <form class="Form_form__DfUhZ Footer_form__KXfqX">
+                <div class="Input_inputWrapper__nWLtM">
+                    <div class="Input_box__YnwY1 Input_focused__vyc_3">
+                        <label class="Input_label__g1g9t Input_focusedLabel__BM_am texts_uppercaseS__xdp_M d-none" for="newsletter-form-email-input">E-mail</label>
+                        <input aria-invalid="false" class="texts_inputText__0ja2F Input_input__AGmLT Input_focusedInput__L4_Ro" id="newsletter-form-email-input" placeholder="E-mail" type="text" name="email" value="eddylujann@gmail.com"></div>
+                    </div>
+                    <button class="Button_button__qoiWI" id="newsletter-form-submit-button" type="submit" aria-describedby="newsletter-policy"><span class="Button_content___mSYw">Suscribirme</span></button>
+                    <dialog id="newsletter-generic-modal" class="Modal_modalTypeL__4WQ_H Modal_dialog__lnfgO" aria-label="Se ha producido un error" role="dialog"></dialog>
+                </form>
+                <div class="ExpandableTextByLink_expandableContent__Hbn_1 Footer_legal__vGQkY">
+                    <p id="newsletter-policy">Al suscribirte, confirmas que has leído la <button id="expand-checkbox" class="ExpandableTextByLink_expander__aTzEo texts_bodySRegularUnderline__pFA1q fw-bold" aria-expanded="false">Política de privacidad</button>.</p>
+                </div>
+            </div>
+        </div>
+     <!-- / End subcrips¡cion  -->
+
     <button class="ChangeCountryLanguage_button__CBDJ7">
         <svg width="24" height="24" role="img" aria-hidden="true" class="Icon_icon-content-1__kPDLF" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
             <path
