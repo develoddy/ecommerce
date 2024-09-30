@@ -13,8 +13,9 @@
     
     <!-- Body Container -->
     <div id="page-content" [class.d-none]="loading"> 
+
         <!--Page Header-->
-        <div class="page-header text-center">
+        <div class="page-header text-center bg-transparent mb-0 p-3">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
@@ -29,7 +30,7 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container" >  
+        <div class="container-fluid">  
             <ng-container *ngIf="listWishlists.length == 0; else allWishlists">
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="p-2 text-center">
@@ -43,6 +44,8 @@
                     </div>
                 </div>
             </ng-container>
+            
+            
             <ng-template #allWishlists>
                 <!--Toolbar-->
                 <div class="toolbar toolbar-wrapper shop-toolbar">
@@ -88,7 +91,7 @@
                         <!-- Foreach de wishlist -->
                         <ng-container *ngIf="listWishlists.length > 0">
                             <ng-container *ngFor="let wishlist of listWishlists">
-                                <div class="item col-item">
+                                <div class="item col-item px-1">
                                     <div class="product-box position-relative">
                                         <button type="button" class="btn remove-icon close-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar" (click)="removeWishlist(wishlist)"><i class="icon anm anm-times-r"></i></button>
                                         <!-- Start Product Image -->

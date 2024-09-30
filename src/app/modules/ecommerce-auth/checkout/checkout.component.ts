@@ -45,12 +45,15 @@ export class CheckoutComponent implements OnInit {
   user:any;
   code_cupon:any=null;
 
-  userId: any;
+  //userId: any;
+  CURRENT_USER_AUTHENTICATED:any=null;
 
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
 
   public loading: boolean = false;
+
+  
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
@@ -66,13 +69,16 @@ export class CheckoutComponent implements OnInit {
 
     this._authEcommerce._authService.user.subscribe(user => {
       if (user) {
-        this.userId = user._id;
+        //this.CURRENT_USER_AUTHENTICATED._id = user._id;
+        this.CURRENT_USER_AUTHENTICATED = user;
       }
     });
 
     //this._authEcommerce.listAddressClient(this._authEcommerce._authService.user._id).subscribe((resp:any) => {
-    this._authEcommerce.listAddressClient(this.userId).subscribe((resp:any) => {
+    this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp:any) => {
       this.listAddressClients = resp.address_client;
+      console.log(this.listAddressClients);
+      
     });
 
     setTimeout(() => {
@@ -131,7 +137,7 @@ export class CheckoutComponent implements OnInit {
          
           // Order.purchase_units[0].payments.captures[0].id
           let sale = {
-            user: this.userId,//this._authEcommerce._authService.user._id,
+            user: this.CURRENT_USER_AUTHENTICATED._id, //this.CURRENT_USER_AUTHENTICATED._id,//this._authEcommerce._authService.user._id,
             currency_payment: "EUR",
             method_payment: "PAYPAL",
             n_transaction: Order.purchase_units[0].payments.captures[0].id,
@@ -192,7 +198,7 @@ export class CheckoutComponent implements OnInit {
   apllyCupon() {
     let data = {
       code: this.code_cupon,
-      user_id: this.userId,//this._cartService._authService.user._id,
+      user_id: this.CURRENT_USER_AUTHENTICATED._id,//this._cartService._authService.user._id,
     }
 
     this._cartService.apllyCupon(data).subscribe((resp:any) => {
@@ -208,7 +214,7 @@ export class CheckoutComponent implements OnInit {
   listAllCarts() {
     this._cartService.resetCart();
     if ( this._cartService._authService.user ) {
-      this._cartService.listCarts(/*this._cartService._authService.user._id*/this.userId).subscribe((resp:any) => {
+      this._cartService.listCarts(/*this._cartService._authService.user._id*/this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp:any) => {
         resp.carts.forEach((cart:any) => {
           this._cartService.changeCart(cart);
         });
@@ -248,7 +254,7 @@ export class CheckoutComponent implements OnInit {
       return;
     }
     let data = {
-        user: this.userId,//this._authEcommerce._authService.user._id,
+        user: this.CURRENT_USER_AUTHENTICATED._id,//this._authEcommerce._authService.user._id,
         name:this.name,
         surname:this.surname,
         pais:this.pais,
@@ -288,7 +294,7 @@ export class CheckoutComponent implements OnInit {
 
     let data = {
         _id: this.address_client_selected.id,
-        user: this.userId, //this._authEcommerce._authService.user._id, //this._authEcommerce._authService.user._id,
+        user: this.CURRENT_USER_AUTHENTICATED._id, //this._authEcommerce._authService.user._id, //this._authEcommerce._authService.user._id,
         name:this.name,
         surname:this.surname,
         pais:this.pais,

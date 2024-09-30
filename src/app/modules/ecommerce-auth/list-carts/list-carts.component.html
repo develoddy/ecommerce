@@ -14,11 +14,11 @@
     <!-- Body Container -->
     <div id="page-content" [class.d-none]="loading"> 
         <!--Page Header-->
-        <div class="page-header text-center">
+        <div class="page-header text-center bg-transparent mb-0 p-3">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                        <div class="page-title"><h1>Carrito de la compra</h1></div>
+                        <div class="page-title d-none"><p class="fw-bold">Carrito</p></div>
                         <!--Breadcrumbs-->
                         <div class="breadcrumbs"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Carrito de la compra</span></div>
                         <!--End Breadcrumbs-->
@@ -29,7 +29,7 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container" > 
+        <div class="container py-5"> 
             
             <ng-container *ngIf="listCarts.length == 0; else allCarts">
                 <div class="d-flex justify-content-center align-items-center">
@@ -48,7 +48,7 @@
                 <div class="row">
                     <!--Cart Content-->
                     <div class="col-12 col-sm-12 col-md-12 col-lg-8 main-col">
-                        <div class="alert alert-success py-2 alert-dismissible fade show cart-alert" role="alert">
+                        <div class="alert alert-success py-2 alert-dismissible fade show cart-alert d-none" role="alert">
                             <i class="align-middle icon anm anm-truck icon-large me-2"></i><strong class="text-uppercase">Felicidades!</strong> Tienes envío gratis!
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -156,7 +156,7 @@
                                         <div class="form-group">
                                             <label for="address_zip">Introduce tu código de cupón si tienes uno.</label>
                                             <div class="input-group0">
-                                                <input class="form-control" type="text" name="coupon" [(ngModel)]="code_cupon" required />
+                                                <input class="form-control" type="text" name="coupon" placeholder="Código de cupon" [(ngModel)]="code_cupon" required />
                                                 <input type="submit" class="btn text-nowrap mt-3"  (click)="apllyCupon()" value="Aplicar cupón" />
                                             </div>
                                         </div>

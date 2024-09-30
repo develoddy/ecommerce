@@ -94,7 +94,7 @@ input[type="checkbox"]:focus, input[type="radio"]:focus { outline:0; box-shadow:
 select { -webkit-appearance:none; -moz-appearance:none; appearance:none; background-image:url(../images/icons/arrow-select.png); background-repeat:no-repeat; background-position:right 10px center; background-size:10px; background-color:#ffffff; line-height:1.2; text-indent:inherit; text-overflow: ''; cursor:pointer; padding:8px 25px 8px 10px; }
 iframe { border:0; width:100%; }
 table, .table { color: #171717; margin-bottom:15px; width:100%; border-collapse:collapse; border-spacing:0; }
-th { font-weight:600; text-transform:uppercase; }
+th { font-weight:600;}
 .table-bordered th, .table-bordered td { border: 1px solid #dddddd; }
 .input-group > .form-control, .input-group > .btn { height: 45px; }
 .required { color: #ff0202; }
@@ -2403,12 +2403,12 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 /*======================================================================
   15. Cart Pages
 ========================================================================*/
-.cart-col h5 { font-size:15px; font-weight:600; text-transform:uppercase; }
+.cart-col h5 { font-size:15px; font-weight:600; }
 .cart-meta-text { color:#222222; font-size:12px; line-height:1.6; padding:5px 0; }
 .cart-image { width:100px; }
 .cart-delete { width:30px; }
 .cart-info { padding:20px; background-color: #f7f7f7; border: 1px solid #ececec; }
-.cart-subtotal-title { text-transform:uppercase; font-size:14px; }
+.cart-subtotal-title { font-size:14px; }
 .cart-subtotal { padding-left:15px; display:inline-block; }
 .cart-shipping { font-style:italic; font-size:13px; }
 
@@ -3212,7 +3212,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 ========================================================================*/
 .sp {
   width: 32px;
-  height: 32px;
+  height: 28px;
   clear: both;
   margin: 5px auto;
 }
@@ -3229,9 +3229,10 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 /* Spinner Bars */
 .sp-bars {
   position: relative;
-  width: 10px;
+  width: 8px;
   /* border: 1px #000 solid; */
-  background-color: rgba(0, 0, 0, 0.25);
+  /* background-color: rgba(0, 0, 0, 0.25); */
+  background-color: #bbb;
   -webkit-animation: spBars 1s infinite linear;
   animation: spBars 1s infinite linear;
 }

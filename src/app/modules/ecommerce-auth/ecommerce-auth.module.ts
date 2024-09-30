@@ -13,6 +13,7 @@ import { ProfileClientComponent } from './profile-client/profile-client.componen
 import { WishlistComponent } from '../ecommerce-auth/wishlist/wishlist.component';
 import { CompareComponent } from './compare/compare.component';
 import { OrderSuccessComponent } from './order-success/order-success.component';
+import { MyaddressModule } from './myaddress/myaddress.module';
 
 
 @NgModule({
@@ -34,6 +35,8 @@ import { OrderSuccessComponent } from './order-success/order-success.component';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
+    // Importar el módulo de direcciones
+    MyaddressModule,
   ]
 })
 export class EcommerceAuthModule { }

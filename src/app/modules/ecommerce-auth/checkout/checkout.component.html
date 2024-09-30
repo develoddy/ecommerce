@@ -1,6 +1,5 @@
 <!--Page Wrapper-->
 <div class="page-wrapper">
-
     <!-- Loading -->
     <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
@@ -10,11 +9,10 @@
         </div>
     </div>
     <!-- End Loading -->
-   
     <!-- Body Container -->
     <div id="page-content" [class.d-none]="loading"> 
         <!--Page Header-->
-        <div class="page-header text-center">
+        <div class="page-header text-center d-none">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
@@ -27,9 +25,6 @@
             </div>
         </div>
         <!--End Page Header-->
-
-        
-
         <!--Main Content-->
         <div class="container" >     
             <div class="row">
@@ -37,15 +32,31 @@
                     <!--Nav step checkout-->
                     <div id="nav-tabs" class="step-checkout">
                         <ul class="nav nav-tabs step-items">
-                            <li class="nav-item onactive">
+                            <!-- <li class="nav-item onactive">
                                 <a class="nav-link active" data-bs-toggle="tab" href="#steps1">Método de pago</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#steps2">Dirección</a>
+                            </li> -->
+
+                            <!-- Primer li -->
+                            <li [ngClass]="{'nav-item': true, 'active onactive': !CURRENT_USER_AUTHENTICATED}">
+                                <a [ngClass]="{'nav-link': true, 'active': !CURRENT_USER_AUTHENTICATED}" data-bs-toggle="tab" href="#steps1">Método de pago</a>
                             </li>
-                            <li class="nav-item">
+                            
+                            <!-- Segundo li -->
+                            <li [ngClass]="{'nav-item': true, 'active onactive': CURRENT_USER_AUTHENTICATED && listAddressClients.length === 0}">
+                                <a [ngClass]="{'nav-link': true, 'active': CURRENT_USER_AUTHENTICATED && listAddressClients.length === 0}" data-bs-toggle="tab" href="#steps2">Dirección</a>
+                            </li>
+  
+                            <!-- Tercer li -->
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#steps3">Resumen del pedido</a>
+                            </li> -->
+                            <li [ngClass]="{'nav-item': true, 'active onactive': listAddressClients.length > 0}">
+                                <a [ngClass]="{'nav-link': true, 'active': listAddressClients.length > 0}" data-bs-toggle="tab" href="#steps3">Resumen del pedido</a>
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#steps4">Pago</a>
                             </li>
@@ -54,7 +65,8 @@
                     <!--End Nav step checkout-->
                     <!--Tab checkout content-->
                     <div class="tab-content checkout-form">
-                        <div class="tab-pane active" id="steps1">
+                        <div [ngClass]="{'tab-pane': true, 'active': !CURRENT_USER_AUTHENTICATED, 'fade': CURRENT_USER_AUTHENTICATED}" id="steps1">
+                        <!-- <div class="tab-pane active" id="steps1"> -->
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-4 mb-md-0">
                                     <div class="block h-100">
@@ -120,55 +132,33 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="steps2">
+
+                        <!-- <div class="tab-pane fade" id="steps2"> -->
+                        <!-- <div [ngClass]="{'tab-pane': true, 'active': CURRENT_USER_AUTHENTICATED, 'fade': !CURRENT_USER_AUTHENTICATED}" id="steps2"> -->
+                        <div [ngClass]="{'tab-pane': true,'active': CURRENT_USER_AUTHENTICATED && listAddressClients.length === 0,'fade': !CURRENT_USER_AUTHENTICATED || listAddressClients.length > 0}" id="steps2">
                             <!--Shipping Address-->
                             <div class="block shipping-address mb-4">
                                 <div class="block-content">
-                                    <h3 class="title mb-3">Dirección de envío (Shipping Address)</h3>
+                                    <h3 class="title mb-3 text-center">Añadir dirección</h3>
                                     <fieldset>
-                                        <div class="row">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
-                                                <label for="firstname" class="form-label">Nombre <span class="required">*</span></label>
-                                                <input name="firstname" value="" id="firstname" type="text" [(ngModel)]="name" required="" placeholder="Introduzca su nombre" class="form-control">
-                                            </div>
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
-                                                <label for="lastname" class="form-label">Apellidos <span class="required">*</span></label>
-                                                <input name="lastname" value="" id="lastname" type="text" [(ngModel)]="surname" required="" placeholder="Introduzca sus apellidos" class="form-control">
+                                        <!-- Nombre -->
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="firstname" class="form-label d-none">Nombre <span class="required">*</span></label>
+                                                <input name="firstname" value="" id="firstname" type="text" [(ngModel)]="name" required="" placeholder="Nombre" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
-                                                <label for="email" class="form-label">E-Mail <span class="required">*</span></label>
-                                                <input name="email" value="" id="email" type="email" required="" [(ngModel)]="email"  placeholder="Introduzca sus E-Mail" class="form-control">
-                                            </div>
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
-                                                <label for="phone" class="form-label">Telefono <span class="required">*</span></label>
-                                                <input name="phone" value="" id="phone" type="tel" required="" [(ngModel)]="telefono"  placeholder="Introduzca su numero de telefono" class="form-control">
+                                        <!-- Apellidos -->
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="lastname" class="form-label d-none">Apellidos <span class="required">*</span></label>
+                                                <input name="lastname" value="" id="lastname" type="text" [(ngModel)]="surname" required="" placeholder="Aellidos" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
-                                                <label for="address-1" class="form-label">Dirección <span class="required">*</span></label>
-                                                <input name="address_1" value="" id="address-1" type="text" required="" [(ngModel)]="address" placeholder="Dirección de la calle" class="form-control">
-                                            </div>
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
-                                                <label for="address-1" class="form-label d-sm-block">Apartamento (opcional)</label>
-                                                <input name="address_2" value="" id="address-2" type="text" required="" [(ngModel)]="referencia" placeholder="Apartamento, bloque, unidad, piso, código del portal, etc." class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
-                                                <label for="new-city">Ciudad <span class="required">*</span></label>
-                                                <input name="city" placeholder="Introduzca la ciudad" value="" required=""   id="new-city" type="text" />
-                                            </div>
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
-                                                <label for="postcode" class="form-label">Código postal <span class="required">*</span></label>
-                                                <input name="postcode" value="" id="postcode" type="text" class="form-control" [(ngModel)]="zipcode" placeholder="Introduce tu código postal. P.ej. 28701">
-                                            </div>
-                                        </div>  
-                                        <div class="row">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
-                                                <label for="address_country1" class="form-label">País <span class="required">*</span></label>
+                                        <!-- Pais -->
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
                                                 <select id="address_country1" name="address[country]" [(ngModel)]="pais" data-default="United States" class="form-control">
                                                     <option value="0" label="Seleccione un país" selected="selected">Seleccione un país</option>
                                                     <optgroup id="country-optgroup-Eu" label="Europe">
@@ -180,9 +170,52 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="row d-none">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
-                                                <label for="address_State" class="form-label">State <span class="required">*</span></label>
+                                        <!-- Direccion -->
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="address-1" class="form-label d-none">Dirección <span class="required">*</span></label>
+                                                <input name="address_1" value="" id="address-1" type="text" required="" [(ngModel)]="address" placeholder="Dirección" class="form-control">
+                                            </div>
+                                        </div>
+                                        <!-- Apartamento -->
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="address-1" class="form-label d-none">Apartamento (opcional)</label>
+                                                <input name="address_2" value="" id="address-2" type="text" required="" [(ngModel)]="referencia" placeholder="Apartamento, bloque, unidad, piso, código del portal, etc." class="form-control">
+                                            </div>
+                                        </div>
+                                        <!-- Codigo postal -->
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="postcode" class="form-label d-none">Código postal <span class="required">*</span></label>
+                                                <input name="postcode" value="" id="postcode" type="text" class="form-control" [(ngModel)]="zipcode" placeholder="Código postal">
+                                            </div>
+                                        </div>
+                                        <!-- Provincia -->
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="new-city" class="form-label d-none">Provincia/Estado <span class="required">*</span></label>
+                                                <input name="city" placeholder="Población" value="" required=""   id="new-city" type="text" />
+                                            </div>
+                                        </div>  
+                                        <!-- Email -->
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="email" class="form-label d-none">E-Mail <span class="required">*</span></label>
+                                                <input name="email" value="" id="email" type="email" required="" [(ngModel)]="email"  placeholder="E-Mail" class="form-control">
+                                            </div>
+                                        </div>
+                                        <!-- Telefono -->
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="phone" class="form-label d-none">Telefono <span class="required">*</span></label>
+                                                <input name="phone" value="" id="phone" type="tel" required="" [(ngModel)]="telefono"  placeholder="Móvil" class="form-control">
+                                            </div>
+                                        </div>
+                                        <!-- State -->
+                                        <div class="row justify-content-center d-none">
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="address_State" class="form-label d-none">State <span class="required">*</span></label>
                                                 <select id="address_State" name="address[State]" data-default="" [(ngModel)]="region" class="form-control">
                                                     <option value="0" label="Select a state" selected="selected">Select a state</option>
                                                     <option value="AL">Alabama</option>
@@ -238,8 +271,8 @@
                                                     <option value="WY">Wyoming</option>
                                                 </select>
                                             </div>
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
-                                                <label for="address_province" class="form-label">Town / City <span class="required">*</span></label>
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="address_province" class="form-label d-none">Town / City <span class="required">*</span></label>
                                                 <select id="address_province" name="address[province]" data-default="" [(ngModel)]="ciudad" class="form-control">
                                                     <option value="0" label="Select a city" selected="selected">Select a city</option>
                                                     <option value="AR">Arkansas</option>
@@ -678,13 +711,14 @@
                                 </div>
                             </div>
                             <!--End Billing Address-->
-
                             <div class="d-flex justify-content-between">
                                 <button type="button" class="btn btn-secondary btnPrevious me-1">Volver al método de pago</button>
                                 <button type="button" class="btn btn-primary btnNext ms-1">Resumen del próximo pedido</button>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="steps3">
+
+                        <!-- <div class="tab-pane fade" id="steps3"> -->
+                        <div [ngClass]="{'tab-pane': true,'active': listAddressClients.length > 0,'fade': listAddressClients.length === 0}" id="steps3">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-7 col-lg-8">
                                     <!--Order Summary-->
@@ -791,8 +825,8 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-secondary me-1 btnPrevious">Volver al resumen del pedido</button>
-                                <button type="button" class="btn btn-primary ms-1 btnNext">Siguiente Proceder al pago</button>
+                                <button type="button" class="btn btn-secondary me-1 btnPrevious">Volver</button>
+                                <button type="button" class="btn btn-primary ms-1 btnNext">Continuar</button>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="steps4">

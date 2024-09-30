@@ -35,6 +35,10 @@ const routes: Routes = [{
     {
       path: "order-success",
       component: OrderSuccessComponent,
+    },
+    {
+      path: 'myaddress', // Añade la ruta para el módulo de direcciones
+      loadChildren: () => import('./myaddress/myaddress.module').then(m => m.MyaddressModule),
     }
   ]
 }];
