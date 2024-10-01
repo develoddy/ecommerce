@@ -26,7 +26,7 @@
         </div>
         <!--End Page Header-->
         <!--Main Content-->
-        <div class="container" >     
+        <div class="container py-5" >     
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">  
                     <!--Nav step checkout-->
@@ -41,27 +41,68 @@
 
                             <!-- Primer li -->
                             <li [ngClass]="{'nav-item': true, 'active onactive': !CURRENT_USER_AUTHENTICATED}">
-                                <a [ngClass]="{'nav-link': true, 'active': !CURRENT_USER_AUTHENTICATED}" data-bs-toggle="tab" href="#steps1">Método de pago</a>
+                                <a [ngClass]="{'nav-link ls-1': true, 'active': !CURRENT_USER_AUTHENTICATED}" data-bs-toggle="tab" href="#steps1">Identifícate</a>
                             </li>
                             
                             <!-- Segundo li -->
                             <li [ngClass]="{'nav-item': true, 'active onactive': CURRENT_USER_AUTHENTICATED && listAddressClients.length === 0}">
-                                <a [ngClass]="{'nav-link': true, 'active': CURRENT_USER_AUTHENTICATED && listAddressClients.length === 0}" data-bs-toggle="tab" href="#steps2">Dirección</a>
-                            </li>
-  
+                                <a [ngClass]="{'nav-link ls-1': true, 'active': CURRENT_USER_AUTHENTICATED && listAddressClients.length === 0}" data-bs-toggle="tab" href="#steps2">Datos del cliente</a>
+                            </li> 
+
                             <!-- Tercer li -->
                             <!-- <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#steps3">Resumen del pedido</a>
                             </li> -->
                             <li [ngClass]="{'nav-item': true, 'active onactive': listAddressClients.length > 0}">
-                                <a [ngClass]="{'nav-link': true, 'active': listAddressClients.length > 0}" data-bs-toggle="tab" href="#steps3">Resumen del pedido</a>
+                                <a [ngClass]="{'nav-link ls-1': true, 'active': listAddressClients.length > 0}" data-bs-toggle="tab" href="#steps3">Resumen del pedido</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#steps4">Pago</a>
+                                <a class="nav-link ls-1" data-bs-toggle="tab" href="#steps4">Métodos de envío y pago</a>
                             </li>
                         </ul>
                     </div>
+
+                    <!-- New Tabs -->
+                    <!-- <div id="mainDivSections" class="main-vertical-component clearfix">
+                        <div class="row-fluid stepsCheckout">
+                            <div class="span12" role="navigation">
+                                <div class="row-fluid labelSteps" role="list">
+                                    <div class="span3 margin " role="listitem" aria-current="false">
+                                        Identifícate
+                                    </div>
+                                    <div class="span3 margin " role="listitem" aria-current="true">
+                                        DATOS DE CLIENTE
+                                    </div>
+                                    <div class="span3 margin medium" role="listitem" aria-current="step">
+                                        Métodos de envío y pago
+                                    </div>
+                                    <div class="span3 margin " role="listitem" aria-current="false">
+                                        Confirmación
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="span12" aria-hidden="true">
+                                <div class="row-fluid bolasSteps">
+                                    <div class="span3 ">
+                                        <div class="flechaSteps "></div>
+                                    </div>
+                                    <div class="span3 ">
+                                        <div class="flechaSteps "></div>
+                                    </div>
+                                    <div class="span3 medium3">
+                                        <div class="flechaSteps "></div>
+                                    </div>
+                                    <div class="span3 ">
+                                        <div class="flechaSteps"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- / End new tabs -->
+
+
                     <!--End Nav step checkout-->
                     <!--Tab checkout content-->
                     <div class="tab-content checkout-form">
@@ -766,7 +807,7 @@
                                     </div>
                                     <!--End Order Summary-->
                                     <!--Order Comment-->
-                                    <div class="block order-comments my-4">
+                                    <div class="block order-comments my-4 d-none">
                                         <div class="block-content">
                                             <h3 class="title mb-3">Ordenar Comentario</h3>
                                             <fieldset>

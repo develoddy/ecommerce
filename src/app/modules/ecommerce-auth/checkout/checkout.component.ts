@@ -53,8 +53,6 @@ export class CheckoutComponent implements OnInit {
 
   public loading: boolean = false;
 
-  
-
   constructor(
     public _authEcommerce: EcommerceAuthService,
     public _cartService: CartService,
@@ -69,17 +67,12 @@ export class CheckoutComponent implements OnInit {
 
     this._authEcommerce._authService.user.subscribe(user => {
       if (user) {
-        //this.CURRENT_USER_AUTHENTICATED._id = user._id;
         this.CURRENT_USER_AUTHENTICATED = user;
       }
     });
 
-    //this._authEcommerce.listAddressClient(this._authEcommerce._authService.user._id).subscribe((resp:any) => {
-    this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp:any) => {
-      this.listAddressClients = resp.address_client;
-      console.log(this.listAddressClients);
-      
-    });
+    this.checkIfAddressClientExists();
+
 
     setTimeout(() => {
       HOMEINITTEMPLATE($);
@@ -184,6 +177,19 @@ export class CheckoutComponent implements OnInit {
     }).render(this.paypalElement?.nativeElement);
   }
 
+  checkIfAddressClientExists() {
+    this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
+      this.listAddressClients = resp.address_client;
+      if (this.listAddressClients.length === 0) {
+        // Guarda la URL actual en sessionStorage
+        sessionStorage.setItem('returnUrl', this._router.url);
+        
+        // Redirige al formulario de agregar dirección
+        this._router.navigate(['/myaddress/add']);
+      }
+    });
+  }
+
   onCheckboxChange(event: any) {
     this.isAddressSameAsShipping = event.target.checked;
   }
@@ -194,7 +200,6 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  // CUpon
   apllyCupon() {
     let data = {
       code: this.code_cupon,

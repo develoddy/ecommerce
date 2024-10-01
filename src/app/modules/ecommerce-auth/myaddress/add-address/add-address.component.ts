@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 declare var $:any;
 declare function alertDanger([]):any;
@@ -17,6 +17,8 @@ export class AddAddressComponent implements OnInit {
 
   address_client_selected:any = null;
   listAddressClients:any = [];
+
+  returnUrl: string = '/myaddress';  // Valor por defecto si no se pasa ningún returnUrl
 
   // Address
   name: string = '';
@@ -38,11 +40,18 @@ export class AddAddressComponent implements OnInit {
 
   constructor(
     public _ecommerceAuthService: EcommerceAuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
+    
     this.SPINNER();
+
+    // Obtiene el valor del returnUrl desde los parámetros de la URL
+    //this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || this.returnUrl;
+    this.returnUrl = sessionStorage.getItem('returnUrl') || this.returnUrl;
+
     this.verifyAuthenticatedUser();
   }
 
@@ -102,8 +111,14 @@ export class AddAddressComponent implements OnInit {
         this.hideMessageAfterDelay();
         alertSuccess(resp.message);
         this.resetForm();
-
-        this.router.navigate(['/myaddress']);
+        //this.router.navigate(['/myaddress']);
+        
+        // Redirige a returnUrl si existe, o a /myaddress por defecto
+        //this.router.navigate([this.returnUrl]);
+        
+        // Limpiar el sessionStorage y redirigir
+        sessionStorage.removeItem('returnUrl');
+        this.router.navigate([this.returnUrl]);
 
       } else {
         this.status = false;

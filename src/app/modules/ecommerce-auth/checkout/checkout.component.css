@@ -1,0 +1,170 @@
+#mainDivSections, .posRelative {
+    max-width: 100% !important;
+    width: 100%;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.clearfix:after, .clearfix:before {
+    display: table;
+    content: "";
+    line-height: 0;
+}
+.bolasSteps .span3 {
+    padding-top: 0 !important;
+}
+.clearfix::after, .clearfix::before {
+    content: "";
+    display: table;
+}
+.clearfix::after, .clearfix::before {
+    content: "";
+    display: table;
+}
+
+.stepsCheckout {
+    margin-top: 10px;
+}
+
+.row-fluid {
+    width: 100%;
+}
+
+.row-fluid:after {
+    clear: both;
+}
+
+.row-fluid:after, .row-fluid:before {
+    content: "";
+    display: table;
+    line-height: 0;
+}
+
+.row-fluid [class*=span]:first-child {
+    margin-left: 0;
+}
+
+
+
+.row-fluid .span12 {
+    width: 100%;
+}
+.row-fluid [class*=span] {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    display: block;
+    float: left;
+    margin-left: .498504%;
+    width: 100%;
+}
+.row-fluid .span12 {
+    width: 100%;
+}
+.row-fluid [class*=span] {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    display: block;
+    float: left;
+    margin-left: .498504%;
+    width: 100%;
+}
+
+
+
+.labelSteps {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+}
+
+.labelSteps {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+}
+.row-fluid {
+    width: 100%;
+}
+
+.stepsCheckout .span3.medium {
+    color: #121314;
+}
+
+.stepsCheckout .span3.medium {
+    color: #333;
+}
+
+.stepsCheckout .span3 {
+    color: #757575;
+    font-family: Gotham-Medium, Arial, sans-serif;
+    font-size: 11px;
+    padding-top: 10px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.row-fluid .span3 {
+    width: 24.6261%;
+}
+.row-fluid [class*=span] {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    display: block;
+    float: left;
+    margin-left: .498504%;
+    width: 100%;
+}
+
+.row-fluid .span3 {
+    width: 24.6261%;
+}
+.row-fluid [class*=span] {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    display: block;
+    float: left;
+    margin-left: .498504%;
+    width: 100%;
+}
+.margin {
+    padding-left: 1.3em;
+}
+.span3 {
+    width: 247px;
+}
+
+
+
+.row-fluid .span3 {
+    width: 24.6261%;
+}
+
+.row-fluid [class*=span] {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    display: block;
+    float: left;
+    margin-left: .498504%;
+    width: 100%;
+}
+
+
+.row-fluid .span3 {
+    width: 24.6261%;
+}
+
+
+/* 00_check.avif*/
+.flechaSteps {
+    background-image: url(//st.mngbcn.com/web/i/testeando/checkoutDesktop2/img/00_check.png);
+    background-size: 100%;
+    height: 33px;
+    margin: 0 auto;
+    position: relative;
+    top: -17px;
+    width: 33px;
+}

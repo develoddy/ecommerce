@@ -24,8 +24,8 @@ export class FooterComponent implements OnInit {
      const currentUrl = this._router.url;
 
     // Oculta la sección de suscripción en /myaddress
-    //if (this._router.url === '/myaddress') {
-    if (currentUrl === '/myaddress' || currentUrl.includes('/edit')) {
+    //if (this._router.url === '/myaddress') { 
+    if ( currentUrl === '/myaddress' || currentUrl === '/myaddress/add' || currentUrl.includes('/edit') || currentUrl.includes('/profile') || currentUrl.includes('/payment-process') ) {
       this.showSubscriptionSection = false;
     }
   }
