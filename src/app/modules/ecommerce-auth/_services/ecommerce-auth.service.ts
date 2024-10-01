@@ -33,6 +33,19 @@ export class EcommerceAuthService {
     );
   }
 
+  listOneAdessClient(idAdressClient:any) {
+    // Inicia el loading
+    this.loadingSubject.next(true);
+    let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE+"address_client/listone?id="+idAdressClient;
+    //return this._http.get(URL, {headers: headers});
+    
+    // Realizamos la petición HTTP
+    return this._http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+    );
+  }
+
   registerAddressClient(data:any) {
     // Inicia el loading
     this.loadingSubject.next(true);

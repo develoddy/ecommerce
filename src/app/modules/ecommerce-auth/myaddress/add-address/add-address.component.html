@@ -55,7 +55,7 @@
                                                         <option value="IT" label="Italy">Italy</option>
                                                         <option value="PT" label="Portugal">Portugal</option>
                                                         <option value="RO" label="Romania">Romania</option>
-                                                        <option value="ES" label="Spain">Spain</option>
+                                                        <option value="SPAIN" label="Spain">Spain</option>
                                                     </optgroup>
                                                 </select>
                                             </div>
@@ -67,13 +67,6 @@
                                                 <input name="address_1" value="" id="address-1" type="text" required="" [(ngModel)]="address" placeholder="Dirección" class="form-control">
                                             </div>
                                         </div>
-                                        <!-- Apartamento -->
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="address-1" class="form-label d-none">Apartamento (opcional)</label>
-                                                <input name="address_2" value="" id="address-2" type="text" required="" [(ngModel)]="referencia" placeholder="Apartamento, bloque, unidad, piso, código del portal, etc." class="form-control">
-                                            </div>
-                                        </div>
                                         <!-- Codigo postal -->
                                         <div class="row justify-content-center">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
@@ -81,25 +74,37 @@
                                                 <input name="postcode" value="" id="postcode" type="text" class="form-control" [(ngModel)]="zipcode" placeholder="Código postal">
                                             </div>
                                         </div>
-                                        <!-- Provincia -->
+                                        <!-- Población -->
                                         <div class="row justify-content-center">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="new-city" class="form-label d-none">Provincia/Estado <span class="required">*</span></label>
-                                                <input name="city" placeholder="Población" value="" required="" id="new-city" type="text" />
+                                                <label for="new-city" class="form-label d-none">Población <span class="required">*</span></label>
+                                                <input name="city" placeholder="Población" value="" required="" [(ngModel)]="poblacion" id="new-city" type="text" />
                                             </div>
                                         </div>  
+                                        <!-- Ciudad -->
+                                        <div class="row justify-content-center">
+                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                <label for="address_State" class="form-label d-none">Ciudad <span class="required">*</span></label>
+                                                <select id="address_State" name="address[State]" data-default="" [(ngModel)]="ciudad" class="form-control">
+                                                    <option value="0" label="Select a state" selected="selected">Provincia/Estado</option>
+                                                    <option value="Madrid">Madrid</option>
+                                                    <option value="New York">New York</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
                                         <!-- Email -->
                                         <div class="row justify-content-center">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
                                                 <label for="email" class="form-label d-none">E-Mail <span class="required">*</span></label>
-                                                <input name="email" value="" id="email" type="email" required="" [(ngModel)]="email"  placeholder="E-Mail" class="form-control">
+                                                <input name="email" value="" id="email" type="email" required="" [(ngModel)]="email"  placeholder="E-mail" class="form-control">
                                             </div>
                                         </div>
                                         <!-- Telefono -->
                                         <div class="row justify-content-center">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="phone" class="form-label d-none">Telefono <span class="required">*</span></label>
-                                                <input name="phone" value="" id="phone" type="tel" required="" [(ngModel)]="telefono"  placeholder="Móvil" class="form-control">
+                                                <label for="phone" class="form-label d-none">Móvil <span class="required">*</span></label>
+                                                <input name="phone" value="" id="phone" type="tel" required="" [(ngModel)]="phone"  placeholder="Móvil" class="form-control">
                                             </div>
                                         </div>
 
@@ -115,21 +120,11 @@
 
                                         <!-- Button register o update -->
                                         <div class="row justify-content-center">
-                                            <!-- <div class="form-group col-md-12 col-lg-12 mb-0"> -->
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <button type="submit" class="btn btn-secondary me-1 w-100 py-3" >
-                                                    <!-- <ng-container *ngIf="!loading">Guardar</ng-container>
-                                                    <ng-container *ngIf="loading">
-                                                        <div class="spinner-border text-light" role="status"></div>
-                                                    </ng-container> -->
+                                                <button type="submit" class="btn btn-secondary me-1 w-100 py-3" (click)="store()">
+                                                    <ng-container *ngIf="!loading">Guardar dirección</ng-container>
                                                 </button>
-                                                <!-- <a _ngcontent-tjs-c2="" href="#" onclick="return false;" class="ms-1 text-link text-decoration" (click)="store()">Registrar dirección</a> -->
-                                                <!-- <button type="button" class="btn btn-secondary me-1 w-100 py-3" (click)="store()">Guardar</button> -->
-                                                <!-- <div class="checkout-tearm customCheckbox d-none"> -->
-                                                    <!-- <input id="checkout_tearm" name="tearm" type="checkbox" value="checkout tearm" required /> -->
-                                                    <!-- <label for="checkout_tearm"> Save address to my account</label> -->
-                                                    <!-- <button type="button" *ngIf="!address_client_selected" (click)="store()" class="axil-btn btn btn-success checkout-btn">Registar dirección</button> -->
-                                                <!-- </div> -->
+                                                <p class="mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p> 
                                             </div>
                                         </div>
                                     </fieldset>

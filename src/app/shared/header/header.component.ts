@@ -74,11 +74,7 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
   }
 
   checkIfMobile() {
-    console.log("window.innerWidth: ", window.innerWidth);
-    
     this.isMobile = window.innerWidth <= 480; // Ajusta según tus necesidades
-
-    console.log("window.innerWidth this.isMobile: ", this.isMobile);
   }
 
   private verifyAuthenticatedUser(): void {

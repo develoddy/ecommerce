@@ -18,9 +18,13 @@ const routes: Routes = [{
       component: AddAddressComponent,
     },
     {
-      path: "edit",
-      component: EditAddressComponent,
+      path: ':idAdressClient/edit',
+      component: EditAddressComponent
     },
+    // {
+    //   path: "edit",
+    //   component: EditAddressComponent,
+    // },
   ]
 }];
 
