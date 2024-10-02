@@ -468,7 +468,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 /*======================================================================
   7. Headers Style 004aad
 ========================================================================*/
-.top-header { display:flex; flex-wrap:wrap; align-items:center; color:#ffffff; background:#424242; font-size:13px; padding-top:10px; padding-bottom:12px; min-height:35px; text-transform: uppercase; }
+.top-header { display:flex; flex-wrap:wrap; align-items:center; color:#ffffff; background:#424242; font-size:13px; padding-top:10px; padding-bottom:12px; min-height:35px; }
 .top-header a { color:#ffffff; }
 .top-header a:hover { color:#f4f4f4; }
 .top-header .social-icons { display:inline-block; font-weight:normal; margin:0; }
@@ -2369,7 +2369,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .btn.soldOutBtn { background-color:#f54337; border-color:#f54337; opacity:1; }
 .soldOutBtn { pointer-events:none; opacity:.75; }
 
-.table-bottom-brd table tr { border-bottom:1px solid #dddddd; }
+/* .table-bottom-brd table tr { border-bottom:1px solid #dddddd; } */
 .table-bottom-brd table th,
 .table-bottom-brd table td { padding: 15px 10px; border: none; box-shadow: none; }
 .table-bottom-brd table th { padding: 12px 10px; }
@@ -2426,7 +2426,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
   16. Checkout Pages
 ========================================================================*/
 .checkout-form .block { border-radius: 0; padding: 20px; }
-.checkout-form .block .title { text-transform: lowercase; }
+.checkout-form .block .title { text-transform: uppercase; }
 .card { background-color:#ffffff; border-color:#f7f7f7; border-radius:0; margin-bottom:10px; }
 .card-header { position:relative; padding:10px 15px; border-color:#f7f7f7; }
 .card-header .card-link { position:relative; text-decoration: none; }
@@ -2458,6 +2458,72 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .payment-accordion-radio .card .card-header .card-link:hover,
 .payment-accordion-radio .card .card-header .card-link[aria-expanded="true"] { color:#131313; border-radius: 0; }
 .payment-accordion-radio .card .card-header .card-link:before { content: none; }
+
+
+/* ------------------ pasos checkout ------------ */
+#mainDivSections, .posRelative {max-width: 100% !important;width: 100%;}
+.clearfix {clear: both;}
+.clearfix:after, .clearfix:before {display: table;content: "";line-height: 0;}
+.bolasSteps .span3 {padding-top: 0 !important;}
+.clearfix::after, .clearfix::before {content: "";display: table;}
+.clearfix::after, .clearfix::before {content: "";display: table;}
+.stepsCheckout {margin-top: 10px;}
+.row-fluid {width: 100%;}
+.row-fluid:after {clear: both;}
+.row-fluid:after, .row-fluid:before {content: "";display: table;line-height: 0;}
+.row-fluid [class*=span]:first-child {margin-left: 0;}
+.row-fluid .span12 {width: 100%;}
+.row-fluid [class*=span] {box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;display: block;float: left;margin-left: .498504%;width: 100%;}
+.labelSteps {border-bottom: 1px solid #ccc;padding-bottom: 20px;}
+.stepsCheckout .span3.medium {color: #121314;}
+.stepsCheckout .span3.medium {color: #333;}
+.stepsCheckout .span3 {color: #757575;font-family: Gotham-Medium, Arial, sans-serif;font-size: 11px;padding-top: 10px;text-align: center;text-transform: uppercase;}
+.row-fluid .span3 {width: 24.6261%;}
+.margin {padding-left: 1.3em;}
+.span3 {width: 247px;} 
+.flechaSteps {background-image: url(../images/icons/00_check.png);background-size: 100%;height: 33px;margin: 0 auto;position: relative;top: -17px;width: 33px;}
+.medium1 .flechaSteps {background-image: url(../images/icons/01_b.png);height: 37px;top: -19px;width: 37px;}
+.medium2 .flechaSteps {background-image: url(../images/icons/02_b.png);height: 37px;top: -19px;width: 37px;}
+.medium3 .flechaSteps {background-image: url(../images/icons/03_b.png);height: 37px;top: -19px;width: 37px;}
+.medium4 .flechaSteps {background-image: url(../images/icons/04_b.png);height: 37px;top: -19px;width: 37px;}
+
+/* header */
+a.logo {
+  background: url(../images/logo/brandlogo1.png) 50% 50% no-repeat;
+}
+
+a.logo {
+  display: block;
+  height: 61px;
+  margin: 0 auto;
+  width: 100%;
+}
+a.logo {
+  display: block;
+  height: 61px;
+  margin: 0 auto;
+  width: 100%;
+}
+.logo {
+  float: left;
+}
+.logo {
+  float: left;
+}
+@media (min-width: 768px) {
+  .logo {
+      background-size: 17% !important;
+  }
+}
+
+
+.header {
+  text-align: center;
+}
+
+.row-fluid {
+  width: 100%;
+}
 
 
 /*======================================================================
@@ -3363,4 +3429,3 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
     to { opacity: 1; -webkit-transform: none; transform: none; }
 }
 .fadeInUp { -webkit-animation-name: fadeInUp; animation-name: fadeInUp; }
-

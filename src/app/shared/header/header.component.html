@@ -33,11 +33,23 @@
         </div>
     </div>
 </div>
+
+<div class="top-header bg-transparent text-secondary">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-right d-flex align-items-center justify-content-center">
+                <p>Envío gratis desde 30 € - Paga en 3 meses 0% TAE</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!--End Top Header-->
 
 <!--Header-->
-<header class="header d-flex align-items-center header-1 header-fixed">
-    <div class="container">        
+<header class="header d-flex align-items-center header-1 header-fixed" *ngIf="showSubscriptionSection && CURRENT_USER_AUTHENTICATED" >
+    <div class="container">
         <div class="row">
             <!--Logo-->
             <div class="logo col-5 col-sm-3 col-md-3 col-lg-3 align-self-center">

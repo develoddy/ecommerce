@@ -24,17 +24,16 @@ export class CheckoutComponent implements OnInit {
 
   @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   listAddressClients:any = [];
-  name:any=null;
-  surname:any=null;
-  pais:any="Spain";
-  address:any=null;
-  referencia:any=null;
-  zipcode:any=null;
-  region:any=null;
-  ciudad:any=null;
-  telefono:any=null;
-  email:any=null;
-  nota:any=null;
+  // Address
+  name: string = '';
+  surname: string = '';
+  pais: string = '';
+  address: string = '';
+  zipcode: string = '';
+  poblacion: string = '';
+  ciudad: string = '';
+  email: string = '';
+  phone: string = '';
   
   address_client_selected:any = null;
 
@@ -52,6 +51,12 @@ export class CheckoutComponent implements OnInit {
   isSuccessRegisteredAddredd : boolean = false;
 
   public loading: boolean = false;
+
+  isLastStepActive: boolean = false;
+
+  errorOrSuccessMessage:any="";
+  validMessage:boolean=false;
+  status:boolean=false;
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
@@ -81,7 +86,6 @@ export class CheckoutComponent implements OnInit {
     }, 50);
 
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
-      
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
@@ -144,12 +148,12 @@ export class CheckoutComponent implements OnInit {
             surname: this.surname,
             pais: this.pais,
             address: this.address,
-            referencia: this.referencia,
+            referencia: '',
             ciudad: this.ciudad,
-            region: this.region,
-            telefono: this.telefono,
+            region: this.poblacion,
+            telefono: this.phone,
             email: this.email,
-            nota: this.nota,
+            nota: '',
           };
 
           this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}).subscribe((resp:any) => {
@@ -188,6 +192,11 @@ export class CheckoutComponent implements OnInit {
         this._router.navigate(['/myaddress/add']);
       }
     });
+  }
+
+  goToNextStep() {
+    // Aquí puedes agregar cualquier otra lógica antes de activar la última pestaña
+    this.isLastStepActive = true;
   }
 
   onCheckboxChange(event: any) {
@@ -235,98 +244,123 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  registerAddress() {
+  private registerAddress() {
 
-    console.log("this.name: ", this.name);
-    console.log("this.surname: ", this.surname);
-    console.log("this.pais: ", this.pais);
-    console.log("this.address: ", this.address);
-    console.log("this.ciudad: ", this.ciudad);
-    console.log("this.telefono: ", this.telefono);
-    console.log("this.email: ", this.email);
-    
-    if (!this.name ||
-        !this.surname ||
-        !this.pais ||
-        !this.address ||
-        //!this.region ||
-        !this.zipcode ||
-        !this.ciudad ||
-        !this.telefono ||
-        !this.email
-    ) {
-      alertDanger("Por favor, complete los campos obligatorios de la dirección de envío.");
+    if ( !this.name || !this.surname || !this.pais || !this.address || !this.zipcode || !this.poblacion || !this.ciudad || !this.email || !this.phone ) {
+      this.status = false;
+      this.validMessage = true;
+      this.errorOrSuccessMessage = "Por favor, complete los campos obligatorios de la dirección de envío";
+      this.hideMessageAfterDelay();
+      alertDanger("Por favor, complete los campos obligatorios de la dirección de envío");
       return;
     }
-    let data = {
-        user: this.CURRENT_USER_AUTHENTICATED._id,//this._authEcommerce._authService.user._id,
-        name:this.name,
-        surname:this.surname,
-        pais:this.pais,
-        address:this.address,
-        referencia:this.referencia,
-        zipcode:this.zipcode,
-        region:"No hay region",
-        ciudad:this.ciudad,
-        telefono:this.telefono,
-        email:this.email,
-        nota:this.nota,
+
+    let data = {    
+        user      : this.CURRENT_USER_AUTHENTICATED._id,
+        name      : this.name,
+        surname   : this.surname,
+        pais      : this.pais,
+        address   : this.address,
+        zipcode   : this.zipcode,
+        poblacion : this.poblacion,
+        ciudad    : this.ciudad,
+        email     : this.email,
+        phone     : this.phone,
     };
-    this._authEcommerce.registerAddressClient(data).subscribe((resp:any) => {
-      //if (resp.address_client) {
-        this.listAddressClients.push(resp.address_client);
+    
+    this._authEcommerce.registerAddressClient(data).subscribe( ( resp:any ) => {
+
+      if ( resp.status == 200 ) {
+
+        this.status = true;
+        this.validMessage = true;
+        this.errorOrSuccessMessage = resp.message;
+        this.hideMessageAfterDelay();
         alertSuccess(resp.message);
         this.resetForm();
-        this.isSuccessRegisteredAddredd = true;
-      //}
-      
+        //this.router.navigate(['/myaddress']);
+        
+        // Redirige a returnUrl si existe, o a /myaddress por defecto
+        //this.router.navigate([this.returnUrl]);
+        $('#addNewModal').modal('hide'); // Para Bootstrap
+
+      } else {
+        this.status = false;
+        this.errorOrSuccessMessage = "Error al registrar la dirección.";
+        this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+      }
+    }, error => {
+      this.status = false;
+      this.errorOrSuccessMessage = "Error al registrar la dirección.";
+      this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
     });
   }
 
-  updateAddress() {
-    if (!this.name ||
-      !this.surname ||
-      !this.pais ||
-      !this.address ||
-      //!this.region ||
-      !this.ciudad ||
-      !this.telefono ||
-      !this.email
-    ) {
-      alertDanger("Por favor, complete los campos obligatorios de la dirección.");
+  private updateAddress() {
+    
+    if ( !this.name || !this.surname || !this.pais || !this.address || !this.zipcode || !this.poblacion || !this.email || !this.phone ) {
+      this.status = false;
+      this.validMessage = true;
+      this.errorOrSuccessMessage = "Por favor, complete los campos obligatorios de la dirección de envío";
+      this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+      //alertDanger("Por favor, complete los campos obligatorios de la dirección de envío.");
       return;
     }
 
     let data = {
-        _id: this.address_client_selected.id,
-        user: this.CURRENT_USER_AUTHENTICATED._id, //this._authEcommerce._authService.user._id, //this._authEcommerce._authService.user._id,
-        name:this.name,
-        surname:this.surname,
-        pais:this.pais,
-        address:this.address,
-        referencia:this.referencia,
-        //region:this.region,
-        ciudad:this.ciudad,
-        telefono:this.telefono,
-        email:this.email,
-        nota:this.nota,
+      _id       : this.address_client_selected.id,
+      user      : this.CURRENT_USER_AUTHENTICATED._id,
+      name      : this.name,
+      surname   : this.surname,
+      pais      : this.pais,
+      address   : this.address,
+      zipcode   : this.zipcode,
+      poblacion : this.poblacion,
+      email     : this.email,
+      phone     : this.phone,
     };
-    this._authEcommerce.updateAddressClient(data).subscribe((resp:any) => {
-      let INDEX = this.listAddressClients.findIndex((item:any) => item._id == this.address_client_selected._id);
-      this.listAddressClients[INDEX] = resp.address_client;
-      alertSuccess(resp.message);
+
+    this._authEcommerce.updateAddressClient( data ).subscribe((resp:any) => {
+
+      if ( resp.status == 200 ) {
+
+        this.status = true;
+        this.validMessage = true;
+        this.errorOrSuccessMessage = resp.message;
+        this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+        
+        alertSuccess(resp.message);
+        this.resetForm();
+        $('#addEditModal').modal('hide'); // Para Bootstrap
+
+      } else {
+        this.status = false;
+        this.errorOrSuccessMessage = "Error al actualizar la dirección.";
+        this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+      }
+      
+    }, error => {
+      this.status = false;
+      this.errorOrSuccessMessage = "Error al actualizar la dirección.";
+      this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
     });
+  }
+
+  private hideMessageAfterDelay() {
+    setTimeout(() => {
+      this.validMessage = false;
+    }, 6000);
   }
 
   resetForm() {
-    this.name = null;
-    this.surname = null;
-    this.pais = null;
-    this.address = null;
-    this.region = null;
-    this.ciudad = null;
-    this.telefono = null;
-    this.email = null;
+    this.name = '';
+    this.surname = '';
+    this.pais = '';
+    this.address = '';
+    this.zipcode = '';
+    this.poblacion = '';
+    this.email = '';
+    this.phone = '';
   }
 
   newAddress() {
@@ -339,17 +373,18 @@ export class CheckoutComponent implements OnInit {
     this.show = true;
 
     this.address_client_selected = list_address;
+    console.log("this.address_client_selected: ", this.address_client_selected);
+    
     this.name = this.address_client_selected.name;
     this.surname = this.address_client_selected.surname;
     this.pais = this.address_client_selected.pais;
     this.address = this.address_client_selected.address;
-    this.referencia = this.address_client_selected.referencia;
-    this.region = this.address_client_selected.region;
     this.ciudad = this.address_client_selected.ciudad;
-    this.telefono = this.address_client_selected.telefono;
+    this.phone = this.address_client_selected.telefono;
     this.email = this.address_client_selected.email;
-    this.pais = this.address_client_selected.pais;
-    this.nota = this.address_client_selected.nota;
+    this.zipcode = this.address_client_selected.zipcode;
+    this.poblacion = this.address_client_selected.poblacion;
+    this.phone = this.address_client_selected.phone;
   }
 
   onAddressChange(event:any) {

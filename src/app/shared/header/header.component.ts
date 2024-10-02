@@ -46,6 +46,8 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
   private searchSubscription: Subscription | undefined;
   private miniCartSubscription: Subscription | undefined;
 
+  showSubscriptionSection: boolean = true;
+
   constructor(
     public _router: Router,
     public _cartService: CartService,
@@ -61,6 +63,15 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
 
   ngOnInit() {
     this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
+
+    // Oculta la sección de suscripción en /myaddress y cualquier ruta que incluya /edit
+    const currentUrl = this._router.url;
+
+    // Oculta la sección de suscripción en /myaddress
+    //if (this._router.url === '/myaddress') { 
+    if (  currentUrl.includes('/payment-process') ) {
+      this.showSubscriptionSection = false;
+    }
     
 
     this.subscribeToCartData(); // Suscripción a los datos del carrito
