@@ -34,7 +34,7 @@
     </div>
 </div>
 
-<div class="top-header bg-transparent text-secondary">
+<!-- <header class="header d-flex align-items-center header-1 header-fixed" *ngIf="CURRENT_USER_AUTHENTICATED">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-right d-flex align-items-center justify-content-center">
@@ -42,13 +42,13 @@
             </div>
         </div>
     </div>
-</div>
+</header> -->
 
 
 <!--End Top Header-->
 
 <!--Header-->
-<header class="header d-flex align-items-center header-1 header-fixed" *ngIf="showSubscriptionSection && CURRENT_USER_AUTHENTICATED" >
+<header class="header d-flex align-items-center header-1 header-fixed" *ngIf="showSubscriptionSection">
     <div class="container">
         <div class="row">
             <!--Logo-->
