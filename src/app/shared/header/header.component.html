@@ -33,18 +33,6 @@
         </div>
     </div>
 </div>
-
-<!-- <header class="header d-flex align-items-center header-1 header-fixed" *ngIf="CURRENT_USER_AUTHENTICATED">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-right d-flex align-items-center justify-content-center">
-                <p>Envío gratis desde 30 € - Paga en 3 meses 0% TAE</p>
-            </div>
-        </div>
-    </div>
-</header> -->
-
-
 <!--End Top Header-->
 
 <!--Header-->
@@ -690,19 +678,18 @@
                 <div class="freeShipMsg d-none"><i class="icon anm anm-truck-l fs-6 me-2 align-middle"></i>Congrats! You are eligible for <b>Free Shipping</b></div>
             </div>
             <div class="subtotal clearfix my-3">
-                <div class="totalInfo clearfix mb-1"><span>Envío:</span><span class="item product-price">{{ euro }}3.50</span></div>
-                <div class="totalInfo clearfix mb-1 d-none"><span>Tax:</span><span class="item product-price">$0.00</span></div>
-                <div class="totalInfo clearfix"><span>Total:</span><span class="item product-price">{{ euro }}{{ totalCarts | number: '1.2-2' }}</span></div>
+                <div class="totalInfo clearfix mb-1"><span>Envío</span><span class="item product-price">{{ euro }}3.50</span></div>
+                <div class="totalInfo clearfix mb-1 d-none"><span>Tax</span><span class="item product-price">$0.00</span></div>
+                <div class="totalInfo clearfix"><span>Total</span><span class="item product-price">{{ euro }}{{ totalCarts | number: '1.2-2' }}</span></div>
 
             </div>
             <div class="agree-check customCheckbox d-none">
                 <input id="prTearm" name="tearm" type="checkbox" value="tearm" required />
                 <label for="prTearm"> I agree with the </label><a href="#" class="ms-1 text-link">Terms &amp; conditions</a>
             </div>
-            <div class="minicart-action d-flex mt-3 flex-column">
-                <a href="checkout-style1.html" onclick="return false;" [routerLink]="['/payment-process']" class="proceed-to-checkout btn btn-secondary w-100 ms-0 py-3 mb-2">Finalizar compra</a>
-                <a href="cart-style1.html" onclick="return false;" [routerLink]="['/list-carts']" class="cart-btn btn btn-outline-secondary w-100 me-1 py-3 mb-2">Carrito de la compra</a>
-                
+            <div class="minicart-action d-flex mt-3">
+                <a href="cart-style1.html" onclick="return false;" [routerLink]="['/list-carts']" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a>
+                <a href="checkout-style1.html" onclick="return false;" [routerLink]="['/payment-process']" class="proceed-to-checkout btn btn-primary w-50 ms-1 btn-lg"> Comenzar pedido</a>
             </div>
         </div>
     </div>

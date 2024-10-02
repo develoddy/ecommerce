@@ -553,7 +553,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .customer-links li .icon { min-width: 20px; font-size: 14px; margin-right: 5px; }
 .customer-links li:not(:last-child) { margin: 0 0 7px; }
 
-#minicart-drawer { width:350px; }
+#minicart-drawer { width:400px; }
 #cart-drawer { color:#171717; padding:20px; width:100%; height:100%; overflow:auto; z-index:999; }
 #cart-drawer.active { right:0; }
 #minicart-drawer .close-cart { color:#050000; font-size:17px; float:right; margin-top:-10px; opacity:0.8; text-decoration:none; }
