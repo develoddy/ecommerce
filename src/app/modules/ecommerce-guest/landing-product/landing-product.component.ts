@@ -7,6 +7,8 @@ import { MinicartService } from 'src/app/services/minicartService.service';
 import { EcommerceAuthService } from '../../ecommerce-auth/_services/ecommerce-auth.service';
 import { WishlistService } from '../_service/wishlist.service';
 
+import { Title, Meta } from '@angular/platform-browser';
+
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function pswp([]):any;
@@ -80,6 +82,9 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     public _wishlistService: WishlistService,
     private minicartService: MinicartService,
     public _ecommerceAuthService: EcommerceAuthService,
+    // Seo
+    private titleService: Title, 
+    private metaService: Meta
   ) {}
 
   ngOnInit(): void {
@@ -93,9 +98,48 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     this.subscribeToRouteParams(); // Suscripción a los parámetros de la ruta
     this.subscribeToQueryParams(); // Suscripción a los parámetros de consulta
 
-    this.initLandingProduct(); // Inicializa el producto en la landing page
+    
 
+    this.initLandingProduct(); // Inicializa el producto en la landing page
+    
+    
     this.checkDeviceType(); // Verifica el tipo de dispositivo al cargar el componente
+
+    //  setTimeout(() => {
+    //    this.seo();
+    //  }, 50);
+
+  }
+
+  private seo() {
+    
+    
+    const productTitle = this.product_selected.title + ' | LujanDev Oficial' || 'Titulo';  // Información del producto
+    const productDescription = this.product_selected.resumen || 'Descripción del producto';
+    const productImageUrl = this.product_selected.imagen || 'URL de la imagen del producto';
+
+    // ver como obtener la ÜRL de forma dinamica cancatenando con el slug del producto
+    const productUrl = "http://localhost:5000/landing-product/"+this.product_selected.slug || 'URL del producto';
+
+    console.log("SEO: ", productUrl );
+
+    // Establecer el título
+    this.titleService.setTitle(productTitle);
+
+    // Meta descripción
+    this.metaService.updateTag({ name: 'description', content: productDescription });
+
+    // Open Graph Tags
+    this.metaService.updateTag({ property: 'og:title', content: productTitle });
+    this.metaService.updateTag({ property: 'og:description', content: productDescription });
+    this.metaService.updateTag({ property: 'og:image', content: productImageUrl });
+    this.metaService.updateTag({ property: 'og:url', content: productUrl });
+
+    // Twitter Card Tags
+    this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.metaService.updateTag({ name: 'twitter:title', content: productTitle });
+    this.metaService.updateTag({ name: 'twitter:description', content: productDescription });
+    this.metaService.updateTag({ name: 'twitter:image', content: productImageUrl });
   }
 
   @HostListener('window:resize', ['$event'])
@@ -157,6 +201,10 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
       this.REVIEWS            = resp.REVIEWS;
       this.AVG_REVIEW         = resp.AVG_REVIEW;
       this.COUNT_REVIEW       = resp.COUNT_REVIEW;
+
+      if (this.product_selected) {
+        this.seo();
+      }
 
       // VERIFICA SI EL USUARIO ESTÁ AUTENTICADO ANTES DE LLAMAR AL METODO showProfileClient
       if( this.CURRENT_USER_AUTHENTICATED ) {
