@@ -15,7 +15,7 @@
     <!-- Body Container -->
     <div id="page-content" [class.d-none]="loading"> 
         <!--Page Header-->
-        <div class="page-header text-center">
+        <div class="page-header text-center d-none">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12  d-flex justify-content-between align-items-center">
@@ -29,7 +29,7 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container">     
+        <div class="container" [ngClass]="{ 'px-0': isMobile }" >     
             <!--Product Content-->
             <div class="product-single">
                 <div class="row">
@@ -81,12 +81,20 @@
                         <!-- End Product Horizontal -->
                     </div>
 
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-info">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-info px-4">
                         <!-- Product Details -->
-                        <div class="product-single-meta">
-                            <h2 class="product-main-title">{{ product_selected.title }}</h2>
+                        <div class="product-single-meta ">
+                            <h2 class="product-main-title d-flex mb-0"> 
+                                <span class="flex-grow-1">{{ product_selected.title }}</span> 
+                                <div class="product-price d-flex-center">
+                                    <ng-container *ngIf="getDiscount() > 0">
+                                        <span class="price old-price">{{ euro }}{{ product_selected.price_usd }}</span>
+                                    </ng-container>
+                                    <span class="price">{{ euro }}{{ (product_selected.price_usd - getDiscount()).toFixed(2) }}</span>
+                                </div>
+                            </h2>
                             <!-- Product Reviews -->
-                            <div class="product-review d-flex-center mb-3">
+                            <div class="product-review d-flex-center mb-3 d-none">
                                 <div class="reviewStar d-flex-center">
                                     <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
                                     <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
@@ -100,22 +108,20 @@
                             <!-- End Product Reviews -->
                             <!-- Product Info -->
                             <div class="product-info">
-                                <p class="product-stock d-flex">Disponibilidad:
-                                    <span class="pro-stockLbl ps-0">
+                                <p class="product-stock d-flex d-none">Disponibilidad:
+                                    <span class="pro-stockLbl ps-0 d-none">
                                         <span class="d-flex-center stockLbl instock ">En stock</span>
                                     </span>
                                 </p>
-                                <p class="product-vendor">Proveedor:<span class="text"><a href="#">HVL</a></span></p>  
+                                <p class="product-vendor d-none">Proveedor:<span class="text"><a href="#">HVL</a></span></p>  
                                 <p class="product-type d-none">Tipo de producto:<span class="text">Tops</span></p> 
-                                <p class="product-sku d-none">SKU:<span class="text">{{ product_selected.sku }}</span></p>
+                                <p class="product-sku">REF.<span class="text">{{ product_selected.sku }}</span></p>
                             </div>
                             <!-- End Product Info -->
                             <!-- Product Price -->
-                            <div class="product-price d-flex-center my-3">
+                            <div class="product-price d-flex-center my-3 d-none">
                                 <ng-container *ngIf="getDiscount() > 0">
-                                    <span class="price old-price">{{ euro }}{{ product_selected.price_usd }}</span>    
-                                    <!-- <span class="price old-price">$135.00</span>
-                                    <span class="price">$99.00</span> -->
+                                    <span class="price old-price">{{ euro }}{{ product_selected.price_usd }}</span>
                                 </ng-container>
                                 <span class="price">{{ euro }}{{ (product_selected.price_usd - getDiscount()).toFixed(2) }}</span>
                             </div>
@@ -219,16 +225,16 @@
                                 <a class="text-link wishlist" href="wishlist-style1.html" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
                                 <a class="text-link compare d-none" href="compare-style1.html"><i class="icon anm anm-sync-ar me-2"></i> <span>Añadir para comparar</span></a>
                                 <a href="#shippingInfo-modal" class="text-link shippingInfo" data-bs-toggle="modal" data-bs-target="#shippingInfo_modal"><i class="icon anm anm-paper-l-plane me-2"></i> <span>Envío y devoluciones</span></a>
-                                <a href="#productInquiry-modal" class="text-link emaillink me-0" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>
+                                <a href="#productInquiry-modal" class="text-link emaillink me-0 d-none" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>
                             </p>
                             <!-- End Product Info link -->
                         </form>
                         <!-- End Product Form -->
 
                         <!-- Product Info -->
-                        <div class="userViewMsg featureText" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div> 
-                        <div class="shippingMsg featureText"><i class="icon anm anm-clock-r"></i>Entrega estimada entre <b id="fromDate">Lunes, 26 de agosto</b> y <b id="toDate">Viernes, 30 de agosto</b>.</div>                             
-                        <div class="freeShipMsg featureText" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}50.00</span></b> Más para envío gratis</div>
+                        <div class="userViewMsg featureText d-none" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div> 
+                        <div class="shippingMsg featureText d-none"><i class="icon anm anm-clock-r"></i>Entrega estimada entre <b id="fromDate">Lunes, 26 de agosto</b> y <b id="toDate">Viernes, 30 de agosto</b>.</div>                             
+                        <div class="freeShipMsg featureText" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}30.00</span></b> Más para envío gratis</div>
                         <!-- End Product Info -->
 
                         <!-- Social Sharing -->
@@ -272,7 +278,7 @@
                     <li rel="shipping-return"><a class="tablink">Envío y devolución</a></li>
                     <li rel="reviews"><a class="tablink">Reseñas</a></li>
                 </ul>
-                <div class="tab-container">
+                <div class="tab-container px-3">
                     <!--Description-->
                     <h3 class="tabs-ac-style d-md-none active" rel="description">Descripción</h3>
                     <div id="description" class="tab-content">
@@ -289,7 +295,7 @@
                                     </ul>
                                     <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p> -->
                                 </div>
-                                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 d-none">
                                     <img data-src="assets/images/content/product-detail-img.jpg" src="assets/images/content/product-detail-img.jpg" alt="image" width="600" height="600" />
                                 </div>
                             </div>

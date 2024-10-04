@@ -47,7 +47,7 @@
             <ng-template #allCarts>
                 <div class="row">
                     <!--Cart Content-->
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-8 main-col">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
                         <div class="alert alert-success py-2 alert-dismissible fade show cart-alert d-none" role="alert">
                             <i class="align-middle icon anm anm-truck icon-large me-2"></i><strong class="text-uppercase">Felicidades!</strong> Tienes envío gratis!
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -141,7 +141,7 @@
                         <!--End Cart Form-->
 
                         <!--Note with Shipping estimates-->
-                        <div class="row my-4 pt-3">
+                        <div class="row my-4 pt-3 d-none">
                             <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-12 cart-col d-none">
                                 <div class="cart-note mb-4">
                                     <h5>Añade una nota a tu pedido</h5>
@@ -149,7 +149,7 @@
                                     <textarea name="note" id="cart-note" class="form-control cart-note-input" rows="3" required></textarea>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-12 cart-col">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-12 cart-col d-none">
                                 <div class="cart-discount">
                                     <h5>Códigos de descuento</h5>
                                     <form>
@@ -508,39 +508,58 @@
                     <!--End Cart Content-->
 
                     <!--Cart Sidebar-->
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-4 cart-footer">
-                        <div class="cart-info sidebar-sticky">
-                            <div class="cart-order-detail cart-col">
-                                <div class="row g-0 border-bottom pb-2">
-                                    <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Subtotal</strong></span>
-                                    <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ euro }}{{ totalCarts | number: '1.2-2' }}</span></span>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 cart-footer py-5">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-4 mb-12 py-3 px-3">
+                                <div class="cart-discount">
+                                    <h3 class="text-uppercase ls-2 ">Códigos de descuento</h3>
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="address_zip">Introduce tu código de cupón si tienes uno.</label>
+                                            <div class="input-group0">
+                                                <input class="form-control" type="text" name="coupon" placeholder="Código de cupon" [(ngModel)]="code_cupon" required />
+                                                <input type="submit" class="btn text-nowrap mt-3"  (click)="apllyCupon()" value="Aplicar cupón" />
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="row g-0 border-bottom py-2 d-none">
-                                    <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Cupón de descuento</strong></span>
-                                    <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">-$25.00</span></span>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-4 mb-12">
+                                <div class="cart-info sidebar-sticky">
+                                    <h3  class="title mb-3 ls-2 text-uppercase">Resumen de Precio</h3>
+                                    <div class="cart-order-detail cart-col">
+                                        <div class="row g-0 border-bottom pb-2">
+                                            <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Subtotal</strong></span>
+                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ euro }}{{ totalCarts | number: '1.2-2' }}</span></span>
+                                        </div>
+                                        <div class="row g-0 border-bottom py-2 d-none">
+                                            <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Cupón de descuento</strong></span>
+                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">-$25.00</span></span>
+                                        </div>
+                                        <div class="row g-0 border-bottom py-2 d-none">
+                                            <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Tax</strong></span>
+                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">$10.00</span></span>
+                                        </div>
+                                        <div class="row g-0 border-bottom py-2">
+                                            <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Envío</strong></span>
+                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Envío gratis</span></span>
+                                        </div>
+                                        <div class="row g-0 pt-2">
+                                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6"><strong>Total</strong></span>
+                                            <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ euro }}{{ totalCarts | number: '1.2-2' }}</b></span>
+                                        </div>
+        
+                                        <p class="cart-shipping mt-3 d-none">Envío &amp; Impuestos calculados al finalizar la compra</p>
+                                        <p class="cart-shipping fst-normal freeShipclaim d-none"><i class="me-2 align-middle icon anm anm-truck-l"></i><b>ENVÍO GRATIS</b> ELEGIBLE</p>
+                                        <div class="customCheckbox cart-tearm d-none">
+                                            <input type="checkbox" value="allen-vela" id="cart-tearm">
+                                            <label for="cart-tearm">Estoy de acuerdo con los términos y condiciones</label>
+                                        </div>
+                                        <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" id="cartCheckout" class="btn btn-secondary btn-lg my-4 checkout w-100">Continuar con el pago</a>
+                                        <div class="paymnet-img text-center"><img src="assets/images/icons/safepayment.png" alt="Payment" width="299" height="28" /></div>
+                                    </div>                               
                                 </div>
-                                <div class="row g-0 border-bottom py-2 d-none">
-                                    <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Tax</strong></span>
-                                    <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">$10.00</span></span>
-                                </div>
-                                <div class="row g-0 border-bottom py-2">
-                                    <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Envío</strong></span>
-                                    <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Envío gratis</span></span>
-                                </div>
-                                <div class="row g-0 pt-2">
-                                    <span class="col-6 col-sm-6 cart-subtotal-title fs-6"><strong>Total</strong></span>
-                                    <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ euro }}{{ totalCarts | number: '1.2-2' }}</b></span>
-                                </div>
-
-                                <p class="cart-shipping mt-3 d-none">Envío &amp; Impuestos calculados al finalizar la compra</p>
-                                <p class="cart-shipping fst-normal freeShipclaim d-none"><i class="me-2 align-middle icon anm anm-truck-l"></i><b>ENVÍO GRATIS</b> ELEGIBLE</p>
-                                <div class="customCheckbox cart-tearm d-none">
-                                    <input type="checkbox" value="allen-vela" id="cart-tearm">
-                                    <label for="cart-tearm">Estoy de acuerdo con los términos y condiciones</label>
-                                </div>
-                                <a href="checkout-style1.html" onclick="return false;" [routerLink]="['/payment-process']" id="cartCheckout" class="btn btn-secondary btn-lg my-4 checkout w-100">Continuar con el pago</a>
-                                <div class="paymnet-img text-center"><img src="assets/images/icons/safepayment.png" alt="Payment" width="299" height="28" /></div>
-                            </div>                               
+                            </div>
                         </div>
                     </div>
                     <!--End Cart Sidebar-->

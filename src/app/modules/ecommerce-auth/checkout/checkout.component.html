@@ -1,5 +1,37 @@
 <!--Page Wrapper-->
 <div class="page-wrapper">
+    <!--Marquee Text-->
+    <div class="topbar-slider clearfix">
+        <div class="container-fluid">
+            <div class="marquee-text">
+                <div class="top-info-bar d-flex">
+                    <div class="flex-item center">
+                        <a href="#">
+                            <span> <i class="anm anm-worldwide"></i> BUY ONLINE PICK UP IN STORE</span>
+                            <span> <i class="anm anm-truck-l"></i> FREE WORLDWIDE SHIPPING ON ALL ORDERS ABOVE $100</span>
+                            <span> <i class="anm anm-redo-ar"></i> EXTENDED RETURN UNTIL 30 DAYS</span>
+                        </a>
+                    </div>
+                    <div class="flex-item center">
+                        <a href="#">
+                            <span> <i class="anm anm-worldwide"></i> BUY ONLINE PICK UP IN STORE</span>
+                            <span> <i class="anm anm-truck-l"></i> FREE WORLDWIDE SHIPPING ON ALL ORDERS ABOVE $100</span>
+                            <span> <i class="anm anm-redo-ar"></i> EXTENDED RETURN UNTIL 30 DAYS</span>
+                        </a>
+                    </div>
+                    <div class="flex-item center">
+                        <a href="#">
+                            <span> <i class="anm anm-worldwide"></i> BUY ONLINE PICK UP IN STORE</span>
+                            <span> <i class="anm anm-truck-l"></i> FREE WORLDWIDE SHIPPING ON ALL ORDERS ABOVE $100</span>
+                            <span> <i class="anm anm-redo-ar"></i> EXTENDED RETURN UNTIL 30 DAYS</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Marquee Text-->
+
     <!-- Loading -->
     <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
@@ -31,7 +63,7 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container py-5" >     
+        <div class="container" >     
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">  
                     <!--Nav step checkout-->
@@ -50,7 +82,7 @@
                                         Métodos de pago
                                     </div>
                                     <!-- <div class="span3 margin " role="listitem" aria-current="false"> -->
-                                    <div class="span3 margin" [ngClass]="{'medium': !isLastStepActive && CURRENT_USER_AUTHENTICATED && listAddressClients.length > 0}" role="listitem" aria-current="step">
+                                    <div class="span3 margin" [ngClass]="{'medium': isLastStepActive && CURRENT_USER_AUTHENTICATED && listAddressClients.length > 0}" role="listitem" aria-current="step">
                                         Confirmación
                                     </div>
                                 </div>
@@ -68,7 +100,6 @@
                                     <div class="span3" [ngClass]="{ 'medium3': CURRENT_USER_AUTHENTICATED && listAddressClients.length > 0 && isLastStepActive}">
                                         <div class="flechaSteps"></div>
                                     </div>
-
                                     <div class="span3">
                                         <div class="flechaSteps"></div>
                                     </div>

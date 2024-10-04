@@ -273,13 +273,13 @@
                                             </select>
                                         </div>
                                         <div class="input-box d-flex fl-1">
-                                            <input type="text" class="input-text border-start-0 border-end-0" [(ngModel)]="search_product" (keyup.enter)="searchProduct()" #filter name="prod-search" id="prod-search" placeholder="Buscar productos ..." value="" />
+                                            <input type="text" class="input-text border-start-0 border-end-0" [(ngModel)]="search_product" (keyup.enter)="searchProduct()" #filter name="prod-search" id="prod-search" placeholder="Buscar" value="" />
                                             <button type="submit" class="action search d-flex-justify-center btn rounded-start-0"><i class="icon anm anm-search-l"></i></button>
                                         </div>
                                     </div>
                                     <!--End Search Field-->
                                     <!--Search popular-->
-                                    <div class="popular-searches d-flex-justify-center mt-3">
+                                    <div class="popular-searches d-flex-justify-center mt-3 d-none">
                                         <span class="title fw-600">Tendencias actuales:</span>
                                         <div class="d-flex-wrap searches-items">
                                             <ng-container *ngFor="let categorie of categories">
@@ -303,7 +303,7 @@
                                                         <div class="ms-3 details text-left">
                                                             <div class="product-name"><a class="item-title" href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', product.slug]" [queryParams]="getRouterDiscount(product)">{{ product.title }}</a></div>
                                                             <div class="product-price"><span class="old-price" *ngIf="product.campaing_discount">{{ euro }}{{ product.price_usd }}</span><span class="price">{{ euro }}{{ product.price_usd - getDiscountProduct(product) }}</span></div>
-                                                            <div class="product-review d-flex align-items-center justify-content-start">
+                                                            <div class="product-review d-flex align-items-center justify-content-start d-none">
                                                                 <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': product.avg_review < 1}"></i>
                                                                 <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': product.avg_review < 2}"></i>
                                                                 <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': product.avg_review < 3}"></i>
@@ -330,11 +330,10 @@
                         <ng-container *ngIf="isMobile; else desktopLink">
                             <a [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/profile'] : ['/auth/login']" class="text-white">
                                 <i class="hdr-icon icon anm anm-user-al"></i>
-                              </a>
+                            </a>
                         </ng-container>
                         <ng-template #desktopLink>
                             <i class="hdr-icon icon anm anm-user-al"></i>
-                            
                         </ng-template>
 
                         <span class="menubar-label" *ngIf="CURRENT_USER_AUTHENTICATED; else notAuthenticated">
@@ -411,9 +410,17 @@
                 <!--End Wishlist-->
                 <!--Minicart-->
                 <div class="header-cart iconset"title="Carro">
-                    <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
-                        <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count">{{ listCarts.length }}</span>
-                    </a>
+                    <ng-container *ngIf="isMobile; else desktopLinkMiniCart">
+                        <a href="cart-style1.html" onclick="return false;" [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/list-carts'] : ['/auth/login']" class="header-cart btn-minicart clr-none">
+                            <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count">{{ listCarts.length }}</span>
+                        </a>
+                    </ng-container>
+                    <ng-template #desktopLinkMiniCart>
+                        <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
+                            <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count">{{ listCarts.length }}</span>
+                        </a>
+                    </ng-template>
+                    
                 </div>
                 <!--End Minicart-->
                 <!--Mobile Toggle-->
@@ -689,7 +696,7 @@
             </div>
             <div class="minicart-action d-flex mt-3">
                 <a href="cart-style1.html" onclick="return false;" [routerLink]="['/list-carts']" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a>
-                <a href="checkout-style1.html" onclick="return false;" [routerLink]="['/payment-process']" class="proceed-to-checkout btn btn-primary w-50 ms-1 btn-lg"> Comenzar pedido</a>
+                <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout btn btn-primary w-50 ms-1 btn-lg"> Comenzar pedido</a>
             </div>
         </div>
     </div>

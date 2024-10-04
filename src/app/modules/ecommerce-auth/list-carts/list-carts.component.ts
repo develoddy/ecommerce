@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function sectionCart():any;
@@ -24,6 +25,7 @@ export class ListCartsComponent implements OnInit {
   constructor(
     public _router: Router,
     public _cartService: CartService,
+    private subscriptionService: SubscriptionService,
   ) {}
   
   ngOnInit() {
@@ -51,6 +53,12 @@ export class ListCartsComponent implements OnInit {
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
     });
+  }
+
+  goToCheckout() {
+    // Cambia el valor antes de navegar
+    this.subscriptionService.setShowSubscriptionSection(false);
+    this._router.navigateByUrl('/payment-process')
   }
 
   updateTotalCarts() {

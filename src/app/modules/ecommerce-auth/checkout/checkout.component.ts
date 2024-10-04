@@ -324,6 +324,9 @@ export class CheckoutComponent implements OnInit {
 
       if ( resp.status == 200 ) {
 
+        let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
+        this.listAddressClients[INDEX] = resp.address_client;
+
         this.status = true;
         this.validMessage = true;
         this.errorOrSuccessMessage = resp.message;

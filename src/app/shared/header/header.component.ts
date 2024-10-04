@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { debounceTime, fromEvent, Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { EcommerceGuestService } from 'src/app/modules/ecommerce-guest/_service/
 import { WishlistService } from 'src/app/modules/ecommerce-guest/_service/wishlist.service';
 import { LanguageService } from 'src/app/services/language.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 declare var $:any;
 //declare function headerIconToggle([]):any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -37,6 +38,8 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
   CURRENT_USER_AUTHENTICATED:any=null;
 
   isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
 
   source:any;
   @ViewChild("filter") filter?:ElementRef;
@@ -56,20 +59,26 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
     private languageService: LanguageService,
     public _ecommerceGuestService: EcommerceGuestService,
     private minicartService: MinicartService,
+    private subscriptionService: SubscriptionService,
   ) {
     translate.setDefaultLang('es');
   }
 
 
   ngOnInit() {
+
+    this.subscriptionService.showSubscriptionSection$.subscribe(value => {
+      this.showSubscriptionSection = value;
+    });
+    
     this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
 
     // Oculta la sección de suscripción en /myaddress y cualquier ruta que incluya /edit
     const currentUrl = this._router.url;
 
     // Oculta la sección de suscripción en /myaddress
-    //if (this._router.url === '/myaddress') { 
-    if (  currentUrl.includes('/payment-process') ) {
+    if (this._router.url === '/payment-process') { 
+    //if (  currentUrl.includes('/payment-process') ) {
       this.showSubscriptionSection = false;
     }
     
@@ -79,13 +88,55 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
     
 
     this.subscribeToEcommerceConfig(); // Suscripción a la configuración inicial de eCommerce
-    this.checkIfMobile();
+    this.checkDeviceType(); // Verifica el tipo de dispositivo al cargar el componente
 
-    
+    /*setTimeout(() => {
+      sectionCart();
+    }, 50);*/
+
   }
 
-  checkIfMobile() {
+  goToCheckout() {
+    this.showSubscriptionSection = false;
+    this._router.navigateByUrl('/payment-process');
+  }
+
+  /**
+   * @HostListener('window:resize'): Escucha los cambios en el tamaño de la ventana, por lo que cuando el usuario ajusta el tamaño de la pantalla, 
+   * la función checkDeviceType() se vuelve a ejecutar.
+   */
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.checkDeviceType(); // Vuelve a verificar el tamaño en caso de cambio de tamaño de pantalla
+  }
+
+  /*checkIfMobile() {
     this.isMobile = window.innerWidth <= 480; // Ajusta según tus necesidades
+  }*/
+  
+    /**
+     * Explicación:
+     * checkDeviceType(): Esta función se encarga de verificar el tamaño de la ventana y ajustar las variables isMobile, isTablet y isDesktop en consecuencia.
+     * isMobile: Es true si el ancho es menor o igual a 480 px (para teléfonos móviles).
+     * isTablet: Es true si el ancho está entre 481 y 768 px (para tabletas).
+     * isDesktop: Es true si el ancho es mayor a 768 px (para pantallas de escritorio)
+     **/
+  checkDeviceType() {
+    const width = window.innerWidth;
+
+    if (width <= 480) {
+      this.isMobile = true;
+      this.isTablet = false;
+      this.isDesktop = false;
+    } else if (width > 480 && width <= 768) {
+      this.isMobile = false;
+      this.isTablet = true;
+      this.isDesktop = false;
+    } else {
+      this.isMobile = false;
+      this.isTablet = false;
+      this.isDesktop = true;
+    }
   }
 
   private verifyAuthenticatedUser(): void {

@@ -22,9 +22,9 @@
   position: fixed;
   left: 0%;
   top: 10%;
-  color: #155724;
-  background-color: #d4edda;
-  border: 1px solid #d4edda;
+  color: #fff !important;
+  background-color: #131313;
+  border: 1px solid #131313;
   /* #ffebeb; */
   border-radius: 0.2rem;
   overflow: hidden;

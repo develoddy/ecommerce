@@ -89,6 +89,10 @@ export class FilterProductsComponent implements OnInit {
 
     this.filterProduct();
 
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+    }, 50);
+
     //setTimeout(() => {
       //HOMEINITTEMPLATE($);
       //filtersSidebar($);

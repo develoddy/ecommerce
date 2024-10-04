@@ -392,7 +392,7 @@
     .aboutus-style2-page .about-details.faqs-style.faqs-style2.px-50 { padding-left: 20px !important; padding-right: 0px !important; }
 
     .dashboard-tab .nav-tabs { overflow: auto; -ms-flex-wrap: nowrap; flex-wrap: nowrap; white-space: nowrap; padding: 0 5px 3px; }
-    .dashboard-tab .nav-tabs .nav-item .nav-link { font-size: 14px; padding: 5px 0; margin: 0 10px; background: transparent;  border-bottom: 2px solid transparent; }
+    .dashboard-tab .nav-tabs .nav-item .nav-link { font-size: 12px; padding: 5px 0; margin: 0 10px; background: transparent;  border-bottom: 2px solid transparent; }
     .dashboard-tab .nav-tabs .nav-item .nav-link:hover, .dashboard-tab .nav-tabs .nav-item.show .nav-link, .dashboard-tab .nav-tabs .nav-link.active { border-color: #ec0016; }
     .tracking-steps .step { min-width: 160px; }
 
@@ -727,7 +727,7 @@
     .modal .modal-body { padding: 15px 15px 20px; }
     .quickview-modal .product-title { font-size: 18px; }
 
-    .product-info p { font-size: 13px; }
+    .product-info p { font-size: .625rem; }
     .button-bottom-action .btn { font-size: 12px; padding: 8px 15px; }
     .product-form .swatches-size .sizelink { margin-left: 30px; }
 

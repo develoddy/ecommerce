@@ -501,7 +501,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .marquee-text .top-info-bar .flex-item { animation: ticker 30s infinite linear; -webkit-animation: ticker 30s infinite linear; flex-shrink: 0; }
 .marquee-text .top-info-bar:hover .flex-item { -webkit-animation-play-state: paused; -moz-animation-play-state: paused; -o-animation-play-state: paused; -ms-animation-play-state: paused; animation-play-state: paused; }
 .marquee-text .top-info-bar a { color: #ffffff; }
-.marquee-text .top-info-bar a i { color: #ffea00; vertical-align: middle; font-size: 16px; margin-right: 6px; font-weight: 400; position: relative; top: -1px; }
+.marquee-text .top-info-bar a i { color: #bbb; vertical-align: middle; font-size: 16px; margin-right: 6px; font-weight: 400; position: relative; top: -1px; }
 .marquee-text .top-info-bar a span { padding: 0 40px; }
 
 @-webkit-keyframes ticker {
@@ -553,7 +553,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .customer-links li .icon { min-width: 20px; font-size: 14px; margin-right: 5px; }
 .customer-links li:not(:last-child) { margin: 0 0 7px; }
 
-#minicart-drawer { width:400px; }
+#minicart-drawer { width:420px; }
 #cart-drawer { color:#171717; padding:20px; width:100%; height:100%; overflow:auto; z-index:999; }
 #cart-drawer.active { right:0; }
 #minicart-drawer .close-cart { color:#050000; font-size:17px; float:right; margin-top:-10px; opacity:0.8; text-decoration:none; }
@@ -2489,21 +2489,38 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 
 /* header */
 a.logo {
-  background: url(../images/logo/brandlogo1.png) 50% 50% no-repeat;
+  /* background: url(../images/logo/brandlogo1.png) 50% 50% no-repeat; */
+  background: url(../images/logo.png) 50% 50% no-repeat;
+  width: 200px;  /* Tamaño del logo en desktop */
+  height: 50px;
+  background-size: contain;
+}
+
+/* Estilo para pantallas pequeñas (móvil) */
+@media (max-width: 768px) {
+  a.logo {
+    width: 120px;  /* Reducir el ancho del logo en móvil */
+    height: 30px;
+    background-size: contain;
+  }
+}
+
+/* Estilo para pantallas muy pequeñas (teléfonos pequeños) */
+@media (max-width: 480px) {
+  a.logo {
+    width: 100px;  /* Aún más pequeño para pantallas muy pequeñas */
+    height: 25px;
+    background-size: contain;
+  }
 }
 
 a.logo {
   display: block;
-  height: 61px;
+  height: 75px;
   margin: 0 auto;
   width: 100%;
 }
-a.logo {
-  display: block;
-  height: 61px;
-  margin: 0 auto;
-  width: 100%;
-}
+
 .logo {
   float: left;
 }
@@ -2584,7 +2601,7 @@ a.logo {
 .product-form-submit .btn { height: 45px; width: 100%; }
 .product-form-quantity .qtyField { width: 100px; }
 .product-form-quantity .qtyField input { font-size: 15px; width: 100px; height: 45px; }
-.product-form .swatches-size .sizelink { font-size: 13px; margin-left: 90px; text-transform: uppercase; font-weight: 600; }
+.product-form .swatches-size .sizelink { font-size: 11px; margin-left: 90px; text-transform: uppercase; font-weight: 600; }
 .infolinks .text-link { text-decoration:none; text-transform:none; font-weight:400; width:auto; height:auto; padding:0; margin:0 15px 0 0; display:flex; align-items:center; }
 .featureText { margin-bottom:10px; }
 .featureText .icon { min-width:25px; font-size:16px; vertical-align:sub; text-align:left; }
@@ -2604,7 +2621,7 @@ a.logo {
 #productInquiry .page-title h3, #sizechart h4 { font-size: 20px; text-transform: uppercase; }
 
 /* Product tabs */
-.tabs-listing .product-tabs li a { font-size:14px; font-weight:600; text-transform:uppercase; position:relative; display:block; padding:0 0 10px; background-color:transparent; color:#333333; border:none; cursor:pointer; margin-right:40px; }
+.tabs-listing .product-tabs li a { font-size:12px; font-weight:600; text-transform:uppercase; position:relative; display:block; padding:0 0 10px; background-color:transparent; color:#333333; border:none; cursor:pointer; margin-right:40px; }
 .tabs-listing .product-tabs li.active a, 
 .tabs-listing .product-tabs li:hover a { color: #424242; }
 .tabs-listing .product-tabs li a:before { content:""; width:0; height:1px; background-color:#424242; position:absolute; bottom:-1px; left:0; right:0; }
@@ -2829,10 +2846,10 @@ a.logo {
   23. My Account Pages
 ========================================================================*/
 .dashboard-sidebar { position: sticky; top: 30px; z-index: 1; padding: 30px 0 15px 0; }
-.dashboard-tab .nav-tabs .nav-item .nav-link { color: #333; font-size: 15px; padding: 8px 20px; border: none; border-radius: 0; cursor: pointer; -webkit-transition: all 0.5s ease; transition: all 0.5s ease; }
+.dashboard-tab .nav-tabs .nav-item .nav-link { color: #333; font-size: 12px; padding: 8px 20px; border: none; border-radius: 0; cursor: pointer; -webkit-transition: all 0.5s ease; transition: all 0.5s ease; }
 .dashboard-tab .nav-tabs .nav-item .nav-link:hover,
 .dashboard-tab .nav-tabs .nav-item.show .nav-link, 
-.dashboard-tab .nav-tabs .nav-link.active { color: #131313; }
+.dashboard-tab .nav-tabs .nav-link.active { color: #131313; background-color: #dddddd6e; }
 .dashboard-content .counter-box img { height: 45px; margin-right: 20px; }
 .dashboard-content .box-info .box-title { position: relative; background-color: #f7f7f7; padding: 10px 15px; }
 .dashboard-content .box-info .box-title h4 { color: #333; font-size: 15px; margin: 0; text-transform: capitalize; }
@@ -3144,8 +3161,10 @@ a.logo {
 .pro-stockLbl .outstock .icon { color:#f00; }
 .pro-stockLbl .items, .discount-badge .off { color:#131313; }
 
-.product-info p { position:relative; color:#333333; font-size:14px; font-weight:600; text-transform:none; margin-bottom:5px; }
-.product-info p span { padding-left:10px; font-weight:400; text-transform:capitalize; }
+
+
+.product-info p { position:relative; color: #757575;font-size: .625rem; font-weight:600; text-transform:none; margin-bottom:5px; }
+.product-info p span { padding-left:5px; font-weight:400; text-transform:capitalize; }
 .product-info p span.instock { color:#447900; }
 
 .text-content h3 { margin: 20px 0; }

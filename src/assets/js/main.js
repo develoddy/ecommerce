@@ -1675,6 +1675,7 @@ function alertSuccess(TEXT){
       SECONDS ++;
       $("#notification-ecommerce-success .btn-secondary").text(SECONDS);
     };
+    
     $("#notification-ecommerce-success .text-message-notification").text(TEXT);
     var timer = setInterval(showTime, 1000);
     setTimeout(() => {

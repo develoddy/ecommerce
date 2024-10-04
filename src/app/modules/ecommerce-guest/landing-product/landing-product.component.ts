@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
@@ -64,6 +64,10 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
 
   loading: boolean = false;
 
+  isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
+
   private routeParamsSubscription: Subscription | undefined;
   private queryParamsSubscription: Subscription | undefined;
   private productSubscription: Subscription | undefined;
@@ -90,6 +94,31 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     this.subscribeToQueryParams(); // Suscripción a los parámetros de consulta
 
     this.initLandingProduct(); // Inicializa el producto en la landing page
+
+    this.checkDeviceType(); // Verifica el tipo de dispositivo al cargar el componente
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.checkDeviceType(); // Vuelve a verificar el tamaño en caso de cambio de tamaño de pantalla
+  }
+
+  checkDeviceType() {
+    const width = window.innerWidth;
+
+    if (width <= 480) {
+      this.isMobile = true;
+      this.isTablet = false;
+      this.isDesktop = false;
+    } else if (width > 480 && width <= 768) {
+      this.isMobile = false;
+      this.isTablet = true;
+      this.isDesktop = false;
+    } else {
+      this.isMobile = false;
+      this.isTablet = false;
+      this.isDesktop = true;
+    }
   }
 
   private verifyAuthenticatedUser(): void {
