@@ -1,0 +1,152 @@
+<!--Page Wrapper-->
+<div class="page-wrapper">
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="sp sp-bars"></div>
+            </div>
+        </div>
+    </div>
+    <!-- End Loading -->
+
+    <!-- Body Container -->
+    <div id="page-content">
+
+        <!--Main Content-->
+        <div class="container py-3">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="dashboard-content h-100">
+                        <!-- My Orders -->
+                        <div class="tab-pane h-100" id="orders">
+                            <div class="orders-card mt-0 h-100">    
+                                <ng-container *ngIf="sale_details.length == 0; else allShowOrders">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <div class="p-2 text-center">
+                                            <div class="inner mb-3">
+                                                <div class="bradcrumb-thumb">
+                                                    <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
+                                                </div>
+                                            </div>
+                                            <h5 class="header-title mb-0 text-uppercase ls-2">Mis pedidos</h5>
+                                            <small>De momento no tienes pedidos</small>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-template #allShowOrders>
+                                    <div class="top-sec d-flex-justify-center justify-content-center mb-4">
+                                        <h2 class="mb-0 text-uppercase ">Mis pedidos</h2>
+                                    </div>
+                                    <div class="table-bottom-brd table-responsive">
+                                        <table class="table align-middle text-center order-table">
+                                            <thead>
+                                                <tr class="table-head text-nowrap">
+                                                    <th scope="col" class="text-uppercase ls-2">Imagen</th>
+                                                    <th scope="col" class="text-uppercase ls-2">ID del pedido</th>
+                                                    <th scope="col" class="text-uppercase ls-2">Detalles del producto</th>
+                                                    <th scope="col" class="text-uppercase ls-2">Precio</th>
+                                                    <th scope="col" class="text-uppercase ls-2">Estado</th>
+                                                    <th scope="col" class="text-uppercase ls-2">Ver</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- <ng-container *ngFor="let order of sale_details"> -->
+                                                <ng-container *ngFor="let order of paginatedSaleDetails">
+                                                    <tr>
+                                                        <td><img class="blur-up lazyload" [attr.data-src]="order.product.imagen" [src]="order.product.imagen" width="50" alt="product" title="product" /></td>
+                                                        <td><span class="id">#{{ order._id }}</span></td>
+                                                        <td><span class="name">{{ order.product.title }}</span></td>
+                                                        <td><span class="price fw-500">{{ euro }}{{ order.total }}</span></td>
+                                                        <!-- <td><span class="badge rounded-pill bg-success custom-badge">Enviado</span></td> -->
+                                                        <!-- <td><span class="badge rounded-pill bg-danger custom-badge">Pendiente</span></td> -->
+                                                        <td><span class="badge rounded-pill bg-dark custom-badge">Processing</span></td>
+                                                        <!-- <td><span class="badge rounded-pill bg-secondary custom-badge">Cancelada</span></td> -->
+                                                        <td><a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', order.product.slug]" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                        <!-- <td><a href="product-layout1.html" onclick="return false" (click)="viewDetailSale(order)" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td> -->
+                                                    </tr>
+                                                </ng-container>
+                                                <tr class="d-none">
+                                                    <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
+                                                    <td><span class="id">#12301</span></td>
+                                                    <td><span class="name">Oxford Cuban Shirt</span></td>
+                                                    <td><span class="price fw-500">$99.00</span></td>
+                                                    <td><span class="badge rounded-pill bg-success custom-badge">Shipped</span></td>
+                                                    <td><a href="product-layout1.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                </tr>
+                                                <tr class="d-none">
+                                                    <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
+                                                    <td><span class="id">#12302</span></td>
+                                                    <td><span class="name">Cuff Beanie Cap</span></td>
+                                                    <td><span class="price fw-500">$128.00</span></td>
+                                                    <td><span class="badge rounded-pill bg-danger custom-badge">Pending</span></td>
+                                                    <td><a href="product-layout2.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                </tr>
+                                                <tr class="d-none">
+                                                    <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
+                                                    <td><span class="id">#12303</span></td>
+                                                    <td><span class="name">Flannel Collar Shirt</span></td>
+                                                    <td><span class="price fw-500">$114.00</span></td>
+                                                    <td><span class="badge rounded-pill bg-dark custom-badge">Processing</span></td>
+                                                    <td><a href="product-layout3.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                </tr>
+                                                <tr class="d-none">
+                                                    <td><img class="blur-up lazyload" data-src="assets/images/products/120x170.jpg" src="assets/images/products/120x170.jpg" width="50" alt="product" title="product" /></td>
+                                                    <td><span class="id">#12304</span></td>
+                                                    <td><span class="name">Cotton Hooded Hoodie</span></td>
+                                                    <td><span class="price fw-500">$198.00</span></td>
+                                                    <td><span class="badge rounded-pill bg-secondary custom-badge">Canceled</span></td>
+                                                    <td><a href="product-layout4.html" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>  
+                                </ng-template>                                             
+                            </div>
+                        </div>
+                        <!-- End My Orders -->
+                    </div>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <!-- <nav class="clearfix pagination-bottom">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled"><a class="page-link" href="#"><i class="icon anm anm-angle-left-l"></i></a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link" href="#"><i class="icon anm anm-angle-right-l"></i></a></li>
+                </ul>
+            </nav> -->
+
+            <!-- Paginación -->
+            <!-- Paginación -->
+            <nav class="clearfix pagination-bottom">
+                <ul class="pagination justify-content-center">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" href="#" onclick="return false;" (click)="onPageChange(currentPage - 1)" [class.disabled]="currentPage === 1">
+                    <i class="icon anm anm-angle-left-l"></i>
+                    </a>
+                </li>
+                <!-- Generar páginas dinámicamente -->
+                <li *ngFor="let page of [].constructor(totalPages); let i = index"
+                    class="page-item" [class.active]="i + 1 === currentPage">
+                    <a class="page-link" href="#" onclick="return false;" (click)="onPageChange(i + 1)">
+                    {{ i + 1 }}
+                    </a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" href="#" onclick="return false;"  (click)="onPageChange(currentPage + 1)" [class.disabled]="currentPage === totalPages">
+                    <i class="icon anm anm-angle-right-l"></i>
+                    </a>
+                </li>
+                </ul>
+            </nav>
+
+            <!-- End Pagination -->
+        </div>
+
+    </div>
+</div>

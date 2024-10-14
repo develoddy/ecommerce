@@ -355,12 +355,7 @@
                                 <ng-template #isAuthenticated>
                                     <h5 class="text-secondary px-3">{{ CURRENT_USER_AUTHENTICATED.name }}</h5>
                                 </ng-template>
-                                <li class="list-group-item d-flex " *ngIf="!CURRENT_USER_AUTHENTICATED">
-                                    <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="d-flex flex-row w-100">
-                                        <span class="flex-grow-1">Mis compras </span>
-                                        <i class="icon anm anm-chevron-r-right"></i>
-                                    </a>
-                                </li>
+                                
                                 <li class="list-group-item d-flex " *ngIf="!CURRENT_USER_AUTHENTICATED">
                                     <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Lujandev likes you</span>
@@ -377,6 +372,13 @@
                                 <li class="list-group-item d-flex " *ngIf="CURRENT_USER_AUTHENTICATED">
                                     <a href="my-account.html" onclick="return false;" [routerLink]="['/profile']" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Mi cuenta</span>
+                                        <i class="icon anm anm-chevron-r-right"></i>
+                                    </a>
+                                </li>
+
+                                <li class="list-group-item d-flex " *ngIf="CURRENT_USER_AUTHENTICATED">
+                                    <a href="register.html" onclick="return false;" [routerLink]="['/mypurchases']" class="d-flex flex-row w-100">
+                                        <span class="flex-grow-1">Mis compras </span>
                                         <i class="icon anm anm-chevron-r-right"></i>
                                     </a>
                                 </li>

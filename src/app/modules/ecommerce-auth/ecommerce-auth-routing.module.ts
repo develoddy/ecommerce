@@ -39,6 +39,10 @@ const routes: Routes = [{
     {
       path: 'myaddress', // Añade la ruta para el módulo de direcciones
       loadChildren: () => import('./myaddress/myaddress.module').then(m => m.MyaddressModule),
+    },
+    {
+      path: 'mypurchases', // Añade la ruta para el módulo de direcciones
+      loadChildren: () => import('./mypurchases/mypurchases.module').then(m => m.MypurchasesModule),
     }
   ]
 }];
