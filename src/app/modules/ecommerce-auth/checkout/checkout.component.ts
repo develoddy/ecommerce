@@ -192,9 +192,6 @@ export class CheckoutComponent implements OnInit {
                     this.isLastStepActive_4 = true;
                     this.isSaleSuccess = true; // Actualiza el estado de éxito
                     this.subscriptionService.setShowSubscriptionSection(false);
-
-                    //console.log("___ DEBUG_: ORDER SUCESS: ", this.listCarts);
-                    //this.removeAllCart(this.CURRENT_USER_AUTHENTICATED._id);
                     this._cartService.resetCart();
                     
                     
