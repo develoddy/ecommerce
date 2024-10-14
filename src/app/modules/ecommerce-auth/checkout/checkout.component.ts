@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
 import { Router } from '@angular/router';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -44,6 +45,10 @@ export class CheckoutComponent implements OnInit {
   user:any;
   code_cupon:any=null;
 
+  sale: any;
+  saleDetails: any =[];
+  isSaleSuccess = false; // Inicialmente no hay venta exitosa
+
   //userId: any;
   CURRENT_USER_AUTHENTICATED:any=null;
 
@@ -52,7 +57,10 @@ export class CheckoutComponent implements OnInit {
 
   public loading: boolean = false;
 
-  isLastStepActive: boolean = false;
+  isLastStepActive_1: boolean = false;
+  isLastStepActive_2: boolean = false;
+  isLastStepActive_3: boolean = false;
+  isLastStepActive_4: boolean = false;
 
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
@@ -62,9 +70,12 @@ export class CheckoutComponent implements OnInit {
     public _authEcommerce: EcommerceAuthService,
     public _cartService: CartService,
     public _router: Router,
+    private subscriptionService: SubscriptionService,
   ) {}
 
   ngOnInit(): void {
+
+    this.subscriptionService.setShowSubscriptionSection(false);
 
     this._authEcommerce.loading$.subscribe(isLoading => {
       this.loading = isLoading;
@@ -106,12 +117,14 @@ export class CheckoutComponent implements OnInit {
           // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
 
           if (this.listCarts.lenght == 0) {
-            alertDanger("No se puede procesar la orden sin ningun elemento dentro del carrito");
+            alertDanger("No se puede proceder con la orden si el carrito está vacío.");
             return;
           }
 
           if (!this.address_client_selected) {
-            alertDanger("Por favor, seleccione una dirección de envío.");
+            //alertDanger("Por favor, seleccione una dirección de envío.");
+            this.validMessage = true;
+            this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
             return;
           }
           const createOrderPayload = {
@@ -157,16 +170,35 @@ export class CheckoutComponent implements OnInit {
           };
 
           this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}).subscribe((resp:any) => {
+
+            this.isLastStepActive_3 = false;
+            
             setTimeout(() => {
               if (resp.code === 403 ) {
                 alertDanger(resp.message); // Muestra de error
+                
                 return;
               } else {
                 alertSuccess(resp.message); // Muestra el mensaje de éxito
-                setTimeout(() => {
+                
+                //setTimeout(() => {
                     //location.reload(); // Recarga la página después de 100 ms
-                    this._router.navigate(['/order-success'], { state: { sale: resp.sale, saleDetails: resp.saleDetails } });
-                }, 3500);
+                    //this._router.navigate(['/order-success'], { state: { sale: resp.sale, saleDetails: resp.saleDetails } });
+                    this.sale = resp.sale;
+                    this.saleDetails = resp.saleDetails;
+
+                    this.isLastStepActive_2 = true;
+                    
+                    this.isLastStepActive_4 = true;
+                    this.isSaleSuccess = true; // Actualiza el estado de éxito
+                    this.subscriptionService.setShowSubscriptionSection(false);
+
+                    //console.log("___ DEBUG_: ORDER SUCESS: ", this.listCarts);
+                    //this.removeAllCart(this.CURRENT_USER_AUTHENTICATED._id);
+                    this._cartService.resetCart();
+                    
+                    
+                //}, 3500);
               }
           }, 100);
             
@@ -194,14 +226,37 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
+  navigateToHome() {
+    this.subscriptionService.setShowSubscriptionSection(true);
+    this._router.navigateByUrl("/");
+  }
+
   goToNextStep() {
     // Aquí puedes agregar cualquier otra lógica antes de activar la última pestaña
-    this.isLastStepActive = true;
+    this.isLastStepActive_2 = true;
+    this.isLastStepActive_3 = true;
+    this.isLastStepActive_4 = false;
+    this.isSaleSuccess = false;
   }
 
   onCheckboxChange(event: any) {
     this.isAddressSameAsShipping = event.target.checked;
   }
+
+
+  removeAllCart(user_id: any) {
+
+    console.log("--Debug: CURRENT_USER_AUTHENTICATED ID: ", user_id);
+    
+    this._cartService.deleteAllCart(user_id).subscribe((resp: any) => {
+        // Aquí puedes manejar la respuesta, por ejemplo:
+        console.log(resp.message_text);
+        this._cartService.resetCart();  // Resetea el carrito local después de eliminar
+    }, (error) => {
+        console.error("Error al eliminar el carrito:", error);
+    });
+}
+
 
   removeCart(cart:any) {
     this._cartService.deleteCart(cart._id).subscribe((resp:any) => {

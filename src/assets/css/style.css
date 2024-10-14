@@ -2547,7 +2547,7 @@ a.logo {
   17. Checkout Success Pages
 ========================================================================*/
 .checkout-card h2 { font-size:30px; margin-bottom:15px; }
-.checkout-card .icon { color:#198754; font-size:70px; margin:0 0 20px; display: block; }
+.checkout-card .icon { color:#198754; font-size:50px; margin:0 0 20px; display: block; }
 .checkout-card .text-order { padding:10px 20px; font-size:13px; font-weight:600; letter-spacing:.5px; }
 .shipping-details p:not(:last-child), .billing-details p:not(:last-child) { margin:0 0 5px; }
 

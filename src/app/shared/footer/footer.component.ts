@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 
 @Component({
   selector: 'app-footer',
@@ -15,9 +16,15 @@ export class FooterComponent implements OnInit {
   constructor(
     public _router: Router,
     public _cartService: CartService,
+    private subscriptionService: SubscriptionService,
   ) {}
 
   ngOnInit(): void {
+
+    this.subscriptionService.showSubscriptionSection$.subscribe(value => {
+      this.showSubscriptionSection = value;
+    });
+
     this.verifyAuthenticatedUser(); 
 
      // Oculta la sección de suscripción en /myaddress y cualquier ruta que incluya /edit

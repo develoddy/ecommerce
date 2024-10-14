@@ -105,23 +105,16 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     
     this.checkDeviceType(); // Verifica el tipo de dispositivo al cargar el componente
 
-    //  setTimeout(() => {
-    //    this.seo();
-    //  }, 50);
 
   }
 
   private seo() {
-    
-    
     const productTitle = this.product_selected.title + ' | LujanDev Oficial' || 'Titulo';  // Información del producto
     const productDescription = this.product_selected.resumen || 'Descripción del producto';
     const productImageUrl = this.product_selected.imagen || 'URL de la imagen del producto';
-
     // ver como obtener la ÜRL de forma dinamica cancatenando con el slug del producto
     const productUrl = "http://localhost:5000/landing-product/"+this.product_selected.slug || 'URL del producto';
 
-    console.log("SEO: ", productUrl );
 
     // Establecer el título
     this.titleService.setTitle(productTitle);
