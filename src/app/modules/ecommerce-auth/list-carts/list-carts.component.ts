@@ -59,7 +59,7 @@ export class ListCartsComponent implements OnInit {
   goToCheckout() {
     // Cambia el valor antes de navegar
     this.subscriptionService.setShowSubscriptionSection(false);
-    this._router.navigateByUrl('/payment-process')
+    this._router.navigateByUrl('/checkout')
   }
 
   updateTotalCarts() {
