@@ -32,7 +32,7 @@ export class FooterComponent implements OnInit {
 
     // Oculta la sección de suscripción en /myaddress
     //if (this._router.url === '/myaddress') { 
-    if ( currentUrl === '/myaddresses' || currentUrl === '/myaddresses/add' || currentUrl.includes('/edit') || currentUrl.includes('/my-account') || currentUrl.includes('/checkout') || currentUrl.includes('/registered') ) {
+    if ( currentUrl === '/myaddresses' || currentUrl === '/myaddresses/add' || currentUrl.includes('/edit') || currentUrl.includes('/my-account') || currentUrl.includes('/checkout') || currentUrl.includes('/registered') || currentUrl.includes('/mypurchases') ) {
       this.showSubscriptionSection = false;
     }
   }

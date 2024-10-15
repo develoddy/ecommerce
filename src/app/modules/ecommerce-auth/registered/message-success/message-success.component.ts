@@ -6,9 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./message-success.component.css']
 })
 export class MessageSuccessComponent implements OnInit {
-  
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
+
+  ngOnInit(){
   }
 
 }

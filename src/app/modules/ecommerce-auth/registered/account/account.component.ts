@@ -218,11 +218,29 @@ export class AccountComponent implements OnInit {
   }
 
   updateAccount() {
+
+    let data: any = {
+      _id: this.CURRENT_USER_AUTHENTICATED._id,
+      name: this.name ,
+      email: this.email, 
+      surname: "",
+      zipcode: this.zipcode,
+      phone: this.phone,
+      birthday: this.birthday,
+    };
+
+    // Solo agrega la contraseña si está definida y no está vacía
+    if (this.password && this.password.trim() !== "") {
+      data.password = this.password;
+    }
+
+    console.log("--debug: Data cambios form: ", data);
+    
+
     /*if ( this.password == null || this.password == ""  || this.repeat_password == null ) {
       alertWarning("Es obligatorio ingresar ambas contraseñeas para modificar sus datos.");
       return;
     }
-
     if (this.password) {
       if (this.password != this.repeat_password) {
         alertDanger("Ambas contraseñas son incorrectas. Intentalo denuevo.");
@@ -230,17 +248,6 @@ export class AccountComponent implements OnInit {
       }
     }*/
 
-    let data = {
-      _id: this.CURRENT_USER_AUTHENTICATED._id,
-      name: this.name ,
-      email: this.email, 
-      surname: "",
-      password: this.password,
-      //repeat_password: this.repeat_password,
-      zipcode: this.zipcode,
-      phone: this.phone,
-      birthday: this.birthday,
-    };
 
     this._ecommerceAuthService.updateProfileClient(data).subscribe((resp:any) => {
      

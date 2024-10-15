@@ -56,6 +56,7 @@ export class ListPurchasesComponent implements OnInit {
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
       this.sale_orders = resp.sale_orders;
+      console.log(this.sale_orders);
       this.sale_details = [];
 
       // Recorremos cada objeto en sale_orders
@@ -81,6 +82,8 @@ export class ListPurchasesComponent implements OnInit {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
     this.paginatedSaleDetails = this.sale_details.slice(start, end);
+    console.log(this.paginatedSaleDetails);
+    
   }
 
   // Función para cambiar de página

@@ -30,10 +30,16 @@
                                                     <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
                                                 </div>
                                             </div>
-                                            <h5 class="header-title mb-0 text-uppercase ls-2">Mis pedidos</h5>
-                                            <small>De momento no tienes pedidos</small>
+                                            <h5 class="header-title mb-0 fw-bold h3 mb-4">Mis compras</h5>
+                                            <strong class="h3">Aún no tienes ninguna compra</strong>
+                                            <p class="pt-5">Haz seguimiento de tus compras online para saber dónde están en <br /> todo momento.</p>
+                                            <p class="pt-3">Pide tu ticket digital la próxima vez que compres en tienda para <br /> llevarlo siempre contigo.</p>
                                         </div>
                                     </div>
+                                    <div  class="view-collection text-center mt-4 mb-5 mt-md-5">
+                                        <a  onclick="return false;" class="btn btn-secondary btn-lg px-5"  href="#" routerLink="/filter-products" >Descubrir lo último</a>
+                                    </div>
+                                    <hr>
                                 </ng-container>
                                 <ng-template #allShowOrders>
                                     <div class="top-sec d-flex-justify-center justify-content-center mb-4">
@@ -45,6 +51,7 @@
                                                 <tr class="table-head text-nowrap">
                                                     <th scope="col" class="text-uppercase ls-2">Imagen</th>
                                                     <th scope="col" class="text-uppercase ls-2">ID del pedido</th>
+                                                    <th scope="col" class="text-uppercase ls-2">ID del producto</th>
                                                     <th scope="col" class="text-uppercase ls-2">Detalles del producto</th>
                                                     <th scope="col" class="text-uppercase ls-2">Precio</th>
                                                     <th scope="col" class="text-uppercase ls-2">Estado</th>
@@ -56,6 +63,7 @@
                                                 <ng-container *ngFor="let order of paginatedSaleDetails">
                                                     <tr>
                                                         <td><img class="blur-up lazyload" [attr.data-src]="order.product.imagen" [src]="order.product.imagen" width="50" alt="product" title="product" /></td>
+                                                        <td><span class="id">#{{ order.sale.id }}</span></td>
                                                         <td><span class="id">#{{ order._id }}</span></td>
                                                         <td><span class="name">{{ order.product.title }}</span></td>
                                                         <td><span class="price fw-500">{{ euro }}{{ order.total }}</span></td>
@@ -123,7 +131,7 @@
 
             <!-- Paginación -->
             <!-- Paginación -->
-            <nav class="clearfix pagination-bottom">
+            <nav class="clearfix pagination-bottom" *ngIf="sale_details.length > 0">
                 <ul class="pagination justify-content-center">
                 <li class="page-item" [class.disabled]="currentPage === 1">
                     <a class="page-link" href="#" onclick="return false;" (click)="onPageChange(currentPage - 1)" [class.disabled]="currentPage === 1">

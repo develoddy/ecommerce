@@ -18,7 +18,7 @@ export class AddAddressComponent implements OnInit {
   address_client_selected:any = null;
   listAddressClients:any = [];
 
-  returnUrl: string = '/myaddress';  // Valor por defecto si no se pasa ningún returnUrl
+  returnUrl: string = '/myaddresses';  // Valor por defecto si no se pasa ningún returnUrl
 
   // Address
   name: string = '';

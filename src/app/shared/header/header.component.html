@@ -328,7 +328,7 @@
                 <div class="account-parent iconset">
                     <div class="account-link" title="Cuenta">
                         <ng-container *ngIf="isMobile; else desktopLink">
-                            <a [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/profile'] : ['/auth/login']" class="text-white">
+                            <a [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/my-account'] : ['/auth/login']" class="text-white">
                                 <i class="hdr-icon icon anm anm-user-al"></i>
                             </a>
                         </ng-container>

@@ -131,7 +131,7 @@
                                                 <li>Pago rápido y sencillo</li>
                                                 <li>Fácil acceso a su historial y estado de pedidos</li>
                                             </ul>
-                                            <button type="submit" name="Continue" class="btn btn-primary">Continuar</button>
+                                            <button type="submit" name="Continue" class="btn btn-primary px-5">Continuar</button>
                                             <button type="submit" name="Continue" class="btn btn-secondary ms-2 btnNext">Próxima dirección</button>
                                         </div>
                                     </div>
@@ -461,7 +461,7 @@
                             </div>
                             <div class="d-flex justify-content-center py-5">
                                 <!-- <button type="button" class="btn btn-secondary me-1 btnPrevious">Volver</button> -->
-                                <button type="button" class="btn btn-primary ms-1 btnNext" (click)="goToNextStep()">Continuar</button>
+                                <button type="button" class="btn btn-primary ms-1 px-5 btnNext" (click)="goToNextStep()">Continuar</button>
                             </div>
                         </div>
                         <div [ngClass]="{'tab-pane': true,'active': isLastStepActive_3 && CURRENT_USER_AUTHENTICATED && !isSaleSuccess,'fade': listAddressClients.length === 0 }" id="steps3">

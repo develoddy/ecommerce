@@ -218,7 +218,7 @@ export class CheckoutComponent implements OnInit {
         sessionStorage.setItem('returnUrl', this._router.url);
         
         // Redirige al formulario de agregar dirección
-        this._router.navigate(['/myaddress/add']);
+        this._router.navigate(['/myaddresses/add']);
       }
     });
   }

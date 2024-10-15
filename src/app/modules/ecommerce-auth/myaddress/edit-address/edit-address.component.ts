@@ -18,6 +18,8 @@ export class EditAddressComponent implements OnInit {
 
   address_client_selected:any = null;
 
+  listAddressClients:any = [];
+
   // Address
   name: string = '';
   surname: string = '';
@@ -48,6 +50,7 @@ export class EditAddressComponent implements OnInit {
   ngOnInit(): void {
     this.SPINNER();
     this.verifyAuthenticatedUser();
+    this.checkIfAddressClientExists();
     this.subscribeToQueryParams();
     this.showProfileClient();
   }
@@ -55,6 +58,19 @@ export class EditAddressComponent implements OnInit {
   private SPINNER() {
     this.loadingSubscription = this._ecommerceAuthService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
+    });
+  }
+
+  checkIfAddressClientExists() {
+    this._ecommerceAuthService.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
+      this.listAddressClients = resp.address_client;
+      if (this.listAddressClients.length === 0) {
+        // Guarda la URL actual en sessionStorage
+        sessionStorage.setItem('returnUrl', this.router.url);
+        
+        // Redirige al formulario de agregar dirección
+        this.router.navigate(['/myaddresses/add']);
+      }
     });
   }
 
@@ -129,11 +145,14 @@ export class EditAddressComponent implements OnInit {
 
       if ( resp.status == 200 ) {
 
+        let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
+        this.listAddressClients[INDEX] = resp.address_client;
+
         this.status = true;
         this.validMessage = true;
         this.errorOrSuccessMessage = resp.message;
         this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
-        this.router.navigate(['/myaddress']);
+        this.router.navigate(['/myaddresses']);
         alertSuccess(resp.message);
         this.resetForm();
 
