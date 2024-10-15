@@ -15,6 +15,7 @@ import { CompareComponent } from './compare/compare.component';
 import { OrderSuccessComponent } from './order-success/order-success.component';
 import { MyaddressModule } from './myaddress/myaddress.module';
 import { MypurchasesModule } from './mypurchases/mypurchases.module';
+import { AccountComponent } from './registered/account/account.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { MypurchasesModule } from './mypurchases/mypurchases.module';
     ProfileClientComponent,
     WishlistComponent,
     CompareComponent,
-    OrderSuccessComponent
+    OrderSuccessComponent,
+    AccountComponent
   ],
   imports: [
     CommonModule,

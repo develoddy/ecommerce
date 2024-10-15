@@ -370,7 +370,7 @@
                                 </li>
 
                                 <li class="list-group-item d-flex " *ngIf="CURRENT_USER_AUTHENTICATED">
-                                    <a href="my-account.html" onclick="return false;" [routerLink]="['/profile']" class="d-flex flex-row w-100">
+                                    <a href="my-account.html" onclick="return false;" [routerLink]="['/my-account']" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Mi cuenta</span>
                                         <i class="icon anm anm-chevron-r-right"></i>
                                     </a>
@@ -403,7 +403,7 @@
                 <!--End Account-->
                 <!--Wishlist-->
                 <div class="wishlist-link iconset" title="Wishlist">
-                    <a href="wishlist-style1.html"  onclick="return false;" [routerLink]="['/wishlist']">
+                    <a href="wishlist-style1.html"  onclick="return false;" [routerLink]="['/favorites']">
                         <i class="hdr-icon icon anm anm-heart-l"></i><span class="menubar-label">Favoritos</span>
                         <span class="wishlist-count" >{{ listWishlists.length }}</span>
                     </a>
@@ -413,7 +413,7 @@
                 <!--Minicart-->
                 <div class="header-cart iconset"title="Carro">
                     <ng-container *ngIf="isMobile; else desktopLinkMiniCart">
-                        <a href="cart-style1.html" onclick="return false;" [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/list-carts'] : ['/auth/login']" class="header-cart btn-minicart clr-none">
+                        <a href="cart-style1.html" onclick="return false;" [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/cart'] : ['/auth/login']" class="header-cart btn-minicart clr-none">
                             <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count">{{ listCarts.length }}</span>
                         </a>
                     </ng-container>
@@ -697,7 +697,7 @@
                 <label for="prTearm"> I agree with the </label><a href="#" class="ms-1 text-link">Terms &amp; conditions</a>
             </div>
             <div class="minicart-action d-flex mt-3">
-                <a href="cart-style1.html" onclick="return false;" [routerLink]="['/list-carts']" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a>
+                <a href="cart-style1.html" onclick="return false;" [routerLink]="['/cart']" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a>
                 <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout btn btn-primary w-50 ms-1 btn-lg"> Comenzar pedido</a>
             </div>
         </div>

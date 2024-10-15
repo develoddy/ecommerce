@@ -1,10 +1,6 @@
 <!--Page Wrapper-->
 <div class="page-wrapper">
    
-    <!--Header-->
-    <app-header></app-header>
-    <!--End Header-->
-
     <!-- Body Container -->
     <div id="page-content">
         <!--Page Header-->
@@ -71,14 +67,14 @@
                                         <input type="password" name="password"[(ngModel)]="password" placeholder="Contraseña" [ngClass]="{'border border-danger': errorPassword}" (input)="onInputChange('password')" id="CustomerPassword" value="" required />                        	
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['password'] && !password">Completa este campo para continuar</div>
                                     </div>
-                                    <div class="form-group col-12">
+                                    <div class="form-group col-12 d-none">
                                         <label for="CustomerConfirmPassword"  class="d-none">Confirmar Contraseña<span class="required">*</span></label>
                                         <input id="CustomerConfirmPassword" type="Password" name="repeat_password" [(ngModel)]="repeat_password" [ngClass]="{'border border-danger': errorRepeatPassword}" (input)="onInputChange('repeat_password')" placeholder="Confirmar Contraseña" required />                         	
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['repeat_password'] && !repeat_password">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12 mt-3 mb-3">
-                                        <button type="submit" class="btn btn-secondary btn-lg py-3 w-100" (click)="register()" [disabled]="loading">
-                                            <ng-container *ngIf="!loading">Crear cuenta</ng-container>
+                                        <button type="submit" class="btn btn-secondary btn-lg py-3 w-100" (click)="updateAccount()" [disabled]="loading">
+                                            <ng-container *ngIf="!loading">Guardar cambios</ng-container>
                                             <ng-container *ngIf="loading">
                                                 <div class="sp sp-bars bg-light" style="width: 7px !important; height: 21px !important; margin: 0px auto !important;"></div>
                                           </ng-container>
@@ -89,23 +85,10 @@
                                     </div>
                                 </div>
 
-                                <div class="login-divide d-none"><span class="login-divide-text">OR</span></div>
-
-                                <p class="text-center fs-6 text-muted mb-3 d-none">Or Sign up with</p>
-                                <div class="login-social d-flex-justify-center d-none">
-                                    <a class="social-link facebook rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-facebook-f me-2"></i> Facebook</a>
-                                    <a class="social-link google rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-google-plus-g me-2"></i> Google</a>
-                                    <a class="social-link twitter rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-twitter me-2"></i> Twitter</a>
+                                <div class="login-signup-text py-5 text-center">
+                                    <a href="#" onclick="return false;" class="text-decoration-underline text-muted form-text ls-1">¿Quieres eliminar tu cuenta?</a>
                                 </div>
 
-                                <div class="login-signup-text mb-4 fs-6 text-center text-secondary">¿Ya tienes cuenta? <a href="login.html" onclick="return false;" [routerLink]="['/auth/login']" class="fw-bold text-decoration-underline">Inicia sesión</a></div>
-
-                                <div class="login-signup-text text-center text-secondary">
-                                    <p id="registry">Al crear una cuenta, confirmas que has leído la  <br>
-                                        <a class="text-decoration-underline fw-bold" href="#" onclick="return false;">Política de privacidad</a> y aceptas las 
-                                        <a class="text-decoration-underline fw-bold" href="#" onclick="return false;">Condiciones de venta</a>.
-                                    </p>
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -115,10 +98,6 @@
         <!--End Main Content-->
     </div>
     <!-- End Body Container -->
-
-    <!--Footer-->
-    <app-footer></app-footer>
-    <!--End Footer-->
 
     <!--Scoll Top-->
     <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>

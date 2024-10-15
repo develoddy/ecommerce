@@ -11,7 +11,8 @@ const routes: Routes = [
     component: EcommerceGuestComponent,
     children: [
       {
-        path: 'landing-product/:slug',
+        //path: 'landing-product/:slug',
+        path: 'product/:slug',
         component: LandingProductComponent
       },
       {

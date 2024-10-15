@@ -100,6 +100,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       this.besProducts = resp.bes_products;
       this.ourProducts = resp.our_products;
+      console.log("--- Debbug get OurProduct: ", this.ourProducts );
+      
       this.FlashSale = resp.FlashSale;
       this.FlashProductList = resp.campaign_products;
 

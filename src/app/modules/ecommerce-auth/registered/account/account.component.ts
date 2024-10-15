@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
+import { AuthService } from '../../../auth-profile/_services/auth.service';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
 declare function alertSuccess([]):any;
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-account',
+  templateUrl: './account.component.html',
+  styleUrls: ['./account.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class AccountComponent implements OnInit {
 
   touchedFields: { [key: string]: boolean } = {
     name: false,
@@ -51,11 +51,9 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     public _authService: AuthService,
+    public _ecommerceAuthService: EcommerceAuthService,
     public _router: Router,
-    public translate: TranslateService
-  ) {
-    translate.setDefaultLang('es');
-  }
+  ) {}
 
   ngOnInit(): void {
 
@@ -64,19 +62,36 @@ export class RegisterComponent implements OnInit {
     });
 
      this.verifyAuthenticatedUser();
-  }
-
-  getTranslatedCondition(): string {
-    return this.translate.instant('auth_profile.register.condition');
+     this.detailUser();
   }
 
   private verifyAuthenticatedUser(): void {
     this._authService.user.subscribe( user => {
       if ( user ) {
-        this._router.navigate(['/']);
         this.CURRENT_USER_AUTHENTICATED = user;
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
+      }
+    });
+  }
+
+  userDetail:any=null;
+  detailUser() {
+    let data = {
+      email: this.CURRENT_USER_AUTHENTICATED.email,
+    }
+    this._ecommerceAuthService.detail_user(data).subscribe((resp:any) => {
+      console.log(resp);
+      
+      if (resp.status = 200) {
+        this.userDetail = resp.user;
+
+        this.name  =  resp.user.name;
+        this.surname  =  resp.user.surname;
+        this.email  =  resp.user.email;
+        this.phone = resp.user.phone;
+        this.birthday = resp.user.birthday;
+        this.zipcode = resp.user.zipcode;
       }
     });
   }
@@ -201,6 +216,47 @@ export class RegisterComponent implements OnInit {
       }
     );
   }
+
+  updateAccount() {
+    /*if ( this.password == null || this.password == ""  || this.repeat_password == null ) {
+      alertWarning("Es obligatorio ingresar ambas contraseñeas para modificar sus datos.");
+      return;
+    }
+
+    if (this.password) {
+      if (this.password != this.repeat_password) {
+        alertDanger("Ambas contraseñas son incorrectas. Intentalo denuevo.");
+        return;
+      }
+    }*/
+
+    let data = {
+      _id: this.CURRENT_USER_AUTHENTICATED._id,
+      name: this.name ,
+      email: this.email, 
+      surname: "",
+      password: this.password,
+      //repeat_password: this.repeat_password,
+      zipcode: this.zipcode,
+      phone: this.phone,
+      birthday: this.birthday,
+    };
+
+    this._ecommerceAuthService.updateProfileClient(data).subscribe((resp:any) => {
+     
+      if (resp.status == 200) {
+        //alertSuccess(resp.message);
+        if (resp.user) {
+          localStorage.setItem("user", JSON.stringify(resp.user));
+        }
+
+        setTimeout(() => {
+          this._router.navigateByUrl("/registered/messageSuccess");
+        }, 50);
+      }
+    });
+  }
+
   resetForm() {
     this.email = '';
     this.name = '';
@@ -211,4 +267,5 @@ export class RegisterComponent implements OnInit {
     this.phone = '';
     this.birthday = '';
   }
+
 }

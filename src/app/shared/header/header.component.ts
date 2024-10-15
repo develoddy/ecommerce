@@ -77,8 +77,8 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
     const currentUrl = this._router.url;
 
     // Oculta la sección de suscripción en /myaddress
-    if (this._router.url === '/payment-process') { 
-    //if (  currentUrl.includes('/payment-process') ) {
+    if (this._router.url === '/checkout') { 
+    //if (  currentUrl.includes('/checkout') ) {
       this.showSubscriptionSection = false;
     }
     
@@ -98,7 +98,7 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
 
   goToCheckout() {
     this.showSubscriptionSection = false;
-    this._router.navigateByUrl('/payment-process');
+    this._router.navigateByUrl('/checkout');
   }
 
   /**

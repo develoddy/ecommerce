@@ -73,13 +73,13 @@
                                                 <a href="#" class="cart-remove remove-icon position-static" onclick="return false;" (click)="removeCart(cart)" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Cart"><i class="icon anm anm-times-r"></i></a>
                                             </td>
                                             <td class="cart-image cart-flex-item">
-                                                <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">
+                                                <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', cart.product.slug]">
                                                     <img class="blur-up lazyload" [attr.data-src]="cart.variedad.files[1].preview_url" [src]="cart.variedad.files[1].preview_url" alt="product" title="Product" width="120" height="170" />
                                                 </a>
                                             </td>
                                             <td class="cart-meta small-text-left cart-flex-item">
                                                 <div class="list-view-item-title">
-                                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">{{ cart.product.title }}</a>
+                                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', cart.product.slug]">{{ cart.product.title }}</a>
                                                 </div>
                                                 <div class="cart-meta-text">
                                                     <!-- Color {{ cart.variedad.color }}<br>
