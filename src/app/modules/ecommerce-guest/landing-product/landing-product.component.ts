@@ -88,24 +88,14 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
   ) {}
 
   ngOnInit(): void {
-
     this._ecommerce_guestService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
-
     this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
-
     this.subscribeToRouteParams(); // Suscripción a los parámetros de la ruta
     this.subscribeToQueryParams(); // Suscripción a los parámetros de consulta
-
-    
-
     this.initLandingProduct(); // Inicializa el producto en la landing page
-    
-    
     this.checkDeviceType(); // Verifica el tipo de dispositivo al cargar el componente
-
-
   }
 
   private seo() {
@@ -505,30 +495,88 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
   }
 
 
+  storeAddToCart(product:any) {
+    // No está logueado
+    if( !this.CURRENT_USER_AUTHENTICATED ) {
+       // Almacenar en Local Storage y Cache Storage después de agregar al carrito
+       //this._cartService.saveCart(resp.cart);
+       this.saveCartOnCACHE(product);
+    } else {
+      // Está logueado
+      // Guardar en la base de datos
+      this.addToCartOnDDBB(product);
+    }
+  }
+
+  /*saveCartOnCACHE(product:any) {
+    const currentCart = this._cartService.getCart();
+    currentCart.push(product);
+    this._cartService.saveCart(currentCart);
+  }*/
+
+  saveCartOnCACHE(product: any) {
+    //console.log("saveCartOnCACHE: product", product);
+    
+    /**const formattedProduct = {
+      _id: 0, // El ID del carrito
+      user: product.userId, // ID del usuario
+      product: {
+        _id: product._id, // ID del producto
+        title: product.title, // Título del producto
+        sku: product.sku, // SKU del producto
+        slug: product.slug, // Slug del producto
+        imagen: product.imagen, // URL de la imagen
+        categorie: product.categorie, // Categoría del producto
+        price_soles: product.price_soles, // Precio en soles
+        price_usd: product.price_usd, // Precio en dólares
+      },
+      type_discount: product.type_discount, // Tipo de descuento aplicado
+      discount: product.discount, // Valor del descuento
+      cantidad: product.cantidad, // Cantidad de productos
+      variedad: product.variedad, // Variedad del producto, si aplica
+      code_cupon: product.code_cupon, // Código del cupón aplicado, si existe
+      code_discount: product.code_discount, // Código de descuento, si existe
+      price_unitario: product.price_unitario, // Precio unitario del producto
+      subtotal: product.subtotal, // Subtotal del producto
+      total: product.total, // Total con descuento, si aplica
+    };*/
+
+    let formattedProduct = {
+      _id: 0, //this.CURRENT_USER_AUTHENTICATED._id,
+      product: product,
+      type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
+      discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
+      cantidad: $("#qty-cart").val(),
+      variedad: this.variedad_selected ? this.variedad_selected.id : null,
+      code_cupon: null,
+      code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
+      price_unitario: this.product_selected.price_usd,
+      subtotal: this.product_selected.price_usd - this.getDiscount(), 
+      total: (this.product_selected.price_usd - this.getDiscount())*$("#qty-cart").val(),
+    }
+  
+    // Obtener el carrito actual desde el localStorage
+    const currentCart = this._cartService.getCart() || [];
+  
+    // Añadir el producto formateado al carrito
+    currentCart.push(formattedProduct);
+  
+    // Guardar el carrito actualizado en localStorage
+    this._cartService.saveCart(currentCart);
+  }
+    
 
   // AÑADITOS PRODUCTOS AL CARRITO DE COMPRAS
-  //
-  //
-  addCart(product:any) {
-    //if ( !this._cartService._authService.user ) {
-    if( !this.CURRENT_USER_AUTHENTICATED ) {
-      //alertDanger("Por favor, autentifíquese para poder añadir el producto a la cesta.");
-      this.errorResponse = true;
-      this.errorMessage = "Por favor, autentifíquese para poder añadir el producto al carrito de compras";
-      return;
-    }
+  addToCartOnDDBB(product:any) {
+
     if ( $("#qty-cart").val() == 0 ) {
-      //alertDanger("Por favor, ingrese una cantidad mayor a 0 para añadir a la cesta.");
       this.errorResponse = true;
       this.errorMessage = "Por favor, ingrese una cantidad mayor a 0 para añadir a la cesta";
       return;
     }
   
     if ( this.product_selected.type_inventario == 2 ) {
-
       if ( !this.variedad_selected ) {
-        //alertDanger("Por favor, seleccione una variedad antes de añadir a la cesta.");
-        //alertDanger("No hay stock disponible para este color.");
         this.errorResponse = true;
         this.errorMessage = "No hay stock disponible para este color";
         return;
@@ -544,7 +592,7 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
     }
 
     let data = {
-      user: this.CURRENT_USER_AUTHENTICATED._id,//this._cartService._authService.user._id,
+      user: this.CURRENT_USER_AUTHENTICATED._id,
       product: this.product_selected._id,
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
@@ -559,17 +607,14 @@ export class LandingProductComponent implements OnInit, OnDestroy/*, AfterViewIn
 
     this._cartService.registerCart(data).subscribe((resp:any) => {
       if (resp.message == 403) {
-        //alertDanger(resp.message_text);
         this.errorResponse = true;
         this.errorMessage = resp.message_text;
         return;
       } else {
         this._cartService.changeCart(resp.cart);
-        //alertSuccess("El producto ha sido añadido correctamente a la cesta.");
         this.minicartService.openMinicart();
       }
     }, error => {
-
       if (error.error.message == "EL TOKEN NO ES VALIDO") {
         this._cartService._authService.logout();
       }

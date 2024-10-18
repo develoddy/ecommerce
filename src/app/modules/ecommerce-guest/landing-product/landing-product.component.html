@@ -197,7 +197,7 @@
                                 <!-- End Product Quantity -->
                                 <!-- Product Add -->
                                 <div class="product-form-submit addcart fl-1 ms-3">
-                                    <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit" (click)="addCart(product_selected)">
+                                    <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit" (click)="storeAddToCart(product_selected)">
                                         <span>Añadir a la cesta</span>
                                     </button>
                                     <button type="submit" name="add" class="btn btn-secondary product-form-sold-out d-none" disabled="disabled">
@@ -1898,7 +1898,7 @@
                     <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty" />
                     <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
                 </div>
-                <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit" (click)="addCart(product_selected)">
+                <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit" (click)="storeAddToCart(product_selected)">
                     <span>Add to cart</span>
                 </button>                  
             </form>

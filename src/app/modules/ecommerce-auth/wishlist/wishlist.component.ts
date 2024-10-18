@@ -90,6 +90,9 @@ export class WishlistComponent implements OnInit {
         this.userId = user._id;
         this._wishlistService.listWishlists(this.userId, TIME_NOW).subscribe((resp: any) => {
 
+          console.log("-- Favorits: ", resp);
+          
+
           resp.wishlists.forEach((wishlistItem:any) => {
             this._wishlistService.changeWishlist(wishlistItem);
           });

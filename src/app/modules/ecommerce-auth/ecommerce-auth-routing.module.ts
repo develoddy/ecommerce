@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EcommerceAuthComponent } from './ecommerce-auth.component';
-import { ListCartsComponent } from './list-carts/list-carts.component';
+//import { ListCartsComponent } from './list-carts/list-carts.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ProfileClientComponent } from './profile-client/profile-client.component';
 import { WishlistComponent } from '../ecommerce-auth/wishlist/wishlist.component';
@@ -13,11 +13,11 @@ const routes: Routes = [{
   path: '',
   component: EcommerceAuthComponent,
   children: [
-    {
+    //{
       //path: "list-carts",
-      path: "cart",
-      component: ListCartsComponent,
-    },
+    //  path: "cart",
+    //  component: ListCartsComponent,
+    //},
     {
       //path: "payment-process",
       path: "checkout",

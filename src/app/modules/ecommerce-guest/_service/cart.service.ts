@@ -9,15 +9,69 @@ import { URL_SERVICE } from 'src/app/config/config';
 })
 export class CartService {
 
+  private cartKey = 'cart';
+  private cacheName = 'SHOPIN_CART_CACHE';
+
   private loadingSubject = new BehaviorSubject<boolean>(false); // Para manejar el estado de carga
   public loading$ = this.loadingSubject.asObservable();
 
   public cart = new BehaviorSubject<Array<any>>([]);
   public currenteDataCart$ = this.cart.asObservable();
+
   constructor(
     public _authService: AuthService,
     public _http: HttpClient,
   ) { }
+
+  // ------- Nueva implementacion para guardar productos en cache --------
+
+
+  //  Almacenar el carrito en Cache Storage
+  async cacheCartData(cartData: any) {
+    const cache = await caches.open(this.cacheName);
+    await cache.put('/api/cart', new Response(JSON.stringify(cartData), {
+      headers: { 'Content-Type': 'application/json' }
+    }));
+  }
+
+  // Obtener el carrito desde Cache Storage
+  async getCartFromCache() {
+    const cache = await caches.open(this.cacheName);
+    const response = await cache.match('/api/cart');
+    return response ? await response.json() : null;
+  }
+
+  // Cargar el carrito desde el backend o Cache Storage
+  async loadCart() {
+    const cachedCart = await this.getCartFromCache();
+    if (cachedCart) {
+      return cachedCart; // Devuelve el carrito desde Cache Storage
+    } else {
+      // Si no hay carrito en Cache, obtener del backend
+      return this._http.get('/api/cart').toPromise();
+    }
+  }
+
+  // Guardar el carrito localmente
+  saveCart(cart: any) {
+    localStorage.setItem(this.cartKey, JSON.stringify(cart));
+    this.cacheCartData(cart); // Cachear el carrito
+  }
+
+  // Obtener el carrito de Local Storage
+  getCart() {
+    const cart = localStorage.getItem(this.cartKey);
+    return cart ? JSON.parse(cart) : [];
+  }
+
+  // Sincronizar el carrito con el backend
+  syncCartWithBackend() {
+    const cart = this.getCart();
+    return this._http.post('/api/cart', { items: cart });
+  }
+
+
+
 
   // ------ CART -------------
   changeCart(DATACART:any) {
@@ -63,9 +117,8 @@ export class CartService {
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cart/list?user_id="+user_id;
     
-    // Retorna la petición HTTP y finaliza el loading al terminar
     return this._http.get(URL, { headers: headers }).pipe(
-      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+      finalize(() => this.loadingSubject.next(false)) 
     );
   }
 
@@ -77,7 +130,7 @@ export class CartService {
 
   deleteAllCart(user_id: any) {
     let headers = new HttpHeaders({'token': this._authService.token});
-    let URL = URL_SERVICE + "cart/delete-all/" + user_id;  // Cambia a la ruta correcta
+    let URL = URL_SERVICE + "cart/delete-all/" + user_id;
     return this._http.delete(URL, { headers: headers });
   }
 

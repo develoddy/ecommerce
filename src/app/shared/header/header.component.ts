@@ -139,27 +139,57 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
     }
   }
 
+
+  getCartsCACHE() {
+    // Resetea el carrito antes de cargar nuevos datos
+    this._cartService.resetCart();
+
+    // Cargar el carrito desde Local Storage o Cache Storage
+    const localCart = this._cartService.getCart(); // Obtener carrito desde Local Storage
+   
+    if (localCart.length > 0) {
+      localCart.forEach((cartItem: any) => {
+        this._cartService.changeCart(cartItem); // Actualiza el carrito con los datos locales
+      });
+    } else {
+      // Si no hay datos en Local Storage, intenta cargar desde Cache Storage
+      this._cartService.loadCart().then((cachedCart) => {
+        if (cachedCart) {
+          cachedCart.forEach((cartItem: any) => {
+            this._cartService.changeCart(cartItem); // Actualiza el carrito con los datos de Cache Storage
+          });
+        }
+      });
+    }
+  }
+
+  getCartsBBDD() {
+    this._cartService.listCarts(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
+      resp.carts.forEach((cart: any) => {
+        this._cartService.changeCart(cart);
+      });
+    });
+
+    this._wishlistService.listWishlists(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
+
+      resp.wishlists.forEach((wishlist: any) => {
+        this._wishlistService.changeWishlist(wishlist);
+      });
+    });
+  }
+
+
+
   private verifyAuthenticatedUser(): void {
     this._cartService._authService.user.subscribe((user:any) => {
-      this.CURRENT_USER_AUTHENTICATED = user;
-      if ( user ) {
-        
-        this._cartService.listCarts(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
-          resp.carts.forEach((cart: any) => {
-            this._cartService.changeCart(cart);
-          });
-        });
 
-        this._wishlistService.listWishlists(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
-
-          resp.wishlists.forEach((wishlist: any) => {
-            this._wishlistService.changeWishlist(wishlist);
-          });
-        });
-
+      if ( user) {
+        this.CURRENT_USER_AUTHENTICATED = user;
+        this.getCartsBBDD();
       } else {
-        this.listCarts = [];
-        this.totalCarts = 0;
+        this.getCartsCACHE();
+        //this.listCarts = [];
+        //this.totalCarts = 0;
 
         this.listWishlists = [];
         this.totalWishlist = 0;
@@ -167,7 +197,7 @@ export class HeaderComponent implements OnInit , AfterViewInit /*, OnDestroy*/ {
     });
   }
 
- 
+  // -- Carts
   private subscribeToCartData(): void {
     this.cartSubscription = this._cartService.currenteDataCart$.subscribe((resp: any) => {
       this.listCarts = resp;

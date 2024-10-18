@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CartService } from '../../ecommerce-guest/_service/cart.service';
+import { CartService } from '../_service/cart.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -16,11 +16,18 @@ declare function alertSuccess([]):any;
 })
 export class ListCartsComponent implements OnInit {
   euro = "€";
+
+  // Cart Cache
+  cartItems: any[] = [];
+
+  // Cart BBDD
   listCarts:any=[];
   totalCarts:any=0;
   code_cupon:any=null;
   userId: any;
   loading: boolean = false;
+
+  CURRENT_USER_AUTHENTICATED:any=null;
 
   constructor(
     public _router: Router,
@@ -28,33 +35,62 @@ export class ListCartsComponent implements OnInit {
     private subscriptionService: SubscriptionService,
   ) {}
   
-  ngOnInit() {
+  async ngOnInit() {
+
+    this.verifyAuthenticatedUser();
 
     this._cartService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
 
-    this._cartService._authService.user.subscribe(user => {
-      if (user) {
-        this.userId = user._id;
-      }
-    });
-    
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       //sectionCart();
     }, 50);
 
-
     this.listAllCarts();
+    this.getCarts();
+    
+  }
 
-    this._cartService.currenteDataCart$.subscribe((resp:any) => {
-      this.listCarts = resp;
-      
-      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
-      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+  private verifyAuthenticatedUser(): void {
+    this._cartService._authService.user.subscribe( user => {
+      if ( user ) {
+        this.CURRENT_USER_AUTHENTICATED = user;
+      } else {
+        this.CURRENT_USER_AUTHENTICATED = null;
+      }
     });
   }
+
+  getCarts() {
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      this._cartService.currenteDataCart$.subscribe((resp:any) => {
+        this.listCarts = resp;
+        
+        this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+      });
+    } else {
+      // Usuario no autenticado: carga el carrito desde el local storage
+      const localCart = this._cartService.getCart(); // Obtener carrito desde Local Storage
+      if (localCart && localCart.length > 0) {
+        this.listCarts = localCart;
+
+        // Calcular el total de los productos en el carrito
+        this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+
+        console.log("Carrito desde Local Storage:", this.listCarts);
+      } else {
+        // Si no hay carrito en Local Storage
+        this.listCarts = [];
+        this.totalCarts = 0;
+        console.log("No hay productos en el carrito local.");
+      }       
+    }
+  }
+
 
   goToCheckout() {
     // Cambia el valor antes de navegar
@@ -152,13 +188,44 @@ export class ListCartsComponent implements OnInit {
     });
   }
 
+
+
   listAllCarts() {
+
+    // Resetea el carrito antes de cargar nuevos datos
     this._cartService.resetCart();
-    if ( this._cartService._authService.user ) {
-      this._cartService.listCarts(/*this._cartService._authService.user._id*/this.userId).subscribe((resp:any) => {
+
+    // Cargar el carrito desde Local Storage o Cache Storage
+    const localCart = this._cartService.getCart(); // Obtener carrito desde Local Storage
+
+    if (localCart.length > 0) {
+      localCart.forEach((cartItem: any) => {
+        this._cartService.changeCart(cartItem); // Actualiza el carrito con los datos locales
+      });
+    } else {
+      // Si no hay datos en Local Storage, intenta cargar desde Cache Storage
+      this._cartService.loadCart().then((cachedCart) => {
+        if (cachedCart) {
+          cachedCart.forEach((cartItem: any) => {
+            this._cartService.changeCart(cartItem); // Actualiza el carrito con los datos de Cache Storage
+          });
+        }
+      });
+    }
+
+    // Si el usuario está autenticado, sincroniza con el backend
+    if ( this.CURRENT_USER_AUTHENTICATED) {
+      this._cartService.listCarts(this.userId).subscribe((resp:any) => {
+        // Actualiza el carrito con los datos del backend
         resp.carts.forEach((cart:any) => {
           this._cartService.changeCart(cart);
         });
+
+        // Sincroniza los carritos locales con el backend
+        //this._cartService.syncCartWithBackend().subscribe(() => {
+        //  console.log("Carrito sincronizado con el backend");
+        //});
+        
       });
     }
   }
