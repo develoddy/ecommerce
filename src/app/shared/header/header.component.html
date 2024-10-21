@@ -414,7 +414,7 @@
                 <div class="header-cart iconset"title="Carro">
                     <ng-container *ngIf="isMobile; else desktopLinkMiniCart">
                         <a href="cart-style1.html" onclick="return false;" [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/cart'] : ['/auth/login']" class="header-cart btn-minicart clr-none">
-                            <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count">{{ listCarts.length }}</span>
+                            <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count" *ngIf="listCarts">{{ listCarts.length }}</span>
                         </a>
                     </ng-container>
                     <ng-template #desktopLinkMiniCart>
@@ -422,7 +422,6 @@
                             <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count">{{ listCarts.length }}</span>
                         </a>
                     </ng-template>
-                    
                 </div>
                 <!--End Minicart-->
                 <!--Mobile Toggle-->
@@ -635,7 +634,7 @@
                             </div>
                         </div>
                         <h5 class="header-title mb-0">Tu carrito está vacío</h5>
-                        <small>Empieza a añadir productos :)</small>
+                        <small>Empieza a añadir articulos al carrito</small>
                     </div>
                </div>
             </ng-container>
@@ -643,15 +642,20 @@
                 <ul class="m-0 clearfix">
                     <ng-container *ngFor="let cart of listCarts">
                         <li class="item d-flex justify-content-center align-items-center">
-                            <!-- <a class="product-image rounded-3" href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">
-                                <img class="blur-up lazyload" [attr.data-src]="cart.variedad.files[1].preview_url" [src]="cart.variedad.files[1].preview_url" alt="product" title="Product" width="120" height="170" />
-                            </a> -->
+                            <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/product', cart.product.slug]">
+                                <img class="blur-up lazyload"
+                                [src]="cart.product.imagen"
+                                alt="{{ cart.product.title }}"
+                                title="{{ cart.product.title }}"
+                                width="120"
+                                height="170" />
+                            </a>
                             <div class="product-details">
-                                <!-- <a class="product-title" href="product-layout1.html"  href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">{{ cart.product.title }}</a> -->
-                                <!-- <div class="variant-cart my-2" *ngIf="cart.variedad">{{ cart.variedad.color }} / {{ cart.variedad.valor }}</div> -->
+                                <a class="product-title" href="#" onclick="return false;" [routerLink]="['/product', cart.product.slug]">{{ cart.product.title }}</a>
+                                <div class="variant-cart my-2" *ngIf="cart.variedad">{{ cart.variedad.color }} / {{ cart.variedad.valor }}</div>
                                 <div class="priceRow">
                                     <div class="product-price">
-                                        <!-- <span class="price">{{ euro }}{{ cart.total | number: '1.2-2' }}</span> -->
+                                        <span class="price">{{ euro }}{{ cart.total | number: '1.2-2' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -664,7 +668,7 @@
                                 <a href="#" class="edit-i remove d-none"><i class="icon anm anm-pencil-ar" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"></i></a>
                                 <a href="#" class="edit-i edit d-none"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Comprar mas tarde"></i></a>
                                 <a href="#" class="remove" onclick="return false;" (click)="removeCart(cart)">Eliminar</a>
-                                <!-- <a href="#" class="remove" onclick="return false;" (click)="removeCart(cart)"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"></i></a> -->
+                                <a href="#" class="remove" onclick="return false;" (click)="removeCart(cart)"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"></i></a>
                             </div>
                         </li>
                     </ng-container>

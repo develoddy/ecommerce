@@ -325,7 +325,7 @@
                                                 <div class="product-details">
                                                     <!-- Product Name -->
                                                     <div class="product-name">
-                                                        <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}">{{ ourProduct.title }}</a>
+                                                        <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}">{{ ourProduct.title }}</a>
                                                     </div>
                                                     <!-- End Product Name -->
                                                     <!-- Product Price -->
@@ -1568,7 +1568,7 @@
                         <div class="blog-item">
                             <div class="blog-article zoomscal-hov">
                                 <div class="blog-img">
-                                    <a class="featured-image zoom-scal" href="blog-details.html" onclick="return false;" [routerLink]="['/landing-product', besProduct.slug]" [queryParams]="{_id:besProduct.campaing_discount?.id }">
+                                    <a class="featured-image zoom-scal" href="blog-details.html" onclick="return false;" [routerLink]="['/product', besProduct.slug]" [queryParams]="{_id:besProduct.campaing_discount?.id }">
                                         <img class="blur-up lazyload" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="New shop collection our shop" width="740" height="410" />
                                     </a>
                                     <div class="date"><span class="dt">25</span> <span class="mt">Apr<br> <b>2023</b></span></div>
@@ -1670,13 +1670,13 @@
                     <form method="post" action="#" id="product-form-quickshop" class="product-form align-items-center">
                         <!-- Product Info -->
                         <div class="row g-0 item mb-3">
-                            <a class="col-4 product-image" href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', product_selected.slug]" [queryParams]="{_id: product_selected.campaing_discount?.id}">
+                            <a class="col-4 product-image" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product_selected.slug]" [queryParams]="{_id: product_selected.campaing_discount?.id}">
                                 <img class="blur-up lazyload" [attr.data-src]="product_selected.imagen" [src]="product_selected.imagen" alt="Product" title="Product" width="625" height="808" />
                             </a>
                             <div class="col-8 product-details">
                                 <div class="product-variant ps-3">
 
-                                    <a class="product-title" href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', product_selected.slug]" [queryParams]="{_id: product_selected.campaing_discount?.id}">{{product_selected.title}}</a>
+                                    <a class="product-title" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product_selected.slug]" [queryParams]="{_id: product_selected.campaing_discount?.id}">{{product_selected.title}}</a>
                                     <div class="priceRow mt-2 mb-3">
                                         <div class="product-price m-0">
                                             <span class="price old-price" *ngIf="product_selected.campaing_discount">{{ euro }}{{ product_selected.price_usd }}</span>
@@ -1745,7 +1745,7 @@
                         <div class="row d-flex-center text-center">
                             <div class="col-md-6">
                                 <!-- Product Image -->
-                                <a class="product-image" href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', product_selected.slug]" [queryParams]="{_id: product_selected.campaing_discount?.id}">
+                                <a class="product-image" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product_selected.slug]" [queryParams]="{_id: product_selected.campaing_discount?.id}">
                                     <img class="blur-up lazyload" [attr.data-src]="product_selected.imagen" [src]="product_selected.imagen" alt="Product" title="Product" width="625" height="808" />
                                 </a>
                                 <!-- End Product Image -->

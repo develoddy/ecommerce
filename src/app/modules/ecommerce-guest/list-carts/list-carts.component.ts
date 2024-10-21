@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-declare var $:any;
-declare function HOMEINITTEMPLATE([]):any;
-declare function sectionCart():any;
-declare function alertDanger([]):any;
-declare function alertWarning([]):any;
-declare function alertSuccess([]):any;
+import { Title, Meta } from '@angular/platform-browser';
+import { URL_FRONTEND } from 'src/app/config/config';
+import { AuthService } from '../../auth-profile/_services/auth.service';
+
+declare var $: any;
+declare function HOMEINITTEMPLATE([]): any;
+declare function alertDanger(message: string): any;
+declare function alertSuccess(message: string): any;
 
 @Component({
   selector: 'app-list-carts',
@@ -16,170 +18,179 @@ declare function alertSuccess([]):any;
 })
 export class ListCartsComponent implements OnInit {
   euro = "€";
-
-  // Cart Cache
-  cartItems: any[] = [];
-
-  // Cart BBDD
-  listCarts:any=[];
-  totalCarts:any=0;
-  code_cupon:any=null;
-  userId: any;
+  cartsCacheItems: any[] = [];
+  listCarts: any[] = [];
+  totalCarts: number = 0;
+  codeCupon: string | null = null;
   loading: boolean = false;
-
-  CURRENT_USER_AUTHENTICATED:any=null;
+  currentUser: any = null;
 
   constructor(
-    public _router: Router,
-    public _cartService: CartService,
+    private router: Router,
+    private cartService: CartService,
+    private authService: AuthService,
     private subscriptionService: SubscriptionService,
-  ) {}
-  
+    private titleService: Title, // seo
+    private metaService: Meta
+  ) {
+      this.cartService.loading$.subscribe(isLoading => {
+        this.loading = isLoading;
+      });
+      this.updateSeo();
+  }
+
   async ngOnInit() {
-
     this.verifyAuthenticatedUser();
-
-    this._cartService.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
-    });
-
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
-      //sectionCart();
-    }, 50);
-
-    this.listAllCarts();
-    this.getCarts();
-    
+    await this.loadCartData();
+    this.initHomeTemplate();
   }
 
   private verifyAuthenticatedUser(): void {
-    this._cartService._authService.user.subscribe( user => {
-      if ( user ) {
-        this.CURRENT_USER_AUTHENTICATED = user;
-      } else {
-        this.CURRENT_USER_AUTHENTICATED = null;
-      }
+    this.authService.user.subscribe(user => {
+      this.currentUser = user || null;
     });
   }
 
-  getCarts() {
-    if (this.CURRENT_USER_AUTHENTICATED) {
-      this._cartService.currenteDataCart$.subscribe((resp:any) => {
-        this.listCarts = resp;
-        
-        this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
-        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-      });
+  private async loadCartData(): Promise<void> {
+    if (!this.currentUser) {
+      this.cartsCacheItems = await this.cartService.loadCart();
+      if (this.cartsCacheItems.length) {
+        this.listCarts = this.cartsCacheItems;
+      }
     } else {
-      // Usuario no autenticado: carga el carrito desde el local storage
-      const localCart = this._cartService.getCart(); // Obtener carrito desde Local Storage
-      if (localCart && localCart.length > 0) {
-        this.listCarts = localCart;
-
-        // Calcular el total de los productos en el carrito
-        this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
-        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-
-        console.log("Carrito desde Local Storage:", this.listCarts);
-      } else {
-        // Si no hay carrito en Local Storage
-        this.listCarts = [];
-        this.totalCarts = 0;
-        console.log("No hay productos en el carrito local.");
-      }       
+      await this.syncLocalCartWithBackend();
     }
   }
 
+  private initHomeTemplate(): void {
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+    }, 50);
+  }
 
-  goToCheckout() {
-    // Cambia el valor antes de navegar
+  async getCarts(): Promise<void> {
+    if (this.currentUser) {
+      this.cartService.currenteDataCart$.subscribe((resp: any) => {
+        this.listCarts = resp;
+        this.updateTotalCarts();
+      });
+    }
+    this.listAllCarts();
+  }
+
+  async listAllCarts(): Promise<void> {
+    this.cartService.resetCart();
+    if (this.currentUser) {
+      this.cartService.listCarts(this.currentUser._id).subscribe((resp: any) => {
+        resp.carts.forEach((cart: any) => {
+          this.cartService.changeCart(cart);
+        });
+      });
+    }
+  }
+
+  async syncLocalCartWithBackend(): Promise<void> {
+    if (this.currentUser) {
+      const userId = this.currentUser._id;
+      const localCart = await this.cartService.getCartFromCache();
+
+      if (localCart && localCart.length) {
+        this.cartService.syncCartWithBackend(localCart, userId).subscribe(
+          (resp: any) => {
+            if (resp.message === 403) {
+              alertDanger(resp.message_text);
+              return;
+            }
+            console.log("--- Despues de sincronizar como respuesta escupe: ", resp);
+            localStorage.removeItem(this.cartService.cartKey);
+            caches.delete(this.cartService.cacheName);
+            this.getCarts();
+          },
+          error => {
+            if (error.error.message === "EL TOKEN NO ES VALIDO") {
+              this.cartService._authService.logout();
+            }
+          }
+        );
+      } else {
+        this.getCarts();
+      //this.listAllCarts();
+      }
+      
+    }
+  }
+
+  addToCart(product: any): void {
+    const currentCart = this.cartService.getCart();
+    currentCart.push(product);
+    this.cartService.saveCart(currentCart);
+  }
+
+  goToCheckout(): void {
     this.subscriptionService.setShowSubscriptionSection(false);
-    this._router.navigateByUrl('/checkout')
+    this.router.navigateByUrl('/checkout');
   }
 
-  updateTotalCarts() {
-    this._cartService.currenteDataCart$.subscribe((resp:any) => {
-      this.listCarts = resp;
-      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
-      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-    });
+  updateTotalCarts(): void {
+    this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+    this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
   }
 
-  dec(cart:any) {
-    console.log(cart, "DEC");
-    if (cart.cantidad - 1 == 0) {
-      alertDanger("Tienes que tener al menos una cantidad de producto");
+  inc(cart: any): void {
+    this.changeQuantity(cart, true);
+  }
+  
+  dec(cart: any): void {
+    this.changeQuantity(cart, false);
+  }
+
+  changeQuantity(cart: any, increment: boolean): void {
+    const quantityChange = increment ? 1 : -1;
+
+    if (cart.cantidad + quantityChange === 0) {
+      alertDanger("Debes tener al menos un producto en el carrito.");
       return;
     }
-    cart.cantidad = cart.cantidad - 1;
-    // cart.subtotal = cart.price_unitario * cart.cantidad;
-    // cart.total = cart.price_unitario * cart.cantidad;
+
+    cart.cantidad += quantityChange;
     cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
     cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
 
-    // AQUI VA LA FUNCION PARA ENVIARLO AL SERVICE O BACKEND
-    let data = {
+    const cartData = {
       _id: cart._id,
       cantidad: cart.cantidad,
       subtotal: cart.subtotal,
       total: cart.total,
       variedad: cart.variedad ? cart.variedad.id : null,
       product: cart.product._id,
-    }
-    this._cartService.updateCart(data).subscribe((resp:any) => {
-      console.log("Debugg: Decremento");
-      console.log(resp);
-      this.updateTotalCarts();
-    });
-  }
+    };
 
-  inc(cart:any) {
-    console.log(cart, "INC");
-    cart.cantidad = cart.cantidad + 1;
-
-    cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
-    cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
-    
-    // AQUI VA LA FUNCION PARA ENVIARLO AL SERVICE O BACKEND
-    let data = {
-      _id: cart._id,
-      cantidad: cart.cantidad,
-      subtotal: cart.subtotal,
-      total: cart.total,
-      variedad: cart.variedad ? cart.variedad.id : null,
-      product: cart.product._id,
-    }
-
-    this._cartService.updateCart(data).subscribe((resp:any) => {
-      if (resp.message == 403) {
+    this.cartService.updateCart(cartData).subscribe((resp: any) => {
+      if (resp.message === 403) {
         alertDanger(resp.message_text);
-          cart.cantidad = cart.cantidad - 1;
-          cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
-          cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+        cart.cantidad -= quantityChange;
+        cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+        cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
         return;
       }
-
       this.updateTotalCarts();
-    }); 
-  }
-
-  removeCart(cart:any) {
-    this._cartService.deleteCart(cart._id).subscribe((resp:any) => {
-      console.log(resp);
-      this._cartService.removeItemCart(cart);
     });
   }
 
-  apllyCupon() {
-    let data = {
-      code: this.code_cupon,
-      user_id: this.userId,//this._cartService._authService.user._id,
+  removeCart(cart: any): void {
+    this.cartService.deleteCart(cart._id).subscribe(() => {
+      this.cartService.removeItemCart(cart);
+    });
+  }
 
-    }
+  applyCupon(): void {
+    const data = {
+      code: this.codeCupon,
+      user_id: this.currentUser._id,
+    };
 
-    this._cartService.apllyCupon(data).subscribe((resp:any) => {
-      if (resp.message == 403) {
+    this.cartService.apllyCupon(data).subscribe((resp: any) => {
+      if (resp.message === 403) {
         alertDanger(resp.message_text);
       } else {
         alertSuccess(resp.message_text);
@@ -188,45 +199,32 @@ export class ListCartsComponent implements OnInit {
     });
   }
 
+  private updateSeo(): void {
 
-
-  listAllCarts() {
-
-    // Resetea el carrito antes de cargar nuevos datos
-    this._cartService.resetCart();
-
-    // Cargar el carrito desde Local Storage o Cache Storage
-    const localCart = this._cartService.getCart(); // Obtener carrito desde Local Storage
-
-    if (localCart.length > 0) {
-      localCart.forEach((cartItem: any) => {
-        this._cartService.changeCart(cartItem); // Actualiza el carrito con los datos locales
-      });
-    } else {
-      // Si no hay datos en Local Storage, intenta cargar desde Cache Storage
-      this._cartService.loadCart().then((cachedCart) => {
-        if (cachedCart) {
-          cachedCart.forEach((cartItem: any) => {
-            this._cartService.changeCart(cartItem); // Actualiza el carrito con los datos de Cache Storage
-          });
-        }
-      });
+    let data = {
+      title: "Lista de carrito",
+      description: "Esta seccion de carritos contiene camisetas para programadores",
+      imagen: ""
     }
 
-    // Si el usuario está autenticado, sincroniza con el backend
-    if ( this.CURRENT_USER_AUTHENTICATED) {
-      this._cartService.listCarts(this.userId).subscribe((resp:any) => {
-        // Actualiza el carrito con los datos del backend
-        resp.carts.forEach((cart:any) => {
-          this._cartService.changeCart(cart);
-        });
+    const { title, description, imagen } =  data;
+    const productUrl = ``;
+    this.titleService.setTitle(`${title} | LujanDev Oficial`);
+    this.metaService.updateTag({ name: 'description', content: description || 'Descripción del producto' });
+    this.updateMetaTags(productUrl, title, description, imagen);
+  }
 
-        // Sincroniza los carritos locales con el backend
-        //this._cartService.syncCartWithBackend().subscribe(() => {
-        //  console.log("Carrito sincronizado con el backend");
-        //});
-        
-      });
-    }
+  private updateMetaTags(url: string, title: string, description: string, imageUrl: string): void {
+    const metaTags = [
+      { property: 'og:title', content: title },
+      { property: 'og:description', content: description },
+      { property: 'og:image', content: imageUrl },
+      { property: 'og:url', content: url },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: title },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: imageUrl },
+    ];
+    metaTags.forEach((tag:any) => this.metaService.updateTag(tag));
   }
 }

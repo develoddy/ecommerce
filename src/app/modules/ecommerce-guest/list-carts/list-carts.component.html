@@ -72,14 +72,8 @@
                                             <td class="cart-delete text-center small-hide">
                                                 <a href="#" class="cart-remove remove-icon position-static" onclick="return false;" (click)="removeCart(cart)" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Cart"><i class="icon anm anm-times-r"></i></a>
                                             </td>
-                                            <!-- <td class="cart-image cart-flex-item">
-                                                <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', cart.product.slug]">
-                                                    <img class="blur-up lazyload" [attr.data-src]="cart.variedad.files[1].preview_url" [src]="cart.variedad.files[1].preview_url" alt="product" title="Product" width="120" height="170" />
-                                                </a>
-                                            </td> -->
                                             <td class="cart-image cart-flex-item">
                                                 <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', cart.product.slug]">
-                                                    <!-- <img class="blur-up lazyload" [attr.data-src]="cart.product.image" [src]="cart.product.image" alt="product" title="Product" width="120" height="170" /> -->
                                                     <img class="blur-up lazyload"
                                                     [src]="cart.product.imagen"
                                                     alt="product"
@@ -162,8 +156,8 @@
                                         <div class="form-group">
                                             <label for="address_zip">Introduce tu código de cupón si tienes uno.</label>
                                             <div class="input-group0">
-                                                <input class="form-control" type="text" name="coupon" placeholder="Código de cupon" [(ngModel)]="code_cupon" required />
-                                                <input type="submit" class="btn text-nowrap mt-3"  (click)="apllyCupon()" value="Aplicar cupón" />
+                                                <input class="form-control" type="text" name="coupon" placeholder="Código de cupon" [(ngModel)]="codeCupon" required />
+                                                <input type="submit" class="btn text-nowrap mt-3"  (click)="applyCupon()" value="Aplicar cupón" />
                                             </div>
                                         </div>
                                     </form>
@@ -523,8 +517,8 @@
                                         <div class="form-group">
                                             <label for="address_zip">Introduce tu código de cupón si tienes uno.</label>
                                             <div class="input-group0">
-                                                <input class="form-control" type="text" name="coupon" placeholder="Código de cupon" [(ngModel)]="code_cupon" required />
-                                                <input type="submit" class="btn text-nowrap mt-3"  (click)="apllyCupon()" value="Aplicar cupón" />
+                                                <input class="form-control" type="text" name="coupon" placeholder="Código de cupon" [(ngModel)]="codeCupon" required />
+                                                <input type="submit" class="btn text-nowrap mt-3"  (click)="applyCupon()" value="Aplicar cupón" />
                                             </div>
                                         </div>
                                     </form>
