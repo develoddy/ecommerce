@@ -5,6 +5,7 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
+import { Subscription, combineLatest } from 'rxjs';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -18,12 +19,14 @@ declare function alertSuccess(message: string): any;
 })
 export class ListCartsComponent implements OnInit {
   euro = "€";
-  cartsCacheItems: any[] = [];
   listCarts: any[] = [];
+  //listCartsCache: any[] = [];
   totalCarts: number = 0;
   codeCupon: string | null = null;
   loading: boolean = false;
   currentUser: any = null;
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private router: Router,
@@ -39,27 +42,10 @@ export class ListCartsComponent implements OnInit {
       this.updateSeo();
   }
 
-  async ngOnInit() {
-    this.verifyAuthenticatedUser();
-    await this.loadCartData();
+  ngOnInit() {
+    this.checkUserAuthenticationStatus();
+    this.getCarts();
     this.initHomeTemplate();
-  }
-
-  private verifyAuthenticatedUser(): void {
-    this.authService.user.subscribe(user => {
-      this.currentUser = user || null;
-    });
-  }
-
-  private async loadCartData(): Promise<void> {
-    if (!this.currentUser) {
-      this.cartsCacheItems = await this.cartService.loadCart();
-      if (this.cartsCacheItems.length) {
-        this.listCarts = this.cartsCacheItems;
-      }
-    } else {
-      await this.syncLocalCartWithBackend();
-    }
   }
 
   private initHomeTemplate(): void {
@@ -68,25 +54,51 @@ export class ListCartsComponent implements OnInit {
     }, 50);
   }
 
-  async getCarts(): Promise<void> {
+  private checkUserAuthenticationStatus(): void {
+    this.subscriptions.add(
+      combineLatest([
+        this.authService.user,
+        this.authService.userGuest
+      ]).subscribe(([user, userGuest]) => {
+        this.currentUser = user || userGuest;
+      })
+    );
+  }
+
+  private getCarts(): void{
     if (this.currentUser) {
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
         this.updateTotalCarts();
       });
-    }
-    this.listAllCarts();
+    } 
+    this.sotoreCarts();
   }
 
-  async listAllCarts(): Promise<void> {
+  public sotoreCarts() {
     this.cartService.resetCart();
-    if (this.currentUser) {
-      this.cartService.listCarts(this.currentUser._id).subscribe((resp: any) => {
-        resp.carts.forEach((cart: any) => {
-          this.cartService.changeCart(cart);
-        });
-      });
+    const isGuest = this.currentUser?.user_guest;
+    if (isGuest) {
+      this.listCartsLocalStorage();
+    } else {
+      this.listCartsDatabase();
     }
+  }
+
+  private listCartsDatabase(): void {
+    this.cartService.listCarts(this.currentUser._id).subscribe((resp: any) => {
+      resp.carts.forEach((cart: any) => {
+        this.cartService.changeCart(cart);
+      });
+    });
+  }
+
+  private listCartsLocalStorage(): void {
+    this.cartService.listCartsCache(this.currentUser.user_guest).subscribe((resp: any) => {
+      resp.carts.forEach((cart: any) => {
+        this.cartService.changeCart(cart);
+      });
+    });
   }
 
   async syncLocalCartWithBackend(): Promise<void> {
@@ -194,7 +206,8 @@ export class ListCartsComponent implements OnInit {
         alertDanger(resp.message_text);
       } else {
         alertSuccess(resp.message_text);
-        this.listAllCarts();
+        //this.listAllCarts();
+        this.sotoreCarts();
       }
     });
   }

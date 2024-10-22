@@ -2,13 +2,15 @@ import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angu
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { EcommerceAuthService } from '../../ecommerce-auth/_services/ecommerce-auth.service';
 import { WishlistService } from '../_service/wishlist.service';
 
 import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
+import { AuthService } from '../../auth-profile/_services/auth.service';
+
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -55,15 +57,18 @@ export class LandingProductComponent implements OnInit, OnDestroy {
   coloresDisponibles: { color: string, imagen: string }[] = [];
   variedades: any[] = [];
   availableSizes = ['S', 'M', 'L', 'XL']; 
-  currentUser: any = null;
   loading: boolean = false;
 
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
 
+  currentUser: any = null;
+
   errorResponse:boolean=false;
   errorMessage:any="";
+
+  private subscriptions: Subscription = new Subscription(); 
 
   private routeParamsSubscription: Subscription | undefined;
   private queryParamsSubscription: Subscription | undefined;
@@ -75,6 +80,7 @@ export class LandingProductComponent implements OnInit, OnDestroy {
     public _router: Router,
     public routerActived: ActivatedRoute,
     public cartService: CartService,
+    public authService: AuthService,
     public wishlistService: WishlistService,
     private minicartService: MinicartService,
     private titleService: Title, // seo
@@ -86,18 +92,42 @@ export class LandingProductComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.verifyAuthenticatedUser(); 
+    this.checkUserAuthenticationStatus(); 
     this.subscribeToRouteParams();
     this.subscribeToQueryParams();
     this.initLandingProduct();
     this.checkDeviceType();
   }
 
-  private verifyAuthenticatedUser(): void {
-    this.ecommerceAuthService._authService.user.subscribe(user => {
-      this.currentUser = user || null;
-    });
+
+  private checkUserAuthenticationStatus(): void {
+    this.subscriptions.add(
+      combineLatest([
+        this.authService.user,
+        this.authService.userGuest
+      ]).subscribe(([user, userGuest]) => {
+        this.currentUser = user || userGuest; // Usa el usuario autenticado o invitado
+        // if (this.currentUser) {
+        //   this.processUserStatus();  // Procesar el usuario
+        // } else {
+        //   console.log("Error: No hay usuario autenticado o invitado.");
+        // }
+      })
+    );
   }
+
+
+  // private checkUserAuthenticationStatus(): void {
+  //   this.ecommerceAuthService._authService.user.subscribe(user => {
+  //     console.log("Debbug checkUserAuthenticationStatus - User: ", user);
+  //     this.currentUser = user || null;
+  //   });
+
+  //   this.ecommerceAuthService._authService.userGuest.subscribe(userGuest => {
+  //     console.log("Debbug checkUserAuthenticationStatus - UserGuest ", userGuest);
+  //     this.currentUser = userGuest || null;
+  //   });
+  // }
 
   private subscribeToRouteParams(): void {
     this.routeParamsSubscription = this.routerActived.params.subscribe((resp: any) => {
@@ -134,8 +164,10 @@ export class LandingProductComponent implements OnInit, OnDestroy {
     if (this.product_selected) {
       this.updateSeo();
       if (this.currentUser) {
-        this.showProfileClient();
+        console.log("Hanlde product response: ", this.currentUser);
+        this.showProfileClient(this.currentUser);
       }
+
       this.filterUniqueGalerias();
       this.setFirstImage();
       this.setColoresDisponibles();
@@ -184,8 +216,11 @@ export class LandingProductComponent implements OnInit, OnDestroy {
     }
   }
 
-  private showProfileClient() {
-    let data = {user_id: this.currentUser._id};
+  private showProfileClient(currentUser:any) {
+
+    console.log("ShowProfile: ", currentUser);
+    
+    let data = {user_id: currentUser._id};
     this.ecommerceAuthService.showProfileClient(data).subscribe( ( resp: any ) => {
       this.sale_orders = resp.sale_orders;
       this.sale_details = this.extractSaleDetails(resp.sale_orders); 
@@ -386,18 +421,37 @@ export class LandingProductComponent implements OnInit, OnDestroy {
     });
   }
 
-  storeAddToCart(product:any) {
-    if(!this.currentUser) {
-       this.saveCartOnCACHE(product);
-    } else {
-      this.addToCartOnDDBB(product);
-    }
+  storeCart(product: any) {
+    const isGuest = this.currentUser.user_guest;
+    this.saveCart(product, isGuest);
   }
 
-  saveCartOnCACHE(product: any) {
-    let formattedProduct = {
-      id: 0,
-      product: product,
+  private saveCart(product: any, isGuest: String) {
+    console.log(`Debug: El usuario ${isGuest ? 'no está logueado' : 'está logueado'}, guardando el artículo en ${isGuest ? 'LocalStorage' : 'la base de datos'}`);
+
+    if ($("#qty-cart").val() == 0) {
+      this.errorResponse = true;
+      this.errorMessage = "Por favor, ingrese una cantidad mayor a 0 para añadir a la cesta";
+      return;
+    }
+
+    if (this.product_selected.type_inventario == 2) {
+      if (!this.variedad_selected) {
+        this.errorResponse = true;
+        this.errorMessage = "No hay stock disponible para este color";
+        return;
+      }
+      if (this.variedad_selected.stock < $("#qty-cart").val()) {
+        this.errorResponse = true;
+        this.errorMessage = "Por favor, reduzca la cantidad. Stock insuficiente";
+        return;
+      }
+    }
+
+    let data = {
+      user: isGuest ? null : this.currentUser._id,
+      user_status: isGuest,
+      product: this.product_selected._id,
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
       cantidad: $("#qty-cart").val(),
@@ -405,16 +459,93 @@ export class LandingProductComponent implements OnInit, OnDestroy {
       code_cupon: null,
       code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
       price_unitario: this.product_selected.price_usd,
-      subtotal: this.product_selected.price_usd - this.getDiscount(), 
+      subtotal: this.product_selected.price_usd - this.getDiscount(),
+      total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
+    };
+
+    if (isGuest) {
+      this.cartService.registerCartCache(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
+    } else {
+      this.cartService.registerCart(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
+    }
+  }
+
+  private handleCartResponse(resp: any) {
+      if (resp.message == 403) {
+          this.errorResponse = true;
+          this.errorMessage = resp.message_text;
+      } else {
+          this.cartService.changeCart(resp.cart);
+          this.minicartService.openMinicart();
+      }
+  }
+
+  private handleCartError(error: any) {
+      if (error.error.message === "EL TOKEN NO ES VALIDO") {
+        this.cartService._authService.logout();
+      }
+  }
+
+  /*
+  storeCart(product:any) {
+    this.currentUser.user_guest ? this.saveCartToLocalStorage(product) : this.saveCartToDatabase(product);
+  }
+
+  private saveCartToLocalStorage(product: any) {
+    console.log("Debbug: El usuario no está Logeado y estas guardando el articulo en la tabla CartCache");
+    if ( $("#qty-cart").val() == 0 ) {
+      this.errorResponse = true;
+      this.errorMessage = "Por favor, ingrese una cantidad mayor a 0 para añadir a la cesta";
+      return;
+    }
+
+    if (this.product_selected.type_inventario == 2) {
+      if ( !this.variedad_selected ) {
+        this.errorResponse = true;
+        this.errorMessage = "No hay stock disponible para este color";
+        return;
+      }
+      if (this.variedad_selected) {
+        if (this.variedad_selected.stock < $("#qty-cart").val()) {
+          this.errorResponse = true;
+          this.errorMessage = "Por favor, reduzca la cantidad. Stock insuficiente";
+          return;
+        }
+      }
+    }
+
+    let data = {
+      user: null,
+      user_status: this.currentUser.user_guest,
+      product: this.product_selected._id,
+      type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
+      discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
+      cantidad: $("#qty-cart").val(),
+      variedad: this.variedad_selected ? this.variedad_selected.id : null,
+      code_cupon: null,
+      code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
+      price_unitario: this.product_selected.price_usd,
+      subtotal: this.product_selected.price_usd - this.getDiscount(),
       total: (this.product_selected.price_usd - this.getDiscount())*$("#qty-cart").val(),
     }
 
-    const currentCart = this.cartService.getCart() || [];  // Obtener el carrito actual desde el localStorage
-    currentCart.push(formattedProduct); // Añadir el producto formateado al carrito
-    this.cartService.saveCart(currentCart); // Guardar el carrito actualizado en localStorage
+    this.cartService.registerCartCache(data).subscribe((resp:any) => {
+      if (resp.message == 403) {
+        this.errorResponse = true;
+        this.errorMessage = resp.message_text;
+        return;
+      } else {
+        this.cartService.changeCart(resp.cart);
+        this.minicartService.openMinicart();
+      }
+    }, error => {
+      if (error.error.message == "EL TOKEN NO ES VALIDO") {
+        this.cartService._authService.logout();
+      }
+    });
   }
     
-  addToCartOnDDBB(product:any) {
+  private saveCartToDatabase(product:any) {
     if ( $("#qty-cart").val() == 0 ) {
       this.errorResponse = true;
       this.errorMessage = "Por favor, ingrese una cantidad mayor a 0 para añadir a la cesta";
@@ -464,7 +595,7 @@ export class LandingProductComponent implements OnInit, OnDestroy {
         this.cartService._authService.logout();
       }
     });
-  }
+  }*/
 
   ngOnDestroy(): void {
     if (this.routeParamsSubscription) {

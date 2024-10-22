@@ -9,12 +9,12 @@ import { WishlistService } from 'src/app/modules/ecommerce-guest/_service/wishli
 import { LanguageService } from 'src/app/services/language.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { combineLatest } from 'rxjs';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
 declare function sectionCart(): any;
 declare function alertDanger([]): any;
-declare function alertWarning([]): any;
 declare function alertSuccess([]): any;
 
 @Component({
@@ -34,15 +34,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   search_product: string | null = null;
   products_search: any[] = [];
   categories: any[] = [];
-  CURRENT_USER_AUTHENTICATED: any = null;
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
   source: any;
 
-  @ViewChild("filter") filter?: ElementRef;
-  private subscriptions: Subscription = new Subscription();  // Consolidar las suscripciones
+  currentUser: any = null;
 
+  @ViewChild("filter") filter?: ElementRef;
+  private subscriptions: Subscription = new Subscription();
   showSubscriptionSection: boolean = true;
 
   constructor(
@@ -57,62 +57,101 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private subscriptionService: SubscriptionService
   ) {
     translate.setDefaultLang('es');
-  }
-
-  async ngOnInit() {
     this.subscriptions.add(
       this.subscriptionService.showSubscriptionSection$.subscribe(value => {
         this.showSubscriptionSection = value;
       })
     );
+  }
 
-    this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
-
-    await this.loadCartData(); // Cargar datos del carrito
-
+  ngOnInit() {
+    this.checkUserAuthenticationStatus();
     if (this.router.url === '/checkout') {
       this.showSubscriptionSection = false;
     }
 
-    this.subscribeToCartData(); // Suscripción a los datos del carrito
-    this.subscribeToWishlistData(); // Suscripción a los datos de la lista de deseos
-    this.subscribeToEcommerceConfig(); // Suscripción a la configuración de eCommerce
-
-    this.checkDeviceType(); // Verifica el tipo de dispositivo
+    this.subscribeToCartData(); 
+    this.subscribeToWishlistData();
+    this.subscribeToEcommerceConfig();
+    this.checkDeviceType();
   }
 
-  private async loadCartData(): Promise<void> {
-    if (!this.CURRENT_USER_AUTHENTICATED) {
-      this.cartsCacheItems = await this.cartService.loadCart();
-      if (this.cartsCacheItems.length) {
-        this.listCarts = this.cartsCacheItems;
-        this.listCarts.forEach((cart: any) => {
-          this.cartService.changeCart(cart);
-        });
-      }
-    }
-  }
-
-  private verifyAuthenticatedUser(): void {
+  private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(
-      this.cartService._authService.user.subscribe((user: any) => {
-        if (user) {
-          this.CURRENT_USER_AUTHENTICATED = user;
-          this.cartService.listCarts(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
-            resp.carts.forEach((cart: any) => this.cartService.changeCart(cart));
-          });
-
-          this.wishlistService.listWishlists(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp: any) => {
-            resp.wishlists.forEach((wishlist: any) => this.wishlistService.changeWishlist(wishlist));
-          });
+      combineLatest([
+        this.authService.user,
+        this.authService.userGuest
+      ]).subscribe(([user, userGuest]) => {
+        this.currentUser = user || userGuest; // Usa el usuario autenticado o invitado
+        if (this.currentUser) {
+          this.processUserStatus();  // Procesar el usuario
+        } else {
+          console.log("Error: No hay usuario autenticado o invitado.");
         }
       })
     );
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event): void {
-    this.checkDeviceType(); // Verifica el tamaño de la pantalla
+  private processUserStatus(): void {
+    this.storeListCarts();
+    this.storeListWishlists();
+  }
+
+  private storeListCarts(): void {
+    const isGuest = this.currentUser?.user_guest;
+  
+    if (isGuest) {
+      this.listCartsLocalStorage();
+    } else if (!isGuest) {
+      this.cartService.resetCart();
+      this.listCartsDatabase();
+    } else {
+      console.log("Error: Estado de usuario no definido");
+    }
+  }
+  
+  private listCartsDatabase(): void {
+    if (!this.currentUser || !this.currentUser._id) {
+      console.error("Error: Intentando acceder a la base de datos sin un usuario autenticado.");
+      return;
+    }
+  
+    this.cartService.listCarts(this.currentUser._id).subscribe((resp: any) => {
+      resp.carts.forEach((cart: any) => this.cartService.changeCart(cart));
+    });
+  }
+  
+  private listCartsLocalStorage(): void {
+    this.cartService.listCartsCache(this.currentUser?.user_guest).subscribe((resp: any) => {
+      resp.carts.forEach((cart: any) => this.cartService.changeCart(cart));
+    });
+  }
+  
+  private storeListWishlists(): void {
+    const isGuest = this.currentUser?.user_guest;
+  
+    if (isGuest) {
+      this.listWishlistsLocalStorage();
+    } else if (!isGuest) {
+      this.listWishlistsDatabase();
+    } else {
+      console.log("Error: Estado de usuario no definido");
+    }
+  }
+  
+  private listWishlistsDatabase(): void {
+    if (!this.currentUser || !this.currentUser._id) {
+      console.error("Error: Intentando acceder a la base de datos sin un usuario autenticado.");
+      return;
+    }
+  
+    this.wishlistService.listWishlists(this.currentUser._id).subscribe((resp: any) => {
+      resp.wishlists.forEach((wishlist: any) => this.wishlistService.changeWishlist(wishlist));
+    });
+  }
+  
+  private listWishlistsLocalStorage(): void {
+    // Implementar la lógica para obtener los favoritos del local storage
   }
 
   private checkDeviceType(): void {
@@ -196,7 +235,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
   
-
   dec(cart: any) {
     if (!this.validateDecrement(cart)) return;
   
@@ -255,10 +293,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();  // Desuscribir todas las suscripciones al destruir el componente
+    this.subscriptions.unsubscribe();
   }
 
   closeMinicart(): void {
     this.minicartService.closeMinicart();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkDeviceType(); // Verifica el tamaño de la pantalla
   }
 }

@@ -50,23 +50,18 @@ export class LoginComponent implements OnInit {
   }
 
   public login() {
-    if ( !this.email ) {
+    if (!this.email) {
       alertDanger("Es necesario ingresar el email");
     }
-
-    if ( !this.password ) {
+    if (!this.password) {
       alertDanger("Es necesario ingresar el password");
     }
-
     this._authService.login(this.email, this.password).subscribe((resp:any) => {
-      // SI NO TIENE UN ERROR Y LA RESPUESTA ES VERDADERA SIGNIFICA QUE EL USUARIO SE LOGUEO CORRECTAMENTE
       if ( !resp.error && resp ) {
         this._router.navigate(["/"]); 
       } else {
-        //alertDanger(resp.error.message);
         this.errorAutenticate = true;
         this.errorMessageAutenticate = resp.error.message;
-        
       }
     });
   }

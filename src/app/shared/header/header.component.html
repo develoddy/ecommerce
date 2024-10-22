@@ -328,7 +328,7 @@
                 <div class="account-parent iconset">
                     <div class="account-link" title="Cuenta">
                         <ng-container *ngIf="isMobile; else desktopLink">
-                            <a [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/my-account'] : ['/auth/login']" class="text-white">
+                            <a [routerLink]="currentUser.email ? ['/my-account'] : ['/auth/login'] " class="text-white">
                                 <i class="hdr-icon icon anm anm-user-al"></i>
                             </a>
                         </ng-container>
@@ -336,7 +336,7 @@
                             <i class="hdr-icon icon anm anm-user-al"></i>
                         </ng-template>
 
-                        <span class="menubar-label" *ngIf="CURRENT_USER_AUTHENTICATED; else notAuthenticated">
+                        <span class="menubar-label" *ngIf="currentUser.email; else notAuthenticated">
                             Mi cuenta
                           </span>
                           <ng-template #notAuthenticated>
@@ -346,55 +346,57 @@
                     <div id="accountBox">
                         <div class="customer-links">
                             <ul class="m-0 m-0 list-group list-group-flush">
-                                <li class="mt-3 mb-3" *ngIf="!CURRENT_USER_AUTHENTICATED; else isAuthenticated">
+                                <li class="mt-3 mb-3" *ngIf="currentUser.user_guest else isAuthenticated">
                                     <button class="btn mb-2 btn-secondary btn-lg w-100">
                                         <a href="login.html" onclick="return false;" [routerLink]="['/auth/login']" class="text-white"><i class="icon anm anm-sign-in-al d-none"></i>Iniciar sesión</a>
                                     </button>
                                     <div class="login-signup-text text-center text-secondary form-text">¿No tienes una cuenta? <a href="login.html" onclick="return false;" [routerLink]="['/auth/register']" class="fw-bold text-decoration-underline">Regístrate</a></div>
                                 </li>
                                 <ng-template #isAuthenticated>
-                                    <h5 class="text-secondary px-3">{{ CURRENT_USER_AUTHENTICATED.name }}</h5>
+                                    <h5 class="text-secondary px-3">{{ currentUser.name }}</h5>
                                 </ng-template>
+
+
                                 
-                                <li class="list-group-item d-flex " *ngIf="!CURRENT_USER_AUTHENTICATED">
+                                <li class="list-group-item d-flex " *ngIf="currentUser.user_guest">
                                     <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Lujandev likes you</span>
                                         <i class="icon anm anm-chevron-r-right"></i>
                                     </a>
                                 </li>
-                                <li class="list-group-item d-flex " *ngIf="!CURRENT_USER_AUTHENTICATED">
+                                <li class="list-group-item d-flex " *ngIf="currentUser.user_guest">
                                     <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Ayuda</span>
                                         <i class="icon anm anm-chevron-r-right"></i>
                                     </a>
                                 </li>
 
-                                <li class="list-group-item d-flex " *ngIf="CURRENT_USER_AUTHENTICATED">
+                                <li class="list-group-item d-flex " *ngIf="currentUser.email">
                                     <a href="my-account.html" onclick="return false;" [routerLink]="['/my-account']" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Mi cuenta</span>
                                         <i class="icon anm anm-chevron-r-right"></i>
                                     </a>
                                 </li>
 
-                                <li class="list-group-item d-flex " *ngIf="CURRENT_USER_AUTHENTICATED">
+                                <li class="list-group-item d-flex " *ngIf="currentUser.email">
                                     <a href="register.html" onclick="return false;" [routerLink]="['/mypurchases']" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Mis compras </span>
                                         <i class="icon anm anm-chevron-r-right"></i>
                                     </a>
                                 </li>
 
-                                <li class="list-group-item d-flex " *ngIf="CURRENT_USER_AUTHENTICATED">
+                                <li class="list-group-item d-flex " *ngIf="currentUser.email">
                                     <a href="login.html" onclick="return false;" (click)="logout()" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Cerrar sesión</span>
                                         <i class="con anm anm-chevron-r-right"></i>
                                     </a>
                                 </li>
 
-                                <!-- <li class="list-group-item" *ngIf="!CURRENT_USER_AUTHENTICATED"><a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" ><i class="icon anm anm-user-al d-none"></i>Registrar</a></li>
-                                <li *ngIf="CURRENT_USER_AUTHENTICATED"><a href="my-account.html" onclick="return false;" [routerLink]="['/profile']" ><i class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
+                                <!-- <li class="list-group-item" *ngIf="!currentUser"><a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" ><i class="icon anm anm-user-al d-none"></i>Registrar</a></li>
+                                <li *ngIf="currentUser"><a href="my-account.html" onclick="return false;" [routerLink]="['/profile']" ><i class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
                                 <li class="list-group-item"><a href="wishlist-style1.html" onclick="return false;" [routerLink]="['/wishlist']" ><i class="icon anm anm-heart-l d-none"></i>Favoritos</a></li>
                                 <li class="d-none"><a href="compare-style1.html" onclick="return false;" [routerLink]="['/compare']"><i class="icon anm anm-random-r"></i>Comparar</a></li>
-                                <li *ngIf="CURRENT_USER_AUTHENTICATED"><a href="login.html" onclick="return false;" (click)="logout()" ><i class="icon anm anm-sign-out-al"></i>Salir</a></li> -->
+                                <li *ngIf="currentUser"><a href="login.html" onclick="return false;" (click)="logout()" ><i class="icon anm anm-sign-out-al"></i>Salir</a></li> -->
                             </ul>
                         </div>
                         
@@ -413,7 +415,7 @@
                 <!--Minicart-->
                 <div class="header-cart iconset"title="Carro">
                     <ng-container *ngIf="isMobile; else desktopLinkMiniCart">
-                        <a href="cart-style1.html" onclick="return false;" [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/cart'] : ['/auth/login']" class="header-cart btn-minicart clr-none">
+                        <a href="cart-style1.html" onclick="return false;" [routerLink]="currentUser ? ['/cart'] : ['/auth/login']" class="header-cart btn-minicart clr-none">
                             <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count" *ngIf="listCarts">{{ listCarts.length }}</span>
                         </a>
                     </ng-container>
@@ -577,9 +579,9 @@
         <li class="mobile-menu-bottom">
             <div class="mobile-links"> 
                 <ul class="list-inline d-inline-flex flex-column w-100">
-                    <li *ngIf="!CURRENT_USER_AUTHENTICATED"><a href="login.html" class="d-flex align-items-center" onclick="return false;" [routerLink]="['/auth/login']"><i class="icon anm anm-sign-in-al"></i>Iniciar sesión</a></li>
-                    <li *ngIf="!CURRENT_USER_AUTHENTICATED"><a href="register.html" class="d-flex align-items-center" onclick="return false;" [routerLink]="['/auth/register']"><i class="icon anm anm-user-al"></i>Registrar</a></li>
-                    <li *ngIf="CURRENT_USER_AUTHENTICATED"><a href="my-account.html" class="d-flex align-items-center" onclick="return false;" [routerLink]="['/profile']"><i class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
+                    <li *ngIf="!currentUser"><a href="login.html" class="d-flex align-items-center" onclick="return false;" [routerLink]="['/auth/login']"><i class="icon anm anm-sign-in-al"></i>Iniciar sesión</a></li>
+                    <li *ngIf="!currentUser"><a href="register.html" class="d-flex align-items-center" onclick="return false;" [routerLink]="['/auth/register']"><i class="icon anm anm-user-al"></i>Registrar</a></li>
+                    <li *ngIf="currentUser"><a href="my-account.html" class="d-flex align-items-center" onclick="return false;" [routerLink]="['/profile']"><i class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
                     <li class="title h5 d-none">¿Necesitas ayuda?</li>
                     <li class="d-none"><a href="tel:401234567890" class="d-flex align-items-center"><i class="icon anm anm-phone-l"></i> (+40) 123 456 7890</a></li>
                     <li class="d-none"><a href="mailto:info@example.com" class="d-flex align-items-center"><i class="icon anm anm-envelope-l"></i> infoexample.com</a></li>

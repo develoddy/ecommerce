@@ -18,13 +18,11 @@ export class CartService {
   public cart = new BehaviorSubject<Array<any>>([]);
   public currenteDataCart$ = this.cart.asObservable();
 
+
   constructor(
     public _authService: AuthService,
     public _http: HttpClient,
   ) { }
-
-  // ------- Nueva implementacion para guardar productos en cache --------
-
 
   //  Almacenar el carrito en Cache Storage
   async cacheCartData(cartData: any) {
@@ -41,17 +39,6 @@ export class CartService {
     return response ? await response.json() : null;
   }
 
-  // Cargar el carrito desde el backend o Cache Storage
-  // async loadCart() {
-  //   const cachedCart = await this.getCartFromCache();
-  //   if (cachedCart) {
-  //     return cachedCart; // Devuelve el carrito desde Cache Storage
-  //   } else {
-  //     // Si no hay carrito en Cache, obtener del backend
-  //     return this._http.get('/api/cart').toPromise();
-  //   }
-  // }
-
   // Guardar el carrito localmente
   saveCart(cart: any) {
     localStorage.setItem(this.cartKey, JSON.stringify(cart));
@@ -63,26 +50,12 @@ export class CartService {
     const cart = localStorage.getItem(this.cartKey);
     return cart ? JSON.parse(cart) : [];
   }
-
  
   syncCartWithBackend(data: any[], userId:any) {
     let headers = new HttpHeaders({ 'token': this._authService.token });
     let URL = URL_SERVICE+"cart/merge?user_id="+userId;
     return this._http.post(URL, {data}, {headers: headers});
   }
-
-
-  // Obtener el carrito desde la base de datos
-  //getCartFromBackend() {
-    //return this._http.get('/api/cart');
-    // this.loadingSubject.next(true);
-    // let headers = new HttpHeaders({'token': this._authService.token});
-    // let URL = URL_SERVICE+"cart/list?user_id="+user_id;
-    
-    // return this._http.get(URL, { headers: headers }).pipe(
-    //   finalize(() => this.loadingSubject.next(false)) 
-    // );
-  //}
 
   // Cargar el carrito desde el backend o Cache Storage
   async loadCart() {
@@ -91,8 +64,33 @@ export class CartService {
       return cachedCart; // Devuelve el carrito desde Cache Storage
     } else {
       // Si no hay carrito en Cache, obtener del backend
-      return this._http.get('/api/cart').toPromise();
+      //return this._http.get('/api/cart').toPromise();
     }
+  }
+
+
+  /**
+   * ----------------------------------------------------------------
+   * -               CART CACHE SERVICE                             - 
+   * ----------------------------------------------------------------
+    **/
+
+  listCartsCache(isGuest:any) {
+    this.loadingSubject.next(true);
+    //let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE+"cartCache/list?isGuest="+isGuest;
+    return this._http.get(URL).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
+  }
+
+  registerCartCache(data:any) {
+    this.loadingSubject.next(true);
+    //let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE+"cartCache/register";
+    return this._http.post(URL, data).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
   }
 
 
@@ -106,16 +104,11 @@ export class CartService {
 
 
 
-
-
-
-
-
-
-
-
-
-  // ------ CART -------------
+  /**
+   * ----------------------------------------------------------------
+   * -               CART SERVICE                                   - 
+   * ----------------------------------------------------------------
+   **/
   changeCart(DATACART:any) {
     let listCart = this.cart.getValue();
     let INDEX = listCart.findIndex((item:any) => item._id == DATACART._id);
@@ -142,9 +135,13 @@ export class CartService {
   }
 
   registerCart(data:any) {
+    this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cart/register";
-    return this._http.post(URL, data, {headers: headers});
+    //return this._http.post(URL, data, {headers: headers});
+    return this._http.post(URL, data, { headers: headers }).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
   }
 
   updateCart(data:any) {
