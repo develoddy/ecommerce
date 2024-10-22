@@ -97,10 +97,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private processUserStatus(): void {
     this.storeListCarts();
     this.storeListWishlists();
-
-    // Sincroniza el carrito después de procesar el usuario
     if (!this.currentUser?.user_guest) { // Si es un usuario autenticado
-      this.syncUserCart();
+      let user_guest = "Guest";
+      this.cartService.listCartsCache(user_guest).subscribe((resp: any) => {
+        if (resp.carts.length > 0) {
+          this.syncUserCart();
+        }
+      });
     }
   }
 
@@ -130,12 +133,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     }).subscribe({
       next: ({ respCache, respDatabase }) => {
         const mergedCarts = this.mergeAndRemoveDuplicates(respDatabase.carts || [], respCache.carts || []);  // Combinar y eliminar duplicados antes de sincronizar
-        this.syncCarts(mergedCarts).subscribe({ // Sincronizar los artículos combinados
-          next: () => {
-              this.deleteCachedItems(respCache.carts || []); // Eliminar artículos del carrito en cache después de la sincronización
+        // Sincronizar el carrito con el backend
+        this.cartService.syncCartWithBackend(mergedCarts, this.currentUser._id).subscribe({
+          next: (resp: any) => {
+            console.log("Carrito sincronizado exitosamente: ", resp);
           },
-          error: (error: any) => {
-              console.error("Error al sincronizar el carrito: ", error);
+          error: (error) => {
+            console.error("Error al sincronizar el carrito: ", error);
           }
         });
       },
@@ -144,38 +148,23 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-  
-  private mergeAndRemoveDuplicates(cartsFromDatabase: any[], cartsFromCache: any[]): any[] {
-    const combinedCarts = [...cartsFromDatabase, ...cartsFromCache];
-    const uniqueCarts = Array.from(new Map(combinedCarts.map(cart => [`${cart.product._id}-${cart.variedad.id}`, cart])).values());
-    return uniqueCarts;
-  }
 
-  private syncCarts(carts: any[]): Observable<any> {
-    return this.cartService.syncCart(carts, this.currentUser._id).pipe(
-        tap((syncResponse: any) => {
-            console.log("Carrito sincronizado exitosamente: ", syncResponse);
-        })
-    );
-  }
+  private mergeAndRemoveDuplicates(databaseCarts: any[], cacheCarts: any[]): any[] {
+    const combinedCarts = [...databaseCarts, ...cacheCarts];
 
-  private deleteCachedItems(cachedItems: any[]): void {
-    const deleteRequests = cachedItems.map((cartItem: any) => 
-      this.cartService.deleteCartCache(cartItem._id).pipe(
-        catchError(error => {
-            if (error.status === 404) {
-                console.warn(`Artículo con ID ${cartItem._id} no encontrado en el cache, ya fue eliminado o no existe.`);
-            } else {
-                console.error(`Error al eliminar el artículo con ID ${cartItem._id}: `, error);
-            }
-            return of(null); // Permitir que el flujo continúe
-        })
-      ));
+    // Utilizar un Set para almacenar los IDs únicos (puedes usar productId y variedadId)
+    const uniqueCarts = new Map();
 
-    forkJoin(deleteRequests).subscribe(() => {
-        console.log("Se han procesado todas las solicitudes de eliminación.");
+    combinedCarts.forEach(cart => {
+        const key = `${cart.product._id}-${cart.variedad.id}`; // Crear clave única
+        if (!uniqueCarts.has(key)) {
+            uniqueCarts.set(key, cart);
+        }
     });
-  }
+
+    return Array.from(uniqueCarts.values());
+}
+
   
   private listCartsDatabase(): void {
     if (!this.currentUser || !this.currentUser._id) {
