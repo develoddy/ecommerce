@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { debounceTime, fromEvent, Subscription } from 'rxjs';
+import { catchError, debounceTime, forkJoin, fromEvent, Observable, of, Subscription, tap } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { EcommerceGuestService } from 'src/app/modules/ecommerce-guest/_service/ecommerce-guest.service';
@@ -10,6 +10,8 @@ import { LanguageService } from 'src/app/services/language.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { combineLatest } from 'rxjs';
+
+
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -95,19 +97,84 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private processUserStatus(): void {
     this.storeListCarts();
     this.storeListWishlists();
+
+    // Sincroniza el carrito después de procesar el usuario
+    if (!this.currentUser?.user_guest) { // Si es un usuario autenticado
+      this.syncUserCart();
+    }
   }
 
   private storeListCarts(): void {
     const isGuest = this.currentUser?.user_guest;
-  
-    if (isGuest) {
+    if (isGuest) { // Es un invitado
       this.listCartsLocalStorage();
-    } else if (!isGuest) {
+    } else if (!isGuest) { // Está autenticado
       this.cartService.resetCart();
       this.listCartsDatabase();
     } else {
       console.log("Error: Estado de usuario no definido");
     }
+  }
+
+  private syncUserCart(): void {
+    if (!this.currentUser || !this.currentUser._id) {
+        console.error("Error: Intentando sincronizar el carrito sin un usuario autenticado.");
+        return;
+    }
+
+    const user_guest = "Guest";
+    // Obtener artículos del carrito del usuario invitado y del usuario autenticado simultáneamente
+    forkJoin({
+        respCache: this.cartService.listCartsCache(user_guest),
+        respDatabase: this.cartService.listCarts(this.currentUser._id)
+    }).subscribe({
+      next: ({ respCache, respDatabase }) => {
+        const mergedCarts = this.mergeAndRemoveDuplicates(respDatabase.carts || [], respCache.carts || []);  // Combinar y eliminar duplicados antes de sincronizar
+        this.syncCarts(mergedCarts).subscribe({ // Sincronizar los artículos combinados
+          next: () => {
+              this.deleteCachedItems(respCache.carts || []); // Eliminar artículos del carrito en cache después de la sincronización
+          },
+          error: (error: any) => {
+              console.error("Error al sincronizar el carrito: ", error);
+          }
+        });
+      },
+      error: (error) => {
+          console.error("Error al obtener los carritos: ", error);
+      }
+    });
+  }
+  
+  private mergeAndRemoveDuplicates(cartsFromDatabase: any[], cartsFromCache: any[]): any[] {
+    const combinedCarts = [...cartsFromDatabase, ...cartsFromCache];
+    const uniqueCarts = Array.from(new Map(combinedCarts.map(cart => [`${cart.product._id}-${cart.variedad.id}`, cart])).values());
+    return uniqueCarts;
+  }
+
+  private syncCarts(carts: any[]): Observable<any> {
+    return this.cartService.syncCart(carts, this.currentUser._id).pipe(
+        tap((syncResponse: any) => {
+            console.log("Carrito sincronizado exitosamente: ", syncResponse);
+        })
+    );
+  }
+
+  private deleteCachedItems(cachedItems: any[]): void {
+    const deleteRequests = cachedItems.map((cartItem: any) => 
+      this.cartService.deleteCartCache(cartItem._id).pipe(
+        catchError(error => {
+            if (error.status === 404) {
+                console.warn(`Artículo con ID ${cartItem._id} no encontrado en el cache, ya fue eliminado o no existe.`);
+            } else {
+                console.error(`Error al eliminar el artículo con ID ${cartItem._id}: `, error);
+            }
+            return of(null); // Permitir que el flujo continúe
+        })
+      ));
+
+    forkJoin(deleteRequests).subscribe(() => {
+        console.log("Se han procesado todas las solicitudes de eliminación.");
+    });
   }
   
   private listCartsDatabase(): void {
@@ -115,16 +182,25 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       console.error("Error: Intentando acceder a la base de datos sin un usuario autenticado.");
       return;
     }
-  
     this.cartService.listCarts(this.currentUser._id).subscribe((resp: any) => {
       resp.carts.forEach((cart: any) => this.cartService.changeCart(cart));
     });
   }
   
   private listCartsLocalStorage(): void {
-    this.cartService.listCartsCache(this.currentUser?.user_guest).subscribe((resp: any) => {
+    let user_guest = "Guest";
+    this.cartService.listCartsCache(user_guest).subscribe((resp: any) => {
       resp.carts.forEach((cart: any) => this.cartService.changeCart(cart));
     });
+  }
+
+  private subscribeToCartData(): void {
+    this.subscriptions.add(
+      this.cartService.currenteDataCart$.subscribe((resp: any) => {
+        this.listCarts = resp;
+        this.totalCarts = this.listCarts.reduce((sum, item) => sum + parseFloat(item.total), 0);
+      })
+    );
   }
   
   private storeListWishlists(): void {
@@ -159,15 +235,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isMobile = width <= 480;
     this.isTablet = width > 480 && width <= 768;
     this.isDesktop = width > 768;
-  }
-
-  private subscribeToCartData(): void {
-    this.subscriptions.add(
-      this.cartService.currenteDataCart$.subscribe((resp: any) => {
-        this.listCarts = resp;
-        this.totalCarts = this.listCarts.reduce((sum, item) => sum + parseFloat(item.total), 0);
-      })
-    );
   }
 
   private subscribeToWishlistData(): void {

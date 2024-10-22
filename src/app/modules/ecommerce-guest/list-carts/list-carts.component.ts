@@ -20,7 +20,6 @@ declare function alertSuccess(message: string): any;
 export class ListCartsComponent implements OnInit {
   euro = "€";
   listCarts: any[] = [];
-  //listCartsCache: any[] = [];
   totalCarts: number = 0;
   codeCupon: string | null = null;
   loading: boolean = false;
@@ -99,43 +98,6 @@ export class ListCartsComponent implements OnInit {
         this.cartService.changeCart(cart);
       });
     });
-  }
-
-  async syncLocalCartWithBackend(): Promise<void> {
-    if (this.currentUser) {
-      const userId = this.currentUser._id;
-      const localCart = await this.cartService.getCartFromCache();
-
-      if (localCart && localCart.length) {
-        this.cartService.syncCartWithBackend(localCart, userId).subscribe(
-          (resp: any) => {
-            if (resp.message === 403) {
-              alertDanger(resp.message_text);
-              return;
-            }
-            console.log("--- Despues de sincronizar como respuesta escupe: ", resp);
-            localStorage.removeItem(this.cartService.cartKey);
-            caches.delete(this.cartService.cacheName);
-            this.getCarts();
-          },
-          error => {
-            if (error.error.message === "EL TOKEN NO ES VALIDO") {
-              this.cartService._authService.logout();
-            }
-          }
-        );
-      } else {
-        this.getCarts();
-      //this.listAllCarts();
-      }
-      
-    }
-  }
-
-  addToCart(product: any): void {
-    const currentCart = this.cartService.getCart();
-    currentCart.push(product);
-    this.cartService.saveCart(currentCart);
   }
 
   goToCheckout(): void {

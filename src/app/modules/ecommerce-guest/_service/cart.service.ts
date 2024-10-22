@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, finalize } from 'rxjs';
+import { BehaviorSubject, finalize, Observable, tap } from 'rxjs';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
+
+interface CartResponse {
+  carts: any[]; // Cambia `any` por el tipo específico de los artículos de tu carrito.
+}
 
 @Injectable({
   providedIn: 'root'
@@ -18,91 +22,53 @@ export class CartService {
   public cart = new BehaviorSubject<Array<any>>([]);
   public currenteDataCart$ = this.cart.asObservable();
 
-
-  constructor(
-    public _authService: AuthService,
-    public _http: HttpClient,
-  ) { }
-
-  //  Almacenar el carrito en Cache Storage
-  async cacheCartData(cartData: any) {
-    const cache = await caches.open(this.cacheName);
-    await cache.put('/api/cart', new Response(JSON.stringify(cartData), {
-      headers: { 'Content-Type': 'application/json' }
-    }));
+  constructor(public _authService: AuthService, public _http: HttpClient) {
+    // Code ...
   }
-
-  // Obtener el carrito desde Cache Storage
-  async getCartFromCache() {
-    const cache = await caches.open(this.cacheName);
-    const response = await cache.match('/api/cart');
-    return response ? await response.json() : null;
-  }
-
-  // Guardar el carrito localmente
-  saveCart(cart: any) {
-    localStorage.setItem(this.cartKey, JSON.stringify(cart));
-    this.cacheCartData(cart); // Cachear el carrito
-  }
-
-  // Obtener el carrito de Local Storage
-  getCart() {
-    const cart = localStorage.getItem(this.cartKey);
-    return cart ? JSON.parse(cart) : [];
-  }
- 
-  syncCartWithBackend(data: any[], userId:any) {
-    let headers = new HttpHeaders({ 'token': this._authService.token });
-    let URL = URL_SERVICE+"cart/merge?user_id="+userId;
-    return this._http.post(URL, {data}, {headers: headers});
-  }
-
-  // Cargar el carrito desde el backend o Cache Storage
-  async loadCart() {
-    const cachedCart = await this.getCartFromCache();
-    if (cachedCart) {
-      return cachedCart; // Devuelve el carrito desde Cache Storage
-    } else {
-      // Si no hay carrito en Cache, obtener del backend
-      //return this._http.get('/api/cart').toPromise();
-    }
-  }
-
 
   /**
    * ----------------------------------------------------------------
    * -               CART CACHE SERVICE                             - 
    * ----------------------------------------------------------------
-    **/
-
-  listCartsCache(isGuest:any) {
+  **/
+  listCartsCache(isGuest:any): Observable<CartResponse> {
     this.loadingSubject.next(true);
-    //let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cartCache/list?isGuest="+isGuest;
-    return this._http.get(URL).pipe(
-      finalize(() => this.loadingSubject.next(false)) 
+    // return this._http.get(URL).pipe(
+    //   finalize(() => this.loadingSubject.next(false)) 
+    // );
+    return this._http.get<CartResponse>(URL).pipe(
+      finalize(() => this.loadingSubject.next(false))
     );
   }
 
   registerCartCache(data:any) {
     this.loadingSubject.next(true);
-    //let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cartCache/register";
     return this._http.post(URL, data).pipe(
       finalize(() => this.loadingSubject.next(false)) 
     );
   }
 
+  syncCart(data: any[], userId: any) {
+    return this.syncCartWithBackend(data, userId).pipe(
+      tap((response: any) => {
+        if (response.carts) {
+          response.carts.forEach((cart: any) => this.changeCart(cart)); // Actualiza el carrito con los datos sincronizados
+        }
+      })
+    );
+  }
+  
+  deleteCartCache(cart_id:any) {
+    let URL = URL_SERVICE+"cartCache/delete/"+cart_id;
+    return this._http.delete(URL);
+  }
 
-
-
-
-
-
-
-
-
-
+  deleteAllCartCache(isGuest: any) {
+    let URL = URL_SERVICE + "cartCache/delete-all/" + isGuest;
+    return this._http.delete(URL);
+  }
 
   /**
    * ----------------------------------------------------------------
@@ -150,13 +116,16 @@ export class CartService {
     return this._http.put(URL, data, {headers: headers});
   }
 
-  listCarts(user_id:any) {
+  listCarts(user_id:any): Observable<CartResponse> {
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cart/list?user_id="+user_id;
     
-    return this._http.get(URL, { headers: headers }).pipe(
-      finalize(() => this.loadingSubject.next(false)) 
+    // return this._http.get(URL, { headers: headers }).pipe(
+    //   finalize(() => this.loadingSubject.next(false)) 
+    // );
+    return this._http.get<CartResponse>(URL).pipe(
+      finalize(() => this.loadingSubject.next(false))
     );
   }
 
@@ -183,5 +152,11 @@ export class CartService {
     let TIME_NOW = new Date().getTime();
     let URL = URL_SERVICE+"home/search_product?TIME_NOW="+TIME_NOW;
     return this._http.post(URL, data, {headers: headers});
+  }
+
+  syncCartWithBackend(data: any[], userId:any) {
+    let headers = new HttpHeaders({ 'token': this._authService.token });
+    let URL = URL_SERVICE+"cart/merge?user_id="+userId;
+    return this._http.post(URL, {data}, {headers: headers});
   }
 }
