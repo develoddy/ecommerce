@@ -6,6 +6,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { Subscription, combineLatest } from 'rxjs';
+import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -19,16 +20,27 @@ declare function alertSuccess(message: string): any;
 })
 export class ListCartsComponent implements OnInit {
   euro = "€";
+
   listCarts: any[] = [];
   totalCarts: number = 0;
   codeCupon: string | null = null;
   loading: boolean = false;
   currentUser: any = null;
+  slug: string | null = null;
+
+  product_selected: any = null;
+  related_products: any = [];
+  REVIEWS:any=null;
+  SALE_FLASH:any = null;
+  AVG_REVIEW:any=null;
+  COUNT_REVIEW:any=null;
+  exist_review:any=null;
 
   private subscriptions: Subscription = new Subscription();
 
   constructor(
     private router: Router,
+    public ecommerceGuestService: EcommerceGuestService,
     private cartService: CartService,
     private authService: AuthService,
     private subscriptionService: SubscriptionService,
@@ -44,7 +56,12 @@ export class ListCartsComponent implements OnInit {
   ngOnInit() {
     this.checkUserAuthenticationStatus();
     this.getCarts();
-    //this.initHomeTemplate();
+    
+    setTimeout(() => {
+      
+      this.showRelatedProducts();
+      
+    }, 150);
   }
 
   // private initHomeTemplate(): void {
@@ -69,9 +86,22 @@ export class ListCartsComponent implements OnInit {
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
         this.updateTotalCarts();
+        
       });
     } 
     this.sotoreCarts();
+  }
+
+  getDiscount() {
+    let discount = 0;
+    if ( this.SALE_FLASH ) {
+      if (this.SALE_FLASH.type_discount == 1) {
+        return (this.SALE_FLASH.discount*this.product_selected.price_usd*0.01).toFixed(2);
+      } else {
+        return this.SALE_FLASH.discount;
+      }
+    }
+    return discount;
   }
 
   public sotoreCarts() {
@@ -98,6 +128,29 @@ export class ListCartsComponent implements OnInit {
         this.cartService.changeCart(cart);
       });
     });
+  }
+
+  private showRelatedProducts() {
+    const firstProductSlug = this.listCarts[0]?.product?.slug;
+    this.slug = firstProductSlug;
+    
+    console.log(this.slug);
+    this.subscriptions = this.ecommerceGuestService.showLandingProduct(this.slug).subscribe(
+      (resp:any) => {
+        this.handleProductResponse(resp);
+        setTimeout(() => {
+          HOMEINITTEMPLATE($);
+        }, 50);
+      }); 
+  }
+
+  private handleProductResponse(resp: any): void {
+    this.product_selected = resp.product;
+    this.related_products = resp.related_products;
+    this.SALE_FLASH = resp.SALE_FLASH;
+    this.REVIEWS = resp.REVIEWS;
+    this.AVG_REVIEW = resp.AVG_REVIEW;
+    this.COUNT_REVIEW = resp.COUNT_REVIEW;
   }
 
   goToCheckout(): void {
@@ -174,8 +227,15 @@ export class ListCartsComponent implements OnInit {
     const isGuest = this.currentUser?.user_guest;
     if (isGuest) {
       this.removeCartLocalStorage(cart);
+      setTimeout(() => {
+        this.showRelatedProducts();
+      }, 150);
+      
     } else {
       this.removeCartDatabase(cart);
+      setTimeout(() => {
+        this.showRelatedProducts();
+      }, 150);
     }
   }
 
@@ -211,7 +271,6 @@ export class ListCartsComponent implements OnInit {
       console.error("Error al vaciar el carrito de invitado:", error);
     });
   }
-  
 
   clearCartsDatabase(): void {
     if (!this.currentUser || !this.currentUser._id) {
@@ -228,7 +287,6 @@ export class ListCartsComponent implements OnInit {
     });
   }
   
-
   applyCupon(): void {
     const data = {
       code: this.codeCupon,

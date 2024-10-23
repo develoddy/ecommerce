@@ -36,7 +36,6 @@ export class LandingProductComponent implements OnInit, OnDestroy {
   related_products:any = [];
   variedad_selected:any=null;
   discount_id:any;
-  SALE_FLASH:any = null;
   order_selected:any=null;
   sale_orders:any = [];
   sale_details:any = [];
@@ -46,6 +45,7 @@ export class LandingProductComponent implements OnInit, OnDestroy {
   sale_detail_selected:any=null;
 
   REVIEWS:any=null;
+  SALE_FLASH:any = null;
   AVG_REVIEW:any=null;
   COUNT_REVIEW:any=null;
   exist_review:any=null;

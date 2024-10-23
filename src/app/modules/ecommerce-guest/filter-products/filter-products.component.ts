@@ -66,6 +66,8 @@ export class FilterProductsComponent implements OnInit {
       
     });
 
+    this.filterProduct();
+
     if (this.idCategorie) {
       this.filterForCategorie(this.idCategorie); 
     }
@@ -86,9 +88,6 @@ export class FilterProductsComponent implements OnInit {
       });
     });
 
-
-    this.filterProduct();
-
     setTimeout(() => {
       HOMEINITTEMPLATE($);
     }, 50);
@@ -100,27 +99,9 @@ export class FilterProductsComponent implements OnInit {
       //pswp($);
       //priceRangeSlider();
     //}, 150);
-    
-
-    
+  
   }
 
-  // @HostListener('window:resize', ['$event'])
-  //  onResize(event: any) {
-  //    this.isDesktopSize = event.target.innerWidth >= 992;
-  //  }
-
-  //  isDesktop(): boolean {
-  //    return this.isDesktopSize;
-  //  }
-
-  // checkWindowSize() {
-  //   this.isMobileSize = window.innerWidth < 768; 
-  // }
-
-  // isMobile(): boolean {
-  //   return this.isMobileSize;
-  // }
 
   filterForCategorie(idCategorie:any) {
     
@@ -132,7 +113,7 @@ export class FilterProductsComponent implements OnInit {
     }
     this.nameCategorie = this.slug;
     this.noneSidebar = false;
-    this.filterProduct();
+    
   }
 
   addCategorie(categorie:any) {
@@ -164,7 +145,9 @@ export class FilterProductsComponent implements OnInit {
       price_max: $("#amount-max").val(),
     }
     this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
+      console.log(resp);
       this.products = resp.products;
+      
     });
   }
 

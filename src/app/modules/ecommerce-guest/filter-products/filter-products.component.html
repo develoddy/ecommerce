@@ -1,5 +1,5 @@
  <!--Page Wrapper-->
- <div class="page-wrapper">
+ <div class="page-wrapper" *ngIf="products">
 
     <!-- Loading -->
     <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
@@ -318,7 +318,7 @@
                                         <!-- Start Product Image -->
                                         <div class="product-image">
                                             <!-- Start Product Image -->
-                                            <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', product.slug]" [queryParams]="getRouterDiscount(product)" class="product-img rounded-0">
+                                            <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="getRouterDiscount(product)" class="product-img rounded-0">
                                                 <!-- Image -->
                                                 <img class="primary rounded-0 blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="808" />
                                                 <!-- End Image -->
@@ -353,20 +353,21 @@
                                         </div>
                                         <!-- End Product Image -->
                                         <!-- Start Product Details -->
-                                        <div class="product-details text-left">
+                                        <div class="product-details px-3">
                                             <!--Product Vendor-->
-                                            <div class="product-vendor">Footwear</div>
+                                            <div class="product-vendor d-none">Footwear</div>
                                             <!--End Product Vendor-->
                                             <!-- Product Name -->
                                             <div class="product-name">
-                                                <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', product.slug]" [queryParams]="getRouterDiscount(product)">{{ product.title }}</a>
+                                                <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="getRouterDiscount(product)">{{ product.title }}</a>
                                             </div>
                                             <!-- End Product Name -->
                                             <!-- Product Price -->                                         
                                             <div class="product-price">
-                                                <span class="price old-price" *ngIf="product.campaing_discount">{{ euro }}{{ product.price_usd }}</span>
-                                                <span class="price">{{ euro }}{{ product.price_usd - getDiscountProduct(product) }}</span>
+                                                <span class="price old-price" *ngIf="product.campaing_discount">{{ product.price_usd }} {{ euro }}</span>
+                                                <span class="price">{{ product.price_usd - getDiscountProduct(product) }} {{ euro }}</span>
                                             </div>
+                                            <div class="form-text mt-0 d-none">4 colores</div>
                                             <!-- End Product Price -->
                                             <!-- Product Review -->
                                             <div class="product-review d-none">

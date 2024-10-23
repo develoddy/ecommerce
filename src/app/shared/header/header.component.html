@@ -41,8 +41,8 @@
         <div class="row">
             <!--Menu-->
             <!-- <div class="col-1 col-sm-1 col-md-1 col-lg-3 align-self-center d-menu-col border border-primary"> -->
-            <div class="align-self-center d-menu-col"
-                [ngClass]="{'col-1 col-sm-1 col-md-1 col-lg-3': isDesktop, 'col-1 col-sm-1 col-md-1 col-lg-6': isMobile}">
+            <div class="align-self-center d-menu-col d-flex justify-content-start"
+                [ngClass]="{'col-1 col-sm-1 col-md-1 col-lg-4': isDesktop, 'col-1 col-sm-1 col-md-1 col-lg-6': isMobile}">
                 <nav class="navigation" id="AccessibleNav">
                     <ul id="siteNav" class="site-nav medium center">
                         <li class="lvl1 parent dropdown"><a href="#">Explorar <i class="icon anm anm-angle-down-l d-none"></i></a>
@@ -249,7 +249,7 @@
             <!--Logo-->
             <!-- <div class="logo col-5 col-sm-3 col-md-3 col-lg-6 d-flex justify-content-center align-self-center border border-success">-->
             <div class="logo col-6 col-sm-3 col-md-3 d-flex justify-content-center align-self-center"
-                [ngClass]="{'col-lg-6': isDesktop, 'col-lg-3': isMobile}">
+                [ngClass]="{'col-lg-4': isDesktop, 'col-lg-3': isMobile}">
                     <!--Mobile Toggle-->
                     <button type="button" class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none" title="Menu">
                     <!-- <i class="hdr-icon icon anm anm-times-l"></i> -->
@@ -265,8 +265,8 @@
             
             <!--Right Icon-->
             <!-- <div class="col-7 col-sm-9 col-md-9 col-lg-3 align-self-center icons-col text-right border border-danger"> -->
-            <div class="col-6 col-sm-9 col-md-9 align-self-center icons-col text-right"
-                [ngClass]="{'col-lg-3': isDesktop}">
+            <div class="col-6 col-sm-9 col-md-9 align-self-center icons-col d-flex justify-content-end"
+                [ngClass]="{'col-lg-4': isDesktop}">
                 <!--Search-->
                 <div class="search-parent iconset" [ngClass]="{'px-2': isMobile}">
                     <div class="site-search" title="Search">

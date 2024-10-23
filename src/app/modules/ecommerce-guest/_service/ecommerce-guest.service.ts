@@ -18,7 +18,7 @@ export class EcommerceGuestService {
     public _authService: AuthService,
   ) { }
 
-  showLandingProduct(slug:any, discount_id:any=null) {
+  showLandingProduct(slug:any=null, discount_id:any=null) {
     // Inicia el loading
     this.loadingSubject.next(true);
     let LINK = "";
