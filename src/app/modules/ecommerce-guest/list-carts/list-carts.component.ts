@@ -44,14 +44,14 @@ export class ListCartsComponent implements OnInit {
   ngOnInit() {
     this.checkUserAuthenticationStatus();
     this.getCarts();
-    this.initHomeTemplate();
+    //this.initHomeTemplate();
   }
 
-  private initHomeTemplate(): void {
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
-    }, 50);
-  }
+  // private initHomeTemplate(): void {
+  //   setTimeout(() => {
+  //     HOMEINITTEMPLATE($);
+  //   }, 50);
+  // }
 
   private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(
@@ -139,23 +139,95 @@ export class ListCartsComponent implements OnInit {
       product: cart.product._id,
     };
 
+    if(this.currentUser.user_guest) {
+      this.updateGuestCart(cartData);
+    } else {
+      this.updateUserCart(cartData);
+    }
+  }
+
+  // Actualizar carrito del usuario autenticado
+  private updateUserCart(cartData: any): void {
     this.cartService.updateCart(cartData).subscribe((resp: any) => {
       if (resp.message === 403) {
         alertDanger(resp.message_text);
-        cart.cantidad -= quantityChange;
-        cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
-        cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
         return;
       }
+      alertSuccess(resp.message_text);
       this.updateTotalCarts();
     });
   }
 
-  removeCart(cart: any): void {
+  // Actualizar carrito del usuario invitado
+  private updateGuestCart(cartData: any): void {
+    this.cartService.updateCartCache(cartData).subscribe((resp: any) => {
+      if (resp.message === 403) {
+        alertDanger(resp.message_text);
+        return;
+      }
+      alertSuccess(resp.message_text);
+      this.updateTotalCarts();
+    });
+  }
+
+  public storeRemoveCart(cart : any) {
+    const isGuest = this.currentUser?.user_guest;
+    if (isGuest) {
+      this.removeCartLocalStorage(cart);
+    } else {
+      this.removeCartDatabase(cart);
+    }
+  }
+
+  removeCartLocalStorage(cart: any): void {
+    this.cartService.deleteCartCache(cart._id).subscribe(() => {
+      this.cartService.removeItemCart(cart);
+    });
+  }
+
+  removeCartDatabase(cart: any): void {
     this.cartService.deleteCart(cart._id).subscribe(() => {
       this.cartService.removeItemCart(cart);
     });
   }
+
+  storeClearCart(): void {
+    if (this.currentUser && this.currentUser.user_guest) {
+      this.clearCartsCache();  // Limpiar carrito para invitados
+    } else if (this.currentUser && this.currentUser._id) {
+      this.clearCartsDatabase();  // Limpiar carrito para usuarios autenticados
+    } else {
+      console.error("Error: No se pudo determinar el estado del usuario.");
+    }
+  }
+  
+  clearCartsCache(): void {
+    const isGuest = "Guest";  // O alguna otra lógica para obtener el identificador de invitados
+    this.cartService.deleteAllCartCache(isGuest).subscribe((resp: any) => {
+      console.log("Carrito de invitado vaciado:", resp);
+      this.listCarts = [];  // Limpiar la lista de artículos localmente
+      this.updateTotalCarts();  // Actualizar el total de artículos
+    }, (error: any) => {
+      console.error("Error al vaciar el carrito de invitado:", error);
+    });
+  }
+  
+
+  clearCartsDatabase(): void {
+    if (!this.currentUser || !this.currentUser._id) {
+      console.error("Error: Usuario no autenticado.");
+      return;
+    }
+  
+    this.cartService.deleteAllCart(this.currentUser._id).subscribe((resp: any) => {
+      console.log("Carrito de usuario autenticado vaciado:", resp);
+      this.listCarts = [];  // Limpiar la lista de artículos localmente
+      this.updateTotalCarts();  // Actualizar el total de artículos
+    }, (error: any) => {
+      console.error("Error al vaciar el carrito de usuario autenticado:", error);
+    });
+  }
+  
 
   applyCupon(): void {
     const data = {

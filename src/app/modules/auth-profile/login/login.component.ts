@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { CartService } from '../../ecommerce-guest/_service/cart.service';
 
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -17,6 +18,12 @@ export class LoginComponent implements OnInit {
   email:string = "";
   password:string = "";
 
+  isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
+
+  isPasswordVisible: boolean = false;
+
   errorAutenticate:boolean=false;
   errorMessageAutenticate:string="";
   CURRENT_USER_AUTHENTICATED:any=null;
@@ -25,6 +32,7 @@ export class LoginComponent implements OnInit {
   
   constructor(
     public _authService: AuthService,
+    public cartService: CartService,
     public _router: Router,
     public translate: TranslateService
   ) { }
@@ -36,6 +44,7 @@ export class LoginComponent implements OnInit {
     });
 
     this.verifyAuthenticatedUser(); // VERIFICA EL USUARIO AUTENTICADO
+    this.checkDeviceType();
   }
 
   private verifyAuthenticatedUser(): void {
@@ -49,6 +58,17 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  private checkDeviceType(): void {
+    const width = window.innerWidth;
+    this.isMobile = width <= 480;
+    this.isTablet = width > 480 && width <= 768;
+    this.isDesktop = width > 768;
+  }
+
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
+
   public login() {
     if (!this.email) {
       alertDanger("Es necesario ingresar el email");
@@ -58,7 +78,8 @@ export class LoginComponent implements OnInit {
     }
     this._authService.login(this.email, this.password).subscribe((resp:any) => {
       if ( !resp.error && resp ) {
-        this._router.navigate(["/"]); 
+        this._router.navigate(["/"]);
+        this.cartService.resetCart(); 
       } else {
         this.errorAutenticate = true;
         this.errorMessageAutenticate = resp.error.message;

@@ -279,7 +279,7 @@
                             <div class="grid-products grid-view-items">
                                 <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
                                     <ng-container *ngFor="let ourProduct of ourProducts">
-                                        <div class="item col-item px-1">
+                                        <div class="item col-item px-0">
                                             <div class="product-box">
                                                 <!-- Start Product Image -->
                                                 <div class="product-image">
@@ -322,7 +322,7 @@
                                                 </div>
                                                 <!-- End Product Image -->
                                                 <!-- Start Product Details -->
-                                                <div class="product-details">
+                                                <div class="product-details px-3">
                                                     <!-- Product Name -->
                                                     <div class="product-name">
                                                         <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}">{{ ourProduct.title }}</a>

@@ -88,7 +88,7 @@ input, textarea, .form-control { padding:10px 15px; }
 input, button, select, textarea, .form-control { font-size:14px; font-family: "Zen Kaku Gothic Antique", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #b8b8b8; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
 input:focus, input:active, button:focus, button:active, select:focus, select:active, textarea:focus, textarea:active, .form-control:focus { outline:none; border-color:#131313; }
 input, select, textarea { width: 100%; }
-input, select { height:45px; }
+input, select { height:40px; }
 input[type="checkbox"], input[type="radio"] { width:auto; height:auto; }
 input[type="checkbox"]:focus, input[type="radio"]:focus { outline:0; box-shadow:none; }
 select { -webkit-appearance:none; -moz-appearance:none; appearance:none; background-image:url(../images/icons/arrow-select.png); background-repeat:no-repeat; background-position:right 10px center; background-size:10px; background-color:#ffffff; line-height:1.2; text-indent:inherit; text-overflow: ''; cursor:pointer; padding:8px 25px 8px 10px; }
@@ -418,7 +418,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
   5. Container
 ========================================================================*/
 .container { max-width:1300px; padding-left:15px; padding-right:15px; }
-.container-fluid { padding:0 50px; }
+/* .container-fluid { padding:0 0px; } */
 .container-1330 { max-width: 1330px; }
 
 /* Boxed Layout */
@@ -529,7 +529,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 /* .logo img { display:block; max-width:170px; max-height:39px; } */
 .logo img { display:block; max-width:230px; max-height:100px; }
 
-.iconset { display:inline-block; position:relative; color: #171717; text-align:center; padding:0 10px; cursor:pointer; }
+.iconset { display:inline-block; position:relative; color: #171717; text-align:center; padding:0 15px; cursor:pointer; }
 .iconset .hdr-icon { color:#171717; font-size:18px; vertical-align:middle; text-decoration:none; -webkit-transition: all .3s ease-in-out; transition: all .3s ease-in-out; }
 .iconset .hdr-icon:hover { color:#424242; }
 .menubar-label { display: block; padding:0; margin: 5px 0 0; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; font-weight: 500; line-height: 1; }
@@ -3297,7 +3297,7 @@ a.logo {
 ========================================================================*/
 .sp {
   width: 32px;
-  height: 28px;
+  height: 10px;
   clear: both;
   margin: 5px auto;
 }
@@ -3314,9 +3314,7 @@ a.logo {
 /* Spinner Bars */
 .sp-bars {
   position: relative;
-  width: 8px;
-  /* border: 1px #000 solid; */
-  /* background-color: rgba(0, 0, 0, 0.25); */
+  width: 5px;
   background-color: #bbb;
   -webkit-animation: spBars 1s infinite linear;
   animation: spBars 1s infinite linear;
@@ -3333,13 +3331,13 @@ a.logo {
 }
 
 .sp-bars:before {
-  left: -20px;
+  left: -13px;
   -webkit-animation: spBarsBefore 1s infinite linear;
   animation: spBarsBefore 1s infinite linear;
 }
 
 .sp-bars:after {
-  right: -20px;
+  right: -13px;
   -webkit-animation: spBarsAfter 1s infinite linear;
   animation: spBarsAfter 1s infinite linear;
 }

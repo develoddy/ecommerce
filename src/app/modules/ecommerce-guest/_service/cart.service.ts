@@ -50,6 +50,11 @@ export class CartService {
     );
   }
 
+  updateCartCache(data:any) {
+    let URL = URL_SERVICE+"cartCache/update";
+    return this._http.put(URL, data,);
+  }
+
   syncCart(data: any[], userId: any) {
     return this.syncCartWithBackend(data, userId).pipe(
       tap((response: any) => {
@@ -61,13 +66,19 @@ export class CartService {
   }
   
   deleteCartCache(cart_id:any) {
+    this.loadingSubject.next(true);
     let URL = URL_SERVICE+"cartCache/delete/"+cart_id;
-    return this._http.delete(URL);
+    return this._http.delete(URL).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
   }
 
   deleteAllCartCache(isGuest: any) {
+    this.loadingSubject.next(true);
     let URL = URL_SERVICE + "cartCache/delete-all/" + isGuest;
-    return this._http.delete(URL);
+    return this._http.delete(URL).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
   }
 
   /**
@@ -104,23 +115,24 @@ export class CartService {
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cart/register";
-    //return this._http.post(URL, data, {headers: headers});
-    return this._http.post(URL, data, { headers: headers }).pipe(
+    return this._http.post(URL, data, {headers: headers}).pipe(
       finalize(() => this.loadingSubject.next(false)) 
     );
   }
 
   updateCart(data:any) {
+    this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cart/update";
-    return this._http.put(URL, data, {headers: headers});
+    return this._http.put(URL, data, {headers: headers}).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
   }
 
   listCarts(user_id:any): Observable<CartResponse> {
     this.loadingSubject.next(true);
-    let headers = new HttpHeaders({'token': this._authService.token});
-    let URL = URL_SERVICE+"cart/list?user_id="+user_id;
-    
+    //let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE+"cart/list?user_id="+user_id; 
     // return this._http.get(URL, { headers: headers }).pipe(
     //   finalize(() => this.loadingSubject.next(false)) 
     // );
@@ -130,33 +142,48 @@ export class CartService {
   }
 
   deleteCart(cart_id:any) {
+    this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cart/delete/"+cart_id;
-    return this._http.delete(URL, {headers: headers});
+    return this._http.delete(URL, {headers: headers}).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
   }
 
   deleteAllCart(user_id: any) {
+    this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE + "cart/delete-all/" + user_id;
-    return this._http.delete(URL, { headers: headers });
+    return this._http.delete(URL, { headers: headers }).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
   }
 
   apllyCupon(data:any) {
+    this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cart/aplly_cupon";
-    return this._http.post(URL, data, {headers: headers});
+    return this._http.post(URL, data, {headers: headers}).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
   }
 
   searchProduct(data:any) {
+    this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let TIME_NOW = new Date().getTime();
     let URL = URL_SERVICE+"home/search_product?TIME_NOW="+TIME_NOW;
-    return this._http.post(URL, data, {headers: headers});
+    return this._http.post(URL, data, {headers: headers}).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
   }
 
   syncCartWithBackend(data: any[], userId:any) {
+    this.loadingSubject.next(true);
     let headers = new HttpHeaders({ 'token': this._authService.token });
     let URL = URL_SERVICE+"cart/merge?user_id="+userId;
-    return this._http.post(URL, {data}, {headers: headers});
+    return this._http.post(URL, {data}, {headers: headers}).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
   }
 }

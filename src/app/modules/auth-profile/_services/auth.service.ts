@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
-import { catchError, map, of, BehaviorSubject, finalize } from 'rxjs';
+import { catchError, map, of, BehaviorSubject, finalize, window } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -113,8 +113,6 @@ export class AuthService {
       this.addGuestLocalStorage();
     }
     this._router.navigate(["/"]);
-
-    
   }
 
   removeUserGuestLocalStorage() {

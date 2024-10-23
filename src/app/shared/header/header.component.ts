@@ -10,12 +10,9 @@ import { LanguageService } from 'src/app/services/language.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { combineLatest } from 'rxjs';
-
-
-
 declare var $: any;
-declare function HOMEINITTEMPLATE([]): any;
-declare function sectionCart(): any;
+//declare function HOMEINITTEMPLATE([]): any;
+//declare function sectionCart(): any;
 declare function alertDanger([]): any;
 declare function alertSuccess([]): any;
 
@@ -27,7 +24,7 @@ declare function alertSuccess([]): any;
 export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   euro = "€";
-  cartsCacheItems: any[] = [];
+  //cartsCacheItems: any[] = [];
   selectedLanguage: string = 'ES';
   listCarts: any[] = [];
   listWishlists: any = [];
@@ -52,13 +49,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private cartService: CartService,
     public authService: AuthService,
     private wishlistService: WishlistService,
-    private translate: TranslateService,
-    private languageService: LanguageService,
+    //private translate: TranslateService,
+    //private languageService: LanguageService,
     private ecommerceGuestService: EcommerceGuestService,
     private minicartService: MinicartService,
     private subscriptionService: SubscriptionService
   ) {
-    translate.setDefaultLang('es');
+    //translate.setDefaultLang('es');
     this.subscriptions.add(
       this.subscriptionService.showSubscriptionSection$.subscribe(value => {
         this.showSubscriptionSection = value;
@@ -163,9 +160,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     return Array.from(uniqueCarts.values());
-}
+  }
 
-  
   private listCartsDatabase(): void {
     if (!this.currentUser || !this.currentUser._id) {
       console.error("Error: Intentando acceder a la base de datos sin un usuario autenticado.");
@@ -300,21 +296,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   inc(cart: any) {
     this.updateCartQuantity(cart, cart.cantidad + 1);
   }
-  
-  private validateDecrement(cart: any): boolean {
-    if (cart.cantidad - 1 === 0) {
-      alertDanger("No puedes disminuir un producto a 0");
-      return false;
-    }
-    return true;
-  }
-  
+   
   private updateCartQuantity(cart: any, newQuantity: number) {
     cart.cantidad = newQuantity;
     cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
     cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
   
-    const data = {
+    const cartData = {
       _id: cart._id,
       cantidad: cart.cantidad,
       subtotal: cart.subtotal,
@@ -322,16 +310,44 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       variedad: cart.variedad ? cart.variedad.id : null,
       product: cart.product._id,
     };
-  
-    this.cartService.updateCart(data).subscribe((resp: any) => {
+
+    if(this.currentUser.user_guest) {
+      this.updateGuestCart(cartData);
+    } else {
+      this.updateUserCart(cartData);
+    }
+  }
+
+  // Actualizar carrito del usuario autenticado
+  private updateUserCart(cartData: any): void {
+    this.cartService.updateCart(cartData).subscribe((resp: any) => {
       if (resp.message === 403) {
         alertDanger(resp.message_text);
         return;
       }
-  
       alertSuccess(resp.message_text);
-      this.updateTotalCarts(); // Actualiza el total del carrito
+      this.updateTotalCarts();
     });
+  }
+
+  // Actualizar carrito del usuario invitado
+  private updateGuestCart(cartData: any): void {
+    this.cartService.updateCartCache(cartData).subscribe((resp: any) => {
+      if (resp.message === 403) {
+        alertDanger(resp.message_text);
+        return;
+      }
+      alertSuccess(resp.message_text);
+      this.updateTotalCarts();
+    });
+  }
+
+  private validateDecrement(cart: any): boolean {
+    if (cart.cantidad - 1 === 0) {
+      alertDanger("No puedes disminuir un producto a 0");
+      return false;
+    }
+    return true;
   }
   
   updateTotalCarts(): void {
@@ -345,7 +361,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   logout() {
+    
     this.authService.logout();
+    
+    this.cartService.resetCart();
+    
   }
 
   ngOnDestroy(): void {

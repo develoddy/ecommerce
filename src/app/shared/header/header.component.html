@@ -37,15 +37,12 @@
 
 <!--Header-->
 <header class="header d-flex align-items-center header-1 header-fixed" *ngIf="showSubscriptionSection">
-    <div class="container">
+    <div [ngClass]="{'container-fluid px-5': isDesktop, 'container': isMobile }" class="container-header">      
         <div class="row">
-            <!--Logo-->
-            <div class="logo col-5 col-sm-3 col-md-3 col-lg-3 align-self-center">
-                <a class="logoImg" href="index.html" onclick="return false;" routerLink="/" ><img src="assets/images/logo.png" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" width="200" height="200" /></a>
-            </div>
-            <!--End Logo-->
             <!--Menu-->
-            <div class="col-1 col-sm-1 col-md-1 col-lg-6 align-self-center d-menu-col">
+            <!-- <div class="col-1 col-sm-1 col-md-1 col-lg-3 align-self-center d-menu-col border border-primary"> -->
+            <div class="align-self-center d-menu-col"
+                [ngClass]="{'col-1 col-sm-1 col-md-1 col-lg-3': isDesktop, 'col-1 col-sm-1 col-md-1 col-lg-6': isMobile}">
                 <nav class="navigation" id="AccessibleNav">
                     <ul id="siteNav" class="site-nav medium center">
                         <li class="lvl1 parent dropdown"><a href="#">Explorar <i class="icon anm anm-angle-down-l d-none"></i></a>
@@ -248,12 +245,36 @@
                 </nav>
             </div>
             <!--End Menu-->
+
+            <!--Logo-->
+            <!-- <div class="logo col-5 col-sm-3 col-md-3 col-lg-6 d-flex justify-content-center align-self-center border border-success">-->
+            <div class="logo col-6 col-sm-3 col-md-3 d-flex justify-content-center align-self-center"
+                [ngClass]="{'col-lg-6': isDesktop, 'col-lg-3': isMobile}">
+                    <!--Mobile Toggle-->
+                    <button type="button" class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none" title="Menu">
+                    <!-- <i class="hdr-icon icon anm anm-times-l"></i> -->
+                    <!-- <i class="hdr-icon icon anm anm-bars-r"></i> -->
+                    <svg width="24" height="24" role="img" aria-hidden="true" class="hdr-icon icon anm anm-times-l Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="M17.354 7.354 12.707 12l4.647 4.646-.708.708L12 12.707l-4.646 4.647-.708-.708L11.293 12 6.646 7.354l.708-.708L12 11.293l4.646-4.647z"></path></svg>
+                    <svg width="24" height="24" role="img" aria-hidden="true" class="hdr-icon icon anm anm-bars-r Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="M21 13H3v-1h18zm0-6H3v1h18zm0 10H3v1h18z"></path></svg>
+                    <small class="ls-1">Menú</small>
+                </button>
+                    <!--End Mobile Toggle-->
+                <a class="logoImg" href="index.html" onclick="return false;" routerLink="/" ><img src="assets/images/logo.png" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" width="200" height="200" /></a>
+            </div>
+            <!--End Logo-->
+            
             <!--Right Icon-->
-            <div class="col-7 col-sm-9 col-md-9 col-lg-3 align-self-center icons-col text-right">
+            <!-- <div class="col-7 col-sm-9 col-md-9 col-lg-3 align-self-center icons-col text-right border border-danger"> -->
+            <div class="col-6 col-sm-9 col-md-9 align-self-center icons-col text-right"
+                [ngClass]="{'col-lg-3': isDesktop}">
                 <!--Search-->
-                <div class="search-parent iconset">
+                <div class="search-parent iconset" [ngClass]="{'px-2': isMobile}">
                     <div class="site-search" title="Search">
-                        <a href="#;" class="search-icon clr-none" data-bs-toggle="offcanvas" data-bs-target="#search-drawer"><i class="hdr-icon icon anm anm-search-l"></i><span class="menubar-label">Buscar</span></a>
+                        <a href="#;" class="search-icon clr-none" data-bs-toggle="offcanvas" data-bs-target="#search-drawer">
+                            <!-- <i class="hdr-icon icon anm anm-search-l"></i> -->
+                            <svg width="24" height="24" role="img" aria-hidden="true" class="Icon_icon-content-1__kPDLF HeaderSearchBoxLegacy_icon__gSWPg" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="M18 10.5C18 6.364 14.636 3 10.5 3S3 6.364 3 10.5 6.364 18 10.5 18a7.46 7.46 0 0 0 4.93-1.862l4.716 4.716.708-.708-4.716-4.715A7.46 7.46 0 0 0 18 10.5M10.5 17C6.916 17 4 14.084 4 10.5S6.916 4 10.5 4 17 6.916 17 10.5 14.084 17 10.5 17"></path></svg>
+                            <span class="menubar-label">Buscar</span>
+                        </a>
                         <!-- <span class="HeaderSearchBox_text__gst9O">Buscar</span> -->
                     </div>
                     <div class="search-drawer offcanvas offcanvas-top" tabindex="-1" id="search-drawer">
@@ -274,7 +295,10 @@
                                         </div>
                                         <div class="input-box d-flex fl-1">
                                             <input type="text" class="input-text border-start-0 border-end-0" [(ngModel)]="search_product" (keyup.enter)="searchProduct()" #filter name="prod-search" id="prod-search" placeholder="Buscar" value="" />
-                                            <button type="submit" class="action search d-flex-justify-center btn rounded-start-0"><i class="icon anm anm-search-l"></i></button>
+                                            <button type="submit" class="action search d-flex-justify-center btn rounded-start-0">
+                                                <i class="icon anm anm-search-l"></i>
+                                                <!-- <svg width="24" height="24" role="img" aria-hidden="true" class="icon Icon_icon-content-1__kPDLF Icons_icon___GFz0" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="m12 21-.4-.4c-.8-.8-1.5-1.5-2.3-2.2-3.7-3.5-6.8-6.5-6.8-10.1 0-2.8 1.9-5.1 4.3-5.3 2-.2 3.7.7 5.2 2.6 1.5-1.9 3.2-2.8 5.2-2.6 2.5.2 4.3 2.5 4.3 5.3 0 3.6-3.2 6.6-6.8 10.1-.8.7-1.5 1.5-2.3 2.2zM7.3 4h-.4C5 4.2 3.5 6 3.5 8.3c0 3.2 3 6.1 6.5 9.4.7.6 1.3 1.3 2 1.9.7-.7 1.3-1.3 2-1.9 3.5-3.3 6.5-6.2 6.5-9.4C20.5 6 19 4.2 17.1 4c-1.7-.2-3.3.7-4.7 2.7l-.4.6-.4-.6C10.3 4.9 8.9 4 7.3 4"></path></svg> -->
+                                            </button>
                                         </div>
                                     </div>
                                     <!--End Search Field-->
@@ -324,22 +348,24 @@
                     </div>
                 </div>
                 <!--End Search-->
+
                 <!--Account-->
-                <div class="account-parent iconset">
+                <div class="account-parent iconset" [ngClass]="{'px-2': isMobile}">
                     <div class="account-link" title="Cuenta">
                         <ng-container *ngIf="isMobile; else desktopLink">
                             <a [routerLink]="currentUser.email ? ['/my-account'] : ['/auth/login'] " class="text-white">
-                                <i class="hdr-icon icon anm anm-user-al"></i>
+                                <!-- <i class="hdr-icon icon anm anm-user-al"></i> -->
+                                <svg width="24" height="24" role="img" aria-hidden="true" class="Icon_icon-content-1__kPDLF Icons_icon___GFz0" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="M12 12c2.757 0 5-2.243 5-5s-2.243-5-5-5-5 2.243-5 5 2.243 5 5 5m0-9c2.206 0 4 1.794 4 4s-1.794 4-4 4-4-1.794-4-4 1.794-4 4-4m0 11c-4.56 0-8 3.224-8 7.5v.5h16v-.5c0-4.276-3.44-7.5-8-7.5m-6.981 7c.257-3.454 3.172-6 6.981-6s6.724 2.546 6.981 6z"></path></svg>
                             </a>
                         </ng-container>
                         <ng-template #desktopLink>
-                            <i class="hdr-icon icon anm anm-user-al"></i>
+                            <!-- <i class="hdr-icon icon anm anm-user-al"></i> -->
+                            <svg width="24" height="24" role="img" aria-hidden="true" class="Icon_icon-content-1__kPDLF Icons_icon___GFz0" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="M12 12c2.757 0 5-2.243 5-5s-2.243-5-5-5-5 2.243-5 5 2.243 5 5 5m0-9c2.206 0 4 1.794 4 4s-1.794 4-4 4-4-1.794-4-4 1.794-4 4-4m0 11c-4.56 0-8 3.224-8 7.5v.5h16v-.5c0-4.276-3.44-7.5-8-7.5m-6.981 7c.257-3.454 3.172-6 6.981-6s6.724 2.546 6.981 6z"></path></svg>
                         </ng-template>
-
                         <span class="menubar-label" *ngIf="currentUser.email; else notAuthenticated">
                             Mi cuenta
-                          </span>
-                          <ng-template #notAuthenticated>
+                        </span>
+                        <ng-template #notAuthenticated>
                             <span class="menubar-label" [routerLink]="['/auth/login']">Iniciar sesión</span>
                         </ng-template>
                     </div>
@@ -355,9 +381,6 @@
                                 <ng-template #isAuthenticated>
                                     <h5 class="text-secondary px-3">{{ currentUser.name }}</h5>
                                 </ng-template>
-
-
-                                
                                 <li class="list-group-item d-flex " *ngIf="currentUser.user_guest">
                                     <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Lujandev likes you</span>
@@ -370,28 +393,24 @@
                                         <i class="icon anm anm-chevron-r-right"></i>
                                     </a>
                                 </li>
-
                                 <li class="list-group-item d-flex " *ngIf="currentUser.email">
                                     <a href="my-account.html" onclick="return false;" [routerLink]="['/my-account']" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Mi cuenta</span>
                                         <i class="icon anm anm-chevron-r-right"></i>
                                     </a>
                                 </li>
-
                                 <li class="list-group-item d-flex " *ngIf="currentUser.email">
                                     <a href="register.html" onclick="return false;" [routerLink]="['/mypurchases']" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Mis compras </span>
                                         <i class="icon anm anm-chevron-r-right"></i>
                                     </a>
                                 </li>
-
                                 <li class="list-group-item d-flex " *ngIf="currentUser.email">
                                     <a href="login.html" onclick="return false;" (click)="logout()" class="d-flex flex-row w-100">
                                         <span class="flex-grow-1">Cerrar sesión</span>
                                         <i class="con anm anm-chevron-r-right"></i>
                                     </a>
                                 </li>
-
                                 <!-- <li class="list-group-item" *ngIf="!currentUser"><a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" ><i class="icon anm anm-user-al d-none"></i>Registrar</a></li>
                                 <li *ngIf="currentUser"><a href="my-account.html" onclick="return false;" [routerLink]="['/profile']" ><i class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
                                 <li class="list-group-item"><a href="wishlist-style1.html" onclick="return false;" [routerLink]="['/wishlist']" ><i class="icon anm anm-heart-l d-none"></i>Favoritos</a></li>
@@ -403,32 +422,33 @@
                     </div>
                 </div>
                 <!--End Account-->
+
                 <!--Wishlist-->
-                <div class="wishlist-link iconset" title="Wishlist">
+                <div class="wishlist-link iconset" [ngClass]="{'px-2': isMobile}" title="Wishlist">
                     <a href="wishlist-style1.html"  onclick="return false;" [routerLink]="['/favorites']">
-                        <i class="hdr-icon icon anm anm-heart-l"></i><span class="menubar-label">Favoritos</span>
-                        <span class="wishlist-count" >{{ listWishlists.length }}</span>
+                        <!-- <i class="hdr-icon icon anm anm-heart-l"></i> -->
+                        <svg width="24" height="24" role="img" aria-hidden="true" class="Icon_icon-content-1__kPDLF Icons_icon___GFz0" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="m12 21-.4-.4c-.8-.8-1.5-1.5-2.3-2.2-3.7-3.5-6.8-6.5-6.8-10.1 0-2.8 1.9-5.1 4.3-5.3 2-.2 3.7.7 5.2 2.6 1.5-1.9 3.2-2.8 5.2-2.6 2.5.2 4.3 2.5 4.3 5.3 0 3.6-3.2 6.6-6.8 10.1-.8.7-1.5 1.5-2.3 2.2zM7.3 4h-.4C5 4.2 3.5 6 3.5 8.3c0 3.2 3 6.1 6.5 9.4.7.6 1.3 1.3 2 1.9.7-.7 1.3-1.3 2-1.9 3.5-3.3 6.5-6.2 6.5-9.4C20.5 6 19 4.2 17.1 4c-1.7-.2-3.3.7-4.7 2.7l-.4.6-.4-.6C10.3 4.9 8.9 4 7.3 4"></path></svg>
+                        <span class="menubar-label">Favoritos</span>
+                        <span class="wishlist-count" *ngIf="listWishlists.length > 0" >{{ listWishlists.length }}</span>
                     </a>
                     <!-- <span class="Icons_text__HOyk8">Favoritos</span> -->
                 </div>
                 <!--End Wishlist-->
+
                 <!--Minicart-->
-                <div class="header-cart iconset"title="Carro">
+                <div class="header-cart iconset" [ngClass]="{'px-2': isMobile}" title="Carro">
                     <ng-container *ngIf="isMobile; else desktopLinkMiniCart">
                         <a href="cart-style1.html" onclick="return false;" [routerLink]="currentUser ? ['/cart'] : ['/auth/login']" class="header-cart btn-minicart clr-none">
-                            <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count" *ngIf="listCarts">{{ listCarts.length }}</span>
+                            <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count" *ngIf="listCarts.length > 0" >{{ listCarts.length }}</span>
                         </a>
                     </ng-container>
                     <ng-template #desktopLinkMiniCart>
                         <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
-                            <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count">{{ listCarts.length }}</span>
+                            <i class="hdr-icon icon anm anm-cart-l"></i><span class="menubar-label">Carro</span><span class="cart-count" *ngIf="listCarts.length > 0">{{ listCarts.length }}</span>
                         </a>
                     </ng-template>
                 </div>
                 <!--End Minicart-->
-                <!--Mobile Toggle-->
-                <button type="button" class="iconset pe-0 menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none" title="Menu"><i class="hdr-icon icon anm anm-times-l"></i><i class="hdr-icon icon anm anm-bars-r"></i></button>
-                <!--End Mobile Toggle-->
             </div>
             <!--End Right Icon-->
         </div>

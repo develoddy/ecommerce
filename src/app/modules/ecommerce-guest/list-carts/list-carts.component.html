@@ -70,7 +70,7 @@
                                     <ng-container *ngFor="let cart of listCarts">
                                         <tr class="cart-row cart-flex position-relative">
                                             <td class="cart-delete text-center small-hide">
-                                                <a href="#" class="cart-remove remove-icon position-static" onclick="return false;" (click)="removeCart(cart)" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Cart"><i class="icon anm anm-times-r"></i></a>
+                                                <a href="#" class="cart-remove remove-icon position-static" onclick="return false;" (click)="storeRemoveCart(cart)" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Cart"><i class="icon anm anm-times-r"></i></a>
                                             </td>
                                             <td class="cart-image cart-flex-item">
                                                 <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', cart.product.slug]">
@@ -83,7 +83,7 @@
                                                 </a>
                                             </td>
                                             <td class="cart-meta small-text-left cart-flex-item">
-                                                <div class="list-view-item-title">
+                                                <div class="list-view-item-title fw-bold">
                                                     <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', cart.product.slug]">{{ cart.product.title }}</a>
                                                 </div>
                                                 <div class="cart-meta-text">
@@ -127,11 +127,11 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="3" class="text-start">
-                                            <a href="#" onclick="return false;" [routerLink]="['/payment-process']" class="btn btn-outline-secondary btn-sm cart-continue"><i class="icon anm anm-angle-left-r me-2 d-none"></i> Seguir comprando</a>
+                                        <td colspan="3" class="text-start ">
+                                            <a href="#" onclick="return false;" [routerLink]="['/checkout']" class="btn btn-outline-secondary btn-sm cart-continue"><i class="icon anm anm-angle-left-r me-2 d-none"></i> Seguir comprando</a>
                                         </td>
                                         <td colspan="3" class="text-end">
-                                            <button type="submit" name="clear" class="btn btn-outline-secondary btn-sm small-hide"><i class="icon anm anm-times-r me-2 d-none"></i> Vaciar carrito de compras</button>
+                                            <button type="submit" name="clear" class="btn btn-outline-secondary btn-sm small-hide" (click)="storeClearCart()" ><i class="icon anm anm-times-r me-2"></i> Vaciar carrito de compras</button>
                                             <button type="submit" name="update" class="btn btn-secondary btn-sm cart-continue ms-2" onclick="return false;" (click)="sotoreCarts()"><i class="icon anm anm-sync-ar me-2 d-none"></i> Actualizar carrito</button>
                                         </td>
                                     </tr>
