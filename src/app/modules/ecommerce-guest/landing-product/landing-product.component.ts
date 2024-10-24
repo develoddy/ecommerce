@@ -72,7 +72,7 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
   errorResponse:boolean=false;
   errorMessage:any="";
 
-  subscriptions: Subscription = new Subscription();  // Mantener todas las subscripciones
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private cdRef: ChangeDetectorRef,

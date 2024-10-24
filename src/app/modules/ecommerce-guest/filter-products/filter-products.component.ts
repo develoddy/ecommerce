@@ -41,7 +41,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   nameCategorie = null;
   userId: any;
 
-  private subscription: Subscription | undefined;
+  private subscription: Subscription = new Subscription();
   loading: boolean = false;
   
   constructor(

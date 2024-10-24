@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
@@ -10,17 +10,19 @@ import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
-declare function pswp([]):any;
-declare function productZoom([]):any;
 declare function alertDanger(message: string): any;
 declare function alertSuccess(message: string): any;
+
+// ---------- Destruir desde main ----------
+declare function cleanupHOMEINITTEMPLATE($: any): any;
+declare function cleanupSliders($: any): any;
 
 @Component({
   selector: 'app-list-carts',
   templateUrl: './list-carts.component.html',
   styleUrls: ['./list-carts.component.css']
 })
-export class ListCartsComponent implements OnInit {
+export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   euro = "€";
 
   listCarts: any[] = [];
@@ -38,7 +40,7 @@ export class ListCartsComponent implements OnInit {
   COUNT_REVIEW:any=null;
   exist_review:any=null;
 
-  private subscriptions: Subscription = new Subscription();
+  private subscriptions: Subscription = new Subscription(); // Mantener todas las subscripciones
 
   constructor(
     private router: Router,
@@ -54,26 +56,19 @@ export class ListCartsComponent implements OnInit {
       });
       this.updateSeo();
   }
+  
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+      //this.showRelatedProducts();
+    }, 150);
+  }
 
   ngOnInit() {
     this.checkUserAuthenticationStatus();
     this.getCarts();
-    
-    setTimeout(() => {
-      // HOMEINITTEMPLATE($);
-      // pswp($);
-      // productZoom($);
       this.showRelatedProducts();
-     
-      
-    }, 150);
   }
-
-  // private initHomeTemplate(): void {
-  //   setTimeout(() => {
-  //     HOMEINITTEMPLATE($);
-  //   }, 50);
-  // }
 
   private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(
@@ -139,14 +134,14 @@ export class ListCartsComponent implements OnInit {
     const firstProductSlug = this.listCarts[0]?.product?.slug;
     this.slug = firstProductSlug;
     
-    console.log(this.slug);
-    this.subscriptions = this.ecommerceGuestService.showLandingProduct(this.slug).subscribe(
+    const LandingSubscriptions = this.ecommerceGuestService.showLandingProduct(this.slug).subscribe(
       (resp:any) => {
         this.handleProductResponse(resp);
-        setTimeout(() => {
-          HOMEINITTEMPLATE($);
-        }, 50);
+        // setTimeout(() => {
+        //   HOMEINITTEMPLATE($);
+        // }, 50);
       }); 
+    this.subscriptions.add(LandingSubscriptions);
   }
 
   private handleProductResponse(resp: any): void {
@@ -336,5 +331,14 @@ export class ListCartsComponent implements OnInit {
       { name: 'twitter:image', content: imageUrl },
     ];
     metaTags.forEach((tag:any) => this.metaService.updateTag(tag));
+  }
+
+  ngOnDestroy(): void {
+    // Desuscribir todas las suscripciones en el método OnDestroy
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    } 
+    cleanupSliders($);
+    cleanupHOMEINITTEMPLATE($);
   }
 }

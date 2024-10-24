@@ -17,6 +17,9 @@ declare function ModalProductDetail():any;
 declare function alertDanger([]):any;
 declare function alertSuccess([]):any;
 
+// ---------- Destruir desde main ----------
+declare function cleanupHOMEINITTEMPLATE($: any): any;
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -79,6 +82,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
   //   return 'Texto traducido';
   // }
 
+  ngAfterViewInit(): void {
+
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+      this.extractTags();
+    }, 150);
+
+    this.initializeLargeSlider();
+    this.initializeSmallSlider();
+  }
+  
+
   ngOnInit(): void {
     // Suscribirse al observable para saber cuando mostrar u ocultar el loading
     this.subscription = this.homeService.loading$.subscribe(isLoading => {
@@ -91,7 +106,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     let TIME_NOW = new Date().getTime();
     
-    this.subscription = this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
+    const listHomeSubscription = this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
       this.sliders = resp.sliders;
       this.categories = resp.categories;
       
@@ -118,10 +133,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
               });
           }
         }
-        HOMEINITTEMPLATE($);
-        this.extractTags();
+        //HOMEINITTEMPLATE($);
+        //this.extractTags();
       }, 150);
     });
+
+    this.subscription?.add(listHomeSubscription);
   }
 
   private verifyAuthenticatedUser(): void {
@@ -134,11 +151,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    this.initializeLargeSlider();
-    this.initializeSmallSlider();
-  }
-
   sizesUnicos( product_selected:any ) {
     const variedadesUnicos = new Set();
     product_selected.variedades = product_selected.variedades.filter((variedad:any) => {
@@ -149,11 +161,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         return true;
       }
     });
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.checkWindowSize();
   }
 
   getSwatchClass(imagen: string, color: string): any {
@@ -402,7 +409,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       total: (product.price_usd - this.getDiscountProduct(product, is_sale_flash))*1, //1, // De momento es igual, luego aplicamos el descuento
     }
 
-    this.subscription = this._cartService.registerCart(data).subscribe((resp:any) => {
+    const cartSubscription = this._cartService.registerCart(data).subscribe((resp:any) => {
       if (resp.message == 403) {
         alertDanger(resp.message_text);
           return;
@@ -417,6 +424,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this._cartService._authService.logout();
       }
     });
+
+    this.subscription?.add(cartSubscription);
   }
 
   esProductoUnitario(variedades:any, valoresUnitarios:any)  {
@@ -492,7 +501,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       alertDanger("Por favor, autentifíquese para poder añadir el producto a favoritos");
       this._router.navigate(['/auth/login']);
       //this._router.navigateByUrl("/landing-product/"+product.slug+LINK_DISCOUNT);
-      
       return;
     }
 
@@ -532,9 +540,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkWindowSize();
+  }
+
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    cleanupHOMEINITTEMPLATE($);
   }
 }
