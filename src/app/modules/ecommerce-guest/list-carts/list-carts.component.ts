@@ -10,6 +10,8 @@ import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
+declare function pswp([]):any;
+declare function productZoom([]):any;
 declare function alertDanger(message: string): any;
 declare function alertSuccess(message: string): any;
 
@@ -58,8 +60,11 @@ export class ListCartsComponent implements OnInit {
     this.getCarts();
     
     setTimeout(() => {
-      
+      // HOMEINITTEMPLATE($);
+      // pswp($);
+      // productZoom($);
       this.showRelatedProducts();
+     
       
     }, 150);
   }

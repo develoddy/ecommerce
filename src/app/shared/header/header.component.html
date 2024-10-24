@@ -259,7 +259,7 @@
                     <small class="ls-1">Menú</small>
                 </button>
                     <!--End Mobile Toggle-->
-                <a class="logoImg" href="index.html" onclick="return false;" routerLink="/" ><img src="assets/images/logo.png" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" width="200" height="200" /></a>
+                <a class="logoImg" [href]="['/']" ><img src="assets/images/logo.png" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" width="200" height="200" /></a>
             </div>
             <!--End Logo-->
             
@@ -723,7 +723,7 @@
                 <label for="prTearm"> I agree with the </label><a href="#" class="ms-1 text-link">Terms &amp; conditions</a>
             </div>
             <div class="minicart-action d-flex mt-3">
-                <a href="cart-style1.html" onclick="return false;" [routerLink]="['/cart']" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a>
+                <a href="cart-style1.html" [href]="'/cart/'" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a>
                 <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout btn btn-primary w-50 ms-1 btn-lg"> Comenzar pedido</a>
             </div>
         </div>

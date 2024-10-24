@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { Subscription } from 'rxjs';
 
@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './list-purchases.component.html',
   styleUrls: ['./list-purchases.component.css']
 })
-export class ListPurchasesComponent implements OnInit {
+export class ListPurchasesComponent implements OnInit, OnDestroy {
 
   euro = "€";
   sale_orders:any = [];
@@ -20,17 +20,18 @@ export class ListPurchasesComponent implements OnInit {
 
   CURRENT_USER_AUTHENTICATED:any=null;
 
-  loadingSubscription: Subscription = new Subscription();
+  subscriptions: Subscription = new Subscription();  // Mantener todas las subscripciones: Subscription = new Subscription();  // Mantener todas las subscripciones
 
   loading: boolean = false;
 
   constructor(
     public _ecommerceAuthService: EcommerceAuthService,
   ) {}
+ 
 
   ngOnInit(): void {
 
-    this.loadingSubscription = this._ecommerceAuthService.loading$.subscribe(isLoading => {
+    this.subscriptions = this._ecommerceAuthService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
 
@@ -72,8 +73,6 @@ export class ListPurchasesComponent implements OnInit {
 
       this.totalPages = Math.ceil(this.sale_details.length / this.pageSize); // Calcular el número total de páginas
       this.updatePaginatedDetails();
-      console.log("--- Debbug: showSaleDetails resp: ", this.sale_orders);
-
     });
   }
 
@@ -90,6 +89,12 @@ export class ListPurchasesComponent implements OnInit {
   onPageChange(page: number): void {
     this.currentPage = page;
     this.updatePaginatedDetails();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    } 
   }
 
 }

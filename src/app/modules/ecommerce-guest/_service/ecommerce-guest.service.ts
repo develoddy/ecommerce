@@ -20,11 +20,12 @@ export class EcommerceGuestService {
 
   showLandingProduct(slug:any=null, discount_id:any=null) {
     // Inicia el loading
-    this.loadingSubject.next(true);
+    
     let LINK = "";
     if (discount_id) {
       LINK = "?_id="+discount_id;
     }
+    this.loadingSubject.next(true);
     let URL = URL_SERVICE+"home/show_landing_product/"+slug+LINK;
     //return this._http.get(URL);
     return this._http.get(URL).pipe(

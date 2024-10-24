@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
@@ -13,22 +13,32 @@ import { AuthService } from '../../auth-profile/_services/auth.service';
 
 
 declare var $:any;
-declare function HOMEINITTEMPLATE([]):any;
-declare function pswp([]):any;
+// declare function HOMEINITTEMPLATE([]):any;
+// declare function sliderRefresh([]):any; 
+
+declare function HOMEINITTEMPLATE($: any): any;
+declare function sliderRefresh(): any;
+
+declare function pswp($: any):any;
 declare function productZoom([]):any;
+
 declare function LandingProductDetail():any;
 declare function ModalProductDetail():any;
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
 declare function alertSuccess([]):any;
 
+// ---- Destruir 
+declare function cleanupProductZoom($: any):any;
+
 @Component({
   selector: 'app-landing-product',
   templateUrl: './landing-product.component.html',
   styleUrls: ['./landing-product.component.css']
 })
-export class LandingProductComponent implements OnInit, OnDestroy {
+export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy {
 
+  // Inyecta ChangeDetectorRe
   euro = "€";
   slug:any=null;
   product_selected:any = null;
@@ -68,13 +78,14 @@ export class LandingProductComponent implements OnInit, OnDestroy {
   errorResponse:boolean=false;
   errorMessage:any="";
 
-  private subscriptions: Subscription = new Subscription(); 
+  subscriptions: Subscription = new Subscription();  // Mantener todas las subscripciones
 
-  private routeParamsSubscription: Subscription | undefined;
-  private queryParamsSubscription: Subscription | undefined;
-  private productSubscription: Subscription | undefined;
+  // private routeParamsSubscription: Subscription | undefined;
+  // private queryParamsSubscription: Subscription | undefined;
+  // private productSubscription: Subscription | undefined;
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     public ecommerceGuestService: EcommerceGuestService,
     public ecommerceAuthService: EcommerceAuthService,
     public _router: Router,
@@ -86,19 +97,40 @@ export class LandingProductComponent implements OnInit, OnDestroy {
     private titleService: Title, // seo
     private metaService: Meta
   ) {
-    this.ecommerceGuestService.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
-    });
+    
+
+  }
+  ngAfterViewInit(): void {
+    // Escuchar el evento de carga
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+      productZoom($);
+      pswp($);
+    }, 150);
   }
 
   ngOnInit(): void {
+
+    this.subscriptions = this.ecommerceGuestService.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
+    
     this.checkUserAuthenticationStatus(); 
     this.subscribeToRouteParams();
     this.subscribeToQueryParams();
-    this.initLandingProduct();
     this.checkDeviceType();
-  }
 
+    // Verifica si se debe hacer scroll hacia arriba
+    if (sessionStorage.getItem('scrollToTop') === 'true') {
+      // Usar el evento load para asegurarse de que la página se haya cargado completamente
+      window.addEventListener('load', () => {
+          // Simula un clic en el botón de scroll hacia arriba
+          $('#site-scroll').trigger('click');
+          // Limpia la bandera
+          sessionStorage.removeItem('scrollToTop');
+      });
+    }
+  }
 
   private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(
@@ -112,32 +144,51 @@ export class LandingProductComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToRouteParams(): void {
-    this.routeParamsSubscription = this.routerActived.params.subscribe((resp: any) => {
+    const routeParamsSubscription = this.routerActived.params.subscribe((resp: any) => {
       this.slug = resp["slug"];
+      this.initLandingProduct();
     });
+    // Añadir todas las suscripciones al objeto compuesto
+    this.subscriptions.add(routeParamsSubscription);
   }
   
   private subscribeToQueryParams(): void {
-    this.queryParamsSubscription = this.routerActived.queryParams.subscribe((resp: any) => {
+    const queryParamsSubscription = this.routerActived.queryParams.subscribe((resp: any) => {
       this.discount_id = resp["_id"];
     });
+    // Añadir todas las suscripciones al objeto compuesto
+    this.subscriptions.add(queryParamsSubscription);
   }
 
   private initLandingProduct() {
-    this.productSubscription = this.ecommerceGuestService.showLandingProduct(this.slug, this.discount_id).subscribe(
+    const productSubscription = this.ecommerceGuestService.showLandingProduct(this.slug, this.discount_id).subscribe(
       (resp:any) => {
+        console.log("Product response: ", resp); // Añade esto para depurar
         this.handleProductResponse(resp);
-        setTimeout(() => {
-          HOMEINITTEMPLATE($);
-          pswp($);
-          productZoom($);
-        }, 50);
+        
+      },
+      (error) => {
+        console.error("Error fetching product: ", error); // Captura errores
       }); 
+
+      // Añadir todas las suscripciones al objeto compuesto
+      this.subscriptions.add(productSubscription);
+      /*setTimeout(() => {
+        HOMEINITTEMPLATE($);
+        productZoom($);
+        pswp($);
+      }, 350);*/
+      
   }
 
   private handleProductResponse(resp: any): void {
+    if (!resp || !resp.product) {
+      console.error("No product data available");
+      return; // Salir si no hay datos de producto
+    }
     this.product_selected = resp.product;
     this.related_products = resp.related_products;
+    
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
     this.AVG_REVIEW = resp.AVG_REVIEW;
@@ -153,9 +204,29 @@ export class LandingProductComponent implements OnInit, OnDestroy {
       this.setFirstImage();
       this.setColoresDisponibles();
       this.sortVariedades();
+
+      // Forzar la detección de cambios
+      //this.cdRef.detectChanges();
+      // setTimeout(() => {
+      //   HOMEINITTEMPLATE($);
+      //   pswp($);
+      //   productZoom($);
+      //   //sliderRefresh();
+      // }, 150);
     }
   }
-
+  
+  navigateToProduct(slug: string, discountId?: string) {
+    // Guarda el estado para hacer scroll hacia arriba
+    sessionStorage.setItem('scrollToTop', 'true');
+    // Navega a la página del producto
+    this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
+      .then(() => {
+          // Recarga la página
+          window.location.reload();
+      });
+  }
+      
   private sortVariedades() {
     this.selectedColor = this.coloresDisponibles[ 0 ]?.color || '';
     this.variedades = this.product_selected.variedades
@@ -199,11 +270,13 @@ export class LandingProductComponent implements OnInit, OnDestroy {
 
   private showProfileClient(currentUser:any) {
     let data = {user_id: currentUser._id};
-    this.ecommerceAuthService.showProfileClient(data).subscribe( ( resp: any ) => {
+    const saleSubscription =  this.ecommerceAuthService.showProfileClient(data).subscribe( ( resp: any ) => {
       this.sale_orders = resp.sale_orders;
       this.sale_details = this.extractSaleDetails(resp.sale_orders); 
       this.handleSaleDetailAndReview();
     });
+
+    this.subscriptions.add(saleSubscription);
   }
 
   private handleSaleDetailAndReview() {
@@ -487,11 +560,13 @@ export class LandingProductComponent implements OnInit, OnDestroy {
       description: this.description,
     };
 
-    this.ecommerceAuthService.registerProfileClientReview(data).subscribe((resp:any) => {
+    const reviewSubscription =  this.ecommerceAuthService.registerProfileClientReview(data).subscribe((resp:any) => {
       this.sale_detail_selected.review = resp.review;
       this.REVIEWS = [resp.review];
       alertSuccess(resp.message);
     });
+
+    this.subscriptions.add(reviewSubscription);
   }
 
   updateReview() {
@@ -510,11 +585,13 @@ export class LandingProductComponent implements OnInit, OnDestroy {
       description: this.description,
     };
 
-    this.ecommerceAuthService.updateProfileClientReview(data).subscribe((resp:any) => {
+    const reviewUpdateSubscription = this.ecommerceAuthService.updateProfileClientReview(data).subscribe((resp:any) => {
       this.sale_detail_selected.review = resp.review;
       this.REVIEWS = [resp.review];
       alertSuccess(resp.message);
     });
+
+    this.subscriptions.add(reviewUpdateSubscription);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -561,22 +638,36 @@ export class LandingProductComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.routeParamsSubscription) {
-      this.routeParamsSubscription.unsubscribe();
-    }
-    if (this.queryParamsSubscription) {
-      this.queryParamsSubscription.unsubscribe();
-    }
-    if (this.productSubscription) {
-      this.productSubscription.unsubscribe();
-    }
 
-    const elevateZoomInstance = $('.zoompro').data('elevateZoom');
-    if (elevateZoomInstance) {
-      $('.zoomContainer').remove(); 
-      $('.zoompro').off('.elevateZoom');
-      $('.zoompro').removeData('elevateZoom');
+
+  private cleanupPSWP() {
+    // Limpiar los eventos asignados por pswp()
+    $('.prlightbox').off('click');
+
+    // Si PhotoSwipe está activo o existe algún lightbox abierto, ciérralo
+    const pswpElement = $('.pswp')[0];
+
+    // Hacemos un casting explícito para acceder a PhotoSwipe y PhotoSwipeUI_Default en window
+    const PhotoSwipe = (window as any).PhotoSwipe;
+    const PhotoSwipeUI_Default = (window as any).PhotoSwipeUI_Default;
+
+    if (pswpElement && typeof PhotoSwipe !== 'undefined') {
+      let lightBox = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, [], {});
+      
+      // Si el lightBox está abierto, ciérralo
+      if (lightBox) {
+        lightBox.close();
+      }
     }
+  }
+
+  ngOnDestroy(): void {
+    // Desuscribir todas las suscripciones en el método OnDestroy
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    } 
+    // Limpiar los eventos y plugins que fueron inicializados
+    cleanupProductZoom($);
+    this.cleanupPSWP();
   }
 }

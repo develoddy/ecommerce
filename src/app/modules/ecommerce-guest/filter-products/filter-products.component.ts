@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, HostListener, ViewEncapsulation, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,12 +6,16 @@ import { Subscription } from 'rxjs';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
-declare function pswp([]):any;
+declare function pswp($: any):any;
 declare function productZoom([]):any;
 declare function alertDanger([]):any;
 declare function alertSuccess([]):any;
 declare function priceRangeSlider():any;
 declare function ModalProductDetail():any;
+
+// ---------- Destruir desde main ----------
+declare function cleanupHOMEINITTEMPLATE($: any): any;
+declare function cleanupSliders($: any): any;
 
 
 @Component({
@@ -20,7 +24,7 @@ declare function ModalProductDetail():any;
   styleUrls: ['./filter-products.component.css'],
   encapsulation: ViewEncapsulation.None // Desactiva la encapsulación
 })
-export class FilterProductsComponent implements OnInit {
+export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy {
   euro = "€";
   categories:any=[];
   variedades:any=[];
@@ -37,19 +41,22 @@ export class FilterProductsComponent implements OnInit {
   nameCategorie = null;
   userId: any;
 
-  private productSubscription: Subscription | undefined;
+  private subscription: Subscription | undefined;
   loading: boolean = false;
   
   constructor(
+    private cdRef: ChangeDetectorRef,
     public _ecommerceGuestService: EcommerceGuestService,
     public _cartService: CartService,
     public _router: Router,
     public _routerActived: ActivatedRoute,
   ) {}
   
+  
   ngOnInit(): void {
 
-    this.productSubscription =  this._ecommerceGuestService.loading$.subscribe(isLoading => {
+
+    this.subscription =  this._ecommerceGuestService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
 
@@ -58,12 +65,10 @@ export class FilterProductsComponent implements OnInit {
         this.userId = user._id;
       }
     });
+
     this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
       this.idCategorie = resp["idCategorie"];
-
-      console.log("Obtener el slug: ", this.slug, "Obtener id de categoria: ", this.idCategorie);
-      
     });
 
     this.filterProduct();
@@ -73,8 +78,7 @@ export class FilterProductsComponent implements OnInit {
     }
 
 
-    this.productSubscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
-      
+    this.subscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
       this.variedades = resp.variedades;
       const variedadesUnicos = new Set();
@@ -88,23 +92,33 @@ export class FilterProductsComponent implements OnInit {
       });
     });
 
+    // setTimeout(() => {∫
+    //   HOMEINITTEMPLATE($);
+    // }, 50);
+  }
+
+  ngAfterViewInit(): void {
+    // Escuchar el evento de carga
     setTimeout(() => {
       HOMEINITTEMPLATE($);
-    }, 50);
-
-    //setTimeout(() => {
-      //HOMEINITTEMPLATE($);
-      //filtersSidebar($);
       //productZoom($);
       //pswp($);
-      //priceRangeSlider();
-    //}, 150);
-  
+    }, 150);
+ }
+
+  navigateToProduct(slug: string, discountId?: string) {
+    // Guarda el estado para hacer scroll hacia arriba
+    sessionStorage.setItem('scrollToTop', 'true');
+    // Navega a la página del producto
+    this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
+    .then(() => {
+        // Recarga la página
+        window.location.reload();
+    });
   }
 
 
   filterForCategorie(idCategorie:any) {
-    
     let index = this.categories_selecteds.findIndex((item:any) => item == idCategorie );
     if (index != -1) {
       this.categories_selecteds.splice(index, 1);
@@ -113,7 +127,6 @@ export class FilterProductsComponent implements OnInit {
     }
     this.nameCategorie = this.slug;
     this.noneSidebar = false;
-    
   }
 
   addCategorie(categorie:any) {
@@ -145,7 +158,6 @@ export class FilterProductsComponent implements OnInit {
       price_max: $("#amount-max").val(),
     }
     this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
-      console.log(resp);
       this.products = resp.products;
       
     });
@@ -264,8 +276,11 @@ export class FilterProductsComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    if (this.productSubscription) {
-      this.productSubscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
+
+    cleanupSliders($);
+    cleanupHOMEINITTEMPLATE($);
   }
 }

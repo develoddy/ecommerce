@@ -11,8 +11,11 @@ import { MinicartService } from 'src/app/services/minicartService.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { combineLatest } from 'rxjs';
 declare var $: any;
-//declare function HOMEINITTEMPLATE([]): any;
-//declare function sectionCart(): any;
+declare var $:any;
+declare function HOMEINITTEMPLATE($: any): any;//declare function HOMEINITTEMPLATE([]):any;
+declare function sliderRefresh(): any;
+declare function pswp([]):any;
+declare function productZoom([]):any;
 declare function alertDanger([]): any;
 declare function alertSuccess([]): any;
 
@@ -240,6 +243,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+
+    // setTimeout(() => {
+    //   HOMEINITTEMPLATE($);
+    //   productZoom($);
+    //   pswp($);
+    // }, 150);
+
     if (this.filter) {
       this.source = fromEvent(this.filter.nativeElement, "keyup");
       this.subscriptions.add(

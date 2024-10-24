@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { BodyClassService } from './services/body-class.service';
 declare var $:any;
-declare function HOMEINITTEMPLATE([]):any;
+declare function HOMEINITTEMPLATE($: any): any;//declare function HOMEINITTEMPLATE([]):any;
+declare function sliderRefresh(): any;
 declare function pswp([]):any;
+declare function productZoom([]):any;
 
 //declare function sideOffcanvasToggle([],[]):any;
 
@@ -36,14 +38,20 @@ export class AppComponent implements OnInit {
     });
   }
 
+  // ngAfterViewInit(): void {
+  //   // Escuchar el evento de carga
+  //   setTimeout(() => {
+  //      HOMEINITTEMPLATE($);
+  //      productZoom($);
+  //      pswp($);
+  //    }, 50);
+  // }
+
   ngOnInit(): void {
 
     // Initialize body class based on the current route
     this.bodyClassService.updateBodyClass("index-demo1");
-    // setTimeout(() => {
-    //    HOMEINITTEMPLATE($);
-    //    pswp($);
-    // }, 50);
+     
     
     // setTimeout(() => {
     //   sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');

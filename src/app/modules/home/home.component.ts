@@ -74,14 +74,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     //private languageService: LanguageService,
   ) { }
 
-  private translateTextAccordingToLanguage(language: string): string {
-    // Lógica para traducir el texto según el idioma
-    return 'Texto traducido';
-  }
+  // private translateTextAccordingToLanguage(language: string): string {
+  //   // Lógica para traducir el texto según el idioma
+  //   return 'Texto traducido';
+  // }
 
   ngOnInit(): void {
-   
-
     // Suscribirse al observable para saber cuando mostrar u ocultar el loading
     this.subscription = this.homeService.loading$.subscribe(isLoading => {
       this.loading = isLoading;

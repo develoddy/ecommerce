@@ -28,8 +28,6 @@
         </div>
         <!--End Page Header-->
 
-        
-
         <!--Main Content-->
         <div class="container-fluid py-5">
             <!--Category Slider-->
@@ -319,6 +317,7 @@
                                         <div class="product-image">
                                             <!-- Start Product Image -->
                                             <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="getRouterDiscount(product)" class="product-img rounded-0">
+                                            <!-- <a href="#" onclick="return false;" (click)="navigateToProduct(product.slug, product.campaing_discount?.id)" class="product-img rounded-0"> -->
                                                 <!-- Image -->
                                                 <img class="primary rounded-0 blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="808" />
                                                 <!-- End Image -->

@@ -1699,3 +1699,76 @@ function LandingProductDetail() {
     });
     
 }
+
+function sliderRefresh() {
+    /*-----------------------------------
+     Slider Refresh
+     -------------------------------------*/
+    $(".nav-tabs .nav-item").on('click', function() {
+        $('.tabs-listing .slick-slider').slick('refresh');
+    })
+}
+
+
+
+
+
+
+
+// --------------- Destruir ---------------
+function cleanupSliders($) {
+    // Destruir todos los sliders para evitar que queden enganchados
+    if ($('.home-slideshow').hasClass('slick-initialized')) {
+      $('.home-slideshow').slick('unslick');
+    }
+    if ($('.promo-slider-1items').hasClass('slick-initialized')) {
+      $('.promo-slider-1items').slick('unslick');
+    }
+    if ($('.infobar-slider-4items').hasClass('slick-initialized')) {
+      $('.infobar-slider-4items').slick('unslick');
+    }
+    if ($('.topBar-slider-style1').hasClass('slick-initialized')) {
+      $('.topBar-slider-style1').slick('unslick');
+    }
+    if ($('.weekly-product').hasClass('slick-initialized')) {
+      $('.weekly-product').slick('unslick');
+    }
+    if ($('.sideProSlider').hasClass('slick-initialized')) {
+      $('.sideProSlider').slick('unslick');
+    }
+}
+
+function cleanupHOMEINITTEMPLATE($) {
+    // Aquí deberías limpiar los eventos adjuntados por HOMEINITTEMPLATE si es necesario
+    $(window).off("load scroll");
+    // Limpia otros eventos del DOM si se han adjuntado en HOMEINITTEMPLATE
+}
+
+function cleanupProductZoom($) {
+    // Destruir el plugin elevateZoom
+    if ($('.zoompro').data('elevateZoom')) {
+      $('.zoompro').removeData('elevateZoom').off();
+      $('.zoomContainer').remove(); // Elimina el contenedor del zoom
+    }
+  }
+
+// function cleanupPSWP($) {
+//     // Limpiar los eventos asignados por pswp()
+//     $('.prlightbox').off('click');
+
+//     // Si PhotoSwipe está activo o existe algún lightbox abierto, ciérralo
+//     const pswpElement = $('.pswp')[0];
+
+//     // Hacemos un casting explícito para acceder a PhotoSwipe y PhotoSwipeUI_Default en window
+//     const PhotoSwipe = (window as any).PhotoSwipe;
+//     const PhotoSwipeUI_Default = (window as any).PhotoSwipeUI_Default;
+
+//     if (pswpElement && typeof PhotoSwipe !== 'undefined') {
+//       let lightBox = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, [], {});
+      
+//       // Si el lightBox está abierto, ciérralo
+//       if (lightBox) {
+//         lightBox.close();
+//       }
+//     }
+// }
