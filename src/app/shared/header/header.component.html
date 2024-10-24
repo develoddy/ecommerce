@@ -37,12 +37,12 @@
 
 <!--Header-->
 <header class="header d-flex align-items-center header-1 header-fixed" *ngIf="showSubscriptionSection">
-    <div [ngClass]="{'container-fluid px-5': isDesktop, 'container': isMobile }" class="container-header">      
+    <div [ngClass]="{'container-fluid px-5': isDesktop || isTablet, 'container': isMobile }" class="container-header">      
         <div class="row">
             <!--Menu-->
             <!-- <div class="col-1 col-sm-1 col-md-1 col-lg-3 align-self-center d-menu-col border border-primary"> -->
-            <div class="align-self-center d-menu-col d-flex justify-content-start"
-                [ngClass]="{'col-1 col-sm-1 col-md-1 col-lg-4': isDesktop, 'col-1 col-sm-1 col-md-1 col-lg-6': isMobile}">
+            <div *ngIf="!isMobile && !isTablet" class="col-1 col-sm-1 col-md-1 align-self-center d-menu-col d-flex justify-content-start"
+                [ngClass]="{'col-lg-4': isDesktop, 'col-lg-6': isMobile}">
                 <nav class="navigation" id="AccessibleNav">
                     <ul id="siteNav" class="site-nav medium center">
                         <li class="lvl1 parent dropdown"><a href="#">Explorar <i class="icon anm anm-angle-down-l d-none"></i></a>
@@ -265,7 +265,7 @@
             
             <!--Right Icon-->
             <!-- <div class="col-7 col-sm-9 col-md-9 col-lg-3 align-self-center icons-col text-right border border-danger"> -->
-            <div class="col-6 col-sm-9 col-md-9 align-self-center icons-col d-flex justify-content-end"
+            <div class="col-6 col-sm-9 col-md-6 align-self-center icons-col d-flex justify-content-end"
                 [ngClass]="{'col-lg-4': isDesktop}">
                 <!--Search-->
                 <div class="search-parent iconset" [ngClass]="{'px-2': isMobile}">
