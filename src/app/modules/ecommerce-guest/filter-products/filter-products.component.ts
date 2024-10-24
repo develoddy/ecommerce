@@ -51,11 +51,14 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     public _router: Router,
     public _routerActived: ActivatedRoute,
   ) {}
-  
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+    }, 150);
+  }
   
   ngOnInit(): void {
-
-
     this.subscription =  this._ecommerceGuestService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
@@ -77,7 +80,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       this.filterForCategorie(this.idCategorie); 
     }
 
-
     this.subscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
       this.variedades = resp.variedades;
@@ -91,32 +93,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         }
       });
     });
-
-    // setTimeout(() => {∫
-    //   HOMEINITTEMPLATE($);
-    // }, 50);
   }
-
-  ngAfterViewInit(): void {
-    // Escuchar el evento de carga
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
-      //productZoom($);
-      //pswp($);
-    }, 150);
- }
-
-  navigateToProduct(slug: string, discountId?: string) {
-    // Guarda el estado para hacer scroll hacia arriba
-    sessionStorage.setItem('scrollToTop', 'true');
-    // Navega a la página del producto
-    this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
-    .then(() => {
-        // Recarga la página
-        window.location.reload();
-    });
-  }
-
 
   filterForCategorie(idCategorie:any) {
     let index = this.categories_selecteds.findIndex((item:any) => item == idCategorie );
@@ -274,6 +251,17 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     }
     return 0;
   }
+
+  // navigateToProduct(slug: string, discountId?: string) {
+  //   // Guarda el estado para hacer scroll hacia arriba
+  //   sessionStorage.setItem('scrollToTop', 'true');
+  //   // Navega a la página del producto
+  //   this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
+  //   .then(() => {
+  //       // Recarga la página
+  //       window.location.reload();
+  //   });
+  // }
 
   ngOnDestroy(): void {
     if (this.subscription) {

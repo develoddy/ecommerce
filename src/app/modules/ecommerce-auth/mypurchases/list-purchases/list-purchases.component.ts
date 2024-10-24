@@ -30,7 +30,6 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
  
 
   ngOnInit(): void {
-
     this.subscriptions = this._ecommerceAuthService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
@@ -96,5 +95,4 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
       this.subscriptions.unsubscribe();
     } 
   }
-
 }

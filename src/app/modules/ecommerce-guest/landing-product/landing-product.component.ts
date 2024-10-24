@@ -11,21 +11,15 @@ import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 
-
 declare var $:any;
-// declare function HOMEINITTEMPLATE([]):any;
-// declare function sliderRefresh([]):any; 
 
 declare function HOMEINITTEMPLATE($: any): any;
 declare function sliderRefresh(): any;
 
 declare function pswp($: any):any;
 declare function productZoom([]):any;
-
-declare function LandingProductDetail():any;
 declare function ModalProductDetail():any;
 declare function alertDanger([]):any;
-declare function alertWarning([]):any;
 declare function alertSuccess([]):any;
 
 // ---- Destruir 
@@ -80,10 +74,6 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
 
   subscriptions: Subscription = new Subscription();  // Mantener todas las subscripciones
 
-  // private routeParamsSubscription: Subscription | undefined;
-  // private queryParamsSubscription: Subscription | undefined;
-  // private productSubscription: Subscription | undefined;
-
   constructor(
     private cdRef: ChangeDetectorRef,
     public ecommerceGuestService: EcommerceGuestService,
@@ -96,10 +86,8 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
     private minicartService: MinicartService,
     private titleService: Title, // seo
     private metaService: Meta
-  ) {
-    
+  ) {}
 
-  }
   ngAfterViewInit(): void {
     // Escuchar el evento de carga
     setTimeout(() => {
@@ -110,7 +98,6 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   ngOnInit(): void {
-
     this.subscriptions = this.ecommerceGuestService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
@@ -621,7 +608,7 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
     metaTags.forEach((tag:any) => this.metaService.updateTag(tag));
   }
 
-  checkDeviceType() {
+  private checkDeviceType() {
     const width = window.innerWidth;
     if (width <= 480) {
       this.isMobile = true;
@@ -637,8 +624,6 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
       this.isDesktop = true;
     }
   }
-
-
 
   private cleanupPSWP() {
     // Limpiar los eventos asignados por pswp()
