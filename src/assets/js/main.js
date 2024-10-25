@@ -1710,11 +1710,6 @@ function sliderRefresh() {
 }
 
 
-
-
-
-
-
 // --------------- Destruir ---------------
 function cleanupSliders($) {
     // Destruir todos los sliders para evitar que queden enganchados
@@ -1750,7 +1745,12 @@ function cleanupProductZoom($) {
       $('.zoompro').removeData('elevateZoom').off();
       $('.zoomContainer').remove(); // Elimina el contenedor del zoom
     }
-  }
+}
+
+function cleanupLandingProductDetail($) {
+    $(".qtyBtn").off(".landing"); // Remueve todos los eventos con el namespace `.landing`
+}
+
 
 // function cleanupPSWP($) {
 //     // Limpiar los eventos asignados por pswp()

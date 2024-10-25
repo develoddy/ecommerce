@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
 import { HomeService } from './_services/home.service';
 import { CartService } from '../ecommerce-guest/_service/cart.service';
 import { Router } from '@angular/router';
@@ -19,13 +19,15 @@ declare function alertSuccess([]):any;
 
 // ---------- Destruir desde main ----------
 declare function cleanupHOMEINITTEMPLATE($: any): any;
+declare function cleanupProductZoom($: any):any;
+declare function cleanupLandingProductDetail($: any):any;
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   euro = "€";
   sliders:any = [];
@@ -83,14 +85,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   // }
 
   ngAfterViewInit(): void {
-
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
-      this.extractTags();
-    }, 150);
-
+    
     this.initializeLargeSlider();
     this.initializeSmallSlider();
+    
   }
   
 
@@ -133,10 +131,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
               });
           }
         }
-        //HOMEINITTEMPLATE($);
-        //this.extractTags();
+        HOMEINITTEMPLATE($);
+        this.extractTags();
       }, 150);
     });
+
+    
+
+    this.extractTags();
 
     this.subscription?.add(listHomeSubscription);
   }
@@ -545,10 +547,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.checkWindowSize();
   }
 
+  private cleanupPSWP() {
+    // Limpiar los eventos asignados por pswp()
+    $('.prlightbox').off('click');
+
+    // Si PhotoSwipe está activo o existe algún lightbox abierto, ciérralo
+    const pswpElement = $('.pswp')[0];
+
+    // Hacemos un casting explícito para acceder a PhotoSwipe y PhotoSwipeUI_Default en window
+    const PhotoSwipe = (window as any).PhotoSwipe;
+    const PhotoSwipeUI_Default = (window as any).PhotoSwipeUI_Default;
+
+    if (pswpElement && typeof PhotoSwipe !== 'undefined') {
+      let lightBox = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, [], {});
+      
+      // Si el lightBox está abierto, ciérralo
+      if (lightBox) {
+        lightBox.close();
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
     cleanupHOMEINITTEMPLATE($);
+    cleanupProductZoom($);
+    cleanupLandingProductDetail($);
+    this.cleanupPSWP();
   }
 }
