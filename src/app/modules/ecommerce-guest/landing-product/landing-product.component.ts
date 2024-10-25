@@ -88,14 +88,22 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
     private metaService: Meta
   ) {}
 
-  ngAfterViewInit(): void {
-    // Escuchar el evento de carga
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
-      productZoom($);
-      pswp($);
-    }, 150);
-  }
+   ngAfterViewInit(): void {
+     setTimeout(() => {
+       HOMEINITTEMPLATE($);
+       productZoom($);
+       pswp($);
+     }, 150);
+   }
+
+  // ngAfterViewInit(): void {
+  //   setTimeout(() => {
+  //     (window as any).HOMEINITTEMPLATE($);
+  //     (window as any).productZoom($);
+  //     (window as any).pswp($);
+  //   }, 150);
+  // }
+
 
   ngOnInit(): void {
     this.subscriptions = this.ecommerceGuestService.loading$.subscribe(isLoading => {

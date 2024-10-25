@@ -1684,7 +1684,7 @@ function alertSuccess(TEXT){
     }, 6000);
 }
 
-function LandingProductDetail() {
+function LandingProductDetail($) {
     $(".qtyBtn").on("click", function() {
         var qtyField = $(this).parent(".qtyField"),
                 oldValue = $(qtyField).find(".qty").val(),
@@ -1697,7 +1697,6 @@ function LandingProductDetail() {
         }
         $(qtyField).find(".qty").val(newVal);
     });
-    
 }
 
 function sliderRefresh() {
@@ -1708,7 +1707,6 @@ function sliderRefresh() {
         $('.tabs-listing .slick-slider').slick('refresh');
     })
 }
-
 
 // --------------- Destruir ---------------
 function cleanupSliders($) {
@@ -1747,28 +1745,16 @@ function cleanupProductZoom($) {
     }
 }
 
-function cleanupLandingProductDetail($) {
-    $(".qtyBtn").off(".landing"); // Remueve todos los eventos con el namespace `.landing`
-}
-
-
-// function cleanupPSWP($) {
-//     // Limpiar los eventos asignados por pswp()
-//     $('.prlightbox').off('click');
-
-//     // Si PhotoSwipe está activo o existe algún lightbox abierto, ciérralo
-//     const pswpElement = $('.pswp')[0];
-
-//     // Hacemos un casting explícito para acceder a PhotoSwipe y PhotoSwipeUI_Default en window
-//     const PhotoSwipe = (window as any).PhotoSwipe;
-//     const PhotoSwipeUI_Default = (window as any).PhotoSwipeUI_Default;
-
-//     if (pswpElement && typeof PhotoSwipe !== 'undefined') {
-//       let lightBox = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, [], {});
-      
-//       // Si el lightBox está abierto, ciérralo
-//       if (lightBox) {
-//         lightBox.close();
-//       }
-//     }
-// }
+// Expón la función al objeto global `window`
+window.HOMEINITTEMPLATE = HOMEINITTEMPLATE;
+window.pswp = pswp;
+window.actionNetxCheckout = actionNetxCheckout;
+window.productZoom = productZoom;
+window.alertDanger = alertDanger;
+window.alertWarning = alertWarning;
+window.alertSuccess = alertSuccess;
+window.LandingProductDetail = LandingProductDetail;
+window.sliderRefresh = sliderRefresh;
+window.cleanupSliders = cleanupSliders;
+window.cleanupHOMEINITTEMPLATE = cleanupHOMEINITTEMPLATE;
+window.cleanupProductZoom = cleanupProductZoom;

@@ -7,10 +7,9 @@ import { LanguageService } from 'src/app/services/language.service';
 import { Subscription } from 'rxjs';
 import { WishlistService } from '../ecommerce-guest/_service/wishlist.service';
 
-declare function LandingProductDetail():any;
-
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
+declare function LandingProductDetail($: any):any;
 declare function pswp([]):any;
 declare function productZoom([]):any;
 declare function ModalProductDetail():any;
@@ -19,8 +18,7 @@ declare function alertSuccess([]):any;
 
 // ---------- Destruir desde main ----------
 declare function cleanupHOMEINITTEMPLATE($: any): any;
-declare function cleanupProductZoom($: any):any;
-declare function cleanupLandingProductDetail($: any):any;
+declare function cleanupProductZoom($: any): any;
 
 @Component({
   selector: 'app-home',
@@ -451,7 +449,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setColoresDisponibles();
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
       setTimeout(() => {
-        LandingProductDetail();
+        //LandingProductDetail($);
         pswp($);
         productZoom($);
       }, 50);
@@ -471,7 +469,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setColoresDisponibles();
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
       setTimeout(() => {
-        LandingProductDetail();
+        //LandingProductDetail($);
         pswp($);
         productZoom($);
       }, 50);
@@ -574,7 +572,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     cleanupHOMEINITTEMPLATE($);
     cleanupProductZoom($);
-    cleanupLandingProductDetail($);
     this.cleanupPSWP();
   }
 }
