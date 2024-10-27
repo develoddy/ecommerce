@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   allTags: string[] = [];
 
-  isDesktopSize: boolean = window.innerWidth >= 992; // Inicialización
+  //isDesktopSize: boolean = window.innerWidth >= 992; // Inicialización
 
   firstImage: string = '';
   coloresDisponibles: { color: string, imagen: string }[] = [];
@@ -66,6 +66,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   CURRENT_USER_AUTHENTICATED:any=null;
 
   private subscription: Subscription | undefined;
+
+  isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
 
 
   constructor(
@@ -83,10 +87,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   // }
 
   ngAfterViewInit(): void {
-    
     this.initializeLargeSlider();
     this.initializeSmallSlider();
-    
   }
   
 
@@ -98,7 +100,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
 
-    this.checkWindowSize();
+    this.checkDeviceType();
 
     let TIME_NOW = new Date().getTime();
     
@@ -134,11 +136,26 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       }, 150);
     });
 
-    
-
     this.extractTags();
 
     this.subscription?.add(listHomeSubscription);
+  }
+
+  private checkDeviceType() {
+    const width = window.innerWidth;
+    if (width <= 480) {
+      this.isMobile = true;
+      this.isTablet = false;
+      this.isDesktop = false;
+    } else if (width > 480 && width <= 768) {
+      this.isMobile = false;
+      this.isTablet = true;
+      this.isDesktop = false;
+    } else {
+      this.isMobile = false;
+      this.isTablet = false;
+      this.isDesktop = true;
+    }
   }
 
   private verifyAuthenticatedUser(): void {
@@ -171,13 +188,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-  checkWindowSize() {
-    this.isDesktopSize = window.innerWidth >= 992;
-  }
+  // checkWindowSize() {
+  //   this.isDesktopSize = window.innerWidth >= 992;
+  // }
 
-  isDesktop(): boolean {
-    return this.isDesktopSize;
-  }
+  // isDesktop(): boolean {
+  //   return this.isDesktopSize;
+  // }
 
   extractTags() {
     this.besProducts.forEach((product: any) => {
@@ -542,7 +559,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.checkWindowSize();
+    this.checkDeviceType(); // Vuelve a verificar el tamaño en caso de cambio de tamaño de pantalla
   }
 
   private cleanupPSWP() {

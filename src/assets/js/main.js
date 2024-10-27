@@ -1224,8 +1224,9 @@ function HOMEINITTEMPLATE ($, undefined) {
         });
 
         var contentwidth = $(window).width();
+
         if (contentwidth < "1199") {
-            $(".grid-options .grid-4").addClass("active");
+            $(".grid-options .grid-3").addClass("active");
         }
         if (contentwidth < "991") {
             $(".grid-options .grid-3").addClass("active");
@@ -1699,7 +1700,7 @@ function LandingProductDetail($) {
     });
 }
 
-function sliderRefresh() {
+function sliderRefresh($) {
     /*-----------------------------------
      Slider Refresh
      -------------------------------------*/
@@ -1745,6 +1746,46 @@ function cleanupProductZoom($) {
     }
 }
 
+function productSlider5items($) {
+    $('.product-slider-5items').slick({
+        dots: false,
+        infinite: true,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        arrows: true,
+        responsive: [
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 1
+                }
+            },
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 1
+                }
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1
+                }
+            },
+            {
+                breakpoint: 576,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    });
+}
+
 // Expón la función al objeto global `window`
 window.HOMEINITTEMPLATE = HOMEINITTEMPLATE;
 window.pswp = pswp;
@@ -1758,3 +1799,4 @@ window.sliderRefresh = sliderRefresh;
 window.cleanupSliders = cleanupSliders;
 window.cleanupHOMEINITTEMPLATE = cleanupHOMEINITTEMPLATE;
 window.cleanupProductZoom = cleanupProductZoom;
+window.productSlider4items = productSlider4items;

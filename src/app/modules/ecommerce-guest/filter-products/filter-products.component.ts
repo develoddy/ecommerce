@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewEncapsulation, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostListener, ViewEncapsulation, ChangeDetectorRef, AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,6 +25,12 @@ declare function cleanupSliders($: any): any;
   encapsulation: ViewEncapsulation.None // Desactiva la encapsulación
 })
 export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy {
+  @ViewChild('grid1') grid1!: ElementRef;
+  @ViewChild('grid2') grid2!: ElementRef;
+  @ViewChild('grid3') grid3!: ElementRef;
+  @ViewChild('grid4') grid4!: ElementRef;
+  @ViewChild('grid5') grid5!: ElementRef;
+  
   euro = "€";
   categories:any=[];
   variedades:any=[];
@@ -53,9 +59,41 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   ) {}
 
   ngAfterViewInit(): void {
+
+    
+    
     setTimeout(() => {
       HOMEINITTEMPLATE($);
+      
+      
+      const contentWidth = window.innerWidth;
+      console.log("contentWidth: ", contentWidth);
+      if (contentWidth < 1999) {
+        this.grid5.nativeElement.click();
+      }
+      if (contentWidth < 1199) {
+        this.grid4.nativeElement.click();
+      }
+      if (contentWidth < 991) {
+        this.grid3.nativeElement.click();
+      }
+      if (contentWidth < 767) {
+        this.grid2.nativeElement.click();
+      }
+
+
+      //   console.log("contentWidth: ", contentWidth); // 1999
+      // if (contentWidth > 1900) {
+      //     //Simula el clic en el botón `.grid-3` si el ancho de la ventana es menor a 991px
+      //   this.grid3.nativeElement.click();
+      // }
+
+      // if (contentWidth < 1199) {
+      //   this.grid4.nativeElement.click();
+      // }
     }, 150);
+
+    
   }
   
   ngOnInit(): void {

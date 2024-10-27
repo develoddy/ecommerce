@@ -43,6 +43,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   currentUser: any = null;
 
+  width: number = 100; // valor por defecto
+  height: number = 100; // valor por defecto
+
   @ViewChild("filter") filter?: ElementRef;
   private subscriptions: Subscription = new Subscription();
   showSubscriptionSection: boolean = true;
@@ -223,7 +226,23 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isMobile = width <= 480;
     this.isTablet = width > 480 && width <= 768;
     this.isDesktop = width > 768;
+
+    // Ajusta el tamaño de la imagen según el tipo de dispositivo
+    if (this.isMobile) {
+        this.width = 80;  // tamaño para móviles
+        this.height = 80; // tamaño para móviles
+    } else {
+        this.width = 100; // tamaño por defecto
+        this.height = 100; // tamaño por defecto
+    }
   }
+
+  // private checkDeviceType(): void {
+  //   const width = window.innerWidth;
+  //   this.isMobile = width <= 480;
+  //   this.isTablet = width > 480 && width <= 768;
+  //   this.isDesktop = width > 768;
+  // }
 
   private subscribeToWishlistData(): void {
     this.subscriptions.add(

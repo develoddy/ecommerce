@@ -15,12 +15,13 @@ declare var $:any;
 
 declare function HOMEINITTEMPLATE($: any): any;
 declare function sliderRefresh(): any;
-
 declare function pswp($: any):any;
 declare function productZoom([]):any;
 declare function ModalProductDetail():any;
 declare function alertDanger([]):any;
 declare function alertSuccess([]):any;
+
+declare function productSlider5items($: any): any;
 
 // ---- Destruir 
 declare function cleanupProductZoom($: any):any;
@@ -30,7 +31,7 @@ declare function cleanupProductZoom($: any):any;
   templateUrl: './landing-product.component.html',
   styleUrls: ['./landing-product.component.css']
 })
-export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy {
+export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Inyecta ChangeDetectorRe
   euro = "€";
@@ -60,7 +61,7 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
   firstImage: string = '';
   coloresDisponibles: { color: string, imagen: string }[] = [];
   variedades: any[] = [];
-  availableSizes = ['S', 'M', 'L', 'XL']; 
+  availableSizes = ['S', 'M', 'L', 'XL', 'XXL', "37", "38", "39", "40", "41", "42"]; //availableSizes = ['S', 'M', 'L', 'XL']; 
   loading: boolean = false;
 
   isMobile: boolean = false;
@@ -88,22 +89,11 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
     private metaService: Meta
   ) {}
 
-   ngAfterViewInit(): void {
-     setTimeout(() => {
-       HOMEINITTEMPLATE($);
-       productZoom($);
-       pswp($);
-     }, 150);
-   }
-
-  // ngAfterViewInit(): void {
-  //   setTimeout(() => {
-  //     (window as any).HOMEINITTEMPLATE($);
-  //     (window as any).productZoom($);
-  //     (window as any).pswp($);
-  //   }, 150);
-  // }
-
+  ngAfterViewInit(): void {
+    // setTimeout(() => {
+    //   productSlider5items($);
+    // }, 150);
+  }
 
   ngOnInit(): void {
     this.subscriptions = this.ecommerceGuestService.loading$.subscribe(isLoading => {
@@ -158,7 +148,7 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
   private initLandingProduct() {
     const productSubscription = this.ecommerceGuestService.showLandingProduct(this.slug, this.discount_id).subscribe(
       (resp:any) => {
-        console.log("Product response: ", resp); // Añade esto para depurar
+        
         this.handleProductResponse(resp);
         
       },
@@ -168,11 +158,6 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
 
       // Añadir todas las suscripciones al objeto compuesto
       this.subscriptions.add(productSubscription);
-      /*setTimeout(() => {
-        HOMEINITTEMPLATE($);
-        productZoom($);
-        pswp($);
-      }, 350);*/
       
   }
 
@@ -182,6 +167,8 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
       return; // Salir si no hay datos de producto
     }
     this.product_selected = resp.product;
+    
+    
     this.related_products = resp.related_products;
     
     this.SALE_FLASH = resp.SALE_FLASH;
@@ -200,14 +187,18 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
       this.setColoresDisponibles();
       this.sortVariedades();
 
-      // Forzar la detección de cambios
-      //this.cdRef.detectChanges();
-      // setTimeout(() => {
-      //   HOMEINITTEMPLATE($);
-      //   pswp($);
-      //   productZoom($);
-      //   //sliderRefresh();
-      // }, 150);
+      setTimeout(() => {
+        (window as any).HOMEINITTEMPLATE($);
+        (window as any).productZoom($);
+        (window as any).pswp($);
+        productSlider5items($);
+        // Llama explícitamente al refresco del slider
+        (window as any).sliderRefresh($);
+       
+
+        // Forzar la detección de cambios
+        this.cdRef.detectChanges();
+      }, 150);
     }
   }
   
@@ -221,17 +212,44 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
           window.location.reload();
       });
   }
-      
+
   private sortVariedades() {
-    this.selectedColor = this.coloresDisponibles[ 0 ]?.color || '';
-    this.variedades = this.product_selected.variedades
-        .filter((variedad: any) => variedad.color === this.selectedColor)
-        .sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
-    this.variedades = this.availableSizes.map(size => {
-        const foundVariedad = this.variedades.find( variedad => variedad.valor === size );
-        return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
-    });
-    this.variedad_selected = this.variedades.find( v => v.stock > 0 ) || null;
+    // Selecciona el primer color disponible
+    this.selectedColor = this.coloresDisponibles[0]?.color || '';
+
+    // Filtra variedades por color
+    this.variedades = this.product_selected.variedades.filter((variedad: any) => variedad.color === this.selectedColor);
+
+    // Verifica si la categoría es Zapatillas o Camisa
+    const isZapatos = this.product_selected.categorie.title.toLowerCase().includes('zapatillas');
+    const isCamisa = this.product_selected.categorie.title.toLowerCase().includes('camisa');
+
+    // Filtra las variedades según el tipo de producto
+    if (isZapatos) {
+        this.variedades = this.variedades.filter(variedad => !isNaN(Number(variedad.valor)));
+    } else if (isCamisa) {
+        this.variedades = this.variedades.filter(variedad => isNaN(Number(variedad.valor)));
+    }
+
+    // Mapea las tallas disponibles con stock positivo en las variedades
+    const availableSizes = this.availableSizes.map(size => size.toString());
+
+    // Mapea las tallas a las variedades
+    this.variedades = availableSizes.map(size => {
+        const foundVariedad = this.variedades.find(variedad => variedad.valor === size && variedad.stock > 0);
+        return foundVariedad ? { ...foundVariedad } : { valor: size, stock: 0 };
+    }).filter(variedad => {
+        // Filtra nuevamente según el tipo de producto
+        if (isZapatos) {
+            return !isNaN(Number(variedad.valor)); // Solo tallas numéricas
+        } else if (isCamisa) {
+            return isNaN(Number(variedad.valor)); // Solo tallas alfabéticas
+        }
+        return true; // Si no es zapatilla ni camisa, deja todas
+    }).sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1));
+
+    // Selecciona la primera variedad con stock positivo
+    this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
     this.activeIndex = 0;
   }
 
@@ -282,10 +300,8 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
 
   private configReview(matchingSaleDetail:any, matchingReview:any) {
     if ( matchingSaleDetail && matchingReview ) {
-      console.log("Se encontró un sale_detail y una review coincidentes:", matchingSaleDetail, matchingReview); // si existe sale_detail & review, entonces mistrar form
       this.viewReview(matchingSaleDetail);
     } else if ( matchingSaleDetail && !matchingReview ) { // Si existe sale_detail pero no hay review, mostrar form para agregar una nueva review
-      console.log("Se encontró un sale_detail pero no hay review. Mostrar formulario para agregar review.", matchingSaleDetail);
       this.viewReview(matchingSaleDetail); // Pasar un objeto vacio para iniciar un form en blanco
     } else {
       // Ni no existe sale_detail y review, entonces no mostrar el form
@@ -406,22 +422,34 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
 
-    // Filtrar las tallas disponibles para el color seleccionado
+    // Filtrar variedades para el color seleccionado
     const filteredVariedades = this.product_selected.variedades
         .filter((variedad: any) => variedad.color === this.selectedColor)
-        .sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1); // Ordenar las tallas de menor a mayor
+        .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1)); // Ordenar las tallas de menor a mayor
 
-    // Mapear las tallas generales y marcar las no disponibles
-    this.variedades = this.availableSizes.map(size => {
-        const foundVariedad = filteredVariedades.find( (variedad:any) => variedad.valor === size);
+    // Detecta si el producto es de tipo zapatillas o camisa
+    const isZapatos = this.product_selected.categorie.title.toLowerCase().includes('zapatillas');
+    const isCamisa = this.product_selected.categorie.title.toLowerCase().includes('camisa');
+
+    // Filtrar `availableSizes` según el tipo de producto
+    const filteredSizes = this.availableSizes
+        .map(size => size.toString()) // Convertir tallas a strings para comparación
+        .filter(size => {
+            if (isZapatos) return !isNaN(Number(size)); // Solo tallas numéricas para zapatillas
+            if (isCamisa) return isNaN(Number(size));   // Solo tallas alfabéticas para camisa
+            return true; // Mantener todas las tallas si no es ninguno de los anteriores
+        });
+
+    // Mapea las tallas generales y marca las no disponibles
+    this.variedades = filteredSizes.map(size => {
+        const foundVariedad = filteredVariedades.find((variedad: any) => variedad.valor === size);
         return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
     });
 
-    // Seleccionar automáticamente la primera talla disponible
+    // Selecciona automáticamente la primera talla disponible
     this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
     this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
 
-    //console.log(`Talla seleccionada: ${this.variedad_selected?.valor || 'Ninguna disponible'}`);
   }
 
   selectedVariedad(variedad:any, index: number) {
@@ -473,7 +501,6 @@ export class LandingProductComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   private saveCart(product: any, isGuest: String) {
-    console.log(`Debug: El usuario ${isGuest ? 'no está logueado' : 'está logueado'}, guardando el artículo en ${isGuest ? 'LocalStorage' : 'la base de datos'}`);
 
     if ($("#qty-cart").val() == 0) {
       this.errorResponse = true;

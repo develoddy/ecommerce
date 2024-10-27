@@ -254,7 +254,7 @@
 
         <!--Products With Tabs-->
         <section class="section product-slider tab-slider-product">
-            <div class="container-fluid">
+            <div class="container-fluid" [ngClass]="{'p-0': isMobile}">
                 <div class="section-header d-none">
                     <h2>Special Offers</h2>
                     <p>Browse the huge variety of our best seller</p>
@@ -279,7 +279,7 @@
                             <div class="grid-products grid-view-items">
                                 <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
                                     <ng-container *ngFor="let ourProduct of ourProducts">
-                                        <div class="item col-item px-0">
+                                        <div class="item col-item col-6 col-lg-4 px-0">
                                             <div class="product-box">
                                                 <!-- Start Product Image -->
                                                 <div class="product-image">
