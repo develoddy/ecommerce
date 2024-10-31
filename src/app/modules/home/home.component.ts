@@ -42,6 +42,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   //private subscription: Subscription;
   REVIEWS:any=null;
 
+  private discountCache = new Map<number, number>(); // Caché para almacenar descuentos calculados
+
   activeIndex: number = 0;
 
   selectedColor: string = '';
@@ -105,10 +107,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     let TIME_NOW = new Date().getTime();
     
     const listHomeSubscription = this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
+      this.ourProducts = resp.our_products.map((product: any) => {
+        product.finalPrice = this.calculateFinalPrice(product); // Asignamos el precio final con descuento
+        return product;
+      });
+
       this.sliders = resp.sliders;
       this.categories = resp.categories;
-      
-
       this.besProducts = resp.bes_products;
       this.ourProducts = resp.our_products;
       
@@ -140,6 +145,31 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subscription?.add(listHomeSubscription);
   }
+
+
+  calculateFinalPrice(product: any): number {
+    let discount = 0;
+  
+    if (this.FlashSale && this.FlashSale.type_discount) {
+      // Aplicar descuento de Flash Sale
+      if (this.FlashSale.type_discount === 1) {
+        discount = product.price_usd * this.FlashSale.discount * 0.01;
+      } else if (this.FlashSale.type_discount === 2) {
+        discount = this.FlashSale.discount;
+      }
+    } else if (product.campaing_discount) {
+      // Aplicar descuento de campaña si no hay Flash Sale
+      if (product.campaing_discount.type_discount === 1) {
+        discount = product.price_usd * product.campaing_discount.discount * 0.01;
+      } else if (product.campaing_discount.type_discount === 2) {
+        discount = product.campaing_discount.discount;
+      }
+    }
+  
+    return parseFloat((product.price_usd - discount).toFixed(2));
+  }
+  
+
 
   private checkDeviceType() {
     const width = window.innerWidth;
@@ -333,8 +363,41 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.activeIndex = index;
   }
 
-  getDiscountProduct(besProduct:any, is_sale_flash:any=null) {
+  getDiscountProduct(besProduct: any): number {
+
+    
+    
+    // Verificar si ya tenemos el descuento calculado en el caché
+    if (this.discountCache.has(besProduct.id)) {
+      return this.discountCache.get(besProduct.id)!;
+    }
+  
+    let discount = 0;
+  
+    // Aplicar descuento de venta flash si existe
+    if (this.FlashSale && this.FlashSale.type_discount) {
+      if (this.FlashSale.type_discount === 1) { // Descuento en porcentaje
+        discount = parseFloat((besProduct.price_usd * this.FlashSale.discount * 0.01).toFixed(2));
+      } else if (this.FlashSale.type_discount === 2) { // Descuento en valor
+        discount = this.FlashSale.discount;
+      }
+    } else if (besProduct.campaing_discount) { // Aplicar descuento de campaña si no hay FlashSale
+      if (besProduct.campaing_discount.type_discount === 1) { // Descuento en porcentaje
+        discount = parseFloat((besProduct.price_usd * besProduct.campaing_discount.discount * 0.01).toFixed(2));
+      } else if (besProduct.campaing_discount.type_discount === 2) { // Descuento en valor
+        discount = besProduct.campaing_discount.discount;
+      }
+    }
+  
+    // Almacenar el resultado en el caché
+    this.discountCache.set(besProduct.id, discount);
+  
+    return discount;
+  }
+
+  /*getDiscountProduct(besProduct:any, is_sale_flash:any=null) {
     if (is_sale_flash) {
+      //console.log("---- getDiscountProduct");
       if (this.FlashSale.type_discount == 1) { // 1 porcentaje
         return (besProduct.price_usd*this.FlashSale.discount*0.01).toFixed(2);
       } else { // 2 es moneda
@@ -351,7 +414,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     return 0;
-  }
+  }*/
 
   getRouterDiscount(besProduct:any) {
     if (besProduct.campaing_discount) {
@@ -360,7 +423,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     return {};
   }
 
-  addCart(product:any, is_sale_flash:any=null) {
+  //addCart(product:any, is_sale_flash:any=null) {
+  addCart(product:any) {
     if (!this._cartService._authService.user) {
       alertDanger("Necesitas autenticarte para poder agregar el producto al carrito");
       return;
@@ -384,7 +448,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     
     if (product.type_inventario == 2) { // Si el producto tiene variedad multiple, entonces redirigir a la landing de product para que de esa manera el cliente pueda seleccionar la variedad (talla)
       let LINK_DISCOUNT = "";
-      if (is_sale_flash) {
+      //if (is_sale_flash) {
+      if (this.FlashSale && this.FlashSale.type_discount) {
         LINK_DISCOUNT = "?_id="+this.FlashSale.id;
       } else { // Si el producto es de inventario unitario, se envia el producto de manera directa al carrito
         if (product.campaing_discount) {
@@ -397,7 +462,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     let type_discount = null;
     let discount = 0;
     let code_discount = null;
-    if (is_sale_flash) {
+    //if (is_sale_flash) {
+    if (this.FlashSale && this.FlashSale.type_discount) {
       type_discount = this.FlashSale.type_discount;
       discount = this.FlashSale.discount;
       code_discount = this.FlashSale._id;
@@ -422,9 +488,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       code_cupon: null,
       code_discount: code_discount,
       price_unitario: product.price_usd,
-      subtotal: product.price_usd - this.getDiscountProduct(product, is_sale_flash),  //*1,
-      total: (product.price_usd - this.getDiscountProduct(product, is_sale_flash))*1, //1, // De momento es igual, luego aplicamos el descuento
+      subtotal: product.price_usd - this.getDiscountProduct(product),//this.getDiscountProduct(product, is_sale_flash),  //*1,
+      total: (product.price_usd - this.getDiscountProduct(product))*1, //1, // De momento es igual, luego aplicamos el descuento
     }
+
+    console.log("----- data: ", data);
+    
 
     const cartSubscription = this._cartService.registerCart(data).subscribe((resp:any) => {
       if (resp.message == 403) {

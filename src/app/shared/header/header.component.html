@@ -40,12 +40,11 @@
     <div [ngClass]="{'container-fluid px-5': isDesktop || isTablet, 'container': isMobile }" class="container-header">      
         <div class="row">
             <!--Menu-->
-            <!-- <div class="col-1 col-sm-1 col-md-1 col-lg-3 align-self-center d-menu-col border border-primary"> -->
             <div *ngIf="!isMobile && !isTablet" class="col-1 col-sm-1 col-md-1 align-self-center d-menu-col d-flex justify-content-start"
                 [ngClass]="{'col-lg-4': isDesktop, 'col-lg-6': isMobile}">
                 <nav class="navigation" id="AccessibleNav">
                     <ul id="siteNav" class="site-nav medium center">
-                        <li class="lvl1 parent dropdown"><a href="#">Explorar <i class="icon anm anm-angle-down-l d-none"></i></a>
+                        <li class="lvl1 parent dropdown"><a href="#" onclick="return false;">Mujer <i class="icon anm anm-angle-down-l d-none"></i></a>
                             <ul class="dropdown d-none">
                                 <li><a href="index.html" class="site-nav lvl-2">Home 01 - Fashion</a></li>
                                 <li><a href="index2-footwear.html" class="site-nav lvl-2">Home 02 - Footwear</a></li>
@@ -61,19 +60,19 @@
                                 <li><a href="index12-christmas.html" class="site-nav lvl-2">Home 12 - Christmas</a></li>
                             </ul>
                         </li>
-                        <li class="lvl1 parent megamenu"><a href="#">Camisetas <i class="icon anm anm-angle-down-l"></i></a>
+                        <li class="lvl1 parent megamenu"><a href="#" onclick="return false;">Hombre <i class="icon anm anm-angle-down-l"></i></a>
                             <div class="megamenu style1">
                                 <ul class="row grid--uniform mmWrapper">
-                                    <li class="lvl-1 col-md-3 col-lg-3 w-22"><a href="#;" class="site-nav lvl-1 menu-title">Hombre</a>
+                                    <li class="lvl-1 col-md-3 col-lg-3 w-22"><a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Zapatillas</a>
                                         <ul class="subLinks">
-                                            <li class="lvl-2"><a href="collection-style1.html" class="site-nav lvl-2">Todas las camisetas</a></li>
-                                            <li class="lvl-2"><a href="collection-style2.html" class="site-nav lvl-2">Camisetas manga larga</a></li>
+                                            <li class="lvl-2"><a onclick="return false;" href="collection-style1.html" class="site-nav lvl-2">Air Max</a></li>
+                                            <li class="lvl-2"><a onclick="return false;" href="collection-style2.html" class="site-nav lvl-2">Skechers</a></li>
                                         </ul>
                                     </li>
-                                    <li class="lvl-1 col-md-3 col-lg-3 w-22"><a href="#;" class="site-nav lvl-1 menu-title">Mujer</a>
+                                    <li class="lvl-1 col-md-3 col-lg-3 w-22"><a href="#;" class="site-nav lvl-1 menu-title">Ropa</a>
                                         <ul class="subLinks">
-                                            <li class="lvl-2"><a href="shop-grid-view.html" class="site-nav lvl-2">Todas las camisetas</a></li>
-                                            <li class="lvl-2"><a href="shop-list-view.html" class="site-nav lvl-2">Camisetas all over</a></li>
+                                            <li class="lvl-2"><a href="shop-grid-view.html" onclick="return false;" class="site-nav lvl-2">Toda la ropa</a></li>
+                                            <li class="lvl-2"><a href="shop-list-view.html" onclick="return false;" class="site-nav lvl-2">Tops y camisetas</a></li>
                                         </ul>
                                     </li>
                                     <li class="lvl-1 col-md-3 col-lg-3 w-22 d-none"><a href="#;" class="site-nav lvl-1 menu-title">Shop Other Page</a>
@@ -106,7 +105,7 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="lvl1 parent megamenu"><a href="#">Sudaderas <i class="icon anm anm-angle-down-l"></i></a>
+                        <li class="lvl1 parent megamenu d-none"><a href="#">Sudaderas <i class="icon anm anm-angle-down-l"></i></a>
                             <div class="megamenu style2">
                                 <ul class="row mmWrapper">
                                     <li class="lvl-1 col-md-3 col-lg-3">
@@ -247,7 +246,6 @@
             <!--End Menu-->
 
             <!--Logo-->
-            <!-- <div class="logo col-5 col-sm-3 col-md-3 col-lg-6 d-flex justify-content-center align-self-center border border-success">-->
             <div class="logo col-6 col-sm-3 col-md-3 d-flex justify-content-center align-self-center"
                 [ngClass]="{'col-lg-4': isDesktop, 'col-lg-3': isMobile}">
                     <!--Mobile Toggle-->
@@ -266,7 +264,6 @@
             <!--End Logo-->
             
             <!--Right Icon-->
-            <!-- <div class="col-7 col-sm-9 col-md-9 col-lg-3 align-self-center icons-col text-right border border-danger"> -->
             <div class="col-6 col-sm-9 col-md-6 align-self-center icons-col d-flex justify-content-end"
                 [ngClass]="{'col-lg-4': isDesktop}">
                 <!--Search-->

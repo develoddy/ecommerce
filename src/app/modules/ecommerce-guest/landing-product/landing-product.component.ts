@@ -61,8 +61,15 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   firstImage: string = '';
   coloresDisponibles: { color: string, imagen: string }[] = [];
   variedades: any[] = [];
-  availableSizes = ['S', 'M', 'L', 'XL', 'XXL', "37", "38", "39", "40", "41", "42"]; //availableSizes = ['S', 'M', 'L', 'XL']; 
+  //availableSizesGorra = ['S', 'M', 'L', 'XL', 'XXL', "37", "38", "39", "40", "41", "42", "Talla única", "50ML", "100ML"];
+  availableSizesCamisetas = ['S', 'M', 'L', 'XL', 'XXL'];  
+  availableSizesZapatillas = ["37", "38", "39", "40", "41", "42"];
+  availableSizesGorra = ["Talla única"];
+  availableSizesPerfume = ["50ML", "100ML"];
   loading: boolean = false;
+
+  tallaError = false; // Reiniciar el error al inicio
+  cantidadError = false; // Reiniciar el error al inicio
 
   isMobile: boolean = false;
   isTablet: boolean = false;
@@ -167,10 +174,9 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       return; // Salir si no hay datos de producto
     }
     this.product_selected = resp.product;
-    
+    console.log("---  this.product_selected: ",  this.product_selected);
     
     this.related_products = resp.related_products;
-    
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
     this.AVG_REVIEW = resp.AVG_REVIEW;
@@ -213,7 +219,148 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
+  /*private sortVariedades() {
+    // Selecciona el primer color disponible
+    this.selectedColor = this.coloresDisponibles[0]?.color || '';
+
+    // Filtra variedades por color
+    this.variedades = this.product_selected.variedades.filter((variedad: any) => variedad.color === this.selectedColor);
+
+    // Verifica si la categoría es Zapatillas, Camisa o Perfume
+    const isZapatos = this.product_selected.categorie.title.toLowerCase().includes('zapatillas');
+    const isCamisa = this.product_selected.categorie.title.toLowerCase().includes('camisa');
+    const isPerfume = this.product_selected.categorie.title.toLowerCase().includes('perfume');
+
+    // Mapea las tallas disponibles con stock positivo en las variedades
+    this.variedades = this.availableSizes.map(size => {
+        const foundVariedad = this.variedades.find(variedad => variedad.valor === size && variedad.stock > 0);
+        return {
+            valor: size,
+            stock: foundVariedad ? foundVariedad.stock : 0,
+            available: foundVariedad ? foundVariedad.stock > 0 : false // Indica si la talla está disponible
+        };
+    });
+
+    // Filtrar tallas de acuerdo a la categoría
+    this.variedades = this.variedades.filter(variedad => {
+        if (isZapatos) {
+            // Verificar si la talla es numérica
+            return /^[0-9]+$/.test(variedad.valor) || variedad.available; // Incluye tallas numéricas
+        } else if (isCamisa) {
+            // Verificar si la talla es alfabética
+            return /^[A-Z]+$/.test(variedad.valor) || variedad.available; // Incluye tallas alfabéticas
+        } else if (isPerfume) {
+            // Solo mostrar "50ML"
+            return variedad.valor === '50ML' || variedad.available;
+        } else {
+            // Para otros productos, solo permitir "Talla única" si no hay más restricciones
+            return variedad.valor === 'Talla única' || variedad.available;
+        }
+    });
+
+    // Selecciona la primera variedad con stock positivo
+    this.variedad_selected = this.variedades.find(v => v.available) || null;
+    this.activeIndex = 0;
+
+    // Para asegurar que se tachen las tallas que no están disponibles
+    this.variedades.forEach(variedad => {
+        if (!variedad.available) {
+            variedad.valor = `~${variedad.valor}`; // Marcar como no disponible
+        }
+    });
+
+    console.log("--- find : ", this.variedades);
+    
+  }*/
+
+
+
+  /*
   private sortVariedades() {
+    // Selecciona el primer color disponible
+    this.selectedColor = this.coloresDisponibles[0]?.color || '';
+
+    // Filtra variedades por color
+    this.variedades = this.product_selected.variedades.filter((variedad: any) => variedad.color === this.selectedColor);
+
+    // Verifica si la categoría es Zapatillas, Camisa o Perfume
+    const isZapatos = this.product_selected.categorie.title.toLowerCase().includes('zapatillas');
+    const isCamisa = this.product_selected.categorie.title.toLowerCase().includes('camisa');
+    const isPerfume = this.product_selected.categorie.title.toLowerCase().includes('perfume');
+
+    // Filtra las variedades según el tipo de producto
+    if (isZapatos) {
+        this.variedades = this.variedades.filter(variedad => {
+            // Solo tallas numéricas
+            return this.availableSizes.includes(variedad.valor) && ['37', '38', '39', '40', '41', '42'].includes(variedad.valor);
+        });
+    } else if (isCamisa) {
+        this.variedades = this.variedades.filter(variedad => {
+            // Solo tallas alfabéticas
+            return this.availableSizes.includes(variedad.valor) && ['S', 'M', 'L', 'XL', 'XXL'].includes(variedad.valor);
+        });
+    } else if (isPerfume) {
+        // Para perfumes, solo mostrar "50ML" y tachar el resto
+        this.variedades = this.variedades.filter(variedad => variedad.valor === "50ML" || variedad.stock > 0);
+    } else {
+        // Si no es camisa ni zapatos, filtrar tallas no deseadas
+        this.variedades = this.variedades.filter(variedad => {
+            return ['100ML'].indexOf(variedad.valor) === -1; // Solo permitimos "50ML"
+        });
+    }
+
+    // Mapea las tallas disponibles con stock positivo en las variedades
+    this.variedades = this.availableSizes.map(size => {
+        const foundVariedad = this.variedades.find(variedad => variedad.valor === size);
+        return {
+            valor: size,
+            stock: foundVariedad ? foundVariedad.stock : 0,
+            available: foundVariedad ? foundVariedad.stock > 0 : false // Indica si la talla está disponible
+        };
+    });
+
+    // Filtra nuevamente las tallas irrelevantes que no corresponden a camisas o zapatillas
+    if (isZapatos) {
+        this.variedades = this.variedades.filter(variedad => {
+            // Solo tallas numéricas y disponibles
+            return ['37', '38', '39', '40', '41', '42'].includes(variedad.valor) || variedad.available;
+        });
+    } else if (isCamisa) {
+        this.variedades = this.variedades.filter(variedad => {
+            // Solo tallas alfabéticas y disponibles
+            return ['S', 'M', 'L', 'XL', 'XXL'].includes(variedad.valor) || variedad.available;
+        });
+    } else {
+        // Para otros productos, solo se permite "50ML"
+        this.variedades = this.variedades.filter(variedad => variedad.valor === "50ML" || variedad.available);
+    }
+
+    // Asegura que "Talla única" se maneje adecuadamente, si no es camisa ni zapatos
+    if (!isCamisa && !isZapatos) {
+        this.variedades.push({
+            valor: 'Talla única',
+            stock: 0, // O ajusta según la lógica que necesites
+            available: false // No disponible por defecto
+        });
+    }
+
+    // Selecciona la primera variedad con stock positivo
+    this.variedad_selected = this.variedades.find(v => v.available) || null;
+    this.activeIndex = 0;
+
+    // Para asegurar que se tachen las tallas que no están disponibles
+    this.variedades.forEach(variedad => {
+        if (!variedad.available) {
+            variedad.valor = `~${variedad.valor}`; // Marcar como no disponible
+        }
+    });
+  }*/
+
+
+
+
+
+  /*private sortVariedades() {
     // Selecciona el primer color disponible
     this.selectedColor = this.coloresDisponibles[0]?.color || '';
 
@@ -251,7 +398,41 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     // Selecciona la primera variedad con stock positivo
     this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
     this.activeIndex = 0;
+  }*/
+  
+  
+
+  private sortVariedades() {
+    this.selectedColor = this.product_selected.variedades[0]?.color || '';
+
+    // Filtra las variedades por color y stock
+    this.variedades = this.product_selected.variedades.filter((variedad: any) => variedad.color === this.selectedColor);
+
+    // Selecciona el array de tallas de acuerdo a la categoría del producto
+    let availableSizes:any = [];
+    if (this.product_selected.categorie.title.toLowerCase().includes('zapatillas')) {
+      availableSizes = this.availableSizesZapatillas;
+    } else if (this.product_selected.categorie.title.toLowerCase().includes('camisa')) {
+      availableSizes = this.availableSizesCamisetas;
+    } else if (this.product_selected.categorie.title.toLowerCase().includes('gorra')) {
+      availableSizes = this.availableSizesGorra;
+    } else if (this.product_selected.categorie.title.toLowerCase().includes('perfume')) {
+      availableSizes = this.availableSizesPerfume;
+    }
+
+    // Mapea las tallas disponibles, mostrando stock positivo o tachado si no hay stock
+    this.variedades = availableSizes.map((size:any) => {
+      const foundVariedad = this.variedades.find(variedad => variedad.valor === size && variedad.stock > 0);
+      return foundVariedad ? { ...foundVariedad } : { valor: size, stock: 0 };
+    }).sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1));
+
+    // Selecciona la primera variedad con stock positivo
+    //this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
+    this.variedad_selected = null;
+    this.activeIndex = 0;
   }
+
+
 
   private extractSaleDetails(orders: any[]): any[] {
     //return orders.flatMap(order => order.sale_details || []);
@@ -418,7 +599,60 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     return 0;
   }
 
-  selectColor(color: { color: string, imagen: string }) {
+  /*selectColor(color: { color: string, imagen: string }) {
+    this.selectedColor = color.color;
+    this.firstImage = color.imagen;
+
+    // Filtrar variedades para el color seleccionado
+    const filteredVariedades = this.product_selected.variedades
+        .filter((variedad: any) => variedad.color === this.selectedColor);
+
+    // Detectar la categoría del producto
+    const isZapatos = this.product_selected.categorie.title.toLowerCase().includes('zapatillas');
+    const isCamisa = this.product_selected.categorie.title.toLowerCase().includes('camisa');
+    const isPerfume = this.product_selected.categorie.title.toLowerCase().includes('perfume');
+
+    // Mapea las tallas disponibles según la categoría
+    this.variedades = this.availableSizes.map(size => {
+        const foundVariedad = filteredVariedades.find((variedad:any) => variedad.valor === size);
+        return {
+            valor: size,
+            stock: foundVariedad ? foundVariedad.stock : 0,
+            available: foundVariedad ? foundVariedad.stock > 0 : false // Indica si la talla está disponible
+        };
+    });
+
+    // Filtrar tallas de acuerdo a la categoría
+    this.variedades = this.variedades.filter(variedad => {
+        if (isZapatos) {
+            // Solo tallas numéricas
+            return /^[0-9]+$/.test(variedad.valor) || variedad.available; // Incluye tallas numéricas
+        } else if (isCamisa) {
+            // Solo tallas alfabéticas
+            return /^[A-Z]+$/.test(variedad.valor) || variedad.available; // Incluye tallas alfabéticas
+        } else if (isPerfume) {
+            // Solo mostrar "50ML"
+            return variedad.valor === '50ML' || variedad.available;
+        } else {
+            // Para otros productos, solo permitir "Talla única" si no hay más restricciones
+            return variedad.valor === 'Talla única' || variedad.available;
+        }
+    });
+
+    // Seleccionar automáticamente la primera variedad con stock positivo
+    this.variedad_selected = this.variedades.find(v => v.available) || null;
+    this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
+
+    // Asegurarse de que se tachen las tallas que no están disponibles
+    this.variedades.forEach(variedad => {
+        if (!variedad.available) {
+            variedad.valor = `~${variedad.valor}`; // Marcar como no disponible
+        }
+    });
+  }*/
+
+
+  /*selectColor(color: { color: string, imagen: string }) {
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
 
@@ -450,11 +684,52 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
     this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
 
-  }
+  }*/
 
+  
+  selectColor(color: { color: string, imagen: string }) {
+    this.selectedColor = color.color;
+    this.firstImage = color.imagen;
+
+    // Filtrar variedades para el color seleccionado
+    const filteredVariedades = this.product_selected.variedades
+        .filter((variedad: any) => variedad.color === this.selectedColor)
+        .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1)); // Ordenar las tallas de menor a mayor
+
+    // Detecta si el producto es de tipo zapatillas, camiseta, gorra o perfume
+    const isZapatos = this.product_selected.categorie.title.toLowerCase().includes('zapatillas');
+    const isCamisa = this.product_selected.categorie.title.toLowerCase().includes('camisa');
+    const isGorra = this.product_selected.categorie.title.toLowerCase().includes('gorra');
+    const isPerfume = this.product_selected.categorie.title.toLowerCase().includes('perfume');
+
+    // Determina las tallas disponibles según la categoría
+    let filteredSizes: string[] = [];
+    if (isZapatos) {
+        filteredSizes = this.availableSizesZapatillas;
+    } else if (isCamisa) {
+        filteredSizes = this.availableSizesCamisetas;
+    } else if (isGorra) {
+        filteredSizes = this.availableSizesGorra;
+    } else if (isPerfume) {
+        filteredSizes = this.availableSizesPerfume;
+    }
+
+    // Mapea las tallas de la categoría y marca las no disponibles
+    this.variedades = filteredSizes.map(size => {
+        const foundVariedad = filteredVariedades.find((variedad: any) => variedad.valor === size);
+        return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
+    });
+
+    // Selecciona automáticamente la primera talla disponible
+    this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
+    this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
+  }
+  
+  
   selectedVariedad(variedad:any, index: number) {
     this.variedad_selected = variedad;
     this.activeIndex = index;
+    this.tallaError = false;
   }
 
   addWishlist(product:any) {
@@ -496,6 +771,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   storeCart(product: any) {
+    console.log(".---Savecart: ", product);
+    
     const isGuest = this.currentUser.user_guest;
     this.saveCart(product, isGuest);
   }
@@ -504,19 +781,22 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
     if ($("#qty-cart").val() == 0) {
       this.errorResponse = true;
-      this.errorMessage = "Por favor, ingrese una cantidad mayor a 0 para añadir a la cesta";
+      this.errorMessage = "Elija una cantidad válida para añadir al carrito";
+      this.cantidadError = true;
       return;
     }
 
     if (this.product_selected.type_inventario == 2) {
       if (!this.variedad_selected) {
+        this.tallaError = true; // Establecer el error de talla
         this.errorResponse = true;
-        this.errorMessage = "No hay stock disponible para este color";
+        this.errorMessage = "Por favor seleccione una talla";
         return;
       }
       if (this.variedad_selected.stock < $("#qty-cart").val()) {
         this.errorResponse = true;
-        this.errorMessage = "Por favor, reduzca la cantidad. Stock insuficiente";
+        this.errorMessage = "La Cantidad excede el stock disponible. Elija menos unidades";
+        this.cantidadError = true;
         return;
       }
     }
@@ -527,7 +807,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       product: this.product_selected._id,
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
-      cantidad: $("#qty-cart").val(),
+      cantidad: parseInt($("#qty-cart").val() as string, 10), //cantidad: $("#qty-cart").val(),
       variedad: this.variedad_selected ? this.variedad_selected.id : null,
       code_cupon: null,
       code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,

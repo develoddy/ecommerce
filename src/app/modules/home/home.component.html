@@ -331,7 +331,8 @@
                                                     <!-- Product Price -->
                                                     <div class="product-price">
                                                         <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} {{ euro }}</span>
-                                                        <span class="price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} {{ euro }}</span>
+                                                        <span class="price">{{ ourProduct.finalPrice }} {{ euro }}</span>
+                                                        <!-- <span class="price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} {{ euro }}</span> -->
                                                     </div>
                                                     <div class="form-text mt-0">4 colores</div>
                                                     <!-- End Product Price -->
