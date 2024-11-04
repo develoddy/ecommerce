@@ -17,21 +17,61 @@ export class ForgotPasswordComponent implements OnInit
 
   email:string = "";
 
+  isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
+
+  flagSendEmail: Boolean = false;
+
+  public loading: boolean = false;
+
   constructor(
     public _authService: AuthService,
     public _router: Router,
     public translate: TranslateService
   ) { 
-    translate.setDefaultLang('es');
+    //translate.setDefaultLang('es');
   }
 
   ngOnInit(): void {
-    if (this._authService.user) {
-      this._router.navigate(['/']);
+    this._authService.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
+
+    this.checkDeviceType();
+  }
+
+  sendEmail() {
+    if (this.email) {
+      this._authService.requestPasswordReset(this.email).subscribe(
+        (response) => {
+
+          console.log("---- Requeesr Password Reset: ", response);
+          
+          // Manejar la respuesta según tu API
+          this.flagSendEmail = true;
+          alertSuccess(['Te hemos enviado un email para restablecer tu contraseña.']);
+        },
+        (error) => {
+          alertDanger(['Ocurrió un error al enviar el email.']);
+          console.error(error);
+        }
+      );
+    } else {
+      alertWarning(['Por favor, introduce tu email.']);
     }
   }
 
   login() {
+  }
+
+  
+
+  private checkDeviceType(): void {
+    const width = window.innerWidth;
+    this.isMobile = width <= 480;
+    this.isTablet = width > 480 && width <= 768;
+    this.isDesktop = width > 768;
   }
 
 }

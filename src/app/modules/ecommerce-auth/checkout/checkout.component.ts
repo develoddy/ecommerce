@@ -98,6 +98,7 @@ export class CheckoutComponent implements OnInit {
 
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
+      
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
     });
@@ -242,9 +243,6 @@ export class CheckoutComponent implements OnInit {
 
 
   removeAllCart(user_id: any) {
-
-    console.log("--Debug: CURRENT_USER_AUTHENTICATED ID: ", user_id);
-    
     this._cartService.deleteAllCart(user_id).subscribe((resp: any) => {
         // Aquí puedes manejar la respuesta, por ejemplo:
         console.log(resp.message_text);

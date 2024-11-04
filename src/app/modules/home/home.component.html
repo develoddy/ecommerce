@@ -37,8 +37,7 @@
     <!--Header-->
     <app-header></app-header>
     <!--End Header-->
-
-
+    
     <!-- Loading -->
     <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
@@ -343,11 +342,25 @@
                                                     </div>
                                                     <!-- End Product Review -->
                                                     <!-- Variant -->
-                                                    <ul class="variants-clr swatches d-none">
+
+                                                    <!-- Swatches Color -->
+                                                    
+                                                    <!-- <label class="label d-flex align-items-center ">Seleccionar color<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label> -->
+                                                    <ul class="variants-clr swatches">
+                                                        <ng-container *ngFor="let item of ourProduct.colores">
+                                                            <li class="swatch medium rounded" [ngClass]=" item.color.replace(' ', '-')" (click)="changeProductImage(ourProduct, item.imagen)">
+                                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}"></span>
+                                                            </li>
+                                                        </ng-container>
+                                                    </ul>
+                                                    <!-- End Swatches Color -->
+
+                                                    <!-- <ul class="variants-clr swatches">
                                                         <li class="swatch medium rounded gray"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="gray"></span></li>
                                                         <li class="swatch medium rounded orange"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="orange"></span></li>
                                                         <li class="swatch medium rounded black"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black"></span></li>
-                                                    </ul>
+                                                    </ul> -->
+
                                                     <!-- End Variant -->
                                                 </div>
                                                 <!-- End product details -->

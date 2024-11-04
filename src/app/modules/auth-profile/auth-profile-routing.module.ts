@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './_services/auth.guard';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -20,8 +21,12 @@ const routes: Routes = [
         component: RegisterComponent
       },
       {
-        path: 'forgot-password',
+        path: 'resetpassword',
         component: ForgotPasswordComponent
+      },
+      {
+        path: 'updatepassword/:token',
+        component: ResetPasswordComponent
       }
     ]
   }

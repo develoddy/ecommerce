@@ -271,20 +271,20 @@
             <!--Product Tabs-->
             <div class="tabs-listing section pb-0">
                 <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-center d-none d-md-flex">
-                    <li rel="description" class="active"><a class="tablink">Descripción</a></li>
-                    <li rel="additionalInformation"><a class="tablink">Información adicional</a></li>
-                    <li rel="size-chart"><a class="tablink">Tabla de tallas</a></li>
-                    <li rel="shipping-return"><a class="tablink">Envío y devolución</a></li>
+                    <!-- <li rel="description" class="active"><a class="tablink">Descripción</a></li> -->
+                    <li rel="additionalInformation" class="active"><a class="tablink">Información adicional</a></li>
+                    <li rel="size-chart" class="d-none"><a class="tablink">Tabla de tallas</a></li>
+                    <li rel="shipping-return" class="d-none"><a class="tablink">Envío y devolución</a></li>
                     <li rel="reviews"><a class="tablink">Reseñas</a></li>
                 </ul>
                 <div class="tab-container px-3">
                     <!--Description-->
-                    <h3 class="tabs-ac-style d-md-none active" rel="description">Descripción</h3>
+                    <!-- <h3 class="tabs-ac-style d-md-none" rel="description">Descripción</h3>
                     <div id="description" class="tab-content">
                         <div class="product-description">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description">
-                                    <!-- <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
+                                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
                                     <h4 class="mb-3">Features</h4>
                                     <ul class="checkmark-info">
                                         <li>High quality fabric, very comfortable to touch and wear.</li>
@@ -292,14 +292,14 @@
                                         <li>It can tie in front-is forgiving to you belly or tie behind.</li>
                                         <li>Light weight and perfect for layering.</li>
                                     </ul>
-                                    <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p> -->
+                                    <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-4 col-lg-4 d-none">
                                     <img data-src="assets/images/content/product-detail-img.jpg" src="assets/images/content/product-detail-img.jpg" alt="image" width="600" height="600" />
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!--End Description-->
 
                     <!--Additional Information-->
@@ -345,8 +345,8 @@
                     <!--End Additional Information-->
 
                     <!--Size Chart-->
-                    <h3 class="tabs-ac-style d-md-none" rel="size-chart">Tabla de tallas</h3>
-                    <div id="size-chart" class="tab-content">
+                    <h3 class="tabs-ac-style d-md-none d-none" rel="size-chart">Tabla de tallas</h3>
+                    <div id="size-chart" class="tab-content d-none">
                         <h4 class="mb-2">Ready to Wear Clothing</h4>
                         <p class="mb-4">This is a standardised guide to give you an idea of what size you will need, however some brands may vary from these conversions.</p>
                         <div class="size-chart-tbl table-responsive px-1">
@@ -478,8 +478,8 @@
                     <!--End Size Chart-->
 
                     <!--Shipping &amp; Return-->
-                    <h3 class="tabs-ac-style d-md-none" rel="shipping-return">Envío y devolución</h3>
-                    <div id="shipping-return" class="tab-content">
+                    <h3 class="tabs-ac-style d-md-none d-none" rel="shipping-return">Envío y devolución</h3>
+                    <div id="shipping-return" class="tab-content d-none">
                         <h4>Shipping &amp; Return</h4>
                         <ul class="checkmark-info">
                             <li>Dispatch: Within 24 Hours</li>

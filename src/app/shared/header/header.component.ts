@@ -221,6 +221,17 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     // Implementar la lógica para obtener los favoritos del local storage
   }
 
+  navigateToProduct(slug: string, discountId?: string) {
+    // Guarda el estado para hacer scroll hacia arriba
+    //sessionStorage.setItem('scrollToTop', 'true');
+    // Navega a la página del producto
+    this.router.navigate(['/product', slug], { queryParams: { _id: discountId } })
+      .then(() => {
+          // Recarga la página
+          window.location.reload();
+      });
+  }
+
   private checkDeviceType(): void {
     const width = window.innerWidth;
     this.isMobile = width <= 480;

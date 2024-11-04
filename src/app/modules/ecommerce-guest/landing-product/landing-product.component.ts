@@ -174,8 +174,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       return; // Salir si no hay datos de producto
     }
     this.product_selected = resp.product;
-    console.log("---  this.product_selected: ",  this.product_selected);
-    
     this.related_products = resp.related_products;
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
@@ -269,14 +267,14 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     let availableSizes:any = [];
     if (this.product_selected.categorie.title.toLowerCase().includes('zapatillas')) {
       availableSizes = this.availableSizesZapatillas;
-    } else if (this.product_selected.categorie.title.toLowerCase().includes('camisa')) {
+    } else if (this.product_selected.categorie.title.toLowerCase().includes('t-shirts')) {
       availableSizes = this.availableSizesCamisetas;
     } else if (this.product_selected.categorie.title.toLowerCase().includes('gorra')) {
       availableSizes = this.availableSizesGorra;
     } else if (this.product_selected.categorie.title.toLowerCase().includes('perfume')) {
       availableSizes = this.availableSizesPerfume;
     }
-
+    //console.log("--- availableSizes: ", availableSizes);
     // Mapea las tallas disponibles, mostrando stock positivo o tachado si no hay stock
     this.variedades = availableSizes.map((size:any) => {
       const foundVariedad = this.variedades.find(variedad => variedad.valor === size && variedad.stock > 0);
@@ -498,7 +496,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
     // Detecta si el producto es de tipo zapatillas, camiseta, gorra o perfume
     const isZapatos = this.product_selected.categorie.title.toLowerCase().includes('zapatillas');
-    const isCamisa = this.product_selected.categorie.title.toLowerCase().includes('camisa');
+    const isCamisa = this.product_selected.categorie.title.toLowerCase().includes('t-shirts');
     const isGorra = this.product_selected.categorie.title.toLowerCase().includes('gorra');
     const isPerfume = this.product_selected.categorie.title.toLowerCase().includes('perfume');
 
@@ -524,6 +522,42 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
     this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
   }
+
+
+
+
+
+  /*
+  
+  this.selectedColor = this.product_selected.variedades[0]?.color || '';
+
+    // Filtra las variedades por color y stock
+    this.variedades = this.product_selected.variedades.filter((variedad: any) => variedad.color === this.selectedColor);
+
+    // Selecciona el array de tallas de acuerdo a la categoría del producto
+    let availableSizes:any = [];
+    if (this.product_selected.categorie.title.toLowerCase().includes('zapatillas')) {
+      availableSizes = this.availableSizesZapatillas;
+    } else if (this.product_selected.categorie.title.toLowerCase().includes('t-shirts')) {
+      availableSizes = this.availableSizesCamisetas;
+    } else if (this.product_selected.categorie.title.toLowerCase().includes('gorra')) {
+      availableSizes = this.availableSizesGorra;
+    } else if (this.product_selected.categorie.title.toLowerCase().includes('perfume')) {
+      availableSizes = this.availableSizesPerfume;
+    }
+    //console.log("--- availableSizes: ", availableSizes);
+    // Mapea las tallas disponibles, mostrando stock positivo o tachado si no hay stock
+    this.variedades = availableSizes.map((size:any) => {
+      const foundVariedad = this.variedades.find(variedad => variedad.valor === size && variedad.stock > 0);
+      return foundVariedad ? { ...foundVariedad } : { valor: size, stock: 0 };
+    }).sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1));
+
+    // Selecciona la primera variedad con stock positivo
+    //this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
+    this.variedad_selected = null;
+    this.activeIndex = 0;
+  
+  */
   
   selectedVariedad(variedad:any, index: number) {
     this.variedad_selected = variedad;
@@ -570,8 +604,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   storeCart(product: any) {
-    console.log(".---Savecart: ", product);
-    
     const isGuest = this.currentUser.user_guest;
     this.saveCart(product, isGuest);
   }

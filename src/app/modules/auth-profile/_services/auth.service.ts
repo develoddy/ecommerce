@@ -94,6 +94,43 @@ export class AuthService {
   }
 
 
+  // Método para solicitar el restablecimiento de contraseña
+  requestPasswordReset(email: string) {
+    this.loadingSubject.next(true);
+    const URL = URL_SERVICE + "users/request-reset-password"; // Ajusta la URL según sea necesario
+    return this._http.post(URL, { email }).pipe(
+      map((response: any) => {
+        // Manejar la respuesta aquí si es necesario
+        return response; // Puedes devolver una respuesta significativa
+      }),
+      catchError((error: any) => {
+        console.error(error);
+        return of(error); // Manejo de errores
+      }),
+      finalize(() => {
+        this.loadingSubject.next(false); // Finaliza el loading
+      })
+    );
+  }
+
+  resetPassword(email: string) {
+    this.loadingSubject.next(true);
+    const URL = URL_SERVICE + "users/reset-password"; // Cambia la URL según tu API
+    return this._http.post(URL, { email }).pipe(
+      map((resp: any) => {
+        return resp; // Maneja la respuesta según lo que devuelva tu API
+      }),
+      catchError((error: any) => {
+        console.error(error);
+        return of(error); // Maneja errores
+      }),
+      finalize(() => {
+        this.loadingSubject.next(false); // Finaliza el loading
+      })
+    );
+  }
+
+
   register(data:any) {
     this.loadingSubject.next(true);
     let URL = URL_SERVICE + "users/register";

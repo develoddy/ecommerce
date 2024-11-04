@@ -32,7 +32,15 @@
     </div>
     <!--End Marquee Text-->
 
-   
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="sp sp-bars"></div>
+            </div>
+        </div>
+    </div>
+    <!-- End Loading -->
 
     <!-- Body Container -->
     <div id="page-content">
@@ -648,7 +656,8 @@
                                                                                             </td>
                                                                                             <td class="text-start">
                                                                                                 <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="thumb">
-                                                                                                    <img class="blur-up lazyload" [attr.data-src]="cart.variedad.files[1].preview_url" [src]="cart.variedad.files[1].preview_url" alt="product" title="Product" width="120" height="170" />
+                                                                                                    <!-- <img class="blur-up lazyload" [attr.data-src]="cart.variedad.files[1].preview_url" [src]="cart.variedad.files[1].preview_url" alt="product" title="Product" width="120" height="170" /> -->
+                                                                                                    <img class="blur-up lazyload" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="Product" width="120" height="170" />
                                                                                                 </a>
                                                                                             </td>
                                                                                             <td class="text-start proName">
@@ -740,17 +749,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Loading -->
-                        <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="sp sp-bars"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Loading -->
-                         
                         <div [ngClass]="{'tab-pane': true, 'active': isLastStepActive_4 && isSaleSuccess}" id="steps4" [class.d-none]="loading">
 
                             <ng-container >

@@ -86,7 +86,6 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
         this.updateTotalCarts();
-        
       });
     } 
     this.sotoreCarts();

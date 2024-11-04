@@ -120,6 +120,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.FlashSale = resp.FlashSale;
       this.FlashProductList = resp.campaign_products;
 
+      if (this.ourProducts) {
+        this.setColoresDisponibles();
+      }
+
       setTimeout(() => {
         if (this.FlashSale) {
           var eventCounter = $(".sale-countdown");
@@ -137,11 +141,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
         HOMEINITTEMPLATE($);
+        
         this.extractTags();
       }, 150);
     });
 
-    this.extractTags();
+    //this.extractTags();
+   
 
     this.subscription?.add(listHomeSubscription);
   }
@@ -244,7 +250,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   
-  selectColor(color: { color: string, imagen: string }) {
+  qselectColor(color: { color: string, imagen: string }) {
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
   }
@@ -335,16 +341,32 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     return colorMap[color] || ''; // Devuelve el valor hexadecimal correspondiente al color
   }
 
-  setColoresDisponibles() {
-    const uniqueColors = new Map();
-    this.product_selected.galerias.forEach((galeria: any) => {
-      if (!uniqueColors.has(galeria.color)) {
-        uniqueColors.set(galeria.color, { imagen: galeria.imagen, hex: this.getColorHex(galeria.color) });
-      }
-    });
-    this.coloresDisponibles = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
+  selectColor(color: { color: string, imagen: string }) {
+    this.selectedColor = color.color;
+    this.firstImage = color.imagen; 
   }
 
+  changeProductImage(product: any, imageUrl: string) {
+    product.imagen = imageUrl; // console.log("Selectre Image: ", product);
+  }
+
+  setColoresDisponibles() {
+    this.ourProducts.forEach((product: any) => {
+      const uniqueColors = new Map();
+      product.galerias.forEach((tag: any) => {
+        if (!uniqueColors.has(tag.color)) {
+          uniqueColors.set(tag.color, { imagen: tag.imagen, hex: this.getColorHex(tag.color) });
+        }
+      });
+  
+      // Agrega los colores únicos de cada producto al propio producto
+      product.colores = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
+
+      // Agregar propiedad `selectedImage` con la imagen principal del producto
+      product.imagen = product.imagen;
+    });
+  }
+  
   getCalNewPrice(product:any) {
     if (this.FlashSale.type_discount == 1) { // Por porcentaje
       // Round to 2 decimal places
@@ -364,9 +386,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getDiscountProduct(besProduct: any): number {
-
-    
-    
     // Verificar si ya tenemos el descuento calculado en el caché
     if (this.discountCache.has(besProduct.id)) {
       return this.discountCache.get(besProduct.id)!;
@@ -523,7 +542,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       return true; // Si no encuentra ninguna de las variedades en valoresUnitarios, es un producto unitario
   }
 
-
   openModalToCart(besProduct:any) {
     this.product_selected = besProduct;
     setTimeout(() => {  
@@ -561,7 +579,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       }, 50);
     }, 150);
   }
-
 
   getDiscount(FlashSale:any=null) {
 
