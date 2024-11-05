@@ -17,6 +17,8 @@ export class ResetPasswordComponent implements OnInit {
   newPassword : string | null = null;
   email:string = "";
 
+  isPasswordVisible: boolean = false;
+
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
@@ -59,6 +61,10 @@ export class ResetPasswordComponent implements OnInit {
     } else {
       alertSuccess(['Por favor, introduce tu email.']);
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
   }
 
   private checkDeviceType(): void {

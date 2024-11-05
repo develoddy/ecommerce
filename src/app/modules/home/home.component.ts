@@ -7,6 +7,8 @@ import { LanguageService } from 'src/app/services/language.service';
 import { Subscription } from 'rxjs';
 import { WishlistService } from '../ecommerce-guest/_service/wishlist.service';
 
+declare var bootstrap: any;
+
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function LandingProductDetail($: any):any;
@@ -100,6 +102,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loading = isLoading;
     });
 
+    this.checkCookieConsent();
+
     this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
 
     this.checkDeviceType();
@@ -152,6 +156,25 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription?.add(listHomeSubscription);
   }
 
+  checkCookieConsent(): void {
+    const isCookieAccepted = localStorage.getItem('cookieAccepted');
+    if (!isCookieAccepted) {
+      const modalElement = document.getElementById('newsletter_modal');
+      if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+      }
+    }
+  }
+
+  acceptCookies(): void {
+    localStorage.setItem('cookieAccepted', 'true');
+    const modalElement = document.getElementById('newsletter_modal');
+    if (modalElement) {
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      modal?.hide();
+    }
+  }
 
   calculateFinalPrice(product: any): number {
     let discount = 0;
@@ -175,8 +198,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     return parseFloat((product.price_usd - discount).toFixed(2));
   }
   
-
-
   private checkDeviceType() {
     const width = window.innerWidth;
     if (width <= 480) {
@@ -223,14 +244,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       'color-swatch': true
     };
   }
-
-  // checkWindowSize() {
-  //   this.isDesktopSize = window.innerWidth >= 992;
-  // }
-
-  // isDesktop(): boolean {
-  //   return this.isDesktopSize;
-  // }
 
   extractTags() {
     this.besProducts.forEach((product: any) => {

@@ -604,6 +604,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   storeCart(product: any) {
+    // Guarda el estado para hacer scroll hacia arriba
+    //window.scrollTo({ top: 0, behavior: 'smooth' });
     const isGuest = this.currentUser.user_guest;
     this.saveCart(product, isGuest);
   }

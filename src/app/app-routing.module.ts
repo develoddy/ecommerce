@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './modules/auth-profile/_services/auth.guard';
+import { AuthGuard } from './modules/auth-profile/_services/guards/auth.guard';
+import { CheckFirstVisitGuard } from './modules/auth-profile/_services/guards/check-first-visit.guard';
 
 const routes: Routes = [
   {
     path: '',
+    canActivate: [CheckFirstVisitGuard],
     loadChildren: () => import("./modules/home/home.module").then(m => m.HomeModule),
   },
   {
@@ -19,6 +21,10 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import("./modules/auth-profile/auth-profile.module").then(m => m.AuthProfileModule),
+  },
+  { 
+    path: 'pre-home', 
+    loadChildren: () => import('./modules/ecommerce-initial/ecommerce-initial.module').then(m => m.EcommerceInitialModule) 
   },
   {
     path: '',

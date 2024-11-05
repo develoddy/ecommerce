@@ -3,7 +3,7 @@
 <!-- <div class="page-wrapper" > -->
 
     <!-- Loading -->
-    <div *ngIf="loading" class="bg-danger loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+    <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
             <div class="col-sm-2">
                 <div class="sp sp-bars"></div>
@@ -186,18 +186,19 @@
                             <!-- Product Action -->
                             <div class="product-action w-100 d-flex-wrap my-3 my-md-4">
                                 <!-- Product Quantity -->
-                                <div class="product-form-quantity d-flex-center"  [ngClass]="{'border border-danger': cantidadError}">
+                                <div class="product-form-quantity d-flex-center" [ngClass]="{'border border-danger': cantidadError}">
                                     <div class="qtyField">
                                         <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
                                         <input type="number" name="quantity" value="1" id="qty-cart" class="product-form-input qty" />
                                         <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
                                     </div>
+                                    
                                 </div>
                                 <!-- End Product Quantity -->
                                 <!-- Product Add -->
                                 <div class="product-form-submit addcart fl-1 ms-3">
                                     <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit" (click)="storeCart(product_selected)">
-                                        <span>Añadir a la cesta</span>
+                                        <span>Añadir al carrito</span>
                                     </button>
                                     <button type="submit" name="add" class="btn btn-secondary product-form-sold-out d-none" disabled="disabled">
                                         <span>Out of stock</span>
@@ -688,7 +689,7 @@
                 <div class="container-fluid" style="padding: 0 50px !important;">
                     <div class="section-header">
                         <p class="mb-1 mt-0">Descubra similares</p>
-                        <h2>Productos relacionados</h2>
+                        <h2 class="ls-2 fs-6">Del mismo estilo</h2>
                     </div>
 
                     <!--Product Grid-->
@@ -698,12 +699,12 @@
                                 <div class="product-box">
                                     <!-- Start Product Image -->
                                     <div class="product-image">
-                                        <a href="#" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="{_id: product.campaing_discount?.id}" class="product-img">
-                                            <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="808" />
-                                        </a>
-                                        <!-- <a href="#" onclick="return false;" (click)="navigateToProduct(product.slug, product.campaing_discount?.id)" class="product-img">
+                                        <!-- <a href="#" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="{_id: product.campaing_discount?.id}" class="product-img">
                                             <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="808" />
                                         </a> -->
+                                        <a href="#" onclick="return false;" (click)="navigateToProduct(product.slug, product.campaing_discount?.id)" class="product-img">
+                                            <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="{{product.title}}" title="{{product.title}}" width="625" height="808" />
+                                        </a>
                                         <!-- End Product Image -->
                                         <!-- Product label -->
                                         <div class="product-labels"><span class="lbl on-sale">Sale</span></div>
@@ -734,7 +735,10 @@
                                     <div class="product-details px-3 p-1">
                                         <!-- Product Name -->
                                         <div class="product-name">
-                                            <a href="#" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="{_id: product.campaing_discount?.id}">{{product.title}}</a>
+                                            <!-- <a href="#" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="{_id: product.campaing_discount?.id}">{{product.title}}</a> -->
+                                            <a href="#" onclick="return false;" (click)="navigateToProduct(product.slug, product.campaing_discount?.id)" class="product-img">
+                                                {{product.title}}
+                                            </a>
                                         </div>
                                         <!-- End Product Name -->
                                         <!-- Product Price -->
@@ -1577,38 +1581,25 @@
                 <div class="product-featured-img">
                     <img class="blur-up lazyload" [attr.data-src]="firstImage" [src]="firstImage" alt="product" width="120" height="170" />
                 </div>
-                <div class="sticky-title ms-2 ps-1 pe-5">{{ product_selected.title }}</div>
-                <div class="stickyOptions position-relative">
-                    <div class="selectedOpt">Red / S - <span class="money">$130.00</span></div>
+                <div class="sticky-title ms-2 ps-1 text-secondary fw-bold text-uppercase ls-1 pe-5" style="font-size: 12;">{{ product_selected.title }}</div>
+                <div class="stickyOptions position-relative" [ngClass]="{'border border-danger': tallaError}">
+                    <!-- <div class="selectedOpt">Red / S - <span class="money">$130.00</span></div> -->
+                    <div class="selectedOpt">Seleccionar</div>
                     <ul>
                         <ng-container *ngFor="let variedad of variedades; let i = index">
                             <li class="vrOpt" data-val="31677941252156" data-no="0" [ngClass]="{ 'available': variedad.stock > 0, 'soldout': variedad.stock === 0, 'active': variedad.valor === variedad_selected?.valor}" (click)="selectedVariedad(variedad, i)">
-                                Red / {{variedad.valor}} - {{ euro }}{{ product_selected.price_usd }}
+                                {{variedad.color}} / {{variedad.valor}} - {{ product_selected.price_usd }} {{ euro }}
                             </li>
                         </ng-container>
                     </ul>
                 </div>
-                <select name="id" id="variantOptions1" class="product-form__variants selectbox no-js d-none ms-3">
-                    <option selected="selected" value="31677941252156">Red / S</option>
-                    <option value="31677941383228">Red / S</option>
-                    <option value="31677941514300">Red / M</option>
-                    <option value="31677941678140">Green / XL</option>
-                    <option value="31677941284924">Pink / S</option>
-                    <option value="31677941415996">Pink / M</option>
-                    <option value="31677941579836">Peach / L</option>
-                    <option value="31677941710908">Peach / XL</option>
-                    <option disabled="disabled">White / S - Sold out</option>
-                    <option value="31677941481532">White / M</option>
-                    <option value="31677941612604">Blue / L</option>
-                    <option value="31677941776444">Blue / XL</option>
-                </select>
-                <div class="qtyField mx-2">
+                <div class="qtyField mx-2" [ngClass]="{'border border-danger': cantidadError}">
                     <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
                     <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty" />
                     <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
                 </div>
                 <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit" (click)="storeCart(product_selected)">
-                    <span>Add to cart</span>
+                    <span>Añadir al carrito</span>
                 </button>                  
             </form>
         </div>

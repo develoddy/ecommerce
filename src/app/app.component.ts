@@ -2,6 +2,8 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { BodyClassService } from './services/body-class.service';
+import { Router } from '@angular/router';
+
 declare var $:any;
 declare function HOMEINITTEMPLATE($: any): any;//declare function HOMEINITTEMPLATE([]):any;
 declare function sliderRefresh(): any;
@@ -20,6 +22,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private translate: TranslateService, 
+    private router: Router,
     private titleService: Title, 
     private bodyClassService: BodyClassService,
   ) {
@@ -48,13 +51,28 @@ export class AppComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-
+    
     // Initialize body class based on the current route
     this.bodyClassService.updateBodyClass("index-demo1");
      
-    
     // setTimeout(() => {
     //   sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');
     // }, 50);
   }
+
+ 
+
+
+  loadUserPreferences() {
+    const country = localStorage.getItem('country');
+    const language = localStorage.getItem('language');
+
+    // Puedes usar las preferencias aquí, por ejemplo:
+    console.log(`Usuario recurrente - País: ${country}, Idioma: ${language}`);
+    
+    // Opcional: redirigir directamente al `HomeComponent` o realizar cualquier otra configuración
+    this.router.navigate(['/']);
+  }
+
+ 
 }
