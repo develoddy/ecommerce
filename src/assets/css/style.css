@@ -1582,6 +1582,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .index-demo8 .collection-banner-grid .details .title { font-size: 20px; }
 .index-demo8 .one-banner-section .details { font-size: 20px; }
 
+.vh-73 { height: 73vh!important;} /* Desktop */
+.vh-34 { height: 34vh!important;} /* Movil */
+
 
 /*----- Homepage Demo 9 -----*/
 .index-demo9 h1, .index-demo9 .h1, .index-demo9 h2, .index-demo9 .h2, .index-demo9 h3, .index-demo9 .h3, .index-demo9 h4, .index-demo9 .h4, 
