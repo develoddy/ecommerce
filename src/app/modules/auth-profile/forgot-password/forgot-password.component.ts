@@ -44,10 +44,7 @@ export class ForgotPasswordComponent implements OnInit
   sendEmail() {
     if (this.email) {
       this._authService.requestPasswordReset(this.email).subscribe(
-        (response) => {
-
-          console.log("---- Requeesr Password Reset: ", response);
-          
+        (response) => {          
           // Manejar la respuesta según tu API
           this.flagSendEmail = true;
           alertSuccess(['Te hemos enviado un email para restablecer tu contraseña.']);

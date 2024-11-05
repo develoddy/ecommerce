@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 declare function alertSuccess([]):any;
 
 
@@ -11,43 +13,52 @@ declare function alertSuccess([]):any;
 })
 export class ResetPasswordComponent implements OnInit {
 
-  password:string = "";
+  token: string | null = null;
+  newPassword : string | null = null;
+  email:string = "";
 
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
 
-  flagSendEmail: Boolean = false;
+  flagSuccessReset: Boolean = false;
 
   public loading: boolean = false;
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     public _authService: AuthService,
     public _router: Router,
+    private routerActived: ActivatedRoute
   ) {}
 
 
   ngOnInit(): void {
+    const routeParamsSubscription = this.routerActived.params.subscribe((resp: any) => {
+      this.token = resp["token"];
+      this.email = resp["email"];
+    });
+    this.subscriptions.add(routeParamsSubscription);
+    
     this.checkDeviceType();
   }
 
   updatePassword() {
-    
-      if (this.password) {
-        this._authService.requestPasswordReset(this.password).subscribe(
+    if (this.newPassword && this.token) {
+        this._authService.resetPassword(this.token, this.newPassword).subscribe(
           (response) => {
-            this.flagSendEmail = true;
-            alertSuccess(['Te hemos enviado un email para restablecer tu contraseña.']);
+            this.flagSuccessReset = true;
+            alertSuccess(['Tu contraseña ha sido actualizada con éxito']);
           },
           (error) => {
-            alertSuccess(['Ocurrió un error al enviar el email.']);
+            alertSuccess(['Ocurrió un error al actualizar la contraseña']);
             console.error(error);
           }
         );
-      } else {
-        alertSuccess(['Por favor, introduce tu email.']);
-      }
-    
+    } else {
+      alertSuccess(['Por favor, introduce tu email.']);
+    }
   }
 
   private checkDeviceType(): void {

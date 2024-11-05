@@ -113,10 +113,10 @@ export class AuthService {
     );
   }
 
-  resetPassword(email: string) {
+  resetPassword(token: string, newPassword: string) {
     this.loadingSubject.next(true);
-    const URL = URL_SERVICE + "users/reset-password"; // Cambia la URL según tu API
-    return this._http.post(URL, { email }).pipe(
+    const URL = URL_SERVICE + "users/reset-password";
+    return this._http.post(URL, { token, newPassword  }).pipe(
       map((resp: any) => {
         return resp; // Maneja la respuesta según lo que devuelva tu API
       }),
