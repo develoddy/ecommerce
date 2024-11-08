@@ -18,7 +18,7 @@ export class AddAddressComponent implements OnInit {
   address_client_selected:any = null;
   listAddressClients:any = [];
 
-  returnUrl: string = '/myaddresses';  // Valor por defecto si no se pasa ningún returnUrl
+  returnUrl: string = 'myaddresses';  // Valor por defecto si no se pasa ningún returnUrl
 
   // Address
   name: string = '';
@@ -38,11 +38,21 @@ export class AddAddressComponent implements OnInit {
   loadingSubscription: Subscription = new Subscription();
   CURRENT_USER_AUTHENTICATED:any=null;
 
+
+  locale: string = "";
+  country: string = "";
+
   constructor(
     public _ecommerceAuthService: EcommerceAuthService,
     private router: Router,
     private route: ActivatedRoute,
-  ) {}
+  ) {
+
+    this.route.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    });
+  }
 
   ngOnInit(): void {
     
@@ -67,6 +77,7 @@ export class AddAddressComponent implements OnInit {
         this.CURRENT_USER_AUTHENTICATED = user;
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
+        this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
       }
     });
   }
@@ -111,14 +122,9 @@ export class AddAddressComponent implements OnInit {
         this.hideMessageAfterDelay();
         alertSuccess(resp.message);
         this.resetForm();
-        //this.router.navigate(['/myaddress']);
-        
-        // Redirige a returnUrl si existe, o a /myaddress por defecto
-        //this.router.navigate([this.returnUrl]);
-        
-        // Limpiar el sessionStorage y redirigir
         sessionStorage.removeItem('returnUrl');
-        this.router.navigate([this.returnUrl]);
+        // this.router.navigate([this.returnUrl]);
+        this.router.navigate(['/', this.locale, this.country, 'account', this.returnUrl]);
 
       } else {
         this.status = false;

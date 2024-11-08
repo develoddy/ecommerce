@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { WishlistService } from '../../ecommerce-guest/_service/wishlist.service';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
+import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
 
 declare var $:any;
 declare function pswp([]):any;
@@ -44,8 +45,14 @@ export class WishlistComponent implements OnInit {
 
   errorResponse:boolean=false;
   errorMessage:any="";
+  validad_error = false;
+  message_error = "";
+
+  locale: string = "";
+  country: string = "";
 
   constructor(
+    public _ecommerceAuthService: EcommerceAuthService,
     public _router: Router,
     public _wishlistService: WishlistService,
     public _cartService: CartService,
@@ -53,61 +60,43 @@ export class WishlistComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    
     this._wishlistService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
 
     this.listAllCarts();
-
     this._wishlistService.currenteDataWishlist$.subscribe((resp:any) => {
-      
       this.listWishlists      = resp;
       this.REVIEWS            = resp.REVIEWS;
       this.AVG_REVIEW         = resp.AVG_REVIEW;
       this.COUNT_REVIEW       = resp.COUNT_REVIEW;
-
-
       this.totalWishlists = this.listWishlists.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalWishlists = parseFloat(this.totalWishlists.toFixed(2));
     });
+  }
 
-    // setTimeout(() => {
-    //    HOMEINITTEMPLATE($);
-    // }, 50);
+  private verifyAuthenticatedUser(): void {
+    this._ecommerceAuthService._authService.user.subscribe( user => {
+      if ( user ) {
+        this.CURRENT_USER_AUTHENTICATED = user;
+        
+      } else {
+        this.CURRENT_USER_AUTHENTICATED = null;
+        this._router.navigate(['/', this.locale, this.country, 'auth', 'login']);
+      }
+    });
   }
 
   listAllCarts() {
-
-    this._wishlistService.resetWishlist();
-
-    //let productIds = this.getProductIdsFromLocalStorage(); // Obtener IDs del LocalStorage
-   
-
+    this._wishlistService.resetWishlist();   
     this._wishlistService._authService.user.subscribe(user => {
       if (user) {
         let TIME_NOW = new Date().getTime();
         this.userId = user._id;
         this._wishlistService.listWishlists(this.userId, TIME_NOW).subscribe((resp: any) => {
-
-          console.log("-- Favorits: ", resp);
-          
-
           resp.wishlists.forEach((wishlistItem:any) => {
             this._wishlistService.changeWishlist(wishlistItem);
           });
-
-          // if (Array.isArray(resp.wishlists)) {
-          //   resp.wishlists.forEach((wishlistItem: any) => {
-          //     // Procesar wishlist autenticado
-          //     console.log("Debbug > Productos de BBDD con usuario SI autenticado : ", wishlistItem);
-          //     this._wishlistService.changeWishlist(wishlistItem);
-          //   });
-          // } else {
-          //   console.error("Error: 'wishlists' no es un array o está indefinido", resp);
-          // }
-
-
         }, error => {
           console.error("Error en la petición de wishlist:", error);
         });
@@ -115,15 +104,7 @@ export class WishlistComponent implements OnInit {
     });
   }
 
-
-  validad_error = false;
-  message_error = "";
-
   addCart(product:any) {
-
-    console.log("Wishlist Product selected: ", product);
-    
-
     this._wishlistService._authService.user.subscribe( user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;

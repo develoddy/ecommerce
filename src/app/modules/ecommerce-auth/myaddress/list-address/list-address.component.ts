@@ -26,10 +26,20 @@ export class ListAddressComponent implements OnInit  {
   loading: boolean = false;
   loadingSubscription: Subscription = new Subscription();
   CURRENT_USER_AUTHENTICATED:any=null;
+  locale: string = "";
+  country: string = "";
 
   constructor(
     public _ecommerceAuthService: EcommerceAuthService, 
-  ) {}
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    
+  ) {
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    });
+  }
 
   ngOnInit(): void {
     this.SPINNER();
@@ -50,6 +60,7 @@ export class ListAddressComponent implements OnInit  {
         
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
+        this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
       }
     });
   }

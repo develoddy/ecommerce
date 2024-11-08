@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, debounceTime, forkJoin, fromEvent, Observable, of, Subscription, tap } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
@@ -18,6 +18,9 @@ declare function pswp([]):any;
 declare function productZoom([]):any;
 declare function alertDanger([]): any;
 declare function alertSuccess([]): any;
+
+
+
 
 @Component({
   selector: 'app-header',
@@ -40,6 +43,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   isTablet: boolean = false;
   isDesktop: boolean = false;
   source: any;
+  locale: string = "";
+  country: string = "";
+
 
   currentUser: any = null;
 
@@ -54,6 +60,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private cartService: CartService,
     public authService: AuthService,
+    private activatedRoute: ActivatedRoute,
     private wishlistService: WishlistService,
     //private translate: TranslateService,
     //private languageService: LanguageService,
@@ -70,6 +77,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Obtenemos `locale` y `country` de la ruta actual
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    });
     this.checkUserAuthenticationStatus();
     if (this.router.url === '/checkout') {
       this.showSubscriptionSection = false;
@@ -222,12 +234,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   navigateToProduct(slug: string, discountId?: string) {
-    // Guarda el estado para hacer scroll hacia arriba
-    //sessionStorage.setItem('scrollToTop', 'true');
-    // Navega a la página del producto
-    this.router.navigate(['/product', slug], { queryParams: { _id: discountId } })
+    this.router.navigate(['/', this.locale, this.country, 'shop', 'product', slug], { queryParams: { _id: discountId } })
       .then(() => {
-          // Recarga la página
           window.location.reload();
       });
   }
@@ -397,7 +405,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goToCheckout(): void {
     this.showSubscriptionSection = false;
-    this.router.navigateByUrl('/checkout');
+    this.router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
   }
 
   logout() {

@@ -80,6 +80,9 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   errorResponse:boolean=false;
   errorMessage:any="";
 
+  locale: string = "";
+  country: string = "";
+
   private subscriptions: Subscription = new Subscription();
 
   constructor(
@@ -94,7 +97,13 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     private minicartService: MinicartService,
     private titleService: Title, // seo
     private metaService: Meta
-  ) {}
+  ) {
+    // Almacenar los valores de `locale` y `country` actuales
+    this.routerActived.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado
+      this.country = params.get('country') || 'es'; // Valor predeterminado
+    });
+  }
 
   ngAfterViewInit(): void {
     // setTimeout(() => {
@@ -210,52 +219,13 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     // Guarda el estado para hacer scroll hacia arriba
     sessionStorage.setItem('scrollToTop', 'true');
     // Navega a la página del producto
-    this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
+    this._router.navigate(['/', this.locale, this.country, 'shop', 'product', slug])
+    //this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
       .then(() => {
           // Recarga la página
           window.location.reload();
       });
   }
-
-  /*private sortVariedades() {
-    // Selecciona el primer color disponible
-    this.selectedColor = this.coloresDisponibles[0]?.color || '';
-
-    // Filtra variedades por color
-    this.variedades = this.product_selected.variedades.filter((variedad: any) => variedad.color === this.selectedColor);
-
-    // Verifica si la categoría es Zapatillas o Camisa
-    const isZapatos = this.product_selected.categorie.title.toLowerCase().includes('zapatillas');
-    const isCamisa = this.product_selected.categorie.title.toLowerCase().includes('camisa');
-
-    // Filtra las variedades según el tipo de producto
-    if (isZapatos) {
-        this.variedades = this.variedades.filter(variedad => !isNaN(Number(variedad.valor)));
-    } else if (isCamisa) {
-        this.variedades = this.variedades.filter(variedad => isNaN(Number(variedad.valor)));
-    }
-
-    // Mapea las tallas disponibles con stock positivo en las variedades
-    const availableSizes = this.availableSizes.map(size => size.toString());
-
-    // Mapea las tallas a las variedades
-    this.variedades = availableSizes.map(size => {
-        const foundVariedad = this.variedades.find(variedad => variedad.valor === size && variedad.stock > 0);
-        return foundVariedad ? { ...foundVariedad } : { valor: size, stock: 0 };
-    }).filter(variedad => {
-        // Filtra nuevamente según el tipo de producto
-        if (isZapatos) {
-            return !isNaN(Number(variedad.valor)); // Solo tallas numéricas
-        } else if (isCamisa) {
-            return isNaN(Number(variedad.valor)); // Solo tallas alfabéticas
-        }
-        return true; // Si no es zapatilla ni camisa, deja todas
-    }).sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1));
-
-    // Selecciona la primera variedad con stock positivo
-    this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
-    this.activeIndex = 0;
-  }*/
   
   private sortVariedades() {
     this.selectedColor = this.product_selected.variedades[0]?.color || '';
@@ -452,39 +422,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     return 0;
   }
 
-  /*selectColor(color: { color: string, imagen: string }) {
-    this.selectedColor = color.color;
-    this.firstImage = color.imagen;
-
-    // Filtrar variedades para el color seleccionado
-    const filteredVariedades = this.product_selected.variedades
-        .filter((variedad: any) => variedad.color === this.selectedColor)
-        .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1)); // Ordenar las tallas de menor a mayor
-
-    // Detecta si el producto es de tipo zapatillas o camisa
-    const isZapatos = this.product_selected.categorie.title.toLowerCase().includes('zapatillas');
-    const isCamisa = this.product_selected.categorie.title.toLowerCase().includes('camisa');
-
-    // Filtrar `availableSizes` según el tipo de producto
-    const filteredSizes = this.availableSizes
-        .map(size => size.toString()) // Convertir tallas a strings para comparación
-        .filter(size => {
-            if (isZapatos) return !isNaN(Number(size)); // Solo tallas numéricas para zapatillas
-            if (isCamisa) return isNaN(Number(size));   // Solo tallas alfabéticas para camisa
-            return true; // Mantener todas las tallas si no es ninguno de los anteriores
-        });
-
-    // Mapea las tallas generales y marca las no disponibles
-    this.variedades = filteredSizes.map(size => {
-        const foundVariedad = filteredVariedades.find((variedad: any) => variedad.valor === size);
-        return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
-    });
-
-    // Selecciona automáticamente la primera talla disponible
-    this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
-    this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
-
-  }*/  
   selectColor(color: { color: string, imagen: string }) {
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
@@ -522,42 +459,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
     this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
   }
-
-
-
-
-
-  /*
-  
-  this.selectedColor = this.product_selected.variedades[0]?.color || '';
-
-    // Filtra las variedades por color y stock
-    this.variedades = this.product_selected.variedades.filter((variedad: any) => variedad.color === this.selectedColor);
-
-    // Selecciona el array de tallas de acuerdo a la categoría del producto
-    let availableSizes:any = [];
-    if (this.product_selected.categorie.title.toLowerCase().includes('zapatillas')) {
-      availableSizes = this.availableSizesZapatillas;
-    } else if (this.product_selected.categorie.title.toLowerCase().includes('t-shirts')) {
-      availableSizes = this.availableSizesCamisetas;
-    } else if (this.product_selected.categorie.title.toLowerCase().includes('gorra')) {
-      availableSizes = this.availableSizesGorra;
-    } else if (this.product_selected.categorie.title.toLowerCase().includes('perfume')) {
-      availableSizes = this.availableSizesPerfume;
-    }
-    //console.log("--- availableSizes: ", availableSizes);
-    // Mapea las tallas disponibles, mostrando stock positivo o tachado si no hay stock
-    this.variedades = availableSizes.map((size:any) => {
-      const foundVariedad = this.variedades.find(variedad => variedad.valor === size && variedad.stock > 0);
-      return foundVariedad ? { ...foundVariedad } : { valor: size, stock: 0 };
-    }).sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1));
-
-    // Selecciona la primera variedad con stock positivo
-    //this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
-    this.variedad_selected = null;
-    this.activeIndex = 0;
-  
-  */
   
   selectedVariedad(variedad:any, index: number) {
     this.variedad_selected = variedad;

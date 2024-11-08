@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../auth-profile/_services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 
 declare function alertDanger([]):any;
@@ -48,12 +48,20 @@ export class AccountComponent implements OnInit {
   CURRENT_USER_AUTHENTICATED:any=null;
 
   public loading: boolean = false;
+  locale: string = "";
+  country: string = "";
 
   constructor(
     public _authService: AuthService,
     public _ecommerceAuthService: EcommerceAuthService,
     public _router: Router,
-  ) {}
+    private activatedRoute: ActivatedRoute,
+  ) {
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    });
+  }
 
   ngOnInit(): void {
 
@@ -71,6 +79,7 @@ export class AccountComponent implements OnInit {
         this.CURRENT_USER_AUTHENTICATED = user;
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
+        this._router.navigate(['/', this.locale, this.country, 'auth', 'login']);
       }
     });
   }
@@ -218,7 +227,6 @@ export class AccountComponent implements OnInit {
   }
 
   updateAccount() {
-
     let data: any = {
       _id: this.CURRENT_USER_AUTHENTICATED._id,
       name: this.name ,
@@ -233,22 +241,7 @@ export class AccountComponent implements OnInit {
     if (this.password && this.password.trim() !== "") {
       data.password = this.password;
     }
-
-    console.log("--debug: Data cambios form: ", data);
     
-
-    /*if ( this.password == null || this.password == ""  || this.repeat_password == null ) {
-      alertWarning("Es obligatorio ingresar ambas contraseñeas para modificar sus datos.");
-      return;
-    }
-    if (this.password) {
-      if (this.password != this.repeat_password) {
-        alertDanger("Ambas contraseñas son incorrectas. Intentalo denuevo.");
-        return;
-      }
-    }*/
-
-
     this._ecommerceAuthService.updateProfileClient(data).subscribe((resp:any) => {
      
       if (resp.status == 200) {
@@ -258,7 +251,8 @@ export class AccountComponent implements OnInit {
         }
 
         setTimeout(() => {
-          this._router.navigateByUrl("/registered/messageSuccess");
+          //this._router.navigateByUrl("/registered/messageSuccess");
+          this._router.navigate(['/', this.locale, this.country, 'account', 'registered', 'messageSuccess']);
         }, 50);
       }
     });

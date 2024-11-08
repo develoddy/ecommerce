@@ -1,40 +1,38 @@
 <!--Page Wrapper-->
-<div class="page-wrapper ">
+<div class="page-wrapper bg-prehome">
     <!-- Body Container -->
     <div>
         <!--Main Content-->
         <div class="container">
             <div class="login-register">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-sm-12 col-md-8 col-lg-4 border ">
+                    <div class="col-12 col-sm-12 col-md-8 col-lg-4">
                         <div class="inner h-100">
-                            <form class="customer-form text-center">	
+                            <form class="customer-form ">	
                                 <div class="form-row d-flex flex-column align-items-center justify-content-center vh-100">
-                                    <div class="form-group col-12 col-lg-12 mb-5">
+                                    <div class="form-group col-12 col-lg-12 mb-5 text-center">
                                         <a class="logoImg" [href]="['/']" >
-                                            <img src="assets/images/logo.png" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" width="200" height="200" />
+                                            <img src="assets/images/logo-white.png" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" width="200" height="200" />
                                         </a>
-                                        <div class="form-text text-secondary fw-bold">Entra y descubre las últimas tendencias de moda.</div>
+                                        <div class="form-text text-uppercase ls-1 text-white">Entra y descubre las últimas tendencias de moda.</div>
                                     </div>
                                     <div class="form-group col-12 col-lg-12">
-                                        <label for="address_country1" class="form-label">Selecciona un país o región <span class="required d-none">*</span></label>
-                                        <select style="font-size: 12px;" id="address_country1" name="address[country]" data-default="United States" class="form-control border border-secondary text-uppercase ls-1">
-                                            <option value="0" label="Selecciona un país o región" selected="selected">Selecciona un país o región</option>
-                                            <option value="DZ" label="Algeria">España (Península y Baleares)</option>
-                                            <option value="AO" label="Angola">Albania</option>
-                                            <option value="BJ" label="Benin">Alemania</option>
+                                        <label for="address_country1" class="form-label text-uppercase ls-1 form-text text-white">Selecciona un país o región</label>
+                                        <select style="font-size: 15px; height: 50px;" id="address_country1" [(ngModel)]="selectedCountry" (change)="onCountryChange()" name="address[country]" class="form-control border border-secondary  ls-1">
+                                            <option value="0" disabled>Selecciona un país o región</option>
+                                            <option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-12 col-lg-12">
-                                        <select style="font-size: 12px;" id="address_country1" name="address[country]" data-default="United States" class="form-control border border-secondary text-uppercase ls-1">
-                                            <option value="0" label="Selecciona un idioma" selected="selected">Selecciona un país o región</option>
-                                            <option value="DZ" label="Algeria">Castellano</option>
-                                            <option value="AO" label="Angola">Catalán</option>
+                                        <label for="address_language" class="form-label text-uppercase ls-1 form-text text-white">Idioma</label>
+                                        <select style="font-size: 15px; height: 50px;" id="address_language" [(ngModel)]="selectedLocale" name="address[language]" class="form-control border border-secondary ls-1">
+                                            <!-- <option value="" disabled selected>Idioma</option> -->
+                                            <option *ngFor="let locale of availableLocales" [value]="locale.code">{{ locale.name }}</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-12 col-lg-12">
+                                    <div class="form-group col-12 col-lg-12 mt-3">
                                         <a href="#" onclick="return false;" [routerLink]="['/']">
-                                            <button type="submit" class="btn btn-outline-secondary w-100" (click)="gotoHome()">
+                                            <button  style="font-size: 15px; height: 50px; background-color: transparent;" type="submit" class="text-white fw-bold w-100" (click)="gotoHome()">
                                                 Aceptar
                                             </button>
                                         </a>

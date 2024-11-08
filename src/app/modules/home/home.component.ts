@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
 import { HomeService } from './_services/home.service';
 import { CartService } from '../ecommerce-guest/_service/cart.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/services/language.service';
 import { Subscription } from 'rxjs';
@@ -54,8 +54,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   allTags: string[] = [];
 
-  //isDesktopSize: boolean = window.innerWidth >= 992; // Inicialización
-
   firstImage: string = '';
   coloresDisponibles: { color: string, imagen: string }[] = [];
 
@@ -65,6 +63,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   errorMessage:any="";
 
   loading: boolean = false;
+
+  locale: string = "";
+  country: string = "";
 
   //userId: any;
   CURRENT_USER_AUTHENTICATED:any=null;
@@ -80,6 +81,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     public homeService: HomeService,
     public _cartService: CartService,
     public _router: Router,
+    private activatedRoute: ActivatedRoute,
     public translate: TranslateService,
     public _wishlistService: WishlistService,
     //private languageService: LanguageService,
@@ -97,6 +99,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   
 
   ngOnInit(): void {
+
+    // Obtenemos `locale` y `country` de la ruta actual
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    });
+
     // Suscribirse al observable para saber cuando mostrar u ocultar el loading
     this.subscription = this.homeService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
@@ -614,9 +623,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if( !this.CURRENT_USER_AUTHENTICATED ) {
       this.errorResponse = true;
       this.errorMessage = "Por favor, autentifíquese para poder añadir el producto a favoritos";
-      alertDanger("Por favor, autentifíquese para poder añadir el producto a favoritos");
-      this._router.navigate(['/auth/login']);
-      //this._router.navigateByUrl("/landing-product/"+product.slug+LINK_DISCOUNT);
+      alertSuccess("Autentifíquese para poder añadir el producto a favoritos");
+      this._router.navigate(['/', this.locale, this.country, 'auth', 'login']);
       return;
     }
 

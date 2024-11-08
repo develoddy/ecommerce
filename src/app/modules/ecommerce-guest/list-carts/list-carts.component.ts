@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CartService } from '../_service/cart.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Title, Meta } from '@angular/platform-browser';
@@ -42,8 +42,12 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscriptions: Subscription = new Subscription(); // Mantener todas las subscripciones
 
+  locale: string = "";
+  country: string = "";
+
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     public ecommerceGuestService: EcommerceGuestService,
     private cartService: CartService,
     private authService: AuthService,
@@ -51,10 +55,16 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     private titleService: Title, // seo
     private metaService: Meta
   ) {
-      this.cartService.loading$.subscribe(isLoading => {
-        this.loading = isLoading;
-      });
-      this.updateSeo();
+    this.cartService.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
+    this.updateSeo();
+
+    // Obtenemos `locale` y `country` de la ruta actual
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    });
   }
   
   ngAfterViewInit(): void {
@@ -67,7 +77,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.checkUserAuthenticationStatus();
     this.getCarts();
-      this.showRelatedProducts();
+    this.showRelatedProducts();
   }
 
   private checkUserAuthenticationStatus(): void {
@@ -154,7 +164,14 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goToCheckout(): void {
     this.subscriptionService.setShowSubscriptionSection(false);
-    this.router.navigateByUrl('/checkout');
+    //this.router.navigateByUrl('/checkout');
+
+    this.router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
+    //this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
+      // .then(() => {
+      //     // Recarga la página
+      //     window.location.reload();
+      // });
   }
 
   updateTotalCarts(): void {

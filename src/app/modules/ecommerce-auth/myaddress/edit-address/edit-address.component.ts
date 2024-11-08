@@ -40,12 +40,20 @@ export class EditAddressComponent implements OnInit {
   loading: boolean = false;
   loadingSubscription: Subscription = new Subscription();
   CURRENT_USER_AUTHENTICATED:any=null;
+  locale: string = "";
+  country: string = "";
 
   constructor(
     public _ecommerceAuthService: EcommerceAuthService,
     private router: Router,
     public _routerActived: ActivatedRoute,
-  ) {}
+  ) {
+
+    this._routerActived.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    });
+  }
 
   ngOnInit(): void {
     this.SPINNER();
@@ -89,6 +97,7 @@ export class EditAddressComponent implements OnInit {
         
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
+        this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
       }
     });
   }
@@ -124,7 +133,6 @@ export class EditAddressComponent implements OnInit {
       this.validMessage = true;
       this.errorOrSuccessMessage = "Por favor, complete los campos obligatorios de la dirección de envío";
       this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
-      //alertDanger("Por favor, complete los campos obligatorios de la dirección de envío.");
       return;
     }
 
@@ -152,7 +160,8 @@ export class EditAddressComponent implements OnInit {
         this.validMessage = true;
         this.errorOrSuccessMessage = resp.message;
         this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
-        this.router.navigate(['/myaddresses']);
+        //this.router.navigate(['/myaddresses']);
+        this.router.navigate(['/', this.locale, this.country, 'account', 'myaddresses']);
         alertSuccess(resp.message);
         this.resetForm();
 

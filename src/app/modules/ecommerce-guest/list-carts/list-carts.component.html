@@ -74,7 +74,7 @@
                                                 <a href="#" class="cart-remove remove-icon position-static" onclick="return false;" (click)="storeRemoveCart(cart)" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Cart"><i class="icon anm anm-times-r"></i></a>
                                             </td>
                                             <td class="cart-image cart-flex-item">
-                                                <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', cart.product.slug]">
+                                                <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">
                                                     <img class="blur-up lazyload"
                                                     [src]="cart.product.imagen"
                                                     alt="product"
@@ -85,7 +85,7 @@
                                             </td>
                                             <td class="cart-meta small-text-left cart-flex-item">
                                                 <div class="list-view-item-title fw-bold">
-                                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', cart.product.slug]">{{ cart.product.title }}</a>
+                                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
                                                 </div>
                                                 <div class="cart-meta-text">
                                                     <ul class="list-group">
@@ -129,7 +129,7 @@
                                 <tfoot>
                                     <tr>
                                         <td colspan="3" class="text-start ">
-                                            <a href="#" onclick="return false;" [routerLink]="['/checkout']" class="btn btn-outline-secondary btn-sm cart-continue"><i class="icon anm anm-angle-left-r me-2 d-none"></i> Seguir comprando</a>
+                                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'checkout']" class="btn btn-outline-secondary btn-sm cart-continue"><i class="icon anm anm-angle-left-r me-2 d-none"></i> Seguir comprando</a>
                                         </td>
                                         <td colspan="3" class="text-end">
                                             <button type="submit" name="clear" class="btn btn-outline-secondary btn-sm small-hide" (click)="storeClearCart()" ><i class="icon anm anm-times-r me-2"></i> Vaciar carrito de compras</button>

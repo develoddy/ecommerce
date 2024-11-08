@@ -283,7 +283,12 @@
                                                 <!-- Start Product Image -->
                                                 <div class="product-image">
                                                     <!-- Start Product Image -->
-                                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}" class="product-img rounded-0 w-100" [ngClass]="{'vh-73': isDesktop, 'vh-34': isMobile}"> <!-- height: 34vh !important; -->
+                                                    <a [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]"
+                                                    [queryParams]="{ _id: ourProduct.campaing_discount?.id }"
+                                                    class="product-img rounded-0 w-100"
+                                                    [ngClass]="{ 'vh-73': isDesktop, 'vh-34': isMobile }">
+                                                 
+                                                    <!-- <a href="product-layout1.html" onclick="return false;" [routerLink]="['/es/es/shop/product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}" class="product-img rounded-0 w-100" [ngClass]="{'vh-73': isDesktop, 'vh-34': isMobile}"> height: 34vh !important; -->
                                                         <!-- Image -->
                                                         <img class="primary blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen }}"  src="{{ ourProduct.imagen }}" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
                                                         <!-- End Image -->

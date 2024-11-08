@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 declare var $:any;
 
@@ -58,11 +59,21 @@ export class ProfileClientComponent implements OnInit {
 
   loadingSubscription: Subscription = new Subscription();
 
+  locale: string = "";
+  country: string = "";
+
 
   CURRENT_USER_AUTHENTICATED:any=null;
   constructor(
     public _ecommerceAuthService: EcommerceAuthService,
-  ) {}
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+  ) {
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    });
+  }
 
   ngOnInit(): void {
 
@@ -87,6 +98,7 @@ export class ProfileClientComponent implements OnInit {
         
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
+        this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
       }
     });
   }
