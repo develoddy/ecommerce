@@ -85,7 +85,7 @@ img { max-width:100%; height:auto; border:0; -ms-interpolation-mode:bicubic; }
 label { margin-bottom:5px; }
 html, button, input, select, textarea { font-family:'Poppins', sans-serif; }
 input, textarea, .form-control { padding:10px 15px; }
-input, button, select, textarea, .form-control { font-size:14px; font-family: "Zen Kaku Gothic Antique", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #b8b8b8; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
+input, button, select, textarea, .form-control { font-size:14px; font-family: "Zen Kaku Gothic Antique", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #171717; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
 input:focus, input:active, button:focus, button:active, select:focus, select:active, textarea:focus, textarea:active, .form-control:focus { outline:none; border-color:#131313; }
 input, select, textarea { width: 100%; }
 input, select { height:40px; }
@@ -2451,7 +2451,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
   16. Checkout Pages
 ========================================================================*/
 .checkout-form .block { border-radius: 0; padding: 20px; }
-.checkout-form .block .title { text-transform: uppercase; }
+.checkout-form .block .title { text-transform: inherit; }
 .card { background-color:#ffffff; border-color:#f7f7f7; border-radius:0; margin-bottom:10px; }
 .card-header { position:relative; padding:10px 15px; border-color:#f7f7f7; }
 .card-header .card-link { position:relative; text-decoration: none; }

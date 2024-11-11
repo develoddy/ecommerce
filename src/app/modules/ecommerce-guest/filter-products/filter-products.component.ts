@@ -47,6 +47,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   nameCategorie = null;
   userId: any;
 
+  locale: string = "";
+  country: string = "";
+
   private subscription: Subscription = new Subscription();
   loading: boolean = false;
   
@@ -56,18 +59,19 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     public _cartService: CartService,
     public _router: Router,
     public _routerActived: ActivatedRoute,
-  ) {}
+  ) {
+     // Obtenemos `locale` y `country` de la ruta actual
+     this._routerActived.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    });
+
+  }
 
   ngAfterViewInit(): void {
-
-    
-    
     setTimeout(() => {
       HOMEINITTEMPLATE($);
-      
-      
       const contentWidth = window.innerWidth;
-      console.log("contentWidth: ", contentWidth);
       if (contentWidth < 1999) {
         this.grid5.nativeElement.click();
       }
@@ -80,20 +84,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       if (contentWidth < 767) {
         this.grid2.nativeElement.click();
       }
-
-
-      //   console.log("contentWidth: ", contentWidth); // 1999
-      // if (contentWidth > 1900) {
-      //     //Simula el clic en el botón `.grid-3` si el ancho de la ventana es menor a 991px
-      //   this.grid3.nativeElement.click();
-      // }
-
-      // if (contentWidth < 1199) {
-      //   this.grid4.nativeElement.click();
-      // }
     }, 150);
 
-    
   }
   
   ngOnInit(): void {

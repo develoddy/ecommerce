@@ -28,14 +28,15 @@ export class AddAddressComponent implements OnInit {
   zipcode: string = '';
   poblacion: string = '';
   ciudad: string = '';
-  email: string = '';
+  email: string | null = null;
   phone: string = '';
     
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
   status:boolean=false;
   loading: boolean = false;
-  loadingSubscription: Subscription = new Subscription();
+  //loadingSubscription: Subscription = new Subscription();
+  private subscriptions: Subscription = new Subscription();
   CURRENT_USER_AUTHENTICATED:any=null;
 
 
@@ -45,10 +46,10 @@ export class AddAddressComponent implements OnInit {
   constructor(
     public _ecommerceAuthService: EcommerceAuthService,
     private router: Router,
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
   ) {
 
-    this.route.paramMap.subscribe(params => {
+    this.activatedRoute.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
       this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
     });
@@ -62,11 +63,23 @@ export class AddAddressComponent implements OnInit {
     //this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || this.returnUrl;
     this.returnUrl = sessionStorage.getItem('returnUrl') || this.returnUrl;
 
+    console.log("Debbug Compoennte add-address tiene la url back: ", this.returnUrl);
+    
+
     this.verifyAuthenticatedUser();
+    this.subscribeToQueryParams();
+  }
+
+  private subscribeToQueryParams(): void {
+    const queryParamsSubscription = this.activatedRoute.queryParams.subscribe((resp: any) => {
+      this.email = resp["email"];
+    });
+    // Añadir todas las suscripciones al objeto compuesto
+    this.subscriptions.add(queryParamsSubscription);
   }
 
   private SPINNER() {
-    this.loadingSubscription = this._ecommerceAuthService.loading$.subscribe(isLoading => {
+    this.subscriptions = this._ecommerceAuthService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
   }
@@ -77,7 +90,7 @@ export class AddAddressComponent implements OnInit {
         this.CURRENT_USER_AUTHENTICATED = user;
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
-        this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
+        //this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
       }
     });
   }
@@ -123,8 +136,9 @@ export class AddAddressComponent implements OnInit {
         alertSuccess(resp.message);
         this.resetForm();
         sessionStorage.removeItem('returnUrl');
-        // this.router.navigate([this.returnUrl]);
-        this.router.navigate(['/', this.locale, this.country, 'account', this.returnUrl]);
+        console.log("Debbug registerAddressla url back navigate to: ", this.returnUrl);
+        this.router.navigate([this.returnUrl]);
+        //this.router.navigate(['/', this.locale, this.country, 'account', this.returnUrl]);
 
       } else {
         this.status = false;
@@ -157,8 +171,8 @@ export class AddAddressComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    if (this.loadingSubscription) {
-      this.loadingSubscription.unsubscribe();
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
     }
   }
 }

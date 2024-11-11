@@ -1,24 +1,23 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
-import { CartService } from '../../ecommerce-guest/_service/cart.service';
+import { Subscription } from 'rxjs';
+import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
+import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
+import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { AuthService } from '../../auth-profile/_services/auth.service';
-import { Subscription } from 'rxjs';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function actionNetxCheckout([]):any;
 declare function alertDanger([]):any;
 declare function alertSuccess([]):any;
-declare var paypal:any;
 
 @Component({
-  selector: 'app-checkout',
-  templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.css']
+  selector: 'app-successfull-checkout',
+  templateUrl: './successfull-checkout.component.html',
+  styleUrls: ['./successfull-checkout.component.css']
 })
-export class CheckoutComponent implements OnInit, AfterViewInit {
+export class SuccessfullCheckoutComponent implements OnInit {
 
   @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   euro = "€";
@@ -81,98 +80,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    paypal.Buttons({
-      // optional styling for buttons
-      // https://developer.paypal.com/docs/checkout/standard/customize/buttons-style-guide/
-      style: {
-        color: "gold",
-        shape: "rect",
-        layout: "vertical"
-      },
-
-      // set up the transaction
-      createOrder: (data:any, actions:any) => {
-          // pass in any options from the v2 orders create call:
-          // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
-          if (this.listCarts.lenght == 0) {
-            alertDanger("No se puede proceder con la orden si el carrito está vacío.");
-            return;
-          }
-
-          if (!this.address_client_selected) {
-            //alertDanger("Por favor, seleccione una dirección de envío.");
-            this.validMessage = true;
-            this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
-            return;
-          }
-          const createOrderPayload = {
-            purchase_units: [
-              {
-                amount: {
-                    description: "COMPRAR POR EL ECOMMERCE",
-                    value: this.totalCarts
-                }
-              }
-            ]
-          };
-
-          return actions.order.create(createOrderPayload);
-      },
-
-      // finalize the transaction
-      onApprove: async (data:any, actions:any) => {
-          let Order = await actions.order.capture();
-          // Order.purchase_units[0].payments.captures[0].id
-          let sale = {
-            user: this.CURRENT_USER_AUTHENTICATED._id,
-            currency_payment: "EUR",
-            method_payment: "PAYPAL",
-            n_transaction: Order.purchase_units[0].payments.captures[0].id,
-            total: this.totalCarts,
-            //curreny_total: ,
-            //price_dolar: ,
-          };
-
-          let sale_address = {
-            name: this.name,
-            surname: this.surname,
-            pais: this.pais,
-            address: this.address,
-            referencia: '',
-            ciudad: this.ciudad,
-            region: this.poblacion,
-            telefono: this.phone,
-            email: this.email,
-            nota: '',
-          };
-
-          this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}).subscribe(
-            (resp:any) => {
-              this.isLastStepActive_3 = false;
-              setTimeout(() => {
-                if (resp.code === 403 ) {
-                  alertDanger(resp.message);
-                  return;
-                } else {
-                  alertSuccess(resp.message); 
-                  this.sale = resp.sale;
-                  this.saleDetails = resp.saleDetails;
-                  this.isLastStepActive_2 = true;
-                  this.isLastStepActive_4 = true;
-                  this.isSaleSuccess = true;
-                  this.subscriptionService.setShowSubscriptionSection(false);
-                  this._cartService.resetCart();
-                }
-              }, 100);  
-          });
-          // return actions.order.capture().then(captureOrderHandler);
-      },
-
-      // handle unrecoverable errors
-      onError: (err:any) => {
-          console.error('An error prevented the buyer from checking out with PayPal');
-      }
-    }).render(this.paypalElement?.nativeElement);
+   
   }
 
   ngOnInit(): void {
@@ -184,8 +92,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     this.verifyAuthenticatedUser();
 
     this.checkIfAddressClientExists();
-
-    this.navigateToStep(); // Redirige al componente de confirmación
   
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
@@ -211,16 +117,14 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   checkIfAddressClientExists() {
-    if (this.CURRENT_USER_AUTHENTICATED) {
-      this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-        (resp: any) => {
-          this.listAddressClients = resp.address_client;
-          if (this.listAddressClients.length === 0) {
-            sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-            this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
-          }
-      });
-    }
+    this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
+      (resp: any) => {
+        this.listAddressClients = resp.address_client;
+        if (this.listAddressClients.length === 0) {
+          sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
+          this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
+        }
+    });
   }
 
   navigateToHome() {
@@ -476,25 +380,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       });
     this.subscriptions.add(subscriptionLogin);
   }
-
-  private navigateToStep(): void {
-
-    console.log("navigateToStep: ", this.CURRENT_USER_AUTHENTICATED);
-    
-    if (!this.CURRENT_USER_AUTHENTICATED) {
-      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'login']); // Redirige al componente de login
-        //.then(() => {
-        //    window.location.reload();
-        //});
-    } else if (this.listAddressClients.length === 0) {
-      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']); // Redirige al componente de resumen
-    } else if (!this.isSaleSuccess) {
-      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'payment']); // Redirige al componente de pago
-    } else {
-      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'successfull']); // Redirige al componente de confirmación
-    }
-  }
-  
 
   ngOnDestroy(): void {
     if (this.subscriptions) {

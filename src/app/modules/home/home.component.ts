@@ -85,7 +85,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     public translate: TranslateService,
     public _wishlistService: WishlistService,
     //private languageService: LanguageService,
-  ) { }
+  ) { 
+     // Obtenemos `locale` y `country` de la ruta actual
+     this.activatedRoute.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    });
+
+  }
 
   // private translateTextAccordingToLanguage(language: string): string {
   //   // Lógica para traducir el texto según el idioma
@@ -99,13 +106,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   
 
   ngOnInit(): void {
-
-    // Obtenemos `locale` y `country` de la ruta actual
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
-      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
-    });
-
     // Suscribirse al observable para saber cuando mostrar u ocultar el loading
     this.subscription = this.homeService.loading$.subscribe(isLoading => {
       this.loading = isLoading;

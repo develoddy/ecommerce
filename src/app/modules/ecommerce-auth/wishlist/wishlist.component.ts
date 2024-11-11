@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { WishlistService } from '../../ecommerce-guest/_service/wishlist.service';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
@@ -57,9 +57,18 @@ export class WishlistComponent implements OnInit {
     public _wishlistService: WishlistService,
     public _cartService: CartService,
     private minicartService: MinicartService,
-  ) {}
+    private activatedRoute: ActivatedRoute,
+  ) {
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    });
+  }
 
   ngOnInit(): void {
+
+    this.verifyAuthenticatedUser()
+
     this._wishlistService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });

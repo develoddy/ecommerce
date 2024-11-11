@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
 
@@ -29,13 +29,22 @@ export class LoginComponent implements OnInit {
   CURRENT_USER_AUTHENTICATED:any=null;
 
   public loading: boolean = false;
+
+  locale: string = "";
+  country: string = "";  
   
   constructor(
     public _authService: AuthService,
     public cartService: CartService,
     public _router: Router,
-    public translate: TranslateService
-  ) { }
+    public translate: TranslateService,
+    public routerActived: ActivatedRoute,
+  ) {
+    this.routerActived.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado
+      this.country = params.get('country') || 'es'; // Valor predeterminado
+    });
+  }
 
   ngOnInit(): void {
 

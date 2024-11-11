@@ -1,0 +1,272 @@
+<div [ngClass]="{'tab-pane': true,'active': isLastStepActive_3 && CURRENT_USER_AUTHENTICATED && !isSaleSuccess,'fade': listAddressClients.length === 0 }" id="steps3">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-7 col-lg-8">
+            <!--Delivery Methods-->
+            <div class="block mb-3 delivery-methods mb-4 d-none">
+                <div class="block-content">
+                    <h3 class="title mb-3">Delivery Methods</h3>
+                    <div class="delivery-methods-content">
+                        <div class="customRadio clearfix">
+                            <input id="formcheckoutRadio1" value="" name="radio1" type="radio" class="radio" checked="checked"> 
+                            <label for="formcheckoutRadio1" class="mb-0">Standard Delivery $2.99 (3-5 days)</label>
+                        </div>
+                        <div class="customRadio clearfix">
+                            <input id="formcheckoutRadio2" value="" name="radio1" type="radio" class="radio"> 
+                            <label for="formcheckoutRadio2" class="mb-0">Express Delivery $10.99 (1-2 days)</label>
+                        </div>
+                        <div class="customRadio clearfix mb-0">
+                            <input id="formcheckoutRadio3" value="" name="radio1" type="radio" class="radio"> 
+                            <label for="formcheckoutRadio3" class="mb-0">Same-Day $20.00 (Evening Delivery)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Delivery Methods-->
+            <!--Shipping address-->
+            <div class="block payment-methods pb-0">
+                <div class="block-content">
+                    <h3 class="title mb-0 ls-2">Dirección de envío</h3>                                     
+                    <div class="payment-accordion-radio">
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item card mb-2">
+                                <div class="card-header d-none" id="headingShippingOne">
+                                    <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShippingOne" aria-expanded="true" aria-controls="collapseShippingOne">
+                                        <span class="customRadio clearfix mb-0">
+                                            <input id="paymentRadioShipping1" value="" name="shipping" type="radio" class="radio" checked="checked" /> 
+                                            <label for="paymentRadioShipping1" class="mb-0">Dirección de envío</label>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div id="collapseShippingOne">
+                                    <div class="card-body px-0">
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
+                                                    <label>Envío Seleccionado <span class="required">*</span></label>
+                                                    <select name="country_id" class="form-control" (change)="onAddressChange($event)">
+                                                        <option value="">Por favor seleccione</option>
+                                                        <ng-container *ngFor="let list_address of listAddressClients; let i=index">
+                                                            <option [value]="i">{{ list_address.name +' '+ list_address.surname +' | '+ list_address.address }}</option> 
+                                                        </ng-container>
+                                                    </select>
+                                                    <div class="form-text text-danger mt-0" *ngIf="validMessage">{{ errorOrSuccessMessage }}</div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Shipping address-->
+            <!--Payment Methods-->
+            <div class="mb-3 payment-methods mb-4">
+                <div class="block-content">
+                    <!-- <h3 class="title mb-3">Payment Methods</h3> -->
+                    <div class="payment-accordion-radio">
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item card mb-2 d-none">
+                                <div class="card-header" id="headingOne">
+                                    <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                        <span class="customRadio clearfix mb-0">
+                                            <input id="paymentRadio1" value="" name="payment" type="radio" class="radio" checked="checked" /> 
+                                            <label for="paymentRadio1" class="mb-0">Pay with credit card</label>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                    <div class="card-body px-0">
+                                        <fieldset>
+                                            <div class="row">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
+                                                    <label for="input-cardname">Name on Card <span class="required">*</span></label>
+                                                    <input name="cardname" value="" placeholder="" id="input-cardname" class="form-control" type="text" pattern="[0-9\-]*">
+                                                </div>
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-6">
+                                                    <label>Credit Card Type <span class="required">*</span></label>
+                                                    <select name="country_id" class="form-control">
+                                                        <option value="">Please Select</option>
+                                                        <option value="1">American Express</option>
+                                                        <option value="2">Visa Card</option>
+                                                        <option value="3">Master Card</option>
+                                                        <option value="4">Discover Card</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-12 col-sm-4 col-md-4 col-lg-4">
+                                                    <label for="input-cardno">Credit Card Number  <span class="required">*</span></label>
+                                                    <input name="cardno" value="" placeholder="" id="input-cardno" class="form-control" type="text" pattern="[0-9\-]*">
+                                                </div>
+                                                <div class="form-group col-12 col-sm-4 col-md-4 col-lg-4">
+                                                    <label for="input-cvv">CVV Code <span class="required">*</span></label>
+                                                    <input name="cvv" value="" placeholder="" id="input-cvv" class="form-control" type="text" pattern="[0-9\-]*">
+                                                </div>
+                                                <div class="form-group col-12 col-sm-4 col-md-4 col-lg-4">
+                                                    <label>Expiration Date <span class="required">*</span></label>
+                                                    <input type="date" name="exdate" class="form-control">
+                                                </div>
+                                                <div class="form-group col-12 col-sm-4 col-md-4 col-lg-4 mb-0">
+                                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card mb-2 d-none">
+                                <div class="card-header" id="headingTwo">
+                                    <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        <span class="customRadio clearfix mb-0">
+                                            <input id="paymentRadio2" value="" name="payment" type="radio" class="radio" /> 
+                                            <label for="paymentRadio2" class="mb-0">Pay with Paypal</label>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                    <div class="card-body px-0">
+                                        <p>Pay via PayPal you can pay with your credit card if you don't have a PayPal account.</p>
+                                        <div class="input-group mb-0 d-flex">
+                                            <input type="text" class="form-control" placeholder="paypal@example.com" required="">
+                                            <button class="btn btn-primary" type="submit">Pay 99.00 USD</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card mb-2 d-none">
+                                <div class="card-header" id="headingThree">
+                                    <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        <span class="customRadio clearfix mb-0">
+                                            <input id="paymentRadio3" value="" name="payment" type="radio" class="radio" /> 
+                                            <label for="paymentRadio3" class="mb-0">Cheque Payment</label>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                    <div class="card-body px-0">
+                                        <p>Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item card mb-2 ">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-7 col-lg-12">
+                                        <!--Order Summary-->
+                                        <div class="block order-summary">
+                                            <div class="block-content">
+                                                <h3 class="title mb-3 ls-2">Paquete</h3>
+                                                <div class="table-responsive table-bottom-brd order-table"> 
+                                                    <table class="table table-hover align-middle mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="action">&nbsp;</th>
+                                                                <th class="text-start text-muted">Image</th>
+                                                                <th class="text-start proName text-muted">Producto</th>
+                                                                <th class="text-center text-muted">Cantidad</th>
+                                                                <th class="text-center text-muted">Precio</th>
+                                                                <th class="text-center text-muted">Subtotal</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <ng-container *ngFor="let cart of listCarts">
+                                                                <tr>
+                                                                    <td class="text-center cart-delete">
+                                                                        <a href="#" onclick="return false;" (click)="removeCart(cart)" class="btn btn-secondary cart-remove remove-icon position-static" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Cart"><i class="icon anm anm-times-r"></i></a>
+                                                                    </td>
+                                                                    <td class="text-start">
+                                                                        <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" class="thumb">
+                                                                            <!-- <img class="blur-up lazyload" [attr.data-src]="cart.variedad.files[1].preview_url" [src]="cart.variedad.files[1].preview_url" alt="product" title="Product" width="120" height="170" /> -->
+                                                                            <img class="blur-up lazyload" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="Product" width="120" height="170" />
+                                                                        </a>
+                                                                    </td>
+                                                                    <td class="text-start proName">
+                                                                        <div class="list-view-item-title">
+                                                                            <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" >{{cart.product.title}}</a>
+                                                                        </div>
+                                                                        <div class="cart-meta-text">
+                                                                            Color: {{ cart.variedad.color }}<br>Talla: {{cart.variedad.valor}}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="text-center">{{ cart.cantidad }}</td>
+                                                                    <td class="text-center">{{ cart.subtotal | number: '1.2-2' }} {{ euro }}</td> <!--{{ euro }}{{ cart.total }} -->
+                                                                    <td class="text-center"><strong>{{ cart.total | number: '1.2-2' }} {{ euro }}</strong></td>
+                                                                </tr>
+                                                            </ng-container>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--End Order Summary-->
+                                    </div>
+                                </div>
+                                <!-- <div class="card-header" id="headingFour">
+                                    <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                        <span class="customRadio clearfix mb-0">
+                                            <input id="paymentRadio4" value="" name="payment" type="radio" class="radio" /> 
+                                            <label for="paymentRadio4" class="mb-0">Cash On Delivery</label>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample"> 
+                                    <div class="card-body px-0">
+                                        <p>Cash on delivery refers to an arrangement in which payment for a purchase is made directly by the purchaser to the person who delivers the item.</p>
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="accordion-item card mb-0 d-none">
+                                <div class="card-header" id="headingFive">
+                                    <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                                        <span class="customRadio clearfix mb-0">
+                                            <input id="paymentRadio5" value="" name="payment" type="radio" class="radio" checked="checked" /> 
+                                            <label for="paymentRadio5" class="mb-0">Paypal / Tarjeta de Crédito o Débito</label>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingFive" data-bs-parent="#accordionExample"> 
+                                    <div class="card-body px-0">
+                                        <p>Pague a través de PayPal; Puedes pagar con tu tarjeta de crédito si no tienes una cuenta PayPal.</p>
+                                        <div class="mt-3" #paypal></div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Payment Methods-->
+        </div>
+        <div class="col-12 col-sm-12 col-md-5 col-lg-4">
+            <!--Cart Summary-->
+            <div class="cart-info">
+                <div class="cart-order-detail cart-col">
+                    <div class="row g-0 border-bottom pb-2">
+                        <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Subtotal</strong></span>
+                        <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ totalCarts }} {{ euro }}</span></span>
+                    </div>
+                    <div class="row g-0 border-bottom py-2 d-none">
+                        <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Coupon Discount</strong></span>
+                        <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">-$25.00</span></span>
+                    </div>
+                    <div class="row g-0 border-bottom py-2 d-none">
+                        <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Tax</strong></span>
+                        <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">$10.00</span></span>
+                    </div>
+                    <div class="row g-0 border-bottom py-2">
+                        <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Envío</strong></span>
+                        <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Envío gratis</span></span>
+                    </div>
+                    <div class="row g-0 pt-2">
+                        <span class="col-6 col-sm-6 cart-subtotal-title fs-5 ls-1 text-uppercase"><strong>Total</strong></span>
+                        <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ totalCarts }} {{ euro }}</b></span>
+                    </div>
+                    <!-- <div class="mt-3" #paypal></div> -->
+                    <!-- <div class="paymnet-img text-center"><img src="assets/images/icons/safepayment.png" alt="Payment" width="299" height="28" /></div> -->
+                </div>                               
+            </div>
+            <!--Cart Summary-->
+        </div>
+    </div>
+</div>

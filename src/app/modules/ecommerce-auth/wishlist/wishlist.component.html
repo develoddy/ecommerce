@@ -97,7 +97,7 @@
                                         <!-- Start Product Image -->
                                         <div class="product-image">
                                             <!-- Start Product Image -->                                                              
-                                            <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', wishlist.product ? wishlist.product.slug : wishlist.slug]" class="product-img rounded-0">
+                                            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', wishlist.product ? wishlist.product.slug : wishlist.slug]" class="product-img rounded-0">
                                                 <!-- Image wishlist.variedad.files[1].preview_url -->
                                                 <img class="primary rounded-0 blur-up lazyload" [attr.data-src]="wishlist.product ? wishlist.product.imagen  : wishlist.imagen" [src]="wishlist.product ? wishlist.product.imagen  : wishlist.imagen" alt="{{ wishlist.product ? wishlist.product.title : wishlist.title }}" title="{{ wishlist.product ? wishlist.product.title : wishlist.title }}" width="625" height="808" />
                                                 <!-- End Image -->
@@ -130,7 +130,7 @@
                                         <div class="product-details text-center">
                                             <!-- Product Name -->
                                             <div class="product-name">
-                                                <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', wishlist.product ? wishlist.product.slug : wishlist.slug]">{{ wishlist.product ? wishlist.product.title : wishlist.title || '' }}</a>
+                                                <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', wishlist.product ? wishlist.product.slug : wishlist.slug]">{{ wishlist.product ? wishlist.product.title : wishlist.title || '' }}</a>
                                             </div>
                                             <!-- End Product Name -->
                                             <!-- Product Price -->
@@ -600,18 +600,9 @@
     </div>
     <!-- End Product Quickshop Modal -->
 
-
-
-
-
-
-
-
-
-
     <!-- MODIFICAR -->
      <!-- Product Quickview Modal-->
-     <!-- <div class="addtocart-modal modal fade" id="addtocart_modal" tabindex="-1" aria-hidden="true" >            -->
+     <!-- <div class="addtocart-modal modal fade" id="addtocart_modal" tabindex="-1" aria-hidden="true"> -->
     <div class="quickview-modal modal fade" id="addtocart_modal" tabindex="-1" aria-hidden="true">  
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
@@ -752,11 +743,6 @@
         </div>
     </div>
     <!--End Product Quickview Modal-->
-
-
-
-
-
 
     <!-- Product Addtocart Modal-->
     <div class="quickview-modal modal fade" id="quickview_modal" tabindex="-1" aria-hidden="true" >           

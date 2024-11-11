@@ -256,13 +256,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // private checkDeviceType(): void {
-  //   const width = window.innerWidth;
-  //   this.isMobile = width <= 480;
-  //   this.isTablet = width > 480 && width <= 768;
-  //   this.isDesktop = width > 768;
-  // }
-
   private subscribeToWishlistData(): void {
     this.subscriptions.add(
       this.wishlistService.currenteDataWishlist$.subscribe((resp: any) => {
@@ -281,13 +274,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-
-    // setTimeout(() => {
-    //   HOMEINITTEMPLATE($);
-    //   productZoom($);
-    //   pswp($);
-    // }, 150);
-
     if (this.filter) {
       this.source = fromEvent(this.filter.nativeElement, "keyup");
       this.subscriptions.add(

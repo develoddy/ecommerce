@@ -83,28 +83,16 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-info px-4">
                         <!-- Product Details -->
                         <div class="product-single-meta ">
-                            <h2 class="product-main-title d-flex mb-0"> 
-                                <span class="flex-grow-1">{{ product_selected.title }}</span> 
+                            <div class="d-flex mb-0"> 
+                                <h2 class="flex-grow-1 product-main-title mb-0">{{ product_selected.title }}</h2> 
                                 <div class="product-price d-flex-center">
                                     <ng-container *ngIf="getDiscount() > 0">
                                         <span class="price old-price">{{ product_selected.price_usd }} €</span>
                                     </ng-container>
                                     <span class="price">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} €</span>
                                 </div>
-                            </h2>
-                            <!-- Product Reviews -->
-                            <div class="product-review d-flex-center mb-3 d-none">
-                                <div class="reviewStar d-flex-center">
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
-                                    <span class="caption ms-2">{{ COUNT_REVIEW }} Reseñas</span>
-                                </div>
-                                <a class="reviewLink d-flex-center" href="#reviews">Escribe una reseña</a>
                             </div>
-                            <!-- End Product Reviews -->
+                            
                             <!-- Product Info -->
                             <div class="product-info">
                                 <p class="product-stock d-flex d-none">Disponibilidad:
@@ -116,6 +104,19 @@
                                 <p class="product-type d-none">Tipo de producto:<span class="text">Tops</span></p> 
                                 <p class="product-sku">REF.<span class="text">{{ product_selected.sku }}</span></p>
                             </div>
+                            <!-- Product Reviews -->
+                            <div class="product-review d-flex-center">
+                                <div class="reviewStar d-flex-center">
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
+                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
+                                    <span class="caption ms-2">{{ COUNT_REVIEW }} Reseñas</span>
+                                </div>
+                                <a class="reviewLink d-flex-center" href="#reviews">Escribe una reseña</a>
+                            </div>
+                            <!-- End Product Reviews -->
                             <!-- End Product Info -->
                             <!-- Product Price -->
                             <div class="product-price d-flex-center my-3 d-none">
@@ -125,7 +126,7 @@
                                 <span class="price">{{ euro }}{{ (product_selected.price_usd - getDiscount()).toFixed(2) }}</span>
                             </div>
                             <!-- End Product Price -->
-                            <hr class="d-none">
+                            <hr class="">
                             <!-- Sort Description -->
                             <div class="sort-description">{{ product_selected.resumen }}</div>
                             <!-- End Sort Description -->
@@ -225,15 +226,15 @@
                                 <a class="text-link wishlist" href="wishlist-style1.html" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
                                 <a class="text-link compare d-none" href="compare-style1.html"><i class="icon anm anm-sync-ar me-2"></i> <span>Añadir para comparar</span></a>
                                 <a href="#shippingInfo-modal" class="text-link shippingInfo" data-bs-toggle="modal" data-bs-target="#shippingInfo_modal"><i class="icon anm anm-paper-l-plane me-2"></i> <span>Envío y devoluciones</span></a>
-                                <a href="#productInquiry-modal" class="text-link emaillink me-0 d-none" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>
+                                <a href="#productInquiry-modal" class="text-link emaillink me-0" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>
                             </p>
                             <!-- End Product Info link -->
                         </form>
                         <!-- End Product Form -->
 
                         <!-- Product Info -->
-                        <div class="userViewMsg featureText d-none" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div> 
-                        <div class="shippingMsg featureText d-none"><i class="icon anm anm-clock-r"></i>Entrega estimada entre <b id="fromDate">Lunes, 26 de agosto</b> y <b id="toDate">Viernes, 30 de agosto</b>.</div>                             
+                        <div class="userViewMsg featureText" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div> 
+                        <div class="shippingMsg featureText"><i class="icon anm anm-clock-r"></i>Entrega estimada entre <b id="fromDate">Lunes, 26 de agosto</b> y <b id="toDate">Viernes, 30 de agosto</b>.</div>                             
                         <div class="freeShipMsg featureText" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}30.00</span></b> Más para envío gratis</div>
                         <!-- End Product Info -->
 
@@ -247,6 +248,8 @@
                             <a href="#" class="d-flex-center btn btn-link btn--share share-email"><i class="icon anm anm-envelope-l"></i><span class="share-title">Email</span></a>
                         </div>
                         <!-- End Social Sharing -->
+
+                        <div class="trustseal-img mt-4"><img src="assets/images/icons/powerby-cards.jpg" alt="powerby cards" width="470" /></div>
                     </div>
                 </div>
             </div>

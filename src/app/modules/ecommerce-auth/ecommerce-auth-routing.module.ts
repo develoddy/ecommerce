@@ -13,18 +13,15 @@ const routes: Routes = [{
   path: '',
   component: EcommerceAuthComponent,
   children: [
-    //{
-      //path: "list-carts",
-    //  path: "cart",
-    //  component: ListCartsComponent,
-    //},
     {
-      //path: "payment-process",
-      path: "checkout",
-      component: CheckoutComponent,
+      path: "checkout", // Añade la ruta para el módulo de direcciones
+      loadChildren: () => import('./checkout/checkout.module').then(m => m.CheckoutModule),
     },
-    {
-      //path: "profile", 
+    // {
+    //   path: "checkout",
+    //   component: CheckoutComponent,
+    // },
+    { 
       path: "my-account",
       component: ProfileClientComponent,
     },
@@ -33,7 +30,6 @@ const routes: Routes = [{
       component: AccountComponent,
     },
     {
-      //path: "wishlist", 
       path: "favorites",
       component: WishlistComponent,
     },
@@ -46,7 +42,6 @@ const routes: Routes = [{
       component: OrderSuccessComponent,
     },
     {
-      //path: 'myaddress', 
       path: "myaddresses", // Añade la ruta para el módulo de direcciones
       loadChildren: () => import('./myaddress/myaddress.module').then(m => m.MyaddressModule),
     },

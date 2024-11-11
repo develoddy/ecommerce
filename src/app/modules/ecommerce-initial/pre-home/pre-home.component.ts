@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class PreHomeComponent implements OnInit {
 
   selectedCountry = 'es'; // Valor predeterminado o el que elijas
-  selectedLocale = 'es';  // Valor predeterminado o el que elijas
+  selectedLocale = '';  // Valor predeterminado o el que elijas
 
   // Opciones de países
   countries = [
@@ -48,7 +48,6 @@ export class PreHomeComponent implements OnInit {
   }
 
   gotoHome() {
-    //this.router.navigate(['/']);
     if (this.selectedCountry && this.selectedLocale) {
       this.router.navigate([`/${this.selectedLocale}/${this.selectedCountry}/home`]);
     }

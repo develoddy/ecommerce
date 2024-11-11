@@ -67,7 +67,7 @@
                                         <h2 class="ss-mega-title">Vístete como <br>piensas: con lógica</h2>
                                         <p class="ss-sub-title xs-hide">Ropa diseñada para los que crean el futuro, con el máximo confort y personalidad</p>
                                         <div class="ss-btnWrap">
-                                            <a class="btn btn-secondary" href="shop-grid-view.html" onclick="return false;" [routerLink]="['/filter-products']"  >Descúbrelas ahora!</a>
+                                            <a class="btn btn-secondary" href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']"  >Descúbrelas ahora!</a>
                                             <a class="btn btn-primary d-none" href="shop-grid-view.html" onclick="return false;">Mujeres</a>
                                         </div>
                                     </div>
@@ -89,7 +89,7 @@
                                         <h2 class="ss-mega-title">Sudaderas tech <br>Comodidad en cada línea</h2>
                                         <p class="ss-sub-title xs-hide">La mejor compañía para tus largas sesiones de programación</p>
                                         <div class="ss-btnWrap d-flex-justify-start">
-                                            <a class="btn btn-primary" href="shop-grid-view.html" onclick="return false;" [routerLink]="['/filter-products']">Descúbrelas ahora!</a>
+                                            <a class="btn btn-primary" href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">Descúbrelas ahora!</a>
                                         </div>
                                     </div>
                                 </div>
@@ -231,7 +231,6 @@
                     <p class="mb-2 mt-0">Comprar por categoría</p>
                     <h2>Colecciones populares</h2>
                 </div>
-
                 <div class="collection-slider-5items gp15 arwOut5 hov-arrow">
                     <ng-container *ngFor="let categorie of categories">
                         <div class="category-item zoomscal-hov">
@@ -283,9 +282,7 @@
                                                 <!-- Start Product Image -->
                                                 <div class="product-image">
                                                     <!-- Start Product Image -->
-                                                    <a [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]"
-                                                    [queryParams]="{ _id: ourProduct.campaing_discount?.id }"
-                                                    class="product-img rounded-0 w-100"
+                                                    <a [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" [queryParams]="{ _id: ourProduct.campaing_discount?.id }" class="product-img rounded-0 w-100"
                                                     [ngClass]="{ 'vh-73': isDesktop, 'vh-34': isMobile }">
                                                  
                                                     <!-- <a href="product-layout1.html" onclick="return false;" [routerLink]="['/es/es/shop/product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}" class="product-img rounded-0 w-100" [ngClass]="{'vh-73': isDesktop, 'vh-34': isMobile}"> height: 34vh !important; -->
@@ -375,7 +372,7 @@
                                 </div>  
 
                                 <div class="view-collection text-center mt-4 mt-md-5">
-                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/filter-products']" class="btn btn-secondary btn-lg">Ver colección</a>
+                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="btn btn-secondary btn-lg">Ver colección</a>
                                 </div>
                             </div>
                             <!--End Product Grid-->

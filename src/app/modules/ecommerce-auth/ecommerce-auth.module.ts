@@ -16,13 +16,14 @@ import { OrderSuccessComponent } from './order-success/order-success.component';
 import { MyaddressModule } from './myaddress/myaddress.module';
 import { MypurchasesModule } from './mypurchases/mypurchases.module';
 import { AccountComponent } from './registered/account/account.component';
+import { CheckoutModule } from './checkout/checkout.module';
 
 
 @NgModule({
   declarations: [
     EcommerceAuthComponent,
     ListCartsComponent,
-    CheckoutComponent,
+    //CheckoutComponent,
     ProfileClientComponent,
     WishlistComponent,
     CompareComponent,
@@ -41,6 +42,7 @@ import { AccountComponent } from './registered/account/account.component';
     // Importar el módulo de direcciones
     MyaddressModule,
     MypurchasesModule,
+    CheckoutModule,
   ]
 })
 export class EcommerceAuthModule { }
