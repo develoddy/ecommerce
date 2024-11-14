@@ -133,10 +133,11 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   goToNextStep() {
-    this.isLastStepActive_2 = true;
-    this.isLastStepActive_3 = true;
-    this.isLastStepActive_4 = false;
-    this.isSaleSuccess = false;
+    // this.isLastStepActive_2 = true;
+    // this.isLastStepActive_3 = true;
+    // this.isLastStepActive_4 = false;
+    // this.isSaleSuccess = false;
+    this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'payment']);
   }
 
   onCheckboxChange(event: any) {

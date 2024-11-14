@@ -75,7 +75,7 @@
                                     <div class="span3 margin" [ngClass]="{'medium': !CURRENT_USER_AUTHENTICATED, '':  isLastStepActive_1}" role="listitem" aria-current="step">
                                         Identifícate
                                     </div>
-                                    <div class="span3 margin" [ngClass]="{'medium': !isLastStepActive_2 && CURRENT_USER_AUTHENTICATED && listAddressClients.length > 0, '':  isLastStepActive_2}" role="listitem" aria-current="step">
+                                    <div class="span3 margin" [ngClass]="{'medium': isLastStepActive_2 && CURRENT_USER_AUTHENTICATED && listAddressClients.length > 0, '':  !isLastStepActive_2}" role="listitem" aria-current="step">
                                         Pedido de envío
                                     </div>
                                     <div class="span3 margin" [ngClass]="{'medium': isLastStepActive_3 && CURRENT_USER_AUTHENTICATED && listAddressClients.length > 0,  '':  !isLastStepActive_3}" role="listitem" aria-current="true">
@@ -91,7 +91,7 @@
                                     <div class="span3" [ngClass]="{'medium1': !CURRENT_USER_AUTHENTICATED,  '':  isLastStepActive_1}">
                                         <div class="flechaSteps"></div>
                                     </div>
-                                    <div class="span3" [ngClass]="{'medium2': !isLastStepActive_2 && CURRENT_USER_AUTHENTICATED && listAddressClients.length > 0,  '':  isLastStepActive_2}">
+                                    <div class="span3" [ngClass]="{'medium2': isLastStepActive_2 && CURRENT_USER_AUTHENTICATED && listAddressClients.length > 0,  '':  !isLastStepActive_2}">
                                         <div class="flechaSteps"></div>
                                     </div>
                                     <div class="span3" [ngClass]="{ 'medium3': isLastStepActive_3 && CURRENT_USER_AUTHENTICATED && listAddressClients.length > 0,  '':  !isLastStepActive_3}">

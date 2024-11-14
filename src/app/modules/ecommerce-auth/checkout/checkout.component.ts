@@ -155,11 +155,11 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
                   return;
                 } else {
                   alertSuccess(resp.message); 
-                  this.sale = resp.sale;
-                  this.saleDetails = resp.saleDetails;
-                  this.isLastStepActive_2 = true;
-                  this.isLastStepActive_4 = true;
-                  this.isSaleSuccess = true;
+                  // this.sale = resp.sale;
+                  // this.saleDetails = resp.saleDetails;
+                  // this.isLastStepActive_2 = true;
+                  // this.isLastStepActive_4 = true;
+                  // this.isSaleSuccess = true;
                   this.subscriptionService.setShowSubscriptionSection(false);
                   this._cartService.resetCart();
                 }
@@ -228,12 +228,12 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
   }
 
-  goToNextStep() {
-    this.isLastStepActive_2 = true;
-    this.isLastStepActive_3 = true;
-    this.isLastStepActive_4 = false;
-    this.isSaleSuccess = false;
-  }
+  // goToNextStep() {
+  //   this.isLastStepActive_2 = true;
+  //   this.isLastStepActive_3 = true;
+  //   this.isLastStepActive_4 = false;
+  //   this.isSaleSuccess = false;
+  // }
 
   onCheckboxChange(event: any) {
     this.isAddressSameAsShipping = event.target.checked;
@@ -478,16 +478,18 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   private navigateToStep(): void {
-
-    console.log("navigateToStep: ", this.CURRENT_USER_AUTHENTICATED);
-    
     if (!this.CURRENT_USER_AUTHENTICATED) {
+      
       this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'login']); // Redirige al componente de login
-        //.then(() => {
-        //    window.location.reload();
-        //});
+      // .then(() => {
+      //   window.location.reload();
+      // });
     } else if (this.listAddressClients.length === 0) {
-      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']); // Redirige al componente de resumen
+      this.isLastStepActive_2 = true;
+      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']) // Redirige al componente de resumen
+      // .then(() => {
+      //   window.location.reload();
+      // });
     } else if (!this.isSaleSuccess) {
       this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'payment']); // Redirige al componente de pago
     } else {
