@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
@@ -60,6 +60,7 @@ export class LoginCheckoutComponent implements OnInit {
   status:boolean=false;
 
   private subscriptions: Subscription = new Subscription();
+  @Output() activate = new EventEmitter<boolean>();
 
   isPasswordVisible: boolean = false;
   locale: string = "";
@@ -84,6 +85,10 @@ export class LoginCheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    // Emitir un evento con el valor que desees
+    this.activate.emit(true);
+
     this.subscriptionService.setShowSubscriptionSection(false);
     this._authEcommerce.loading$.subscribe(isLoading => {
       this.loading = isLoading;
@@ -340,9 +345,10 @@ export class LoginCheckoutComponent implements OnInit {
       (resp:any) => {
         if (!resp.error && resp) {
           this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']);
-          // .then(() => {
-          //   window.location.reload();
-          // });
+          //  .then(() => {
+          //    window.location.reload();
+          //  });
+
           this._cartService.resetCart();
         } else {
           this.errorAutenticate = true;

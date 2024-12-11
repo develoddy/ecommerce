@@ -1799,4 +1799,4 @@ window.sliderRefresh = sliderRefresh;
 window.cleanupSliders = cleanupSliders;
 window.cleanupHOMEINITTEMPLATE = cleanupHOMEINITTEMPLATE;
 window.cleanupProductZoom = cleanupProductZoom;
-window.productSlider4items = productSlider4items;
+window.productSlider5items = productSlider5items;

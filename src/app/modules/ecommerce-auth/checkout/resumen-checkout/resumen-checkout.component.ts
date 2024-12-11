@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { CheckoutService } from '../../_services/checkoutService';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -46,11 +47,7 @@ export class ResumenCheckoutComponent implements OnInit {
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
-  isLastStepActive_1: boolean = false;
   isLastStepActive_2: boolean = false;
-  isLastStepActive_3: boolean = false;
-  isLastStepActive_4: boolean = false;
-
   errorAutenticate:boolean=false;
   errorMessageAutenticate:string="";
   password_identify:string = "";
@@ -60,6 +57,7 @@ export class ResumenCheckoutComponent implements OnInit {
   status:boolean=false;
 
   private subscriptions: Subscription = new Subscription();
+  @Output() activate = new EventEmitter<boolean>();
 
   isPasswordVisible: boolean = false;
   locale: string = "";
@@ -72,11 +70,14 @@ export class ResumenCheckoutComponent implements OnInit {
     public _router: Router,
     private subscriptionService: SubscriptionService,
     public routerActived: ActivatedRoute,
+    private checkoutService: CheckoutService,
   ) {
     this.routerActived.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  // Valor predeterminado
       this.country = params.get('country') || 'es'; // Valor predeterminado
     });
+
+     
   }
 
   ngAfterViewInit() {
@@ -84,6 +85,10 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    // Emitir un evento con el valor que desees
+    this.activate.emit(true);
+
     this.subscriptionService.setShowSubscriptionSection(false);
     this._authEcommerce.loading$.subscribe(isLoading => {
       this.loading = isLoading;
@@ -111,7 +116,7 @@ export class ResumenCheckoutComponent implements OnInit {
         this.CURRENT_USER_AUTHENTICATED = user;
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
-        this.isLastStepActive_1 = true;
+        //this.isLastStepActive_1 = true;
       }
     });
   }
@@ -133,11 +138,11 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   goToNextStep() {
-    // this.isLastStepActive_2 = true;
-    // this.isLastStepActive_3 = true;
-    // this.isLastStepActive_4 = false;
-    // this.isSaleSuccess = false;
+    this.checkoutService.setNavigatingToPayment(true);
     this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'payment']);
+    // .then(() => {
+    //   window.location.reload();
+    // });
   }
 
   onCheckboxChange(event: any) {

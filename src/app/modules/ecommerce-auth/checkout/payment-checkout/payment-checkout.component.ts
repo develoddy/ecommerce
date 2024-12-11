@@ -1,16 +1,18 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { CheckoutService } from '../../_services/checkoutService';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function actionNetxCheckout([]):any;
 declare function alertDanger([]):any;
 declare function alertSuccess([]):any;
+declare var paypal:any;
 
 @Component({
   selector: 'app-payment-checkout',
@@ -61,6 +63,8 @@ export class PaymentCheckoutComponent implements OnInit {
 
   private subscriptions: Subscription = new Subscription();
 
+  @Output() activate = new EventEmitter<boolean>();
+
   isPasswordVisible: boolean = false;
   locale: string = "";
   country: string = "";
@@ -72,6 +76,7 @@ export class PaymentCheckoutComponent implements OnInit {
     public _router: Router,
     private subscriptionService: SubscriptionService,
     public routerActived: ActivatedRoute,
+    private checkoutService: CheckoutService,
   ) {
     this.routerActived.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  // Valor predeterminado
@@ -80,10 +85,104 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-   
+    paypal.Buttons({
+      // optional styling for buttons
+      // https://developer.paypal.com/docs/checkout/standard/customize/buttons-style-guide/
+      style: {
+        color: "gold",
+        shape: "rect",
+        layout: "vertical"
+      },
+
+      // set up the transaction
+      createOrder: (data:any, actions:any) => {
+          // pass in any options from the v2 orders create call:
+          // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
+          if (this.listCarts.lenght == 0) {
+            alertDanger("No se puede proceder con la orden si el carrito está vacío.");
+            return;
+          }
+
+          if (!this.address_client_selected) {
+            //alertDanger("Por favor, seleccione una dirección de envío.");
+            this.validMessage = true;
+            this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
+            return;
+          }
+          const createOrderPayload = {
+            purchase_units: [
+              {
+                amount: {
+                    description: "COMPRAR POR EL ECOMMERCE",
+                    value: this.totalCarts
+                }
+              }
+            ]
+          };
+
+          return actions.order.create(createOrderPayload);
+      },
+
+      // finalize the transaction
+      onApprove: async (data:any, actions:any) => {
+          let Order = await actions.order.capture();
+          // Order.purchase_units[0].payments.captures[0].id
+          let sale = {
+            user: this.CURRENT_USER_AUTHENTICATED._id,
+            currency_payment: "EUR",
+            method_payment: "PAYPAL",
+            n_transaction: Order.purchase_units[0].payments.captures[0].id,
+            total: this.totalCarts,
+            //curreny_total: ,
+            //price_dolar: ,
+          };
+
+          let sale_address = {
+            name: this.name,
+            surname: this.surname,
+            pais: this.pais,
+            address: this.address,
+            referencia: '',
+            ciudad: this.ciudad,
+            region: this.poblacion,
+            telefono: this.phone,
+            email: this.email,
+            nota: '',
+          };
+
+          this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}).subscribe(
+            (resp:any) => {
+              this.isLastStepActive_3 = false;
+              setTimeout(() => {
+                if (resp.code === 403 ) {
+                  alertDanger(resp.message);
+                  return;
+                } else {
+                  alertSuccess(resp.message);
+                  this.subscriptionService.setShowSubscriptionSection(false);
+                  this._cartService.resetCart();
+
+                  // Actualiza el servicio para indicar que la venta fue exitosa
+                  this.checkoutService.setSaleSuccess(true);
+                  //this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'successfull']);
+                }
+              }, 100);  
+          });
+          // return actions.order.capture().then(captureOrderHandler);
+      },
+
+      // handle unrecoverable errors
+      onError: (err:any) => {
+          console.error('An error prevented the buyer from checking out with PayPal');
+      }
+    }).render(this.paypalElement?.nativeElement);
   }
 
   ngOnInit(): void {
+
+     // Emitir un evento con el valor que desees
+    this.activate.emit(true);
+     
     this.subscriptionService.setShowSubscriptionSection(false);
     this._authEcommerce.loading$.subscribe(isLoading => {
       this.loading = isLoading;
@@ -368,10 +467,7 @@ export class PaymentCheckoutComponent implements OnInit {
     const subscriptionLogin =  this._authService.login(this.email_identify, this.password_identify).subscribe(
       (resp:any) => {
         if (!resp.error && resp) {
-          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout'])
-          .then(() => {
-            window.location.reload();
-          });
+          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
           this._cartService.resetCart();
         } else {
           this.errorAutenticate = true;

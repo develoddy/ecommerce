@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
@@ -61,6 +61,8 @@ export class SuccessfullCheckoutComponent implements OnInit {
 
   private subscriptions: Subscription = new Subscription();
 
+  @Output() activate = new EventEmitter<boolean>();
+
   isPasswordVisible: boolean = false;
   locale: string = "";
   country: string = "";
@@ -84,6 +86,10 @@ export class SuccessfullCheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+     // Emitir un evento con el valor que desees
+     this.activate.emit(true);
+
     this.subscriptionService.setShowSubscriptionSection(false);
     this._authEcommerce.loading$.subscribe(isLoading => {
       this.loading = isLoading;
