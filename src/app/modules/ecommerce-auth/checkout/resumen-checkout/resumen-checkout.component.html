@@ -59,7 +59,17 @@
                                 <p>¿Tienes un código promocional? Entonces estás a unos cuantos números y letras combinados al azar de obtener fabulosos ahorros!</p>
                                 <div class="input-group mb-0 d-flex">
                                     <input id="coupon-code" [(ngModel)]="code_cupon" required="" type="text" class="form-control" placeholder="Código de promoción">
-                                    <button class="coupon-btn btn btn-secondary" (click)="apllyCupon()" type="submit">Aplicar</button>
+                                    <button class="coupon-btn btn btn-secondary" (click)="apllyCupon()" [disabled]="loading" type="submit">
+                                        <div *ngIf="loading" class="loading-spinner justify-content-center align-items-center">
+                                            <div class="row">
+                                                <div class="col-sm-2">
+                                                    <div class="sp bg-white sp-bars"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <span *ngIf="!loading">Aplicar</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
