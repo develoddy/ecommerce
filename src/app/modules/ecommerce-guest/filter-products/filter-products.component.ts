@@ -137,11 +137,11 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   addCategorie(categorie:any) {
-    let index = this.categories_selecteds.findIndex((item:any) => item == categorie.id );
+    let index = this.categories_selecteds.findIndex((item:any) => item == categorie._id );
     if (index != -1) {
       this.categories_selecteds.splice(index, 1);
     } else {
-      this.categories_selecteds.push(categorie.id);
+      this.categories_selecteds.push(categorie._id);
     }
     this.filterProduct();
   }
@@ -157,18 +157,47 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   filterProduct() {
-    let data = {
-      categories_selecteds: this.categories_selecteds,
-      is_discount: this.is_discount,
-      variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
-      price_min: $("#amount-min").val(),
-      price_max: $("#amount-max").val(),
-    }
-    this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
-      this.products = resp.products;
-      
-    });
+    setTimeout(() => {
+      let priceRange = $("#amount").val(); // Obtiene el valor del input, ej. "$39 - $83"
+      if (!priceRange) {
+        console.error("El input #amount no tiene valor definido.");
+        return;
+      }
+      let priceArray = priceRange.replace(/\$/g, "").split(" - "); // Remueve todos los '$'
+      let data = {
+        categories_selecteds: this.categories_selecteds,
+        is_discount: this.is_discount,
+        variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
+        price_min: priceArray[0] ? parseFloat(priceArray[0].trim()) : null,
+        price_max: priceArray[1] ? parseFloat(priceArray[1].trim()) : null,
+      }
+      this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
+        this.products = resp.products;
+      });
+    }, 500);
   }
+  
+  // clearFilters() {
+  //   //this.categories_selecteds = [];
+  //   this.is_discount = false;
+  //   //this.variedad_selected = null;
+
+  //   $("#amount").val(""); // Limpiar el input de precio
+  //   $("#slider-range").slider("values", [0, 10]); // Restablecer el slider (ajusta los valores según tu configuración)
+
+  //   let data = {
+  //       categories_selecteds: this.categories_selecteds,
+  //       is_discount: this.is_discount,
+  //       variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
+  //       price_min: null,
+  //       price_max: null,
+  //   };
+
+  //   this._ecommerceGuestService.filterProduct(data).subscribe((resp: any) => {
+  //       this.products = resp.products;
+  //   });
+  // }
+
 
   getRouterDiscount(product:any) {
     if (product.campaing_discount) {

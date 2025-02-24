@@ -176,7 +176,7 @@
                                     <li class="item"><a href="#;" class="rounded-5"><span class="filter-value">Blue</span><i class="icon anm anm-times-r"></i></a></li>
                                     <li class="item"><a href="#;" class="rounded-5"><span class="filter-value">XL</span><i class="icon anm anm-times-r"></i></a></li>
                                 </ul>
-                                <a href="#;" class="btn btn-sm brd-link">Limpiar todo</a>
+                                <a href="#;" onclick="return false;" (click)="filterProduct();" class="btn btn-sm brd-link">Limpiar todo</a>
                             </div>
                         </div>
                         <!--End Filter By-->
@@ -186,7 +186,10 @@
                             <div class="widget-content filterDD">
                                 <ul class="sidebar-categories scrollspy morelist clearfix">
                                     <ng-container *ngFor="let categorie of categories">
-                                        <li class="lvl1 more-item"><a href="#" onclick="return false;" (click)="addCategorie(categorie)" class="site-nav">{{ categorie.title }} <span class="count">(27)</span></a></li>
+                                        <!-- <li class="lvl1 more-item"> -->
+                                        <li [ngClass]="{'current-cat': categories_selecteds.includes(categorie.id) }" >
+                                            <a href="#" onclick="return false;" (click)="addCategorie(categorie)" class="site-nav">{{ categorie.title }} <span class="count">(27)</span></a>
+                                        </li>
                                     </ng-container>
                                 </ul>
                             </div>
@@ -199,7 +202,7 @@
                                 <div id="slider-range" class="mt-2"></div>
                                 <div class="row">
                                     <div class="col-6"><input id="amount" type="text" /></div>
-                                    <div class="col-6 text-right"><button class="btn btn-sm">filtrar</button></div>
+                                    <div class="col-6 text-right"><button class="btn btn-sm" (click)="filterProduct()">filtrar</button></div>
                                 </div>
                             </form>
                         </div>
@@ -230,7 +233,12 @@
                             <div class="widget-title"><h2>Talla</h2></div>
                             <div class="widget-content filter-size filterDD">
                                 <ul class="swacth-list size-swatches d-flex-center clearfix">
-                                    <li class="swatch large radius soldout"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XS">XS</span></li>
+                                    <ng-container *ngFor="let variedad of variedades">
+                                        <li [ngClass]="{'chosen': variedad_selected.id == variedad.id}" class="chosen">
+                                            <a href="#" onclick="return false;" (click)="selectedVariedad(variedad)" > {{variedad.valor}} </a>
+                                        </li>
+                                    </ng-container>
+                                    <!-- <li class="swatch large radius soldout"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XS">XS</span></li>
                                     <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="S">S</span></li>
                                     <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="M">M</span></li>
                                     <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="L">L</span></li>
@@ -240,13 +248,13 @@
                                     <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XXL">XXL</span></li>
                                     <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="25">25</span></li>
                                     <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="35">35</span></li>
-                                    <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="40">40</span></li>
+                                    <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="40">40</span></li> -->
                                 </ul>
                             </div>
                         </div>
                         <!--End Size Swatches-->
                         <!--Product type-->
-                        <div class="sidebar-widget filterBox filter-widget product-type">
+                        <div class="sidebar-widget filterBox filter-widget product-type d-none">
                             <div class="widget-title"><h2>Tipo de producto</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="clearfix">
@@ -258,7 +266,7 @@
                         </div>
                         <!--End Product type-->
                         <!--Brand-->
-                        <div class="sidebar-widget filterBox filter-widget brand-filter">
+                        <div class="sidebar-widget filterBox filter-widget brand-filter d-none">
                             <div class="widget-title"><h2>Marcas</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="clearfix">
@@ -270,7 +278,7 @@
                         </div>
                         <!--End Brand-->
                         <!--Availability-->
-                        <div class="sidebar-widget filterBox filter-widget availability">
+                        <div class="sidebar-widget filterBox filter-widget availability d-none">
                             <div class="widget-title"><h2>Disponibilidad</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="clearfix">
@@ -281,7 +289,7 @@
                         </div>
                         <!--End Availability-->
                         <!--Product Tags-->
-                        <div class="sidebar-widget filterBox filter-widget product-tag">
+                        <div class="sidebar-widget filterBox filter-widget product-tag d-none">
                             <div class="widget-title"><h2>Etiquetas de productos</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="tags-list product-tags d-flex-wrap clearfix">
