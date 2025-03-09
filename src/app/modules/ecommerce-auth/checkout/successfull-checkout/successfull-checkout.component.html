@@ -6,7 +6,7 @@
             <h2>¡Gracias por su orden!</h2>
             <p class="mb-1 lh-1">El pago se ha procesado correctamente y tu pedido está en camino</p>
             <p class="mb-1 lh-1">Recibirá un correo electrónico de confirmación de pedido con detalles de su pedido y un enlace para seguir su progreso.</p>                                       
-            <p class="text-order badge bg-dark mt-3 rounded-0 text-uppercase">Transaction ID: GHERT05764</p>
+            <p class="text-order badge bg-dark mt-3 rounded-0 text-uppercase" *ngIf="this.sale">Identificación de transacción: {{ sale.n_transaction }}</p>
         </div>
         <!--End Order success-->
         <div class="row checkout-form">
@@ -14,15 +14,15 @@
                 <!--Order Summary-->
                 <div class="block order-summary">
                     <div class="block-content">
-                        <h3 class="title mb-3">Resumen del pedido</h3>
+                        <h3 class="title mb-3 text-uppercase ls-1">Resumen del pedido</h3>
                         <div class="table-responsive-sm table-bottom-brd order-table"> 
                             <table class="table table-hover align-middle mb-0">
                                 <thead>
                                     <tr>
-                                        <th class="text-start">Image</th>
-                                        <th class="text-start proName">Product</th>
-                                        <th class="text-center">Qty</th>
-                                        <th class="text-center">Price</th>
+                                        <th class="text-start">Imagen</th>
+                                        <th class="text-start proName">Producto</th>
+                                        <th class="text-center">Cant.</th>
+                                        <th class="text-center">Precio</th>
                                         <th class="text-center">Subtotal</th>
                                     </tr>
                                 </thead>
@@ -31,20 +31,28 @@
                                         <tr>
                                             <td class="text-start">
                                                 <a href="product-layout1.html" class="thumb">
-                                                    <img class="blur-up lazyload" [attr.data-src]="sale.variedade.files[1].preview_url" [src]="sale.variedade.files[1].preview_url" alt="product" title="Product" width="120" height="170" />
+                                                    <img 
+                                                        class="blur-up lazyload" 
+                                                        [attr.data-src]="sale.variedade.files[1].preview_url" 
+                                                        [src]="sale.variedade.files[1].preview_url" 
+                                                        alt="{{ sale.product.title }}" 
+                                                        title="{{ sale.product.title }}" 
+                                                        width="120" 
+                                                        height="170" 
+                                                    />
                                                 </a>
                                             </td>
                                             <td class="text-start proName">
                                                 <div class="list-view-item-title">
-                                                    <a href="product-layout1.html">{{ sale.product.title }}</a>
+                                                    <a href="#">{{ sale.product.title }}</a>
                                                 </div>
                                                 <div class="cart-meta-text">
                                                     Color: {{ sale.variedade.color }}<br>Size: {{ sale.variedade.valor }}
                                                 </div>
                                             </td>
-                                            <td class="text-center">2</td>
-                                            <td class="text-center">{{ euro }}15.99</td> 
-                                            <td class="text-center"><strong>{{ euro }}15.99</strong></td>
+                                            <td class="text-center">{{ sale.cantidad }}</td>
+                                            <td class="text-center">{{ sale.price_unitario }} {{ euro }}</td> 
+                                            <td class="text-center"><strong>{{ sale.total }} {{ euro }}</strong></td>
                                         </tr>
                                     </ng-container>
                                 </tbody>
@@ -59,9 +67,9 @@
                     <div class="cart-order-detail cart-col">
                         <div class="row g-0 border-bottom pb-2">
                             <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Subtotal</strong></span>
-                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ euro }}15.99</span></span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ totalCarts }} {{ euro }}</span></span>
                         </div>
-                        <div class="row g-0 border-bottom py-2">
+                        <div class="row g-0 border-bottom py-2 d-none">
                             <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Coupon Discount</strong></span>
                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">-$25.00</span></span>
                         </div>
@@ -74,8 +82,8 @@
                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Free shipping</span></span>
                         </div>
                         <div class="row g-0 pt-2">
-                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6"><strong>Total</strong></span>
-                            <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end text-primary"><b class="money">15.99 {{ euro }}</b></span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase"><strong>Total</strong></span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end text-primary"><b class="money">{{ totalCarts }} {{ euro }}</b></span>
                         </div>
                     </div>                               
                 </div>
@@ -88,14 +96,26 @@
                         <div class="row g-0">
                             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                 <div class="shipping-details mb-4 mb-sm-0">
-                                    <h3 class="title mb-3">Shipping Address</h3>
-                                    <p>No 40 Gallaxy Enque Street 133/2,</p>
-                                    <p>New York,</p>
-                                    <p>USA</p>
-                                    <p>00004-1988</p>
+                                    <h3 class="title mb-3 text-uppercase ls-1">Dirección de envío</h3>
+                                    <ng-container *ngIf="this.shippingAddress">
+                                        <p class="text-bold">{{ shippingAddress.name }} {{ shippingAddress.surname }}</p>
+                                        <p>{{ shippingAddress.address }}</p>
+                                        <p>{{ shippingAddress.zipcode }} {{ shippingAddress.poblacion }}, {{ shippingAddress.ciudad }}</p>
+                                        <p>Tel: {{ shippingAddress.phone }}</p>
+                                        <div class="form-text px-2 mt-3 text-dark" style="width: fit-content !important; background-color: #f3f3f3;">Dirección de envío habitual</div>
+                                    </ng-container>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="billing-details">
+                                    <h3 class="title mb-3 text-uppercase ls-1">Método de pago</h3>
+                                    <!-- <p>Paypal</p> -->
+                                    <ng-container *ngIf="this.sale">
+                                        <p>{{ sale.method_payment }}</p>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6 d-none">
                                 <div class="billing-details">
                                     <h3 class="title mb-3">Billing Address</h3>
                                     <p>No 40 Gallaxy Enque Street 133/2,</p>
@@ -110,17 +130,17 @@
                 <!--Order Address-->
 
                 <!--Order Method-->
-                <div class="block mt-4">
+                <div class="block mt-4 d-none">
                     <div class="block-content">  
                         <div class="row g-0">
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6 d-none">
                                 <div class="shipping-details mb-4 mb-sm-0">
                                     <h3 class="title mb-3">Shipping Method</h3>
                                     <p>Flat Rate - Fixeds</p>
                                     <p>Delivery Date: N/A</p>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-12 d-none">
                                 <div class="billing-details">
                                     <h3 class="title mb-3">Payment Method</h3>
                                     <p class="d-none">Check / Money order</p> 
@@ -138,18 +158,20 @@
                         <div class="row g-0">
                             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                 <div class="shipping-details mb-4 mb-sm-0">
-                                    <h3 class="title mb-3">Order details</h3>
-                                    <p>Order ID: GHERT05764</p>
-                                    <p>Order Date: October 14, 2023</p>
-                                    <p>Order Total: {{ euro }}15.99</p>
+                                    <h3 class="title mb-3 text-uppercase ls-1">Detalles del pedido</h3>
+                                    <ng-container *ngIf="this.sale">
+                                        <p>ID del pedido: {{ sale.n_transaction }}</p>
+                                        <p>Fecha de pedido: {{ formatDate(sale.updatedAt) }}</p>
+                                        <p>Total del pedido {{ sale.total }}{{ euro }}</p>
+                                    </ng-container>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                                 <div class="billing-details">
-                                    <h3 class="title mb-3">Expected date of delivery</h3>
-                                    <p>Your order is on the way</p>
-                                    <p class="h5 my-2">October 18, 2023</p>
-                                    <p><a href="#" class="btn-link">Track order</a></p>
+                                    <h3 class="title mb-3 text-uppercase ls-1">Fecha prevista de entrega</h3>
+                                    <p>Su pedido está en camino</p>
+                                    <p class="h5 my-2">18 de octubre de 2023</p>
+                                    <p><a href="#" class="btn-link">Seguimiento de pedidos</a></p>
                                 </div>
                             </div>
                         </div>
@@ -160,8 +182,8 @@
                 <!--Order Delivery-->
                 <div class="d-flex-wrap w-100 mt-4 text-center">
                     <a href="index.html" onclick="return false;" (click)="navigateToHome()" class="d-inline-flex align-items-center btn btn-outline-primary me-2 mb-2 me-sm-3"><i class="me-2 icon an an-angle-left-r"></i>Continue Shopping</a>
-                    <button type="button" class="d-inline-flex align-items-center btn me-2 mb-2 me-sm-3"><i class="me-2 icon an an-print"></i>Print Order</button>
-                    <button type="button" class="d-inline-flex align-items-center btn me-2 mb-2 me-sm-3"><i class="me-2 icon an an-sync-ar"></i>Re-Order</button>
+                    <button type="button" class="d-inline-flex align-items-center btn me-2 mb-2 me-sm-3 d-none"><i class="me-2 icon an an-print"></i>Orden de impresión</button>
+                    <button type="button" class="d-inline-flex align-items-center btn me-2 mb-2 me-sm-3 d-none"><i class="me-2 icon an an-sync-ar"></i>Re-Order</button>
                 </div>
                 <!--Order delivery-->
             </div>

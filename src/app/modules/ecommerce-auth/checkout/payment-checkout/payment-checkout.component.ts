@@ -152,6 +152,9 @@ export class PaymentCheckoutComponent implements OnInit {
 
           this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}).subscribe(
             (resp:any) => {
+
+              console.log("Debbug - component Payment-checkout - ", resp);
+              
               this.isLastStepActive_3 = false;
               setTimeout(() => {
                 if (resp.code === 403 ) {
@@ -164,6 +167,8 @@ export class PaymentCheckoutComponent implements OnInit {
 
                   // Actualiza el servicio para indicar que la venta fue exitosa
                   this.checkoutService.setSaleSuccess(true);
+
+                  this.checkoutService.setSaleData(resp);
                   //this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'successfull']);
                 }
               }, 100);  

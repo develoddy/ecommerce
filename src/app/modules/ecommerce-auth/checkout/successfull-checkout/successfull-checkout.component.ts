@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { CheckoutService } from '../../_services/checkoutService';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -34,6 +35,7 @@ export class SuccessfullCheckoutComponent implements OnInit {
   phone: string = '';
   
   address_client_selected:any = null;
+  shippingAddress:any=null;
   listCarts:any = [];
   totalCarts:any=null;
   show = false;
@@ -74,6 +76,7 @@ export class SuccessfullCheckoutComponent implements OnInit {
     public _router: Router,
     private subscriptionService: SubscriptionService,
     public routerActived: ActivatedRoute,
+    private checkoutService: CheckoutService,
   ) {
     this.routerActived.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  // Valor predeterminado
@@ -87,8 +90,8 @@ export class SuccessfullCheckoutComponent implements OnInit {
 
   ngOnInit(): void {
 
-     // Emitir un evento con el valor que desees
-     this.activate.emit(true);
+    // Emitir un evento con el valor que desees
+    this.activate.emit(true);
 
     this.subscriptionService.setShowSubscriptionSection(false);
     this._authEcommerce.loading$.subscribe(isLoading => {
@@ -100,15 +103,37 @@ export class SuccessfullCheckoutComponent implements OnInit {
     this.checkIfAddressClientExists();
   
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
-      this.listCarts = resp;
-      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+      this.sale = resp;
+      this.totalCarts = this.sale.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
     });
+
+
+    this.checkoutService.saleData$.subscribe((sale) => {
+      if (sale) {
+        this.sale = sale.sale;
+
+        console.log("sale.sale: ", sale.sale);
+        console.log("this.checkoutService.saleData$.subscribe((sale): ", this.sale);
+        this.totalCarts = parseFloat(sale.sale.total); // Extraemos el total directamente
+        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+
+
+        this.saleDetails = sale.saleDetails; // Extraer y asignar los detalles de la venta
+        console.log("Detalles de la venta:", this.saleDetails);
+      }
+    });
+    
 
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
     }, 50);
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   private verifyAuthenticatedUser(): void {
@@ -126,10 +151,8 @@ export class SuccessfullCheckoutComponent implements OnInit {
     this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
       (resp: any) => {
         this.listAddressClients = resp.address_client;
-        if (this.listAddressClients.length === 0) {
-          sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-          this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
-        }
+        this.shippingAddress = this.listAddressClients[0]; // Asignamos la primera dirección
+        // NOTA: Ver como se puede configurar para que coja la direccion de envio habitual
     });
   }
 
