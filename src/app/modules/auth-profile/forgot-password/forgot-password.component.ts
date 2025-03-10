@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
 declare function alertDanger([]):any;
@@ -21,6 +21,9 @@ export class ForgotPasswordComponent implements OnInit
   isTablet: boolean = false;
   isDesktop: boolean = false;
 
+  locale: string = "";
+  country: string = ""; 
+
   flagSendEmail: Boolean = false;
 
   public loading: boolean = false;
@@ -28,9 +31,13 @@ export class ForgotPasswordComponent implements OnInit
   constructor(
     public _authService: AuthService,
     public _router: Router,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private routerActived: ActivatedRoute,
   ) { 
-    //translate.setDefaultLang('es');
+    this.routerActived.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado
+      this.country = params.get('country') || 'es'; // Valor predeterminado
+    });
   }
 
   ngOnInit(): void {

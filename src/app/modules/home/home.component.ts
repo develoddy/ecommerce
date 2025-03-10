@@ -44,6 +44,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   //private subscription: Subscription;
   REVIEWS:any=null;
 
+  // Count cart & wishilist
+  listCarts: any[] = [];
+  totalCarts: number = 0;
+  listWishlists: any = [];
+  totalWishlist: number = 0;
+
   private discountCache = new Map<number, number>(); // Caché para almacenar descuentos calculados
 
   activeIndex: number = 0;
@@ -71,6 +77,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   CURRENT_USER_AUTHENTICATED:any=null;
 
   private subscription: Subscription | undefined;
+
+  private subscriptions: Subscription = new Subscription();
 
   isMobile: boolean = false;
   isTablet: boolean = false;
@@ -117,6 +125,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.checkDeviceType();
 
+    this.subscribeToCartData(); 
+
+    this.subscribeToWishlistData();
+
     let TIME_NOW = new Date().getTime();
     
     const listHomeSubscription = this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
@@ -160,8 +172,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     //this.extractTags();
-   
-
     this.subscription?.add(listHomeSubscription);
   }
 
@@ -690,10 +700,33 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  private subscribeToCartData(): void {
+    this.subscriptions.add(
+      this._cartService.currenteDataCart$.subscribe((resp: any) => {
+        this.listCarts = resp;
+        this.totalCarts = this.listCarts.reduce((sum, item) => sum + parseFloat(item.total), 0);
+      })
+    );
+  }
+
+  private subscribeToWishlistData(): void {
+    this.subscriptions.add(
+      this._wishlistService.currenteDataWishlist$.subscribe((resp: any) => {
+        this.listWishlists = resp;
+        this.totalWishlist = this.listWishlists.reduce((sum:any, item:any) => sum + parseFloat(item.total), 0);
+      })
+    );
+  }
+
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
+
     cleanupHOMEINITTEMPLATE($);
     cleanupProductZoom($);
     this.cleanupPSWP();

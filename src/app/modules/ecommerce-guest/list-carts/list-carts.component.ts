@@ -7,6 +7,7 @@ import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { Subscription, combineLatest } from 'rxjs';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
+import { WishlistService } from '../_service/wishlist.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -40,6 +41,9 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   COUNT_REVIEW:any=null;
   exist_review:any=null;
 
+  listWishlists: any = [];
+  totalWishlist: number = 0;
+
   private subscriptions: Subscription = new Subscription(); // Mantener todas las subscripciones
 
   locale: string = "";
@@ -53,7 +57,8 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     private authService: AuthService,
     private subscriptionService: SubscriptionService,
     private titleService: Title, // seo
-    private metaService: Meta
+    private metaService: Meta,
+    public _wishlistService: WishlistService,
   ) {
     this.cartService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
@@ -78,6 +83,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.checkUserAuthenticationStatus();
     this.getCarts();
     this.showRelatedProducts();
+    this.subscribeToWishlistData();
   }
 
   private checkUserAuthenticationStatus(): void {
@@ -347,6 +353,15 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       { name: 'twitter:image', content: imageUrl },
     ];
     metaTags.forEach((tag:any) => this.metaService.updateTag(tag));
+  }
+
+  private subscribeToWishlistData(): void {
+    this.subscriptions.add(
+      this._wishlistService.currenteDataWishlist$.subscribe((resp: any) => {
+        this.listWishlists = resp;
+        this.totalWishlist = this.listWishlists.reduce((sum:any, item:any) => sum + parseFloat(item.total), 0);
+      })
+    );
   }
 
   ngOnDestroy(): void {

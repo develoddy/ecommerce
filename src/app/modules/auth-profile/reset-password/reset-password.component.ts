@@ -19,6 +19,9 @@ export class ResetPasswordComponent implements OnInit {
 
   isPasswordVisible: boolean = false;
 
+  locale: string = "";
+  country: string = ""; 
+
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
@@ -32,8 +35,13 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     public _authService: AuthService,
     public _router: Router,
-    private routerActived: ActivatedRoute
-  ) {}
+    private routerActived: ActivatedRoute,
+  ) {
+    this.routerActived.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado
+      this.country = params.get('country') || 'es'; // Valor predeterminado
+    });
+  }
 
 
   ngOnInit(): void {

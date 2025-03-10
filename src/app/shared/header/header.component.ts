@@ -19,9 +19,6 @@ declare function productZoom([]):any;
 declare function alertDanger([]): any;
 declare function alertSuccess([]): any;
 
-
-
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -62,8 +59,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     public authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private wishlistService: WishlistService,
-    //private translate: TranslateService,
-    //private languageService: LanguageService,
     private ecommerceGuestService: EcommerceGuestService,
     private minicartService: MinicartService,
     private subscriptionService: SubscriptionService

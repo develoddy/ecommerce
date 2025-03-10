@@ -620,7 +620,8 @@
                                 <!-- Start Product Image -->
                                 <div class="product-image">
                                     <!-- Start Product Image -->
-                                    <a [href]="'/product/'+related_product.slug" class="product-img">
+                                    <!-- <a [href]="'/product/'+related_product.slug" class="product-img"> -->
+                                    <a [routerLink]="['/', locale, country, 'shop', 'product', related_product.slug]" class="product-img">
                                         <img class="blur-up lazyload" [src]="related_product.imagen" alt="Product" title="Product" width="625" height="808" />
                                     </a>
                                     <!-- End Product Image -->
@@ -653,7 +654,8 @@
                                 <div class="product-details px-3 p-1">
                                     <!-- Product Name -->
                                     <div class="product-name">
-                                        <a [href]="'/product/'+related_product.slug">{{related_product.title}}</a>
+                                        <!-- <a [href]="'/product/'+related_product.slug">{{related_product.title}}</a> -->
+                                        <a [routerLink]="['/', locale, country, 'shop', 'product', related_product.slug]">{{related_product.title}}</a>
                                     </div>
                                     <!-- End Product Name -->
                                     <!-- Product Price -->
@@ -929,6 +931,32 @@
         <!--End Related Products-->
     </div>
     <!-- End Body Container -->
+
+    <!--Sticky Menubar Mobile-->
+    <div class="menubar-mobile d-flex align-items-center justify-content-between d-lg-none">
+        <div class="menubar-shop menubar-item">
+            <a href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']"  ><i class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">Compra</span></a>
+        </div>
+        <div class="menubar-account menubar-item">
+            <a href="my-account.html" [routerLink]="currentUser.email ? ['/', locale, country, 'account', 'my-account'] : ['/', locale, country, 'auth', 'login']"><i class="menubar-icon icon anm anm-user-al"></i><span class="menubar-label">Cuenta</span></a>
+        </div>
+        <div class="menubar-search menubar-item">
+            <a [href]="['/']"><span class="menubar-icon anm anm-home-l"></span><span class="menubar-label">Inicio</span></a>
+        </div>
+        <div class="menubar-wish menubar-item">
+            <a href="wishlist-style1.html" onclick="return false;"  [routerLink]="['/', this.locale, this.country, 'account', 'favorites']">
+                <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-heart-l"></i><span class="wishlist-count counter menubar-count" *ngIf="listWishlists.length > 0">{{ listWishlists.length }}</span></span>
+                <span class="menubar-label">Favoritos</span>
+            </a>
+        </div>
+        <div class="menubar-cart menubar-item">
+            <a href="#;" onclick="return false;" [routerLink]="currentUser ? ['/', locale, country, 'shop', 'cart'] : ['/', locale, country, 'auth', 'login']" class="btn-minicart" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
+                <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-cart-l"></i><span class="cart-count counter menubar-count" *ngIf="listCarts.length > 0">{{ listCarts.length }}</span></span>
+                <span class="menubar-label">Carrito</span>
+            </a>
+        </div>
+    </div>
+    <!--End Sticky Menubar Mobile-->
 
     <!--Scoll Top-->
     <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
 declare function alertDanger([]):any;
@@ -24,6 +24,8 @@ export class RegisterComponent implements OnInit {
     repeat_password: false,
   };
 
+  locale: string = "";
+  country: string = "";  
 
   email:string = "";
   name:string = "";
@@ -52,9 +54,14 @@ export class RegisterComponent implements OnInit {
   constructor(
     public _authService: AuthService,
     public _router: Router,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public routerActived: ActivatedRoute,
   ) {
-    translate.setDefaultLang('es');
+    
+    this.routerActived.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  // Valor predeterminado
+      this.country = params.get('country') || 'es'; // Valor predeterminado
+    });
   }
 
   ngOnInit(): void {
