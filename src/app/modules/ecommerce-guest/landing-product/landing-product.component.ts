@@ -183,6 +183,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       return; // Salir si no hay datos de producto
     }
     this.product_selected = resp.product;
+    console.log("DEBBUG * Product Seletec :  ", this.product_selected);
+    
     this.related_products = resp.related_products;
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;

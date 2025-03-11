@@ -273,41 +273,31 @@
             <!--End Product Nav-->
 
             <!--Product Tabs-->
-            <div class="tabs-listing section pb-0">
+            <div class="tabs-listing section pb-0 px-3">
                 <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-center d-none d-md-flex">
-                    <!-- <li rel="description" class="active"><a class="tablink">Descripción</a></li> -->
-                    <li rel="additionalInformation" class="active"><a class="tablink">Información adicional</a></li>
-                    <li rel="size-chart" class="d-none"><a class="tablink">Tabla de tallas</a></li>
-                    <li rel="shipping-return" class="d-none"><a class="tablink">Envío y devolución</a></li>
+                    <li rel="description" class="active"><a class="tablink">Descripción</a></li>
+                    <!-- <li rel="additionalInformation"><a class="tablink">Composición, origen y cuidados</a></li> -->
+                    <!-- <li rel="size-chart"><a class="tablink">Tabla de tallas</a></li> -->
+                    <li rel="shipping-return"><a class="tablink">Envíos y devoluciones</a></li>
                     <li rel="reviews"><a class="tablink">Reseñas</a></li>
                 </ul>
-                <div class="tab-container px-3">
+                <div class="tab-container">
                     <!--Description-->
-                    <!-- <h3 class="tabs-ac-style d-md-none" rel="description">Descripción</h3>
+                    <h3 class="tabs-ac-style d-md-none" rel="description">Descripción</h3>
                     <div id="description" class="tab-content">
-                        <div class="product-description">
+                        <div class="product-description mb-3">
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description">
-                                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
-                                    <h4 class="mb-3">Features</h4>
-                                    <ul class="checkmark-info">
-                                        <li>High quality fabric, very comfortable to touch and wear.</li>
-                                        <li>This cardigan sweater is cute for no reason,perfect for travel and casual.</li>
-                                        <li>It can tie in front-is forgiving to you belly or tie behind.</li>
-                                        <li>Light weight and perfect for layering.</li>
-                                    </ul>
-                                    <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
-                                </div>
-                                <div class="col-12 col-sm-12 col-md-4 col-lg-4 d-none">
-                                    <img data-src="assets/images/content/product-detail-img.jpg" src="assets/images/content/product-detail-img.jpg" alt="image" width="600" height="600" />
+                                <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description"></div>
+                                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                    <img [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="image" width="600" height="600" />
                                 </div>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                     <!--End Description-->
 
                     <!--Additional Information-->
-                    <h3 class="tabs-ac-style d-md-none" rel="additionalInformation">Información adicional</h3>
+                    <h3 class="tabs-ac-style d-md-none d-none" rel="additionalInformation">Composición, origen y cuidados</h3>
                     <div id="additionalInformation" class="tab-content">
                         <div class="product-description">
                             <div class="row">
@@ -349,7 +339,7 @@
                     <!--End Additional Information-->
 
                     <!--Size Chart-->
-                    <h3 class="tabs-ac-style d-md-none d-none" rel="size-chart">Tabla de tallas</h3>
+                    <!-- <h3 class="tabs-ac-style d-md-none d-none" rel="size-chart">Tabla de tallas</h3>
                     <div id="size-chart" class="tab-content d-none">
                         <h4 class="mb-2">Ready to Wear Clothing</h4>
                         <p class="mb-4">This is a standardised guide to give you an idea of what size you will need, however some brands may vary from these conversions.</p>
@@ -478,25 +468,62 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div> -->
                     <!--End Size Chart-->
 
                     <!--Shipping &amp; Return-->
-                    <h3 class="tabs-ac-style d-md-none d-none" rel="shipping-return">Envío y devolución</h3>
-                    <div id="shipping-return" class="tab-content d-none">
-                        <h4>Shipping &amp; Return</h4>
-                        <ul class="checkmark-info">
-                            <li>Dispatch: Within 24 Hours</li>
-                            <li>1 Year Brand Warranty</li>
-                            <li>Free shipping across all products on a minimum purchase of $50.</li>
-                            <li>International delivery time - 7-10 business days</li>
-                            <li>Cash on delivery might be available</li>
-                            <li>Easy 30 days returns and exchanges</li>
+                    <h3 class="tabs-ac-style d-md-none" rel="shipping-return">Envío y devolución</h3>
+                    <div id="shipping-return" class="tab-content">
+                        <!-- <h4 class="text-uppercase fw-bold">Envío &amp; devolución</h4> -->
+                        <div class="d-flex flex-column">
+                            <div class="border-bottom mb-4">
+                                <h4 class="text-uppercase fw-bold mb-0">Envíos</h4>
+                                <div class="d-flex flex-row py-3">
+                                    <div class="">Envío a domicilio</div>
+                                    <div class="">1 a 6 días laborables</div>
+                                    <div class="">
+                                        <span>Gratis en pedidos superiores a 30 €</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <h4 class="text-uppercase fw-bold">Devoluciones</h4>
+                                <div>Dispones de <strong>30 días</strong> para realizar tu devolución a través de cualquiera de los siguientes métodos:</div>
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex flex-row border-bottom py-3">
+                                        <div class="d-flex flex-column"><span>Devolución en tienda</span></div>
+                                        <div class="d-flex flex-column"><span class="fw-bold">Gratis</span></div>
+                                    </div>
+                                    <div class="d-flex flex-row border-bottom py-3">
+                                        <div class="d-flex flex-column"><span>Devolución en punto GLS</span></div>
+                                        <div class="d-flex flex-column"><span class="fw-bold">Gratis</span></div>
+                                    </div>
+                                    <div class="d-flex flex-row border-bottom py-3">
+                                        <div class="d-flex flex-column"><span>Devolución con recogida a domicilio</span></div>
+                                        <div class="d-flex flex-column"><span class="fw-bold">Gratis</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>
+                                    Por motivos de higiene, no podrán devolverse los productos precintados, tales como la lencería, la ropa interior, los productos de baño y los pendientes que no conserven la etiqueta o el dispositivo de protección. Los artículos que contienen sustancias inflamables (como perfumes, body mist, etc.) solo se pueden devolver con la etiqueta de mercancías peligrosas y en su embalaje original.
+                                </p>
+                                <p>Consulta más información en <a href="#" class="fw-bold" >Ayuda</a>.</p>
+                            </div>
+                        </div>
+
+                        <!-- <ul class="checkmark-info">
+                            <li>Envío: En 24 horas</li>
+                            <li>1 año de garantía de marca</li>
+                            <li>Envío gratuito en todos los productos con una compra mínima de 30 .</li>
+                            <li>Plazo de entrega internacional: 7-10 días laborables</li>
+                            <li>Podría estar disponible el pago contra reembolso</li>
+                            <li>Devoluciones y cambios fáciles en 30 días</li>
                         </ul>
-                        <h4>Free and Easy Returns</h4>
+                        <h4>Devoluciones gratuitas y sencillas</h4>
                         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
                         <h4>Special Financing</h4>
-                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage.</p>
+                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage.</p> -->
                     </div>
                     <!--End Shipping &amp; Return-->
                     <!--Review-->
