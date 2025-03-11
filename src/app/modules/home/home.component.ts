@@ -139,13 +139,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.sliders = resp.sliders;
       this.categories = resp.categories;
-      this.besProducts = resp.bes_products;
+
       this.ourProducts = resp.our_products;
+      console.log("DEBBUG - ourProducts:  ", this.ourProducts);
+
+      this.besProducts = resp.bes_products;
+      console.log("DEBBUG - besProducts:  ", this.besProducts);
+      
+      
       
       this.FlashSale = resp.FlashSale;
       this.FlashProductList = resp.campaign_products;
 
-      if (this.ourProducts) {
+      if (this.ourProducts || this.besProducts) {
         this.setColoresDisponibles();
       }
 
@@ -384,6 +390,21 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setColoresDisponibles() {
     this.ourProducts.forEach((product: any) => {
+      const uniqueColors = new Map();
+      product.galerias.forEach((tag: any) => {
+        if (!uniqueColors.has(tag.color)) {
+          uniqueColors.set(tag.color, { imagen: tag.imagen, hex: this.getColorHex(tag.color) });
+        }
+      });
+  
+      // Agrega los colores únicos de cada producto al propio producto
+      product.colores = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
+
+      // Agregar propiedad `selectedImage` con la imagen principal del producto
+      product.imagen = product.imagen;
+    });
+
+    this.besProducts.forEach((product: any) => {
       const uniqueColors = new Map();
       product.galerias.forEach((tag: any) => {
         if (!uniqueColors.has(tag.color)) {

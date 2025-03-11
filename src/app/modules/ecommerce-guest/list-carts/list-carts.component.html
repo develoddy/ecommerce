@@ -41,7 +41,8 @@
                         <h5 class="header-title mb-2">Tu carrito está vacío</h5>
                         <p>Inspírate con las últimas tendencias y descubre algo <br /> nuevo para renovar tu armario</p>
                         <div class="view-collection text-center mt-4 mb-4 mt-md-5">
-                            <a [href]="['/filter-products']" class="btn btn-secondary btn-lg px-5">Descubrir novedades</a>
+                            <a onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="btn btn-secondary btn-lg px-5">Descubrir novedades</a>
+                            <!-- <a [href]="['/filter-products']" class="btn btn-secondary btn-lg px-5">Descubrir novedades</a> -->
                         </div>
                     </div>
                 </div>

@@ -257,7 +257,6 @@
                     <h2>Special Offers</h2>
                     <p>Browse the huge variety of our best seller</p>
                 </div>
-
                 <div class="tabs-listing">
                     <ul class="nav nav-tabs style1 justify-content-center" id="productTabs" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -270,8 +269,8 @@
                             <button class="nav-link head-font" id="toprated-tab" data-bs-toggle="tab" data-bs-target="#toprated" type="button" role="tab" aria-controls="toprated" aria-selected="false">Los mejor valorados</button>
                         </li>
                     </ul>
-
                     <div class="tab-content" id="productTabsContent">
+                        <!-- Mejor vendidos -->
                         <div class="tab-pane show active" id="bestsellers" role="tabpanel" aria-labelledby="bestsellers-tab">
                             <!--Product Grid-->
                             <div class="grid-products grid-view-items">
@@ -282,10 +281,7 @@
                                                 <!-- Start Product Image -->
                                                 <div class="product-image">
                                                     <!-- Start Product Image -->
-                                                    <a [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" [queryParams]="{ _id: ourProduct.campaing_discount?.id }" class="product-img rounded-0 w-100"
-                                                    [ngClass]="{ 'vh-73': isDesktop, 'vh-34': isMobile }">
-                                                 
-                                                    <!-- <a href="product-layout1.html" onclick="return false;" [routerLink]="['/es/es/shop/product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}" class="product-img rounded-0 w-100" [ngClass]="{'vh-73': isDesktop, 'vh-34': isMobile}"> height: 34vh !important; -->
+                                                    <a [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" [queryParams]="{ _id: ourProduct.campaing_discount?.id }" class="product-img rounded-0 w-100" [ngClass]="{ 'vh-73': isDesktop, 'vh-34': isMobile }">
                                                         <!-- Image -->
                                                         <img class="primary blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen }}"  src="{{ ourProduct.imagen }}" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
                                                         <!-- End Image -->
@@ -297,7 +293,7 @@
                                                     </a>
                                                     <!-- End Product Image -->
                                                     <!-- Product label -->
-                                                    <div class="product-labels d-none"><span class="lbl pr-label3">New</span></div>
+                                                    <div class="product-labels d-none"><span class="lbl pr-label3">Nuevo</span></div>
                                                     <!-- End Product label -->
                                                     <!--Product Button-->
                                                     <div class="button-set style1">
@@ -335,7 +331,6 @@
                                                         <span class="price">{{ ourProduct.finalPrice }} {{ euro }}</span>
                                                         <!-- <span class="price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} {{ euro }}</span> -->
                                                     </div>
-                                                    <div class="form-text mt-0">4 colores</div>
                                                     <!-- End Product Price -->
                                                     <!-- Product Review -->
                                                     <div class="product-review d-none">
@@ -344,10 +339,7 @@
                                                     </div>
                                                     <!-- End Product Review -->
                                                     <!-- Variant -->
-
                                                     <!-- Swatches Color -->
-                                                    
-                                                    <!-- <label class="label d-flex align-items-center ">Seleccionar color<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label> -->
                                                     <ul class="variants-clr swatches">
                                                         <ng-container *ngFor="let item of ourProduct.colores">
                                                             <li class="swatch medium rounded" [ngClass]=" item.color.replace(' ', '-')" (click)="changeProductImage(ourProduct, item.imagen)">
@@ -356,13 +348,6 @@
                                                         </ng-container>
                                                     </ul>
                                                     <!-- End Swatches Color -->
-
-                                                    <!-- <ul class="variants-clr swatches">
-                                                        <li class="swatch medium rounded gray"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="gray"></span></li>
-                                                        <li class="swatch medium rounded orange"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="orange"></span></li>
-                                                        <li class="swatch medium rounded black"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black"></span></li>
-                                                    </ul> -->
-
                                                     <!-- End Variant -->
                                                 </div>
                                                 <!-- End product details -->
@@ -372,12 +357,13 @@
                                 </div>  
 
                                 <div class="view-collection text-center mt-4 mt-md-5">
-                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="btn btn-secondary btn-lg">Ver colección</a>
+                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="btn btn-secondary btn-lg px-5">Ver colección</a>
                                 </div>
                             </div>
                             <!--End Product Grid-->
                         </div>
 
+                        <!-- Nuevas llegadas -->
                         <div class="tab-pane" id="newarrivals" role="tabpanel" aria-labelledby="newarrivals-tab">
                             <!--Product Grid-->
                             <div class="grid-products grid-view-items">
@@ -388,7 +374,7 @@
                                                 <!-- Start Product Image -->
                                                 <div class="product-image">
                                                     <!-- Start Product Image -->
-                                                    <a href="product-layout1.html" class="product-img rounded-0">
+                                                    <a [routerLink]="['/', locale, country, 'shop', 'product', besProduct.slug]" [queryParams]="{ _id: besProduct.campaing_discount?.id }"  class="product-img rounded-0">
                                                         <!-- Image -->
                                                         <img class="primary blur-up lazyload rounded-0" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
                                                         <!-- End Image -->
@@ -400,30 +386,30 @@
                                                     <!--Product Button-->
                                                     <div class="button-set style1">
                                                         <!--Cart Button-->
-                                                        <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                                        <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal d-none" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
                                                             <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
                                                         </a>
                                                         <!--End Cart Button-->
                                                         <!--Quick View Button-->
-                                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal">
                                                             <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
                                                         </a>
                                                         <!--End Quick View Button-->
                                                         <!--Wishlist Button-->
-                                                        <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                                        <a href="wishlist-style2.html" onclick="return false;" (click)="addWishlist(besProduct, FlashSale)" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a>
                                                         <!--End Wishlist Button-->
                                                         <!--Compare Button-->
-                                                        <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                                        <a href="compare-style2.html" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
                                                         <!--End Compare Button-->
                                                     </div>
                                                     <!--End Product Button-->
                                                 </div>
                                                 <!-- End Product Image -->
                                                 <!-- Start Product Details -->
-                                                <div class="product-details">
+                                                <div class="product-details px-3">
                                                     <!-- Product Name -->
                                                     <div class="product-name">
-                                                        <a href="product-layout1.html">Narror Neck Tie</a>
+                                                        <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', besProduct.slug]" [queryParams]="{_id: besProduct.campaing_discount?.id}">{{ besProduct.title }}</a>
                                                     </div>
                                                     <!-- End Product Name -->
                                                     <!-- Product Price -->
@@ -432,511 +418,35 @@
                                                     </div>
                                                     <!-- End Product Price -->
                                                     <!-- Product Review -->
-                                                    <div class="product-review">
+                                                    <div class="product-review d-none">
                                                         <i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
                                                         <span class="caption hidden ms-1">0 Reviews</span>
                                                     </div>
                                                     <!-- End Product Review -->
-                                                    <!-- Variant -->
+                                                    <!-- Swatches Color -->
                                                     <ul class="variants-clr swatches">
-                                                        <li class="swatch medium radius navy" *ngFor="let color of besProduct.tags; let i = index" [class.active]="color === selectedColor" (click)="selectColor(color)">
-                                                            <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black" [style.backgroundColor]="getColorHex(color)"></span>
-                                                        </li>
-                                                        <li class="swatch medium radius black d-none"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black"></span></li>
-                                                        <li class="swatch medium radius navy d-none"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="navy"></span></li>
-                                                        <li class="swatch medium radius darkgreen d-none"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="darkgreen"></span></li>
+                                                        <ng-container *ngFor="let item of besProduct.colores">
+                                                            <li class="swatch medium rounded" [ngClass]=" item.color.replace(' ', '-')" (click)="changeProductImage(besProduct, item.imagen)">
+                                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}"></span>
+                                                            </li>
+                                                        </ng-container>
                                                     </ul>
-                                                    <!-- End Variant -->
+                                                    <!-- End Swatches Color -->
                                                 </div>
                                                 <!-- End product details -->
                                             </div>
                                         </div>
                                     </ng-container>
-                                    
-                                    <div class="item col-item d-none">
-                                        <div class="product-box">
-                                            <!-- Start Product Image -->
-                                            <div class="product-image">
-                                                <!-- Start Product Image -->
-                                                <a href="product-layout1.html" class="product-img rounded-3">
-                                                    <!-- Image -->
-                                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Image -->
-                                                    <!-- Hover Image -->
-                                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Hover Image -->
-                                                </a>
-                                                <!-- End Product Image -->
-                                                <!--Product Button-->
-                                                <div class="button-set style1">
-                                                    <!--Cart Button-->
-                                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                                    </a>
-                                                    <!--End Cart Button-->
-                                                    <!--Quick View Button-->
-                                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                                    </a>
-                                                    <!--End Quick View Button-->
-                                                    <!--Wishlist Button-->
-                                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                                    <!--End Wishlist Button-->
-                                                    <!--Compare Button-->
-                                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                                    <!--End Compare Button-->
-                                                </div>
-                                                <!--End Product Button-->
-                                            </div>
-                                            <!-- End Product Image -->
-                                            <!-- Start Product Details -->
-                                            <div class="product-details">
-                                                <!-- Product Name -->
-                                                <div class="product-name">
-                                                    <a href="product-layout1.html">Narror Neck Tie</a>
-                                                </div>
-                                                <!-- End Product Name -->
-                                                <!-- Product Price -->
-                                                <div class="product-price">
-                                                    <span class="price">$134.00</span>
-                                                </div>
-                                                <!-- End Product Price -->
-                                                <!-- Product Review -->
-                                                <div class="product-review">
-                                                    <i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                                    <span class="caption hidden ms-1">0 Reviews</span>
-                                                </div>
-                                                <!-- End Product Review -->
-                                                <!-- Variant -->
-                                                <ul class="variants-clr swatches">
-                                                    <li class="swatch medium radius black"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black"></span></li>
-                                                    <li class="swatch medium radius navy"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="navy"></span></li>
-                                                    <li class="swatch medium radius darkgreen"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="darkgreen"></span></li>
-                                                </ul>
-                                                <!-- End Variant -->
-                                            </div>
-                                            <!-- End product details -->
-                                        </div>
-                                    </div>
-                                    <div class="item col-item d-none">
-                                        <div class="product-box">
-                                            <!-- Start Product Image -->
-                                            <div class="product-image">
-                                                <!-- Start Product Image -->
-                                                <a href="product-layout1.html" class="product-img rounded-3">
-                                                    <!-- Image -->
-                                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Image -->
-                                                    <!-- Hover Image -->
-                                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Hover Image -->
-                                                </a>
-                                                <!-- End Product Image -->
-                                                <!-- Product label -->
-                                                <div class="product-labels"><span class="lbl pr-label4">Popular</span></div>
-                                                <!-- End Product label -->
-                                                <!--Product Button-->
-                                                <div class="button-set style1">
-                                                    <!--Cart Button-->
-                                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                                    </a>
-                                                    <!--End Cart Button-->
-                                                    <!--Quick View Button-->
-                                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                                    </a>
-                                                    <!--End Quick View Button-->
-                                                    <!--Wishlist Button-->
-                                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                                    <!--End Wishlist Button-->
-                                                    <!--Compare Button-->
-                                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                                    <!--End Compare Button-->
-                                                </div>
-                                                <!--End Product Button-->
-                                            </div>
-                                            <!-- End Product Image -->
-                                            <!-- Start Product Details -->
-                                            <div class="product-details">
-                                                <!-- Product Name -->
-                                                <div class="product-name">
-                                                    <a href="product-layout1.html">Men's Cheater Jacket</a>
-                                                </div>
-                                                <!-- End Product Name -->
-                                                <!-- Product Price -->
-                                                <div class="product-price">
-                                                    <span class="price">$99.00</span>
-                                                </div>
-                                                <!-- End Product Price -->
-                                                <!-- Product Review -->
-                                                <div class="product-review">
-                                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                                    <span class="caption hidden ms-1">19 Reviews</span>
-                                                </div>
-                                                <!-- End Product Review -->
-                                            </div>
-                                            <!-- End product details -->
-                                        </div>
-                                    </div>
-                                    <div class="item col-item d-none">
-                                        <div class="product-box">
-                                            <!-- Start Product Image -->
-                                            <div class="product-image">
-                                                <!-- Start Product Image -->
-                                                <a href="product-layout1.html" class="product-img rounded-3">
-                                                    <!-- Image -->
-                                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Image -->
-                                                    <!-- Hover Image -->
-                                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Hover Image -->
-                                                </a>
-                                                <!-- End Product Image -->
-                                                <!--Product Button-->
-                                                <div class="button-set style1">
-                                                    <!--Cart Button-->
-                                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                                    </a>
-                                                    <!--End Cart Button-->
-                                                    <!--Quick View Button-->
-                                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                                    </a>
-                                                    <!--End Quick View Button-->
-                                                    <!--Wishlist Button-->
-                                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                                    <!--End Wishlist Button-->
-                                                    <!--Compare Button-->
-                                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                                    <!--End Compare Button-->
-                                                </div>
-                                                <!--End Product Button-->
-                                            </div>
-                                            <!-- End Product Image -->
-                                            <!-- Start Product Details -->
-                                            <div class="product-details">
-                                                <!-- Product Name -->
-                                                <div class="product-name">
-                                                    <a href="product-layout1.html">Casual Mustard Shirt</a>
-                                                </div>
-                                                <!-- End Product Name -->
-                                                <!-- Product Price -->
-                                                <div class="product-price">
-                                                    <span class="price">$167.00</span>
-                                                </div>
-                                                <!-- End Product Price -->
-                                                <!-- Product Review -->
-                                                <div class="product-review">
-                                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i>
-                                                    <span class="caption hidden ms-1">7 Reviews</span>
-                                                </div>
-                                                <!-- End Product Review -->
-                                            </div>
-                                            <!-- End product details -->
-                                        </div>
-                                    </div>
-                                    <div class="item col-item d-none">
-                                        <div class="product-box">
-                                            <!-- Start Product Image -->
-                                            <div class="product-image">
-                                                <!-- Start Product Image -->
-                                                <a href="product-layout1.html" class="product-img rounded-3">
-                                                    <!-- Image -->
-                                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Image -->
-                                                    <!-- Hover Image -->
-                                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Hover Image -->
-                                                </a>
-                                                <!-- End Product Image -->
-                                                <!--Product Button-->
-                                                <div class="button-set style1">
-                                                    <!--Cart Button-->
-                                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                                    </a>
-                                                    <!--End Cart Button-->
-                                                    <!--Quick View Button-->
-                                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                                    </a>
-                                                    <!--End Quick View Button-->
-                                                    <!--Wishlist Button-->
-                                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                                    <!--End Wishlist Button-->
-                                                    <!--Compare Button-->
-                                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                                    <!--End Compare Button-->
-                                                </div>
-                                                <!--End Product Button-->
-                                            </div>
-                                            <!-- End Product Image -->
-                                            <!-- Start Product Details -->
-                                            <div class="product-details">
-                                                <!-- Product Name -->
-                                                <div class="product-name">
-                                                    <a href="product-layout1.html">Sleeve Round T-Shirt</a>
-                                                </div>
-                                                <!-- End Product Name -->
-                                                <!-- Product Price -->
-                                                <div class="product-price">
-                                                    <span class="price">$154.00</span>
-                                                </div>
-                                                <!-- End Product Price -->
-                                                <!-- Product Review -->
-                                                <div class="product-review">
-                                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i>
-                                                    <span class="caption hidden ms-1">19 Reviews</span>
-                                                </div>
-                                                <!-- End Product Review -->
-                                            </div>
-                                            <!-- End product details -->
-                                        </div>
-                                    </div>
-                                    <div class="item col-item d-none">
-                                        <div class="product-box">
-                                            <!-- Start Product Image -->
-                                            <div class="product-image">
-                                                <!-- Start Product Image -->
-                                                <a href="product-layout1.html" class="product-img rounded-3">
-                                                    <!-- Image -->
-                                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Image -->
-                                                    <!-- Hover Image -->
-                                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Hover Image -->
-                                                </a>
-                                                <!-- End Product Image -->
-                                                <!--Product Button-->
-                                                <div class="button-set style1">
-                                                    <!--Cart Button-->
-                                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                                    </a>
-                                                    <!--End Cart Button-->
-                                                    <!--Quick View Button-->
-                                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                                    </a>
-                                                    <!--End Quick View Button-->
-                                                    <!--Wishlist Button-->
-                                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                                    <!--End Wishlist Button-->
-                                                    <!--Compare Button-->
-                                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                                    <!--End Compare Button-->
-                                                </div>
-                                                <!--End Product Button-->
-                                            </div>
-                                            <!-- End Product Image -->
-                                            <!-- Start Product Details -->
-                                            <div class="product-details">
-                                                <!-- Product Name -->
-                                                <div class="product-name">
-                                                    <a href="product-layout1.html">Backpack Laptop Bag</a>
-                                                </div>
-                                                <!-- End Product Name -->
-                                                <!-- Product Price -->
-                                                <div class="product-price">
-                                                    <span class="price">$121.00</span>
-                                                </div>
-                                                <!-- End Product Price -->
-                                                <!-- Product Review -->
-                                                <div class="product-review">
-                                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                                    <span class="caption hidden ms-1">6 Reviews</span>
-                                                </div>
-                                                <!-- End Product Review -->
-                                            </div>
-                                            <!-- End product details -->
-                                        </div>
-                                    </div>
-                                    <div class="item col-item d-none">
-                                        <div class="product-box">
-                                            <!-- Start Product Image -->
-                                            <div class="product-image">
-                                                <!-- Start Product Image -->
-                                                <a href="product-layout1.html" class="product-img rounded-3">
-                                                    <!-- Image -->
-                                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Image -->
-                                                    <!-- Hover Image -->
-                                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Hover Image -->
-                                                </a>
-                                                <!-- End Product Image -->
-                                                <!--Product Button-->
-                                                <div class="button-set style1">
-                                                    <!--Cart Button-->
-                                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                                    </a>
-                                                    <!--End Cart Button-->
-                                                    <!--Quick View Button-->
-                                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                                    </a>
-                                                    <!--End Quick View Button-->
-                                                    <!--Wishlist Button-->
-                                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                                    <!--End Wishlist Button-->
-                                                    <!--Compare Button-->
-                                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                                    <!--End Compare Button-->
-                                                </div>
-                                                <!--End Product Button-->
-                                            </div>
-                                            <!-- End Product Image -->
-                                            <!-- Start Product Details -->
-                                            <div class="product-details">
-                                                <!-- Product Name -->
-                                                <div class="product-name">
-                                                    <a href="product-layout1.html">Cotton Casual Tshirt</a>
-                                                </div>
-                                                <!-- End Product Name -->
-                                                <!-- Product Price -->
-                                                <div class="product-price">
-                                                    <span class="price">$167.00</span>
-                                                </div>
-                                                <!-- End Product Price -->
-                                                <!-- Product Review -->
-                                                <div class="product-review">
-                                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                                    <span class="caption hidden ms-1">13 Reviews</span>
-                                                </div>
-                                                <!-- End Product Review -->
-                                            </div>
-                                            <!-- End product details -->
-                                        </div>
-                                    </div>
-                                    <div class="item col-item d-none">
-                                        <div class="product-box">
-                                            <!-- Start Product Image -->
-                                            <div class="product-image">
-                                                <!-- Start Product Image -->
-                                                <a href="product-layout1.html" class="product-img rounded-3">
-                                                    <!-- Image -->
-                                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Image -->
-                                                    <!-- Hover Image -->
-                                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Hover Image -->
-                                                </a>
-                                                <!-- End Product Image -->
-                                                <!--Product Button-->
-                                                <div class="button-set style1">
-                                                    <!--Cart Button-->
-                                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                                    </a>
-                                                    <!--End Cart Button-->
-                                                    <!--Quick View Button-->
-                                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                                    </a>
-                                                    <!--End Quick View Button-->
-                                                    <!--Wishlist Button-->
-                                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                                    <!--End Wishlist Button-->
-                                                    <!--Compare Button-->
-                                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                                    <!--End Compare Button-->
-                                                </div>
-                                                <!--End Product Button-->
-                                            </div>
-                                            <!-- End Product Image -->
-                                            <!-- Start Product Details -->
-                                            <div class="product-details">
-                                                <!-- Product Name -->
-                                                <div class="product-name">
-                                                    <a href="product-layout1.html">Ankle Casual Pants</a>
-                                                </div>
-                                                <!-- End Product Name -->
-                                                <!-- Product Price -->
-                                                <div class="product-price">
-                                                    <span class="price">$125.00</span>
-                                                </div>
-                                                <!-- End Product Price -->
-                                                <!-- Product Review -->
-                                                <div class="product-review">
-                                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i>
-                                                    <span class="caption hidden ms-1">20 Reviews</span>
-                                                </div>
-                                                <!-- End Product Review -->
-                                            </div>
-                                            <!-- End product details -->
-                                        </div>
-                                    </div>
-                                    <div class="item col-item d-none">
-                                        <div class="product-box">
-                                            <!-- Start Product Image -->
-                                            <div class="product-image">
-                                                <!-- Start Product Image -->
-                                                <a href="product-layout1.html" class="product-img rounded-3">
-                                                    <!-- Image -->
-                                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Image -->
-                                                    <!-- Hover Image -->
-                                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                                    <!-- End Hover Image -->
-                                                </a>
-                                                <!-- End Product Image -->
-                                                <!--Product Button-->
-                                                <div class="button-set style1">
-                                                    <!--Cart Button-->
-                                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                                    </a>
-                                                    <!--End Cart Button-->
-                                                    <!--Quick View Button-->
-                                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                                    </a>
-                                                    <!--End Quick View Button-->
-                                                    <!--Wishlist Button-->
-                                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                                    <!--End Wishlist Button-->
-                                                    <!--Compare Button-->
-                                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                                    <!--End Compare Button-->
-                                                </div>
-                                                <!--End Product Button-->
-                                            </div>
-                                            <!-- End Product Image -->
-                                            <!-- Start Product Details -->
-                                            <div class="product-details">
-                                                <!-- Product Name -->
-                                                <div class="product-name">
-                                                    <a href="product-layout1.html">Straight Fit Trousers</a>
-                                                </div>
-                                                <!-- End Product Name -->
-                                                <!-- Product Price -->
-                                                <div class="product-price">
-                                                    <span class="price">$122.00</span>
-                                                </div>
-                                                <!-- End Product Price -->
-                                                <!-- Product Review -->
-                                                <div class="product-review">
-                                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                                    <span class="caption hidden ms-1">11 Reviews</span>
-                                                </div>
-                                                <!-- End Product Review -->
-                                            </div>
-                                            <!-- End product details -->
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div class="view-collection text-center mt-4 mt-md-5">
-                                    <a href="shop-left-sidebar.html" class="btn btn-secondary btn-lg">Ver colección</a>
+                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="btn btn-secondary btn-lg px-5">Ver colección</a>
                                 </div>
                             </div>
                             <!--End Product Grid-->
                         </div>
 
-                        <div class="tab-pane" id="toprated" role="tabpanel" aria-labelledby="toprated-tab">
+                        <div class="tab-pane d-none" id="toprated" role="tabpanel" aria-labelledby="toprated-tab">
                             <!--Product Grid-->
                             <div class="grid-products grid-view-items">
                                 <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">                                                                            
@@ -1654,7 +1164,7 @@
             <a href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']"  ><i class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">Compra</span></a>
         </div>
         <div class="menubar-account menubar-item">
-            <a href="my-account.html" [routerLink]="CURRENT_USER_AUTHENTICATED.email ? ['/', locale, country, 'account', 'my-account'] : ['/', locale, country, 'auth', 'login']"><i class="menubar-icon icon anm anm-user-al"></i><span class="menubar-label">Cuenta</span></a>
+            <a href="my-account.html" [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/', locale, country, 'account', 'my-account'] : ['/', locale, country, 'auth', 'login']"><i class="menubar-icon icon anm anm-user-al"></i><span class="menubar-label">Cuenta</span></a>
         </div>
         <div class="menubar-search menubar-item">
             <a [href]="['/']"><span class="menubar-icon anm anm-home-l"></span><span class="menubar-label">Inicio</span></a>
