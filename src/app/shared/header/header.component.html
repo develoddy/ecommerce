@@ -641,7 +641,7 @@
     <div id="cart-drawer" class="block block-cart" *ngIf="listCarts">
         <div class="minicart-header">
             <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i></button>
-            <h4 class="fs-6">Tu carrito ({{ listCarts.length }} Elementos)</h4>
+            <h4 class="fs-6 text-uppercase fw-bold">Carrito ({{ listCarts.length }})</h4>
         </div>
         <div class="minicart-content">
             <ng-container *ngIf="listCarts.length == 0; else allCarts">
@@ -660,8 +660,48 @@
             <ng-template #allCarts>
                 <ul class="m-0 clearfix">
                     <ng-container *ngFor="let cart of listCarts">
-                        <li class="item d-flex justify-content-center align-items-center"> 
-                            <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', cart.product.slug]">
+                        <!-- <li class="item d-flex justify-content-center align-items-center"> -->
+                        <li class="item d-flex flex-column"> 
+                            <div class="d-flex flex-row mb-2">
+                                <div class="">
+                                    <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', cart.product.slug]">
+                                        <img class="blur-up lazyload"
+                                        [src]="cart.product.imagen"
+                                        alt="{{ cart.product.title }}"
+                                        title="{{ cart.product.title }}"
+                                        width="200"
+                                        height="200" />
+                                    </a>
+                                </div>
+                                <div class="d-flex w-100">
+                                    <div class="product-details">
+                                        <div class="priceRow mb-2">
+                                            <div class="product-price d-flex flex-row justify-content-between">
+                                                <a class="product-title text-uppercase fw-bold" href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                                <span class="price fw-bold">{{ cart.total | number: '1.2-2' }} {{ euro }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="variant-cart mb-3" *ngIf="cart.variedad">{{ cart.variedad.color }} / {{ cart.variedad.valor }}</div>
+                                        <div class="qtyField">
+                                            <a class="qtyBtn minus" href="#;" onclick="return false;" (click)="dec(cart)"><i class="icon anm anm-minus-r"></i></a>
+                                            <input type="text" name="quantity" [value]="cart.cantidad" class="qty">
+                                            <a class="qtyBtn plus" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <div class="">
+                                    <a href="#" class="remove" onclick="return false;" (click)="removeCart(cart)"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"></i> Eliminar</a>
+                                </div>
+                                <div class="">
+                                    <a href="#" class="remove" onclick="return false;"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Favorito"></i> Comprar mas tarde</a>
+                                </div>
+                            </div>
+
+
+                            <!-- Old -->
+                            <!-- <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', cart.product.slug]">
                                 <img class="blur-up lazyload"
                                 [src]="cart.product.imagen"
                                 alt="{{ cart.product.title }}"
@@ -670,7 +710,7 @@
                                 height="170" />
                             </a>
                             <div class="product-details">
-                                <a class="product-title" href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                <a class="product-title text-uppercase fw-bold" href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
                                 <div class="variant-cart my-2" *ngIf="cart.variedad">{{ cart.variedad.color }} / {{ cart.variedad.valor }}</div>
                                 <div class="priceRow">
                                     <div class="product-price">
@@ -688,7 +728,7 @@
                                 <a href="#" class="edit-i edit d-none"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Comprar mas tarde"></i></a>
                                 <a href="#" class="remove" onclick="return false;" (click)="removeCart(cart)">Eliminar</a>
                                 <a href="#" class="remove" onclick="return false;" (click)="removeCart(cart)"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"></i></a>
-                            </div>
+                            </div> -->
                         </li>
                     </ng-container>
                 </ul>
@@ -710,10 +750,10 @@
                 <div class="freeShipMsg d-none"><i class="icon anm anm-truck-l fs-6 me-2 align-middle"></i>Congrats! You are eligible for <b>Free Shipping</b></div>
             </div>
             <div class="subtotal clearfix my-3">
-                <div class="totalInfo clearfix mb-1"><span>Envío</span><span class="item product-price">3.50 {{ euro }}</span></div>
-                <div class="totalInfo clearfix mb-1 d-none"><span>Tax</span><span class="item product-price">$0.00</span></div>
+                <div class="totalInfo clearfix"><span class="text-capitalize fw-normal">Subtotal</span><span class="item product-price text-capitalize fw-normal">{{ totalCarts | number: '1.2-2' }} {{ euro }}</span></div>
+                <div class="totalInfo clearfix"><span class="text-capitalize fw-normal">Envío</span><span class="item product-price text-capitalize fw-normal">Gratis</span></div>
                 <div class="totalInfo clearfix"><span>Total</span><span class="item product-price">{{ totalCarts | number: '1.2-2' }} {{ euro }}</span></div>
-
+                <!-- <div>Impuestos incluidos</div> -->
             </div>
             <div class="agree-check customCheckbox d-none">
                 <input id="prTearm" name="tearm" type="checkbox" value="tearm" required />
