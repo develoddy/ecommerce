@@ -21,65 +21,12 @@ export class CartService {
 
   public cart = new BehaviorSubject<Array<any>>([]);
   public currenteDataCart$ = this.cart.asObservable();
+  
 
   constructor(public _authService: AuthService, public _http: HttpClient) {
     // Code ...
   }
 
-  /**
-   * ----------------------------------------------------------------
-   * -               CART CACHE SERVICE                             - 
-   * ----------------------------------------------------------------
-  **/
-  listCartsCache(isGuest:any): Observable<CartResponse> {
-    this.loadingSubject.next(true);
-    let URL = URL_SERVICE+"cartCache/list?isGuest="+isGuest;
-    // return this._http.get(URL).pipe(
-    //   finalize(() => this.loadingSubject.next(false)) 
-    // );
-    return this._http.get<CartResponse>(URL).pipe(
-      finalize(() => this.loadingSubject.next(false))
-    );
-  }
-
-  registerCartCache(data:any) {
-    this.loadingSubject.next(true);
-    let URL = URL_SERVICE+"cartCache/register";
-    return this._http.post(URL, data).pipe(
-      finalize(() => this.loadingSubject.next(false)) 
-    );
-  }
-
-  updateCartCache(data:any) {
-    let URL = URL_SERVICE+"cartCache/update";
-    return this._http.put(URL, data,);
-  }
-
-  syncCart(data: any[], userId: any) {
-    return this.syncCartWithBackend(data, userId).pipe(
-      tap((response: any) => {
-        if (response.carts) {
-          response.carts.forEach((cart: any) => this.changeCart(cart)); // Actualiza el carrito con los datos sincronizados
-        }
-      })
-    );
-  }
-  
-  deleteCartCache(cart_id:any) {
-    this.loadingSubject.next(true);
-    let URL = URL_SERVICE+"cartCache/delete/"+cart_id;
-    return this._http.delete(URL).pipe(
-      finalize(() => this.loadingSubject.next(false)) 
-    );
-  }
-
-  deleteAllCartCache(isGuest: any) {
-    this.loadingSubject.next(true);
-    let URL = URL_SERVICE + "cartCache/delete-all/" + isGuest;
-    return this._http.delete(URL).pipe(
-      finalize(() => this.loadingSubject.next(false)) 
-    );
-  }
 
   /**
    * ----------------------------------------------------------------
@@ -141,6 +88,7 @@ export class CartService {
     );
   }
 
+  
   deleteCart(cart_id:any) {
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
@@ -186,4 +134,62 @@ export class CartService {
       finalize(() => this.loadingSubject.next(false)) 
     );
   }
+
+
+
+
+
+
+  /**
+   * ----------------------------------------------------------------
+   * -               CART CACHE SERVICE                             - 
+   * ----------------------------------------------------------------
+  **/
+  listCartsCache(isGuest:any): Observable<CartResponse> {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE+"cartCache/list?isGuest="+isGuest;
+    return this._http.get<CartResponse>(URL).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    );
+  }
+
+  registerCartCache(data:any) {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE+"cartCache/register";
+    return this._http.post(URL, data).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
+  }
+
+  updateCartCache(data:any) {
+    let URL = URL_SERVICE+"cartCache/update";
+    return this._http.put(URL, data,);
+  }
+
+  syncCart(data: any[], userId: any) {
+    return this.syncCartWithBackend(data, userId).pipe(
+      tap((response: any) => {
+        if (response.carts) {
+          response.carts.forEach((cart: any) => this.changeCart(cart)); // Actualiza el carrito con los datos sincronizados
+        }
+      })
+    );
+  }
+  
+  deleteCartCache(cart_id:any) {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE+"cartCache/delete/"+cart_id;
+    return this._http.delete(URL).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
+  }
+
+  deleteAllCartCache(isGuest: any) {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE + "cartCache/delete-all/" + isGuest;
+    return this._http.delete(URL).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
+  }
+
 }

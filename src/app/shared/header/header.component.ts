@@ -18,6 +18,7 @@ declare function pswp([]):any;
 declare function productZoom([]):any;
 declare function alertDanger([]): any;
 declare function alertSuccess([]): any;
+declare function cleanupHOMEINITTEMPLATE($: any): any;
 
 @Component({
   selector: 'app-header',
@@ -305,15 +306,28 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   removeCart(cart: any) {
-    this.cartService.deleteCart(cart._id).subscribe((resp: any) => {
-      this.cartService.removeItemCart(cart);
-      if (resp.message === 403) {
-        alertDanger(resp.message_text);
-        return;
-      }
-      alertSuccess("El producto ha sido eliminado correctamente de la cesta.");
-      this.updateTotalCarts();
-    });
+    // Si es un usuario autenticado
+    if(!this.currentUser?.user_guest) { 
+      this.cartService.deleteCart(cart._id).subscribe((resp: any) => {
+        this.cartService.removeItemCart(cart);
+        if (resp.message === 403) {
+          alertDanger(resp.message_text);
+          return;
+        }
+        alertSuccess("El producto ha sido eliminado del carrito");
+        this.updateTotalCarts();
+      });
+    } else {
+      this.cartService.deleteCartCache(cart._id).subscribe((resp: any) => {
+        this.cartService.removeItemCart(cart);
+        if (resp.message === 403) {
+          alertDanger(resp.message_text);
+          return;
+        }
+        alertSuccess("El producto ha sido eliminado del carrito");
+        this.updateTotalCarts();
+      });
+    }
   }
   
   dec(cart: any) {
@@ -397,8 +411,34 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     
   }
 
+
+  private cleanupPSWP() {
+    // Limpiar los eventos asignados por pswp()
+    $('.prlightbox').off('click');
+
+    // Si PhotoSwipe está activo o existe algún lightbox abierto, ciérralo
+    const pswpElement = $('.pswp')[0];
+
+    // Hacemos un casting explícito para acceder a PhotoSwipe y PhotoSwipeUI_Default en window
+    const PhotoSwipe = (window as any).PhotoSwipe;
+    const PhotoSwipeUI_Default = (window as any).PhotoSwipeUI_Default;
+
+    if (pswpElement && typeof PhotoSwipe !== 'undefined') {
+      let lightBox = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, [], {});
+      
+      // Si el lightBox está abierto, ciérralo
+      if (lightBox) {
+        lightBox.close();
+      }
+    }
+  }
+
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    // Desuscribir todas las suscripciones en el método OnDestroy
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    } 
+    cleanupHOMEINITTEMPLATE($);
   }
 
   closeMinicart(): void {
@@ -409,4 +449,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   onResize(event: Event): void {
     this.checkDeviceType(); // Verifica el tamaño de la pantalla
   }
+
+ 
 }

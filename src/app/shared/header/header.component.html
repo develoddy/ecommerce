@@ -699,7 +699,6 @@
                                 </div>
                             </div>
 
-
                             <!-- Old -->
                             <!-- <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', cart.product.slug]">
                                 <img class="blur-up lazyload"
@@ -761,7 +760,8 @@
             </div>
             <div class="minicart-action d-flex mt-3">
                 <!-- <a href="cart-style1.html" [href]="'/cart/'" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a> -->
-                <a [routerLink]="['/', locale, country, 'shop', 'cart']" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a>
+                <!-- <a [routerLink]="['/', locale, country, 'shop', 'cart']" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a> -->
+                <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a>
                 <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout btn btn-primary w-50 ms-1 btn-lg"> Comenzar pedido</a>
             </div>
         </div>

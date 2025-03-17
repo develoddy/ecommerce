@@ -139,15 +139,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.sliders = resp.sliders;
       this.categories = resp.categories;
-
       this.ourProducts = resp.our_products;
-      console.log("DEBBUG - ourProducts:  ", this.ourProducts);
-
       this.besProducts = resp.bes_products;
-      console.log("DEBBUG - besProducts:  ", this.besProducts);
-      
-      
-      
       this.FlashSale = resp.FlashSale;
       this.FlashProductList = resp.campaign_products;
 
@@ -248,6 +241,18 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.CURRENT_USER_AUTHENTICATED = null;
       }
     });
+  }
+
+  navigateToProduct(slug: string, discountId?: string) {
+    // Guarda el estado para hacer scroll hacia arriba
+    sessionStorage.setItem('scrollToTop', 'true');
+    // Navega a la página del producto
+    this._router.navigate(['/', this.locale, this.country, 'shop', 'product', slug])
+    //this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
+      .then(() => {
+          // Recarga la página
+          window.location.reload();
+      });
   }
 
   sizesUnicos( product_selected:any ) {

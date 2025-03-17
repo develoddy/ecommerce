@@ -344,12 +344,15 @@ export class LoginCheckoutComponent implements OnInit {
     const subscriptionLogin =  this._authService.login(this.email_identify, this.password_identify).subscribe(
       (resp:any) => {
         if (!resp.error && resp) {
-          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']);
-          //  .then(() => {
-          //    window.location.reload();
-          //  });
-
+          setTimeout(() => {
+            // Primero navegamos a la ruta del componente de resumen
+            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']).then(() => {
+              // Luego forzamos una recarga del componente
+              window.location.reload(); // Este método fuerza la recarga de la página
+            });
+          }, 500);
           this._cartService.resetCart();
+
         } else {
           this.errorAutenticate = true;
           this.errorMessageAutenticate = resp.error.message;

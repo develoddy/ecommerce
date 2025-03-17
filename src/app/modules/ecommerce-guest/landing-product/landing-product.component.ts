@@ -24,6 +24,7 @@ declare function alertSuccess([]):any;
 declare function productSlider5items($: any): any;
 
 // ---- Destruir 
+declare function cleanupHOMEINITTEMPLATE($: any): any;
 declare function cleanupProductZoom($: any):any;
 
 @Component({
@@ -109,6 +110,10 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     // setTimeout(() => {
     //   productSlider5items($);
     // }, 150);
+
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+    }, 150);
   }
 
   ngOnInit(): void {
@@ -164,9 +169,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   private initLandingProduct() {
     const productSubscription = this.ecommerceGuestService.showLandingProduct(this.slug, this.discount_id).subscribe(
       (resp:any) => {
-        
         this.handleProductResponse(resp);
-        
       },
       (error) => {
         console.error("Error fetching product: ", error); // Captura errores
@@ -174,7 +177,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
       // Añadir todas las suscripciones al objeto compuesto
       this.subscriptions.add(productSubscription);
-      
   }
 
   private handleProductResponse(resp: any): void {
@@ -183,8 +185,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       return; // Salir si no hay datos de producto
     }
     this.product_selected = resp.product;
-    console.log("DEBBUG * Product Seletec :  ", this.product_selected);
-    
     this.related_products = resp.related_products;
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
@@ -210,7 +210,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         // Llama explícitamente al refresco del slider
         (window as any).sliderRefresh($);
        
-
         // Forzar la detección de cambios
         this.cdRef.detectChanges();
       }, 150);
@@ -705,5 +704,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     // Limpiar los eventos y plugins que fueron inicializados
     cleanupProductZoom($);
     this.cleanupPSWP();
+    cleanupHOMEINITTEMPLATE($);
   }
 }

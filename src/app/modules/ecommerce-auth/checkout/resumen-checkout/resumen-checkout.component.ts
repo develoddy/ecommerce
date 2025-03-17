@@ -90,24 +90,36 @@ export class ResumenCheckoutComponent implements OnInit {
     this.activate.emit(true);
 
     this.subscriptionService.setShowSubscriptionSection(false);
-    this._authEcommerce.loading$.subscribe(isLoading => {
+    this.subscriptions = this._authEcommerce.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
 
     this.verifyAuthenticatedUser();
-
     this.checkIfAddressClientExists();
-  
+
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
     });
-
+    
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
     }, 50);
+  }
+
+
+  listAllCarts() {
+    this._cartService.resetCart();
+    if ( this._cartService._authService.user ) {
+      this._cartService.listCarts(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
+        (resp:any) => {
+          resp.carts.forEach((cart:any) => {
+            this._cartService.changeCart(cart);
+          });
+      });
+    }
   }
 
   private verifyAuthenticatedUser(): void {
@@ -183,17 +195,7 @@ export class ResumenCheckoutComponent implements OnInit {
     });
   }
 
-  listAllCarts() {
-    this._cartService.resetCart();
-    if ( this._cartService._authService.user ) {
-      this._cartService.listCarts(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-        (resp:any) => {
-          resp.carts.forEach((cart:any) => {
-            this._cartService.changeCart(cart);
-          });
-      });
-    }
-  }
+  
 
   store() {
     this.address_client_selected ? this.updateAddress(): this.registerAddress();

@@ -72,18 +72,22 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
   
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
-      //this.showRelatedProducts();
-    }, 150);
-  }
+   ngAfterViewInit(): void {
+  //   setTimeout(() => {
+  //     HOMEINITTEMPLATE($);
+  //     //this.showRelatedProducts();
+  //   }, 150);
+   }
 
   ngOnInit() {
     this.checkUserAuthenticationStatus();
     this.getCarts();
     this.showRelatedProducts();
     this.subscribeToWishlistData();
+
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+    }, 150);
   }
 
   private checkUserAuthenticationStatus(): void {
@@ -152,9 +156,9 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     const LandingSubscriptions = this.ecommerceGuestService.showLandingProduct(this.slug).subscribe(
       (resp:any) => {
         this.handleProductResponse(resp);
-        // setTimeout(() => {
-        //   HOMEINITTEMPLATE($);
-        // }, 50);
+        //  setTimeout(() => {
+        //    HOMEINITTEMPLATE($);
+        //  }, 150);
       }); 
     this.subscriptions.add(LandingSubscriptions);
   }

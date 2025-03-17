@@ -1,9 +1,11 @@
+
+
 <div [ngClass]="{'tab-pane': true,'active': !isLastStepActive_2 && listAddressClients.length > 0 && !isSaleSuccess, 'fade': listAddressClients.length === 0}" id="steps2">
     <div class="row">
         <!-- List cart -->
         <div class="col-12 col-sm-12 col-md-7 col-lg-12">
             <!--Order Summary-->
-            <div class="block order-summary">
+            <div class="block order-summary" *ngIf="listCarts">
                 <div class="block-content">
                     <h3 class="title mb-3 text-center text-uppercase ls-3">Resumen del pedido</h3>
                     <div class="table-responsive table-bottom-brd order-table"> 
