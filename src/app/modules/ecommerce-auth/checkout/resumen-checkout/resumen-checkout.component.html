@@ -7,7 +7,7 @@
             <!--Order Summary-->
             <div class="block order-summary" *ngIf="listCarts">
                 <div class="block-content">
-                    <h3 class="title mb-3 text-center text-uppercase ls-3">Resumen del pedido</h3>
+                    <h2 class="title mb-3 text-center fw-bold mb-5 mt-3 text-uppercase">Resumen del pedido</h2>
                     <div class="table-responsive table-bottom-brd order-table"> 
                         <table class="table table-hover align-middle mb-0">
                             <thead>
@@ -38,8 +38,8 @@
                                             </div>
                                         </td>
                                         <td class="text-center">{{ cart.cantidad }}</td>
-                                        <td class="text-center">{{ euro }}{{ cart.subtotal | number: '1.2-2' }}</td> <!--{{ euro }}{{ cart.total }} -->
-                                        <td class="text-center"><strong>{{ euro }}{{ cart.total | number: '1.2-2' }}</strong></td>
+                                        <td class="text-center">{{ cart.subtotal | number: '1.2-2' }} {{ euro }}</td> <!--{{ euro }}{{ cart.total }} -->
+                                        <td class="text-center"><strong>{{ cart.total | number: '1.2-2' }} {{ euro }}</strong></td>
                                     </tr>
                                 </ng-container>
                             </tbody>
@@ -56,12 +56,12 @@
                     <!--Apply Promocode-->
                     <div class="block mb-3 apply-code mb-4">
                         <div class="block-content">
-                            <h3 class="title mb-3 ls-2">Aplicar código promocional</h3>
+                            <h3 class="title mb-3 text-uppercase">Aplicar código promocional</h3>
                             <div id="coupon" class="coupon-dec">
-                                <p>¿Tienes un código promocional? Entonces estás a unos cuantos números y letras combinados al azar de obtener fabulosos ahorros!</p>
+                                <p class="fw-light">Introduce tu código promocional y disfruta de grandes ahorros en tu compra.</p>
                                 <div class="input-group mb-0 d-flex">
                                     <input id="coupon-code" [(ngModel)]="code_cupon" required="" type="text" class="form-control" placeholder="Código de promoción">
-                                    <button class="coupon-btn btn btn-secondary" (click)="apllyCupon()" [disabled]="loading" type="submit">
+                                    <button class="coupon-btn btn btn-secondary fw-normal text-uppercase" (click)="apllyCupon()" [disabled]="loading" type="submit">
                                         <div *ngIf="loading" class="loading-spinner justify-content-center align-items-center">
                                             <div class="row">
                                                 <div class="col-sm-2">
@@ -69,7 +69,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
                                         <span *ngIf="!loading">Aplicar</span>
                                     </button>
                                 </div>
@@ -82,12 +81,12 @@
                     <!--Cart Summary-->
                     
                     <div class="cart-info mb-4">
-                        <h3 class="title mb-3 ls-2 text-uppercase">Resumen de Precio</h3>
+                        <h3 class="title mb-3 text-uppercase">Resumen de Precio</h3>
                         <div class="cart-order-detail cart-col">
                             
                             <div class="row g-0 border-bottom pb-2">
-                                <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Subtotal</strong></span>
-                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ euro }}{{totalCarts}} </span></span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Subtotal</strong></span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{totalCarts}} {{ euro }}</span></span>
                             </div>
                             <div class="row g-0 border-bottom py-2 d-none">
                                 <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Coupon Discount</strong></span>
@@ -98,12 +97,12 @@
                                 <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">$10.00</span></span>
                             </div>
                             <div class="row g-0 border-bottom py-2">
-                                <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Envío</strong></span>
-                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Envío gratis</span></span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Envío</strong></span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Gratis</span></span>
                             </div>
                             <div class="row g-0 pt-2">
                                 <span class="col-6 col-sm-6 cart-subtotal-title fs-5 text-uppercase"><strong>Total</strong></span>
-                                <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ euro }}{{ totalCarts | number: '1.2-2' }}</b></span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ totalCarts | number: '1.2-2' }} {{ euro }}</b></span>
                             </div>
                         </div>                               
                     </div>
@@ -149,25 +148,33 @@
                             <!-- Mostrar la lista de direcciones -->
                             <div class="address-book-section" [class.d-none]="loading">
                                 <div class="top-sec d-flex-justify-center justify-content-center mb-3" [class.d-none]="loading">
-                                    <h2 class="mb-0 text-uppercase ls-2">Dirección de envío</h2>
+                                    <h3 class="mb-0 text-uppercase text-uppercase">Dirección de envío</h3>
                                 </div>
                                 <div class="row g-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 justify-content-center">
                                     <ng-container *ngFor="let list_address of listAddressClients; let i=index">
                                         <div class="address-select-box active">
                                             <div class="address-box bg-block">
+                                                <div class="mb-3 d-flex flex-row">
+                                                    <span class="d-flex flex-row">
+                                                        <svg width="24" height="24" aria-hidden="true" class="Icon_icon-content-1__kPDLF" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="M19 20V9.3l.7.5.6-.8L12 2.9 9 5.1V3H6v4.3L3.7 9l.6.8.7-.5V20H3v1h18v-1zM7 4h1v1.8l-1 .8zM6 8.6l6-4.4 6 4.4V12H6zM11 20v-4h2v4zm-1-5v5H6v-7h12v7h-4v-5z"></path><path d="M12 7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 3c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1"></path></svg>
+                                                    </span>
+                                                    <span class="px-2">Domicilio</span>
+                                                    <span class="">GRATIS</span>
+                                                </div>
+
                                                 <div class="top d-flex-justify-center justify-content-between mb-3">
-                                                    <h5 class="m-0 fw-bold">{{ list_address.name +' '+ list_address.surname }}</h5>
+                                                    <h5 class="m-0 fw-bold text-uppercase">{{ list_address.name +' '+ list_address.surname }}</h5>
                                                     <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Casa</span></span>
                                                 </div>
                                                 <div class="middle">
                                                     <div class="address">
-                                                        <p> {{ list_address.address }}</p>
+                                                        <p class="fw-light"> {{ list_address.address }}</p>
                                                     </div>
                                                     <div class="address">
-                                                        <p> {{ list_address.zipcode }} {{ list_address.poblacion }}, <span class="text-uppercase">{{ list_address.ciudad }}</span> <br/></p>
+                                                        <p class="fw-light"> {{ list_address.zipcode }} {{ list_address.poblacion }}, <span class="text-uppercase">{{ list_address.ciudad }}</span> <br/></p>
                                                     </div>
                                                     <div class="address">
-                                                        <p>Tel. {{ list_address.phone }}</p>
+                                                        <p class="fw-light">Tel. {{ list_address.phone }}</p>
                                                     </div>
                                                     <div class="form-text px-2 mt-3 text-dark" style="width: fit-content !important; background-color: #f3f3f3;">Dirección de envío habitual</div>
                                                 </div>
@@ -302,6 +309,6 @@
     </div>
     <div class="d-flex justify-content-center py-5">
         <!-- <button type="button" class="btn btn-secondary me-1 btnPrevious">Volver</button> -->
-        <button type="button" class="btn btn-primary ms-1 px-5 btnNext" (click)="goToNextStep()">Continuar</button>
+        <button type="button" class="btn btn-primary ms-1 px-5 py-3 text-uppercase fw-normal btnNext" (click)="goToNextStep()">Continuar</button>
     </div>
 </div>

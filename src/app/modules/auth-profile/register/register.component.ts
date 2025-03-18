@@ -25,7 +25,12 @@ export class RegisterComponent implements OnInit {
   };
 
   locale: string = "";
-  country: string = "";  
+  country: string = "";
+  
+  
+  isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
 
   email:string = "";
   name:string = "";
@@ -71,6 +76,7 @@ export class RegisterComponent implements OnInit {
     });
 
      this.verifyAuthenticatedUser();
+     this.checkDeviceType();
   }
 
   getTranslatedCondition(): string {
@@ -208,6 +214,16 @@ export class RegisterComponent implements OnInit {
       }
     );
   }
+
+
+  private checkDeviceType(): void {
+    const width = window.innerWidth;
+    this.isMobile = width <= 480;
+    this.isTablet = width > 480 && width <= 768;
+    this.isDesktop = width > 768;
+  }
+
+
   resetForm() {
     this.email = '';
     this.name = '';

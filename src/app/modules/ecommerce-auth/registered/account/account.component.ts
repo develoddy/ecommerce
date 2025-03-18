@@ -24,6 +24,9 @@ export class AccountComponent implements OnInit {
     repeat_password: false,
   };
 
+  isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
 
   email:string = "";
   name:string = "";
@@ -71,6 +74,7 @@ export class AccountComponent implements OnInit {
 
      this.verifyAuthenticatedUser();
      this.detailUser();
+     this.checkDeviceType();
   }
 
   private verifyAuthenticatedUser(): void {
@@ -267,6 +271,13 @@ export class AccountComponent implements OnInit {
     this.zipcode = '';
     this.phone = '';
     this.birthday = '';
+  }
+
+  private checkDeviceType(): void {
+    const width = window.innerWidth;
+    this.isMobile = width <= 480;
+    this.isTablet = width > 480 && width <= 768;
+    this.isDesktop = width > 768;
   }
 
 }

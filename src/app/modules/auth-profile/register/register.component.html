@@ -8,13 +8,13 @@
     <!-- Body Container -->
     <div id="page-content">
         <!--Page Header-->
-        <div class="page-header text-center d-none">
+        <div class="page-header text-center bg-transparent mb-0">
             <div class="container">
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                        <div class="page-title"><h1>Crear una cuenta</h1></div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center align-items-center">
+                        <div class="page-title"><h2 class="text-uppercase">Crear una cuenta</h2></div>
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs"><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Crear una cuenta</span></div>
+                        <div class="breadcrumbs d-none"><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Crear una cuenta</span></div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -33,51 +33,53 @@
                 <p class="mb-1">Por favor revise su correo electrónico para verificar su cuenta y completar el proceso de registro.</p>
             </div>
             <!--End Order success-->
-            <div class="login-register pt-3">
-                <div class="row">
-                    <div class="col-12 col-sm-12 col-md-8 offset-md-2 col-lg-4 offset-lg-4">
+            <div class="login-register pt-4">
+                <div class="row justify-content-center">
+                    <!-- <div class="col-12 col-sm-12 col-md-8 offset-md-2 col-lg-5 offset-lg-4"> -->
+                    <div class="col-12 col-sm-12 col-md-8 col-lg-5" [ngClass]="{'px-5': isDesktop, 'px-3': isMobile}">
                         <div class="inner h-100">
                             <form class="customer-form">	
-                                <h2 class="text-center fs-4 mb-4">Crea tu cuenta</h2>
+                                <h2 class="text-center text-uppercase mb-4 d-none">Crea tu cuenta</h2>
+                                <p class="text-start mb-4 fw-bold lh-1">Los miembros de LujanDev tienen más ventajas</p>
                                 <div class="form-row">
                                     <div class="form-group col-12">
                                         <label for="CustomerUsername" class="d-none">Nombre <span class="required">*</span></label>
-                                        <input type="text" name="name" [(ngModel)]="name" placeholder="Nombre" [ngClass]="{'border border-danger': errorName}" (input)="onInputChange('name')"   id="CustomerUsername" value=""  required />
+                                        <input type="text" name="name" [(ngModel)]="name" placeholder="Nombre" class="py-4" [ngClass]="{'border border-danger': errorName}" (input)="onInputChange('name')"   id="CustomerUsername" value=""  required />
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['name'] && !name">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerEmail"  class="d-none">E-mail <span class="required">*</span></label>
-                                        <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" [ngClass]="{'border border-danger': errorEmail}" (input)="onInputChange('email')" id="CustomerEmail" value="" required />
+                                        <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" class="py-4" [ngClass]="{'border border-danger': errorEmail}" (input)="onInputChange('email')" id="CustomerEmail" value="" required />
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['email'] && !email">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerZipcode" class="d-none">Código postal <span class="required">*</span></label>
-                                        <input type="text" name="zipcode" [(ngModel)]="zipcode" placeholder="Código postal" [ngClass]="{'border border-danger': errorZipcode}" (input)="onInputChange('zipcode')" id="CustomerZipcode" value="" required />
+                                        <input type="text" name="zipcode" [(ngModel)]="zipcode" placeholder="Código postal" class="py-4" [ngClass]="{'border border-danger': errorZipcode}" (input)="onInputChange('zipcode')" id="CustomerZipcode" value="" required />
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['zipcode'] && !zipcode">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerMovil" class="d-none">Móvil<span class="required">*</span></label>
-                                        <input type="tel" name="phone" [(ngModel)]="phone" placeholder="Movil" [ngClass]="{'border border-danger': errorPhone}" (input)="onInputChange('phone')" id="CustomerMovil" value="" required />
+                                        <input type="tel" name="phone" [(ngModel)]="phone" placeholder="Movil" class="py-4" [ngClass]="{'border border-danger': errorPhone}" (input)="onInputChange('phone')" id="CustomerMovil" value="" required />
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['phone'] && !phone">Completa este campo para continuar</div>
                                         <div class="form-text text-danger mt-0" *ngIf="errorPhone && phone">Revisa el formato de tu móvil (ej. +346xxxxxxxx / 6xxxxxxxx)</div>
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerBirthday" class="fs-4 fw-bold">Fecha de nacimiento<span class="required d-none">*</span></label>
-                                        <input type="date" name="birthday" [(ngModel)]="birthday" placeholder="Fecha de nacimiento" [ngClass]="{'border border-danger': errorBirthday}" (input)="onInputChange('birthday')" id="CustomerBirthday" value="" required />
+                                        <label for="CustomerBirthday" class="text-uppercase fw-bold">Fecha de nacimiento<span class="required d-none">*</span></label>
+                                        <input type="date" name="birthday" [(ngModel)]="birthday" class="py-4" placeholder="Fecha de nacimiento" [ngClass]="{'border border-danger': errorBirthday}" (input)="onInputChange('birthday')" id="CustomerBirthday" value="" required />
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['birthday'] && !birthday">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerPassword"  class="fs-4 fw-bold">Contraseña <span class="required d-none">*</span></label>
-                                        <input type="password" name="password"[(ngModel)]="password" placeholder="Contraseña" [ngClass]="{'border border-danger': errorPassword}" (input)="onInputChange('password')" id="CustomerPassword" value="" required />                        	
+                                        <label for="CustomerPassword" class="fw-bold text-uppercase">Contraseña <span class="required d-none">*</span></label>
+                                        <input type="password" name="password"[(ngModel)]="password" class="py-4" placeholder="Contraseña" [ngClass]="{'border border-danger': errorPassword}" (input)="onInputChange('password')" id="CustomerPassword" value="" required />                        	
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['password'] && !password">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerConfirmPassword"  class="d-none">Confirmar Contraseña<span class="required">*</span></label>
-                                        <input id="CustomerConfirmPassword" type="Password" name="repeat_password" [(ngModel)]="repeat_password" [ngClass]="{'border border-danger': errorRepeatPassword}" (input)="onInputChange('repeat_password')" placeholder="Confirmar Contraseña" required />                         	
+                                        <label for="CustomerConfirmPassword" class="d-none">Confirmar Contraseña<span class="required">*</span></label>
+                                        <input id="CustomerConfirmPassword" type="Password" class="py-4" name="repeat_password" [(ngModel)]="repeat_password" [ngClass]="{'border border-danger': errorRepeatPassword}" (input)="onInputChange('repeat_password')" placeholder="Confirmar Contraseña" required />                         	
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['repeat_password'] && !repeat_password">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12 mt-3 mb-3">
-                                        <button type="submit" class="btn btn-secondary btn-lg py-3 w-100" (click)="register()" [disabled]="loading">
+                                        <button type="submit" class="btn btn-secondary btn-lg py-3 w-100 text-uppercase fw-normal" (click)="register()" [disabled]="loading">
                                             <ng-container *ngIf="!loading">Crear cuenta</ng-container>
                                             <ng-container *ngIf="loading">
                                                 <div class="sp sp-bars bg-light" style="width: 7px !important; height: 21px !important; margin: 0px auto !important;"></div>
@@ -98,7 +100,7 @@
                                     <a class="social-link twitter rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-twitter me-2"></i> Twitter</a>
                                 </div>
 
-                                <div class="login-signup-text mb-4 fs-6 text-center text-secondary">¿Ya tienes cuenta? <a href="login.html" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'login']" class="fw-bold text-decoration-underline">Inicia sesión</a></div>
+                                <div class="login-signup-text mb-4 mt-3 fs-6 text-center text-secondary">¿Ya tienes cuenta? <a href="login.html" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'login']" class="fw-bold text-decoration-underline">Inicia sesión</a></div>
 
                                 <div class="login-signup-text text-center text-secondary">
                                     <p id="registry">Al crear una cuenta, confirmas que has leído la  <br>

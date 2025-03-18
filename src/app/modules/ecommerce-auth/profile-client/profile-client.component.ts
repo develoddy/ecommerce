@@ -109,11 +109,8 @@ export class ProfileClientComponent implements OnInit {
       email: this.CURRENT_USER_AUTHENTICATED.email,
     }
     this._ecommerceAuthService.detail_user(data).subscribe((resp:any) => {
-      console.log(resp);
-      
       if (resp.status = 200) {
         this.userDetail = resp.user;
-
         this.name_c  =  resp.user.name;
         this.surname_c  =  resp.user.surname;
         this.email_c  =  resp.user.email;
@@ -147,8 +144,6 @@ export class ProfileClientComponent implements OnInit {
       });
 
       this.listAddressClients = resp.address_client;
-      console.log("Data listAddressClients: ", this.listAddressClients);
-      
     });
   }
 
