@@ -585,7 +585,15 @@
 @media only screen and (max-width: 767px) {
     body { font-size: 13px; line-height: 1.5; }
     h1, .h1 { font-size:22px; }
-    h2, .h2 { font-size:18px; }
+    /* h2, .h2 { font-size:18px; } */
+    h2, .h2  {
+        font-family: 'Zen Kaku Gothic New', 'Zen Kaku Gothic Antique', sans-serif;
+        font-weight: 700; /* Bold para resaltar el título */
+        font-size: 2.5rem; /* Ajusta según el tamaño que prefieras 2.75rem */
+        line-height: 1.4;
+        letter-spacing: 0.5px;
+        color: #171717; /* Color oscuro para buen contraste */
+      }
     h3, .h3 { font-size:16px; }
     p { margin: 0 0 15px; }
     blockquote { font-size: 14px; }

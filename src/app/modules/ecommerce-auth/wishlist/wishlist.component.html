@@ -34,14 +34,17 @@
             <ng-container *ngIf="listWishlists.length == 0; else allWishlists">
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="p-2 text-center">
-                        <div class="inner mb-3">
+                        <div class="inner mb-3 d-none">
                             <div class="bradcrumb-thumb">
                                 <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
                             </div>
                         </div>
-                        <h5 class="header-title mb-0 text-uppercase">Tu lista de deseos está vacío</h5>
-                        <small>Empieza a añadir productos que te gusten :)</small>
+                        <h5 class="header-title mb-0 text-uppercase">GUARDA TUS ARTÍCULOS FAVORITOS</h5>
+                        <p class="pt-3">¿Quieres guardar los artículos que te gustan? Haz clic en el símbolo del corazón junto al artículo y aparecerá aquí.</p>
                     </div>
+                </div>
+                <div  class="view-collection text-center mt-4 mb-5 mt-md-5">
+                    <a  class="btn btn-secondary btn-lg px-5 text-uppercase "  href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" >Descubrir lo último</a>
                 </div>
             </ng-container>
             

@@ -5,13 +5,13 @@
     <div id="page-content"> 
 
         <!--Page Header-->
-        <div class="page-header text-center d-none">
+        <div class="page-header text-center bg-transparent mb-0 p-3">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                        <div class="page-title"><h1>Mi cuenta</h1></div>
+                        <div class="page-title"><h2 class="text-uppercase">Mis direcciones</h2></div>
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Mi cuenta</span></div>
+                        <div class="breadcrumbs d-none"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Mi cuenta</span></div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                                             </div>
                                             <h5 class="header-title mb-0">Libreta de direcciones</h5>
                                             <small class="mb-3">De momento ninguna dirección registrada</small>
-                                            <a href="" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'myaddresses', 'add']" >
+                                            <a href="" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'myaddresses', 'add']">
                                                 <button type="button" class="mt-3 btn btn-primary btn-lg px-5"> Añadir dirección</button>
                                             </a>
                                         </div>
@@ -53,9 +53,9 @@
                                             <h4 class="text-muted">Cargando</h4>
                                         </div>
                                     </div>
-                                    <div class="top-sec d-flex-justify-center justify-content-center mb-5" [class.d-none]="loading">
+                                    <!-- <div class="top-sec d-flex-justify-center justify-content-center mb-5" [class.d-none]="loading">
                                         <h2 class="mb-0">Mis direcciones</h2>
-                                    </div>
+                                    </div> -->
                                     <!-- Mostrar la lista de direcciones -->
                                     <div class="address-book-section" [class.d-none]="loading">
                                         <div class="row g-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 justify-content-center">
@@ -80,9 +80,9 @@
                                                         </div>
                                                         <div class="bottom d-flex-justify-center justify-content-between">
                                                             <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'myaddresses', list_address.id, 'edit']">
-                                                                <button type="button" class="bottom-btn btn btn-gray btn-sm">Editar</button>
+                                                                <button type="button" class="bottom-btn btn btn-gray btn-sm text-uppercase">Editar</button>
                                                             </a>
-                                                            <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="removeAddressSelected(list_address)">Eliminar</button>
+                                                            <button type="button" class="bottom-btn btn btn-gray btn-sm text-uppercase" (click)="removeAddressSelected(list_address)">Eliminar</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -92,7 +92,7 @@
 
                                     <div class="top-sec d-flex-justify-center justify-content-center mt-5">
                                         <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'myaddresses', 'add']">
-                                            <button type="button" class="btn btn-primary btn-lg px-5"> Añadir dirección</button>
+                                            <button type="button" class="btn btn-primary btn-lg px-5 text-uppercase">Añadir dirección</button>
                                         </a>
                                     </div>
                                 </ng-template>

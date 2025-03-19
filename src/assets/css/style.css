@@ -141,7 +141,7 @@ hr { margin:20px 0; border:0; opacity:1; border-bottom:1px solid #ececec; }
 .col-row-20 { margin-top: -20px; margin-left: -10px; margin-right: -10px; }
 .col-row-20 .col-item { padding-top: 20px; padding-left: 10px; padding-right: 10px; }
 .sp-row { margin-top: -1.5rem; }
-.sp-row .sp-col { padding-top: 1.5rem; }
+.sp-row .sp-col { padding-top: 1.9rem; }
 .list--inline { padding:0; margin:0; }
 .list--inline li { display:inline-block; margin-bottom:0; vertical-align:middle; }
 .display-table { display:table; table-layout:fixed; width:100%; margin:0 !important; }
