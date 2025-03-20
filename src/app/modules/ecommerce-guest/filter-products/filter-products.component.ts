@@ -103,23 +103,40 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
       this.idCategorie = resp["idCategorie"];
+
+      if (this.idCategorie) {
+        // Limpiar filtros antes
+        this.categories_selecteds = [];
+        this.variedad_selected = {_id: null};
+        this.is_discount = 1;
+
+        this.filterForCategorie(this.idCategorie); 
+      }
+
+      this.filterProduct(); // ¡Ahora sí después de aplicar la categoría!
     });
-
-    this.filterProduct();
-
-    if (this.idCategorie) {
-      this.filterForCategorie(this.idCategorie); 
-    }
 
     this.subscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
+
+      // Generar slug para cada categoría sin modificar el título original
+      this.categories.forEach((category:any) => {
+        category.slug = this.generateSlug(category.title);  // Genera el slug y lo agrega al objeto categoria
+      });
+
       // Buscar el título de la categoría basada en el idCategorie
       const category = this.categories.find((cat:any) => cat._id === Number(this.idCategorie));
       if (category) {
         this.categoryTitle = category.title; // Asignar el título de la categoría
       }
 
+      // Actualizar título una vez cargadas las categorías
+      this.updateCategoryTitle();
+
       this.variedades = resp.variedades;
+
+      console.log("variedades: ", this.variedades);
+      
       const variedadesUnicos = new Set();
       this.variedades = this.variedades.filter((variedad:any) => {
         if (variedadesUnicos.has(variedad.valor)) {
@@ -130,6 +147,10 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         }
       });
     });
+
+    // setTimeout(() => {
+    //   HOMEINITTEMPLATE($);
+    // }, 150);
   }
 
   filterForCategorie(idCategorie:any) {
@@ -141,6 +162,11 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     }
     this.nameCategorie = this.slug;
     this.noneSidebar = false;
+
+    // Nueva línea: actualizar el título
+    this.idCategorie = idCategorie;
+    this.updateCategoryTitle();
+
   }
 
   addCategorie(categorie:any) {
@@ -148,18 +174,24 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     if (index != -1) {
       this.categories_selecteds.splice(index, 1);
     } else {
+      this.categories_selecteds = [];
       this.categories_selecteds.push(categorie._id);
     }
     this.filterProduct();
   }
 
+  tallas: any[] = [];  // Aquí guardaremos las tallas disponibles
+  selectedTallas: any[] = [];  // Aquí guardamos las tallas seleccionadas
+
   filterProduct() {
+    this.products = []; // Limpiamos los productos actuales
     setTimeout(() => {
       let priceRange = $("#amount").val(); // Obtiene el valor del input, ej. "$39 - $83"
       if (!priceRange) {
         console.error("El input #amount no tiene valor definido.");
         return;
       }
+      
       let priceArray = priceRange.replace(/\$/g, "").split(" - "); // Remueve todos los '$'
       let data = {
         categories_selecteds: this.categories_selecteds,
@@ -167,13 +199,39 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
         price_min: priceArray[0] ? parseFloat(priceArray[0].trim()) : null,
         price_max: priceArray[1] ? parseFloat(priceArray[1].trim()) : null,
+        selectedTallas: this.selectedTallas,  // Aquí pasamos las tallas seleccionadas
       }
+
+      // Llamada al servicio para obtener los productos filtrados
       this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
         this.products = resp.products;
+
+        console.log("DEBBUG this._ecommerceGuestService.filterProduct: ", this.products);
+        
       });
     }, 500);
   }
 
+  // Método para manejar las tallas seleccionadas
+  selectedTalla(talla: any) {
+    let index = this.selectedTallas.indexOf(talla);
+    if (index === -1) {
+      this.selectedTallas.push(talla);  // Si la talla no está seleccionada, la agregamos
+    } else {
+      this.selectedTallas.splice(index, 1);  // Si la talla ya está seleccionada, la eliminamos
+    }
+    this.filterProduct();  // Volvemos a filtrar los productos con las tallas seleccionadas
+  }
+
+  updateCategoryTitle() {
+    const category = this.categories.find((cat:any) => cat._id === Number(this.idCategorie));
+    if (category) {
+      this.categoryTitle = category.title;
+    } else {
+      this.categoryTitle = '';
+    }
+  }
+  
   selectedDiscount(value: number) {
     this.is_discount = value;
     this.filterProduct();
@@ -181,6 +239,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
   selectedVariedad(variedad:any) {
     this.variedad_selected = variedad;
+    console.log("Seleted variedad sizze: ", this.variedad_selected);
+    
     this.filterProduct();
   }
 
@@ -189,6 +249,14 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       return {_id: product.campaing_discount._id};
     }
     return {};
+  }
+
+  generateSlug(title: string): string {
+    return title
+      .toLowerCase()                  // Convertir a minúsculas
+      .replace(/[^a-z0-9 -]/g, '')     // Eliminar caracteres no alfanuméricos
+      .replace(/\s+/g, '-')            // Reemplazar los espacios por guiones
+      .replace(/-+/g, '-');            // Reemplazar múltiples guiones por uno solo
   }
 
   getDiscountProduct(product:any) {
