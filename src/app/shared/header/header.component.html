@@ -246,14 +246,14 @@
             <!--End Menu-->
 
             <!--Logo-->
-            <div class="logo col-6 col-sm-3 col-md-3 d-flex justify-content-center align-self-center" [ngClass]="{'col-lg-4': isDesktop, 'col-lg-3': isMobile}">
+            <div class="logo col-4 col-sm-3 col-md-3 d-flex justify-content-start align-self-center" [ngClass]="{'col-lg-4': isDesktop, 'col-lg-3': isMobile}">
                 <!--Mobile Toggle-->
-                <button type="button" class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none" title="Menu">
+                <button type="button" class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none px-0" title="Menu">
                     <!-- <i class="hdr-icon icon anm anm-times-l"></i> -->
                     <!-- <i class="hdr-icon icon anm anm-bars-r"></i> -->
-                    <svg width="24" height="24" role="img" aria-hidden="true" class="hdr-icon icon anm anm-times-l Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="M17.354 7.354 12.707 12l4.647 4.646-.708.708L12 12.707l-4.646 4.647-.708-.708L11.293 12 6.646 7.354l.708-.708L12 11.293l4.646-4.647z"></path></svg>
+                    <!-- <svg width="24" height="24" role="img" aria-hidden="true" class="hdr-icon icon anm anm-times-l Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="M17.354 7.354 12.707 12l4.647 4.646-.708.708L12 12.707l-4.646 4.647-.708-.708L11.293 12 6.646 7.354l.708-.708L12 11.293l4.646-4.647z"></path></svg> -->
                     <svg width="24" height="24" role="img" aria-hidden="true" class="hdr-icon icon anm anm-bars-r Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="M21 13H3v-1h18zm0-6H3v1h18zm0 10H3v1h18z"></path></svg>
-                    <small class="ls-1">Menú</small>
+                    <!-- <small class="ls-1">Menú</small> -->
                 </button>
                 <!--End Mobile Toggle-->
                 <a class="logoImg" [href]="['/']" >
@@ -263,7 +263,7 @@
             <!--End Logo-->
             
             <!--Right Icon-->
-            <div class="col-6 col-sm-9 col-md-6 align-self-center icons-col d-flex justify-content-end"
+            <div class="col-8 col-sm-9 col-md-6 align-self-center icons-col d-flex justify-content-end"
                 [ngClass]="{'col-lg-4': isDesktop}">
                 <!--Search-->
                 <div class="search-parent iconset" [ngClass]="{'px-2': isMobile}">
@@ -410,11 +410,6 @@
                                         <i class="con anm anm-chevron-r-right"></i>
                                     </a>
                                 </li>
-                                <!-- <li class="list-group-item" *ngIf="!currentUser"><a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" ><i class="icon anm anm-user-al d-none"></i>Registrar</a></li>
-                                <li *ngIf="currentUser"><a href="my-account.html" onclick="return false;" [routerLink]="['/profile']" ><i class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
-                                <li class="list-group-item"><a href="wishlist-style1.html" onclick="return false;" [routerLink]="['/wishlist']" ><i class="icon anm anm-heart-l d-none"></i>Favoritos</a></li>
-                                <li class="d-none"><a href="compare-style1.html" onclick="return false;" [routerLink]="['/compare']"><i class="icon anm anm-random-r"></i>Comparar</a></li>
-                                <li *ngIf="currentUser"><a href="login.html" onclick="return false;" (click)="logout()" ><i class="icon anm anm-sign-out-al"></i>Salir</a></li> -->
                             </ul>
                         </div>
                         
@@ -457,24 +452,10 @@
 
  <!--Mobile Menu-->
  <div class="mobile-nav-wrapper" role="navigation">
-    <div class="closemobileMenu">Close Menu <i class="icon anm anm-times-l"></i></div>
+    <div class="closemobileMenu">Menu <i class="icon anm anm-times-l"></i></div>
     <ul id="MobileNav" class="mobile-nav">
-        <li class="lvl1 parent dropdown"><a href="index.html">Inicio <i class="icon anm anm-angle-down-l"></i></a>
-            <ul class="lvl-2">
-                <li><a href="index.html" class="site-nav">Home 01 - Fashion</a></li>
-                <li><a href="index2-footwear.html" class="site-nav">Home 02 - Footwear</a></li>
-                <li><a href="index3-bags.html" class="site-nav">Home 03 - Bags</a></li>
-                <li><a href="index4-electronic.html" class="site-nav d-none">Home 04 - Electronic</a></li>
-                <li><a href="index5-tools-parts.html" class="site-nav d-none">Home 05 - Tools &amp; Parts</a></li>
-                <li><a href="index6-jewelry.html" class="site-nav d-none">Home 06 - Jewelry</a></li>
-                <li><a href="index7-organic-food.html" class="site-nav d-none">Home 07 - Organic Food</a></li>
-                <li><a href="index8-cosmetics.html" class="site-nav d-none">Home 08 - Cosmetics</a></li>
-                <li><a href="index9-furniture.html" class="site-nav d-none">Home 09 - Furniture</a></li>
-                <li><a href="index10-sunglasses.html" class="site-nav d-none">Home 10 - Sunglasses</a></li>  
-                <li><a href="index11-medical.html" class="site-nav d-none">Home 11 - Medical</a></li>
-                <li><a href="index12-christmas.html" class="site-nav d-none last">Home 12 - Christmas</a></li>                   
-            </ul>
-        </li>
+        <li class="lvl1 parent dropdown"><a href="index.html">Hombre <!--<i class="icon anm anm-angle-down-l"></i>--></a></li>
+        <li class="lvl1 parent dropdown"><a href="index.html">Mujer</a></li>
         <li class="lvl1 parent megamenu d-none"><a href="#">Shop <i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
                 <li><a href="#;" class="site-nav">Collection Page <i class="icon anm anm-angle-down-l"></i></a>
@@ -597,9 +578,24 @@
         <li class="mobile-menu-bottom">
             <div class="mobile-links"> 
                 <ul class="list-inline d-inline-flex flex-column w-100">
-                    <li *ngIf="!currentUser"><a href="login.html" class="d-flex align-items-center" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'login']"><i class="icon anm anm-sign-in-al"></i>Iniciar sesión</a></li>
-                    <li *ngIf="!currentUser"><a href="register.html" class="d-flex align-items-center" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'register']"><i class="icon anm anm-user-al"></i>Registrar</a></li>
-                    <li *ngIf="currentUser"><a href="my-account.html" class="d-flex align-items-center" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'profile']"><i class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
+                    <li *ngIf="!currentUser.email"><a href="login.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'login']"><i class="icon anm anm-sign-in-al"></i>Iniciar sesión</a></li>
+                    <li *ngIf="!currentUser.email"><a href="register.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'register']"><i class="icon anm anm-user-al"></i>Registrar</a></li>
+                    <li *ngIf="currentUser.email"><a href="my-account.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', locale, country, 'account', 'my-account']"><i class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
+
+                    <!-- <a href="my-account.html" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'my-account']" class="d-flex flex-row w-100">
+                        <span class="flex-grow-1">Mi cuenta</span>
+                        <i class="icon anm anm-chevron-r-right"></i>
+                    </a> -->
+                    
+                    <!-- <span class="menubar-label text-uppercase fw-bold" *ngIf="currentUser.email; else notAuthenticated">
+                        Mi cuenta
+                    </span>
+                    <ng-template #notAuthenticated>
+                        <span class="menubar-label text-uppercase fw-bold" [routerLink]="['/', locale, country, 'auth', 'login']">Iniciar sesión</span>
+                    </ng-template> -->
+
+
+
                     <li class="title h5 d-none">¿Necesitas ayuda?</li>
                     <li class="d-none"><a href="tel:401234567890" class="d-flex align-items-center"><i class="icon anm anm-phone-l"></i> (+40) 123 456 7890</a></li>
                     <li class="d-none"><a href="mailto:info@example.com" class="d-flex align-items-center"><i class="icon anm anm-envelope-l"></i> infoexample.com</a></li>

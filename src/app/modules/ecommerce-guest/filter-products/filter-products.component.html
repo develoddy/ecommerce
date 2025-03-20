@@ -18,7 +18,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-start align-items-center">
-                        <div class="page-title"><h2 class="text-uppercase">Novedades</h2></div>
+                        <div class="page-title"><h2 class="text-uppercase">{{ categoryTitle || 'Novedades' }}</h2></div>
                         <!--Breadcrumbs-->
                         <div class="breadcrumbs d-none"><a href="index.html" title="Back to the home page">LUJANDEV.COM</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Todos los productos</span></div>
                         <!--End Breadcrumbs-->
@@ -186,8 +186,7 @@
                             <div class="widget-content filterDD">
                                 <ul class="sidebar-categories scrollspy morelist clearfix">
                                     <ng-container *ngFor="let categorie of categories">
-                                        <!-- <li class="lvl1 more-item"> -->
-                                        <li [ngClass]="{'current-cat': categories_selecteds.includes(categorie.id) }" >
+                                        <li [ngClass]="{'current-cat': categories_selecteds.includes(categorie.id) }"> <!-- <li class="lvl1 more-item"> -->
                                             <a href="#" onclick="return false;" (click)="addCategorie(categorie)" class="site-nav">{{ categorie.title }} <span class="count">(27)</span></a>
                                         </li>
                                     </ng-container>

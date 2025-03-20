@@ -39,6 +39,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   variedad_selected:any = {_id: null};
   products:any = [];
   product_selected:any=null;
+  categoryTitle: string = '';
   slug:any=null;
   isDesktopSize: boolean = window.innerWidth >= 992; // Inicialización
   isMobileSize: boolean = window.innerWidth < 768;
@@ -112,6 +113,12 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
     this.subscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
+      // Buscar el título de la categoría basada en el idCategorie
+      const category = this.categories.find((cat:any) => cat._id === Number(this.idCategorie));
+      if (category) {
+        this.categoryTitle = category.title; // Asignar el título de la categoría
+      }
+
       this.variedades = resp.variedades;
       const variedadesUnicos = new Set();
       this.variedades = this.variedades.filter((variedad:any) => {
@@ -126,7 +133,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   filterForCategorie(idCategorie:any) {
-    let index = this.categories_selecteds.findIndex((item:any) => item == idCategorie );
+    let index = this.categories_selecteds.findIndex((item:any) => item === Number(idCategorie) );
     if (index != -1) {
       this.categories_selecteds.splice(index, 1);
     } else {
@@ -143,16 +150,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     } else {
       this.categories_selecteds.push(categorie._id);
     }
-    this.filterProduct();
-  }
-
-  selectedDiscount(value: number) {
-    this.is_discount = value;
-    this.filterProduct();
-  }
-
-  selectedVariedad(variedad:any) {
-    this.variedad_selected = variedad;
     this.filterProduct();
   }
 
@@ -176,28 +173,16 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       });
     }, 500);
   }
-  
-  // clearFilters() {
-  //   //this.categories_selecteds = [];
-  //   this.is_discount = false;
-  //   //this.variedad_selected = null;
 
-  //   $("#amount").val(""); // Limpiar el input de precio
-  //   $("#slider-range").slider("values", [0, 10]); // Restablecer el slider (ajusta los valores según tu configuración)
+  selectedDiscount(value: number) {
+    this.is_discount = value;
+    this.filterProduct();
+  }
 
-  //   let data = {
-  //       categories_selecteds: this.categories_selecteds,
-  //       is_discount: this.is_discount,
-  //       variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
-  //       price_min: null,
-  //       price_max: null,
-  //   };
-
-  //   this._ecommerceGuestService.filterProduct(data).subscribe((resp: any) => {
-  //       this.products = resp.products;
-  //   });
-  // }
-
+  selectedVariedad(variedad:any) {
+    this.variedad_selected = variedad;
+    this.filterProduct();
+  }
 
   getRouterDiscount(product:any) {
     if (product.campaing_discount) {
@@ -311,6 +296,36 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     return 0;
   }
 
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    cleanupSliders($);
+    cleanupHOMEINITTEMPLATE($);
+  }
+
+  // clearFilters() {
+  //   //this.categories_selecteds = [];
+  //   this.is_discount = false;
+  //   //this.variedad_selected = null;
+
+  //   $("#amount").val(""); // Limpiar el input de precio
+  //   $("#slider-range").slider("values", [0, 10]); // Restablecer el slider (ajusta los valores según tu configuración)
+
+  //   let data = {
+  //       categories_selecteds: this.categories_selecteds,
+  //       is_discount: this.is_discount,
+  //       variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
+  //       price_min: null,
+  //       price_max: null,
+  //   };
+
+  //   this._ecommerceGuestService.filterProduct(data).subscribe((resp: any) => {
+  //       this.products = resp.products;
+  //   });
+  // }
+
   // navigateToProduct(slug: string, discountId?: string) {
   //   // Guarda el estado para hacer scroll hacia arriba
   //   sessionStorage.setItem('scrollToTop', 'true');
@@ -322,12 +337,5 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   //   });
   // }
 
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    cleanupSliders($);
-    cleanupHOMEINITTEMPLATE($);
-  }
+  
 }

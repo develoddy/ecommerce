@@ -139,6 +139,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.sliders = resp.sliders;
       this.categories = resp.categories;
+      console.log("Categoriaas desde la home: ", this.categories);
+      // Generar slug para cada categoría sin modificar el título original
+      this.categories.forEach((category:any) => {
+        category.slug = this.generateSlug(category.title);  // Genera el slug y lo agrega al objeto categoria
+      });
+      
       this.ourProducts = resp.our_products;
       this.besProducts = resp.bes_products;
       this.FlashSale = resp.FlashSale;
@@ -183,6 +189,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         modal.show();
       }
     }
+  }
+
+  generateSlug(title: string): string {
+    return title
+      .toLowerCase()                  // Convertir a minúsculas
+      .replace(/[^a-z0-9 -]/g, '')     // Eliminar caracteres no alfanuméricos
+      .replace(/\s+/g, '-')            // Reemplazar los espacios por guiones
+      .replace(/-+/g, '-');            // Reemplazar múltiples guiones por uno solo
   }
 
   acceptCookies(): void {
