@@ -48,6 +48,13 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   nameCategorie = null;
   userId: any;
 
+  tallas: any[] = [];  // Aquí guardaremos las tallas disponibles
+  selectedTallas: any[] = [];  // Aquí guardamos las tallas seleccionadas
+
+  selectedColors: string[] = [];
+  coloresDisponibles: { name: string, hex: string }[] = [];
+
+
   locale: string = "";
   country: string = "";
 
@@ -61,8 +68,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     public _router: Router,
     public _routerActived: ActivatedRoute,
   ) {
-     // Obtenemos `locale` y `country` de la ruta actual
-     this._routerActived.paramMap.subscribe(params => {
+    
+    this._routerActived.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
       this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
     });
@@ -117,8 +124,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     });
 
     this.subscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
-      this.categories = resp.categories;
 
+      this.categories = resp.categories;
+  
       // Generar slug para cada categoría sin modificar el título original
       this.categories.forEach((category:any) => {
         category.slug = this.generateSlug(category.title);  // Genera el slug y lo agrega al objeto categoria
@@ -135,7 +143,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
       this.variedades = resp.variedades;
 
-      console.log("variedades: ", this.variedades);
+      if (this.variedades) {
+        this.setColoresDisponibles();
+      }
       
       const variedadesUnicos = new Set();
       this.variedades = this.variedades.filter((variedad:any) => {
@@ -147,10 +157,47 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         }
       });
     });
+  }
 
-    // setTimeout(() => {
-    //   HOMEINITTEMPLATE($);
-    // }, 150);
+  setColoresDisponibles() {
+    const uniqueColors = new Map<string, string>();
+  
+    this.variedades.forEach((variedad: any) => {
+      console.log(variedad);
+      
+      const colorName = variedad.color;
+      if (!uniqueColors.has(colorName)) {
+        const colorHex = this.getColorHex(colorName);
+        uniqueColors.set(colorName, colorHex);
+      }
+    });
+  
+    // Convertimos el Map a un array si lo quieres así:
+    const coloresDisponibles = Array.from(uniqueColors, ([name, hex]) => ({ name, hex }));  
+    // Puedes asignarlo a una variable si es necesario:
+    this.coloresDisponibles = coloresDisponibles;
+  }
+  
+
+  getColorHex(color: string): string {
+    // Mapea los nombres de los colores a sus valores hexadecimales correspondientes
+    const colorMap: { [key: string]: string } = {
+      'Faded Black': '#424242',
+      'Faded Khaki': '#dbc4a2',
+      'Black': '#080808',
+      'Navy': '#152438',
+      'Maroon': '#6c152b',
+      'Red': '#e41525',
+      'Royal': '#1652ac',
+      'Sport Grey': '#9b969c',
+      'Light blue': '#9dbfe2',
+      'Faded Eucalyptus': '#d1cbad',
+      'Faded Bone': '#f3ede4',
+      'White': '#ffffff',
+      'Leaf': '#5c9346',
+      'Autumn': '#c85313',
+    };
+    return colorMap[color] || ''; // Devuelve el valor hexadecimal correspondiente al color
   }
 
   filterForCategorie(idCategorie:any) {
@@ -180,8 +227,17 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     this.filterProduct();
   }
 
-  tallas: any[] = [];  // Aquí guardaremos las tallas disponibles
-  selectedTallas: any[] = [];  // Aquí guardamos las tallas seleccionadas
+  toggleColor(colorName: string) {
+    // Limpia todos los colores previamente seleccionados
+    this.selectedColors = [];
+  
+    // Añade el nuevo color
+    this.selectedColors.push(colorName);
+  
+    // Filtra productos
+    this.filterProduct();
+  }
+  
 
   filterProduct() {
     this.products = []; // Limpiamos los productos actuales
@@ -199,20 +255,17 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
         price_min: priceArray[0] ? parseFloat(priceArray[0].trim()) : null,
         price_max: priceArray[1] ? parseFloat(priceArray[1].trim()) : null,
-        selectedTallas: this.selectedTallas,  // Aquí pasamos las tallas seleccionadas
+        //selectedTallas: this.selectedTallas,  // Aquí pasamos las tallas seleccionadas
+        selectedColors: this.selectedColors, // <-- ¡Aquí añadimos los colores!
       }
 
       // Llamada al servicio para obtener los productos filtrados
       this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
         this.products = resp.products;
-
-        console.log("DEBBUG this._ecommerceGuestService.filterProduct: ", this.products);
-        
       });
     }, 500);
   }
 
-  // Método para manejar las tallas seleccionadas
   selectedTalla(talla: any) {
     let index = this.selectedTallas.indexOf(talla);
     if (index === -1) {

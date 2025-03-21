@@ -211,18 +211,15 @@
                             <div class="widget-title"><h2>Color</h2></div>
                             <div class="widget-content filter-color filterDD">
                                 <ul class="swacth-list swatches d-flex-center clearfix pt-0">
-                                    <li class="swatch large radius available active"><img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80" height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Blue" /></li>
-                                    <li class="swatch large radius available"><img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80" height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Black" /></li>
-                                    <li class="swatch large radius available"><img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80" height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Pink" /></li>
-                                    <li class="swatch large radius available"><img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80" height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Red" /></li>
-                                    <li class="swatch large radius available black"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Black"></span></li>
-                                    <li class="swatch large radius available red"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Red"></span></li>
-                                    <li class="swatch large radius available blue"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Blue"></span></li>
-                                    <li class="swatch large radius available pink"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Pink"></span></li>
-                                    <li class="swatch large radius available gray"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Gray"></span></li>
-                                    <li class="swatch large radius available green"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Green"></span></li>
-                                    <li class="swatch large radius available orange"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Orange"></span></li>
-                                    <li class="swatch large radius soldout yellow"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Yellow"></span></li>
+                                    <li *ngFor="let color of coloresDisponibles"
+                                        class="swatch large radius available"
+                                        [ngStyle]="{'background-color': color.hex}"
+                                        [attr.title]="color.name"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        (click)="toggleColor(color.name)"
+                                    >
+                                    <span class="swatchLbl"></span>
                                 </ul>
                             </div>
                         </div>
@@ -237,17 +234,6 @@
                                             <a href="#" onclick="return false;" (click)="selectedVariedad(variedad)" > {{variedad.valor}} </a>
                                         </li>
                                     </ng-container>
-                                    <!-- <li class="swatch large radius soldout"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XS">XS</span></li>
-                                    <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="S">S</span></li>
-                                    <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="M">M</span></li>
-                                    <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="L">L</span></li>
-                                    <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="X">X</span></li>
-                                    <li class="swatch large radius available active"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XL">XL</span></li>
-                                    <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XLL">XLL</span></li>
-                                    <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XXL">XXL</span></li>
-                                    <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="25">25</span></li>
-                                    <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="35">35</span></li>
-                                    <li class="swatch large radius available"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="40">40</span></li> -->
                                 </ul>
                             </div>
                         </div>

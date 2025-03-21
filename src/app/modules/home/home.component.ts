@@ -102,17 +102,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  // private translateTextAccordingToLanguage(language: string): string {
-  //   // Lógica para traducir el texto según el idioma
-  //   return 'Texto traducido';
-  // }
-
   ngAfterViewInit(): void {
     this.initializeLargeSlider();
     this.initializeSmallSlider();
   }
   
-
   ngOnInit(): void {
     // Suscribirse al observable para saber cuando mostrar u ocultar el loading
     this.subscription = this.homeService.loading$.subscribe(isLoading => {
@@ -485,27 +479,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     return discount;
   }
 
-  /*getDiscountProduct(besProduct:any, is_sale_flash:any=null) {
-    if (is_sale_flash) {
-      //console.log("---- getDiscountProduct");
-      if (this.FlashSale.type_discount == 1) { // 1 porcentaje
-        return (besProduct.price_usd*this.FlashSale.discount*0.01).toFixed(2);
-      } else { // 2 es moneda
-        return this.FlashSale.discount;
-      }
-    } else {
-      if (besProduct.campaing_discount) {
-        if (besProduct.campaing_discount.type_discount == 1) { // 1 porcentaje
-          //return besProduct.price_usd*besProduct.campaing_discount.discount*0.01;
-          return (besProduct.price_usd*besProduct.campaing_discount.discount*0.01).toFixed(2);
-        } else { // 2 es moneda
-          return besProduct.campaing_discount.discount;
-        }
-      }
-    }
-    return 0;
-  }*/
-
   getRouterDiscount(besProduct:any) {
     if (besProduct.campaing_discount) {
       return {_id: besProduct.campaing_discount._id};
@@ -513,7 +486,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     return {};
   }
 
-  //addCart(product:any, is_sale_flash:any=null) {
   addCart(product:any) {
     if (!this._cartService._authService.user) {
       alertDanger("Necesitas autenticarte para poder agregar el producto al carrito");
@@ -770,4 +742,25 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     cleanupProductZoom($);
     this.cleanupPSWP();
   }
+
+  /*getDiscountProduct(besProduct:any, is_sale_flash:any=null) {
+    if (is_sale_flash) {
+      //console.log("---- getDiscountProduct");
+      if (this.FlashSale.type_discount == 1) { // 1 porcentaje
+        return (besProduct.price_usd*this.FlashSale.discount*0.01).toFixed(2);
+      } else { // 2 es moneda
+        return this.FlashSale.discount;
+      }
+    } else {
+      if (besProduct.campaing_discount) {
+        if (besProduct.campaing_discount.type_discount == 1) { // 1 porcentaje
+          //return besProduct.price_usd*besProduct.campaing_discount.discount*0.01;
+          return (besProduct.price_usd*besProduct.campaing_discount.discount*0.01).toFixed(2);
+        } else { // 2 es moneda
+          return besProduct.campaing_discount.discount;
+        }
+      }
+    }
+    return 0;
+  }*/
 }
