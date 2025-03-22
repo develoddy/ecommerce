@@ -31,13 +31,13 @@
         <!--Main Content-->
         <div class="container-fluid">
             <!--Category Slider-->
-            <div class="collection-slider-8items gp10 slick-arrow-dots sub-collection section">
+            <div class="collection-slider-8items gp10 slick-arrow-dots sub-collection section" *ngIf="categories">
+          
                 <ng-container *ngFor="let categorie of categories">
                     <div class="category-item zoomscal-hov">
                         <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" class="category-link clr-none">
                             <div class="zoom-scal zoom-scal-nopb rounded-0">
                                 <img class="rounded-0 blur-up lazyload" [attr.data-src]="categorie.imagen_home" [src]="categorie.imagen_home" alt="{{ categorie.title }}" title="{{ categorie.title }}" width="365" height="365" />
-                                <!-- <img class="rounded-0 blur-up lazyloaded" data-src="assets/images/collection/sub-collection5.jpg" src="assets/images/collection/sub-collection5.jpg" alt="T-Shirts" title="T-Shirts" width="365" height="365"> -->
                             </div>
                             <div class="details text-center">
                                 <h4 class="category-title mb-0">{{ categorie.title }}</h4>
@@ -116,7 +116,7 @@
             <div class="toolbar toolbar-wrapper shop-toolbar px-4">
                 <div class="row align-items-center">
                     <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-between">
-                        <button type="button" class="btn btn-filter text icon anm anm-sliders-hr d-inline-flex me-2 me-lg-3 text-uppercase">Filtrar y ordenar</button>
+                        <button type="button" class="btn btn-filter text icon anm anm-sliders-hr d-inline-flex me-2 me-lg-3 btn-lg text-uppercase">Filtrar y ordenar</button>
                         <div class="filters-item d-flex align-items-center">
                             <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
                             <div class="grid-options view-mode d-flex">

@@ -17,6 +17,9 @@ declare function ModalProductDetail():any;
 declare function cleanupHOMEINITTEMPLATE($: any): any;
 declare function cleanupSliders($: any): any;
 
+declare function productSlider5items($: any): any;
+declare function sliderRefresh(): any;
+
 
 @Component({
   selector: 'app-filter-products',
@@ -157,6 +160,13 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         }
       });
     });
+
+     setTimeout(() => {
+      productSlider5items($);
+      // Llama explícitamente al refresco del slider
+      (window as any).sliderRefresh($);
+     }, 50);
+
   }
 
   setColoresDisponibles() {
