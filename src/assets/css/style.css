@@ -2275,14 +2275,18 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .toolbar .view-mode .icon-mode.active.grid-4:before { box-shadow: 7px 0 0 #424242,14px 0 0 #424242,21px 0 0 #424242; }
 .toolbar .view-mode .icon-mode.active.grid-5:before { box-shadow: 7px 0 0 #424242,14px 0 0 #424242,21px 0 0 #424242,28px 0 0 #424242; } */
 
-
+.disabled-link {
+  pointer-events: none; /* Desactiva clics */
+  opacity: 0.2;         /* Visualmente más claro que está deshabilitado */
+  cursor: not-allowed;
+}
 
 .toolbar .view-mode .icon-mode.active:before { background-color: #131313; }
 
 /* Sidebar Filter */
 .btn.btn-filter { padding:8px 15px; }   
 .btn.btn-filter:before { font-family:'annimex-icons'; font-size:18px; margin-right:6px; }
-.sidebar-filter .filterbar { width:300px; height:100%; padding:0 !important; background-color:#ffffff; box-shadow:0 0 5px rgba(0,0,0,0.3); position:fixed; top:0; left:-335px; z-index:9999; -ms-transition:0.5s; -webkit-transition:0.5s; transition:0.5s; }
+.sidebar-filter .filterbar { width:350px; height:100%; padding:0 !important; background-color:#ffffff; box-shadow:0 0 5px rgba(0,0,0,0.3); position:fixed; top:0; left:-355px; z-index:9999; -ms-transition:0.5s; -webkit-transition:0.5s; transition:0.5s; }
 .sidebar-filter .filterbar.active { left:0; }
 .sidebar-filter .filterbar .sidebar-tags { position:relative; z-index:9; background:#f8f9fa; padding:30px 20px; height:100%; overflow:auto; }
 .sidebar-filter .filterbar .filterBox { padding:0; border:none; margin-bottom:30px; }

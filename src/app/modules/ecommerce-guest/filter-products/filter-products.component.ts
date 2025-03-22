@@ -49,11 +49,11 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   userId: any;
 
   tallas: any[] = [];  // Aquí guardaremos las tallas disponibles
-  selectedTallas: any[] = [];  // Aquí guardamos las tallas seleccionadas
+  //selectedTallas: any[] = [];  // Aquí guardamos las tallas seleccionadas
 
   selectedColors: string[] = [];
   coloresDisponibles: { name: string, hex: string }[] = [];
-
+  filtersApplied = false; // Deshabilitado por defecto
 
   locale: string = "";
   country: string = "";
@@ -161,10 +161,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
   setColoresDisponibles() {
     const uniqueColors = new Map<string, string>();
-  
     this.variedades.forEach((variedad: any) => {
-      console.log(variedad);
-      
       const colorName = variedad.color;
       if (!uniqueColors.has(colorName)) {
         const colorHex = this.getColorHex(colorName);
@@ -178,7 +175,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     this.coloresDisponibles = coloresDisponibles;
   }
   
-
   getColorHex(color: string): string {
     // Mapea los nombres de los colores a sus valores hexadecimales correspondientes
     const colorMap: { [key: string]: string } = {
@@ -213,7 +209,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     // Nueva línea: actualizar el título
     this.idCategorie = idCategorie;
     this.updateCategoryTitle();
-
   }
 
   addCategorie(categorie:any) {
@@ -233,12 +228,13 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   
     // Añade el nuevo color
     this.selectedColors.push(colorName);
-  
+    
+    //this.filtersApplied = true;
+
     // Filtra productos
     this.filterProduct();
   }
   
-
   filterProduct() {
     this.products = []; // Limpiamos los productos actuales
     setTimeout(() => {
@@ -249,15 +245,34 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       }
       
       let priceArray = priceRange.replace(/\$/g, "").split(" - "); // Remueve todos los '$'
+
+      // Establecemos los valores predeterminados del slider
+      let defaultMin = 15;
+      let defaultMax = 100;
+
+      // Convertimos los valores del precio
+      let priceMin = priceArray[0] ? parseFloat(priceArray[0].trim()) : null;
+      let priceMax = priceArray[1] ? parseFloat(priceArray[1].trim()) : null;
+
+      // Actualizar la variable filtersApplied
+      // La lógica revisa si los valores de precio son diferentes de los predeterminados
+      this.filtersApplied = this.selectedColors.length > 0 
+          || this.variedad_selected.length > 0 
+          || priceMin !== defaultMin 
+          || priceMax !== defaultMax;
+
+
       let data = {
         categories_selecteds: this.categories_selecteds,
         is_discount: this.is_discount,
         variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
-        price_min: priceArray[0] ? parseFloat(priceArray[0].trim()) : null,
-        price_max: priceArray[1] ? parseFloat(priceArray[1].trim()) : null,
-        //selectedTallas: this.selectedTallas,  // Aquí pasamos las tallas seleccionadas
+        price_min: priceMin,
+        price_max: priceMax,
         selectedColors: this.selectedColors, // <-- ¡Aquí añadimos los colores!
       }
+
+      // Actualizar la variable filtersApplied
+      //this.filtersApplied = this.selectedColors.length > 0 || this.variedad_selected.length > 0 || priceRange !== "";
 
       // Llamada al servicio para obtener los productos filtrados
       this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
@@ -266,15 +281,15 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     }, 500);
   }
 
-  selectedTalla(talla: any) {
-    let index = this.selectedTallas.indexOf(talla);
-    if (index === -1) {
-      this.selectedTallas.push(talla);  // Si la talla no está seleccionada, la agregamos
-    } else {
-      this.selectedTallas.splice(index, 1);  // Si la talla ya está seleccionada, la eliminamos
-    }
-    this.filterProduct();  // Volvemos a filtrar los productos con las tallas seleccionadas
-  }
+  // selectedTalla(talla: any) {
+  //   let index = this.selectedTallas.indexOf(talla);
+  //   if (index === -1) {
+  //     this.selectedTallas.push(talla);  // Si la talla no está seleccionada, la agregamos
+  //   } else {
+  //     this.selectedTallas.splice(index, 1);  // Si la talla ya está seleccionada, la eliminamos
+  //   }
+  //   this.filterProduct();  // Volvemos a filtrar los productos con las tallas seleccionadas
+  // }
 
   updateCategoryTitle() {
     const category = this.categories.find((cat:any) => cat._id === Number(this.idCategorie));
@@ -292,8 +307,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
   selectedVariedad(variedad:any) {
     this.variedad_selected = variedad;
-    console.log("Seleted variedad sizze: ", this.variedad_selected);
-    
+    //this.filtersApplied = true;
     this.filterProduct();
   }
 
@@ -426,26 +440,45 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     cleanupHOMEINITTEMPLATE($);
   }
 
+  clearFilters() {
+    //this.categories_selecteds = [];
+    this.variedad_selected = { _id: null };
+    this.is_discount = 1;
+    this.variedad_selected = [];
+    this.selectedColors = [];
+    $("#slider-range").slider("values", [15, 100]); // Restablecer el slider (ajusta los valores según tu configuración)
+    $("#amount").val("15.00 € - 100.00 €"); // Actualizar el valor del input del rango de precios
+    this.filtersApplied = false; // Deshabilitar el botón
+    this.filterProduct();
+  }
+  
+  // Cada vez que el usuario aplica un filtro:
+  applyAnyFilter() {
+    // Esto lo llamas cuando el usuario selecciona categoría, variedad, talla, color o mueve el slider
+    this.filtersApplied = true;
+    this.filterProduct();
+  }
+  
   // clearFilters() {
-  //   //this.categories_selecteds = [];
+  //   this.categories_selecteds = [];
   //   this.is_discount = false;
-  //   //this.variedad_selected = null;
+  //   this.variedad_selected = null;
 
-  //   $("#amount").val(""); // Limpiar el input de precio
-  //   $("#slider-range").slider("values", [0, 10]); // Restablecer el slider (ajusta los valores según tu configuración)
+  //    $("#amount").val(""); // Limpiar el input de precio
+  //    $("#slider-range").slider("values", [0, 10]); // Restablecer el slider (ajusta los valores según tu configuración)
 
-  //   let data = {
-  //       categories_selecteds: this.categories_selecteds,
-  //       is_discount: this.is_discount,
-  //       variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
-  //       price_min: null,
-  //       price_max: null,
-  //   };
+  //    let data = {
+  //        categories_selecteds: this.categories_selecteds,
+  //        is_discount: this.is_discount,
+  //        variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
+  //        price_min: null,
+  //        price_max: null,
+  //    };
 
   //   this._ecommerceGuestService.filterProduct(data).subscribe((resp: any) => {
-  //       this.products = resp.products;
+  //        this.products = resp.products;
   //   });
-  // }
+  //  }
 
   // navigateToProduct(slug: string, discountId?: string) {
   //   // Guarda el estado para hacer scroll hacia arriba
@@ -458,5 +491,4 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   //   });
   // }
 
-  
 }

@@ -1183,22 +1183,25 @@ function HOMEINITTEMPLATE ($, undefined) {
         }
     });
 
-
+    
     /*-----------------------------------
      17. Price Range Slider
      -------------------------------------*/
     function price_slider() {
         $("#slider-range").slider({
             range: true,
-            min: 12,
-            max: 200,
+            min: 15,
+            max: 100,
+            step: 0.01, // Añadimos paso para decimales
             values: [0, 100],
             slide: function(event, ui) {
-                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                //$("#amount").val(ui.values[0] + " € - " + ui.values[1] + " €"); //$("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                $("#amount").val(ui.values[0].toFixed(2) + " € - " + ui.values[1].toFixed(2) + " €");
+                //componentRef.filtersApplied = true; // Activa el botón
             }
         });
-        $("#amount").val("$" + $("#slider-range").slider("values", 0) +
-                " - $" + $("#slider-range").slider("values", 1));
+        //$("#amount").val($("#slider-range").slider("values", 0) + " € - " + $("#slider-range").slider("values", 1) + " €"); //" - $" + $("#slider-range").slider("values", 1));
+        $("#amount").val($("#slider-range").slider("values", 0).toFixed(2) + " € - " + $("#slider-range").slider("values", 1).toFixed(2) + " €");
     }
     price_slider();
 

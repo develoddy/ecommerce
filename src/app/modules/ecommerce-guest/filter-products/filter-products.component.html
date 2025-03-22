@@ -169,20 +169,20 @@
                     <div class="sidebar-tags clearfix">
                         <!--Filter By-->
                         <div class="sidebar-widget filterBox filter-widget">
-                            <div class="widget-title"><h2>Filtrar por</h2></div>
-                            <div class="widget-content filterby filterDD">
+                            <div class="text-uppercase"><h2>Filtrar y ordenar</h2></div>
+                            <!-- <div class="widget-content filterby filterDD d-none">
                                 <ul class="items tags-list d-flex-wrap">
                                     <li class="item"><a href="#;" class="rounded-5"><span class="filter-value">Women</span><i class="icon anm anm-times-r"></i></a></li>
                                     <li class="item"><a href="#;" class="rounded-5"><span class="filter-value">Blue</span><i class="icon anm anm-times-r"></i></a></li>
                                     <li class="item"><a href="#;" class="rounded-5"><span class="filter-value">XL</span><i class="icon anm anm-times-r"></i></a></li>
                                 </ul>
                                 <a href="#;" onclick="return false;" (click)="filterProduct();" class="btn btn-sm brd-link">Limpiar todo</a>
-                            </div>
+                            </div> -->
                         </div>
                         <!--End Filter By-->
                         <!--Categories-->
-                        <div class="sidebar-widget clearfix categories filterBox filter-widget">
-                            <div class="widget-title"><h2>Categorías</h2></div>
+                        <div class="sidebar-widget clearfix categories filterBox filter-widget pt-5">
+                            <div class="widget-title "><h2>Categorías</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="sidebar-categories scrollspy morelist clearfix">
                                     <ng-container *ngFor="let categorie of categories">
@@ -194,22 +194,24 @@
                             </div>
                         </div>
                         <!--Categories-->
-                        <!--Price Filter-->
+                        <!--Size Swatches-->
                         <div class="sidebar-widget filterBox filter-widget">
-                            <div class="widget-title"><h2>Precio</h2></div>
-                            <form class="widget-content price-filter filterDD" action="#" method="post">
-                                <div id="slider-range" class="mt-2"></div>
-                                <div class="row">
-                                    <div class="col-6"><input id="amount" type="text" /></div>
-                                    <div class="col-6 text-right"><button class="btn btn-sm" (click)="filterProduct()">filtrar</button></div>
-                                </div>
-                            </form>
+                            <div class="widget-title active"><h2>Talla</h2></div>
+                            <div class="widget-content filter-size filterDD" style="display: none;">
+                                <ul class="swacth-list size-swatches d-flex-center clearfix">
+                                    <ng-container *ngFor="let variedad of variedades">
+                                        <li [ngClass]="{'chosen': variedad_selected.id == variedad.id}" class="chosen">
+                                            <a href="#" onclick="return false;" (click)="selectedVariedad(variedad)" > {{variedad.valor}} </a>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
                         </div>
-                        <!--End Price Filter-->
+                        <!--End Size Swatches-->
                         <!--Color Swatches-->
                         <div class="sidebar-widget filterBox filter-widget">
-                            <div class="widget-title"><h2>Color</h2></div>
-                            <div class="widget-content filter-color filterDD">
+                            <div class="widget-title active"><h2>Color</h2></div>
+                            <div class="widget-content filter-color filterDD" style="display: none;">
                                 <ul class="swacth-list swatches d-flex-center clearfix pt-0">
                                     <li *ngFor="let color of coloresDisponibles"
                                         class="swatch large radius available"
@@ -224,20 +226,18 @@
                             </div>
                         </div>
                         <!--End Color Swatches-->
-                        <!--Size Swatches-->
+                        <!--Price Filter-->
                         <div class="sidebar-widget filterBox filter-widget">
-                            <div class="widget-title"><h2>Talla</h2></div>
-                            <div class="widget-content filter-size filterDD">
-                                <ul class="swacth-list size-swatches d-flex-center clearfix">
-                                    <ng-container *ngFor="let variedad of variedades">
-                                        <li [ngClass]="{'chosen': variedad_selected.id == variedad.id}" class="chosen">
-                                            <a href="#" onclick="return false;" (click)="selectedVariedad(variedad)" > {{variedad.valor}} </a>
-                                        </li>
-                                    </ng-container>
-                                </ul>
-                            </div>
+                            <div class="widget-title active"><h2>Precio</h2></div>
+                            <form class="widget-content price-filter filterDD" style="display: none;" action="#" method="post">
+                                <div id="slider-range" class="mt-2"></div>
+                                <div class="row">
+                                    <div class="col-6"><input id="amount" class="w-100" type="text" /></div>
+                                    <div class="col-6 text-right"><button class="btn btn-sm text-uppercase fw-normal" (click)="filterProduct()">filtrar</button></div>
+                                </div>
+                            </form>
                         </div>
-                        <!--End Size Swatches-->
+                        <!--End Price Filter-->
                         <!--Product type-->
                         <div class="sidebar-widget filterBox filter-widget product-type d-none">
                             <div class="widget-title"><h2>Tipo de producto</h2></div>
@@ -294,6 +294,15 @@
                             </div>
                         </div>
                         <!--End Product Tags-->
+
+                        <div class="sidebar-widget filterBox filter-widget brand-filter pt-3">
+                            <!-- <a href="#;" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="cart-btn btn btn-black w-100 btn-lg me-1 text-uppercase fw-normal">Borrar filtros</a> -->
+                            <a  href="#;" 
+                                onclick="return false;" 
+                                (click)="clearFilters()" 
+                                [ngClass]="{'disabled-link': !filtersApplied}" 
+                                class="cart-btn btn btn-black w-100 btn-lg me-1 text-uppercase fw-normal">Borrar filtros</a>
+                        </div>
                     </div>
                 </div>
                 <!--End Sidebar-->
