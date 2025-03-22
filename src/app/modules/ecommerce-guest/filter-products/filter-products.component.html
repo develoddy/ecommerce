@@ -41,7 +41,8 @@
                             </div>
                             <div class="details text-center">
                                 <h4 class="category-title mb-0">{{ categorie.title }}</h4>
-                                <p class="counts">20 Elementos</p>
+                                <p class="counts text-uppercase fw-normal">{{ categorie.total_products }} {{ categorie.total_products == 1 ? 'Producto' : 'Productos' }}</p>
+
                             </div>
                         </a>
                     </div>

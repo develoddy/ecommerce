@@ -13,13 +13,11 @@ declare function alertSuccess([]):any;
 declare function priceRangeSlider():any;
 declare function ModalProductDetail():any;
 
-// ---------- Destruir desde main ----------
+// ------------------ DESTRUIR DESDE EL MAIN.JS ------------------
 declare function cleanupHOMEINITTEMPLATE($: any): any;
 declare function cleanupSliders($: any): any;
-
 declare function productSlider5items($: any): any;
 declare function sliderRefresh(): any;
-
 
 @Component({
   selector: 'app-filter-products',
@@ -28,6 +26,8 @@ declare function sliderRefresh(): any;
   encapsulation: ViewEncapsulation.None // Desactiva la encapsulación
 })
 export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy {
+
+  /* ------------------ PROPERTIES  ------------------ */
   @ViewChild('grid1') grid1!: ElementRef;
   @ViewChild('grid2') grid2!: ElementRef;
   @ViewChild('grid3') grid3!: ElementRef;
@@ -38,32 +38,27 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   categories:any=[];
   variedades:any=[];
   categories_selecteds:any = [];
-  is_discount:any = 1; // 1 es normal,  y 2 es producto con descuento
+  is_discount:any = 1; // 1 ES NORMAL, Y 2 ES PRODUCTO CON DESCUENTO
   variedad_selected:any = {_id: null};
   products:any = [];
   product_selected:any=null;
   categoryTitle: string = '';
   slug:any=null;
-  isDesktopSize: boolean = window.innerWidth >= 992; // Inicialización
+  isDesktopSize: boolean = window.innerWidth >= 992;
   isMobileSize: boolean = window.innerWidth < 768;
   idCategorie:any=null;
   noneSidebar = true;
   nameCategorie = null;
   userId: any;
-
-  tallas: any[] = [];  // Aquí guardaremos las tallas disponibles
-  //selectedTallas: any[] = [];  // Aquí guardamos las tallas seleccionadas
-
   selectedColors: string[] = [];
   coloresDisponibles: { name: string, hex: string }[] = [];
-  filtersApplied = false; // Deshabilitado por defecto
-
+  filtersApplied = false; // DESHABILITAR POR DEFECTO
   locale: string = "";
   country: string = "";
-
   private subscription: Subscription = new Subscription();
   loading: boolean = false;
   
+  /* ------------------ CONSTRUCTOR ------------------ */
   constructor(
     private cdRef: ChangeDetectorRef,
     public _ecommerceGuestService: EcommerceGuestService,
@@ -73,8 +68,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   ) {
     
     this._routerActived.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
-      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+      // VALORES PREDETERMINADO SI NO SE ENCUENTRA
+      this.locale = params.get('locale') || 'es';
+      this.country = params.get('country') || 'es';
     });
 
   }
@@ -99,6 +95,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
   }
   
+  /* ------------------ CYCLE INIT ------------------ */
   ngOnInit(): void {
     this.subscription =  this._ecommerceGuestService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
@@ -113,35 +110,45 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
       this.idCategorie = resp["idCategorie"];
-
       if (this.idCategorie) {
-        // Limpiar filtros antes
+        // LIMPIAR FILTROS ANTES
         this.categories_selecteds = [];
         this.variedad_selected = {_id: null};
         this.is_discount = 1;
-
         this.filterForCategorie(this.idCategorie); 
       }
-
       this.filterProduct(); // ¡Ahora sí después de aplicar la categoría!
     });
 
-    this.subscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
+    this.configInitial();
 
+    setTimeout(() => {
+      productSlider5items($);
+      // REFRESCAR EL SLIDER
+      (window as any).sliderRefresh($);
+    }, 150);
+
+  }
+
+   /* ------------------ INIT FUCTIONS ------------------ */
+  configInitial() {
+    this.subscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
-  
-      // Generar slug para cada categoría sin modificar el título original
+      
+      // GENERAR SLUG PARA CASA CATEGORIA SIN MODIFICAR EL TITULO ORIGINAL
       this.categories.forEach((category:any) => {
-        category.slug = this.generateSlug(category.title);  // Genera el slug y lo agrega al objeto categoria
+        // GENERA EL SLUG Y LO AGREGA AL OBJETO CATEGORIA
+        category.slug = this.generateSlug(category.title);
       });
 
-      // Buscar el título de la categoría basada en el idCategorie
+      // BUSCAR EL TITULO DE LA CATEGORIA BASADA EN EL IDCATEGORIE
       const category = this.categories.find((cat:any) => cat._id === Number(this.idCategorie));
       if (category) {
-        this.categoryTitle = category.title; // Asignar el título de la categoría
+        // ASIGNCAR EL TITULO DE LA CATEGORIA
+        this.categoryTitle = category.title;
       }
 
-      // Actualizar título una vez cargadas las categorías
+      // ACTUALIZAR EL TITULO UNA VEZ CARGADAS LAS CATEGORIAS
       this.updateCategoryTitle();
 
       this.variedades = resp.variedades;
@@ -160,13 +167,48 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         }
       });
     });
+  }
 
-     setTimeout(() => {
-      productSlider5items($);
-      // Llama explícitamente al refresco del slider
-      (window as any).sliderRefresh($);
-     }, 50);
+  filterProduct() {
+    // SE LIMPIA LOS PRODUCTOS ACTUALES
+    this.products = []; 
+    setTimeout(() => {
+      // OBTIENE EL VALOR DEL INPUT, EJ "15 € - 100 €"
+      let priceRange = $("#amount").val();
+      if (!priceRange) {
+        console.error("El input #amount no tiene valor definido.");
+        return;
+      }
+      
+      // ELIMINA TODOS LOS '$'
+      let priceArray = priceRange.replace(/\$/g, "").split(" - ");
 
+      // ESTABLECEMOS LOS VALORES PREDETERMINADOS DEL SLIDER
+      let defaultMin = 15;
+      let defaultMax = 100;
+
+      // CONVERTIMOS LOS VALORES DEL PRECIO
+      let priceMin = priceArray[0] ? parseFloat(priceArray[0].trim()) : null;
+      let priceMax = priceArray[1] ? parseFloat(priceArray[1].trim()) : null;
+
+      // ACTUALIZA LA VARIABLE FILTERAPPLIED
+      // LA LÓGICA REVISA SI LOS VALORES DE PRECIO SON DIFERENTES DE LOS PREDETERMINADOS
+      this.filtersApplied = this.categories_selecteds.length > 0 || this.selectedColors.length > 0 || this.variedad_selected.length > 0 || priceMin !== defaultMin || priceMax !== defaultMax;
+
+      let data = {
+        categories_selecteds  : this.categories_selecteds,
+        is_discount           : this.is_discount,
+        variedad_selected     : this.variedad_selected.id ? this.variedad_selected : null,
+        price_min             : priceMin,
+        price_max             : priceMax,
+        selectedColors        : this.selectedColors, 
+      }
+
+      // LLAMADA AL SERVICIO PARA OBTENER LOS PRODUCTOS FILTRADOS
+      this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
+        this.products = resp.products;
+      });
+    }, 500);
   }
 
   setColoresDisponibles() {
@@ -179,31 +221,33 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       }
     });
   
-    // Convertimos el Map a un array si lo quieres así:
+    // CONVERTIMOS EL MAP A UN ARRAY
     const coloresDisponibles = Array.from(uniqueColors, ([name, hex]) => ({ name, hex }));  
-    // Puedes asignarlo a una variable si es necesario:
+    // PUEDES ASIGNARLO A UNA VARIABLE SI ES NECESARIO
     this.coloresDisponibles = coloresDisponibles;
   }
   
   getColorHex(color: string): string {
-    // Mapea los nombres de los colores a sus valores hexadecimales correspondientes
+    // MAPEA LOS NOMBRES DE LOS COLORES A SUS VALORES HEXADECIMALES CORRESPONDIENTE
     const colorMap: { [key: string]: string } = {
-      'Faded Black': '#424242',
-      'Faded Khaki': '#dbc4a2',
-      'Black': '#080808',
-      'Navy': '#152438',
-      'Maroon': '#6c152b',
-      'Red': '#e41525',
-      'Royal': '#1652ac',
-      'Sport Grey': '#9b969c',
-      'Light blue': '#9dbfe2',
+      'Faded Black' : '#424242',
+      'Faded Khaki' : '#dbc4a2',
+      'Black'       : '#080808',
+      'Navy'        : '#152438',
+      'Maroon'      : '#6c152b',
+      'Red'         : '#e41525',
+      'Royal'       : '#1652ac',
+      'Sport Grey'  : '#9b969c',
+      'Light blue'  : '#9dbfe2',
       'Faded Eucalyptus': '#d1cbad',
-      'Faded Bone': '#f3ede4',
-      'White': '#ffffff',
-      'Leaf': '#5c9346',
-      'Autumn': '#c85313',
+      'Faded Bone'  : '#f3ede4',
+      'White'       : '#ffffff',
+      'Leaf'        : '#5c9346',
+      'Autumn'      : '#c85313',
     };
-    return colorMap[color] || ''; // Devuelve el valor hexadecimal correspondiente al color
+
+    // DEVUELVE EL VALOR HEX CORRESPONDIENTE AL COLOR
+    return colorMap[color] || '';
   }
 
   filterForCategorie(idCategorie:any) {
@@ -215,8 +259,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     }
     this.nameCategorie = this.slug;
     this.noneSidebar = false;
-
-    // Nueva línea: actualizar el título
     this.idCategorie = idCategorie;
     this.updateCategoryTitle();
   }
@@ -233,71 +275,11 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   toggleColor(colorName: string) {
-    // Limpia todos los colores previamente seleccionados
     this.selectedColors = [];
-  
-    // Añade el nuevo color
     this.selectedColors.push(colorName);
-    
-    //this.filtersApplied = true;
-
-    // Filtra productos
     this.filterProduct();
   }
   
-  filterProduct() {
-    this.products = []; // Limpiamos los productos actuales
-    setTimeout(() => {
-      let priceRange = $("#amount").val(); // Obtiene el valor del input, ej. "$39 - $83"
-      if (!priceRange) {
-        console.error("El input #amount no tiene valor definido.");
-        return;
-      }
-      
-      let priceArray = priceRange.replace(/\$/g, "").split(" - "); // Remueve todos los '$'
-
-      // Establecemos los valores predeterminados del slider
-      let defaultMin = 15;
-      let defaultMax = 100;
-
-      // Convertimos los valores del precio
-      let priceMin = priceArray[0] ? parseFloat(priceArray[0].trim()) : null;
-      let priceMax = priceArray[1] ? parseFloat(priceArray[1].trim()) : null;
-
-      // Actualizar la variable filtersApplied
-      // La lógica revisa si los valores de precio son diferentes de los predeterminados
-      this.filtersApplied = this.categories_selecteds.length > 0 || this.selectedColors.length > 0 || this.variedad_selected.length > 0 || priceMin !== defaultMin || priceMax !== defaultMax;
-
-
-      let data = {
-        categories_selecteds: this.categories_selecteds,
-        is_discount: this.is_discount,
-        variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
-        price_min: priceMin,
-        price_max: priceMax,
-        selectedColors: this.selectedColors, // <-- ¡Aquí añadimos los colores!
-      }
-
-      // Actualizar la variable filtersApplied
-      //this.filtersApplied = this.selectedColors.length > 0 || this.variedad_selected.length > 0 || priceRange !== "";
-
-      // Llamada al servicio para obtener los productos filtrados
-      this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
-        this.products = resp.products;
-      });
-    }, 500);
-  }
-
-  // selectedTalla(talla: any) {
-  //   let index = this.selectedTallas.indexOf(talla);
-  //   if (index === -1) {
-  //     this.selectedTallas.push(talla);  // Si la talla no está seleccionada, la agregamos
-  //   } else {
-  //     this.selectedTallas.splice(index, 1);  // Si la talla ya está seleccionada, la eliminamos
-  //   }
-  //   this.filterProduct();  // Volvemos a filtrar los productos con las tallas seleccionadas
-  // }
-
   updateCategoryTitle() {
     const category = this.categories.find((cat:any) => cat._id === Number(this.idCategorie));
     if (category) {
@@ -314,7 +296,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
   selectedVariedad(variedad:any) {
     this.variedad_selected = variedad;
-    //this.filtersApplied = true;
     this.filterProduct();
   }
 
@@ -365,11 +346,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       //this._router.navigateByUrl("/landing-product/"+product.slug);
       //return;
     //}
-
-    // console.log("product.type_inventario: " + product.type_inventario);
-
-    
-    
     if (product.type_inventario == 2) { // Si el producto tiene variedad multiple, entonces redirigir a la landing de product para que de esa manera el cliente pueda seleccionar la variedad (talla)
       let LINK_DISCOUNT = "?_id="+product.campaing_discount._id;
       this._router.navigateByUrl("/landing-product/"+product.slug+LINK_DISCOUNT);
@@ -438,15 +414,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     return 0;
   }
 
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    cleanupSliders($);
-    cleanupHOMEINITTEMPLATE($);
-  }
-
   clearFilters() {
     //this.categories_selecteds = [];
     this.variedad_selected = { _id: null };
@@ -459,43 +426,17 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     this.filterProduct();
   }
   
-  // Cada vez que el usuario aplica un filtro:
   applyAnyFilter() {
-    // Esto lo llamas cuando el usuario selecciona categoría, variedad, talla, color o mueve el slider
     this.filtersApplied = true;
     this.filterProduct();
   }
-  
-  // clearFilters() {
-  //   this.categories_selecteds = [];
-  //   this.is_discount = false;
-  //   this.variedad_selected = null;
 
-  //    $("#amount").val(""); // Limpiar el input de precio
-  //    $("#slider-range").slider("values", [0, 10]); // Restablecer el slider (ajusta los valores según tu configuración)
-
-  //    let data = {
-  //        categories_selecteds: this.categories_selecteds,
-  //        is_discount: this.is_discount,
-  //        variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
-  //        price_min: null,
-  //        price_max: null,
-  //    };
-
-  //   this._ecommerceGuestService.filterProduct(data).subscribe((resp: any) => {
-  //        this.products = resp.products;
-  //   });
-  //  }
-
-  // navigateToProduct(slug: string, discountId?: string) {
-  //   // Guarda el estado para hacer scroll hacia arriba
-  //   sessionStorage.setItem('scrollToTop', 'true');
-  //   // Navega a la página del producto
-  //   this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
-  //   .then(() => {
-  //       // Recarga la página
-  //       window.location.reload();
-  //   });
-  // }
-
+  /* ------------------ DESTROY ------------------ */
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    cleanupSliders($);
+    cleanupHOMEINITTEMPLATE($);
+  }
 }
