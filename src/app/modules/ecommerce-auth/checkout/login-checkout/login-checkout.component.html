@@ -35,7 +35,7 @@
             <div class="block h-100">
                 <div class="block-content">
                     <form method="post" action="#" class="login-form">	
-                        <h2 class="title ls-1">Continuar como invitado/a</h2>
+                        <h3 class="title text-uppercase fs-22">Continuar como invitado/a</h3>
                         <p class="text-black lh-sm">Completa tu pedido sin crear una cuenta. Podrás guardar tus datos en el siguiente paso y ahorrar tiempo en próximas compras.</p>
                         <div class="row">
                             <div class="col-12 form-group">
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                             <div class="col-12 d-flex justify-content-between align-items-center mt-3">
-                                <input type="submit" class="btn w-100" value="Continuar sesión" (click)="verifyExistEmail(email_identify)">
+                                <input type="submit" class="btn py-3 text-uppercase fw-normal w-100" value="Continuar sesión" (click)="verifyExistEmail(email_identify)">
                             </div>
                         </div>
                     </form>
@@ -61,7 +61,7 @@
             <div class="block h-100">
                 <div class="block-content">
                     <form method="post" action="#" class="login-form">	
-                        <h2 class="title ls-1">Inicia sesión</h2>
+                        <h3 class="title text-uppercase fs-22">Inicia sesión</h3>
                         <p class="text-black">Haz tu pedido en menos pasos con tu cuenta</p>
                         <div class="row">
                             <div class="col-12 form-group">
@@ -80,7 +80,7 @@
                                         required
                                         class="border-0"
                                     />
-                                    <button aria-live="polite" class="border-0"  type="button" (click)="togglePasswordVisibility()">
+                                    <button aria-live="polite" class="border-0 text-uppercase fw-normal py-3"  type="button" (click)="togglePasswordVisibility()">
                                         <!-- SVG de 'Mostrar' -->
                                         <svg *ngIf="!isPasswordVisible" width="24" height="24" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path d="M12 6.266c-5.24 0-8.653 5.242-8.796 5.464l-.173.27.173.27c.143.222 3.557 5.464 8.796 5.464s8.653-5.242 8.796-5.464l.173-.27-.173-.27c-.143-.222-3.557-5.464-8.796-5.464m0 10.468c-4.046 0-7.01-3.693-7.766-4.734.755-1.041 3.72-4.734 7.766-4.734s7.01 3.693 7.766 4.734c-.755 1.041-3.72 4.734-7.766 4.734M12 9c-1.654 0-3 1.346-3 3s1.346 3 3 3 3-1.346 3-3-1.346-3-3-3m0 5c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2"></path>
@@ -104,7 +104,7 @@
                             </div>
 
                             <div class="form-group col-12 mt-3 mb-3">
-                                <button type="submit" class="btn btn-secondary btn-lg py-2 w-100" (click)="login()" [disabled]="loading">
+                                <button type="submit" class="btn btn-secondary text-uppercase fw-normal py-3 w-100" (click)="login()" [disabled]="loading">
                                     <ng-container *ngIf="!loading">Iniciar sesión</ng-container>
                                     <ng-container *ngIf="loading">
                                         <!-- <div class="sp sp-bars bg-light" style="width: 7px !important; height: 21px !important; margin: 0px auto !important;"></div> -->

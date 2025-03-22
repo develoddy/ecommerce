@@ -153,9 +153,9 @@
                     <div class="row sp-row">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item">
                             <div class="collection-item sp-col">
-                                <a href="shop-left-sidebar.html" class="zoom-scal">
+                                <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
                                     <div class="img">
-                                        <img class="blur-up lazyload" data-src="assets/images/collection/demo1-ct-img1.png" src="assets/images/collection/demo1-ct-img1.png" alt="Women Wear" title="Women Wear" width="645" height="723" />
+                                        <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img1.png" src="assets/images/collection/demo1-ct-img1.png" alt="Women Wear" title="Women Wear" width="645" height="723" />
                                     </div>
                                     <div class="details middle-right">
                                         <div class="inner">
@@ -171,9 +171,9 @@
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item">
                             <div class="row">
                                 <div class="col-12 col-lg-12"><div class="collection-item sp-col">
-                                    <a href="shop-left-sidebar.html" class="zoom-scal">
+                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
                                         <div class="img">
-                                            <img class="blur-up lazyload" data-src="assets/images/collection/demo1-ct-img2.png" src="assets/images/collection/demo1-ct-img2.png" alt="Mens Wear" title="Mens Wear" width="645" height="350" />
+                                            <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img2.png" src="assets/images/collection/demo1-ct-img2.png" alt="Mens Wear" title="Mens Wear" width="645" height="350" />
                                         </div>
                                         <div class="details middle-left">
                                             <div class="inner">
@@ -185,49 +185,19 @@
                                     </a>
                                 </div></div>
                                 <div class="col-12 col-lg-12"><div class="collection-item sp-col">
-                                    <a href="shop-left-sidebar.html" class="zoom-scal">
+                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
                                         <div class="img">
-                                            <img class="blur-up lazyload" data-src="assets/images/collection/demo1-ct-img3.png" src="assets/images/collection/demo1-ct-img3.jpg" alt="Kids Wear" title="Kids Wear" width="645" height="350" />
+                                            <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img3.png" src="assets/images/collection/demo1-ct-img3.jpg" alt="Kids Wear" title="Kids Wear" width="645" height="350" />
                                         </div>
                                         <div class="details middle-right">
                                             <div class="inner">
                                                 <p class="mb-2">Gorra master</p>
                                                 <h3 class="title">Gorras</h3>
-                                                <span class="btn btn-outline-secondary btn-md text-uppercase">Gorras</span>
+                                                <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span>
                                             </div>
                                         </div>
                                     </a>
                                 </div></div>
-                            </div>
-                            <div class="collection-item sp-col d-none">
-                                <a href="shop-left-sidebar.html" class="zoom-scal">
-                                    <div class="img">
-                                        <img class="blur-up lazyload" data-src="assets/images/collection/demo1-ct-img2.jpg" src="assets/images/collection/demo1-ct-img2.jpg" alt="Mens Wear" title="Mens Wear" width="645" height="350" />
-                                    </div>
-                                    <div class="details middle-left">
-                                        <div class="inner">
-                                            <p class="mb-2">Jersey en producción</p>
-                                            <h3 class="title">Jerséis</h3>
-                                            <!-- <p class="mb-3">Tailor-made with passion</p> -->
-                                            <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="collection-item sp-col d-none">
-                                <a href="shop-left-sidebar.html" class="zoom-scal">
-                                    <div class="img">
-                                        <img class="blur-up lazyload" data-src="assets/images/collection/demo1-ct-img3.jpg" src="assets/images/collection/demo1-ct-img3.jpg" alt="Kids Wear" title="Kids Wear" width="645" height="350" />
-                                    </div>
-                                    <div class="details middle-right">
-                                        <div class="inner">
-                                            <p class="mb-2">Gorra master/p>
-                                            <!-- <h3 class="title">Kids Wear</h3> -->
-                                            <h3 class="title">Gorras</h3>
-                                            <span class="btn btn-outline-secondary btn-md text-uppercase">Gorras</span>
-                                        </div>
-                                    </div>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -251,7 +221,7 @@
                                     <img class="blur-up lazyload" [attr.data-src]="categorie.imagen_home" [src]="categorie.imagen_home" alt="{{ categorie.title }}" title="{{ categorie.title }}" width="365" height="365" />
                                 </div>
                                 <div class="details mt-3 text-center">
-                                    <h4 class="category-title mb-0">{{ categorie.title }}</h4>
+                                    <h4 class="category-title mb-0 text-uppercase">{{ categorie.title }}</h4>
                                     <p class="counts d-none">20 Productos</p>
                                 </div>
                             </a>
@@ -384,11 +354,6 @@
                                             <div class="product-box">
                                                 <!-- Start Product Image -->
                                                 <div class="product-image">
-                                                    
-
-
-
-
                                                     <!-- Start Product Image -->
                                                     <a [routerLink]="['/', locale, country, 'shop', 'product', besProduct.slug]" [queryParams]="{ _id: besProduct.campaing_discount?.id }" class="product-img rounded-0 w-100" [ngClass]="{ 'vh-73': isDesktop, 'vh-34': isMobile }">
                                                         <!-- Image -->
@@ -401,9 +366,6 @@
                                                         <!-- End Hover Image -->
                                                     </a>
                                                     <!-- End Product Image -->
-
-
-
                                                     <!--Product Button-->
                                                     <div class="button-set style1">
                                                         <!--Cart Button-->
@@ -989,7 +951,7 @@
         <!--End Products With Tabs-->
 
         <!--Parallax Banner-->
-        <div class="section parallax-banner-style1 py-0 d-none">
+        <div class="section parallax-banner-style1 d-none">
             <div class="hero hero-large hero-overlay bg-size">
                 <img class="bg-img" src="assets/images/parallax/demo1-sale-banner.jpg" alt="Clearance Sale - Flat 50% Off" width="1920" height="645" />
                 <div class="hero-inner d-flex-justify-center">
