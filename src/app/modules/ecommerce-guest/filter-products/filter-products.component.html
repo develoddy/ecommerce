@@ -29,9 +29,9 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container-fluid py-5">
+        <div class="container-fluid">
             <!--Category Slider-->
-            <div class="collection-slider-6items gp10 slick-arrow-dots sub-collection section">
+            <div class="collection-slider-8items gp10 slick-arrow-dots sub-collection section">
                 <ng-container *ngFor="let categorie of categories">
                     <div class="category-item zoomscal-hov">
                         <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" class="category-link clr-none">
@@ -116,7 +116,7 @@
             <div class="toolbar toolbar-wrapper shop-toolbar px-4">
                 <div class="row align-items-center">
                     <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-between">
-                        <button type="button" class="btn btn-filter text icon anm anm-sliders-hr d-inline-flex me-2 me-lg-3 text-uppercase ls-1"> Filtrar</button>
+                        <button type="button" class="btn btn-filter text icon anm anm-sliders-hr d-inline-flex me-2 me-lg-3 text-uppercase">Filtrar y ordenar</button>
                         <div class="filters-item d-flex align-items-center">
                             <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
                             <div class="grid-options view-mode d-flex">
@@ -181,7 +181,7 @@
                         </div>
                         <!--End Filter By-->
                         <!--Categories-->
-                        <div class="sidebar-widget clearfix categories filterBox filter-widget pt-5">
+                        <div class="sidebar-widget clearfix categories filterBox filter-widget pt-5 d-none">
                             <div class="widget-title "><h2>Categorías</h2></div>
                             <div class="widget-content filterDD">
                                 <ul class="sidebar-categories scrollspy morelist clearfix">
@@ -195,7 +195,7 @@
                         </div>
                         <!--Categories-->
                         <!--Size Swatches-->
-                        <div class="sidebar-widget filterBox filter-widget">
+                        <div class="sidebar-widget filterBox filter-widget pt-5">
                             <div class="widget-title active"><h2>Talla</h2></div>
                             <div class="widget-content filter-size filterDD" style="display: none;">
                                 <ul class="swacth-list size-swatches d-flex-center clearfix">
@@ -308,12 +308,12 @@
                 <!--End Sidebar-->
 
                 <!--Products-->
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col g-1">
                     <!--Product Grid-->
                     <div class="grid-products grid-view-items">
-                        <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">  
+                        <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 g-1">  
                             <ng-container *ngFor="let product of products">
-                                <div class="item col-item px-0">
+                                <div class="item col-item">
                                     <div class="product-box">
                                         <!-- Start Product Image -->
                                         <div class="product-image">

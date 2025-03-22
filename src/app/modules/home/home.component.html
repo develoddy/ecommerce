@@ -264,7 +264,7 @@
 
         <!--Products With Tabs-->
         <section class="section product-slider tab-slider-product">
-            <div class="container-fluid" [ngClass]="{'p-0': isMobile}">
+            <div class="container-fluid px-0" [ngClass]="{'p-0': isMobile}">
                 <div class="section-header d-none">
                     <h2>Special Offers</h2>
                     <p>Browse the huge variety of our best seller</p>
@@ -272,13 +272,13 @@
                 <div class="tabs-listing">
                     <ul class="nav nav-tabs style1 justify-content-center" id="productTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link head-font active text-uppercase fw-bold ls-1" id="bestsellers-tab" data-bs-toggle="tab" data-bs-target="#bestsellers" type="button" role="tab" aria-controls="bestsellers" aria-selected="true">Mejor vendido</button>
+                            <button class="nav-link head-font active text-uppercase fw-bold" id="bestsellers-tab" data-bs-toggle="tab" data-bs-target="#bestsellers" type="button" role="tab" aria-controls="bestsellers" aria-selected="true">Mejor vendido</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link head-font text-uppercase fw-bold" id="newarrivals-tab" data-bs-toggle="tab" data-bs-target="#newarrivals" type="button" role="tab" aria-controls="newarrivals" aria-selected="false">Nuevas llegadas</button>
                         </li>
                         <li class="nav-item d-none" role="presentation">
-                            <button class="nav-link head-font text-uppercase fw-bold ls-1" id="toprated-tab" data-bs-toggle="tab" data-bs-target="#toprated" type="button" role="tab" aria-controls="toprated" aria-selected="false">Los mejor valorados</button>
+                            <button class="nav-link head-font text-uppercase fw-bold" id="toprated-tab" data-bs-toggle="tab" data-bs-target="#toprated" type="button" role="tab" aria-controls="toprated" aria-selected="false">Los mejor valorados</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="productTabsContent">
@@ -286,15 +286,14 @@
                         <div class="tab-pane show active" id="bestsellers" role="tabpanel" aria-labelledby="bestsellers-tab">
                             <!--Product Grid-->
                             <div class="grid-products grid-view-items">
-                                <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
+                                <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 g-1">
                                     <ng-container *ngFor="let ourProduct of ourProducts">
-                                        <div class="item col-item col-6 col-lg-4 px-0">
+                                        <div class="item col-item col-6 col-lg-4">
                                             <div class="product-box">
                                                 <!-- Start Product Image -->
                                                 <div class="product-image">
                                                     <!-- Start Product Image -->
                                                     <a [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" [queryParams]="{ _id: ourProduct.campaing_discount?.id }" class="product-img rounded-0 w-100" [ngClass]="{ 'vh-73': isDesktop, 'vh-34': isMobile }">
-                                                    <!-- <a href="#" onclick="return false;" (click)="navigateToProduct(ourProduct.slug, ourProduct.campaing_discount?.id)" class="product-img rounded-0 w-100" [ngClass]="{ 'vh-73': isDesktop, 'vh-34': isMobile }"> -->
                                                         <!-- Image -->
                                                         <img class="primary blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen }}"  src="{{ ourProduct.imagen }}" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
                                                         <!-- End Image -->
@@ -379,22 +378,32 @@
                         <div class="tab-pane" id="newarrivals" role="tabpanel" aria-labelledby="newarrivals-tab">
                             <!--Product Grid-->
                             <div class="grid-products grid-view-items">
-                                <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
+                                <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 g-1">
                                     <ng-container *ngFor="let besProduct of besProducts">
-                                        <div class="item col-item px-1">
+                                        <div class="item col-item col-6 col-lg-4">
                                             <div class="product-box">
                                                 <!-- Start Product Image -->
                                                 <div class="product-image">
+                                                    
+
+
+
+
                                                     <!-- Start Product Image -->
-                                                    <a [routerLink]="['/', locale, country, 'shop', 'product', besProduct.slug]" [queryParams]="{ _id: besProduct.campaing_discount?.id }"  class="product-img rounded-0">
+                                                    <a [routerLink]="['/', locale, country, 'shop', 'product', besProduct.slug]" [queryParams]="{ _id: besProduct.campaing_discount?.id }" class="product-img rounded-0 w-100" [ngClass]="{ 'vh-73': isDesktop, 'vh-34': isMobile }">
                                                         <!-- Image -->
-                                                        <img class="primary blur-up lazyload rounded-0" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
+                                                        <img class="primary blur-up lazyload rounded-0 w-100 h-100" data-src="{{ besProduct.imagen }}"  src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
                                                         <!-- End Image -->
                                                         <!-- Hover Image -->
-                                                        <img class="hover blur-up lazyload rounded-0" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
+                                                        <ng-container *ngIf="besProduct.imagen_two">
+                                                            <img class="hover blur-up lazyload rounded-0 w-100 h-100" data-src="{{ besProduct.imagen_two }}" src="{{ besProduct.imagen_two }}" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>
+                                                        </ng-container>
                                                         <!-- End Hover Image -->
                                                     </a>
                                                     <!-- End Product Image -->
+
+
+
                                                     <!--Product Button-->
                                                     <div class="button-set style1">
                                                         <!--Cart Button-->

@@ -256,10 +256,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
       // Actualizar la variable filtersApplied
       // La lógica revisa si los valores de precio son diferentes de los predeterminados
-      this.filtersApplied = this.selectedColors.length > 0 
-          || this.variedad_selected.length > 0 
-          || priceMin !== defaultMin 
-          || priceMax !== defaultMax;
+      this.filtersApplied = this.categories_selecteds.length > 0 || this.selectedColors.length > 0 || this.variedad_selected.length > 0 || priceMin !== defaultMin || priceMax !== defaultMax;
 
 
       let data = {
