@@ -84,7 +84,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   isTablet: boolean = false;
   isDesktop: boolean = false;
 
-
   constructor(
     public homeService: HomeService,
     public _cartService: CartService,
@@ -164,7 +163,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
         HOMEINITTEMPLATE($);
-        
         this.extractTags();
       }, 150);
     });

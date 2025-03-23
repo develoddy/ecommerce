@@ -193,7 +193,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
       // ACTUALIZA LA VARIABLE FILTERAPPLIED
       // LA LÓGICA REVISA SI LOS VALORES DE PRECIO SON DIFERENTES DE LOS PREDETERMINADOS
-      this.filtersApplied = this.categories_selecteds.length > 0 || this.selectedColors.length > 0 || this.variedad_selected.length > 0 || priceMin !== defaultMin || priceMax !== defaultMax;
+      this.filtersApplied = this.categories_selecteds.length > 0 || this.selectedColors.length > 0 || this.variedad_selected.length > 0 || this.variedad_selected != '' || priceMin !== defaultMin || priceMax !== defaultMax;
 
       let data = {
         categories_selecteds  : this.categories_selecteds,
@@ -296,6 +296,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
   selectedVariedad(variedad:any) {
     this.variedad_selected = variedad;
+    console.log( typeof this.variedad_selected);
+    
     this.filterProduct();
   }
 

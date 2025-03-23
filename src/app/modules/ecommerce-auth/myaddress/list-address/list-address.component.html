@@ -5,7 +5,7 @@
     <div id="page-content"> 
 
         <!--Page Header-->
-        <div class="page-header text-center bg-transparent mb-0 p-3">
+        <div class="page-header text-center bg-transparent mb-0">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
@@ -30,15 +30,15 @@
                                 <ng-container *ngIf="listAddressClients.length == 0; else allShowListAddressClients">
                                     <div class="d-flex justify-content-center align-items-center">
                                         <div class="p-2 text-center d-flex flex-column">
-                                            <div class="inner mb-3">
+                                            <div class="inner mb-3 d-none">
                                                 <div class="bradcrumb-thumb">
                                                     <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
                                                 </div>
                                             </div>
-                                            <h5 class="header-title mb-0">Libreta de direcciones</h5>
-                                            <small class="mb-3">De momento ninguna dirección registrada</small>
+                                            <h5 class="header-title mb-0 text-uppercase">Libreta de direcciones</h5>
+                                            <small class="mb-3">Actualmente no tienes ninguna dirección registrada</small>
                                             <a href="" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'myaddresses', 'add']">
-                                                <button type="button" class="mt-3 btn btn-primary btn-lg px-5"> Añadir dirección</button>
+                                                <button type="button" class="mt-3 btn btn-primary btn-lg px-5 text-uppercase fw-normal"> Añadir dirección</button>
                                             </a>
                                         </div>
                                     </div>

@@ -1188,17 +1188,27 @@ function HOMEINITTEMPLATE ($, undefined) {
      17. Price Range Slider
      -------------------------------------*/
     function price_slider() {
+
         $("#slider-range").slider({
             range: true,
             min: 15,
             max: 100,
             step: 0.01, // Añadimos paso para decimales
-            values: [0, 100],
+            values: [15, 100],
             slide: function(event, ui) {
                 $("#amount").val(ui.values[0].toFixed(2) + " € - " + ui.values[1].toFixed(2) + " €");
             }
         });
-        $("#amount").val($("#slider-range").slider("values", 0).toFixed(2) + " € - " + $("#slider-range").slider("values", 1).toFixed(2) + " €");
+        //$("#amount").val($("#slider-range").slider("values", 0).toFixed(2) + " € - " + $("#slider-range").slider("values", 1).toFixed(2) + " €");
+        
+        // Inicializamos correctamente
+        const val0 = $("#slider-range").slider("values", 0);
+        const val1 = $("#slider-range").slider("values", 1);
+
+        // Solo aplicamos toFixed si es número
+        if (typeof val0 === "number" && typeof val1 === "number") {
+            $("#amount").val(val0.toFixed(2) + " € - " + val1.toFixed(2) + " €");
+        }
     }
     price_slider();
 
