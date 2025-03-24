@@ -185,6 +185,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       return; // Salir si no hay datos de producto
     }
     this.product_selected = resp.product;
+
+    
     this.related_products = resp.related_products;
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
@@ -235,14 +237,19 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.variedades = this.product_selected.variedades.filter((variedad: any) => variedad.color === this.selectedColor);
 
     // Selecciona el array de tallas de acuerdo a la categoría del producto
+    
+  
+    const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
+    console.log("---- DEBBUG ----- this.product_selected categoryTitle: ", this.product_selected.categorie);
+    
     let availableSizes:any = [];
-    if (this.product_selected.categorie.title.toLowerCase().includes('zapatillas')) {
+    if (categoryTitle.toLowerCase().includes('zapatillas')) {
       availableSizes = this.availableSizesZapatillas;
-    } else if (this.product_selected.categorie.title.toLowerCase().includes('t-shirts')) {
+    } else if (categoryTitle.toLowerCase().includes('t-shirts')) {
       availableSizes = this.availableSizesCamisetas;
-    } else if (this.product_selected.categorie.title.toLowerCase().includes('gorra')) {
+    } else if (categoryTitle.toLowerCase().includes('gorra')) {
       availableSizes = this.availableSizesGorra;
-    } else if (this.product_selected.categorie.title.toLowerCase().includes('perfume')) {
+    } else if (categoryTitle.toLowerCase().includes('perfume')) {
       availableSizes = this.availableSizesPerfume;
     }
     //console.log("--- availableSizes: ", availableSizes);
@@ -432,11 +439,13 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         .filter((variedad: any) => variedad.color === this.selectedColor)
         .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1)); // Ordenar las tallas de menor a mayor
 
+    const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
+
     // Detecta si el producto es de tipo zapatillas, camiseta, gorra o perfume
-    const isZapatos = this.product_selected.categorie.title.toLowerCase().includes('zapatillas');
-    const isCamisa = this.product_selected.categorie.title.toLowerCase().includes('t-shirts');
-    const isGorra = this.product_selected.categorie.title.toLowerCase().includes('gorra');
-    const isPerfume = this.product_selected.categorie.title.toLowerCase().includes('perfume');
+    const isZapatos = categoryTitle.toLowerCase().includes('zapatillas');
+    const isCamisa = categoryTitle.toLowerCase().includes('t-shirts');
+    const isGorra = categoryTitle.toLowerCase().includes('gorra');
+    const isPerfume = categoryTitle.toLowerCase().includes('perfume');
 
     // Determina las tallas disponibles según la categoría
     let filteredSizes: string[] = [];
