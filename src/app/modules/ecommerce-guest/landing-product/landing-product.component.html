@@ -1,24 +1,23 @@
 <!--Page Wrapper-->
-<div class="page-wrapper py-3" *ngIf="product_selected && related_products">
-<!-- <div class="page-wrapper" > -->
 
-    <!-- Loading -->
-    <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
-        <div class="row">
-            <div class="col-sm-2">
-                <div class="sp sp-bars"></div>
-            </div>
+<!-- Loading -->
+<div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="sp sp-bars"></div>
         </div>
     </div>
-    <!-- End Loading -->
-    
+</div>
+<!-- End Loading -->
+
+<div class="page-wrapper py-3" *ngIf="product_selected && related_products">
     <!-- Body Container -->
-    <div id="page-content py-5" [class.d-none]="loading" > 
+    <div id="page-content py-5" [class.d-none]="loading"> 
         <!--Page Header-->
         <div class="page-header text-center d-none">
             <div class="container">
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12  d-flex justify-content-between align-items-center">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12  d-flex justify-content-between align-items-center" >
                         <!--Breadcrumbs-->
                         <div class="breadcrumbs"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>{{ product_selected.title }}</span></div>
                         <!--End Breadcrumbs-->
@@ -80,7 +79,7 @@
                         </div>
                         <!-- End Product Horizontal -->
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-info px-4">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-info px-4" >
                         <!-- Product Details -->
                         <div class="product-single-meta ">
                             <div class="d-flex mb-0"> 
@@ -278,7 +277,7 @@
             <!--End Product Nav-->
 
             <!--Product Tabs-->
-            <div class="tabs-listing section pb-0 px-3">
+            <div class="tabs-listing section pb-0 px-3" >
                 <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-center d-none d-md-flex">
                     <li rel="description" class="active"><a class="tablink">Descripción</a></li>
                     <!-- <li rel="additionalInformation"><a class="tablink">Composición, origen y cuidados</a></li> -->
@@ -289,7 +288,7 @@
                 <div class="tab-container">
                     <!--Description-->
                     <h3 class="tabs-ac-style d-md-none" rel="description">Descripción</h3>
-                    <div id="description" class="tab-content">
+                    <div id="description" class="tab-content" >
                         <div class="product-description mb-3">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description"></div>

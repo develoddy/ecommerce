@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, NgZone, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
@@ -26,6 +26,8 @@ declare function productSlider5items($: any): any;
 // ---- Destruir 
 declare function cleanupHOMEINITTEMPLATE($: any): any;
 declare function cleanupProductZoom($: any):any;
+declare function menuProductSlider($: any):any;
+
 
 @Component({
   selector: 'app-landing-product',
@@ -97,7 +99,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     public wishlistService: WishlistService,
     private minicartService: MinicartService,
     private titleService: Title, // seo
-    private metaService: Meta
+    private metaService: Meta,
+    private ngZone: NgZone
   ) {
     // Almacenar los valores de `locale` y `country` actuales
     this.routerActived.paramMap.subscribe(params => {
@@ -107,13 +110,30 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit(): void {
-    // setTimeout(() => {
-    //   productSlider5items($);
-    // }, 150);
+    //  setTimeout(() => {
+    //    HOMEINITTEMPLATE($);
+    //  }, 150);
 
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
-    }, 150);
+   
+      this.ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          (window as any).cleanupSliders($);
+          (window as any).HOMEINITTEMPLATE($);
+          (window as any).productZoom($);
+          (window as any).pswp($);
+          (window as any).productSlider5items($);
+          (window as any).menuProductSlider($);
+          (window as any).sliderRefresh($);
+    
+          // Si necesitas actualizar algo en Angular (por ejemplo, una bandera, vista, etc.)
+          this.ngZone.run(() => {
+            this.cdRef.detectChanges();
+          });
+    
+        }, 150);
+      });
+    
+    
   }
 
   ngOnInit(): void {
@@ -204,17 +224,35 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       this.setColoresDisponibles();
       this.sortVariedades();
 
-      setTimeout(() => {
-        (window as any).HOMEINITTEMPLATE($);
-        (window as any).productZoom($);
-        (window as any).pswp($);
-        productSlider5items($);
-        // Llama explícitamente al refresco del slider
-        (window as any).sliderRefresh($);
+
+      this.ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          (window as any).cleanupSliders($);
+          (window as any).HOMEINITTEMPLATE($);
+          (window as any).productZoom($);
+          (window as any).pswp($);
+          (window as any).productSlider5items($);
+          (window as any).menuProductSlider($);
+          (window as any).sliderRefresh($);
+        }, 150);
+      });
+      
+
+
+
+    
+
+      // setTimeout(() => {
+      //   (window as any).HOMEINITTEMPLATE($);
+      //   (window as any).productZoom($);
+      //   (window as any).pswp($);
+      //   productSlider5items($);
+      //   // Llama explícitamente al refresco del slider
+      //   (window as any).sliderRefresh($);
        
-        // Forzar la detección de cambios
-        this.cdRef.detectChanges();
-      }, 150);
+      //   // Forzar la detección de cambios
+      //   this.cdRef.detectChanges();
+      // }, 150);
     }
   }
   
