@@ -15,7 +15,8 @@ export class AuthGuard implements CanActivate {
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       if ( !this._authService.user || !this._authService.token ) {
         this._router.navigate(["auth/login"]);
         return false;
@@ -24,10 +25,22 @@ export class AuthGuard implements CanActivate {
       let token = this._authService.token;
   
       let expiration = (JSON.parse(atob(token.split('.')[1]))).exp;
-      if (Math.floor((new Date).getTime() / 1000) >= expiration) {
+      let currentTime = Math.floor(new Date().getTime() / 1000);
+
+      if (currentTime >= expiration) {
+        console.log("Token expirado. Intentando refrescar...");
+        const refreshed = this._authService.refreshToken().toPromise();
+        if (!refreshed) {
+          this._router.navigate(["auth/login"]);
+          return false;
+        }
+      }
+
+      /*if (Math.floor((new Date).getTime() / 1000) >= expiration) {
         this._authService.logout();
         return false;
-      }
+      }*/
+
       return true;
   }
 }

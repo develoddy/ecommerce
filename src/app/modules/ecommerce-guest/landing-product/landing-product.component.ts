@@ -110,11 +110,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit(): void {
-    //  setTimeout(() => {
-    //    HOMEINITTEMPLATE($);
-    //  }, 150);
-
-   
       this.ngZone.runOutsideAngular(() => {
         setTimeout(() => {
           (window as any).cleanupSliders($);
@@ -132,8 +127,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     
         }, 150);
       });
-    
-    
   }
 
   ngOnInit(): void {
@@ -199,6 +192,14 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       this.subscriptions.add(productSubscription);
   }
 
+  getPriceWithDiscount() {
+    const priceWithDiscount = this.product_selected.price_usd - this.getDiscount();
+    const integerPart = Math.floor(priceWithDiscount); // Parte entera
+    const decimalPart = ((priceWithDiscount - integerPart) * 100).toFixed(0); // Parte decimal
+    return { integerPart, decimalPart };
+  }
+  
+
   private handleProductResponse(resp: any): void {
     if (!resp || !resp.product) {
       console.error("No product data available");
@@ -206,7 +207,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }
     this.product_selected = resp.product;
 
-    
     this.related_products = resp.related_products;
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
@@ -224,7 +224,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       this.setColoresDisponibles();
       this.sortVariedades();
 
-
       this.ngZone.runOutsideAngular(() => {
         setTimeout(() => {
           (window as any).cleanupSliders($);
@@ -236,23 +235,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
           (window as any).sliderRefresh($);
         }, 150);
       });
-      
-
-
-
-    
-
-      // setTimeout(() => {
-      //   (window as any).HOMEINITTEMPLATE($);
-      //   (window as any).productZoom($);
-      //   (window as any).pswp($);
-      //   productSlider5items($);
-      //   // Llama explícitamente al refresco del slider
-      //   (window as any).sliderRefresh($);
-       
-      //   // Forzar la detección de cambios
-      //   this.cdRef.detectChanges();
-      // }, 150);
     }
   }
   
@@ -278,7 +260,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     
   
     const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
-    console.log("---- DEBBUG ----- this.product_selected categoryTitle: ", this.product_selected.categorie);
     
     let availableSizes:any = [];
     if (categoryTitle.toLowerCase().includes('zapatillas')) {
@@ -447,17 +428,33 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }, 150);
   }
 
+  // getDiscount() {
+  //   let discount = 0;
+  //   if ( this.SALE_FLASH ) {
+  //     if (this.SALE_FLASH.type_discount == 1) {
+  //       return (this.SALE_FLASH.discount*this.product_selected.price_usd*0.01).toFixed(2);
+  //     } else {
+  //       return this.SALE_FLASH.discount;
+  //     }
+  //   }
+  //   return discount;
+  // }
+
+
   getDiscount() {
     let discount = 0;
-    if ( this.SALE_FLASH ) {
+    if (this.SALE_FLASH) {
       if (this.SALE_FLASH.type_discount == 1) {
-        return (this.SALE_FLASH.discount*this.product_selected.price_usd*0.01).toFixed(2);
+        // Cálculo del descuento en porcentaje
+        discount = this.SALE_FLASH.discount * this.product_selected.price_usd * 0.01;
       } else {
-        return this.SALE_FLASH.discount;
+        // Descuento directo
+        discount = this.SALE_FLASH.discount;
       }
     }
     return discount;
   }
+  
 
   getCalNewPrice(product:any) {
     // if (this.FlashSale.type_discount == 1) {

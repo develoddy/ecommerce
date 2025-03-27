@@ -127,6 +127,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     const listHomeSubscription = this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
       this.ourProducts = resp.our_products.map((product: any) => {
         product.finalPrice = this.calculateFinalPrice(product); // Asignamos el precio final con descuento
+
+        const priceParts = this.getPriceParts(product.finalPrice); // Dividimos el precio
+
+        product.priceInteger = priceParts.integer;
+        product.priceDecimals = priceParts.decimals;
+
+
         return product;
       });
 
@@ -171,6 +178,34 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription?.add(listHomeSubscription);
   }
 
+  getPriceParts(price: number) {
+    const [integer, decimals] = price.toFixed(2).split('.');
+    return { integer, decimals };
+  }
+  
+
+  calculateFinalPrice(product: any): number {
+    let discount = 0;
+  
+    if (this.FlashSale && this.FlashSale.type_discount) {
+      // Aplicar descuento de Flash Sale
+      if (this.FlashSale.type_discount === 1) {
+        discount = product.price_usd * this.FlashSale.discount * 0.01;
+      } else if (this.FlashSale.type_discount === 2) {
+        discount = this.FlashSale.discount;
+      }
+    } else if (product.campaing_discount) {
+      // Aplicar descuento de campaña si no hay Flash Sale
+      if (product.campaing_discount.type_discount === 1) {
+        discount = product.price_usd * product.campaing_discount.discount * 0.01;
+      } else if (product.campaing_discount.type_discount === 2) {
+        discount = product.campaing_discount.discount;
+      }
+    }
+  
+    return parseFloat((product.price_usd - discount).toFixed(2));
+  }
+
   checkCookieConsent(): void {
     const isCookieAccepted = localStorage.getItem('cookieAccepted');
     if (!isCookieAccepted) {
@@ -199,28 +234,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  calculateFinalPrice(product: any): number {
-    let discount = 0;
-  
-    if (this.FlashSale && this.FlashSale.type_discount) {
-      // Aplicar descuento de Flash Sale
-      if (this.FlashSale.type_discount === 1) {
-        discount = product.price_usd * this.FlashSale.discount * 0.01;
-      } else if (this.FlashSale.type_discount === 2) {
-        discount = this.FlashSale.discount;
-      }
-    } else if (product.campaing_discount) {
-      // Aplicar descuento de campaña si no hay Flash Sale
-      if (product.campaing_discount.type_discount === 1) {
-        discount = product.price_usd * product.campaing_discount.discount * 0.01;
-      } else if (product.campaing_discount.type_discount === 2) {
-        discount = product.campaing_discount.discount;
-      }
-    }
-  
-    return parseFloat((product.price_usd - discount).toFixed(2));
-  }
-  
   private checkDeviceType() {
     const width = window.innerWidth;
     if (width <= 480) {

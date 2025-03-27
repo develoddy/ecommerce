@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../auth-profile/_services/auth.service';
 
 declare var $:any;
 
@@ -55,6 +56,10 @@ export class ProfileClientComponent implements OnInit {
   sale_detail_selected:any=null;
   user:any;
 
+  errorOrSuccessMessage:any="";
+  validMessage:boolean=false;
+  status:boolean=false;
+  userDetail:any=null;
   loading: boolean = false;
 
   loadingSubscription: Subscription = new Subscription();
@@ -62,9 +67,11 @@ export class ProfileClientComponent implements OnInit {
   locale: string = "";
   country: string = "";
 
+  public accessToken: string | null = null;
 
   CURRENT_USER_AUTHENTICATED:any=null;
   constructor(
+    private authService: AuthService,
     public _ecommerceAuthService: EcommerceAuthService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -77,14 +84,19 @@ export class ProfileClientComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // Suscribirse al observable para saber cuando mostrar u ocultar el loading
-    this.loadingSubscription = this._ecommerceAuthService.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
-    });
+    // Suscribirse al token
+    // this.authService.accessToken$.subscribe((token) => {
+    //   this.accessToken = token;
+    //   console.log('Token actualizado en componente:', this.accessToken);
+    // });
 
     this.verifyAuthenticatedUser();
-    this.showProfileClient();
-    this.detailUser();
+
+    
+
+    
+    //this.showProfileClient();
+    //this.detailUser();
 
     this.name_c = this.CURRENT_USER_AUTHENTICATED.name,//this.user.name; //this._ecommerceAuthService._authService.user.name;
     this.surname_c = this.CURRENT_USER_AUTHENTICATED.surname; //this._ecommerceAuthService._authService.user.surname;
@@ -95,16 +107,25 @@ export class ProfileClientComponent implements OnInit {
     this._ecommerceAuthService._authService.user.subscribe( user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;
+        this.showProfileClient();
+        this.detailUser();
         
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
         this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
       }
     });
+
+    // Suscribirse al observable para saber cuando mostrar u ocultar el loading
+    this.loadingSubscription = this._ecommerceAuthService.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
   }
 
-  userDetail:any=null;
   detailUser() {
+
+    if (!this.CURRENT_USER_AUTHENTICATED) return;
+
     let data = {
       email: this.CURRENT_USER_AUTHENTICATED.email,
     }
@@ -172,9 +193,7 @@ export class ProfileClientComponent implements OnInit {
     }
   }
 
-  errorOrSuccessMessage:any="";
-  validMessage:boolean=false;
-  status:boolean=false;
+  
   registerAddress() {
     if (!this.name ||
         //!this.surname ||
@@ -296,7 +315,6 @@ export class ProfileClientComponent implements OnInit {
     });
   }
 
-  // Función para ocultar el mensaje después de unos segundos
   hideMessageAfterDelay() {
     setTimeout(() => {
       this.validMessage = false;
@@ -344,10 +362,6 @@ export class ProfileClientComponent implements OnInit {
   }
 
   updateProfileClient() {
-
-    // validMessage
-    // status
-
     if( !this.name_c ||  !this.email_c || !this.phone_c || !this.birthday_c  ) {
     //if ( this.password == null || this.password == ""  || this.password_repeat == null ) {
 
@@ -358,14 +372,6 @@ export class ProfileClientComponent implements OnInit {
       this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
       return;
     }
-
-    // if (this.password) {
-    //   if (this.password != this.password_repeat) {
-    //     alertDanger("Ambas contraseñas son incorrectas. Intentalo denuevo.");
-    //     return;
-    //   }
-    // }
-
     let data = {
       _id: this.CURRENT_USER_AUTHENTICATED._id,//this.user.id,
       name: this.name_c,
@@ -375,7 +381,6 @@ export class ProfileClientComponent implements OnInit {
       birthday: this.birthday_c,
       //password: this.password,
     };
-
     this._ecommerceAuthService.updateProfileClient(data).subscribe((resp:any) => {
       if (resp.status == 200) {
 
@@ -437,7 +442,6 @@ export class ProfileClientComponent implements OnInit {
   }
 
   save() {
-
     if (this.sale_detail_selected.review) {
       this.updateReview();
     } else {

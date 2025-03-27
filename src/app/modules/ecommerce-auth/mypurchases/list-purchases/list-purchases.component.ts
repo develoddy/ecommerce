@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
+import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 
 @Component({
   selector: 'app-list-purchases',
@@ -28,8 +30,10 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   country: string = "";
 
   constructor(
+    private authService: AuthService,
     public _ecommerceAuthService: EcommerceAuthService,
     private router: Router,
+     private cartService: CartService,
     private activatedRoute: ActivatedRoute,
   ) {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -44,15 +48,44 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
       this.loading = isLoading;
     });
 
-    this.verifyAuthenticatedUser();
-    this.showSaleDetails();
+    // Obtener el token desde el localStorage
+    // const accessToken = this.authService.getAccessToken();
+    // if (accessToken) {
+    //   this.authService.verifyTokenExpiration(accessToken);
+    // } else {
+    //   console.log("No se encontró un token de acceso.");
+    // }
+
+    // Verificar si el token está expirado y si es necesario, renovarlo
+    // const accessToken = this.authService.getAccessToken();
+    // if (accessToken) {
+    //   // Verificar si el token ha expirado
+    //   this.authService.verifyTokenExpiration(accessToken);
+    //   // Si el token está cerca de expirar, renovar el token
+    //   if (this.authService.isTokenNearExpiration(accessToken)) {
+    //     this.authService.refreshToken().subscribe({
+    //       next: (response) => {
+    //         console.log('Token renovado exitosamente. ', response);
+    //       },
+    //       error: (err) => {
+    //         console.error('Error al renovar el token', err);
+    //         this.router.navigate(["/"]);
+    //       }
+    //     });
+    //   }
+    // } else {
+    //   // Si no hay token de acceso, redirigir a login
+    //   this.router.navigate(["/"]);
+    // }
+
+    this.verifyAuthenticatedUser(); 
   }
 
   private verifyAuthenticatedUser(): void {
     this._ecommerceAuthService._authService.user.subscribe( user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;
-        
+        this.showSaleDetails();
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
         this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
@@ -67,7 +100,6 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
       this.sale_orders = resp.sale_orders;
-      console.log(this.sale_orders);
       this.sale_details = [];
 
       // Recorremos cada objeto en sale_orders
@@ -91,8 +123,6 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
     this.paginatedSaleDetails = this.sale_details.slice(start, end);
-    console.log(this.paginatedSaleDetails);
-    
   }
 
   // Función para cambiar de página

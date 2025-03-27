@@ -78,7 +78,7 @@ Table of Content:
 /* body { font-family: "Zen Kaku Gothic Antique", sans-serif; font-style: normal; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; } */
 
 
-
+body { font-family:"sans-serif", sans-serif; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; } 
 
 article, aside, details, figcaption, figure, footer, header, nav, section, summary { display: block; }
 audio, canvas, video { display: inline-block; }
@@ -86,7 +86,10 @@ audio:not([controls]) { display:none; height:0; }
 [hidden] { display:none; }
 img { max-width:100%; height:auto; border:0; -ms-interpolation-mode:bicubic; }
 label { margin-bottom:5px; }
-html, button, input, select, textarea { font-family:'Poppins', sans-serif; }
+/*font-family: sans-serif;
+"PrimaryFont", "Arial", "Helvetica", "sans-serif";
+*/
+html, button, input, select, textarea { font-family:'sans-serif', sans-serif; }
 input, textarea, .form-control { padding:10px 15px; }
 input, button, select, textarea, .form-control { font-size:14px; font-family: "Zen Kaku Gothic Antique", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #171717; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
 input:focus, input:active, button:focus, button:active, select:focus, select:active, textarea:focus, textarea:active, .form-control:focus { outline:none; border-color:#131313; }
@@ -2646,7 +2649,7 @@ a.logo {
 
 .product-single-meta .product-review .icon { font-size: 15px; }
 .product-single-meta .reviewLink:before { content: "|"; margin: 0 10px; color: #6c757d; }
-.product-single-meta .product-price .price { font-size: 22px; font-weight: 600; line-height: 1; color: #131313; }
+.product-single-meta .product-price .price { font-size: 22px; font-weight: 600; /*line-height: 1;*/ color: #131313; }
 .product-single-meta .product-price .old-price { font-size: 18px; color: #4c4c4c; font-weight: 500; }
 .product-single-meta .product-availability .progress { margin:12px 0 20px; }
 .product-single-meta .orderMsg .icon { color:#131313; font-size:18px; margin-right:10px; -webkit-animation-name:blinker; -webkit-animation-iteration-count:infinite; -webkit-animation-timing-function:cubic-bezier(.6, 0, 1, 1); -webkit-animation-duration:0.8s; }
@@ -3345,6 +3348,26 @@ a.logo {
 .about-review .quote-wraper .product-review { color: rgba(248,212,6,0.8); margin:12px 0; }
 .about-review .quote-wraper .authour { font-size: 15px; margin-bottom: 3px; }
 .about-review .slick-dots li button { background-color: #ffffff; }
+
+/* --------- Precios Small --------- */
+
+.price-small {display: inline-flex;align-items: flex-start;font-family: sans-serif;font-weight: bold;}
+/* Tamaño grande para la parte entera */
+.price-main-small {font-size: 1rem; }
+/* Tamaño más pequeño para los decimales */
+.price-decimals-small {font-size: 0.8rem; margin-left: 2px;line-height: 1;position: relative;top: 0.6em;}
+/* Tamaño del símbolo del euro */
+.currency-symbol-small {font-size: .6rem; margin-left: 2px;position: relative;top: -0.55em;}
+
+/* --------- Precios Large --------- */
+.price {display: inline-flex;align-items: flex-start;font-family: sans-serif;font-weight: bold;}
+/* Tamaño grande para la parte entera */
+.price-main {font-size: 1.5rem; }
+/* Tamaño más pequeño para los decimales */
+.price-decimals {font-size: 1.2rem; margin-left: 2px;line-height: 1;position: relative;top: 0.6em;}
+/* Tamaño del símbolo del euro */
+.currency-symbol {font-size: .85rem; margin-left: 2px;position: relative;top: -0.55em;}
+
 
 
 /*======================================================================

@@ -110,20 +110,39 @@
                                                 </div>
                                             </td>
                                             <td class="cart-price cart-flex-item text-center small-hide">
-                                                <span class="money">{{ euro }}{{ cart.subtotal | number: '1.2-2' }}</span>
+                                                <!-- <span class="money">{{ euro }}{{ cart.subtotal | number: '1.2-2' }}</span> -->
+                                                <!-- <span class="money">{{ cart.price_unitario | number: '1.2-2' }} {{ euro }}</span> -->
+                                                <span class="money">
+                                                    <span class="price-small fw-normal">
+                                                        <span class="price-main-small">{{ getFormattedPrice(cart.price_unitario).integerPart }}</span>
+                                                        <span class="price-decimals-small">
+                                                            <sup>{{ getFormattedPrice(cart.price_unitario).decimalPart }}</sup>
+                                                            <span class="currency-symbol-small">{{ euro }}</span>
+                                                        </span>
+                                                    </span>
+                                                </span>
                                             </td>
                                             <td class="cart-update-wrapper cart-flex-item text-end text-md-center">
                                                 <div class="cart-qty d-flex justify-content-end justify-content-md-center">
                                                     <div class="qtyField">
-                                                        <a class="qtyBtn minus" href="#;" onclick="return false;" (click)="dec(cart)"><i class="icon anm anm-minus-r"></i></a>
-                                                        <input class="cart-qty-input qty" type="text" name="updates[]" [value]="cart.cantidad" pattern="[0-9]*" />
-                                                        <a class="qtyBtn plus" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r"></i></a>
+                                                        <a class="qtyBtn minus text-muted" href="#;" onclick="return false;" (click)="dec(cart)"><i class="icon anm anm-minus-r"></i></a>
+                                                        <input class="cart-qty-input qty border-0" type="text" name="updates[]" [value]="cart.cantidad" pattern="[0-9]*" />
+                                                        <a class="qtyBtn plus text-muted" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r"></i></a>
                                                     </div>
                                                 </div>
                                                 <a href="#" title="Remove" class="removeMb d-md-none d-inline-block text-decoration-underline mt-2 me-3">Eliminar</a>
                                             </td>
                                             <td class="cart-price cart-flex-item text-center small-hide">
-                                                <span class="money fw-500">{{ euro }}{{ cart.total | number: '1.2-2' }}</span>
+                                                <!-- <span class="money fw-500">{{ cart.total | number: '1.2-2' }} {{ euro }}</span> -->
+                                                <span class="money">
+                                                    <span class="price-small fw-normal">
+                                                        <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
+                                                        <span class="price-decimals-small">
+                                                            <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
+                                                            <span class="currency-symbol-small">{{ euro }}</span>
+                                                        </span>
+                                                    </span>
+                                                </span>
                                             </td>
                                         </tr>
                                     </ng-container>
@@ -131,11 +150,11 @@
                                 <tfoot>
                                     <tr>
                                         <td colspan="3" class="text-start ">
-                                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'checkout']" class="btn btn-outline-secondary btn-sm cart-continue text-uppercase"><i class="icon anm anm-angle-left-r me-2 d-none"></i> Seguir comprando</a>
+                                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'checkout']" class="btn btn-outline-secondary btn-sm cart-continue text-uppercase fw-normal"><i class="icon anm anm-angle-left-r me-2 d-none"></i> Seguir comprando</a>
                                         </td>
                                         <td colspan="3" class="text-end">
-                                            <button type="submit" name="clear" class="btn btn-outline-secondary btn-sm small-hide text-uppercase" (click)="storeClearCart()" ><i class="icon anm anm-times-r me-2"></i> Vaciar carrito de compras</button>
-                                            <button type="submit" name="update" class="btn btn-secondary btn-sm cart-continue ms-2 text-uppercase" onclick="return false;" (click)="sotoreCarts()"><i class="icon anm anm-sync-ar me-2 d-none"></i> Actualizar carrito</button>
+                                            <button type="submit" name="clear" class="btn btn-outline-secondary btn-sm small-hide text-uppercase fw-normal" (click)="storeClearCart()" ><i class="icon anm anm-times-r me-2"></i> Vaciar carrito de compras</button>
+                                            <button type="submit" name="update" class="btn btn-secondary btn-sm cart-continue ms-2 text-uppercase fw-normal" onclick="return false;" (click)="sotoreCarts()"><i class="icon anm anm-sync-ar me-2 d-none"></i> Actualizar carrito</button>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -514,7 +533,17 @@
                             <div class="cart-order-detail cart-col">
                                 <div class="row g-0 border-bottom pb-2">
                                     <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Subtotal</strong></span>
-                                    <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ totalCarts | number: '1.2-2' }} {{ euro }}</span></span>
+                                    <!-- <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ totalCarts | number: '1.2-2' }} {{ euro }}</span></span> -->
+
+                                    <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                                        <span class="price-small fw-normal">
+                                            <span class="price-main-small">{{ getFormattedPrice(totalCarts).integerPart }}</span>
+                                            <span class="price-decimals-small">
+                                                <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
+                                                <span class="currency-symbol-small">{{ euro }}</span>
+                                            </span>
+                                        </span>
+                                    </span>
                                 </div>
                                 <div class="row g-0 border-bottom py-2 d-none">
                                     <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Cupón de descuento</strong></span>
@@ -530,7 +559,16 @@
                                 </div>
                                 <div class="row g-0 pt-2">
                                     <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase"><strong>Total</strong></span>
-                                    <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ totalCarts | number: '1.2-2' }} {{ euro }}</b></span>
+                                    <!-- <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ totalCarts | number: '1.2-2' }} {{ euro }}</b></span> -->
+                                    <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end">
+                                        <span class="money price">
+                                            <span class="price-main">{{ getFormattedPrice(totalCarts).integerPart }}</span>
+                                            <span class="price-decimals">
+                                                <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
+                                                <span class="currency-symbol">{{ euro }}</span>
+                                            </span>
+                                        </span>
+                                    </span>
                                 </div>
 
                                 <p class="cart-shipping mt-3 d-none">Envío &amp; Impuestos calculados al finalizar la compra</p>

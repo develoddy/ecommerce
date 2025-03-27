@@ -304,14 +304,20 @@
                                                 <div class="product-details px-3">
                                                     <!-- Product Name -->
                                                     <div class="product-name">
-                                                        <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}">{{ ourProduct.title }}</a>
+                                                        <a href="product-layout1.html" class="text-uppercase" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" [queryParams]="{_id: ourProduct.campaing_discount?.id}">{{ ourProduct.title }}</a>
                                                     </div>
                                                     <!-- End Product Name -->
                                                     <!-- Product Price -->
                                                     <div class="product-price">
                                                         <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} {{ euro }}</span>
-                                                        <span class="price">{{ ourProduct.finalPrice }} {{ euro }}</span>
                                                         <!-- <span class="price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} {{ euro }}</span> -->
+                                                        <span class="price">
+                                                            <span class="price-main">{{ getPriceParts(ourProduct.finalPrice).integer }}</span>
+                                                            <span class="price-decimals">
+                                                                <sup>{{ getPriceParts(ourProduct.finalPrice).decimals }}</sup>
+                                                                <span class="currency-symbol">{{ euro }}</span>
+                                                            </span>
+                                                        </span>
                                                     </div>
                                                     <!-- End Product Price -->
                                                     <!-- Product Review -->

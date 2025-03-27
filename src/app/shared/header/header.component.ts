@@ -43,10 +43,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   source: any;
   locale: string = "";
   country: string = "";
-
-
   currentUser: any = null;
-
   width: number = 100; // valor por defecto
   height: number = 100; // valor por defecto
 
@@ -192,6 +189,23 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       resp.carts.forEach((cart: any) => this.cartService.changeCart(cart));
     });
   }
+
+  getFormattedPrice(price: any) {
+    if (typeof price === 'string') {
+      price = parseFloat(price); // Convertir a número
+    }
+  
+    if (isNaN(price)) {
+      return { integerPart: "0", decimalPart: "00" }; // Manejo de error si el valor no es válido
+    }
+    
+    const formatted = price.toFixed(2).split('.'); // Asegura siempre dos decimales
+    return {
+      integerPart: formatted[0], // Parte entera
+      decimalPart: formatted[1]  // Parte decimal
+    };
+  }
+  
 
   private subscribeToCartData(): void {
     this.subscriptions.add(
@@ -448,7 +462,5 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     this.checkDeviceType(); // Verifica el tamaño de la pantalla
-  }
-
- 
+  } 
 }

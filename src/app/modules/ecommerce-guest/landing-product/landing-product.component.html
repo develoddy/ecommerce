@@ -83,12 +83,22 @@
                         <!-- Product Details -->
                         <div class="product-single-meta ">
                             <div class="d-flex mb-0"> 
-                                <h2 class="flex-grow-1 product-main-title mb-0">{{ product_selected.title }}</h2> 
+                                <h2 class="flex-grow-1 product-main-title mb-0 text-uppercase">{{ product_selected.title }}</h2> 
                                 <div class="product-price d-flex-center">
                                     <ng-container *ngIf="getDiscount() > 0">
                                         <span class="price old-price">{{ product_selected.price_usd }} €</span>
                                     </ng-container>
-                                    <span class="price">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} €</span>
+                                    <!-- <span class="price">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} €</span> -->
+                                    <!-- Mostrar precio con descuento -->
+                                    <span class="price">
+                                        <span class="price-main">
+                                            {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
+                                        </span>
+                                        <span class="price-decimals">
+                                            <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
+                                            <span class="currency-symbol">€</span>
+                                        </span>
+                                    </span>
                                 </div>
                             </div>
                             
@@ -770,7 +780,7 @@
                                         <!-- Product Name -->
                                         <div class="product-name">
                                             <!-- <a href="#" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="{_id: product.campaing_discount?.id}">{{product.title}}</a> -->
-                                            <a href="#" onclick="return false;" (click)="navigateToProduct(product.slug, product.campaing_discount?.id)" class="product-img">
+                                            <a href="#" onclick="return false;" (click)="navigateToProduct(product.slug, product.campaing_discount?.id)" class="product-img text-uppercase">
                                                 {{product.title}}
                                             </a>
                                         </div>
@@ -780,7 +790,17 @@
                                             <ng-container *ngIf="getDiscount() > 0">
                                                 <span class="price old-price">{{ product_selected.price_usd }} {{ euro }}</span>
                                             </ng-container>
-                                            <span class="price">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} {{ euro }}</span>
+                                            <!-- <span class="price">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} {{ euro }}</span> -->
+
+                                            <span class="price">
+                                                <span class="price-main">
+                                                    {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
+                                                </span>
+                                                <span class="price-decimals">
+                                                    <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
+                                                    <span class="currency-symbol">€</span>
+                                                </span>
+                                            </span>
                                         </div>
                                         <!-- End Product Price -->
                                         <!-- Product Review -->
