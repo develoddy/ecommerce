@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
 import { catchError, map, of, BehaviorSubject, finalize, window, Observable, tap } from 'rxjs';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,185 +12,243 @@ export class AuthService {
 
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
-
   private loadingSubject = new BehaviorSubject<boolean>(false); // Para manejar el estado de carga
   public loading$ = this.loadingSubject.asObservable();
+  public accessTokenSubject = new BehaviorSubject<string | null>(this.getAccessToken());
+  public accessToken$ = this.accessTokenSubject.asObservable();
+  token: any = null;
 
-  private userSubject = new BehaviorSubject<any>(null);
-  user = this.userSubject.asObservable();
+  private userSubject = new BehaviorSubject<any>(this.getStoredUser());
+  user = this.userSubject.asObservable(); //private userSubject = new BehaviorSubject<any>(null);
 
   private userGuestSubject = new BehaviorSubject<any>(null);
   userGuest = this.userGuestSubject.asObservable();
-  token: any = null;
-
-  public accessTokenSubject = new BehaviorSubject<string | null>(this.getAccessToken());
-  public accessToken$ = this.accessTokenSubject.asObservable();
+  
 
   constructor(
     private _http: HttpClient,
-    private _router: Router
+    private _router: Router,
+    private localizationService: LocalizationService
   ) {
     this.addGuestLocalStorage();
-    const storedUser = localStorage.getItem("user"); 
-    this.userSubject = new BehaviorSubject<any>(storedUser ? JSON.parse(storedUser) : null);
-    this.user = this.userSubject.asObservable();
+    //const storedUser = sessionStorage.getItem("user"); //const storedUser = localStorage.getItem("user"); 
+    //this.userSubject = new BehaviorSubject<any>(storedUser ? JSON.parse(storedUser) : null);
+    //this.user = this.userSubject.asObservable();
     this.userGuest = this.userGuestSubject.asObservable();
 
     this.getLocalStorage();
   }
 
+  private getStoredUser(): any {
+    const storedUser = sessionStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  }
+
+  private getLocalStorage() {
+    const token = sessionStorage.getItem('access_token');
+    const storedUser = sessionStorage.getItem("user");
+
+    if ( storedUser ) {
+      this.userSubject.next(JSON.parse(storedUser));
+      this.accessTokenSubject.next(token);
+      this.token = sessionStorage.getItem("access_token");
+
+    } else {
+      this.token = null;
+      this.userSubject.next(null);
+
+    }
+  }
+
+  // Función para obtener locale y country de LocalizationService
+  private getLocaleAndCountry(): { locale: string, country: string } {
+    return {
+      locale: this.localizationService.locale,
+      country: this.localizationService.country
+    };
+  }
+
   public setAccessToken(accessToken:any) {
-    localStorage.setItem("access_token", accessToken);
+    sessionStorage.setItem("access_token", accessToken);
     this.accessTokenSubject.next(accessToken); // Emitir el nuevo token
   }
 
   // Método para obtener el token
   public getAccessToken(): string | null {
-    return localStorage.getItem('access_token');
+    return sessionStorage.getItem('access_token');
   }
 
-   // Obtener el refresh token (si lo usas)
+  
   getRefreshToken(): string | null {
-    return localStorage.getItem('refresh_token');
+    return sessionStorage.getItem('refresh_token');
   }
 
   
 
-  private getLocalStorage() {
-    const token = localStorage.getItem('access_token');
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      this.userSubject.next(JSON.parse(storedUser));
-      this.accessTokenSubject.next(token);
-      this.token = localStorage.getItem("access_token"); //this.token = localStorage.getItem("token");
-    } else {
-      this.token = null;
-      this.userSubject.next(null);
-    }
-  }
-
   login(email: string, password: string) {
+
     this.loadingSubject.next(true);
+
     const URL = URL_SERVICE + "users/login";
-    return this._http.post(URL, { email, password }).pipe(
-      map((resp: any) => {
-        if (resp.USER_FRONTED && resp.USER_FRONTED.accessToken && resp.USER_FRONTED.refreshToken) {
+
+    return this._http.post( URL, { email, password } ).pipe(
+      map(( resp: any ) => {
+        if (  resp.USER_FRONTED             && 
+              resp.USER_FRONTED.accessToken && 
+              resp.USER_FRONTED.refreshToken 
+        ) {
+
           this.localStorageSave(resp.USER_FRONTED);
           this.removeUserGuestLocalStorage();
           return true;
+
         } else {
           return resp;
         }
+
       }),
-      catchError((error: any) => {
+      catchError(( error: any ) => {
         console.error(error);
         return of(error);
+
       }),
       finalize(() => {
-        // Finaliza el loading cuando termina la llamada
+        // FINALIZA EL LOADING CUANDO TERMINA LA LLAMADA
         this.loadingSubject.next(false);
+
       })
     );
   }
 
-  // Manejar la expiración del token
-  handleTokenExpiration(): void {
-    const refreshToken = this.getRefreshToken();
-    if (refreshToken) {
-      this.refreshToken();
-    } else {
-      // Si no tienes un refresh token, redirigir al login
-      this._router.navigate(['/auth/login']);
-    }
-  }
+  /* ------------------ Zona de Token --------------- */
+  /*  ¿Qué pasa cuando el Access Token expira?
+   *  Usuario inicia sesión → Se generan accessToken (6 min) y refreshToken (30 días).
+   *  El usuario usa el accessToken para hacer peticiones al backend.
+   *  Cuando el accessToken expira (pasan 6 minutos), el sistema detecta que está vencido.
+   *  Se usa el refreshToken para generar un nuevo accessToken.
+   *  Este ciclo se repite cada 6 minutos hasta que el refreshToken también expire (30 días).
+   *
+   *  📌 Importante: El refreshToken NO cambia cada 6 minutos. Solo se usa para obtener un nuevo accessToken.
+  */
 
   verifyTokenExpiration(token: string) {
     try {
-      // Extraer la parte del payload del token JWT
+  
+      // EXTRAER LA PARTE DEL PAYLOAD DEL TOKEN JWT
       const base64Url = token.split('.')[1];
       
-      // Asegurar que la cadena base64 esté en el formato correcto
+      // ASEGURAR QUE LA CADENA BASE64 ESTÉ EN EL FORMATO CORRECTO
       const base64 = base64Url.replace('-', '+').replace('_', '/');
       
-      // Decodificar el token manualmente
+      // DECODIFICAR EL TOKEN MANUALMENTE
       const decoded = JSON.parse(atob(base64));
-      // Mostrar la fecha de emisión (iat) y expiración (exp) en formato legible
+      
+      // MOSTRAR LA FECHA DE EMISION (IAT) Y EXPIRACION (EXP) EN FORMATO LEGIBLE
       const iatTimestamp = decoded.iat;
       const expTimestamp = decoded.exp;
 
-      if (!iatTimestamp || !expTimestamp) {
+      if ( !iatTimestamp || !expTimestamp ) {
         throw new Error("El token no contiene la fecha de emisión (iat) o de expiración (exp).");
       }
 
-      const iatDate = new Date(iatTimestamp * 1000);  // Convertir a milisegundos
-      const expDate = new Date(expTimestamp * 1000);  // Convertir a milisegundos
-      console.log("------------------------------------------------ T O K E N -------------------------------------------------------");
-      console.log("FECHA DE EMISION DEL TOKEN (IAT) --------------> ", iatDate.toLocaleString()); // Fecha de emisión
-      console.log("FECHA DE VENCIMIENTO DEL TOKEN (EXP) ----------> ", expDate.toLocaleString()); // Fecha de expiración
-      console.log("DECODED TOKEN: ", decoded);
-      console.log("--------------------------------------------------------------------------------------------------------------");
+      // VERIFICAR SI EL TOKEN HA EXPIRADA
+      // OBTENER EL TIEMPO ACTUAL EN SEGUNDOS
+      const currentTimestamp = Math.floor(Date.now() / 1000);
 
-      // Verificar si el token ya ha expirado
-      const currentTimestamp = Math.floor(Date.now() / 1000); // Obtener el tiempo actual en segundos
-      if (decoded.exp < currentTimestamp) {
-        console.log("EL access_token HA EXPIRADO ❌");
-        console.log("--------------------------------------------------------------------------------------------------------------");
-      } else {
-        console.log("EL access_token SIGUE SIENDO VALIDO ✅");
-        console.log("--------------------------------------------------------------------------------------------------------------");
+      if ( decoded.exp < currentTimestamp ) {  
+        // INTENTAR REFRESCAR EL TOKEN SI HAY UN refresh_token DISPONIBLE
+        const refreshToken = sessionStorage.getItem('refresh_token');
+        if ( refreshToken ) {
+
+          this.refreshToken().subscribe({
+            error: () => {
+              // SI FALLA LA RENOVACION, REDIRIGIR AL LOGIN
+              const { locale, country } = this.getLocaleAndCountry();
+              this._router.navigateByUrl(`/${locale}/${country}/auth/login`);
+            }
+          });
+        }
       }
+
     } catch (error) {
-      console.error("ERROR AL DECODIFICAR EL TOKEN ❌:", error);
+      console.error("❌ ERROR AL DECODIFICAR EL TOKEN:", error);
     }
   }
 
-
   isTokenNearExpiration(token: string): boolean {
     try {
-      // Extraer la parte del payload del token JWT
+      // EXTRAER LA PARTE DEL PAYLOAD DEL TOKEN JWT
       const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace('-', '+').replace('_', '/');
-      const decoded = JSON.parse(atob(base64));
+      const base64    = base64Url.replace('-', '+').replace('_', '/');
+      const decoded   = JSON.parse(atob(base64));
   
       const exp = decoded.exp;
-      const currentTimestamp = Math.floor(Date.now() / 1000); // Obtener el tiempo actual en segundos
+      const currentTimestamp = Math.floor(Date.now() / 1000); // OBTENER EL TIEMPO ACTUAL EN SEGUNDOS
   
-      // Definir el umbral de "cerca de expirar" (en segundos, por ejemplo, 5 minutos)
-      const expirationThreshold = 5 * 60; // 5 minutos antes de la expiración
+      // DEFINIR EL UMBRAL DE "CERCA DE EXPIRAR" (EN SEGUNDOS, POR EJEMPLO, 5 MINUTOS)
+      const expirationThreshold = 2 * 60; // 2 MINUTOS ANTES DE LA EXPIRACIÓN
   
-      // Verificar si el token está cerca de expirar
+      // VERIFICAR SI EL TOKEN ESTÁ CERCA DE EXPIRAR
       if (exp - currentTimestamp <= expirationThreshold) {
-        console.log('EL TOKEN ESTÁ CERCA DE EXPIRAR. QUEDAN MENOS DE 5 MINUTOS ⚠️');
-        console.log("--------------------------------------------------------------------------------------------------------------");
-        return true; // El token está cerca de expirar
+        return true; // EL TOKEN ESTÁ CERCA DE EXPIRAR
       }
   
-      return false; // El token no está cerca de expirar
-    } catch (error) {
-      console.error("Error al verificar la expiración del token:", error);
+      return false; 
+
+    } catch ( error ) {
+      const { locale, country } = this.getLocaleAndCountry();
+      this._router.navigate(['/', locale, country, 'auth', 'login']);
       return false;
     }
   }
   
-  public refreshToken(): Observable<any> {
-    const refreshToken = localStorage.getItem('refresh_token');
+  refreshToken(): Observable<any> {
+
+    const refreshToken = sessionStorage.getItem('refresh_token');
     const URL = URL_SERVICE + "users/refresh-token";
+
+    if ( !refreshToken ) {
+      const { locale, country } = this.getLocaleAndCountry();
+      this._router.navigateByUrl(`/${locale}/${country}/auth/login`);
+    }
     
-    if (!this.isRefreshing) {
+    if ( !this.isRefreshing ) {
+
       this.isRefreshing = true;
       
       return this._http.post<any>(URL, { refresh_token: refreshToken }).pipe(
-        tap((response) => {
-          this.setAccessToken(response.accessToken); // Guardar el nuevo accessToken
-          this.accessTokenSubject.next(response.accessToken); // Emitir el nuevo token
-          this.refreshTokenSubject.next(response.accessToken);
+        tap(( response ) => {
+
+          // VERIFICAR SI EL BACKEND AHA RESPONDIDO CON UN REFRESH TOKEN VALIDO
+          if ( !response || !response.refreshToken ) {
+            const { locale, country } = this.getLocaleAndCountry(); 
+            this._router.navigateByUrl(`/${locale}/${country}/auth/login`);
+            sessionStorage.removeItem('access_token');
+            sessionStorage.removeItem('refresh_token');
+            this.isRefreshing = false;
+            return;
+          }
+
+          // DECODIFICAR EL PAYLOAD DEL NUEVO refreshToken PARA VERIFICAR SU EXPIRACION
+           const base64Url      = response.refreshToken.split('.')[1];
+           const base64         = base64Url.replace('-', '+').replace('_', '/');
+           const decodedPayload = JSON.parse(atob(base64));
+          // console.log("📌 NUEVO PAYLOAD DEL REFRESH TOKEN:", decodedPayload);
+          console.warn("📅 REFRESH TOKEN EXPIRA EN:", new Date(decodedPayload.exp * 1000).toLocaleString());
+
+          // GUARDA EL NUEVO accessToken
+          sessionStorage.setItem("access_token", response.accessToken); 
+          this.accessTokenSubject.next(response.accessToken);
           this.isRefreshing = false;
+
         }),
-        catchError((error) => {
-          console.error("Error al renovar el token:", error);
-          // Si hay un error al renovar el token, redirigir al login
-          this._router.navigate(['/auth/login']);
-          throw error; // Propagar el error si es necesario para el manejo posterior
+        catchError(( error ) => {
+          const { locale, country } = this.getLocaleAndCountry();
+          this._router.navigateByUrl(`/${locale}/${country}/auth/login`);
+          sessionStorage.removeItem('access_token');
+          sessionStorage.removeItem('refresh_token');
+          this.isRefreshing = false;
+          throw error; // PROPAGAR EL ERROR
         })
       );
     } else {
@@ -197,26 +256,25 @@ export class AuthService {
     }
   }
 
-
   private localStorageSave(USER_FRONTED: any) {
-    localStorage.setItem("access_token", USER_FRONTED.accessToken); // localStorage.setItem("token", USER_FRONTED.token);
-    localStorage.setItem("refresh_token", USER_FRONTED.refreshToken);
-    localStorage.setItem("user", JSON.stringify(USER_FRONTED.user));
+    sessionStorage.setItem("access_token", USER_FRONTED.accessToken);
+    sessionStorage.setItem("refresh_token", USER_FRONTED.refreshToken);
+    sessionStorage.setItem("user", JSON.stringify(USER_FRONTED.user));
     this.token = USER_FRONTED.accessToken;
-    this.userSubject.next(USER_FRONTED.user);  // Emitir el nuevo estado del usuario
+    this.userSubject.next(USER_FRONTED.user);  
   }
 
   private addGuestLocalStorage() {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = sessionStorage.getItem("user");
     if(!storedUser) {
       let data = {
         _id:0,
         user_guest: "Guest",
         guest: true,
       }
-      localStorage.setItem("user_guest", JSON.stringify(data));
+      sessionStorage.setItem("user_guest", JSON.stringify(data));
   
-      const storedUserGuest = localStorage.getItem("user_guest");
+      const storedUserGuest = sessionStorage.getItem("user_guest");
       if (storedUserGuest) {
         this.userGuestSubject.next(JSON.parse(storedUserGuest));
       }
@@ -267,14 +325,13 @@ export class AuthService {
   }
 
   logout() {
-    //localStorage.removeItem("token");
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem("user");
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('refresh_token');
+    sessionStorage.removeItem("user");
     this.token = null;
     this.userSubject.next(null);
 
-    const storedUser = localStorage.getItem("user");
+    const storedUser = sessionStorage.getItem("user");
     if (!storedUser) {
       this.addGuestLocalStorage();
     }
@@ -282,9 +339,8 @@ export class AuthService {
   }
 
   removeUserGuestLocalStorage() {
-    localStorage.removeItem("user_guest");
+    sessionStorage.removeItem("user_guest");
     this.userGuestSubject.next(null);
   }
-
   
 }

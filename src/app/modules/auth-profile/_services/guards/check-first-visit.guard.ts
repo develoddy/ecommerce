@@ -14,16 +14,17 @@ export class CheckFirstVisitGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
 
-    const isFirstVisit = localStorage.getItem('isFirstVisit');
+    const isFirstVisit = sessionStorage.getItem('isFirstVisit');
+    console.log('Check First visita : ', isFirstVisit);
     const currentUrl = state.url;
 
     if (!isFirstVisit) {
-      console.log('Primera visita, permitiendo acceso...');
-      this.router.navigate(['/pre-home/config']); 
-      localStorage.setItem('isFirstVisit', 'false');
+      console.warn('Primera visita, permitiendo acceso...');
+      this.router.navigate(['/preHome/config']); 
+      sessionStorage.setItem('isFirstVisit', 'false');
       return false;
     } else {
-      console.log('No es la primera visita, redirigiendo a home...');
+      console.warn('No es la primera visita, redirigiendo a home...');
       return true;
     }
   }

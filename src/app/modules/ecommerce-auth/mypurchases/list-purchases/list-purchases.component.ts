@@ -42,41 +42,10 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     });
   }
  
-
   ngOnInit(): void {
     this.subscriptions = this._ecommerceAuthService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
-
-    // Obtener el token desde el localStorage
-    // const accessToken = this.authService.getAccessToken();
-    // if (accessToken) {
-    //   this.authService.verifyTokenExpiration(accessToken);
-    // } else {
-    //   console.log("No se encontró un token de acceso.");
-    // }
-
-    // Verificar si el token está expirado y si es necesario, renovarlo
-    // const accessToken = this.authService.getAccessToken();
-    // if (accessToken) {
-    //   // Verificar si el token ha expirado
-    //   this.authService.verifyTokenExpiration(accessToken);
-    //   // Si el token está cerca de expirar, renovar el token
-    //   if (this.authService.isTokenNearExpiration(accessToken)) {
-    //     this.authService.refreshToken().subscribe({
-    //       next: (response) => {
-    //         console.log('Token renovado exitosamente. ', response);
-    //       },
-    //       error: (err) => {
-    //         console.error('Error al renovar el token', err);
-    //         this.router.navigate(["/"]);
-    //       }
-    //     });
-    //   }
-    // } else {
-    //   // Si no hay token de acceso, redirigir a login
-    //   this.router.navigate(["/"]);
-    // }
 
     this.verifyAuthenticatedUser(); 
   }

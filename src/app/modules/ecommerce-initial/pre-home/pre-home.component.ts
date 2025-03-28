@@ -15,7 +15,6 @@ export class PreHomeComponent implements OnInit {
   countries = [
     { code: 'es', name: 'España (Península y Baleares)' },
     { code: 'us', name: 'Estados Unidos' },
-    { code: 'ee', name: 'Estonia' }
   ];
 
   // Opciones de idioma por país
@@ -26,9 +25,6 @@ export class PreHomeComponent implements OnInit {
     ],
     'us': [
       { code: 'en', name: 'English (USA)' }
-    ],
-    'ee': [
-      { code: 'et', name: 'Estonian' }
     ]
   };
 
@@ -45,11 +41,20 @@ export class PreHomeComponent implements OnInit {
   onCountryChange() {
     this.availableLocales = this.languageOptions[this.selectedCountry] || [];
     //this.selectedLocale = ''; // Reinicia el idioma seleccionado
+
+    // Si hay idiomas disponibles, asignar el primero
+    if (this.availableLocales.length > 0) {
+      this.selectedLocale = this.availableLocales[0].code;
+    } else {
+      this.selectedLocale = ''; // Si no hay idiomas disponibles, lo dejamos vacío
+    }
   }
 
   gotoHome() {
+    console.log("Selected Contry: ", this.selectedCountry, ' ', 'selected Locale: ', this.selectedLocale);
+    
     if (this.selectedCountry && this.selectedLocale) {
-      this.router.navigate([`/${this.selectedLocale}/${this.selectedCountry}/home`]);
+      this.router.navigate([`/${this.selectedCountry}/${this.selectedLocale}/home`]);
     }
   }
 
