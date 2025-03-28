@@ -10,6 +10,7 @@ import { LanguageService } from 'src/app/services/language.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { combineLatest } from 'rxjs';
+import { LocalizationService } from 'src/app/services/localization.service';
 declare var $: any;
 declare var $:any;
 declare function HOMEINITTEMPLATE($: any): any;//declare function HOMEINITTEMPLATE([]):any;
@@ -59,7 +60,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private wishlistService: WishlistService,
     private ecommerceGuestService: EcommerceGuestService,
     private minicartService: MinicartService,
-    private subscriptionService: SubscriptionService
+    private subscriptionService: SubscriptionService,
+    private localizationService: LocalizationService
   ) {
     //translate.setDefaultLang('es');
     this.subscriptions.add(
@@ -70,11 +72,17 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    // Obtenemos `locale` y `country` de la ruta actual
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
-      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
-    });
+    
+    // this.activatedRoute.paramMap.subscribe(params => {
+    //   this.locale = params.get('locale') || 'es';  
+    //   this.country = params.get('country') || 'es'; 
+    // });
+
+    console.log("Header ---- Selected Contry: ", this.localizationService.country, ' ', 'selected Locale: ', this.localizationService.locale);
+
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
+
     this.checkUserAuthenticationStatus();
     if (this.router.url === '/checkout') {
       this.showSubscriptionSection = false;
@@ -244,7 +252,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   navigateToProduct(slug: string, discountId?: string) {
-    this.router.navigate(['/', this.locale, this.country, 'shop', 'product', slug], { queryParams: { _id: discountId } })
+    this.router.navigate(['/', this.country, this.locale, 'shop', 'product', slug], { queryParams: { _id: discountId } })
       .then(() => {
           window.location.reload();
       });
@@ -414,17 +422,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goToCheckout(): void {
     this.showSubscriptionSection = false;
-    this.router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
+    this.router.navigate(['/', this.country, this.locale, 'account', 'checkout']);
   }
 
   logout() {
-    
     this.authService.logout();
-    
     this.cartService.resetCart();
-    
   }
-
 
   private cleanupPSWP() {
     // Limpiar los eventos asignados por pswp()

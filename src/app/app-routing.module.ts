@@ -8,7 +8,7 @@ const routes: Routes = [
   // Redirección de la raíz a /es/es/home
   {
     path: '',
-    redirectTo: 'es/es/home', // Idioma y país por defecto
+    redirectTo: 'es/es/home', // País y el idioma por defecto
     pathMatch: 'full'
   },
   // Ruta para preHome fuera de la estructura de locale/country
@@ -17,7 +17,7 @@ const routes: Routes = [
     loadChildren: () => import('./modules/ecommerce-initial/ecommerce-initial.module').then(m => m.EcommerceInitialModule) 
   },
   {
-    path: ':locale/:country',
+    path: ':country/:locale',
     children: [
       {
         path: 'home',

@@ -10,6 +10,7 @@ import { WishlistService } from '../_service/wishlist.service';
 import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 declare var $:any;
 
@@ -36,7 +37,6 @@ declare function menuProductSlider($: any):any;
 })
 export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  // Inyecta ChangeDetectorRe
   euro = "€";
   slug:any=null;
   product_selected:any = null;
@@ -51,38 +51,30 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   title:any=null;
   description:any=null;
   sale_detail_selected:any=null;
-
   REVIEWS:any=null;
   SALE_FLASH:any = null;
   AVG_REVIEW:any=null;
   COUNT_REVIEW:any=null;
   exist_review:any=null;
-
   activeIndex: number = 0;
   selectedColor: string = '';
   uniqueGalerias: any[] = [];
   firstImage: string = '';
   coloresDisponibles: { color: string, imagen: string }[] = [];
   variedades: any[] = [];
-  //availableSizesGorra = ['S', 'M', 'L', 'XL', 'XXL', "37", "38", "39", "40", "41", "42", "Talla única", "50ML", "100ML"];
   availableSizesCamisetas = ['S', 'M', 'L', 'XL', 'XXL'];  
   availableSizesZapatillas = ["37", "38", "39", "40", "41", "42"];
-  availableSizesGorra = ["Talla única"];
+  availableSizesGorra = ["One size"];
   availableSizesPerfume = ["50ML", "100ML"];
   loading: boolean = false;
-
-  tallaError = false; // Reiniciar el error al inicio
-  cantidadError = false; // Reiniciar el error al inicio
-
+  tallaError = false; 
+  cantidadError = false; 
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
-
   currentUser: any = null;
-
   errorResponse:boolean=false;
   errorMessage:any="";
-
   locale: string = "";
   country: string = "";
 
@@ -100,13 +92,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     private minicartService: MinicartService,
     private titleService: Title, // seo
     private metaService: Meta,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private localizationService: LocalizationService
   ) {
-    // Almacenar los valores de `locale` y `country` actuales
-    this.routerActived.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado
-      this.country = params.get('country') || 'es'; // Valor predeterminado
-    });
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
   }
 
   ngAfterViewInit(): void {
@@ -257,20 +247,22 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.variedades = this.product_selected.variedades.filter((variedad: any) => variedad.color === this.selectedColor);
 
     // Selecciona el array de tallas de acuerdo a la categoría del producto
-    
-  
     const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
+
+    console.log("SortVariedades: ", categoryTitle);
+    
     
     let availableSizes:any = [];
-    if (categoryTitle.toLowerCase().includes('zapatillas')) {
-      availableSizes = this.availableSizesZapatillas;
-    } else if (categoryTitle.toLowerCase().includes('t-shirts')) {
+    if (categoryTitle.toLowerCase().includes('t-shirts')) {
       availableSizes = this.availableSizesCamisetas;
-    } else if (categoryTitle.toLowerCase().includes('gorra')) {
+    } else if (categoryTitle.toLowerCase().includes('snapbacks')) {
       availableSizes = this.availableSizesGorra;
-    } else if (categoryTitle.toLowerCase().includes('perfume')) {
-      availableSizes = this.availableSizesPerfume;
+    } else if (categoryTitle.toLowerCase().includes('all shirts')) {
+      availableSizes = this.availableSizesCamisetas;
+    } else if (categoryTitle.toLowerCase().includes('hoodies')) {
+      availableSizes = this.availableSizesCamisetas;
     }
+    
     //console.log("--- availableSizes: ", availableSizes);
     // Mapea las tallas disponibles, mostrando stock positivo o tachado si no hay stock
     this.variedades = availableSizes.map((size:any) => {
@@ -480,7 +472,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     const isZapatos = categoryTitle.toLowerCase().includes('zapatillas');
     const isCamisa = categoryTitle.toLowerCase().includes('t-shirts');
     const isGorra = categoryTitle.toLowerCase().includes('gorra');
-    const isPerfume = categoryTitle.toLowerCase().includes('perfume');
+    const isPerfume = categoryTitle.toLowerCase().includes('all shirts');
 
     // Determina las tallas disponibles según la categoría
     let filteredSizes: string[] = [];

@@ -6,6 +6,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/services/language.service';
 import { Subscription } from 'rxjs';
 import { WishlistService } from '../ecommerce-guest/_service/wishlist.service';
+import { LocalizationService } from 'src/app/services/localization.service';
+import { AuthService } from '../auth-profile/_services/auth.service';
 
 declare var bootstrap: any;
 
@@ -91,13 +93,23 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     public translate: TranslateService,
     public _wishlistService: WishlistService,
+    public _authService: AuthService,
+    private localizationService: LocalizationService
     //private languageService: LanguageService,
   ) { 
      // Obtenemos `locale` y `country` de la ruta actual
-     this.activatedRoute.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
-      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
-    });
+    // this.activatedRoute.paramMap.subscribe(params => {
+    //   this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+    //   this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    // });
+
+    //const { locale, country } = this._authService.getLocaleAndCountry();
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
+    
+    console.log("Home ---- Selected Contry: ", this.locale, ' ', 'selected Locale: ', this.country);
+    
+   
 
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 @Component({
   selector: 'app-pre-home',
@@ -14,23 +15,23 @@ export class PreHomeComponent implements OnInit {
   // Opciones de países
   countries = [
     { code: 'es', name: 'España (Península y Baleares)' },
-    { code: 'us', name: 'Estados Unidos' },
+    // { code: 'us', name: 'Estados Unidos' },
   ];
 
   // Opciones de idioma por país
   languageOptions: { [key: string]: { code: string, name: string }[] } = {
     'es': [
       { code: 'es', name: 'Castellano' },
-      { code: 'ca', name: 'Catalán' }
+      //{ code: 'ca', name: 'Catalán' }
     ],
-    'us': [
-      { code: 'en', name: 'English (USA)' }
-    ]
+    //'us': [
+    //  { code: 'en', name: 'English (USA)' }
+    //]
   };
 
   availableLocales: { code: string, name: string }[] = []; // Idiomas disponibles según el país seleccionado
 
-  constructor(private router: Router,) { }
+  constructor(private router: Router, private localizationService: LocalizationService) { }
 
   ngOnInit(): void {
     // Llama a onCountryChange al cargar el componente para establecer los idiomas disponibles
@@ -40,7 +41,6 @@ export class PreHomeComponent implements OnInit {
   // Actualiza los idiomas disponibles según el país seleccionado
   onCountryChange() {
     this.availableLocales = this.languageOptions[this.selectedCountry] || [];
-    //this.selectedLocale = ''; // Reinicia el idioma seleccionado
 
     // Si hay idiomas disponibles, asignar el primero
     if (this.availableLocales.length > 0) {
@@ -51,9 +51,8 @@ export class PreHomeComponent implements OnInit {
   }
 
   gotoHome() {
-    console.log("Selected Contry: ", this.selectedCountry, ' ', 'selected Locale: ', this.selectedLocale);
-    
     if (this.selectedCountry && this.selectedLocale) {
+      this.localizationService.setLocaleAndCountry(this.selectedCountry , this.selectedLocale );
       this.router.navigate([`/${this.selectedCountry}/${this.selectedLocale}/home`]);
     }
   }

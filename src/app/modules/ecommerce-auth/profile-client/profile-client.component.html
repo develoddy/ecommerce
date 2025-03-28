@@ -41,15 +41,15 @@
                             <div class="profile-detail">
                                 <!-- <h3 class="mb-1" style="font-size: 3.5rem; letter-spacing: -2px;" >{{ name_c }} {{surname_c}}</h3> -->
                                 <h2 class="mb-1" style="letter-spacing: -2px;">{{ name_c }} {{surname_c}}</h2>
-                                <p class="text-uppercase ls-1"> {{email_c}}</p>
+                                <p class="text-uppercase"> {{email_c}}</p>
                             </div>
                         </div>
                         <div class="dashboard-tab">
                             <ul class="nav nav-tabs flex-lg-column border-bottom-0 flex-column" id="top-tab" role="tablist">
-                                <li class="nav-item mb-2"><a href="#" [routerLink]="['/', this.locale, this.country, 'account', 'mypurchases']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Mis compras</span><i class="icon anm anm-arrow-s-right"></i></a></li>
-                                <li class="nav-item mb-2"><a href="#" [routerLink]="['/', this.locale, this.country, 'account', 'registered', 'account']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Mis datos</span><i class="icon anm anm-arrow-s-right"></i></a></li>
-                                <li class="nav-item mb-2"><a href="#" [routerLink]="['/', this.locale, this.country, 'account', 'myaddresses']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Mis direcciones</span><i class="icon anm anm-arrow-s-right"></i></a></li>
-                                <li class="nav-item mb-2"><a href="#" [routerLink]="['/', this.locale, this.country, 'account', 'favorites']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Favoritos</span><i class="icon anm anm-arrow-s-right"></i></a></li>
+                                <li class="nav-item mb-2"><a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'mypurchases']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Mis compras</span><i class="icon anm anm-arrow-s-right"></i></a></li>
+                                <li class="nav-item mb-2"><a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'registered', 'account']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Mis datos</span><i class="icon anm anm-arrow-s-right"></i></a></li>
+                                <li class="nav-item mb-2"><a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'myaddresses']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Mis direcciones</span><i class="icon anm anm-arrow-s-right"></i></a></li>
+                                <li class="nav-item mb-2"><a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'favorites']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Favoritos</span><i class="icon anm anm-arrow-s-right"></i></a></li>
                                 <li class="nav-item mb-2 d-none"><a href="#" class="nav-link">Seguimiento de pedidos</a></li>
                                 <li class="nav-item mb-2 d-none"><a href="#" class="nav-link">Mi lista de deseos</a></li>
                                 <li class="nav-item mb-2 d-none"><a href="#" class="nav-link d-flex justify-content-between align-items-center text-uppercase ls-1" style="font-weight: 500;"><span>Perfil</span><i class="icon anm anm-arrow-s-right"></i></a></li>

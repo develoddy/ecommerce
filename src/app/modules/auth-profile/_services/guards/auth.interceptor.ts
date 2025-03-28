@@ -35,7 +35,7 @@ export class AuthInterceptor implements HttpInterceptor {
               this.authService.logout();
               const locale = this.localizationService.locale;
               const country = this.localizationService.country;
-              this._router.navigate(['/', locale, country, 'auth', 'login']);
+              this._router.navigate(['/', country, locale, 'auth', 'login']);
               return throwError(() => new Error('🚨 EL SEGUNDO REFRESH TOKEN HA EXPIRADO.'));
             })
         );

@@ -3,6 +3,7 @@ import { AuthService } from '../_services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -39,15 +40,13 @@ export class LoginComponent implements OnInit {
     public _router: Router,
     public translate: TranslateService,
     public routerActived: ActivatedRoute,
+    private localizationService: LocalizationService
   ) {
-    this.routerActived.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado
-      this.country = params.get('country') || 'es'; // Valor predeterminado
-    });
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
   }
 
   ngOnInit(): void {
-
     this._authService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
@@ -59,7 +58,8 @@ export class LoginComponent implements OnInit {
   private verifyAuthenticatedUser(): void {
     this._authService.user.subscribe( user => {
       if ( user ) {
-        this._router.navigate(['/']);
+        //this._router.navigate(['/']);
+        this._router.navigate(['/', this.country, this.locale, 'home']);
         this.CURRENT_USER_AUTHENTICATED = user;
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
@@ -87,7 +87,8 @@ export class LoginComponent implements OnInit {
     }
     this._authService.login(this.email, this.password).subscribe((resp:any) => {
       if ( !resp.error && resp ) {
-        this._router.navigate(["/"]);
+        //this._router.navigate(["/"]);
+        this._router.navigate(['/', this.country, this.locale, 'home']);
         this.cartService.resetCart(); 
       } else {
         this.errorAutenticate = true;

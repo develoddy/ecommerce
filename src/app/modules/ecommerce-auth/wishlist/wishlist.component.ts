@@ -4,6 +4,7 @@ import { MinicartService } from 'src/app/services/minicartService.service';
 import { WishlistService } from '../../ecommerce-guest/_service/wishlist.service';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
 import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 declare var $:any;
 declare function pswp([]):any;
@@ -57,12 +58,16 @@ export class WishlistComponent implements OnInit {
     public _wishlistService: WishlistService,
     public _cartService: CartService,
     private minicartService: MinicartService,
-    private activatedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute, 
+    private localizationService: LocalizationService
   ) {
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
-      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
-    });
+    // this.activatedRoute.paramMap.subscribe(params => {
+    //   this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
+    //   this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+    // });
+    
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
   }
 
   ngOnInit(): void {
@@ -91,7 +96,7 @@ export class WishlistComponent implements OnInit {
         
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
-        this._router.navigate(['/', this.locale, this.country, 'auth', 'login']);
+        this._router.navigate(['/',this.country, this.locale, 'auth', 'login']);
       }
     });
   }

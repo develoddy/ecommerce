@@ -61,7 +61,7 @@ export class AuthService {
   }
 
   // Función para obtener locale y country de LocalizationService
-  private getLocaleAndCountry(): { locale: string, country: string } {
+  getLocaleAndCountry(): { locale: string, country: string } {
     return {
       locale: this.localizationService.locale,
       country: this.localizationService.country
@@ -82,8 +82,6 @@ export class AuthService {
   getRefreshToken(): string | null {
     return sessionStorage.getItem('refresh_token');
   }
-
-  
 
   login(email: string, password: string) {
 
@@ -163,8 +161,11 @@ export class AuthService {
           this.refreshToken().subscribe({
             error: () => {
               // SI FALLA LA RENOVACION, REDIRIGIR AL LOGIN
-              const { locale, country } = this.getLocaleAndCountry();
-              this._router.navigateByUrl(`/${locale}/${country}/auth/login`);
+              //const { locale, country } = this.getLocaleAndCountry();
+              //this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
+              const country = this.localizationService.country;
+              const locale = this.localizationService.locale;
+              this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
             }
           });
         }
@@ -208,8 +209,10 @@ export class AuthService {
     const URL = URL_SERVICE + "users/refresh-token";
 
     if ( !refreshToken ) {
-      const { locale, country } = this.getLocaleAndCountry();
-      this._router.navigateByUrl(`/${locale}/${country}/auth/login`);
+      //const { locale, country } = this.getLocaleAndCountry();
+      const country = this.localizationService.country;
+      const locale = this.localizationService.locale;
+      this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
     }
     
     if ( !this.isRefreshing ) {
@@ -221,8 +224,10 @@ export class AuthService {
 
           // VERIFICAR SI EL BACKEND AHA RESPONDIDO CON UN REFRESH TOKEN VALIDO
           if ( !response || !response.refreshToken ) {
-            const { locale, country } = this.getLocaleAndCountry(); 
-            this._router.navigateByUrl(`/${locale}/${country}/auth/login`);
+            //const { locale, country } = this.getLocaleAndCountry(); 
+            const country = this.localizationService.country;
+            const locale = this.localizationService.locale;
+            this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
             sessionStorage.removeItem('access_token');
             sessionStorage.removeItem('refresh_token');
             this.isRefreshing = false;
@@ -243,8 +248,12 @@ export class AuthService {
 
         }),
         catchError(( error ) => {
-          const { locale, country } = this.getLocaleAndCountry();
-          this._router.navigateByUrl(`/${locale}/${country}/auth/login`);
+        
+          const country = this.localizationService.country;
+          const locale = this.localizationService.locale;
+
+          // const { locale, country } = this.getLocaleAndCountry();
+          this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
           sessionStorage.removeItem('access_token');
           sessionStorage.removeItem('refresh_token');
           this.isRefreshing = false;

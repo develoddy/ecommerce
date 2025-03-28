@@ -2,7 +2,8 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { BodyClassService } from './services/body-class.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LocalizationService } from './services/localization.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE($: any): any;//declare function HOMEINITTEMPLATE([]):any;
@@ -25,14 +26,15 @@ export class AppComponent implements OnInit {
     private router: Router,
     private titleService: Title, 
     private bodyClassService: BodyClassService,
+    private activatedRoute: ActivatedRoute,
+    private localizationService: LocalizationService
   ) {
-    // translate.addLangs(['en', 'es']);
-    // const lang = translate.getBrowserLang();
-    // if ( (lang !== 'es') && (lang !== 'en') ) {
-    //   translate.setDefaultLang('es');
-    // }
-    // translate.setDefaultLang('es');
-    // translate.use('es');
+    // this.activatedRoute.paramMap.subscribe(params => {
+    //   const country = params.get('country') || 'es';
+    //   const locale = params.get('locale') || 'es';
+    //   console.log("app.component.ts : ", country, locale);
+    //   this.localizationService.setLocaleAndCountry(country, locale);
+    // });
 
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translate.get('app.title').subscribe((res: string) => {
@@ -41,27 +43,9 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // ngAfterViewInit(): void {
-  //   // Escuchar el evento de carga
-  //   setTimeout(() => {
-  //      HOMEINITTEMPLATE($);
-  //      productZoom($);
-  //      pswp($);
-  //    }, 50);
-  // }
-
   ngOnInit(): void {
-    
-    // Initialize body class based on the current route
     this.bodyClassService.updateBodyClass("index-demo1");
-     
-    // setTimeout(() => {
-    //   sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');
-    // }, 50);
   }
-
- 
-
 
   loadUserPreferences() {
     const country = localStorage.getItem('country');
@@ -73,6 +57,4 @@ export class AppComponent implements OnInit {
     // Opcional: redirigir directamente al `HomeComponent` o realizar cualquier otra configuración
     this.router.navigate(['/']);
   }
-
- 
 }
