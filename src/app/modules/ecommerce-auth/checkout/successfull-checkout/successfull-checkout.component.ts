@@ -6,6 +6,7 @@ import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.servi
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { CheckoutService } from '../../_services/checkoutService';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -77,11 +78,10 @@ export class SuccessfullCheckoutComponent implements OnInit {
     private subscriptionService: SubscriptionService,
     public routerActived: ActivatedRoute,
     private checkoutService: CheckoutService,
+    private localizationService: LocalizationService
   ) {
-    this.routerActived.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado
-      this.country = params.get('country') || 'es'; // Valor predeterminado
-    });
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
   }
 
   ngAfterViewInit() {

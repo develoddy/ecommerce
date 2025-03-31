@@ -471,7 +471,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     // Detecta si el producto es de tipo zapatillas, camiseta, gorra o perfume
     const isZapatos = categoryTitle.toLowerCase().includes('zapatillas');
     const isCamisa = categoryTitle.toLowerCase().includes('t-shirts');
-    const isGorra = categoryTitle.toLowerCase().includes('gorra');
+    const isGorra = categoryTitle.toLowerCase().includes('snapbacks');
     const isPerfume = categoryTitle.toLowerCase().includes('all shirts');
 
     // Determina las tallas disponibles según la categoría
