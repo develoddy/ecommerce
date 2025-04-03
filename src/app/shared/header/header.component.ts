@@ -78,7 +78,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     //   this.country = params.get('country') || 'es'; 
     // });
 
-    console.log("Header ---- Selected Contry: ", this.localizationService.country, ' ', 'selected Locale: ', this.localizationService.locale);
 
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;

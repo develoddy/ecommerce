@@ -3369,6 +3369,21 @@ a.logo {
 .currency-symbol {font-size: .85rem; margin-left: 2px;position: relative;top: -0.55em;}
 
 
+/*----------------*/
+.Benefits_benefits__kDX0o{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.Benefits_benefit__VNfg7 {
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+  list-style-type: none;
+}
 
 /*======================================================================
   36. Spinner

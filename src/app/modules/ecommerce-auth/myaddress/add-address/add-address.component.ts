@@ -96,6 +96,10 @@ export class AddAddressComponent implements OnInit {
   }
 
   public store() {
+    //console.log("this.CURRENT_USER_AUTHENTICATED.user_guest: ", this.CURRENT_USER_AUTHENTICATED);
+    //const isGuest = this.CURRENT_USER_AUTHENTICATED.user_guest;
+    //console.log("Add-address.componente invitado: ", isGuest);
+    
     if ( !this.address_client_selected ) {
       this.registerAddress();
     } 

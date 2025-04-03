@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-4 mb-md-0">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-4 mb-md-0 d-none">
             <div class="block h-100">
                 <div class="block-content">
                     <form method="post" action="#" class="login-form">	
@@ -57,13 +57,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-5">
             <div class="block h-100">
                 <div class="block-content">
                     <form method="post" action="#" class="login-form">	
                         <h3 class="title text-uppercase fs-22">Inicia sesión</h3>
-                        <p class="text-black">Haz tu pedido en menos pasos con tu cuenta</p>
-                        <div class="row">
+                        <p class="text-black d-none">Haz tu pedido en menos pasos con tu cuenta</p>
+                        <div class="row mb-4">
                             <div class="col-12 form-group">
                                 <label for="CustomerEmail" class="form-label">E-mail <span class="required">*</span></label>
                                 <input type="email" name="customer[email]" [(ngModel)]="email_identify" placeholder="E-mail" id="CustomerEmail" autofocus="" class="form-control py-4">
@@ -98,11 +98,9 @@
                                     <label for="remember"> Mantener la sesión iniciada</label>
                                 </div>
                             </div>
-                            
                             <div class="form-group col-12 mt-3" *ngIf="this.errorAutenticate">
                                 <p class="text-danger">{{ this.errorMessageAutenticate }}</p>
                             </div>
-
                             <div class="form-group col-12 mt-3 mb-3">
                                 <button type="submit" class="btn btn-secondary text-uppercase fw-normal py-3 w-100" (click)="login()" [disabled]="loading">
                                     <ng-container *ngIf="!loading">Iniciar sesión</ng-container>
@@ -112,8 +110,39 @@
                                   </ng-container>
                                 </button>
                             </div>
+                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'auth', 'resetpassword']" class="btn-link p-3 text-center fw-bold text-decoration-underline">¿Has olvidado tu contraseña?</a>
+                        </div>
 
-                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'auth', 'resetpassword']" class="btn-link p-3 text-center fw-bold text-decoration-underline">¿Olvidaste tu contraseña?</a>
+
+                        <div class="row mb-4">
+                            <div class="col-12 form-group">
+                                <h3 class="fw-bold text-uppercase">Crea tu cuenta</h3>
+                            </div>
+                            <ul class="Benefits_benefits__kDX0o">
+                                <li class="Benefits_benefit__VNfg7">
+                                    <svg width="16" height="16" aria-hidden="true" class="Icon_icon-content-1__kPDLF Benefits_icon__UCCFg" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="m9 19.707-5.854-5.853.708-.708L9 18.293 20.146 7.146l.708.708z"></path>
+                                    </svg>Guarda tus datos para una experiencia de compra más cómoda
+                                </li>
+                                <li class="Benefits_benefit__VNfg7">
+                                    <svg width="16" height="16" aria-hidden="true" class="Icon_icon-content-1__kPDLF Benefits_icon__UCCFg" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="m9 19.707-5.854-5.853.708-.708L9 18.293 20.146 7.146l.708.708z"></path>
+                                    </svg>Localiza y gestiona tu pedido más fácil
+                                </li>
+                                <li class="Benefits_benefit__VNfg7">
+                                    <svg width="16" height="16" aria-hidden="true" class="Icon_icon-content-1__kPDLF Benefits_icon__UCCFg" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="m9 19.707-5.854-5.853.708-.708L9 18.293 20.146 7.146l.708.708z"></path>
+                                    </svg>Accede a las ventajas y experiencias del Club LujanDev likes you
+                                </li>
+                            </ul>
+                            <div class="form-group col-12 ">
+                                <a href="register.html" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'register']" class="btn-link">
+                                    <input type="submit" class="btn btn-outline-secondary btn-lg py-3 w-100 text-uppercase fw-normal" value="Crear cuenta" />
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <!-- <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'checkout', 'resumen']" class="btn-link p-3 text-center fw-bold text-decoration-underline">Continuar sin cuenta</a> -->
+                            <!-- <a [routerLink]="['/', locale, country, 'account', 'checkout', 'resumen']" [queryParams]="{ initialized: true, from: 'step2' }" class="btn-link p-3 text-center fw-bold text-decoration-underline" (click)="enterAsGuest()" >Continuar sin cuenta</a> -->
+                            <a href="#" onclick="return false;" class="btn-link p-3 text-center fw-bold text-decoration-underline" (click)="enterAsGuest()" >Continuar sin cuenta</a>
                         </div>
                     </form>
                 </div>

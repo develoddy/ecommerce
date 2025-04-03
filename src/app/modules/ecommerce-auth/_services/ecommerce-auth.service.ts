@@ -18,18 +18,36 @@ export class EcommerceAuthService {
     public _http: HttpClient,
   ) { }
 
-  // ADDRESS FROM CLIENT
+  
+  // ------------- ADDRESS FRONT CLIENTE GUEST ------------
+  listAddressGuest() {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE+"address_guest/list";
+    return this._http.get(URL).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
+  }
+
+  updateAddressGuest(data:any) {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE+"address_guest/update";
+    return this._http.put(URL, data).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    );
+ }
+  // ------------- END ADDRESS FRONT CLIENTE GUEST ------------
+
+
+  // ------------- ADDRESS FRONT CLIENTE AUTENTICATED ------------
   
   listAddressClient(user_id:any) {
-    // Inicia el loading
     this.loadingSubject.next(true);
+
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"address_client/list?user_id="+user_id;
-    //return this._http.get(URL, {headers: headers});
-    
-    // Realizamos la petición HTTP
+   
     return this._http.get(URL, { headers: headers }).pipe(
-      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+      finalize(() => this.loadingSubject.next(false)) 
     );
   }
 
@@ -81,7 +99,10 @@ export class EcommerceAuthService {
       finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
     );
   }
-  // END SERVICE
+  // ------------- END ADDRESS FRONT CLIENTE AUTENTICATED ------------
+
+
+  // ------------- SALE FRONT CLIENTE ------------
 
   registerSale(data:any) {
     // Inicia el loading
@@ -94,7 +115,11 @@ export class EcommerceAuthService {
     );
   }
 
-  //
+  // ------------- END SALE FRONT CLIENTE ------------
+
+  
+
+  // ------------- PROFILE FRONT CLIENTE ------------
   showProfileClient(data:any) {
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
@@ -123,6 +148,8 @@ export class EcommerceAuthService {
     let URL = URL_SERVICE+"review/update";
     return this._http.put(URL, data, {headers: headers});
   }
+
+  // ------------- END PROFILE FRONT CLIENTE ------------
 
   detail_user(data:any) {
     // Inicia el loading

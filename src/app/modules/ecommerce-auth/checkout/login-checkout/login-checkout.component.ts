@@ -42,7 +42,7 @@ export class LoginCheckoutComponent implements OnInit {
   sale: any;
   saleDetails: any =[];
   isSaleSuccess = false;
-  CURRENT_USER_AUTHENTICATED:any=null;
+
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
@@ -58,6 +58,9 @@ export class LoginCheckoutComponent implements OnInit {
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
   status:boolean=false;
+
+  CURRENT_USER_AUTHENTICATED:any=null;
+  CURRENT_USER_GUEST:any=null;
 
   private subscriptions: Subscription = new Subscription();
   @Output() activate = new EventEmitter<boolean>();
@@ -94,9 +97,8 @@ export class LoginCheckoutComponent implements OnInit {
       this.loading = isLoading;
     });
 
+    //this.checkIfAddressClientExists();
     this.verifyAuthenticatedUser();
-
-    this.checkIfAddressClientExists();
   
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
@@ -110,26 +112,68 @@ export class LoginCheckoutComponent implements OnInit {
     }, 50);
   }
 
+  enterAsGuest() {
+    //this._authEcommerce._authService.setGuestUser({ guest: true });
+      let guestData = {
+        _id:0,
+        user_guest: "Guest",
+        guest: true,
+      }
+      
+      sessionStorage.setItem("user_guest", JSON.stringify(guestData));
+      this._authEcommerce._authService.userGuestSubject.next(guestData);
+
+      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
+    
+  }
+
+  // private verifyAuthenticatedUser(): void {
+  //   this._authEcommerce._authService.user.subscribe(user => {
+  //     if ( user ) {
+  //       this.CURRENT_USER_AUTHENTICATED = user;
+  //     } else {
+  //       this.CURRENT_USER_AUTHENTICATED = null;
+  //       this.isLastStepActive_1 = true;
+  //     }
+  //   });
+  // }
+
   private verifyAuthenticatedUser(): void {
     this._authEcommerce._authService.user.subscribe(user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;
+        this.CURRENT_USER_GUEST = null; // Si hay usuario autenticado, se ignora el invitado
+        console.log("Compra como usuario registrado", this.CURRENT_USER_AUTHENTICATED);
       } else {
-        this.CURRENT_USER_AUTHENTICATED = null;
-        this.isLastStepActive_1 = true;
+        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
+          if (guestUser?.guest) {
+            this.CURRENT_USER_GUEST = guestUser;
+            console.log("Compra como invitado", this.CURRENT_USER_GUEST);
+          } else {
+            this.CURRENT_USER_GUEST = null;
+          }
+        });
       }
     });
   }
 
   checkIfAddressClientExists() {
-    this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-      (resp: any) => {
-        this.listAddressClients = resp.address_client;
-        if (this.listAddressClients.length === 0) {
-          sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-          this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
-        }
-    });
+    this.verifyAuthenticatedUser();
+
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      // Si el usuario está autenticado, buscar en address_client
+      this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
+        (resp: any) => {
+          this.listAddressClients = resp.address_client;
+          if (this.listAddressClients.length === 0) {
+            sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
+            this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
+          }
+      });
+    } else if (this.CURRENT_USER_GUEST) {
+      // Si es un usuario invitado, buscar en address_guest
+      console.log("Si es un usuario invitado, buscar en address_guest", this.CURRENT_USER_GUEST);
+    }
   }
 
 

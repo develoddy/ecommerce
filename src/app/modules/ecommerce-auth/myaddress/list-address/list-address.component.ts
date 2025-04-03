@@ -43,7 +43,7 @@ export class ListAddressComponent implements OnInit  {
 
   ngOnInit(): void {
     this.SPINNER();
-    this.verifyAuthenticatedUser();
+    //this.verifyAuthenticatedUser();
     this.showProfileClient();
   }
 

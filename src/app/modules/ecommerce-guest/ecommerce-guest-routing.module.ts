@@ -25,9 +25,9 @@ const routes: Routes = [
         component: FilterProductsComponent,
       },
       {
-      path: "cart",
-      component: ListCartsComponent,
-     },
+        path: "cart",
+        component: ListCartsComponent,
+      },
     ]
   }
 ];

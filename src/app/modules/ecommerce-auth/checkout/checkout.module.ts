@@ -11,6 +11,7 @@ import { LoginCheckoutComponent } from './login-checkout/login-checkout.componen
 import { ResumenCheckoutComponent } from './resumen-checkout/resumen-checkout.component';
 import { PaymentCheckoutComponent } from './payment-checkout/payment-checkout.component';
 import { SuccessfullCheckoutComponent } from './successfull-checkout/successfull-checkout.component';
+import { DeliveryComponent } from './delivery/delivery.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { SuccessfullCheckoutComponent } from './successfull-checkout/successfull
     ResumenCheckoutComponent,
     PaymentCheckoutComponent,
     SuccessfullCheckoutComponent,
+    DeliveryComponent,
   ],
   imports: [
     CommonModule,

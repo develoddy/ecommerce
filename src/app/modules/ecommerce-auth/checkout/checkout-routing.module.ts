@@ -6,6 +6,7 @@ import { ResumenCheckoutComponent } from './resumen-checkout/resumen-checkout.co
 import { LoginCheckoutComponent } from './login-checkout/login-checkout.component';
 import { PaymentCheckoutComponent } from './payment-checkout/payment-checkout.component';
 import { SuccessfullCheckoutComponent } from './successfull-checkout/successfull-checkout.component';
+import { DeliveryComponent } from './delivery/delivery.component';
 
 
 const routes: Routes = [{
@@ -13,9 +14,10 @@ const routes: Routes = [{
   component: CheckoutComponent,
   children: [
     {path: "login", component: LoginCheckoutComponent},
-    {path: "resumen", component: ResumenCheckoutComponent},
-    {path: "payment", component: PaymentCheckoutComponent},
-    {path: "successfull", component: SuccessfullCheckoutComponent},
+    {path: "delivery", component: DeliveryComponent},
+    {path: "resumen", component: ResumenCheckoutComponent, data: { step: 2 }},
+    {path: "payment", component: PaymentCheckoutComponent, data: { step: 3 }},
+    {path: "successfull", component: SuccessfullCheckoutComponent, data: { step: 4 }},
   ]
 }];
 

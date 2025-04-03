@@ -1,11 +1,12 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { AuthService } from '../../auth-profile/_services/auth.service';
-import { Subscription } from 'rxjs';
+import { filter, Subscription, take } from 'rxjs';
 import { CheckoutService } from '../_services/checkoutService';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -23,6 +24,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   euro = "€";
   listAddressClients:any = [];
+  listAddressGuest:any = [];
   // Address
   name: string = '';
   surname: string = '';
@@ -42,7 +44,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   sale: any;
   saleDetails: any =[];
   isSaleSuccess = false;
-  CURRENT_USER_AUTHENTICATED:any=null;
+  
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
@@ -61,11 +63,16 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   validMessage:boolean=false;
   status:boolean=false;
 
+  CURRENT_USER_AUTHENTICATED:any=null;
+  CURRENT_USER_GUEST:any=null;
+
   private subscriptions: Subscription = new Subscription();
 
   isPasswordVisible: boolean = false;
   locale: string = "";
   country: string = "";
+  currentStep: string = '';  // Paso actual de checkout
+  isCheckoutNavVisible: boolean = true; // Inicializa en true para mostrar el Nav step de manera predeterminada
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
@@ -76,14 +83,13 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     public routerActived: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
     private checkoutService: CheckoutService,
+    private localizationService: LocalizationService
   ) {
-    this.routerActived.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado
-      this.country = params.get('country') || 'es'; // Valor predeterminado
-    });
-
-    this.routerActived.params.subscribe((resp: any) => {
-      console.log("Route params: ", resp);
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
+    
+    this.routerActived.params.subscribe((data: any) => {
+      this.currentStep = data.step;
     });
   }
 
@@ -101,48 +107,121 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
     });
 
+    this.checkIfAddressClientExists();
     this.verifyAuthenticatedUser();
 
-    this.checkIfAddressClientExists();
+    //this.navigateToStep();
+    // this.subscriptions = this.checkoutService.navigatingToPayment$.subscribe(value => {
+    //   this.isNavigatingToPayment = value;
+    //   this.navigateToStep();
+    // });
 
-    this.navigateToStep();
-    this.subscriptions = this.checkoutService.navigatingToPayment$.subscribe(value => {
-      this.isNavigatingToPayment = value;
-      this.navigateToStep();
-    });
-
-    this.subscriptions = this.checkoutService.isSaleSuccess$.subscribe(value => {
-      this.isSaleSuccess = value;
-      this.navigateToStep();
-    });
+    // this.subscriptions = this.checkoutService.isSaleSuccess$.subscribe(value => {
+    //   this.isSaleSuccess = value;
+    //   this.navigateToStep();
+    // });
 
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
       
     }, 50);
+
+    // Detectar en qué paso está el usuario (componente hijo activo)
+    this._router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.updateCurrentStep();
+    });
+
+    this.updateCurrentStep(); // Llama al método al cargar el componente
   }
 
-  private verifyAuthenticatedUser(): void {
-    this._authEcommerce._authService.user.subscribe(user => {
-      if ( user ) {
-        this.CURRENT_USER_AUTHENTICATED = user;
+  private updateCurrentStep(): void {
+    const currentRoute = this.getActiveRoute(this.routerActived);
+    if (currentRoute) {
+      this.currentStep = currentRoute.snapshot.routeConfig?.path || '';
+      console.log('Componente hijo actual:', this.currentStep);
+
+      // Ocultar el Nav step si estamos en 'login' o 'delivery'
+      if (this.currentStep === 'login' || this.currentStep === 'delivery') {
+        this.isCheckoutNavVisible = false; // Ocultar el Nav step checkout
       } else {
-        this.CURRENT_USER_AUTHENTICATED = null;
-        this.isLastStepActive_1 = true;
+        this.isCheckoutNavVisible = true; // Mostrar el Nav step checkout
+      }
+    }
+  }
+  // private updateCurrentStep(): void {
+  //   // Obtenemos el paso actual desde la URL activa
+  //   const currentRoute = this.getActiveRoute(this.routerActived);
+  //   if (currentRoute) {
+  //     this.currentStep = currentRoute.snapshot.routeConfig?.path || '';
+  //     console.log('Componente hijo actual:', this.currentStep);
+  //   }
+  // }
+
+  private getActiveRoute(route: ActivatedRoute): ActivatedRoute {
+    // Recursivamente accede a la ruta hija más profunda
+    if (!route.firstChild) {
+      return route;
+    }
+    return this.getActiveRoute(route.firstChild);
+  }
+
+  verifyAuthenticatedUser(): void {
+    // OBTENER LA URL ACTUAL PARA VERIFICAR EN QUE PASO ESTÁ EL USUARIO
+    const currentPath = this.routerActived.snapshot.url.map(segment => segment.path);
+    console.log("DEBBUG DECHKOUT.COMPONENT : VERISY AUTENTICATED UER - EL USUARIO ESTÁ EN EL PASO ---> ", currentPath);
+    
+    this._authEcommerce._authService.user.pipe(take(1)).subscribe(user => {
+      if (user) {
+        this.CURRENT_USER_AUTHENTICATED = user;
+        this.CURRENT_USER_GUEST = null;
+        // SI ESTÁ EN LOGIN Y YA ESTÁ AUTENTICADO, REDIRIGIR A RESUMEN
+        this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+      } else {
+        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
+          if (guestUser?.guest) {
+            this.CURRENT_USER_GUEST = guestUser;
+            this.handleGuestCheckout();
+          } else {
+            this.showLogin();
+          }
+        });
       }
     });
   }
 
   checkIfAddressClientExists() {
+    const currentUrl = this._router.url;
     if (this.CURRENT_USER_AUTHENTICATED) {
       this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
         (resp: any) => {
           this.listAddressClients = resp.address_client;
-          //this.isStepActive.isLastStepActive_2 = true;
           if (this.listAddressClients.length === 0) {
-            sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-            this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
+            // GUARDA LA URL ACTUAL EN SESSION STORARE
+            sessionStorage.setItem('returnUrl', this._router.url); 
+            // SOLO REDIRIGE A ADD SI NO ESTÁ EN RESUMEN
+            if (!currentUrl.includes('resumen')) {
+              this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
+            }
+          }
+      });
+    }
+  }
+
+  checkIfAddressGuestExists() {
+    const currentUrl = this._router.url;
+    if (this.CURRENT_USER_GUEST) {
+      this._authEcommerce.listAddressGuest().subscribe(
+        (resp: any) => {
+          this.listAddressGuest = resp.addresses;
+          if (this.listAddressGuest.length === 0) {
+            // GUARDA LA URL ACTUAL EN SESSION STORAGE
+            sessionStorage.setItem('returnUrl', this._router.url); 
+            if (!currentUrl.includes('resumen')) {
+              this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']);
+            }
           }
       });
     }
@@ -207,7 +286,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     this.address_client_selected ? this.updateAddress(): this.registerAddress();
   }
 
-  private registerAddress() {
+  registerAddress() {
     if ( 
       !this.name      || 
       !this.surname   || 
@@ -262,7 +341,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private updateAddress() {
+  updateAddress() {
     if (!this.name || !this.surname || !this.pais || !this.address || !this.zipcode || !this.poblacion || !this.email || !this.phone) {
       this.status = false;
       this.validMessage = true;
@@ -307,7 +386,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private hideMessageAfterDelay() {
+  hideMessageAfterDelay() {
     setTimeout(() => {
       this.validMessage = false;
     }, 6000);
@@ -369,7 +448,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add'],{ queryParams: { email } });
   }
 
-  public login() {
+  login() {
     if (!this.email_identify) {
       alertDanger("Es necesario ingresar el email");
     }
@@ -393,24 +472,36 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       });
     this.subscriptions.add(subscriptionLogin);
   }
+  showLogin(): void {
+    this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'login']); // Redirige al componente de login
+  }
+     
+  // proceedToPurchaseSteps() {
+  //   // Si el usuario está autenticado, ir al paso del resumen (por ejemplo, el paso final del checkout)
+  //   if (this.currentStep === 'resumen') {
+  //     this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' }});
+  //   }
+  // }
 
-  private navigateToStep(): void {
-    if (!this.CURRENT_USER_AUTHENTICATED) {     
-       this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'login']); // Redirige al componente de login
-     } else if (!this.isSaleSuccess) {
-       if (this.isNavigatingToPayment) {
-         this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'payment']); // Redirige al componente de pago
-       } else {
-           this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']); // Queda en resumen
-       }
-     } else {
-       this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'successfull']); // Redirige al componente de confirmación
-     }
+  handleGuestCheckout() {
+    // En resumen, cada vez que haya un cambio en los datos del carrito, este código redirige al usuario a una página de resumen de la compra, pasando ciertos parámetros para controlar el flujo de la aplicación.
+    this._cartService.currenteDataCart$.subscribe(() => {
+        this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' }});
+    });
   }
 
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     }
+
+    let data = {
+        _id: 0,
+        user_guest: "Guest",
+        guest: false, // Cambiar a false al salir
+    };
+
+    sessionStorage.setItem("user_guest", JSON.stringify(data));
+    this._authEcommerce._authService.userGuestSubject.next(data);
   }
 }

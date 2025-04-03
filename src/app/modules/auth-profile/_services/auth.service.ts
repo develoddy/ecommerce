@@ -18,10 +18,10 @@ export class AuthService {
   public accessToken$ = this.accessTokenSubject.asObservable();
   token: any = null;
 
-  private userSubject = new BehaviorSubject<any>(this.getStoredUser());
-  user = this.userSubject.asObservable(); //private userSubject = new BehaviorSubject<any>(null);
+  public userSubject = new BehaviorSubject<any>(this.getAuthenticatedUser());
+  user = this.userSubject.asObservable();
 
-  private userGuestSubject = new BehaviorSubject<any>(null);
+  public userGuestSubject = new BehaviorSubject<any>(this.getGuestUser());
   userGuest = this.userGuestSubject.asObservable();
   
 
@@ -34,15 +34,30 @@ export class AuthService {
     //const storedUser = sessionStorage.getItem("user"); //const storedUser = localStorage.getItem("user"); 
     //this.userSubject = new BehaviorSubject<any>(storedUser ? JSON.parse(storedUser) : null);
     //this.user = this.userSubject.asObservable();
-    this.userGuest = this.userGuestSubject.asObservable();
+    
+    //this.userGuest = this.userGuestSubject.asObservable();
 
     this.getLocalStorage();
   }
 
-  private getStoredUser(): any {
-    const storedUser = sessionStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
+  private getAuthenticatedUser(): any {
+    const authenticatedUser = sessionStorage.getItem("user");
+    return authenticatedUser ? JSON.parse(authenticatedUser) : null;
   }
+
+  private getGuestUser(): any {
+    const guestUser = sessionStorage.getItem("user_guest");
+    return guestUser ? JSON.parse(guestUser) : null;
+  }
+
+  isGuestUser(): boolean {
+    return this.getGuestUser() !== null;
+  }
+  
+  isAuthenticatedUser(): boolean {
+    return this.getAuthenticatedUser() !== null;
+  }
+  
 
   private getLocalStorage() {
     const token = sessionStorage.getItem('access_token');
@@ -274,19 +289,27 @@ export class AuthService {
   }
 
   private addGuestLocalStorage() {
+    console.log("Siempre entra por aut.Service addGuestrLocalStorage...");
+    
     const storedUser = sessionStorage.getItem("user");
-    if(!storedUser) {
+    const storedUserGuest = sessionStorage.getItem("user_guest");
+    if(!storedUserGuest) {
       let data = {
         _id:0,
         user_guest: "Guest",
-        guest: true,
+        guest: false,
       }
       sessionStorage.setItem("user_guest", JSON.stringify(data));
+      this.userGuestSubject.next(data);
   
-      const storedUserGuest = sessionStorage.getItem("user_guest");
-      if (storedUserGuest) {
-        this.userGuestSubject.next(JSON.parse(storedUserGuest));
-      }
+      // const storedUserGuest = sessionStorage.getItem("user_guest");
+      // if (storedUserGuest) {
+      //   this.userGuestSubject.next(JSON.parse(storedUserGuest));
+      // }
+    } else {
+        // Si ya existe, lo mantiene como está
+        const parsedUserGuest = JSON.parse(storedUserGuest);
+        this.userGuestSubject.next(parsedUserGuest);
     }
   }
 
@@ -351,5 +374,7 @@ export class AuthService {
     sessionStorage.removeItem("user_guest");
     this.userGuestSubject.next(null);
   }
+
+  
   
 }

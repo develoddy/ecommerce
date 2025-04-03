@@ -23,6 +23,7 @@ export class ResumenCheckoutComponent implements OnInit {
   @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   euro = "€";
   listAddressClients:any = [];
+  listAddressGuest:any = [];
   // Address
   name: string = '';
   surname: string = '';
@@ -43,7 +44,6 @@ export class ResumenCheckoutComponent implements OnInit {
   sale: any;
   saleDetails: any =[];
   isSaleSuccess = false;
-  CURRENT_USER_AUTHENTICATED:any=null;
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
@@ -55,6 +55,9 @@ export class ResumenCheckoutComponent implements OnInit {
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
   status:boolean=false;
+
+  CURRENT_USER_AUTHENTICATED:any=null;
+  CURRENT_USER_GUEST:any=null;
 
   private subscriptions: Subscription = new Subscription();
   @Output() activate = new EventEmitter<boolean>();
@@ -76,18 +79,13 @@ export class ResumenCheckoutComponent implements OnInit {
       this.locale = params.get('locale') || 'es';  // Valor predeterminado
       this.country = params.get('country') || 'es'; // Valor predeterminado
     });
-
-     
   }
 
-  ngAfterViewInit() {
-   
-  }
+  ngAfterViewInit() {}
 
   ngOnInit(): void {
-
     // Emitir un evento con el valor que desees
-    this.activate.emit(true);
+    //this.activate.emit(true);
 
     this.subscriptionService.setShowSubscriptionSection(false);
     this.subscriptions = this._authEcommerce.loading$.subscribe(isLoading => {
@@ -96,6 +94,8 @@ export class ResumenCheckoutComponent implements OnInit {
 
     this.verifyAuthenticatedUser();
     this.checkIfAddressClientExists();
+    //this.storeAllCarts();
+    
 
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
@@ -125,7 +125,27 @@ export class ResumenCheckoutComponent implements OnInit {
     };
   }
 
-  listAllCarts() {
+  private listCartsLocalStorage(): void {
+    console.log(this.CURRENT_USER_GUEST.user_guest);
+    
+    this._cartService.listCartsCache(this.CURRENT_USER_GUEST.user_guest).subscribe((resp: any) => {
+      resp.carts.forEach((cart: any) => {
+        console.log(cart);
+        this._cartService.changeCart(cart);
+      });
+    });
+  }
+
+  storeAllCarts() {
+
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      this.listCartsDatabase();
+    } else if (this.CURRENT_USER_GUEST) {
+      this.listCartsLocalStorage();
+    }
+  }
+
+  private listCartsDatabase(): void {
     this._cartService.resetCart();
     if ( this._cartService._authService.user ) {
       this._cartService.listCarts(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
@@ -140,25 +160,80 @@ export class ResumenCheckoutComponent implements OnInit {
   private verifyAuthenticatedUser(): void {
     this._authEcommerce._authService.user.subscribe(user => {
       if ( user ) {
-        console.log('---> Token enviado:', user);
         this.CURRENT_USER_AUTHENTICATED = user;
+        this.CURRENT_USER_GUEST = null; // Si hay usuario autenticado, se ignora el invitado
+        //console.log("Compra como usuario registrado", this.CURRENT_USER_AUTHENTICATED);
       } else {
-        this.CURRENT_USER_AUTHENTICATED = null;
-        //this.isLastStepActive_1 = true;
+        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
+          if (guestUser?.guest) {
+            this.CURRENT_USER_GUEST = guestUser;
+            //console.log("Compra como invitado", this.CURRENT_USER_GUEST);
+          } else {
+            this.CURRENT_USER_GUEST = null;
+          }
+        });
       }
     });
   }
 
+
   checkIfAddressClientExists() {
-    this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-      (resp: any) => {
-        this.listAddressClients = resp.address_client;
-        if (this.listAddressClients.length === 0) {
-          sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-          this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
+    
+
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      // Si el usuario está autenticado, buscar en address_client
+      this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
+        (resp: any) => {
+          this.listAddressClients = resp.address_client;
+          console.log("[186]: SE OBTIENE LA LISTA DE DIRECCIONES DEL USAURIO AUTENTICADO: ", this.listAddressClients);
+          
+          if (this.listAddressClients.length === 0) {
+            sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
+            this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
+          }
+      });
+    } else if (this.CURRENT_USER_GUEST) {
+      // Si es un usuario invitado, buscar en address_guest
+      //console.log("Si es un usuario invitado, buscar en address_guest", this.CURRENT_USER_GUEST);
+      this._authEcommerce.listAddressGuest().subscribe(
+        (resp: any) => {
+          this.listAddressGuest = resp.addresses; // La respuesta contiene 'addresses' según el backend
+          console.log("[186]: SE OBTIENE LA LISTA DE DIRECCIONES DEL USAURIO INVITADO: ", this.listAddressGuest);
+          //console.log("Si es un usuario invitado, se Lista los addres de guests", this.listAddressClients);
+          //this.redirectIfNoAddress();
+         
         }
-    });
+      );
+    }
   }
+
+  // private redirectIfNoAddress() {
+  //   if (this.listAddressClients.length === 0) {
+  //     sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual
+  //     this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
+  //   }
+  // }
+
+  // private verifyAuthenticatedUser(): void {
+  //   this._authEcommerce._authService.user.subscribe(user => {
+  //     if ( user ) {
+  //       this.CURRENT_USER_AUTHENTICATED = user;
+  //     } else {
+  //       this.CURRENT_USER_AUTHENTICATED = null;
+  //     }
+  //   });
+  // }
+
+  // checkIfAddressClientExists() {
+  //   this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
+  //     (resp: any) => {
+  //       this.listAddressClients = resp.address_client;
+  //       if (this.listAddressClients.length === 0) {
+  //         sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
+  //         this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
+  //       }
+  //   });
+  // }
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
@@ -206,15 +281,13 @@ export class ResumenCheckoutComponent implements OnInit {
           alertDanger(resp.message_text);
         } else {
           alertSuccess(resp.message_text);
-          this.listAllCarts();
+          this.storeAllCarts();//this.listAllCarts();
         }
     });
   }
 
-  
-
-  store() {
-    this.address_client_selected ? this.updateAddress(): this.registerAddress();
+  storeAddress() {
+    this.address_client_selected ? this.storeUpdateAddress(): this.registerAddress();
   }
 
   private registerAddress() {
@@ -272,7 +345,7 @@ export class ResumenCheckoutComponent implements OnInit {
     });
   }
 
-  private updateAddress() {
+  private storeUpdateAddress() {
     if (!this.name || !this.surname || !this.pais || !this.address || !this.zipcode || !this.poblacion || !this.email || !this.phone) {
       this.status = false;
       this.validMessage = true;
@@ -283,7 +356,7 @@ export class ResumenCheckoutComponent implements OnInit {
 
     let data = {
       _id       : this.address_client_selected.id,
-      user      : this.CURRENT_USER_AUTHENTICATED._id,
+      user      : this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : this.CURRENT_USER_GUEST,
       name      : this.name,
       surname   : this.surname,
       pais      : this.pais,
@@ -294,7 +367,60 @@ export class ResumenCheckoutComponent implements OnInit {
       phone     : this.phone,
     };
 
+    console.log("369-> data", data);
+  
+    // VERIFICAR SI SE ESTÁ MODIFICANDO EN USUARIO REGISTRADO O INVITADO
+    this.CURRENT_USER_AUTHENTICATED ? this.updateAddressCliente(data) : this.updateAddressGuest(data);
+
+    // this._authEcommerce.updateAddressClient( data ).subscribe((resp:any) => {
+    //   if (resp.status == 200) {
+    //     let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
+    //     this.listAddressClients[INDEX] = resp.address_client;
+    //     this.status = true;
+    //     this.validMessage = true;
+    //     this.errorOrSuccessMessage = resp.message;
+    //     this.hideMessageAfterDelay();
+    //     alertSuccess(resp.message);
+    //     this.resetForm();
+    //     $('#addEditModal').modal('hide');
+    //   } else {
+    //     this.status = false;
+    //     this.errorOrSuccessMessage = "Error al actualizar la dirección.";
+    //     this.hideMessageAfterDelay();
+    //   }
+    // }, error => {
+    //   this.status = false;
+    //   this.errorOrSuccessMessage = "Error al actualizar la dirección.";
+    //   this.hideMessageAfterDelay();
+    // });
+  }
+
+  private updateAddressCliente(data:any) {
     this._authEcommerce.updateAddressClient( data ).subscribe((resp:any) => {
+      if (resp.status == 200) {
+        let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
+        this.listAddressClients[INDEX] = resp.address_client;
+        this.status = true;
+        this.validMessage = true;
+        this.errorOrSuccessMessage = resp.message;
+        this.hideMessageAfterDelay();
+        alertSuccess(resp.message);
+        this.resetForm();
+        $('#addEditModal').modal('hide');
+      } else {
+        this.status = false;
+        this.errorOrSuccessMessage = "Error al actualizar la dirección.";
+        this.hideMessageAfterDelay();
+      }
+    }, error => {
+      this.status = false;
+      this.errorOrSuccessMessage = "Error al actualizar la dirección.";
+      this.hideMessageAfterDelay();
+    });
+  }
+
+  private updateAddressGuest(data:any) {
+    this._authEcommerce.updateAddressGuest( data ).subscribe((resp:any) => {
       if (resp.status == 200) {
         let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
         this.listAddressClients[INDEX] = resp.address_client;
@@ -410,5 +536,4 @@ export class ResumenCheckoutComponent implements OnInit {
       this.subscriptions.unsubscribe();
     }
   }
-
 }

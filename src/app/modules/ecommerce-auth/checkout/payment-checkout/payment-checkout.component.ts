@@ -209,6 +209,22 @@ export class PaymentCheckoutComponent implements OnInit {
     }, 50);
   }
 
+  getFormattedPrice(price: any) {
+    if (typeof price === 'string') {
+      price = parseFloat(price); // Convertir a número
+    }
+  
+    if (isNaN(price)) {
+      return { integerPart: "0", decimalPart: "00" }; // Manejo de error si el valor no es válido
+    }
+    
+    const formatted = price.toFixed(2).split('.'); // Asegura siempre dos decimales
+    return {
+      integerPart: formatted[0], // Parte entera
+      decimalPart: formatted[1]  // Parte decimal
+    };
+  }
+  
   private verifyAuthenticatedUser(): void {
     this._authEcommerce._authService.user.subscribe(user => {
       if ( user ) {
