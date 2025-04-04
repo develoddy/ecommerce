@@ -107,19 +107,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
     });
 
-    this.checkIfAddressClientExists();
+    
     this.verifyAuthenticatedUser();
-
-    //this.navigateToStep();
-    // this.subscriptions = this.checkoutService.navigatingToPayment$.subscribe(value => {
-    //   this.isNavigatingToPayment = value;
-    //   this.navigateToStep();
-    // });
-
-    // this.subscriptions = this.checkoutService.isSaleSuccess$.subscribe(value => {
-    //   this.isSaleSuccess = value;
-    //   this.navigateToStep();
-    // });
 
     setTimeout(() => {
       HOMEINITTEMPLATE($);
@@ -137,6 +126,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     this.updateCurrentStep(); // Llama al método al cargar el componente
   }
 
+  /**
+   * Detecta en qué componente hijo está el usuario al analizar la ruta activa y actualizar la propiedad currentStep.
+   */
   private updateCurrentStep(): void {
     const currentRoute = this.getActiveRoute(this.routerActived);
     if (currentRoute) {
@@ -144,21 +136,14 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       console.log('Componente hijo actual:', this.currentStep);
 
       // Ocultar el Nav step si estamos en 'login' o 'delivery'
-      if (this.currentStep === 'login' || this.currentStep === 'delivery') {
+      if (this.currentStep === 'delivery') {
         this.isCheckoutNavVisible = false; // Ocultar el Nav step checkout
       } else {
         this.isCheckoutNavVisible = true; // Mostrar el Nav step checkout
       }
     }
   }
-  // private updateCurrentStep(): void {
-  //   // Obtenemos el paso actual desde la URL activa
-  //   const currentRoute = this.getActiveRoute(this.routerActived);
-  //   if (currentRoute) {
-  //     this.currentStep = currentRoute.snapshot.routeConfig?.path || '';
-  //     console.log('Componente hijo actual:', this.currentStep);
-  //   }
-  // }
+  
 
   private getActiveRoute(route: ActivatedRoute): ActivatedRoute {
     // Recursivamente accede a la ruta hija más profunda
@@ -170,20 +155,23 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
   verifyAuthenticatedUser(): void {
     // OBTENER LA URL ACTUAL PARA VERIFICAR EN QUE PASO ESTÁ EL USUARIO
-    const currentPath = this.routerActived.snapshot.url.map(segment => segment.path);
-    console.log("DEBBUG DECHKOUT.COMPONENT : VERISY AUTENTICATED UER - EL USUARIO ESTÁ EN EL PASO ---> ", currentPath);
-    
+    //const currentPath = this.routerActived.snapshot.url.map(segment => segment.path);
+   
     this._authEcommerce._authService.user.pipe(take(1)).subscribe(user => {
       if (user) {
         this.CURRENT_USER_AUTHENTICATED = user;
         this.CURRENT_USER_GUEST = null;
+        console.log("Checkout ejecuta, se ha entrado como User ---> ", this.CURRENT_USER_AUTHENTICATED);
         // SI ESTÁ EN LOGIN Y YA ESTÁ AUTENTICADO, REDIRIGIR A RESUMEN
-        this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+        //this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+        this.checkIfAddressClientExists();
       } else {
-        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
+        this._authEcommerce._authService.userGuest.pipe(take(1)).subscribe(guestUser => { // this._authEcommerce._authService.userGuest.subscribe(guestUser => {
           if (guestUser?.guest) {
             this.CURRENT_USER_GUEST = guestUser;
-            this.handleGuestCheckout();
+            console.log("Checkout ejecuta, se ha entrado como Guest ---> ", this.CURRENT_USER_GUEST);
+           // this.handleGuestCheckout();
+           this.checkIfAddressGuestExists();
           } else {
             this.showLogin();
           }
@@ -205,6 +193,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             if (!currentUrl.includes('resumen')) {
               this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
             }
+          } else {
+            console.log("Checkout componente ejecuta en la lunea 197, redirigir a resumen");
+            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
           }
       });
     }
@@ -217,11 +208,18 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         (resp: any) => {
           this.listAddressGuest = resp.addresses;
           if (this.listAddressGuest.length === 0) {
-            // GUARDA LA URL ACTUAL EN SESSION STORAGE
-            sessionStorage.setItem('returnUrl', this._router.url); 
-            if (!currentUrl.includes('resumen')) {
-              this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']);
-            }
+            console.log("Checkout componente ejecuta en la lunea 211, redirigir a delivery");
+            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'delivery']);
+            
+            // // GUARDA LA URL ACTUAL EN SESSION STORAGE
+            // sessionStorage.setItem('returnUrl', this._router.url); 
+            // // SOLO REDIRIGE A ADD SI NO ESTÁ EN RESUMEN
+            // if (!currentUrl.includes('resumen')) {
+            //   this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'delivery']);
+            // }
+          } else {
+            console.log("Checkout componente ejecuta en la lunea 221, redirigir a resumen");
+            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
           }
       });
     }
@@ -476,12 +474,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'login']); // Redirige al componente de login
   }
      
-  // proceedToPurchaseSteps() {
-  //   // Si el usuario está autenticado, ir al paso del resumen (por ejemplo, el paso final del checkout)
-  //   if (this.currentStep === 'resumen') {
-  //     this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' }});
-  //   }
-  // }
 
   handleGuestCheckout() {
     // En resumen, cada vez que haya un cambio en los datos del carrito, este código redirige al usuario a una página de resumen de la compra, pasando ciertos parámetros para controlar el flujo de la aplicación.
@@ -495,13 +487,34 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       this.subscriptions.unsubscribe();
     }
 
-    let data = {
-        _id: 0,
-        user_guest: "Guest",
-        guest: false, // Cambiar a false al salir
-    };
+    let existingGuestData = sessionStorage.getItem("user_guest");
+    console.log(existingGuestData);
+    
+    if (existingGuestData) {
+      let parsedData = JSON.parse(existingGuestData);
+      console.log(parsedData);
+      parsedData.guest = false;
 
-    sessionStorage.setItem("user_guest", JSON.stringify(data));
-    this._authEcommerce._authService.userGuestSubject.next(data);
+      sessionStorage.setItem("user_guest", JSON.stringify(parsedData));
+      this._authEcommerce._authService.userGuestSubject.next(parsedData);
+    }
+
+    // let existingGuestData = sessionStorage.getItem("user_guest");
+    // if (existingGuestData) {
+    //   let parsedData = JSON.parse(existingGuestData);
+    //   parsedData.guest = true;
+
+    //   sessionStorage.setItem("user_guest", JSON.stringify(parsedData));
+    //   this._authEcommerce._authService.userGuestSubject.next(parsedData); 
+    // }
+
+    // let data = {
+    //     _id: 0,
+    //     user_guest: "Guest",
+    //     guest: false, // Cambiar a false al salir
+    // };
+
+    // sessionStorage.setItem("user_guest", JSON.stringify(data));
+    // this._authEcommerce._authService.userGuestSubject.next(data);
   }
 }

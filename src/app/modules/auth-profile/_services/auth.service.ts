@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
-import { catchError, map, of, BehaviorSubject, finalize, window, Observable, tap } from 'rxjs';
+import { catchError, map, of, BehaviorSubject, finalize, window, Observable, tap, filter, throwError, switchMap } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
   private loadingSubject = new BehaviorSubject<boolean>(false); // Para manejar el estado de carga
@@ -17,26 +17,17 @@ export class AuthService {
   public accessTokenSubject = new BehaviorSubject<string | null>(this.getAccessToken());
   public accessToken$ = this.accessTokenSubject.asObservable();
   token: any = null;
-
   public userSubject = new BehaviorSubject<any>(this.getAuthenticatedUser());
   user = this.userSubject.asObservable();
-
   public userGuestSubject = new BehaviorSubject<any>(this.getGuestUser());
   userGuest = this.userGuestSubject.asObservable();
   
-
   constructor(
     private _http: HttpClient,
     private _router: Router,
     private localizationService: LocalizationService
   ) {
     this.addGuestLocalStorage();
-    //const storedUser = sessionStorage.getItem("user"); //const storedUser = localStorage.getItem("user"); 
-    //this.userSubject = new BehaviorSubject<any>(storedUser ? JSON.parse(storedUser) : null);
-    //this.user = this.userSubject.asObservable();
-    
-    //this.userGuest = this.userGuestSubject.asObservable();
-
     this.getLocalStorage();
   }
 
@@ -57,7 +48,6 @@ export class AuthService {
   isAuthenticatedUser(): boolean {
     return this.getAuthenticatedUser() !== null;
   }
-  
 
   private getLocalStorage() {
     const token = sessionStorage.getItem('access_token');
@@ -75,7 +65,7 @@ export class AuthService {
     }
   }
 
-  // Función para obtener locale y country de LocalizationService
+  // FUNCION PARA OBTENER EL COUNTRY Y LOCALE DE LOCALIZATIONSERVICE
   getLocaleAndCountry(): { locale: string, country: string } {
     return {
       locale: this.localizationService.locale,
@@ -88,12 +78,11 @@ export class AuthService {
     this.accessTokenSubject.next(accessToken); // Emitir el nuevo token
   }
 
-  // Método para obtener el token
+  // METODO PARA OBTENER EL TOKEN
   public getAccessToken(): string | null {
     return sessionStorage.getItem('access_token');
   }
 
-  
   getRefreshToken(): string | null {
     return sessionStorage.getItem('refresh_token');
   }
@@ -133,6 +122,116 @@ export class AuthService {
     );
   }
 
+  /* ------------------ ZONA DE GUESTS --------------- */
+  /* Generar un ID único para guardar en usuarios guests en session storage
+   * y posteriomente guardarlo en la base de datos en la tabla guest
+   */
+  addGuestLocalStorage() {
+    
+    const storedUser = sessionStorage.getItem("user");
+    const storedUserGuest = sessionStorage.getItem("user_guest");
+    console.log("Auth.service ejecuta el metodo > addGuestLocalStorage para saber storedUserGuest", storedUserGuest);
+    
+
+    if(!storedUserGuest) {
+      let data = {
+        _id:0,
+        user_guest: "Guest",
+        name: 'Anonymous',
+        guest: false,
+        session_id: this.generateSessionId(), // Usamos la función generateUniqueId() en lugar de uuidv4()
+      }
+      sessionStorage.setItem("user_guest", JSON.stringify(data));
+      this.userGuestSubject.next(data);
+
+
+      // Solo enviar al backend 'name' y 'session_id'
+      const guestData = {
+        name: data.name,
+        session_id: data.session_id
+      };
+      // Enviar datos al backend (por ejemplo, POST request)
+      this.sendGuestDataToBackend(guestData);
+   
+    } else {
+        // Si ya existe, lo mantiene como está
+        const parsedUserGuest = JSON.parse(storedUserGuest);
+        this.userGuestSubject.next(parsedUserGuest);
+    }
+  }
+
+
+
+  sendGuestDataToBackend(data:any) {
+
+    console.log("aut.service > sendGuestDataToBackend: ", data);
+
+    this.loadingSubject.next(true);
+
+    // Registrar datos de guest
+    let URL = URL_SERVICE + "guests/register";
+    // http://localhost:3500/api/guests/register
+
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    console.log("Llamando a la API en: ", URL);
+    
+     return this._http.post(URL, data, { headers }).subscribe({
+       //next: (resp) => console.log("---------> Respuesta del backend:", resp),
+       next: (resp: any) => {
+        console.log("---------> Respuesta del backend:", resp);
+  
+        if (resp?.status === 200 && resp?.data) {
+          const guestData = {
+            _id: resp.data.id || 0,
+            user_guest: "Guest",
+            name: resp.data.name || "Anonymous",
+            guest: false,
+            session_id: resp.data.session_id
+          };
+  
+          // ✅ Guardar en sessionStorage
+          sessionStorage.setItem("user_guest", JSON.stringify(guestData));
+  
+          // ✅ Notificar al observable
+          this.userGuestSubject.next(guestData);
+  
+          console.log("✔️ Guest guardado en storage:", guestData);
+        }
+      },
+
+      error: (err) => {
+        console.error("❌ Error al registrar el invitado:", err);
+      },
+      complete: () => {
+        console.log("Llamada completada");
+      }
+     });
+
+     /*return this._http.post( URL, data).pipe(
+       map(( resp: any ) => {
+         console.log("REGISTRANDO GUESTS: ", resp);
+       }),
+       catchError(( error: any ) => {
+         console.error(error);
+         return of(error);
+
+       }),
+       finalize(() => {
+          // FINALIZA EL LOADING CUANDO TERMINA LA LLAMADA
+         this.loadingSubject.next(false);
+
+       })
+     );*/
+  }
+
+  // FUNCION PARA GENERAR UN ID ÚNICO SIMILIAR A UUID
+  generateSessionId(): string {
+    const array = new Uint8Array(16);
+    crypto.getRandomValues(array);  // Esto llena el array con valores aleatorios
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+
   /* ------------------ Zona de Token --------------- */
   /*  ¿Qué pasa cuando el Access Token expira?
    *  Usuario inicia sesión → Se generan accessToken (6 min) y refreshToken (30 días).
@@ -143,7 +242,6 @@ export class AuthService {
    *
    *  📌 Importante: El refreshToken NO cambia cada 6 minutos. Solo se usa para obtener un nuevo accessToken.
   */
-
   verifyTokenExpiration(token: string) {
     try {
   
@@ -176,8 +274,6 @@ export class AuthService {
           this.refreshToken().subscribe({
             error: () => {
               // SI FALLA LA RENOVACION, REDIRIGIR AL LOGIN
-              //const { locale, country } = this.getLocaleAndCountry();
-              //this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
               const country = this.localizationService.country;
               const locale = this.localizationService.locale;
               this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
@@ -191,6 +287,7 @@ export class AuthService {
     }
   }
 
+  // OLD
   isTokenNearExpiration(token: string): boolean {
     try {
       // EXTRAER LA PARTE DEL PAYLOAD DEL TOKEN JWT
@@ -202,7 +299,7 @@ export class AuthService {
       const currentTimestamp = Math.floor(Date.now() / 1000); // OBTENER EL TIEMPO ACTUAL EN SEGUNDOS
   
       // DEFINIR EL UMBRAL DE "CERCA DE EXPIRAR" (EN SEGUNDOS, POR EJEMPLO, 5 MINUTOS)
-      const expirationThreshold = 2 * 60; // 2 MINUTOS ANTES DE LA EXPIRACIÓN
+      const expirationThreshold = 5 * 60; // 5 MINUTOS ANTES DE LA EXPIRACIÓN
   
       // VERIFICAR SI EL TOKEN ESTÁ CERCA DE EXPIRAR
       if (exp - currentTimestamp <= expirationThreshold) {
@@ -217,70 +314,79 @@ export class AuthService {
       return false;
     }
   }
+
+  private handleLogout(): void {
+    const country = this.localizationService.country;
+    const locale = this.localizationService.locale;
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('refresh_token');
+    this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
+  }
   
-  refreshToken(): Observable<any> {
+  //refreshToken(): Observable<any> {
+  refreshToken(): Observable<string> {
 
     const refreshToken = sessionStorage.getItem('refresh_token');
     const URL = URL_SERVICE + "users/refresh-token";
 
     if ( !refreshToken ) {
-      //const { locale, country } = this.getLocaleAndCountry();
-      const country = this.localizationService.country;
-      const locale = this.localizationService.locale;
-      this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
+      this.handleLogout();
+      return throwError(() => new Error('No refresh token found.'));
     }
     
     if ( !this.isRefreshing ) {
-
       this.isRefreshing = true;
-      
+      this.refreshTokenSubject.next(null); // LIMPIAR EL SUBJECT ANTES DE HACER LA LLAMADA
+
       return this._http.post<any>(URL, { refresh_token: refreshToken }).pipe(
         tap(( response ) => {
-
           // VERIFICAR SI EL BACKEND AHA RESPONDIDO CON UN REFRESH TOKEN VALIDO
-          if ( !response || !response.refreshToken ) {
-            //const { locale, country } = this.getLocaleAndCountry(); 
-            const country = this.localizationService.country;
-            const locale = this.localizationService.locale;
-            this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
-            sessionStorage.removeItem('access_token');
-            sessionStorage.removeItem('refresh_token');
+          if ( !response || !response.refreshToken || !response.accessToken) {
+            this.handleLogout();
+            throw new Error('Invalid refresh response');
             this.isRefreshing = false;
             return;
           }
 
           // DECODIFICAR EL PAYLOAD DEL NUEVO refreshToken PARA VERIFICAR SU EXPIRACION
-           const base64Url      = response.refreshToken.split('.')[1];
-           const base64         = base64Url.replace('-', '+').replace('_', '/');
-           const decodedPayload = JSON.parse(atob(base64));
+          const base64Url      = response.refreshToken.split('.')[1];
+          const base64         = base64Url.replace('-', '+').replace('_', '/');
+          const decodedPayload = JSON.parse(atob(base64));
           // console.log("📌 NUEVO PAYLOAD DEL REFRESH TOKEN:", decodedPayload);
           console.warn("📅 REFRESH TOKEN EXPIRA EN:", new Date(decodedPayload.exp * 1000).toLocaleString());
 
           // GUARDA EL NUEVO accessToken
-          sessionStorage.setItem("access_token", response.accessToken); 
-          this.accessTokenSubject.next(response.accessToken);
+          sessionStorage.setItem("access_token", response.accessToken);
+          sessionStorage.setItem('refresh_token', response.refreshToken);
+          this.accessTokenSubject.next(response.accessToken); // EMITIMOS NUEVO TOKEN A LOS QUE ESTÁN ESPERANDO
           this.isRefreshing = false;
 
         }),
+        //switchMap(() => this.refreshTokenSubject.pipe(filter(token => token !== null), take(1))), 
+        // DEVOLVEMOS EL TOKEN NUEVO
+        switchMap(() =>
+          this.refreshTokenSubject.pipe(
+            filter((token): token is string => token !== null), // 👈 forzamos tipo
+            take(1)
+          )
+        ),
         catchError(( error ) => {
-        
-          const country = this.localizationService.country;
-          const locale = this.localizationService.locale;
-
-          // const { locale, country } = this.getLocaleAndCountry();
-          this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
-          sessionStorage.removeItem('access_token');
-          sessionStorage.removeItem('refresh_token');
+          this.handleLogout();
           this.isRefreshing = false;
-          throw error; // PROPAGAR EL ERROR
+          return throwError(() => error); //throw error; // PROPAGAR EL ERROR
         })
       );
     } else {
-      return this.refreshTokenSubject.asObservable();
+      //return this.refreshTokenSubject.asObservable();
+      // YA SE ESTÁ REFRESCANDO, DEVOLVEMOS EL OBSERVABLE QUE ESPERA EL TOKEN
+      return this.refreshTokenSubject.pipe(
+        filter((token): token is string => token !== null), // 👈 aquí también
+        take(1)
+      );
     }
   }
 
-  private localStorageSave(USER_FRONTED: any) {
+  localStorageSave(USER_FRONTED: any) {
     sessionStorage.setItem("access_token", USER_FRONTED.accessToken);
     sessionStorage.setItem("refresh_token", USER_FRONTED.refreshToken);
     sessionStorage.setItem("user", JSON.stringify(USER_FRONTED.user));
@@ -288,29 +394,9 @@ export class AuthService {
     this.userSubject.next(USER_FRONTED.user);  
   }
 
-  private addGuestLocalStorage() {
-    console.log("Siempre entra por aut.Service addGuestrLocalStorage...");
-    
-    const storedUser = sessionStorage.getItem("user");
-    const storedUserGuest = sessionStorage.getItem("user_guest");
-    if(!storedUserGuest) {
-      let data = {
-        _id:0,
-        user_guest: "Guest",
-        guest: false,
-      }
-      sessionStorage.setItem("user_guest", JSON.stringify(data));
-      this.userGuestSubject.next(data);
-  
-      // const storedUserGuest = sessionStorage.getItem("user_guest");
-      // if (storedUserGuest) {
-      //   this.userGuestSubject.next(JSON.parse(storedUserGuest));
-      // }
-    } else {
-        // Si ya existe, lo mantiene como está
-        const parsedUserGuest = JSON.parse(storedUserGuest);
-        this.userGuestSubject.next(parsedUserGuest);
-    }
+  getSessionId(): string | null {
+    const guestUser = sessionStorage.getItem("user_guest");
+    return guestUser ? JSON.parse(guestUser).session_id : null;
   }
 
   requestPasswordReset(email: string) {
@@ -375,6 +461,8 @@ export class AuthService {
     this.userGuestSubject.next(null);
   }
 
-  
-  
 }
+function take(arg0: number): import("rxjs").OperatorFunction<string, any> {
+  throw new Error('Function not implemented.');
+}
+

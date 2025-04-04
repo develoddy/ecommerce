@@ -18,8 +18,27 @@ export class EcommerceAuthService {
     public _http: HttpClient,
   ) { }
 
+  // ---------- GUESTS -----------------
+  deleteGuestAndAddresses() {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE+"guests/removeAll/";
+    return this._http.delete(URL).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    );
+  }
+  // ------------- END GUESTS ------------
+
+
   
   // ------------- ADDRESS FRONT CLIENTE GUEST ------------
+  registerAddressGuest(data:any) {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE+"address_guest/register";
+    return this._http.post(URL, data).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    );
+  }
+
   listAddressGuest() {
     this.loadingSubject.next(true);
     let URL = URL_SERVICE+"address_guest/list";
@@ -34,7 +53,15 @@ export class EcommerceAuthService {
     return this._http.put(URL, data).pipe(
       finalize(() => this.loadingSubject.next(false))
     );
- }
+  }
+
+  deleteAddressGuest(address_guest_id:any) {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE+"address_guest/delete/"+address_guest_id;
+    return this._http.delete(URL).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    );
+  }
   // ------------- END ADDRESS FRONT CLIENTE GUEST ------------
 
 

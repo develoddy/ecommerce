@@ -11,6 +11,7 @@ declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function actionNetxCheckout([]):any;
 declare function alertDanger([]):any;
+declare function alertWarning([]):any;
 declare function alertSuccess([]):any;
 
 @Component({
@@ -178,8 +179,6 @@ export class ResumenCheckoutComponent implements OnInit {
 
 
   checkIfAddressClientExists() {
-    
-
     if (this.CURRENT_USER_AUTHENTICATED) {
       // Si el usuario está autenticado, buscar en address_client
       this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
@@ -345,6 +344,22 @@ export class ResumenCheckoutComponent implements OnInit {
     });
   }
 
+
+  /* --------------- EMPIEZA EL CICLO DE ACTUALIZACION DE DIRECCIONES TANTO PARA USUARIOS REGISTRADOS O USUARIO INVITADO -------------- */
+  /**
+   * Actualiza la dirección del usuario en el sistema.
+   * Este método se encarga de gestionar la actualización de direcciones 
+   * tanto para usuarios registrados como para usuarios invitados.
+   *
+   * - Llama al servicio correspondiente (`updateAddressClient` o `updateAddressGuest`).
+   * - Verifica el estado de la respuesta (`200`, `404`, `500`).
+   * - Si la actualización es exitosa, reemplaza la dirección en la lista.
+   * - Muestra mensajes de éxito o error según corresponda.
+   * - Cierra el modal después de la operación.
+   *
+   * TODO: Refactorizar este proceso para evitar duplicación de código,
+   * creando un método genérico que reciba el tipo de usuario y maneje la actualización.
+   */
   private storeUpdateAddress() {
     if (!this.name || !this.surname || !this.pais || !this.address || !this.zipcode || !this.poblacion || !this.email || !this.phone) {
       this.status = false;
@@ -370,78 +385,80 @@ export class ResumenCheckoutComponent implements OnInit {
     console.log("369-> data", data);
   
     // VERIFICAR SI SE ESTÁ MODIFICANDO EN USUARIO REGISTRADO O INVITADO
-    this.CURRENT_USER_AUTHENTICATED ? this.updateAddressCliente(data) : this.updateAddressGuest(data);
-
-    // this._authEcommerce.updateAddressClient( data ).subscribe((resp:any) => {
-    //   if (resp.status == 200) {
-    //     let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
-    //     this.listAddressClients[INDEX] = resp.address_client;
-    //     this.status = true;
-    //     this.validMessage = true;
-    //     this.errorOrSuccessMessage = resp.message;
-    //     this.hideMessageAfterDelay();
-    //     alertSuccess(resp.message);
-    //     this.resetForm();
-    //     $('#addEditModal').modal('hide');
-    //   } else {
-    //     this.status = false;
-    //     this.errorOrSuccessMessage = "Error al actualizar la dirección.";
-    //     this.hideMessageAfterDelay();
-    //   }
-    // }, error => {
-    //   this.status = false;
-    //   this.errorOrSuccessMessage = "Error al actualizar la dirección.";
-    //   this.hideMessageAfterDelay();
-    // });
+    this.CURRENT_USER_AUTHENTICATED ? this.updateAddressClient(data) : this.updateAddressGuest(data);
+  }
+  
+  private updateAddressClient(data: any) {
+    this._authEcommerce.updateAddressClient(data).subscribe(
+      (resp: any) => this.handleAddressUpdateResponse(resp, 'client'),
+      (error) => this.handleAddressUpdateError(error)
+    );
+  }
+  
+  private updateAddressGuest(data: any) {
+    this._authEcommerce.updateAddressGuest(data).subscribe(
+      (resp: any) => this.handleAddressUpdateResponse(resp, 'guest'),
+      (error) => this.handleAddressUpdateError(error)
+    );
   }
 
-  private updateAddressCliente(data:any) {
-    this._authEcommerce.updateAddressClient( data ).subscribe((resp:any) => {
-      if (resp.status == 200) {
-        let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
-        this.listAddressClients[INDEX] = resp.address_client;
-        this.status = true;
-        this.validMessage = true;
-        this.errorOrSuccessMessage = resp.message;
-        this.hideMessageAfterDelay();
-        alertSuccess(resp.message);
-        this.resetForm();
-        $('#addEditModal').modal('hide');
-      } else {
-        this.status = false;
-        this.errorOrSuccessMessage = "Error al actualizar la dirección.";
-        this.hideMessageAfterDelay();
-      }
-    }, error => {
-      this.status = false;
-      this.errorOrSuccessMessage = "Error al actualizar la dirección.";
-      this.hideMessageAfterDelay();
-    });
+  private handleAddressUpdateResponse(resp: any, type: 'client' | 'guest') {
+    const { status, address_client, message } = resp;
+    
+    switch (status) {
+      case 200:
+        this.updateAddressList(address_client, type);
+        this.showAlert(message, 'success');
+        break;
+      case 404:
+        this.showAlert(message, 'warning');
+        break;
+      case 500:
+        this.showAlert(message, 'danger');
+        break;
+      default:
+        this.showAlert('Error desconocido', 'danger');
+        break;
+    }
+    this.closeModal();
   }
 
-  private updateAddressGuest(data:any) {
-    this._authEcommerce.updateAddressGuest( data ).subscribe((resp:any) => {
-      if (resp.status == 200) {
-        let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
-        this.listAddressClients[INDEX] = resp.address_client;
-        this.status = true;
-        this.validMessage = true;
-        this.errorOrSuccessMessage = resp.message;
-        this.hideMessageAfterDelay();
-        alertSuccess(resp.message);
-        this.resetForm();
-        $('#addEditModal').modal('hide');
-      } else {
-        this.status = false;
-        this.errorOrSuccessMessage = "Error al actualizar la dirección.";
-        this.hideMessageAfterDelay();
-      }
-    }, error => {
-      this.status = false;
-      this.errorOrSuccessMessage = "Error al actualizar la dirección.";
-      this.hideMessageAfterDelay();
-    });
+  private updateAddressList(addressClient: any, type: 'client' | 'guest'): void {
+    const list = type === 'client' ? this.listAddressClients : this.listAddressGuest;
+    const index = list.findIndex((item: any) => item.id === this.address_client_selected.id);
+    
+    if (index !== -1) {
+      list[index] = addressClient;
+    }
+    this.hideMessageAfterDelay();
+    this.resetForm();
   }
+
+  private handleAddressUpdateError(error: any): void {
+    this.showAlert("¡Oops! No se pudo actualizar la dirección", 'danger');
+    this.closeModal();
+  }
+
+  private showAlert(message: string, type: 'success' | 'warning' | 'danger'): void {
+    switch (type) {
+      case 'success':
+        alertSuccess(message);
+        break;
+      case 'warning':
+        alertWarning(message);
+        break;
+      case 'danger':
+        alertDanger(message);
+        break;
+    }
+  }
+  
+  private closeModal(): void {
+    // Usar Angular para manejar la visibilidad del modal o un servicio
+    $('#addEditModal').modal('hide');
+  }
+  /* -------------------------------------------------------- FIN --------------------------------------------------- */
+
 
   private hideMessageAfterDelay() {
     setTimeout(() => {

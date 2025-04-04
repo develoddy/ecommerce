@@ -22,6 +22,7 @@ export class LoginCheckoutComponent implements OnInit {
   @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   euro = "€";
   listAddressClients:any = [];
+  listAddressGuest:any = [];
   // Address
   name: string = '';
   surname: string = '';
@@ -113,17 +114,25 @@ export class LoginCheckoutComponent implements OnInit {
   }
 
   enterAsGuest() {
-    //this._authEcommerce._authService.setGuestUser({ guest: true });
-      let guestData = {
-        _id:0,
-        user_guest: "Guest",
-        guest: true,
-      }
-      
-      sessionStorage.setItem("user_guest", JSON.stringify(guestData));
-      this._authEcommerce._authService.userGuestSubject.next(guestData);
+    let existingGuestData = sessionStorage.getItem("user_guest");
 
-      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
+    if (existingGuestData) {
+      let parsedData = JSON.parse(existingGuestData);
+      parsedData.guest = true;
+
+      sessionStorage.setItem("user_guest", JSON.stringify(parsedData));
+      this._authEcommerce._authService.userGuestSubject.next(parsedData);
+
+      // Verificar si el cambio fue exitoso antes de redirigir
+      const updatedData = JSON.parse(sessionStorage.getItem("user_guest") || '{}');
+      if (updatedData.guest === true) {
+        this._router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
+      } else {
+        console.warn('⚠️ No se pudo activar el modo guest correctamente.');
+      }
+    } else {
+      console.error('❌ No se encontró información de guest en el sessionStorage.');
+    }
     
   }
 
@@ -144,11 +153,13 @@ export class LoginCheckoutComponent implements OnInit {
         this.CURRENT_USER_AUTHENTICATED = user;
         this.CURRENT_USER_GUEST = null; // Si hay usuario autenticado, se ignora el invitado
         console.log("Compra como usuario registrado", this.CURRENT_USER_AUTHENTICATED);
+        this.checkIfAddressClientExists();
       } else {
         this._authEcommerce._authService.userGuest.subscribe(guestUser => {
           if (guestUser?.guest) {
             this.CURRENT_USER_GUEST = guestUser;
             console.log("Compra como invitado", this.CURRENT_USER_GUEST);
+            this.checkIfAddressGuestExists();
           } else {
             this.CURRENT_USER_GUEST = null;
           }
@@ -158,7 +169,6 @@ export class LoginCheckoutComponent implements OnInit {
   }
 
   checkIfAddressClientExists() {
-    this.verifyAuthenticatedUser();
 
     if (this.CURRENT_USER_AUTHENTICATED) {
       // Si el usuario está autenticado, buscar en address_client
@@ -173,6 +183,30 @@ export class LoginCheckoutComponent implements OnInit {
     } else if (this.CURRENT_USER_GUEST) {
       // Si es un usuario invitado, buscar en address_guest
       console.log("Si es un usuario invitado, buscar en address_guest", this.CURRENT_USER_GUEST);
+    }
+  }
+
+  checkIfAddressGuestExists() {
+    const currentUrl = this._router.url;
+    if (this.CURRENT_USER_GUEST) {
+      this._authEcommerce.listAddressGuest().subscribe(
+        (resp: any) => {
+          this.listAddressGuest = resp.addresses;
+          if (this.listAddressGuest.length === 0) {
+            console.log("LoginCheckout componente ejecuta en la lunea 211, redirigir a delivery");
+            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'delivery']);
+            
+            // // GUARDA LA URL ACTUAL EN SESSION STORAGE
+            // sessionStorage.setItem('returnUrl', this._router.url); 
+            // // SOLO REDIRIGE A ADD SI NO ESTÁ EN RESUMEN
+            // if (!currentUrl.includes('resumen')) {
+            //   this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'delivery']);
+            // }
+          } else {
+            console.log("LoginCheckout componente ejecuta en la lunea 221, redirigir a resumen");
+            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+          }
+      });
     }
   }
 

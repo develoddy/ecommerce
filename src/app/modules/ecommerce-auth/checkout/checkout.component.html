@@ -74,16 +74,16 @@
                             <div class="row-fluid stepsCheckout">
                                 <div class="span12" role="navigation">
                                     <div class="row-fluid labelSteps" role="list">
-                                        <!-- <div class="span3 margin" [ngClass]="{'medium': !CURRENT_USER_AUTHENTICATED, '':  CURRENT_USER_AUTHENTICATED}" role="listitem" aria-current="step">
+                                        <div class="span3 margin" [ngClass]="{'medium': !CURRENT_USER_AUTHENTICATED, '':  CURRENT_USER_AUTHENTICATED}" role="listitem" aria-current="step">
                                             Identifícate
-                                        </div> -->
+                                        </div>
                                         <!-- Los siguientes pasos se activan solo cuando hay un usuario autenticado (o después de avanzar como invitado) -->
                                         <!-- <div  class="span3 margin" [ngClass]="{'medium': CURRENT_USER_AUTHENTICATED && !isNavigatingToPayment, '':  !CURRENT_USER_AUTHENTICATED && isNavigatingToPayment}" role="listitem" aria-current="step"> -->
-                                        <div class="span3 margin" [ngClass]="{'medium': (CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST) && !isNavigatingToPayment, '': !CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST}" role="listitem" aria-current="step">
-                                            Pedido de envío
+                                        <div class="span3 margin" [ngClass]="{'medium': (CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST), '': !CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST}" role="listitem" aria-current="step">
+                                            Envío
                                         </div>
                                         <div class="span3 margin" [ngClass]="{'medium': isNavigatingToPayment && !isSaleSuccess,  '':  !isNavigatingToPayment && isSaleSuccess}" role="listitem" aria-current="true">
-                                            Métodos de pago
+                                            Pago
                                         </div>
                                         <div class="span3 margin" [ngClass]="{'medium': isSaleSuccess, '': !isSaleSuccess}" role="listitem" aria-current="step">
                                             Confirmación
@@ -92,9 +92,9 @@
                                 </div>
                                 <div class="span12" aria-hidden="true">
                                     <div class="row-fluid bolasSteps">
-                                        <!-- <div class="span3" [ngClass]="{'medium1': !CURRENT_USER_AUTHENTICATED,  '':  CURRENT_USER_AUTHENTICATED}">
+                                        <div class="span3" [ngClass]="{'medium1': !CURRENT_USER_AUTHENTICATED,  '':  CURRENT_USER_AUTHENTICATED}">
                                             <div class="flechaSteps"></div>
-                                        </div> -->
+                                        </div> 
                                         <div class="span3" [ngClass]="{'medium2': (CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST) && !isNavigatingToPayment,  '' :  (!CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST) && isNavigatingToPayment}">
                                             <div class="flechaSteps"></div>
                                         </div>
