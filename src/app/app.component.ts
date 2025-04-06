@@ -47,14 +47,10 @@ export class AppComponent implements OnInit {
     this.bodyClassService.updateBodyClass("index-demo1");
   }
 
-  loadUserPreferences() {
-    const country = localStorage.getItem('country');
-    const language = localStorage.getItem('language');
-
-    // Puedes usar las preferencias aquí, por ejemplo:
-    console.log(`Usuario recurrente - País: ${country}, Idioma: ${language}`);
-    
-    // Opcional: redirigir directamente al `HomeComponent` o realizar cualquier otra configuración
-    this.router.navigate(['/']);
-  }
+  // loadUserPreferences() {
+  //   const country = localStorage.getItem('country');
+  //   const language = localStorage.getItem('language');
+  //   // Opcional: redirigir directamente al `HomeComponent` o realizar cualquier otra configuración
+  //   this.router.navigate(['/']);
+  // }
 }

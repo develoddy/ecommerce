@@ -180,59 +180,27 @@ export class ResumenCheckoutComponent implements OnInit {
 
   checkIfAddressClientExists() {
     if (this.CURRENT_USER_AUTHENTICATED) {
-      // Si el usuario está autenticado, buscar en address_client
       this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
         (resp: any) => {
           this.listAddressClients = resp.address_client;
-          console.log("[186]: SE OBTIENE LA LISTA DE DIRECCIONES DEL USAURIO AUTENTICADO: ", this.listAddressClients);
-          
           if (this.listAddressClients.length === 0) {
-            sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-            this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
+            sessionStorage.setItem('returnUrl', this._router.url);
+            this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']);
           }
       });
     } else if (this.CURRENT_USER_GUEST) {
-      // Si es un usuario invitado, buscar en address_guest
-      //console.log("Si es un usuario invitado, buscar en address_guest", this.CURRENT_USER_GUEST);
-      this._authEcommerce.listAddressGuest().subscribe(
+      this._authEcommerce.listOneAdessGuest(this.CURRENT_USER_GUEST._id).subscribe(
         (resp: any) => {
-          this.listAddressGuest = resp.addresses; // La respuesta contiene 'addresses' según el backend
-          console.log("[186]: SE OBTIENE LA LISTA DE DIRECCIONES DEL USAURIO INVITADO: ", this.listAddressGuest);
-          //console.log("Si es un usuario invitado, se Lista los addres de guests", this.listAddressClients);
-          //this.redirectIfNoAddress();
-         
-        }
-      );
+          if (resp.addresses.length === 0) {
+            alertWarning("Este usuario invitado no tiene direcciones guardadas");
+          } else {
+            this.listAddressGuest = resp.addresses;
+          }
+        }, error => {
+          alertDanger(error.message);
+        });
     }
   }
-
-  // private redirectIfNoAddress() {
-  //   if (this.listAddressClients.length === 0) {
-  //     sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual
-  //     this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
-  //   }
-  // }
-
-  // private verifyAuthenticatedUser(): void {
-  //   this._authEcommerce._authService.user.subscribe(user => {
-  //     if ( user ) {
-  //       this.CURRENT_USER_AUTHENTICATED = user;
-  //     } else {
-  //       this.CURRENT_USER_AUTHENTICATED = null;
-  //     }
-  //   });
-  // }
-
-  // checkIfAddressClientExists() {
-  //   this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-  //     (resp: any) => {
-  //       this.listAddressClients = resp.address_client;
-  //       if (this.listAddressClients.length === 0) {
-  //         sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-  //         this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
-  //       }
-  //   });
-  // }
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);

@@ -43,45 +43,27 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   translatedText: string = "";
   AVG_REVIEW:any=null;
   COUNT_REVIEW:any=null;
-  //private subscription: Subscription;
   REVIEWS:any=null;
-
-  // Count cart & wishilist
   listCarts: any[] = [];
   totalCarts: number = 0;
   listWishlists: any = [];
   totalWishlist: number = 0;
-
-  private discountCache = new Map<number, number>(); // Caché para almacenar descuentos calculados
-
+  private discountCache = new Map<number, number>();
   activeIndex: number = 0;
-
   selectedColor: string = '';
-
   filteredGallery: any[] = [];
-
   allTags: string[] = [];
-
   firstImage: string = '';
   coloresDisponibles: { color: string, imagen: string }[] = [];
-
   variedades: any[] = [];
-
   errorResponse:boolean=false;
   errorMessage:any="";
-
   loading: boolean = false;
-
   locale: string = "";
   country: string = "";
-
-  //userId: any;
   CURRENT_USER_AUTHENTICATED:any=null;
-
   private subscription: Subscription | undefined;
-
   private subscriptions: Subscription = new Subscription();
-
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
@@ -95,22 +77,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     public _wishlistService: WishlistService,
     public _authService: AuthService,
     private localizationService: LocalizationService
-    //private languageService: LanguageService,
   ) { 
-     // Obtenemos `locale` y `country` de la ruta actual
-    // this.activatedRoute.paramMap.subscribe(params => {
-    //   this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
-    //   this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
-    // });
-
-    //const { locale, country } = this._authService.getLocaleAndCountry();
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
-    
-    console.log("Home ---- Selected Contry: ", this.locale, ' ', 'selected Locale: ', this.country);
-    
-   
-
   }
 
   ngAfterViewInit(): void {
@@ -139,13 +108,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     const listHomeSubscription = this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
       this.ourProducts = resp.our_products.map((product: any) => {
         product.finalPrice = this.calculateFinalPrice(product); // Asignamos el precio final con descuento
-
         const priceParts = this.getPriceParts(product.finalPrice); // Dividimos el precio
-
         product.priceInteger = priceParts.integer;
         product.priceDecimals = priceParts.decimals;
-
-
         return product;
       });
 

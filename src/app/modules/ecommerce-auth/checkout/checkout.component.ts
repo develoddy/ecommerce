@@ -487,34 +487,40 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       this.subscriptions.unsubscribe();
     }
 
-    let existingGuestData = sessionStorage.getItem("user_guest");
-    console.log(existingGuestData);
-    
-    if (existingGuestData) {
-      let parsedData = JSON.parse(existingGuestData);
-      console.log(parsedData);
-      parsedData.guest = false;
+    const guestData = sessionStorage.getItem("user_guest");
+    if (guestData) {
+      const parsedGuest = JSON.parse(guestData);
 
-      sessionStorage.setItem("user_guest", JSON.stringify(parsedData));
-      this._authEcommerce._authService.userGuestSubject.next(parsedData);
+      // Aquí llamas al backend para eliminar el guest y sus direcciones
+      const deleteSubscription = this._authEcommerce.deleteGuestAndAddresses().subscribe({
+        next: () => {
+          console.log("Datos de invitado eliminados con éxito.");
+          sessionStorage.removeItem("user_guest");
+          this._authEcommerce._authService.userGuestSubject.next(null);
+        },
+        error: err => {
+          console.error("Error eliminando guest y addresses", err);
+        }
+      });
+
+      // Si lo necesitas, agrega esta suscripción a `this.subscriptions` para que se pueda manejar correctamente.
+      this.subscriptions.add(deleteSubscription);
+
+      
     }
 
     // let existingGuestData = sessionStorage.getItem("user_guest");
+    // console.log(existingGuestData);
+    
     // if (existingGuestData) {
     //   let parsedData = JSON.parse(existingGuestData);
-    //   parsedData.guest = true;
+    //   console.log(parsedData);
+    //   parsedData.guest = false;
 
     //   sessionStorage.setItem("user_guest", JSON.stringify(parsedData));
-    //   this._authEcommerce._authService.userGuestSubject.next(parsedData); 
+    //   this._authEcommerce._authService.userGuestSubject.next(parsedData);
     // }
 
-    // let data = {
-    //     _id: 0,
-    //     user_guest: "Guest",
-    //     guest: false, // Cambiar a false al salir
-    // };
-
-    // sessionStorage.setItem("user_guest", JSON.stringify(data));
-    // this._authEcommerce._authService.userGuestSubject.next(data);
+    
   }
 }

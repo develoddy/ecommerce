@@ -3,7 +3,7 @@ import { AuthService } from '../../auth-profile/_services/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { finalize } from 'rxjs';
+import { catchError, finalize, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +20,21 @@ export class EcommerceAuthService {
 
   // ---------- GUESTS -----------------
   deleteGuestAndAddresses() {
+
+    console.log("---> Ecommerce-auth ejecuta, deleteGuestAndAddresses");
+    
     this.loadingSubject.next(true);
-    let URL = URL_SERVICE+"guests/removeAll/";
+    let URL = URL_SERVICE+"guests/removeAll";
     return this._http.delete(URL).pipe(
-      finalize(() => this.loadingSubject.next(false))
+      finalize(() => this.loadingSubject.next(false)),
+      catchError((error) => {
+        console.error("Error al eliminar los datos del invitado:", error);
+        return of(null); // Devuelve un observable vacío si hay error
+      }),
+      finalize(() => {
+        this.loadingSubject.next(false);
+        console.log("Finalizando la solicitud.");
+      })
     );
   }
   // ------------- END GUESTS ------------
@@ -44,6 +55,14 @@ export class EcommerceAuthService {
     let URL = URL_SERVICE+"address_guest/list";
     return this._http.get(URL).pipe(
       finalize(() => this.loadingSubject.next(false)) 
+    );
+  }
+
+  listOneAdessGuest(idGuest:any) {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE+"address_guest/listone?guest_id="+idGuest;
+    return this._http.get(URL).pipe(
+      finalize(() => this.loadingSubject.next(false))
     );
   }
 

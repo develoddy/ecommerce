@@ -130,9 +130,6 @@ export class AuthService {
     
     const storedUser = sessionStorage.getItem("user");
     const storedUserGuest = sessionStorage.getItem("user_guest");
-    console.log("Auth.service ejecuta el metodo > addGuestLocalStorage para saber storedUserGuest", storedUserGuest);
-    
-
     if(!storedUserGuest) {
       let data = {
         _id:0,
@@ -143,7 +140,6 @@ export class AuthService {
       }
       sessionStorage.setItem("user_guest", JSON.stringify(data));
       this.userGuestSubject.next(data);
-
 
       // Solo enviar al backend 'name' y 'session_id'
       const guestData = {
