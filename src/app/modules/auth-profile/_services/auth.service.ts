@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
-import { catchError, map, of, BehaviorSubject, finalize, window, Observable, tap, filter, throwError, switchMap } from 'rxjs';
+import { catchError, map, of, BehaviorSubject, finalize, window, Observable, tap, filter, throwError, switchMap, take } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
 
 
@@ -156,8 +156,6 @@ export class AuthService {
     }
   }
 
-
-
   sendGuestDataToBackend(data:any) {
 
     console.log("aut.service > sendGuestDataToBackend: ", data);
@@ -169,20 +167,15 @@ export class AuthService {
     // http://localhost:3500/api/guests/register
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    console.log("Llamando a la API en: ", URL);
-    
      return this._http.post(URL, data, { headers }).subscribe({
-       //next: (resp) => console.log("---------> Respuesta del backend:", resp),
        next: (resp: any) => {
-        console.log("---------> Respuesta del backend:", resp);
-  
         if (resp?.status === 200 && resp?.data) {
           const guestData = {
             _id: resp.data.id || 0,
             user_guest: "Guest",
             name: resp.data.name || "Anonymous",
             guest: false,
+            state: resp.data.state,
             session_id: resp.data.session_id
           };
   
@@ -191,8 +184,6 @@ export class AuthService {
   
           // ✅ Notificar al observable
           this.userGuestSubject.next(guestData);
-  
-          console.log("✔️ Guest guardado en storage:", guestData);
         }
       },
 
@@ -203,22 +194,6 @@ export class AuthService {
         console.log("Llamada completada");
       }
      });
-
-     /*return this._http.post( URL, data).pipe(
-       map(( resp: any ) => {
-         console.log("REGISTRANDO GUESTS: ", resp);
-       }),
-       catchError(( error: any ) => {
-         console.error(error);
-         return of(error);
-
-       }),
-       finalize(() => {
-          // FINALIZA EL LOADING CUANDO TERMINA LA LLAMADA
-         this.loadingSubject.next(false);
-
-       })
-     );*/
   }
 
   // FUNCION PARA GENERAR UN ID ÚNICO SIMILIAR A UUID
@@ -319,7 +294,6 @@ export class AuthService {
     this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
   }
   
-  //refreshToken(): Observable<any> {
   refreshToken(): Observable<string> {
 
     const refreshToken = sessionStorage.getItem('refresh_token');
@@ -449,16 +423,15 @@ export class AuthService {
     if (!storedUser) {
       this.addGuestLocalStorage();
     }
-    this._router.navigate(["/"]);
+   
+    const { country, locale } = this.getLocaleAndCountry();
+    this._router.navigate(['/', country, locale, 'home']);
   }
 
   removeUserGuestLocalStorage() {
     sessionStorage.removeItem("user_guest");
     this.userGuestSubject.next(null);
   }
+}
 
-}
-function take(arg0: number): import("rxjs").OperatorFunction<string, any> {
-  throw new Error('Function not implemented.');
-}
 

@@ -3,7 +3,7 @@ import { AuthService } from '../../auth-profile/_services/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { catchError, finalize, of } from 'rxjs';
+import { catchError, finalize, Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,22 +19,24 @@ export class EcommerceAuthService {
   ) { }
 
   // ---------- GUESTS -----------------
-  deleteGuestAndAddresses() {
-
-    console.log("---> Ecommerce-auth ejecuta, deleteGuestAndAddresses");
+  deleteGuestAndAddresses(): Observable<any> {
+    console.log("eliminando delete Gues  address en servicie");
     
     this.loadingSubject.next(true);
     let URL = URL_SERVICE+"guests/removeAll";
-    return this._http.delete(URL).pipe(
-      finalize(() => this.loadingSubject.next(false)),
-      catchError((error) => {
-        console.error("Error al eliminar los datos del invitado:", error);
-        return of(null); // Devuelve un observable vacío si hay error
-      }),
-      finalize(() => {
-        this.loadingSubject.next(false);
-        console.log("Finalizando la solicitud.");
-      })
+    return this._http.delete<any>(URL).pipe(
+      // tap((resp) => {
+      //   console.log("✅ Respuesta completa del servidor:", resp);
+      // }),
+      // catchError((error) => {
+      //   console.error("Error al eliminar los datos del invitado:", error);
+      //   return of(null); // Devuelve un observable vacío si hay error
+      // }),
+      // finalize(() => {
+      //   this.loadingSubject.next(false);
+      //   console.log("Finalizando la solicitud.");
+      // })
+      finalize(() => this.loadingSubject.next(false))
     );
   }
   // ------------- END GUESTS ------------
@@ -170,9 +172,8 @@ export class EcommerceAuthService {
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"home/profile_client";
-    //return this._http.post(URL, data, {headers: headers});
     return this._http.post(URL, data, { headers: headers }).pipe(
-      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+      finalize(() => this.loadingSubject.next(false)) 
     );
   }
 

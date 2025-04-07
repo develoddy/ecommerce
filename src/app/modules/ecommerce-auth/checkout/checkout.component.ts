@@ -491,36 +491,24 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     if (guestData) {
       const parsedGuest = JSON.parse(guestData);
 
-      // Aquí llamas al backend para eliminar el guest y sus direcciones
-      const deleteSubscription = this._authEcommerce.deleteGuestAndAddresses().subscribe({
-        next: () => {
-          console.log("Datos de invitado eliminados con éxito.");
+      /*
+      this._authEcommerce.registerAddressClient(data).subscribe(
+        (resp:any) => {
+        }, error => {
+      });
+      */
+
+      const deleteSubscription = this._authEcommerce.deleteGuestAndAddresses().subscribe(
+        (resp:any) => {
+          console.log("✅ Respuesta completa del servidor:", resp);
           sessionStorage.removeItem("user_guest");
           this._authEcommerce._authService.userGuestSubject.next(null);
-        },
-        error: err => {
-          console.error("Error eliminando guest y addresses", err);
+        }, error => {
+          console.error("Error eliminando guest y addresses", error);
         }
-      });
+      );
 
-      // Si lo necesitas, agrega esta suscripción a `this.subscriptions` para que se pueda manejar correctamente.
-      this.subscriptions.add(deleteSubscription);
-
-      
+        this.subscriptions.add(deleteSubscription);
     }
-
-    // let existingGuestData = sessionStorage.getItem("user_guest");
-    // console.log(existingGuestData);
-    
-    // if (existingGuestData) {
-    //   let parsedData = JSON.parse(existingGuestData);
-    //   console.log(parsedData);
-    //   parsedData.guest = false;
-
-    //   sessionStorage.setItem("user_guest", JSON.stringify(parsedData));
-    //   this._authEcommerce._authService.userGuestSubject.next(parsedData);
-    // }
-
-    
   }
 }

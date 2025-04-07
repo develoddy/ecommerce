@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
@@ -85,8 +85,6 @@ export class ResumenCheckoutComponent implements OnInit {
   ngAfterViewInit() {}
 
   ngOnInit(): void {
-    // Emitir un evento con el valor que desees
-    //this.activate.emit(true);
 
     this.subscriptionService.setShowSubscriptionSection(false);
     this.subscriptions = this._authEcommerce.loading$.subscribe(isLoading => {
@@ -97,19 +95,22 @@ export class ResumenCheckoutComponent implements OnInit {
     this.checkIfAddressClientExists();
     //this.storeAllCarts();
     
-
-    this._cartService.currenteDataCart$.subscribe((resp:any) => {
-      this.listCarts = resp;
-      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
-      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-    });
     
+    this.subscriptions.add(
+      this._cartService.currenteDataCart$.subscribe((resp:any) => {
+        this.listCarts = resp;
+        this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+      })
+    );
+
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
-    }, 50);
+    }, 150);
   }
 
+ 
   getFormattedPrice(price: any) {
     if (typeof price === 'string') {
       price = parseFloat(price); // Convertir a número
@@ -520,5 +521,24 @@ export class ResumenCheckoutComponent implements OnInit {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     }
+
+    // const guestData = sessionStorage.getItem("user_guest");
+    // if (guestData) {
+    //   const parsedGuest = JSON.parse(guestData);
+
+    //   const deleteSubscription = this._authEcommerce.deleteGuestAndAddresses().subscribe({
+    //     next: () => {
+    //       console.log("Datos de invitado eliminados con éxito.");
+    //       sessionStorage.removeItem("user_guest");
+    //       this._authEcommerce._authService.userGuestSubject.next(null);
+    //     },
+    //     error: err => {
+    //       console.error("Error eliminando guest y addresses", err);
+    //     }
+    //   });
+
+    //   this.subscriptions.add(deleteSubscription); // Añadimos la suscripción a la lista para asegurar que se mantenga activa
+    // }
+    
   }
 }

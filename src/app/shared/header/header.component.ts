@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, HostListener } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, HostListener, EventEmitter, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, debounceTime, forkJoin, fromEvent, Observable, of, Subscription, tap } from 'rxjs';
@@ -11,6 +11,7 @@ import { MinicartService } from 'src/app/services/minicartService.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { combineLatest } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { HeaderEventsService } from 'src/app/services/headerEvents.service';
 declare var $: any;
 declare var $:any;
 declare function HOMEINITTEMPLATE($: any): any;//declare function HOMEINITTEMPLATE([]):any;
@@ -27,6 +28,8 @@ declare function cleanupHOMEINITTEMPLATE($: any): any;
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  @Output() forceLogin = new EventEmitter<void>();
 
   euro = "€";
   //cartsCacheItems: any[] = [];
@@ -61,9 +64,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private ecommerceGuestService: EcommerceGuestService,
     private minicartService: MinicartService,
     private subscriptionService: SubscriptionService,
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+    private headerEventsService: HeaderEventsService
   ) {
-    //translate.setDefaultLang('es');
     this.subscriptions.add(
       this.subscriptionService.showSubscriptionSection$.subscribe(value => {
         this.showSubscriptionSection = value;
@@ -73,12 +76,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     
-    // this.activatedRoute.paramMap.subscribe(params => {
-    //   this.locale = params.get('locale') || 'es';  
-    //   this.country = params.get('country') || 'es'; 
-    // });
-
-
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
 
@@ -112,9 +109,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private processUserStatus(): void {
     this.storeListCarts();
     this.storeListWishlists();
-    if (!this.currentUser?.user_guest) { // Si es un usuario autenticado
+    //if (!this.currentUser?.user_guest) { // Si es un usuario autenticado
+    if (this.currentUser && this.currentUser.user_guest !== "Guest") { // Si el usuario no es un invitado
+      
       let user_guest = "Guest";
       this.cartService.listCartsCache(user_guest).subscribe((resp: any) => {
+        console.log("----> processUserStatus listCartCache resp: ", resp);
         if (resp.carts.length > 0) {
           this.syncUserCart();
         }
@@ -134,6 +134,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+
+  
+
   private syncUserCart(): void {
     if (!this.currentUser || !this.currentUser._id) {
         console.error("Error: Intentando sincronizar el carrito sin un usuario autenticado.");
@@ -147,16 +150,23 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         respDatabase: this.cartService.listCarts(this.currentUser._id)
     }).subscribe({
       next: ({ respCache, respDatabase }) => {
-        const mergedCarts = this.mergeAndRemoveDuplicates(respDatabase.carts || [], respCache.carts || []);  // Combinar y eliminar duplicados antes de sincronizar
-        // Sincronizar el carrito con el backend
-        this.cartService.syncCartWithBackend(mergedCarts, this.currentUser._id).subscribe({
-          next: (resp: any) => {
-            console.log("Carrito sincronizado exitosamente: ", resp);
-          },
-          error: (error) => {
-            console.error("Error al sincronizar el carrito: ", error);
-          }
-        });
+        if (respCache && respDatabase) {
+          // Sincronizar ambos carritos de forma ordenada
+          const mergedCarts = this.mergeAndRemoveDuplicates(respDatabase.carts || [], respCache.carts || []);  // Combinar y eliminar duplicados antes de sincronizar
+          // Sincronizar el carrito con el backend solo si es necesario
+
+          console.log("syncUserCart: currentUser?: _ ",this.currentUser);
+          
+          this.cartService.syncCartWithBackend(mergedCarts, this.currentUser._id).subscribe({
+            next: (resp: any) => {
+              console.log("Carrito sincronizado exitosamente: ", resp);
+              //this.cartService.changeCart(resp);
+            },
+            error: (error) => {
+              console.error("Error al sincronizar el carrito: ", error);
+            }
+          });
+        }
       },
       error: (error) => {
           console.error("Error al obtener los carritos: ", error);
@@ -213,11 +223,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
   
-
   private subscribeToCartData(): void {
     this.subscriptions.add(
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
+        console.log("---> Header.componente: ejecuta el total de carts: ", this.listCarts);
+        
         this.totalCarts = this.listCarts.reduce((sum, item) => sum + parseFloat(item.total), 0);
       })
     );
@@ -360,6 +371,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   inc(cart: any) {
     this.updateCartQuantity(cart, cart.cantidad + 1);
   }
+
+  goLogin() {
+    this.headerEventsService.emitForceLogin(); // Cuando quieras forzar login
+  }
    
   private updateCartQuantity(cart: any, newQuantity: number) {
     cart.cantidad = newQuantity;
@@ -451,7 +466,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Desuscribir todas las suscripciones en el método OnDestroy
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     } 

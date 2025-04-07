@@ -374,7 +374,8 @@
                             <ul class="m-0 m-0 list-group list-group-flush">
                                 <li class="mt-3 mb-3" *ngIf="currentUser.user_guest else isAuthenticated">
                                     <button class="btn mb-2 btn-secondary btn-lg w-100 text-uppercase fw-bold">
-                                        <a href="login.html" onclick="return false;" [routerLink]="['/', country, locale, 'auth', 'login']" class="text-white"><i class="icon anm anm-sign-in-al d-none"></i>Iniciar sesión</a>
+                                        <!-- <a href="login.html" onclick="return false;" [routerLink]="['/', country, locale, 'auth', 'login']" class="text-white"><i class="icon anm anm-sign-in-al d-none"></i>Iniciar sesión</a> -->
+                                        <a href="login.html" onclick="return false;" (click)="goLogin()" class="text-white"><i class="icon anm anm-sign-in-al d-none"></i>Iniciar sesión</a>
                                     </button>
                                     <div class="login-signup-text text-center text-secondary form-text">¿No tienes una cuenta? <a href="login.html" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'register']" class="fw-bold text-decoration-underline">Regístrate</a></div>
                                 </li>
@@ -576,6 +577,7 @@
                 <li><a href="blog-details.html" class="site-nav">Blog Details</a></li>
             </ul>
         </li>
+       
         <li class="mobile-menu-bottom">
             <div class="mobile-links"> 
                 <ul class="list-inline d-inline-flex flex-column w-100">

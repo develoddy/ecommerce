@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { Subscription } from 'rxjs';
 
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -30,6 +31,8 @@ export class LoginComponent implements OnInit {
   CURRENT_USER_AUTHENTICATED:any=null;
 
   public loading: boolean = false;
+
+  private subscriptions: Subscription = new Subscription();
 
   locale: string = "";
   country: string = "";  
@@ -82,19 +85,25 @@ export class LoginComponent implements OnInit {
     if (!this.email) {
       alertDanger("Es necesario ingresar el email");
     }
+
     if (!this.password) {
       alertDanger("Es necesario ingresar el password");
     }
-    this._authService.login(this.email, this.password).subscribe((resp:any) => {
-      if ( !resp.error && resp ) {
-        //this._router.navigate(["/"]);
-        this._router.navigate(['/', this.country, this.locale, 'home']);
-        this.cartService.resetCart(); 
-      } else {
-        this.errorAutenticate = true;
-        this.errorMessageAutenticate = resp.error.message;
-      }
-    });
+
+    const subscriptionLogin = this._authService.login(this.email, this.password).subscribe((
+      resp:any) => {
+        if ( !resp.error && resp ) {
+          // this._router.navigate(["/"]);
+          // this._router.navigate(['/', this.country, this.locale, 'home']);
+          this._router.navigate(['/', this.country, this.locale,  'home']).then(() => {window.location.reload();});
+          // window.location.href = `/${this.country}/${this.locale}/home`;
+          this.cartService.resetCart(); 
+        } else {
+          this.errorAutenticate = true;
+          this.errorMessageAutenticate = resp.error.message;
+        }
+      });
+    this.subscriptions.add(subscriptionLogin);
   }
 
   changeLanguageToSpanish(): void {
@@ -103,5 +112,11 @@ export class LoginComponent implements OnInit {
   
   changeLanguageToEnglish(): void {
     this.translate.use('en');
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
   }
 }

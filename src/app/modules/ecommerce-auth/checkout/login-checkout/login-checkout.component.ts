@@ -407,7 +407,7 @@ export class LoginCheckoutComponent implements OnInit {
 
   verifyExistEmail(email: string) {
     sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-    this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add'],{ queryParams: { email } });
+    this._router.navigate(['/', this.country, this.locale,  'account', 'myaddresses', 'add'],{ queryParams: { email } });
   }
 
   public login() {
@@ -419,18 +419,15 @@ export class LoginCheckoutComponent implements OnInit {
       alertDanger("Es necesario ingresar el password");
     }
 
-    const subscriptionLogin =  this._authService.login(this.email_identify, this.password_identify).subscribe(
+    const subscriptionLogin = this._authService.login(this.email_identify, this.password_identify).subscribe(
       (resp:any) => {
         if (!resp.error && resp) {
+          
           setTimeout(() => {
-            // Primero navegamos a la ruta del componente de resumen
-            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']).then(() => {
-              // Luego forzamos una recarga del componente
-              window.location.reload(); // Este método fuerza la recarga de la página
-            });
-          }, 500);
+            //this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']).then(() => {window.location.reload();});
+          this._router.navigate(['/',this.country, this.locale, 'account', 'checkout', 'resumen']);
+          }, 150);
           this._cartService.resetCart();
-
         } else {
           this.errorAutenticate = true;
           this.errorMessageAutenticate = resp.error.message;

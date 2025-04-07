@@ -88,7 +88,6 @@ export class CartService {
     );
   }
 
-  
   deleteCart(cart_id:any) {
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
@@ -126,7 +125,23 @@ export class CartService {
     );
   }
 
-  syncCartWithBackend(data: any[], userId:any) {
+  syncCartWithBackend(data: any[], userId: any) {
+    this.loadingSubject.next(true);
+    let headers = new HttpHeaders({ 'token': this._authService.token });
+    let URL = URL_SERVICE + "cart/merge?user_id=" + userId;
+    return this._http.post(URL, { data }, { headers: headers }).pipe(
+        finalize(() => this.loadingSubject.next(false)),
+        tap((response: any) => {
+            if (response && response.carts) {
+                // Actualiza el carrito con los productos sincronizados
+                response.carts.forEach((cart: any) => this.changeCart(cart));
+            }
+        })
+    );
+  }
+
+
+  syncCartWithBackend__OLD(data: any[], userId:any) {
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({ 'token': this._authService.token });
     let URL = URL_SERVICE+"cart/merge?user_id="+userId;
@@ -134,11 +149,6 @@ export class CartService {
       finalize(() => this.loadingSubject.next(false)) 
     );
   }
-
-
-
-
-
 
   /**
    * ----------------------------------------------------------------
@@ -166,15 +176,15 @@ export class CartService {
     return this._http.put(URL, data,);
   }
 
-  syncCart(data: any[], userId: any) {
-    return this.syncCartWithBackend(data, userId).pipe(
-      tap((response: any) => {
-        if (response.carts) {
-          response.carts.forEach((cart: any) => this.changeCart(cart)); // Actualiza el carrito con los datos sincronizados
-        }
-      })
-    );
-  }
+  // syncCart(data: any[], userId: any) {
+  //   return this.syncCartWithBackend(data, userId).pipe(
+  //     tap((response: any) => {
+  //       if (response.carts) {
+  //         response.carts.forEach((cart: any) => this.changeCart(cart)); // Actualiza el carrito con los datos sincronizados
+  //       }
+  //     })
+  //   );
+  // }
   
   deleteCartCache(cart_id:any) {
     this.loadingSubject.next(true);
@@ -191,5 +201,4 @@ export class CartService {
       finalize(() => this.loadingSubject.next(false)) 
     );
   }
-
 }

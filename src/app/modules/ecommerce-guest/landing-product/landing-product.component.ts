@@ -205,10 +205,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
     if (this.product_selected) {
       this.updateSeo();
-      if (!this.currentUser.guest) {
+      if (this.currentUser && this.currentUser.user_guest !== "Guest") {
+        // Si el usuario no es un invitado (user_guest !== "Guest"), entonces muestra el perfil
         this.showProfileClient(this.currentUser);
       }
-
+      
       this.filterUniqueGalerias();
       this.setFirstImage();
       this.setColoresDisponibles();
@@ -307,6 +308,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   private showProfileClient(currentUser:any) {
     let data = {user_id: currentUser._id};
     const saleSubscription =  this.ecommerceAuthService.showProfileClient(data).subscribe( ( resp: any ) => {
+      console.log("310 ---> resp", resp);
+      
       this.sale_orders = resp.sale_orders;
       this.sale_details = this.extractSaleDetails(resp.sale_orders); 
       this.handleSaleDetailAndReview();

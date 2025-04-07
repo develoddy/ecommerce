@@ -13,6 +13,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './modules/auth-profile/_services/guards/auth.interceptor';
+import { SharedModule } from './shared/shared.module';
 //import { AuthInterceptor } from './modules/auth-profile/_services/auth.interceptor';
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -37,7 +38,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     AppRoutingModule,
     BrowserAnimationsModule,
-    
+    SharedModule,
   ],
   providers: [
     {
