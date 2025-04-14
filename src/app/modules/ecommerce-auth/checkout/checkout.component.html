@@ -51,13 +51,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center align-items-center">
-                        <!-- <div class="page-title text-uppercase"><h1>Finalizar compra</h1></div> -->
-                        <!--Breadcrumbs-->
-                        <!-- <div class="breadcrumbs"><a href="index.html" title="Back to the home page">Lujandev.com</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Finalizar compra</span></div> -->
-                        <!--End Breadcrumbs-->
-                        <!-- <a class="logoImg" [href]="['/']" > -->
-                        <a class="logoImg" href="#" onclick="return false;" [routerLink]="['/',country, locale, 'home']">
-                            <img src="assets/images/logo.png" alt="Hema Multipurpose Html Template" (click)="navigateToHome()" title="Hema Multipurpose Html Template" width="100" height="100" />
+                        <!-- <a class="logoImg" href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'cart']"> -->
+                        <a class="logoImg" (click)="navigateToCart()">
+                            <img src="assets/images/logo.png" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" width="100" height="100" />
                         </a>
                     </div>
                 </div>
@@ -78,8 +74,6 @@
                                         <div class="span3 margin" [ngClass]="{'medium': !CURRENT_USER_AUTHENTICATED, '':  CURRENT_USER_AUTHENTICATED}" role="listitem" aria-current="step">
                                             Identifícate
                                         </div>
-                                        <!-- Los siguientes pasos se activan solo cuando hay un usuario autenticado (o después de avanzar como invitado) -->
-                                        <!-- <div  class="span3 margin" [ngClass]="{'medium': CURRENT_USER_AUTHENTICATED && !isNavigatingToPayment, '':  !CURRENT_USER_AUTHENTICATED && isNavigatingToPayment}" role="listitem" aria-current="step"> -->
                                         <div class="span3 margin" [ngClass]="{'medium': (CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST), '': !CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST}" role="listitem" aria-current="step">
                                             Envío
                                         </div>

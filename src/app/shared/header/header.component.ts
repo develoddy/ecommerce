@@ -134,33 +134,32 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-
-  
-
+  /**
+   * SINCRONIZAR AMBOS CARRITOS DE USUARIOS INVITADOS Y AUTENTICADOS
+   * @returns 
+   */
   private syncUserCart(): void {
-    if (!this.currentUser || !this.currentUser._id) {
+    if ( !this.currentUser || !this.currentUser._id ) {
         console.error("Error: Intentando sincronizar el carrito sin un usuario autenticado.");
         return;
     }
 
     const user_guest = "Guest";
-    // Obtener artículos del carrito del usuario invitado y del usuario autenticado simultáneamente
+    // OBTENER ARTICULOS DEL CARRITO DEL USUARIO INVITADO Y DEL USUARIO AUTENTICADO SIMULTÁNEAMENTE
     forkJoin({
         respCache: this.cartService.listCartsCache(user_guest),
         respDatabase: this.cartService.listCarts(this.currentUser._id)
     }).subscribe({
       next: ({ respCache, respDatabase }) => {
         if (respCache && respDatabase) {
-          // Sincronizar ambos carritos de forma ordenada
-          const mergedCarts = this.mergeAndRemoveDuplicates(respDatabase.carts || [], respCache.carts || []);  // Combinar y eliminar duplicados antes de sincronizar
-          // Sincronizar el carrito con el backend solo si es necesario
-
-          console.log("syncUserCart: currentUser?: _ ",this.currentUser);
+          // SINCRONIZAR AMBOS CARRITOS DE FORMA ORDENADA
+          // COMPROBAR Y ELIMINAR DUPLICADOS ANTES DE SINCRONIZAR
+          const mergedCarts = this.mergeAndRemoveDuplicates(respDatabase.carts || [], respCache.carts || []);
           
+          // SINCRONIZAR EL CARRITO CON EL BACKEND SOLO SI ES NECESARIO
           this.cartService.syncCartWithBackend(mergedCarts, this.currentUser._id).subscribe({
             next: (resp: any) => {
-              console.log("Carrito sincronizado exitosamente: ", resp);
-              //this.cartService.changeCart(resp);
+              console.warn("Carrito sincronizado exitosamente: ", resp);
             },
             error: (error) => {
               console.error("Error al sincronizar el carrito: ", error);
@@ -227,8 +226,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
-        console.log("---> Header.componente: ejecuta el total de carts: ", this.listCarts);
-        
         this.totalCarts = this.listCarts.reduce((sum, item) => sum + parseFloat(item.total), 0);
       })
     );
@@ -436,7 +433,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goToCheckout(): void {
     this.showSubscriptionSection = false;
-    this.router.navigate(['/', this.country, this.locale, 'account', 'checkout']);
+    this.router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
   }
 
   logout() {

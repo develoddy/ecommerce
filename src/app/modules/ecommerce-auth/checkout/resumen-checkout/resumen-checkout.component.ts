@@ -85,17 +85,24 @@ export class ResumenCheckoutComponent implements OnInit {
   ngAfterViewInit() {}
 
   ngOnInit(): void {
+    this.loadLoading();
+    this.verifyAuthenticatedUser();
+    this.currentDataCart();
+    
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+      actionNetxCheckout($);
+    }, 150);
+  }
 
+  private loadLoading() {
     this.subscriptionService.setShowSubscriptionSection(false);
     this.subscriptions = this._authEcommerce.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
+  }
 
-    this.verifyAuthenticatedUser();
-    this.checkIfAddressClientExists();
-    //this.storeAllCarts();
-    
-    
+  private currentDataCart() {
     this.subscriptions.add(
       this._cartService.currenteDataCart$.subscribe((resp:any) => {
         this.listCarts = resp;
@@ -103,14 +110,100 @@ export class ResumenCheckoutComponent implements OnInit {
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       })
     );
-
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
-      actionNetxCheckout($);
-    }, 150);
   }
 
- 
+
+  private verifyAuthenticatedUser(): void {
+    this._authEcommerce._authService.user.subscribe(user => {
+      if ( user ) {
+        this.CURRENT_USER_AUTHENTICATED = user;
+        this.CURRENT_USER_GUEST = null; // Si hay usuario autenticado, se ignora el invitado
+        this.checkIfAddressClientExists();
+      } else {
+        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
+          if (guestUser?.guest) {
+            this.CURRENT_USER_GUEST = guestUser;
+            this.checkIfAddressGuestExists();
+          } else {
+            this.CURRENT_USER_GUEST = null;
+          }
+        });
+      }
+    });
+  }
+
+  checkIfAddressClientExists() {
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
+        (resp: any) => {
+          this.listAddressClients = resp.address_client;
+          if (this.listAddressClients.length === 0) {
+            // GUARDA LA URL ACTUAL EN SESSION STORARE
+            sessionStorage.setItem('returnUrl', this._router.url); 
+            // SOLO REDIRIGE A myaddresses SI NO ESTÁ EN RESUMEN
+            this._router.navigate(['/', , this.country, this.locale, 'account', 'myaddresses', 'add']); 
+          } else {
+            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+          }
+      });
+    }
+  }
+
+  checkIfAddressGuestExists() {
+    const currentUrl = this._router.url;
+    if (this.CURRENT_USER_GUEST) {
+      this._authEcommerce.listAddressGuest().subscribe(
+        (resp: any) => {
+          this.listAddressGuest = resp.addresses;
+          if (this.listAddressGuest.length === 0) {
+            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery']);
+          } else {
+            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+          }
+      });
+    }
+  }
+
+
+
+
+  // checkIfAddressClientExistsOLD__() {
+  //   if (this.CURRENT_USER_AUTHENTICATED) {
+  //     this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
+  //       (resp: any) => {
+  //         this.listAddressClients = resp.address_client;
+  //         if (this.listAddressClients.length === 0) {
+  //           sessionStorage.setItem('returnUrl', this._router.url);
+  //           this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']);
+  //         }
+  //     });
+  //   } else if (this.CURRENT_USER_GUEST) {
+  //     this._authEcommerce.listOneAdessGuest(this.CURRENT_USER_GUEST._id).subscribe(
+  //       (resp: any) => {
+  //         if (resp.addresses.length === 0) {
+  //           alertWarning("Este usuario invitado no tiene direcciones guardadas");
+  //         } else {
+  //           this.listAddressGuest = resp.addresses;
+  //         }
+  //       }, error => {
+  //         alertDanger(error.message);
+  //       });
+  //   }
+  // }
+
+  navigateToHome() {
+    this.subscriptionService.setShowSubscriptionSection(true);
+    this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
+  }
+
+  goToNextStep() {
+    this.checkoutService.setNavigatingToPayment(true);
+    this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'payment']);
+    // .then(() => {
+    //   window.location.reload();
+    // });
+  }
+
   getFormattedPrice(price: any) {
     if (typeof price === 'string') {
       price = parseFloat(price); // Convertir a número
@@ -139,7 +232,6 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   storeAllCarts() {
-
     if (this.CURRENT_USER_AUTHENTICATED) {
       this.listCartsDatabase();
     } else if (this.CURRENT_USER_GUEST) {
@@ -157,63 +249,6 @@ export class ResumenCheckoutComponent implements OnInit {
           });
       });
     }
-  }
-
-  private verifyAuthenticatedUser(): void {
-    this._authEcommerce._authService.user.subscribe(user => {
-      if ( user ) {
-        this.CURRENT_USER_AUTHENTICATED = user;
-        this.CURRENT_USER_GUEST = null; // Si hay usuario autenticado, se ignora el invitado
-        //console.log("Compra como usuario registrado", this.CURRENT_USER_AUTHENTICATED);
-      } else {
-        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
-          if (guestUser?.guest) {
-            this.CURRENT_USER_GUEST = guestUser;
-            //console.log("Compra como invitado", this.CURRENT_USER_GUEST);
-          } else {
-            this.CURRENT_USER_GUEST = null;
-          }
-        });
-      }
-    });
-  }
-
-
-  checkIfAddressClientExists() {
-    if (this.CURRENT_USER_AUTHENTICATED) {
-      this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-        (resp: any) => {
-          this.listAddressClients = resp.address_client;
-          if (this.listAddressClients.length === 0) {
-            sessionStorage.setItem('returnUrl', this._router.url);
-            this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']);
-          }
-      });
-    } else if (this.CURRENT_USER_GUEST) {
-      this._authEcommerce.listOneAdessGuest(this.CURRENT_USER_GUEST._id).subscribe(
-        (resp: any) => {
-          if (resp.addresses.length === 0) {
-            alertWarning("Este usuario invitado no tiene direcciones guardadas");
-          } else {
-            this.listAddressGuest = resp.addresses;
-          }
-        }, error => {
-          alertDanger(error.message);
-        });
-    }
-  }
-
-  navigateToHome() {
-    this.subscriptionService.setShowSubscriptionSection(true);
-    this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
-  }
-
-  goToNextStep() {
-    this.checkoutService.setNavigatingToPayment(true);
-    this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'payment']);
-    // .then(() => {
-    //   window.location.reload();
-    // });
   }
 
   onCheckboxChange(event: any) {

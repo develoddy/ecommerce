@@ -94,8 +94,8 @@ export class LoginComponent implements OnInit {
       resp:any) => {
         if ( !resp.error && resp ) {
           // this._router.navigate(["/"]);
-          // this._router.navigate(['/', this.country, this.locale, 'home']);
-          this._router.navigate(['/', this.country, this.locale,  'home']).then(() => {window.location.reload();});
+          this._router.navigate(['/', this.country, this.locale, 'home']);
+          // this._router.navigate(['/', this.country, this.locale,  'home']).then(() => {window.location.reload();});
           // window.location.href = `/${this.country}/${this.locale}/home`;
           this.cartService.resetCart(); 
         } else {

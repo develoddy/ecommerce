@@ -4,6 +4,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
 import { catchError, map, of, BehaviorSubject, finalize, window, Observable, tap, filter, throwError, switchMap, take } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { GuestCleanupService } from '../../ecommerce-guest/_service/guestCleanup.service';
+import { EcommerceAuthService } from '../../ecommerce-auth/_services/ecommerce-auth.service';
 
 
 @Injectable({
@@ -25,7 +27,8 @@ export class AuthService {
   constructor(
     private _http: HttpClient,
     private _router: Router,
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+     //private authEcommerce: EcommerceAuthService,
   ) {
     this.addGuestLocalStorage();
     this.getLocalStorage();
@@ -95,13 +98,19 @@ export class AuthService {
 
     return this._http.post( URL, { email, password } ).pipe(
       map(( resp: any ) => {
-        if (  resp.USER_FRONTED             && 
-              resp.USER_FRONTED.accessToken && 
-              resp.USER_FRONTED.refreshToken 
-        ) {
-
+        if (  resp.USER_FRONTED  && resp.USER_FRONTED.accessToken && resp.USER_FRONTED.refreshToken ) {
           this.localStorageSave(resp.USER_FRONTED);
-          this.removeUserGuestLocalStorage();
+          //this.removeUserGuestLocalStorage();
+          this.deleteGuestAndAddresses().subscribe({
+            next: (resp: any) => {
+              this.removeUserGuestLocalStorage();
+                //sessionStorage.removeItem("user_guest");
+                //this.addGuestLocalStorage();
+            },
+            error: err => {
+                console.error("❌ Error al limpiar datos guest al salir del checkout", err);
+            }
+          });
           return true;
 
         } else {
@@ -120,6 +129,14 @@ export class AuthService {
 
       })
     );
+  }
+
+  localStorageSave(USER_FRONTED: any) {
+    sessionStorage.setItem("access_token", USER_FRONTED.accessToken);
+    sessionStorage.setItem("refresh_token", USER_FRONTED.refreshToken);
+    sessionStorage.setItem("user", JSON.stringify(USER_FRONTED.user));
+    this.token = USER_FRONTED.accessToken;
+    this.userSubject.next(USER_FRONTED.user);  
   }
 
   /* ------------------ ZONA DE GUESTS --------------- */
@@ -158,13 +175,8 @@ export class AuthService {
 
   sendGuestDataToBackend(data:any) {
 
-    console.log("aut.service > sendGuestDataToBackend: ", data);
-
     this.loadingSubject.next(true);
-
-    // Registrar datos de guest
     let URL = URL_SERVICE + "guests/register";
-    // http://localhost:3500/api/guests/register
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
      return this._http.post(URL, data, { headers }).subscribe({
@@ -356,14 +368,6 @@ export class AuthService {
     }
   }
 
-  localStorageSave(USER_FRONTED: any) {
-    sessionStorage.setItem("access_token", USER_FRONTED.accessToken);
-    sessionStorage.setItem("refresh_token", USER_FRONTED.refreshToken);
-    sessionStorage.setItem("user", JSON.stringify(USER_FRONTED.user));
-    this.token = USER_FRONTED.accessToken;
-    this.userSubject.next(USER_FRONTED.user);  
-  }
-
   getSessionId(): string | null {
     const guestUser = sessionStorage.getItem("user_guest");
     return guestUser ? JSON.parse(guestUser).session_id : null;
@@ -416,16 +420,32 @@ export class AuthService {
     sessionStorage.removeItem('access_token');
     sessionStorage.removeItem('refresh_token');
     sessionStorage.removeItem("user");
+    sessionStorage.removeItem("user_guest");
     this.token = null;
     this.userSubject.next(null);
+    this.userGuestSubject.next(null);
 
-    const storedUser = sessionStorage.getItem("user");
-    if (!storedUser) {
-      this.addGuestLocalStorage();
-    }
-   
+    this.deleteGuestAndAddresses().subscribe({
+      next: (resp: any) => {
+          sessionStorage.removeItem("user_guest");
+          this.addGuestLocalStorage();
+      },
+      error: err => {
+          console.error("❌ Error al limpiar datos guest al salir del checkout", err);
+      }
+    });
+    
     const { country, locale } = this.getLocaleAndCountry();
     this._router.navigate(['/', country, locale, 'home']);
+  }
+
+  deleteGuestAndAddresses(): Observable<any> {
+    
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE+"guests/removeAll";
+    return this._http.delete<any>(URL).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    );
   }
 
   removeUserGuestLocalStorage() {

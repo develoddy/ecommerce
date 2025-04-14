@@ -72,12 +72,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
   
-   ngAfterViewInit(): void {
-  //   setTimeout(() => {
-  //     HOMEINITTEMPLATE($);
-  //     //this.showRelatedProducts();
-  //   }, 150);
-   }
+  ngAfterViewInit(): void {}
 
   ngOnInit() {
     this.checkUserAuthenticationStatus();
@@ -87,7 +82,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     setTimeout(() => {
       HOMEINITTEMPLATE($);
-    }, 150);
+    }, 550);
   }
 
   private checkUserAuthenticationStatus(): void {
@@ -105,8 +100,6 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentUser) {
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
-        console.log(this.listCarts);
-        
         this.updateTotalCarts();
       });
     } 
@@ -192,9 +185,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goToCheckout(): void {
     this.subscriptionService.setShowSubscriptionSection(false);
-    //this.router.navigateByUrl('/checkout');
-
-    this.router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
+    this.router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
     //this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
       // .then(() => {
       //     // Recarga la página

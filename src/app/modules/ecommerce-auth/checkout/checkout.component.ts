@@ -87,7 +87,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
-    
     this.routerActived.params.subscribe((data: any) => {
       this.currentStep = data.step;
     });
@@ -96,18 +95,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {}
 
   ngOnInit(): void {
-    this.subscriptionService.setShowSubscriptionSection(false);
-    this._authEcommerce.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
-    });
-    
-    this._cartService.currenteDataCart$.subscribe((resp:any) => {
-      this.listCarts = resp;
-      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
-      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-    });
-
-    
+    this.loadLoading();
+    this.loadCurrentDataCart();
     this.verifyAuthenticatedUser();
 
     setTimeout(() => {
@@ -116,25 +105,37 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       
     }, 50);
 
-    // Detectar en qué paso está el usuario (componente hijo activo)
+    // DETECTAR EN QUE PASO ESTÁ EL USUARIO (COMPONENTE HIJO ACTIVO)
     this._router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.updateCurrentStep();
     });
 
-    this.updateCurrentStep(); // Llama al método al cargar el componente
+    this.updateCurrentStep();
   }
 
-  /**
-   * Detecta en qué componente hijo está el usuario al analizar la ruta activa y actualizar la propiedad currentStep.
-   */
+  loadLoading() {
+    this.subscriptionService.setShowSubscriptionSection(false);
+    this._authEcommerce.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
+  }
+
+  loadCurrentDataCart() {
+    this._cartService.currenteDataCart$.subscribe((resp:any) => {
+      this.listCarts = resp;
+      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+    });
+  }
+
+   
+  // DETECTA EN QUE COMPONENTE HIJO ESTÁ EL USUARIO AL ANALIZAR LA RUTA ACTIVA Y ACTUALIZAR LA PROPIEDAD CURRENTSTEP
   private updateCurrentStep(): void {
     const currentRoute = this.getActiveRoute(this.routerActived);
     if (currentRoute) {
       this.currentStep = currentRoute.snapshot.routeConfig?.path || '';
-      console.log('Componente hijo actual:', this.currentStep);
-
       // Ocultar el Nav step si estamos en 'login' o 'delivery'
       if (this.currentStep === 'delivery') {
         this.isCheckoutNavVisible = false; // Ocultar el Nav step checkout
@@ -154,24 +155,16 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   verifyAuthenticatedUser(): void {
-    // OBTENER LA URL ACTUAL PARA VERIFICAR EN QUE PASO ESTÁ EL USUARIO
-    //const currentPath = this.routerActived.snapshot.url.map(segment => segment.path);
-   
     this._authEcommerce._authService.user.pipe(take(1)).subscribe(user => {
       if (user) {
         this.CURRENT_USER_AUTHENTICATED = user;
         this.CURRENT_USER_GUEST = null;
-        console.log("Checkout ejecuta, se ha entrado como User ---> ", this.CURRENT_USER_AUTHENTICATED);
-        // SI ESTÁ EN LOGIN Y YA ESTÁ AUTENTICADO, REDIRIGIR A RESUMEN
-        //this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
         this.checkIfAddressClientExists();
       } else {
-        this._authEcommerce._authService.userGuest.pipe(take(1)).subscribe(guestUser => { // this._authEcommerce._authService.userGuest.subscribe(guestUser => {
+        this._authEcommerce._authService.userGuest.pipe(take(1)).subscribe(guestUser => {
           if (guestUser?.guest) {
             this.CURRENT_USER_GUEST = guestUser;
-            console.log("Checkout ejecuta, se ha entrado como Guest ---> ", this.CURRENT_USER_GUEST);
-           // this.handleGuestCheckout();
-           this.checkIfAddressGuestExists();
+            this.checkIfAddressGuestExists();
           } else {
             this.showLogin();
           }
@@ -181,7 +174,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   checkIfAddressClientExists() {
-    const currentUrl = this._router.url;
     if (this.CURRENT_USER_AUTHENTICATED) {
       this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
         (resp: any) => {
@@ -189,13 +181,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
           if (this.listAddressClients.length === 0) {
             // GUARDA LA URL ACTUAL EN SESSION STORARE
             sessionStorage.setItem('returnUrl', this._router.url); 
-            // SOLO REDIRIGE A ADD SI NO ESTÁ EN RESUMEN
-            if (!currentUrl.includes('resumen')) {
-              this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
-            }
+            // SOLO REDIRIGE A myaddresses SI NO ESTÁ EN RESUMEN
+            this._router.navigate(['/', , this.country, this.locale, 'account', 'myaddresses', 'add']); 
           } else {
-            console.log("Checkout componente ejecuta en la lunea 197, redirigir a resumen");
-            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
           }
       });
     }
@@ -208,26 +197,17 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         (resp: any) => {
           this.listAddressGuest = resp.addresses;
           if (this.listAddressGuest.length === 0) {
-            console.log("Checkout componente ejecuta en la lunea 211, redirigir a delivery");
-            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'delivery']);
-            
-            // // GUARDA LA URL ACTUAL EN SESSION STORAGE
-            // sessionStorage.setItem('returnUrl', this._router.url); 
-            // // SOLO REDIRIGE A ADD SI NO ESTÁ EN RESUMEN
-            // if (!currentUrl.includes('resumen')) {
-            //   this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'delivery']);
-            // }
+            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery']);
           } else {
-            console.log("Checkout componente ejecuta en la lunea 221, redirigir a resumen");
-            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
           }
       });
     }
   }
 
-  navigateToHome() {
+  navigateToCart() {
     this.subscriptionService.setShowSubscriptionSection(true);
-    this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
+    this._router.navigate(['/', this.country , this.locale, 'shop', 'cart']);
   }
 
   onCheckboxChange(event: any) {
@@ -470,15 +450,21 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       });
     this.subscriptions.add(subscriptionLogin);
   }
+
   showLogin(): void {
     this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'login']); // Redirige al componente de login
   }
      
-
   handleGuestCheckout() {
-    // En resumen, cada vez que haya un cambio en los datos del carrito, este código redirige al usuario a una página de resumen de la compra, pasando ciertos parámetros para controlar el flujo de la aplicación.
+    // En resumen, cada vez que haya un cambio en los datos del carrito, este código redirige al usuario a 
+    // una página de resumen de la compra, pasando ciertos parámetros para controlar el flujo de la aplicación.
     this._cartService.currenteDataCart$.subscribe(() => {
-        this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' }});
+        this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { 
+          queryParams: { 
+            initialized: true, 
+            from: 'step2' 
+          }
+        });
     });
   }
 
@@ -491,24 +477,17 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     if (guestData) {
       const parsedGuest = JSON.parse(guestData);
 
-      /*
-      this._authEcommerce.registerAddressClient(data).subscribe(
-        (resp:any) => {
-        }, error => {
-      });
-      */
-
       const deleteSubscription = this._authEcommerce.deleteGuestAndAddresses().subscribe(
         (resp:any) => {
-          console.log("✅ Respuesta completa del servidor:", resp);
           sessionStorage.removeItem("user_guest");
           this._authEcommerce._authService.userGuestSubject.next(null);
+          this._authService.addGuestLocalStorage();
         }, error => {
           console.error("Error eliminando guest y addresses", error);
         }
       );
 
-        this.subscriptions.add(deleteSubscription);
+      this.subscriptions.add(deleteSubscription);
     }
   }
 }

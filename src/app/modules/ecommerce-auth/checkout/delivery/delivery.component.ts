@@ -144,7 +144,7 @@ export class DeliveryComponent implements OnInit {
           this.hideMessageAfterDelay();
           alertSuccess(resp.message);
           this.resetForm();
-          this.router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+          this.router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
         } else {
           this.status = false;
           this.errorOrSuccessMessage = "Error al registrar la dirección.";

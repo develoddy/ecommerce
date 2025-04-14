@@ -30,7 +30,8 @@ export class AppComponent implements OnInit {
     private titleService: Title, 
     private bodyClassService: BodyClassService,
     private localizationService: LocalizationService,
-    private headerEventsService: HeaderEventsService
+    private headerEventsService: HeaderEventsService,
+    private guestCleanupService: GuestCleanupService,
   ) {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translate.get('app.title').subscribe((res: string) => {
@@ -50,9 +51,7 @@ export class AppComponent implements OnInit {
   }
 
   handleForceLogin() {
-    console.log("-----> Desde app.compoente se llamada el inicio de session y tiene q tener reloaddd...");
     this.router.navigate(['/', this.country, this.locale,  'auth', 'login']).then(() => {window.location.reload();});
   }
-  
 }
 

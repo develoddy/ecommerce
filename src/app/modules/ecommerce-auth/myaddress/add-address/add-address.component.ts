@@ -96,10 +96,6 @@ export class AddAddressComponent implements OnInit {
   }
 
   public store() {
-    //console.log("this.CURRENT_USER_AUTHENTICATED.user_guest: ", this.CURRENT_USER_AUTHENTICATED);
-    //const isGuest = this.CURRENT_USER_AUTHENTICATED.user_guest;
-    //console.log("Add-address.componente invitado: ", isGuest);
-    
     if ( !this.address_client_selected ) {
       this.registerAddress();
     } 
@@ -139,10 +135,7 @@ export class AddAddressComponent implements OnInit {
         this.hideMessageAfterDelay();
         alertSuccess(resp.message);
         this.resetForm();
-        sessionStorage.removeItem('returnUrl');
-        console.log("Debbug registerAddressla url back navigate to: ", this.returnUrl);
-        this.router.navigate([this.returnUrl]);
-        //this.router.navigate(['/', this.locale, this.country, 'account', this.returnUrl]);
+        this.router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
 
       } else {
         this.status = false;

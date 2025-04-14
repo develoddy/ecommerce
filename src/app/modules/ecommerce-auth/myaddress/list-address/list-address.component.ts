@@ -43,8 +43,7 @@ export class ListAddressComponent implements OnInit  {
 
   ngOnInit(): void {
     this.SPINNER();
-    //this.verifyAuthenticatedUser();
-    this.showProfileClient();
+    this.verifyAuthenticatedUser();
   }
 
   private SPINNER() {
@@ -57,10 +56,10 @@ export class ListAddressComponent implements OnInit  {
     this._ecommerceAuthService._authService.user.subscribe( user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;
-        
+        this.showProfileClient();
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
-        this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
+        this.router.navigate(['/', this.country, this.locale, 'auth', 'login']);
       }
     });
   }

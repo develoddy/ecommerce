@@ -29,10 +29,15 @@ export class GuestCleanupService {
     return isLeavingCheckout;
   }
 
-  private cleanGuestData(): void {
+  cleanGuestData(): void {
+    
+    
     const accessToken = localStorage.getItem("access_token");
     const guestData = sessionStorage.getItem("user_guest");
-    if (guestData && !accessToken) {
+
+    console.log("entra en clean Guest Data", guestData);
+    //if (guestData && !accessToken) {
+    if (!accessToken) {
         // Solo si es un invitado y no está logueado
         this.authEcommerce.deleteGuestAndAddresses().subscribe({
             next: (resp: any) => {

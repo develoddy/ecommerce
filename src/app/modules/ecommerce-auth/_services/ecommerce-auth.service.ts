@@ -20,22 +20,10 @@ export class EcommerceAuthService {
 
   // ---------- GUESTS -----------------
   deleteGuestAndAddresses(): Observable<any> {
-    console.log("eliminando delete Gues  address en servicie");
     
     this.loadingSubject.next(true);
     let URL = URL_SERVICE+"guests/removeAll";
     return this._http.delete<any>(URL).pipe(
-      // tap((resp) => {
-      //   console.log("✅ Respuesta completa del servidor:", resp);
-      // }),
-      // catchError((error) => {
-      //   console.error("Error al eliminar los datos del invitado:", error);
-      //   return of(null); // Devuelve un observable vacío si hay error
-      // }),
-      // finalize(() => {
-      //   this.loadingSubject.next(false);
-      //   console.log("Finalizando la solicitud.");
-      // })
       finalize(() => this.loadingSubject.next(false))
     );
   }

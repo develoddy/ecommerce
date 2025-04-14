@@ -544,13 +544,16 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     });
   }
 
-  storeCart(product: any) {
-    const isGuest = this.currentUser.user_guest;
-    this.saveCart(product, isGuest);
+  // VER EL CURRENT USER SI ES AUTENTICADO O GUEST
+  //storeCart(product: any) {
+    storeCart() {
+    //const isGuest = this.currentUser.user_guest;
+    //this.saveCart(product, isGuest);
+    this.saveCart();
   }
 
-  private saveCart(product: any, isGuest: String) {
-
+  //private saveCart(product: any, isGuest: String) {
+  private saveCart() {
     if ($("#qty-cart").val() == 0) {
       this.errorResponse = true;
       this.errorMessage = "Elija una cantidad válida para añadir al carrito";
@@ -574,8 +577,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     let data = {
-      user: isGuest ? null : this.currentUser._id,
-      user_status: isGuest,
+      user: this.currentUser._id,
+      user_status: this.currentUser.user_guest,
       product: this.product_selected._id,
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
@@ -588,7 +591,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
     };
 
-    if (isGuest) {
+    if (this.currentUser.user_guest == "Guest") {
       this.cartService.registerCartCache(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
     } else {
       this.cartService.registerCart(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
