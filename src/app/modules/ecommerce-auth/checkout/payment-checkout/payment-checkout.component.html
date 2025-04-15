@@ -1,4 +1,5 @@
-<div [ngClass]="{'tab-pane': true,'active': isLastStepActive_3 && CURRENT_USER_AUTHENTICATED && !isSaleSuccess,'fade': listAddressClients.length === 0 }" id="steps3">
+<!-- <div [ngClass]="{'tab-pane': true,'active': isLastStepActive_3 && CURRENT_USER_AUTHENTICATED && !isSaleSuccess,'fade': listAddressClients.length === 0 }" id="steps3"> -->
+<div id="steps3">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-7 col-lg-7">
             <!--Delivery Methods-->
@@ -45,7 +46,8 @@
                                                     <label>Envío Seleccionado <span class="required">*</span></label>
                                                     <select name="country_id" class="form-control" (change)="onAddressChange($event)">
                                                         <option value="">Por favor seleccione</option>
-                                                        <ng-container *ngFor="let list_address of listAddressClients; let i=index">
+                                                        <!-- <ng-container *ngFor="let list_address of listAddressClients; let i=index"> -->
+                                                        <ng-container *ngFor="let list_address of listAddresses; let i=index">
                                                             <option [value]="i">{{ list_address.name +' '+ list_address.surname +' | '+ list_address.address }}</option> 
                                                         </ng-container>
                                                     </select>

@@ -581,9 +581,9 @@
         <li class="mobile-menu-bottom">
             <div class="mobile-links"> 
                 <ul class="list-inline d-inline-flex flex-column w-100">
-                    <li *ngIf="!currentUser.email"><a href="login.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'login']"><i class="icon anm anm-sign-in-al"></i>Iniciar sesión</a></li>
-                    <li *ngIf="!currentUser.email"><a href="register.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'register']"><i class="icon anm anm-user-al"></i>Registrar</a></li>
-                    <li *ngIf="currentUser.email"><a href="my-account.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', locale, country, 'account', 'my-account']"><i class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
+                    <li *ngIf="!currentUser.email"><a href="login.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', country, locale,  'auth', 'login']"><i class="icon anm anm-sign-in-al"></i>Iniciar sesión</a></li>
+                    <li *ngIf="!currentUser.email"><a href="register.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', country, locale,  'auth', 'register']"><i class="icon anm anm-user-al"></i>Registrar</a></li>
+                    <li *ngIf="currentUser.email"><a href="my-account.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', country, locale,  'account', 'my-account']"><i class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
 
                     <!-- <a href="my-account.html" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'my-account']" class="d-flex flex-row w-100">
                         <span class="flex-grow-1">Mi cuenta</span>

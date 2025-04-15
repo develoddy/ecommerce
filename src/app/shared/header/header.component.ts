@@ -75,7 +75,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
 
@@ -100,7 +99,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.currentUser) {
           this.processUserStatus();  // Procesar el usuario
         } else {
-          console.log("Error: No hay usuario autenticado o invitado.");
+          console.warn("Error: No hay usuario autenticado o invitado.");
         }
       })
     );
@@ -114,7 +113,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       
       let user_guest = "Guest";
       this.cartService.listCartsCache(user_guest).subscribe((resp: any) => {
-        console.log("----> processUserStatus listCartCache resp: ", resp);
         if (resp.carts.length > 0) {
           this.syncUserCart();
         }
@@ -130,7 +128,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.cartService.resetCart();
       this.listCartsDatabase();
     } else {
-      console.log("Error: Estado de usuario no definido");
+      console.warn("Error: Estado de usuario no definido");
     }
   }
 
@@ -168,7 +166,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       },
       error: (error) => {
-          console.error("Error al obtener los carritos: ", error);
+        console.error("Error al obtener los carritos: ", error);
       }
     });
   }
@@ -239,7 +237,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (!isGuest) {
       this.listWishlistsDatabase();
     } else {
-      console.log("Error: Estado de usuario no definido");
+      console.warn("Error: Estado de usuario no definido");
     }
   }
   

@@ -164,33 +164,6 @@ export class ResumenCheckoutComponent implements OnInit {
     }
   }
 
-
-
-
-  // checkIfAddressClientExistsOLD__() {
-  //   if (this.CURRENT_USER_AUTHENTICATED) {
-  //     this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-  //       (resp: any) => {
-  //         this.listAddressClients = resp.address_client;
-  //         if (this.listAddressClients.length === 0) {
-  //           sessionStorage.setItem('returnUrl', this._router.url);
-  //           this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']);
-  //         }
-  //     });
-  //   } else if (this.CURRENT_USER_GUEST) {
-  //     this._authEcommerce.listOneAdessGuest(this.CURRENT_USER_GUEST._id).subscribe(
-  //       (resp: any) => {
-  //         if (resp.addresses.length === 0) {
-  //           alertWarning("Este usuario invitado no tiene direcciones guardadas");
-  //         } else {
-  //           this.listAddressGuest = resp.addresses;
-  //         }
-  //       }, error => {
-  //         alertDanger(error.message);
-  //       });
-  //   }
-  // }
-
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
     this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
@@ -198,10 +171,7 @@ export class ResumenCheckoutComponent implements OnInit {
 
   goToNextStep() {
     this.checkoutService.setNavigatingToPayment(true);
-    this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'payment']);
-    // .then(() => {
-    //   window.location.reload();
-    // });
+    this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
   }
 
   getFormattedPrice(price: any) {

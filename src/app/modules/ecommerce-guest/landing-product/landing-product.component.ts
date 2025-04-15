@@ -62,7 +62,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   firstImage: string = '';
   coloresDisponibles: { color: string, imagen: string }[] = [];
   variedades: any[] = [];
-  availableSizesCamisetas = ['S', 'M', 'L', 'XL', 'XXL'];  
+  availableSizesCamisetas = ['L', 'M', 'S', 'XL', 'XXL'];  
   availableSizesZapatillas = ["37", "38", "39", "40", "41", "42"];
   availableSizesGorra = ["One size"];
   availableSizesPerfume = ["50ML", "100ML"];
@@ -250,9 +250,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     // Selecciona el array de tallas de acuerdo a la categoría del producto
     const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
 
-    console.log("SortVariedades: ", categoryTitle);
-    
-    
     let availableSizes:any = [];
     if (categoryTitle.toLowerCase().includes('t-shirts')) {
       availableSizes = this.availableSizesCamisetas;
@@ -263,8 +260,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     } else if (categoryTitle.toLowerCase().includes('hoodies')) {
       availableSizes = this.availableSizesCamisetas;
     }
-    
-    //console.log("--- availableSizes: ", availableSizes);
+
     // Mapea las tallas disponibles, mostrando stock positivo o tachado si no hay stock
     this.variedades = availableSizes.map((size:any) => {
       const foundVariedad = this.variedades.find(variedad => variedad.valor === size && variedad.stock > 0);
@@ -272,7 +268,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }).sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1));
 
     // Selecciona la primera variedad con stock positivo
-    //this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
     this.variedad_selected = null;
     this.activeIndex = 0;
   }
@@ -308,12 +303,10 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   private showProfileClient(currentUser:any) {
     let data = {user_id: currentUser._id};
     const saleSubscription =  this.ecommerceAuthService.showProfileClient(data).subscribe( ( resp: any ) => {
-      console.log("310 ---> resp", resp);
-      
-      this.sale_orders = resp.sale_orders;
-      this.sale_details = this.extractSaleDetails(resp.sale_orders); 
-      this.handleSaleDetailAndReview();
-    });
+    this.sale_orders = resp.sale_orders;
+    this.sale_details = this.extractSaleDetails(resp.sale_orders); 
+    this.handleSaleDetailAndReview();
+  });
 
     this.subscriptions.add(saleSubscription);
   }
@@ -336,12 +329,10 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         (review: any) => review.productId === this.product_selected._id
       );
       if (otherReviews.length > 0) {
-        //console.log("Mostrando reseñas de otros usuarios:", otherReviews);
         // AQUI PODRÍAS MOSTRAR ESTAS RESEÑAS EN EL UI
         // POR EJEMPLO, PODRÍAS ASIGNAR A UNA VARIABLE EN EL COMPONENTE PARA RENDERIZAR EN EL TEMPLATE
         // this.displayOtherReviews(otherReviews);
       } else {
-        //console.log("No hay reseñas disponibles para este producto.");
         this.viewReview(null); // O cualquier otro comportamiento que desees
       }
     }
@@ -435,7 +426,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   //   return discount;
   // }
 
-
   getDiscount() {
     let discount = 0;
     if (this.SALE_FLASH) {
@@ -450,7 +440,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     return discount;
   }
   
-
   getCalNewPrice(product:any) {
     // if (this.FlashSale.type_discount == 1) {
     //   return product.price_soles - product.price_soles*this.FlashSale.discount*0.01;
@@ -470,12 +459,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1)); // Ordenar las tallas de menor a mayor
 
     const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
-
-    // Detecta si el producto es de tipo zapatillas, camiseta, gorra o perfume
-    const isZapatos = categoryTitle.toLowerCase().includes('zapatillas');
+    
     const isCamisa = categoryTitle.toLowerCase().includes('t-shirts');
+    const allShirts = categoryTitle.toLowerCase().includes('all shirts');
     const isGorra = categoryTitle.toLowerCase().includes('snapbacks');
-    const isPerfume = categoryTitle.toLowerCase().includes('all shirts');
+    const isZapatos = categoryTitle.toLowerCase().includes('zapatillas');
 
     // Determina las tallas disponibles según la categoría
     let filteredSizes: string[] = [];
@@ -485,8 +473,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         filteredSizes = this.availableSizesCamisetas;
     } else if (isGorra) {
         filteredSizes = this.availableSizesGorra;
-    } else if (isPerfume) {
-        filteredSizes = this.availableSizesPerfume;
+    } else if (allShirts) {
+        filteredSizes = this.availableSizesCamisetas;
     }
 
     // Mapea las tallas de la categoría y marca las no disponibles
@@ -537,22 +525,16 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         alertSuccess( resp.message_text );
       }
     }, error => {
-      console.log("__ Debbug > Error Register Wishlist 431: ", error.error.message);
       if (error.error.message == "EL TOKEN NO ES VALIDO") {
         this.wishlistService._authService.logout();
       }
     });
   }
 
-  // VER EL CURRENT USER SI ES AUTENTICADO O GUEST
-  //storeCart(product: any) {
-    storeCart() {
-    //const isGuest = this.currentUser.user_guest;
-    //this.saveCart(product, isGuest);
+  storeCart() {
     this.saveCart();
   }
 
-  //private saveCart(product: any, isGuest: String) {
   private saveCart() {
     if ($("#qty-cart").val() == 0) {
       this.errorResponse = true;
@@ -737,11 +719,9 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnDestroy(): void {
-    // Desuscribir todas las suscripciones en el método OnDestroy
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     } 
-    // Limpiar los eventos y plugins que fueron inicializados
     cleanupProductZoom($);
     this.cleanupPSWP();
     cleanupHOMEINITTEMPLATE($);

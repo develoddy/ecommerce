@@ -100,17 +100,15 @@ export class AuthService {
       map(( resp: any ) => {
         if (  resp.USER_FRONTED  && resp.USER_FRONTED.accessToken && resp.USER_FRONTED.refreshToken ) {
           this.localStorageSave(resp.USER_FRONTED);
-          //this.removeUserGuestLocalStorage();
-          this.deleteGuestAndAddresses().subscribe({
-            next: (resp: any) => {
-              this.removeUserGuestLocalStorage();
-                //sessionStorage.removeItem("user_guest");
-                //this.addGuestLocalStorage();
-            },
-            error: err => {
-                console.error("❌ Error al limpiar datos guest al salir del checkout", err);
-            }
-          });
+          this.removeUserGuestLocalStorage();
+          // this.deleteGuestAndAddresses().subscribe({
+          //   next: (resp: any) => {
+          //     this.removeUserGuestLocalStorage();
+          //   },
+          //   error: err => {
+          //       console.error("❌ Error al limpiar datos guest al salir del checkout", err);
+          //   }
+          // });
           return true;
 
         } else {

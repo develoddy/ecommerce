@@ -6,6 +6,7 @@ import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.servi
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { CheckoutService } from '../../_services/checkoutService';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -24,6 +25,7 @@ export class PaymentCheckoutComponent implements OnInit {
   @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   euro = "€";
   listAddressClients:any = [];
+  listAddressGuest:any = [];
   // Address
   name: string = '';
   surname: string = '';
@@ -44,7 +46,7 @@ export class PaymentCheckoutComponent implements OnInit {
   sale: any;
   saleDetails: any =[];
   isSaleSuccess = false;
-  CURRENT_USER_AUTHENTICATED:any=null;
+  
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
@@ -60,6 +62,9 @@ export class PaymentCheckoutComponent implements OnInit {
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
   status:boolean=false;
+
+  CURRENT_USER_AUTHENTICATED:any=null;
+  CURRENT_USER_GUEST:any=null;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -77,11 +82,10 @@ export class PaymentCheckoutComponent implements OnInit {
     private subscriptionService: SubscriptionService,
     public routerActived: ActivatedRoute,
     private checkoutService: CheckoutService,
+    private localizationService: LocalizationService
   ) {
-    this.routerActived.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado
-      this.country = params.get('country') || 'es'; // Valor predeterminado
-    });
+      this.country = this.localizationService.country;
+      this.locale = this.localizationService.locale;
   }
 
   ngAfterViewInit() {
@@ -184,29 +188,33 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-     // Emitir un evento con el valor que desees
-    this.activate.emit(true);
-     
-    this.subscriptionService.setShowSubscriptionSection(false);
-    this._authEcommerce.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
-    });
-
+    this.loadSPINER();
     this.verifyAuthenticatedUser();
-
-    this.checkIfAddressClientExists();
-  
-    this._cartService.currenteDataCart$.subscribe((resp:any) => {
-      this.listCarts = resp;
-      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
-      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-    });
+    this.loadCurrentDataCart();
 
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
-    }, 50);
+    }, 150);
+  }
+
+  loadSPINER() {
+    this.subscriptionService.setShowSubscriptionSection(false);
+    this._authEcommerce.loading$.subscribe(isLoading => {
+      this.loading = isLoading;
+    });
+  }
+
+  loadCurrentDataCart() {
+    this.subscriptions.add(
+      this._cartService.currenteDataCart$.subscribe((resp:any) => {
+        this.listCarts = resp;
+        console.log(this.listCarts);
+        
+        this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+      })
+    );
   }
 
   getFormattedPrice(price: any) {
@@ -229,35 +237,55 @@ export class PaymentCheckoutComponent implements OnInit {
     this._authEcommerce._authService.user.subscribe(user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;
+        this.CURRENT_USER_GUEST = null;
+        this.checkIfAddressClientExists();
       } else {
-        this.CURRENT_USER_AUTHENTICATED = null;
-        this.isLastStepActive_1 = true;
+        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
+          if (guestUser?.guest) {
+            this.CURRENT_USER_GUEST = guestUser;
+            this.checkIfAddressGuestExists();
+          } else {
+            this.CURRENT_USER_GUEST = null;
+          }
+        });
       }
     });
   }
 
   checkIfAddressClientExists() {
-    this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-      (resp: any) => {
-        this.listAddressClients = resp.address_client;
-        if (this.listAddressClients.length === 0) {
-          sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-          this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
-        }
-    });
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
+        (resp: any) => {
+          this.listAddressClients = resp.address_client;
+      });
+    }
   }
+
+  checkIfAddressGuestExists() {
+    if (this.CURRENT_USER_GUEST) {
+      this._authEcommerce.listAddressGuest().subscribe(
+        (resp: any) => {
+          this.listAddressGuest = resp.addresses;
+      });
+    }
+  }
+
+  get listAddresses(): any[] {
+    return this.CURRENT_USER_AUTHENTICATED ? this.listAddressClients : this.listAddressGuest;
+  }
+  
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
     this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
   }
 
-  goToNextStep() {
-    this.isLastStepActive_2 = true;
-    this.isLastStepActive_3 = true;
-    this.isLastStepActive_4 = false;
-    this.isSaleSuccess = false;
-  }
+  // goToNextStep() {
+  //   this.isLastStepActive_2 = true;
+  //   this.isLastStepActive_3 = true;
+  //   this.isLastStepActive_4 = false;
+  //   this.isSaleSuccess = false;
+  // }
 
   onCheckboxChange(event: any) {
     this.isAddressSameAsShipping = event.target.checked;

@@ -4,7 +4,7 @@ import { CartService } from '../../ecommerce-guest/_service/cart.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { AuthService } from '../../auth-profile/_services/auth.service';
-import { filter, Subscription, take } from 'rxjs';
+import { filter, Subject, Subscription, take, takeUntil } from 'rxjs';
 import { CheckoutService } from '../_services/checkoutService';
 import { LocalizationService } from 'src/app/services/localization.service';
 
@@ -44,17 +44,18 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   sale: any;
   saleDetails: any =[];
   isSaleSuccess = false;
+  PAYMENT:boolean=false;
   
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
-  isLastStepActive_1: boolean = false;
-  isLastStepActive_2: boolean = false;
-  isLastStepActive_3: boolean = false;
-  isLastStepActive_4: boolean = false;
+  // isLastStepActive_1: boolean = false;
+  // isLastStepActive_2: boolean = false;
+  // isLastStepActive_3: boolean = false;
+  // isLastStepActive_4: boolean = false;
   url: string = "";
 
-  isNavigatingToPayment: boolean = false;
+  //isNavigatingToPayment: boolean = false;
   errorAutenticate:boolean=false;
   errorMessageAutenticate:string="";
   password_identify:string = "";
@@ -72,7 +73,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   locale: string = "";
   country: string = "";
   currentStep: string = '';  // Paso actual de checkout
+  
   isCheckoutNavVisible: boolean = true; // Inicializa en true para mostrar el Nav step de manera predeterminada
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
@@ -96,23 +100,48 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadLoading();
+    this.subscribeToCheckoutEvents();
     this.loadCurrentDataCart();
     this.verifyAuthenticatedUser();
+    this.initializeExternalScripts();
+    this.watchRouteChanges();
+    this.updateCurrentStep();
+  }
 
+  private initializeExternalScripts(): void {
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
-      
-    }, 50);
+    }, 150);
+  }
 
+  private watchRouteChanges(): void {
     // DETECTAR EN QUE PASO ESTÁ EL USUARIO (COMPONENTE HIJO ACTIVO)
     this._router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.updateCurrentStep();
     });
+  }
 
-    this.updateCurrentStep();
+  private subscribeToCheckoutEvents(): void {
+    this.checkoutService.navigatingToPayment$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(value => {
+      if (value) {
+        console.log("--> Checkout escuchando navigatingToPayment: ", value);
+        this.currentStep = 'payment'; // o 3 si lo manejas como número
+      }
+    });
+
+    this.checkoutService.isSaleSuccess$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(value => {
+      if (value) {
+        console.log("--> Checkout escuchando isSaleSuccess: ", value);
+        this.currentStep = 'successfull'; // o 4 si lo manejas como número
+      }
+    });
   }
 
   loadLoading() {
@@ -130,7 +159,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     });
   }
 
-   
   // DETECTA EN QUE COMPONENTE HIJO ESTÁ EL USUARIO AL ANALIZAR LA RUTA ACTIVA Y ACTUALIZAR LA PROPIEDAD CURRENTSTEP
   private updateCurrentStep(): void {
     const currentRoute = this.getActiveRoute(this.routerActived);
@@ -145,7 +173,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     }
   }
   
-
   private getActiveRoute(route: ActivatedRoute): ActivatedRoute {
     // Recursivamente accede a la ruta hija más profunda
     if (!route.firstChild) {
@@ -182,9 +209,13 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             // GUARDA LA URL ACTUAL EN SESSION STORARE
             sessionStorage.setItem('returnUrl', this._router.url); 
             // SOLO REDIRIGE A myaddresses SI NO ESTÁ EN RESUMEN
-            this._router.navigate(['/', , this.country, this.locale, 'account', 'myaddresses', 'add']); 
+            this._router.navigate(['/', this.country, this.locale, 'account', 'myaddresses', 'add']); 
           } else {
-            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+            if (this.currentStep === 'payment') {
+              this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
+            } else {
+              this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+            }
           }
       });
     }
@@ -199,7 +230,11 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
           if (this.listAddressGuest.length === 0) {
             this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery']);
           } else {
-            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+            if (this.currentStep === 'payment') {
+              this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
+            } else {
+              this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+            }
           }
       });
     }
@@ -472,6 +507,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     }
+    
 
     const guestData = sessionStorage.getItem("user_guest");
     if (guestData) {
@@ -489,5 +525,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
       this.subscriptions.add(deleteSubscription);
     }
+
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

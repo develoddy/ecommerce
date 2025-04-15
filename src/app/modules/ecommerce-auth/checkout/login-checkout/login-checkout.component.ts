@@ -84,9 +84,7 @@ export class LoginCheckoutComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
-   
-  }
+  ngAfterViewInit() {}
 
   ngOnInit(): void {
 

@@ -66,7 +66,7 @@
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">  
                     <!--Nav step checkout-->
-                    <ng-container *ngIf="isCheckoutNavVisible">
+                    <!-- <ng-container *ngIf="isCheckoutNavVisible">
                         <div id="nav-tabs" class="step-checkout main-vertical-component clearfix">
                             <div class="row-fluid stepsCheckout">
                                 <div class="span12" role="navigation">
@@ -77,7 +77,7 @@
                                         <div class="span3 margin" [ngClass]="{'medium': (CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST), '': !CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST}" role="listitem" aria-current="step">
                                             Envío
                                         </div>
-                                        <div class="span3 margin" [ngClass]="{'medium': isNavigatingToPayment && !isSaleSuccess,  '':  !isNavigatingToPayment && isSaleSuccess}" role="listitem" aria-current="true">
+                                        <div class="span3 margin" [ngClass]="{'medium': !CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST || PAYMENT,  '':  !CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST || !PAYMENT}" role="listitem" aria-current="true">
                                             Pago
                                         </div>
                                         <div class="span3 margin" [ngClass]="{'medium': isSaleSuccess, '': !isSaleSuccess}" role="listitem" aria-current="step">
@@ -90,10 +90,10 @@
                                         <div class="span3" [ngClass]="{'medium1': !CURRENT_USER_AUTHENTICATED,  '':  CURRENT_USER_AUTHENTICATED}">
                                             <div class="flechaSteps"></div>
                                         </div> 
-                                        <div class="span3" [ngClass]="{'medium2': (CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST) && !isNavigatingToPayment,  '' :  (!CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST) && isNavigatingToPayment}">
+                                        <div class="span3" [ngClass]="{'medium2': (CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST),  '' :  (!CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST) }">
                                             <div class="flechaSteps"></div>
                                         </div>
-                                        <div class="span3" [ngClass]="{ 'medium3': isNavigatingToPayment && !isSaleSuccess,  '':  !isNavigatingToPayment && isSaleSuccess}">
+                                        <div class="span3" [ngClass]="{ 'medium3': !CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST || PAYMENT,  '': !CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST || !PAYMENT}">
                                             <div class="flechaSteps"></div>
                                         </div>
                                         <div class="span3" [ngClass]="{ 'medium4': isSaleSuccess,  '':  !isSaleSuccess}">
@@ -103,8 +103,52 @@
                                 </div>
                             </div>
                         </div>
+                    </ng-container> -->
+                    <!--End Nav step checkout-->
+
+                    <!--Nav step checkout-->
+                    <ng-container *ngIf="isCheckoutNavVisible">
+                        <div id="nav-tabs" class="step-checkout main-vertical-component clearfix">
+                        <div class="row-fluid stepsCheckout">
+                            <div class="span12" role="navigation">
+                            <div class="row-fluid labelSteps" role="list">
+                                <div class="span3 margin" [ngClass]="{'medium': currentStep === 'login'}" role="listitem">
+                                Identifícate
+                                </div>
+                                <div class="span3 margin" [ngClass]="{'medium': currentStep === 'resumen'}" role="listitem">
+                                Envío
+                                </div>
+                                <div class="span3 margin" [ngClass]="{'medium': currentStep === 'payment'}" role="listitem">
+                                Pago
+                                </div>
+                                <div class="span3 margin" [ngClass]="{'medium': currentStep === 'successfull'}" role="listitem">
+                                Confirmación
+                                </div>
+                            </div>
+                            </div>
+                    
+                            <div class="span12" aria-hidden="true">
+                            <div class="row-fluid bolasSteps">
+                                <div class="span3" [ngClass]="{'medium1': currentStep === 'login'}">
+                                <div class="flechaSteps"></div>
+                                </div> 
+                                <div class="span3" [ngClass]="{'medium2': currentStep === 'resumen'}">
+                                <div class="flechaSteps"></div>
+                                </div>
+                                <div class="span3" [ngClass]="{'medium3': currentStep === 'payment'}">
+                                <div class="flechaSteps"></div>
+                                </div>
+                                <div class="span3" [ngClass]="{'medium4': currentStep === 'successfull'}">
+                                <div class="flechaSteps"></div>
+                                </div>
+                            </div>
+                            </div>
+                    
+                        </div>
+                        </div>
                     </ng-container>
                     <!--End Nav step checkout-->
+  
                     
                     <!--Tab checkout content-->
                     <div class="tab-content checkout-form">
