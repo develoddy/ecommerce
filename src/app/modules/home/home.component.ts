@@ -90,19 +90,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   ngOnInit(): void {
-    // Suscribirse al observable para saber cuando mostrar u ocultar el loading
-    this.subscription = this.homeService.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
-    });
-
+    
+    this.loadSPINER();
     this.checkCookieConsent();
-
-    this.verifyAuthenticatedUser(); // Verifica el usuario autenticado
-
+    this.verifyAuthenticatedUser();
     this.checkDeviceType();
-
     this.subscribeToCartData(); 
-
     this.subscribeToWishlistData();
 
     let TIME_NOW = new Date().getTime();
@@ -133,28 +126,38 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       setTimeout(() => {
-        if (this.FlashSale) {
-          var eventCounter = $(".sale-countdown");
-          let PARSE_DATE = new Date(this.FlashSale.end_date);
-          
-          let DATE = PARSE_DATE.getFullYear() + "/" + (PARSE_DATE.getMonth()+1) + "/" + (PARSE_DATE.getDate())
-          if (eventCounter.length) {
-              eventCounter.countdown(DATE, function(e:any) {
-                eventCounter.html(
-                      e.strftime(
-                          "<div class='countdown-section'><div><div class='countdown-number'>%-D</div> <div class='countdown-unit'>Day</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%H</div> <div class='countdown-unit'>Hrs</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%M</div> <div class='countdown-unit'>Min</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%S</div> <div class='countdown-unit'>Sec</div> </div></div>"
-                      )
-                  );
-              });
+        this.loadSPINER();
+
+        setTimeout(() => {
+          if (this.FlashSale) {
+            var eventCounter = $(".sale-countdown");
+            let PARSE_DATE = new Date(this.FlashSale.end_date);
+            
+            let DATE = PARSE_DATE.getFullYear() + "/" + (PARSE_DATE.getMonth()+1) + "/" + (PARSE_DATE.getDate())
+            if (eventCounter.length) {
+                eventCounter.countdown(DATE, function(e:any) {
+                  eventCounter.html(
+                        e.strftime(
+                            "<div class='countdown-section'><div><div class='countdown-number'>%-D</div> <div class='countdown-unit'>Day</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%H</div> <div class='countdown-unit'>Hrs</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%M</div> <div class='countdown-unit'>Min</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%S</div> <div class='countdown-unit'>Sec</div> </div></div>"
+                        )
+                    );
+                });
+            }
           }
-        }
-        HOMEINITTEMPLATE($);
-        this.extractTags();
-      }, 150);
+          HOMEINITTEMPLATE($);
+          this.extractTags();
+        }, 50);
+      }, 800);
     });
 
-    //this.extractTags();
+    
     this.subscription?.add(listHomeSubscription);
+  }
+
+  loadSPINER() {
+    this.subscription = this.homeService.loading$.subscribe(isLoading => {
+      this.loading = !isLoading;
+    });
   }
 
   getPriceParts(price: number) {
@@ -162,7 +165,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     return { integer, decimals };
   }
   
-
   calculateFinalPrice(product: any): number {
     let discount = 0;
   

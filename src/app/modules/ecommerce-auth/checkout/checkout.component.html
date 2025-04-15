@@ -1,7 +1,7 @@
 <!--Page Wrapper-->
 <div class="page-wrapper">
     <!--Marquee Text-->
-    <ng-container *ngIf="isCheckoutNavVisible">
+    <!-- <ng-container *ngIf="isCheckoutNavVisible">
         <div class="topbar-slider clearfix">
             <div class="container-fluid">
                 <div class="marquee-text">
@@ -31,11 +31,11 @@
                 </div>
             </div>
         </div>
-    </ng-container>
+    </ng-container> -->
     <!--End Marquee Text-->
 
     <!-- Loading -->
-    <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+    <div *ngIf="!loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
             <div class="col-sm-2">
                 <div class="sp sp-bars"></div>
@@ -45,7 +45,7 @@
     <!-- End Loading -->
 
     <!-- Body Container -->
-    <div id="page-content">
+    <div id="page-content" [class.d-none]="!loading">
         <!--Page Header-->
         <div class="page-header mb-0 py-4 bg-transparent">
             <div class="container">

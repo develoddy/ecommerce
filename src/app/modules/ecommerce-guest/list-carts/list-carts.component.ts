@@ -60,9 +60,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     private metaService: Meta,
     public _wishlistService: WishlistService,
   ) {
-    this.cartService.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
-    });
+   
     this.updateSeo();
 
     // Obtenemos `locale` y `country` de la ruta actual
@@ -75,14 +73,27 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {}
 
   ngOnInit() {
+  
     this.checkUserAuthenticationStatus();
     this.getCarts();
     this.showRelatedProducts();
     this.subscribeToWishlistData();
 
     setTimeout(() => {
-      HOMEINITTEMPLATE($);
-    }, 550);
+      this.loadSPINER();
+      setTimeout(() => {
+        HOMEINITTEMPLATE($);
+      }, 50);
+    }, 750);
+  }
+
+  loadSPINER() {
+    this.cartService.loading$.subscribe(isLoading => {
+      //this.loading = isLoading;
+      //setTimeout(() => {
+        this.loading = !isLoading;
+      //}, 550);
+    });
   }
 
   private checkUserAuthenticationStatus(): void {

@@ -109,10 +109,14 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   private initializeExternalScripts(): void {
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
-      actionNetxCheckout($);
-    }, 150);
+
+    
+      this.loadLoading();
+      setTimeout(() => {
+        HOMEINITTEMPLATE($);
+        actionNetxCheckout($);
+      }, 150);
+    
   }
 
   private watchRouteChanges(): void {
@@ -146,9 +150,11 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
   loadLoading() {
     this.subscriptionService.setShowSubscriptionSection(false);
+    setTimeout(() => {
     this._authEcommerce.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
+      this.loading = !isLoading;
     });
+    }, 1500);
   }
 
   loadCurrentDataCart() {

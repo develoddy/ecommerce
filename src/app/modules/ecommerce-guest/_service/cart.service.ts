@@ -22,10 +22,10 @@ export class CartService {
   public cart = new BehaviorSubject<Array<any>>([]);
   public currenteDataCart$ = this.cart.asObservable();
   
-
-  constructor(public _authService: AuthService, public _http: HttpClient) {
-    // Code ...
-  }
+  constructor(
+    public _authService: AuthService, 
+    public _http: HttpClient
+  ) {}
 
 
   /**
@@ -78,11 +78,7 @@ export class CartService {
 
   listCarts(user_id:any): Observable<CartResponse> {
     this.loadingSubject.next(true);
-    //let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cart/list?user_id="+user_id; 
-    // return this._http.get(URL, { headers: headers }).pipe(
-    //   finalize(() => this.loadingSubject.next(false)) 
-    // );
     return this._http.get<CartResponse>(URL).pipe(
       finalize(() => this.loadingSubject.next(false))
     );
@@ -140,15 +136,6 @@ export class CartService {
     );
   }
 
-
-  syncCartWithBackend__OLD(data: any[], userId:any) {
-    this.loadingSubject.next(true);
-    let headers = new HttpHeaders({ 'token': this._authService.token });
-    let URL = URL_SERVICE+"cart/merge?user_id="+userId;
-    return this._http.post(URL, {data}, {headers: headers}).pipe(
-      finalize(() => this.loadingSubject.next(false)) 
-    );
-  }
 
   /**
    * ----------------------------------------------------------------
