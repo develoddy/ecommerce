@@ -120,25 +120,31 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnInit(): void {
-    this.subscriptions = this.ecommerceGuestService.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
-    });
-    
+   
+    this.loadSPINNER();
     this.checkUserAuthenticationStatus(); 
     this.subscribeToRouteParams();
     this.subscribeToQueryParams();
     this.checkDeviceType();
 
     // Verifica si se debe hacer scroll hacia arriba
-    if (sessionStorage.getItem('scrollToTop') === 'true') {
-      // Usar el evento load para asegurarse de que la página se haya cargado completamente
-      window.addEventListener('load', () => {
-          // Simula un clic en el botón de scroll hacia arriba
-          $('#site-scroll').trigger('click');
-          // Limpia la bandera
-          sessionStorage.removeItem('scrollToTop');
+    // if (sessionStorage.getItem('scrollToTop') === 'true') {
+    //   // Usar el evento load para asegurarse de que la página se haya cargado completamente
+    //   window.addEventListener('load', () => {
+    //       // Simula un clic en el botón de scroll hacia arriba
+    //       $('#site-scroll').trigger('click');
+    //       // Limpia la bandera
+    //       sessionStorage.removeItem('scrollToTop');
+    //   });
+    // }
+  }
+
+  loadSPINNER() {
+    setTimeout(() => {
+      this.subscriptions = this.ecommerceGuestService.loading$.subscribe(isLoading => {
+        this.loading = !isLoading;
       });
-    }
+    }, 1000);
   }
 
   private checkUserAuthenticationStatus(): void {

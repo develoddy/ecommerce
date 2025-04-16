@@ -1,7 +1,7 @@
 <!--Page Wrapper-->
 
 <!-- Loading -->
-<div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+<div *ngIf="!loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
     <div class="row">
         <div class="col-sm-2">
             <div class="sp sp-bars"></div>
@@ -12,7 +12,7 @@
 
 <div class="page-wrapper py-3" *ngIf="product_selected && related_products">
     <!-- Body Container -->
-    <div id="page-content py-5" [class.d-none]="loading"> 
+    <div id="page-content py-5" [class.d-none]="!loading"> 
         <!--Page Header-->
         <div class="page-header text-center d-none">
             <div class="container">

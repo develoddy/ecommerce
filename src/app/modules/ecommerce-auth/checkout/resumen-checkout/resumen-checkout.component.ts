@@ -85,14 +85,17 @@ export class ResumenCheckoutComponent implements OnInit {
   ngAfterViewInit() {}
 
   ngOnInit(): void {
-    this.loadLoading();
+    //this.loadLoading();
     this.verifyAuthenticatedUser();
     this.currentDataCart();
     
     setTimeout(() => {
-      HOMEINITTEMPLATE($);
-      actionNetxCheckout($);
-    }, 150);
+      this.loadLoading();
+      setTimeout(() => {
+        HOMEINITTEMPLATE($);
+        actionNetxCheckout($);
+      }, 150);
+    }, 1000);
   }
 
   private loadLoading() {
