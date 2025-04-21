@@ -140,14 +140,23 @@ export class EcommerceAuthService {
 
   // ------------- SALE FRONT CLIENTE ------------
 
-  registerSale(data:any) {
-    // Inicia el loading
+  registerSale(data:any, isGuest: boolean = false) {
     this.loadingSubject.next(true);
-    let headers = new HttpHeaders({'token': this._authService.token});
-    let URL = URL_SERVICE+"sale/register";
-    //return this._http.post(URL, data, {headers: headers});
+
+    //let headers = new HttpHeaders({'token': this._authService.token});
+    //let URL = URL_SERVICE+"sale/register";
+    
+    const headers = isGuest
+    ? {} // sin headers para invitado
+    : new HttpHeaders({ token: this._authService.token });
+
+    const URL = isGuest
+    ? URL_SERVICE + "sale/register-guest"
+    : URL_SERVICE + "sale/register";
+
+
     return this._http.post(URL, data, { headers: headers }).pipe(
-      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+      finalize(() => this.loadingSubject.next(false))
     );
   }
 

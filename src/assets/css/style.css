@@ -2688,7 +2688,7 @@ a.logo {
 
 .tabs-listing .product-tabs.style2 li a { color:#333333; background-color:#eeeeee; padding:12px 25px; margin: 0 5px; line-height: normal; }
 .tabs-listing .product-tabs.style2 li.active a, 
-.tabs-listing .product-tabs.style2 li:hover a { background-color: #424242; color: #ffffff; }
+.tabs-listing .product-tabs.style2 li:hover a { background-color: #000; color: #ffffff; }
 .tabs-listing .product-tabs.style2 li a:before { content:none; }
 
 .tabs-listing .product-tabs.style3 li a { color:#333333; background-color:#f5f5f5; border:1px solid transparent; border-bottom:0; padding:10px 25px; margin-right:10px; }

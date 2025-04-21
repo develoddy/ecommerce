@@ -89,6 +89,10 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    //console.log("Guest ID: ", this.CURRENT_USER_GUEST._id);
+    
+    const isGuest = !this.CURRENT_USER_AUTHENTICATED; //const isGuest = this.CURRENT_USER_AUTHENTICATED == null;
+
     paypal.Buttons({
       // optional styling for buttons
       // https://developer.paypal.com/docs/checkout/standard/customize/buttons-style-guide/
@@ -107,8 +111,8 @@ export class PaymentCheckoutComponent implements OnInit {
             return;
           }
 
-          if (!this.address_client_selected) {
-            //alertDanger("Por favor, seleccione una dirección de envío.");
+          //if (!this.address_client_selected) {
+            if( !this.listAddresses ) {
             this.validMessage = true;
             this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
             return;
@@ -132,7 +136,8 @@ export class PaymentCheckoutComponent implements OnInit {
           let Order = await actions.order.capture();
           // Order.purchase_units[0].payments.captures[0].id
           let sale = {
-            user: this.CURRENT_USER_AUTHENTICATED._id,
+            user: this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : undefined,
+            guestId: this.CURRENT_USER_GUEST ? this.CURRENT_USER_GUEST._id : null,
             currency_payment: "EUR",
             method_payment: "PAYPAL",
             n_transaction: Order.purchase_units[0].payments.captures[0].id,
@@ -154,10 +159,8 @@ export class PaymentCheckoutComponent implements OnInit {
             nota: '',
           };
 
-          this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}).subscribe(
+          this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}, isGuest).subscribe(
             (resp:any) => {
-
-              console.log("Debbug - component Payment-checkout - ", resp);
               
               this.isLastStepActive_3 = false;
               setTimeout(() => {
@@ -209,8 +212,6 @@ export class PaymentCheckoutComponent implements OnInit {
     this.subscriptions.add(
       this._cartService.currenteDataCart$.subscribe((resp:any) => {
         this.listCarts = resp;
-        console.log(this.listCarts);
-        
         this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       })
@@ -465,6 +466,8 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   addressClienteSelected(list_address:any) {
+    console.log("Payment address Cliente Seletec: ", list_address);
+    
     this.show = true;
     this.address_client_selected = list_address;
     this.name = this.address_client_selected.name;
@@ -480,9 +483,12 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   onAddressChange(event:any) {
+    console.log("Payment onAddressChange: ", event.target);
     const selectedIndex = event.target.value;
+    // listAddresses
     if (selectedIndex !== "") {
-      const selectedAddress = this.listAddressClients[selectedIndex];
+      //const selectedAddress = this.listAddressClients[selectedIndex];
+      const selectedAddress = this.listAddresses[selectedIndex];
       this.addressClienteSelected(selectedAddress);
     }
   }
