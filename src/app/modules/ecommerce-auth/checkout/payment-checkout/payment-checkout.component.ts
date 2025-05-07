@@ -176,7 +176,7 @@ export class PaymentCheckoutComponent implements OnInit {
                   this.checkoutService.setSaleSuccess(true);
 
                   this.checkoutService.setSaleData(resp);
-                  //this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'successfull']);
+                  this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'successfull']);
                 }
               }, 100);  
           });
@@ -274,19 +274,11 @@ export class PaymentCheckoutComponent implements OnInit {
   get listAddresses(): any[] {
     return this.CURRENT_USER_AUTHENTICATED ? this.listAddressClients : this.listAddressGuest;
   }
-  
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
     this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
   }
-
-  // goToNextStep() {
-  //   this.isLastStepActive_2 = true;
-  //   this.isLastStepActive_3 = true;
-  //   this.isLastStepActive_4 = false;
-  //   this.isSaleSuccess = false;
-  // }
 
   onCheckboxChange(event: any) {
     this.isAddressSameAsShipping = event.target.checked;

@@ -24,6 +24,7 @@ export class SuccessfullCheckoutComponent implements OnInit {
   @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   euro = "€";
   listAddressClients:any = [];
+  listAddressGuest:any = [];
   // Address
   name: string = '';
   surname: string = '';
@@ -46,6 +47,7 @@ export class SuccessfullCheckoutComponent implements OnInit {
   saleDetails: any =[];
   isSaleSuccess = false;
   CURRENT_USER_AUTHENTICATED:any=null;
+  CURRENT_USER_GUEST:any=null;
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
@@ -136,7 +138,7 @@ export class SuccessfullCheckoutComponent implements OnInit {
     return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
-  private verifyAuthenticatedUser(): void {
+  /*private verifyAuthenticatedUser(): void {
     this._authEcommerce._authService.user.subscribe(user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;
@@ -145,16 +147,59 @@ export class SuccessfullCheckoutComponent implements OnInit {
         this.isLastStepActive_1 = true;
       }
     });
+  }*/
+
+  private verifyAuthenticatedUser(): void {
+    this._authEcommerce._authService.user.subscribe(user => {
+      if ( user ) {
+        this.CURRENT_USER_AUTHENTICATED = user;
+        this.CURRENT_USER_GUEST = null;
+        this.checkIfAddressClientExists();
+      } else {
+        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
+          if (guestUser?.guest) {
+            this.CURRENT_USER_GUEST = guestUser;
+            this.checkIfAddressGuestExists();
+          } else {
+            this.CURRENT_USER_GUEST = null;
+          }
+        });
+      }
+    });
   }
 
   checkIfAddressClientExists() {
-    this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-      (resp: any) => {
-        this.listAddressClients = resp.address_client;
-        this.shippingAddress = this.listAddressClients[0]; // Asignamos la primera dirección
-        // NOTA: Ver como se puede configurar para que coja la direccion de envio habitual
-    });
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
+        (resp: any) => {
+          this.listAddressClients = resp.address_client;
+          this.shippingAddress = this.listAddressClients[0];
+      });
+    }
   }
+
+  checkIfAddressGuestExists() {
+    if (this.CURRENT_USER_GUEST) {
+      this._authEcommerce.listAddressGuest().subscribe(
+        (resp: any) => {
+          console.log("Successfull: ver address_guest ", resp);
+          
+          this.listAddressGuest = resp.addresses;
+
+          console.log("Successfull: ver address_guest ", this.listAddressGuest);
+          this.shippingAddress = this.listAddressGuest[0];
+      });
+    }
+  }
+
+  // checkIfAddressClientExists() {
+  //   this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
+  //     (resp: any) => {
+  //       this.listAddressClients = resp.address_client;
+  //       this.shippingAddress = this.listAddressClients[0]; // Asignamos la primera dirección
+  //       // NOTA: Ver como se puede configurar para que coja la direccion de envio habitual
+  //   });
+  // }
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
@@ -174,6 +219,22 @@ export class SuccessfullCheckoutComponent implements OnInit {
 
   togglePasswordVisibility(): void {
     this.isPasswordVisible = !this.isPasswordVisible;
+  }
+
+  getFormattedPrice(price: any) {
+    if (typeof price === 'string') {
+      price = parseFloat(price); // Convertir a número
+    }
+  
+    if (isNaN(price)) {
+      return { integerPart: "0", decimalPart: "00" }; // Manejo de error si el valor no es válido
+    }
+    
+    const formatted = price.toFixed(2).split('.'); // Asegura siempre dos decimales
+    return {
+      integerPart: formatted[0], // Parte entera
+      decimalPart: formatted[1]  // Parte decimal
+    };
   }
 
   removeAllCart(user_id: any) {

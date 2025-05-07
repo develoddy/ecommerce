@@ -100,6 +100,13 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadLoading();
+
+    this.checkoutService.isSaleSuccess$.subscribe((success: boolean) => {
+      if (success) {
+        this.currentStep = 'successfull';
+      }
+    });
+
     this.subscribeToCheckoutEvents();
     this.loadCurrentDataCart();
     this.verifyAuthenticatedUser();
