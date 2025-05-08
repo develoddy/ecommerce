@@ -18,20 +18,16 @@ export class EcommerceAuthService {
     public _http: HttpClient,
   ) { }
 
-  // ---------- GUESTS -----------------
-  deleteGuestAndAddresses(): Observable<any> {
-    
+  // ---------- SHIPPING RATES -------------
+  getShippingRates(data: any) {
     this.loadingSubject.next(true);
-    let URL = URL_SERVICE+"guests/removeAll";
-    return this._http.delete<any>(URL).pipe(
+    let URL = URL_SERVICE+"shipping/rates";
+    return this._http.post(URL, data).pipe(
       finalize(() => this.loadingSubject.next(false))
     );
   }
-  // ------------- END GUESTS ------------
 
-
-  
-  // ------------- ADDRESS FRONT CLIENTE GUEST ------------
+  // -------- ADDRESS FRONT CLIENTE GUEST ---------
   registerAddressGuest(data:any) {
     this.loadingSubject.next(true);
     let URL = URL_SERVICE+"address_guest/register";
@@ -71,11 +67,16 @@ export class EcommerceAuthService {
       finalize(() => this.loadingSubject.next(false))
     );
   }
-  // ------------- END ADDRESS FRONT CLIENTE GUEST ------------
 
+  deleteGuestAndAddresses(): Observable<any> {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE+"guests/removeAll";
+    return this._http.delete<any>(URL).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    );
+  }
 
   // ------------- ADDRESS FRONT CLIENTE AUTENTICATED ------------
-  
   listAddressClient(user_id:any) {
     this.loadingSubject.next(true);
 
@@ -101,53 +102,39 @@ export class EcommerceAuthService {
   }
 
   registerAddressClient(data:any) {
-    // Inicia el loading
     this.loadingSubject.next(true);
-
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"address_client/register";
-    // return this._http.post(URL, data, {headers: headers});
 
     return this._http.post(URL, data, { headers: headers }).pipe(
-      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+      finalize(() => this.loadingSubject.next(false))
     );
   }
 
   updateAddressClient(data:any) {
-     // Inicia el loading
      this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"address_client/update";
-    //return this._http.put(URL, data, {headers: headers});
 
     return this._http.put(URL, data, { headers: headers }).pipe(
-      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+      finalize(() => this.loadingSubject.next(false))
     );
   }
 
   deleteAddressClient(address_cliente_id:any) {
-    // Inicia el loading
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"address_client/delete/"+address_cliente_id;
-    //return this._http.delete(URL, {headers: headers});
     return this._http.delete(URL, { headers: headers }).pipe(
-      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+      finalize(() => this.loadingSubject.next(false))
     );
   }
-  // ------------- END ADDRESS FRONT CLIENTE AUTENTICATED ------------
-
-
-  // ------------- SALE FRONT CLIENTE ------------
 
   registerSale(data:any, isGuest: boolean = false) {
     this.loadingSubject.next(true);
-
-    //let headers = new HttpHeaders({'token': this._authService.token});
-    //let URL = URL_SERVICE+"sale/register";
     
     const headers = isGuest
-    ? {} // sin headers para invitado
+    ? {}
     : new HttpHeaders({ token: this._authService.token });
 
     const URL = isGuest
@@ -160,11 +147,6 @@ export class EcommerceAuthService {
     );
   }
 
-  // ------------- END SALE FRONT CLIENTE ------------
-
-  
-
-  // ------------- PROFILE FRONT CLIENTE ------------
   showProfileClient(data:any) {
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
@@ -180,7 +162,6 @@ export class EcommerceAuthService {
     return this._http.post(URL, data, {headers: headers});
   }
 
-  // REVIEW
   registerProfileClientReview(data:any) {
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"review/register";
@@ -193,15 +174,12 @@ export class EcommerceAuthService {
     return this._http.put(URL, data, {headers: headers});
   }
 
-  // ------------- END PROFILE FRONT CLIENTE ------------
-
   detail_user(data:any) {
-    // Inicia el loading
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"users/detail_user";
     return this._http.post(URL, data, { headers: headers }).pipe(
-      finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando la llamada termina
+      finalize(() => this.loadingSubject.next(false))
     );
   }
 

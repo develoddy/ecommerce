@@ -38,6 +38,8 @@ declare function menuProductSlider($: any):any;
 export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy {
 
   euro = "€";
+  listAddressClients:any = [];
+  listAddressGuest:any = [];
   slug:any=null;
   product_selected:any = null;
   product_selected_modal:any=null;
@@ -77,6 +79,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   errorMessage:any="";
   locale: string = "";
   country: string = "";
+  shippingRate: number = 0;
+  fechaEntregaMin: string = '';
+  fechaEntregaMax: string = '';
+  shippingMethod: string = '';
+  address: string = '';
 
   private subscriptions: Subscription = new Subscription();
 
@@ -158,6 +165,99 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     );
   }
 
+  storeIfAddressExists() {
+    this.currentUser?.user_guest == 'Guest' ? this.checkIfAddressGuestExists() : this.checkIfAddressClientExists();
+  }
+
+  checkIfAddressClientExists() {
+    this.ecommerceAuthService.listAddressClient(
+      this.currentUser._id
+    ).subscribe(
+      (resp: any) => {
+        this.listAddressClients = resp.address_client;
+        console.log("DEBBUG: Verificamos si hay address de user autenticated: ", this.listAddressClients);
+        if (this.listAddressClients && this.listAddressClients.length > 0) {
+          const firstAddress = this.listAddressClients[0];
+          console.log("Primera dirección:", firstAddress);
+  
+          this.loadShippingRateWithAddress(firstAddress); // Por ejemplo
+        } else {
+          console.warn("No hay direcciones disponibles.");
+        }
+        
+    });
+  }
+
+  checkIfAddressGuestExists() {
+    this.ecommerceAuthService.listAddressGuest().subscribe(
+      (resp: any) => {
+        this.listAddressGuest = resp.addresses;
+        console.log("DEBBUG: Verificamos si hay address de user guest: ", this.listAddressGuest);
+    });
+  }
+
+  loadShippingRateWithAddress(address: any) {
+
+    this.address = address.address;
+
+
+    const countryMap: Record<string, string> = {
+      'España': 'ES',
+      'Spain': 'ES',
+      'France': 'FR',
+      'Francia': 'FR',
+      'Germany': 'DE',
+      // ...
+    };
+
+    const payload = {
+      recipient: {
+        address1: address.address,
+        city: address.ciudad,
+        country_code: countryMap[address.pais as string] || 'ES',
+        zip: address.zipcode,
+      },
+      items: [
+        {
+          variant_id: this.product_selected.variedades[0].variant_id,
+          quantity: 1,
+        },
+      ],
+      currency: 'EUR',
+      locale: 'es_ES'
+    };
+
+    console.log("DEBBUG: loadShippingRateWithAddress - payload: ", payload);
+  
+    this.ecommerceAuthService.getShippingRates(payload).subscribe({
+      next: (res:any) => {
+        console.log("DEBBUG: Respuesta de Shipping Rate: ", res);
+        
+        const rate = res.result?.[0];
+        if (rate) {
+          this.shippingRate = parseFloat(rate.rate); // 4.29
+          this.fechaEntregaMin = this.formatearFechaEntrega(rate.minDeliveryDate); // "2025-05-13"
+          this.fechaEntregaMax = this.formatearFechaEntrega(rate.maxDeliveryDate); // "2025-05-13"
+          this.shippingMethod = rate.name; // "Envío estándar..."
+        }
+      },
+      error: (err) => console.error("Error al calcular tarifas de envío", err)
+    });
+
+  }
+  
+  formatearFechaEntrega(fecha: string): string {
+    const date = new Date(fecha);
+    return date.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      day: '2-digit',
+      month: 'long'
+    });
+  }
+  
+
+
+
   private subscribeToRouteParams(): void {
     const routeParamsSubscription = this.routerActived.params.subscribe((resp: any) => {
       this.slug = resp["slug"];
@@ -195,13 +295,16 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     return { integerPart, decimalPart };
   }
   
-
   private handleProductResponse(resp: any): void {
     if (!resp || !resp.product) {
       console.error("No product data available");
       return; // Salir si no hay datos de producto
     }
     this.product_selected = resp.product;
+    console.log("FRONT DEBBUG - HANdLE PRoduct Response ---> ", this.product_selected);
+
+    // Hay que pensar como obtener los address para pasar al payloas
+    
 
     this.related_products = resp.related_products;
     this.SALE_FLASH = resp.SALE_FLASH;
@@ -211,6 +314,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
     if (this.product_selected) {
       this.updateSeo();
+      this.storeIfAddressExists();
+
       if (this.currentUser && this.currentUser.user_guest !== "Guest") {
         // Si el usuario no es un invitado (user_guest !== "Guest"), entonces muestra el perfil
         this.showProfileClient(this.currentUser);

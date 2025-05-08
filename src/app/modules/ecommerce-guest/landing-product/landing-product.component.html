@@ -246,7 +246,15 @@
 
                         <!-- Product Info -->
                         <div class="userViewMsg featureText" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div> 
-                        <div class="shippingMsg featureText"><i class="icon anm anm-clock-r"></i>Entrega estimada entre <b id="fromDate">Lunes, 26 de agosto</b> y <b id="toDate">Viernes, 30 de agosto</b>.</div>                             
+                        <div class="shippingMsg featureText" *ngIf="shippingRate">
+                            <!-- <i class="icon anm anm-clock-r"></i>Entrega estimada entre <b id="fromDate">Lunes, 26 de agosto</b> y <b id="toDate">Viernes, 30 de agosto</b>. -->
+                            <!-- <p> -->
+                                <!-- <i class="icon anm anm-clock-r"></i>{{ shippingMethod }} -->
+                                <!-- Precio: {{ shippingRate | currency:'EUR' }} <br />-->
+                                <p><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline">{{ address }}</a> </p>
+
+                            <!-- </p> -->
+                        </div>                             
                         <div class="freeShipMsg featureText" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}30.00</span></b> Más para envío gratis</div>
                         <!-- End Product Info -->
 
