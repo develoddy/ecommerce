@@ -524,6 +524,9 @@ export class PaymentCheckoutComponent implements OnInit {
     this.subscriptions.add(subscriptionLogin);
   }
 
+  storeAddress() {
+  }
+
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();

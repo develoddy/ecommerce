@@ -85,6 +85,15 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   shippingMethod: string = '';
   address: string = '';
 
+  fallbackAddress = {
+    address: 'Gran Vía, 1',
+    ciudad: 'Madrid',
+    pais: 'España',
+    zipcode: '28013'
+  };
+  
+  usandoFallback: boolean = false;
+
   private subscriptions: Subscription = new Subscription();
 
   constructor(
@@ -175,14 +184,12 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     ).subscribe(
       (resp: any) => {
         this.listAddressClients = resp.address_client;
-        console.log("DEBBUG: Verificamos si hay address de user autenticated: ", this.listAddressClients);
         if (this.listAddressClients && this.listAddressClients.length > 0) {
           const firstAddress = this.listAddressClients[0];
-          console.log("Primera dirección:", firstAddress);
-  
-          this.loadShippingRateWithAddress(firstAddress); // Por ejemplo
+          this.loadShippingRateWithAddress(firstAddress); 
         } else {
           console.warn("No hay direcciones disponibles.");
+          this.loadShippingRateWithAddress(this.fallbackAddress, true);
         }
         
     });
@@ -192,14 +199,19 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.ecommerceAuthService.listAddressGuest().subscribe(
       (resp: any) => {
         this.listAddressGuest = resp.addresses;
-        console.log("DEBBUG: Verificamos si hay address de user guest: ", this.listAddressGuest);
+        if (this.listAddressGuest && this.listAddressGuest.length > 0) {
+          const firstAddress = this.listAddressGuest[0];
+          this.loadShippingRateWithAddress(firstAddress); 
+        } else {
+          console.warn("No hay direcciones disponibles.");
+          this.loadShippingRateWithAddress(this.fallbackAddress, true);
+        }
     });
   }
 
-  loadShippingRateWithAddress(address: any) {
-
+  loadShippingRateWithAddress(address: any, isFallback: boolean = false) {
     this.address = address.address;
-
+    this.usandoFallback = isFallback;
 
     const countryMap: Record<string, string> = {
       'España': 'ES',
