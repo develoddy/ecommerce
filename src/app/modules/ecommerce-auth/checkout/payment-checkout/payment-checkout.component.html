@@ -1,7 +1,6 @@
-<!-- <div [ngClass]="{'tab-pane': true,'active': isLastStepActive_3 && CURRENT_USER_AUTHENTICATED && !isSaleSuccess,'fade': listAddressClients.length === 0 }" id="steps3"> -->
 <div id="steps3">
     <div class="row p-lg-5">
-        <!-- Columna izquierda -->
+        <!-- ======== Columna de la izquierda ======== -->
         <div class="col-12 col-sm-12 col-md-7 col-lg-8">
             <!--Delivery Methods-->
             <div class="block mb-3 delivery-methods mb-4 d-none">
@@ -478,7 +477,7 @@
             </div>
         </div>
 
-        <!-- Columna derecha -->
+        <!-- ======== Columna de la derecha ======== -->
         <div class="col-12 col-sm-12 col-md-5 col-lg-4">
             <h3 class="title mb-0 text-uppercase mb-3">Pago</h3>
 
@@ -517,7 +516,6 @@
                     <div class="row g-0 border-bottom pb-2">
                         <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Subtotal</strong></span>
                         <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                            <!-- <span class="money">{{ totalCarts }} {{ euro }}</span> -->
                             <span class="price-small fw-normal">
                                 <span class="price-main-small">{{ getFormattedPrice(totalCarts).integerPart }}</span>
                                 <span class="price-decimals-small">
@@ -542,7 +540,6 @@
                     <div class="row g-0 pt-2">
                         <span class="col-6 col-sm-6 cart-subtotal-title fs-5 ls-1 text-uppercase"><strong>Total</strong></span>
                         <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end">
-                            <!-- <strong class="money">{{ totalCarts }} {{ euro }}</strong> -->
                             <strong>
                                 <span class="price">
                                     <span class="price-main">{{ getFormattedPrice(totalCarts).integerPart }}</span>
@@ -560,13 +557,14 @@
             </div>
             <!--Cart Summary-->
 
+            <!-- Text legal -->
             <div class="mb-5">
                 <div class="TermsOfSale_terms__2leN4" id="checkout.step2.termsofsale">
                     <p class="lh-1 text-muted"><small>Al finalizar la compra, confirmas que has leído, entendido y que aceptas las <b><a class="text-decoration-underline" href="#" data-testid="" target="">Condiciones de venta</a></b> </small></p>
                 </div>
             </div>
 
-            <!-- Carts -->
+            <!-- Carts Lists -->
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-7 col-lg-12">
                   <!-- Order Summary -->

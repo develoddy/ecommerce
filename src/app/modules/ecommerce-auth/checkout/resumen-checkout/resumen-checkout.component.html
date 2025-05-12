@@ -1,170 +1,5 @@
 <div id="steps2">
-
     <div class="row p-lg-5">
-        <!-- List cart -->
-        <div class="col-12 col-sm-12 col-md-7 col-lg-12 border border-danger d-none">
-            <!--Order Summary-->
-            <div class="block order-summary" *ngIf="listCarts">
-                <div class="block-content">
-                    <h2 class="title mb-3 text-center fw-bold mb-5 mt-3 text-uppercase">Resumen del pedido</h2>
-                    <div class="table-responsive table-bottom-brd order-table"> 
-                        <table class="table table-hover align-middle mb-0">
-                            <thead>
-                                <tr>
-                                    <th class="action">&nbsp;</th>
-                                    <th class="text-start text-black">Imagen</th>
-                                    <th class="text-start proName text-black">Product</th>
-                                    <th class="text-center text-black">Cantidad</th>
-                                    <th class="text-center text-black">Precio</th>
-                                    <th class="text-center text-black">Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <ng-container *ngFor="let cart of listCarts">
-                                    <tr>
-                                        <td class="text-center cart-delete"><a href="#" onclick="return false;" (click)="removeCart(cart)" class="btn btn-secondary cart-remove remove-icon position-static" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Cart"><i class="icon anm anm-times-r"></i></a></td>
-                                        <td class="text-start">
-                                            <a href="product-layout1.html" class="thumb">
-                                                <img class="rounded-0 blur-up lazyload" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="product" width="120" height="170" />
-                                            </a>
-                                        </td>
-                                        <td class="text-start proName">
-                                            <div class="list-view-item-title">
-                                                <a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', cart.product.slug]">{{cart.product.title}}</a>
-                                            </div>
-                                            <div class="cart-meta-text">
-                                                Color: {{cart.variedad.color}}<br>Talla: {{cart.variedad.valor}}
-                                            </div>
-                                        </td>
-                                        <td class="text-center">{{ cart.cantidad }}</td>
-
-                                        <!-- <td class="text-center">{{ cart.subtotal | number: '1.2-2' }} {{ euro }}</td> -->
-                                        <td class="text-center">
-                                            <span class="price-small fw-normal">
-                                                <span class="price-main-small">{{ getFormattedPrice(cart.subtotal).integerPart }}</span>
-                                                <span class="price-decimals-small">
-                                                    <sup>{{ getFormattedPrice(cart.subtotal).decimalPart }}</sup>
-                                                    <span class="currency-symbol-small">{{ euro }}</span>
-                                                </span>
-                                            </span>
-                                        </td>
-
-
-                                        <!-- <td class="text-center"><strong>{{ cart.total | number: '1.2-2' }} {{ euro }}</strong></td> -->
-                                        <td class="text-center">
-                                            <span class="price-small">
-                                                <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
-                                                <span class="price-decimals-small">
-                                                    <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
-                                                    <span class="currency-symbol-small">{{ euro }}</span>
-                                                </span>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </ng-container>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!--End Order Summary-->
-        </div>
-        <!-- Codigo de cupon y Total -->
-        <div class="col-12 col-sm-12 col-md-5 col-lg-12 py-5 border border-success d-none">
-            <div class="row justify-content-center">
-                <div class="col-12 col-sm-12 col-md-5 col-lg-4">
-                    <!--Apply Promocode-->
-                    <div class="block mb-3 apply-code mb-4">
-                        <div class="block-content">
-                            <h3 class="title mb-3 text-uppercase">Aplicar código promocional</h3>
-                            <div id="coupon" class="coupon-dec">
-                                <p class="fw-light">Introduce tu código promocional y disfruta de grandes ahorros en tu compra.</p>
-                                <div class="input-group mb-0 d-flex">
-                                    <input id="coupon-code" [(ngModel)]="code_cupon" required="" type="text" class="form-control" placeholder="Código de promoción">
-                                    <button class="coupon-btn btn btn-secondary fw-normal text-uppercase" (click)="apllyCupon()" [disabled]="loading" type="submit">
-                                        <div *ngIf="loading" class="loading-spinner justify-content-center align-items-center">
-                                            <div class="row">
-                                                <div class="col-sm-2">
-                                                    <div class="sp bg-white sp-bars"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span *ngIf="!loading">Aplicar</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--End Apply Promocode-->
-                </div>
-                <div class="col-12 col-sm-12 col-md-5 col-lg-4">
-                    <!--Cart Summary-->
-                    
-                    <div class="cart-info mb-4">
-                        <h3 class="title mb-3 text-uppercase">Resumen de Precio</h3>
-                        <div class="cart-order-detail cart-col">
-                            
-                            <div class="row g-0 border-bottom pb-2">
-                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Subtotal</strong></span>
-                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                    <!-- <span class="money">{{ getFormattedPrice(totalCarts).integerPart }}.{{ getFormattedPrice(totalCarts).decimalPart }} {{ euro }}</span> -->
-                                    <span class="money">
-                                        <span class="price-small fw-normal">
-                                            <span class="price-main-small">{{ getFormattedPrice(totalCarts).integerPart }}</span>
-                                            <span class="price-decimals-small">
-                                                <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
-                                                <span class="currency-symbol-small">{{ euro }}</span>
-                                            </span>
-                                        </span>
-                                    </span>
-                                </span>
-
-                                <!-- <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                    <span class="money price">
-                                        <span class="price-main">{{ getFormattedPrice(totalCarts).integerPart }}</span>
-                                        <span class="price-decimals">
-                                            <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
-                                            <span class="currency-symbol">{{ euro }}</span>
-                                        </span>
-                                    </span>
-                                </span> -->
-                            </div>
-                            <div class="row g-0 border-bottom py-2 d-none">
-                                <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Coupon Discount</strong></span>
-                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">-$25.00</span></span>
-                            </div>
-                            <div class="row g-0 border-bottom py-2 d-none">
-                                <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Tax</strong></span>
-                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">$10.00</span></span>
-                            </div>
-                            <div class="row g-0 border-bottom py-2">
-                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Envío</strong></span>
-                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Gratis</span></span>
-                            </div>
-                            <div class="row g-0 pt-2">
-                                <span class="col-6 col-sm-6 cart-subtotal-title fs-5 text-uppercase"><strong>Total</strong></span>
-                                <!-- <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ totalCarts | number: '1.2-2' }} {{ euro }}</b></span> -->
-                                <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end">
-                                    <span class="money price">
-                                        <span class="price-main">{{ getFormattedPrice(totalCarts).integerPart }}</span>
-                                        <span class="price-decimals">
-                                            <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
-                                            <span class="currency-symbol">{{ euro }}</span>
-                                        </span>
-                                    </span>
-                                </span>
-                            </div>
-                        </div>                               
-                    </div>
-                    <!--Cart Summary-->
-                </div>
-            </div>
-        </div>
-        <!-- / End Codigo de cupon y Total -->
-        
-
-
-        <!-- ------ NUEVA Estructura ------- -->
         
         <!-- ======== Columna de la izquierda ======== -->
         <div class="col-12 col-sm-12 col-md-7 col-lg-8">
@@ -228,6 +63,7 @@
                                     </div>
                                 </div>
                             </ng-container>
+                            <!-- Address List -->
                             <ng-template #allShowListAddress>
                                 <!-- Spinner -->
                                 <div *ngIf="loading" class="loading-spinner d-flex justify-content-center h-100 align-items-center">
@@ -244,39 +80,13 @@
                                     <div class="top-sec d-flex mb-3" [class.d-none]="loading">
                                         <h3 class="mb-0 text-uppercase">Datos de envío</h3>
                                     </div>
-                                    
                                     <div class="row">
-                                        <!-- Direcciones de usuarios autenticados -->
-                                        <!-- <ng-container *ngFor="let list_address of listAddressClients; let i=index">
-                                            <div class="address-select-box active">
-                                                <div class="address-box bg-block">
-                                                    <div class="top d-flex-justify-center justify-content-between">
-                                                        <p class="m-0 text-uppercase">{{ list_address.name +' '+ list_address.surname }}</p>
-                                                        <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#miniAddress-drawer">
-                                                            <button type="button" class="bottom-btn btn btn-gray btn-sm">Editar</button>
-                                                        </a>
-                                                    </div>
-                                                    <div class="middle">
-                                                        <div class="address"><p class="fw-light"> {{ list_address.address }}</p></div>
-                                                        <div class="address"><p class="fw-light"> {{ list_address.zipcode }} {{ list_address.poblacion }}, <span class="text-uppercase">{{ list_address.ciudad }}</span> <br/></p></div>
-                                                        <div class="address"><p class="fw-light">Tel. +34 {{ list_address.phone }}</p></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </ng-container> -->
-
-                                    
                                         <ng-container *ngIf="selectedAddress">
                                             <div class="address-select-box active">
                                                 <div class="address-box bg-block">
                                                     <div class="top d-flex-justify-center justify-content-between">
-                                                        <p class="m-0 text-uppercase">
-                                                            {{ selectedAddress.name + ' ' + selectedAddress.surname }}
-                                                        </p>
-                                                        <!-- <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="addressClienteSelected(list_address)" data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button> -->
-                                                        <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#miniAddress-drawer">
-                                                            <button type="button" class="bottom-btn btn btn-gray btn-sm">Editar</button>
-                                                        </a>
+                                                        <p class="m-0 text-uppercase">{{ selectedAddress.name + ' ' + selectedAddress.surname }}</p>
+                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="openAddressModal()">Editar</button>
                                                     </div>
                                                     <div class="middle">
                                                         <div class="address"><p class="fw-light">{{ selectedAddress.address }}</p></div>
@@ -293,72 +103,37 @@
                                                 </div>
                                             </div>
                                         </ng-container>
-                                          
-
-                                        <!-- Direcciones de usuarios invitados -->
-                                         <div class="d-none">
-                                            <ng-container *ngFor="let list_address of listAddressGuest; let i=index">
-                                                <div class="address-select-box active">
-                                                    <div class="address-box bg-block">
-                                                        <div class="mb-3 d-flex flex-row">
-                                                            <span class="d-flex flex-row">
-                                                                <svg width="24" height="24" aria-hidden="true" class="Icon_icon-content-1__kPDLF" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
-                                                                    <path d="M19 20V9.3l.7.5.6-.8L12 2.9 9 5.1V3H6v4.3L3.7 9l.6.8.7-.5V20H3v1h18v-1zM7 4h1v1.8l-1 .8zM6 8.6l6-4.4 6 4.4V12H6zM11 20v-4h2v4zm-1-5v5H6v-7h12v7h-4v-5z"></path>
-                                                                    <path d="M12 7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 3c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1"></path>
-                                                                </svg>
-                                                            </span>
-                                                            <span class="px-2">Domicilio</span>
-                                                            <span class="">GRATIS</span>
-                                                        </div>
-                                                        <div class="top d-flex-justify-center justify-content-between mb-3">
-                                                            <h5 class="m-0 fw-bold text-uppercase">{{ list_address.name +' '+ list_address.surname }}</h5>
-                                                            <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Casa</span></span>
-                                                        </div>
-                                                        <div class="middle">
-                                                            <div class="address"><p class="fw-light"> {{ list_address.address }}</p></div>
-                                                            <div class="address"><p class="fw-light"> {{ list_address.zipcode }} {{ list_address.poblacion }}, <span class="text-uppercase">{{ list_address.ciudad }}</span> <br/></p></div>
-                                                            <div class="address"><p class="fw-light">Tel. {{ list_address.phone }}</p></div>
-                                                            <div class="form-text px-2 mt-3 text-dark d-none" style="width: fit-content !important; background-color: #f3f3f3;">Dirección de envío habitual</div>
-                                                        </div>
-                                                        <div class="bottom d-flex-justify-center justify-content-between">
-                                                            <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="addressClienteSelected(list_address)" data-bs-toggle="modal" data-bs-target="#addEditModal">Añadir o editar dirección</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </ng-container>
-                                        </div>
-                                        
                                     </div>
                                 </div>
                             </ng-template>
 
                             <!-- Edit Address Modal -->
                             <div class="modal fade" id="addEditModal" tabindex="-1" aria-labelledby="addEditModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-dialog modal modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header justify-content-center border-0">
-                                            <h2 class="modal-title text-uppercase" id="addNewModalLabel">Editar dirección</h2>
+                                            <h3 class="modal-title text-uppercase" id="addNewModalLabel">Editar dirección de envío</h3>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body border-0">
                                             <fieldset>
                                                 <!-- Nombre -->
                                                 <div class="row justify-content-center">
-                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
+                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
                                                         <label for="firstname" class="form-label d-none">Nombre <span class="required">*</span></label>
                                                         <input name="firstname" value="" id="firstname" type="text" [(ngModel)]="name" required="" placeholder="Nombre" class="form-control">
                                                     </div>
                                                 </div>
                                                 <!-- Apellidos -->
                                                 <div class="row justify-content-center">
-                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
+                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
                                                         <label for="lastname" class="form-label d-none">Apellidos <span class="required">*</span></label>
                                                         <input name="lastname" value="" id="lastname" type="text" [(ngModel)]="surname" required="" placeholder="Aellidos" class="form-control">
                                                     </div>
                                                 </div>
                                                 <!-- Pais -->
                                                 <div class="row justify-content-center">
-                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
+                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
                                                         <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
                                                         <select id="address_country1" name="address[country]" [(ngModel)]="pais" data-default="United States" disabled class="form-control text-muted">
                                                             <option value="0" label="Seleccione un país" selected="selected">Seleccione un país</option>
@@ -373,28 +148,28 @@
                                                 </div>
                                                 <!-- Direccion -->
                                                 <div class="row justify-content-center">
-                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
+                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
                                                         <label for="address-1" class="form-label d-none">Dirección <span class="required">*</span></label>
                                                         <input name="address_1" value="" id="address-1" type="text" required="" [(ngModel)]="address" placeholder="Dirección" class="form-control">
                                                     </div>
                                                 </div>
                                                 <!-- Codigo postal -->
                                                 <div class="row justify-content-center">
-                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
+                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
                                                         <label for="postcode" class="form-label d-none">Código postal <span class="required">*</span></label>
                                                         <input name="postcode" value="" id="postcode" type="text" class="form-control" [(ngModel)]="zipcode" placeholder="Código postal">
                                                     </div>
                                                 </div>
                                                 <!-- Población -->
                                                 <div class="row justify-content-center">
-                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
+                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
                                                         <label for="new-city" class="form-label d-none">Población <span class="required">*</span></label>
                                                         <input name="city" placeholder="Población" value="" required="" [(ngModel)]="poblacion" id="new-city" type="text" />
                                                     </div>
                                                 </div>  
                                                 <!-- Ciudad -->
                                                 <div class="row justify-content-center">
-                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
+                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
                                                         <label for="address_State" class="form-label d-none">Ciudad <span class="required">*</span></label>
                                                         <select id="address_State" name="address[State]" data-default="" [(ngModel)]="ciudad" class="form-control">
                                                             <option value="0" label="Select a state" selected="selected">Provincia/Estado</option>
@@ -405,27 +180,36 @@
                                                 </div>
                                                 <!-- Email -->
                                                 <div class="row justify-content-center">
-                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
+                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
                                                         <label for="email" class="form-label d-none">E-Mail <span class="required">*</span></label>
                                                         <input name="email" value="" id="email" type="email" required="" [(ngModel)]="email"  placeholder="E-mail" disabled class="form-control text-muted text-uppercase">
                                                     </div>
                                                 </div>
                                                 <!-- Telefono -->
                                                 <div class="row justify-content-center">
-                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
+                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10 mb-5">
                                                         <label for="phone" class="form-label d-none">Móvil <span class="required">*</span></label>
                                                         <input name="phone" value="" id="phone" type="tel" required="" [(ngModel)]="phone"  placeholder="Móvil" class="form-control">
                                                     </div>
                                                 </div>
         
-                                                <div class="row justify-content-center mt-0 mb-3">
-                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
+                                                <div class="row justify-content-center mt-0 mb-5 d-none">
+                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
                                                         <p class="mt-3">Dirección de envío habitual</p> 
+                                                    </div>
+                                                </div>
+
+                                                <div class="row justify-content-center mt-0 mb-3">
+                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
+                                                        <button type="submit" class="btn btn-primary w-100 text-uppercase fw-normal btn-lg" (click)="storeAddress()">
+                                                            <span>Guardar cambios</span>
+                                                        </button>
+                                                        <p class="fs-12"><small class="text-muted">Al continuar, confirmas que has leído la <a href="#" class="text-decoration-underline">Política de privacidad</a></small></p>
                                                     </div>
                                                 </div>
                                             </fieldset>
                                         </div>
-                                        <div class="modal-footer border-0 justify-content-center">
+                                        <div class="modal-footer border-0 justify-content-center d-none">
                                             <div class="form-row row-cols-lg-1 row-cols-md-2 row-cols-sm-1 row-cols-1 text-center">
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary text-uppercase fw-normal btn-lg" (click)="storeAddress()">
@@ -677,7 +461,7 @@
 </div>
 
 
-<!--MiniCart Drawer-->
+<!--MiniAddress Drawer-->
 <div id="miniAddress-drawer" class="minicart-right-drawer offcanvas offcanvas-end" tabindex="-1">
     <!--MiniCart Empty-->
     <div id="cartEmpty" class="cartEmpty d-flex-justify-center flex-column text-center p-3 text-muted d-none">
@@ -716,7 +500,6 @@
             <ng-template #allCarts>
                 <ul class="m-0 clearfix w-100">
                     <ng-container *ngFor="let list_address of listAddresses; let i=index">
-                        
                         <div class="payment-accordion-radio">
                             <div class="accordion" id="accordionExample">
                                 <div class="accordion-item card mb-2 p-3">
@@ -748,8 +531,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <p class="text-danger">selectedAddressId = {{ selectedAddressId }}</p>
-                                    <p class="text-primary">list_address.id  = {{ list_address.id }}</p>
+                                    <!-- <p class="text-danger">selectedAddressId = {{ selectedAddressId }}</p>
+                                    <p class="text-primary">list_address.id  = {{ list_address.id }}</p> -->
                                     <div 
                                         [id]="'collapse' + i" 
                                         class="accordion-collapse collapse show" 
@@ -764,9 +547,7 @@
                                 </div>
                             </div>
                         </div>
-                            
-                    </ng-container> 
-
+                    </ng-container>
 
                     <!-- <ng-container *ngFor="let cart of listCarts">
                         <li class="item d-flex flex-column"> 
@@ -810,20 +591,13 @@
                             </div>
                         </li>
                     </ng-container> -->
-                    
                 </ul>
             </ng-template>
         </div>
         <div class="minicart-bottom" *ngIf="listAddressClients.length != 0">
             <div class="minicart-action d-flex flex-column mt-3">
                 <!-- <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-black w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3">Confirmar dirección</a> -->
-                <button 
-                class="cart-btn btn btn-outline-black w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3"
-                (click)="confirmarDireccion()"
-              >
-                Confirmar dirección
-              </button>
-              
+                <button class="cart-btn btn btn-outline-black w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3" (click)="confirmarDireccion()">Confirmar dirección</button>
                 <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-white text-black bg-white w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3">Añadir otra dirección</a>
             </div>
         </div>

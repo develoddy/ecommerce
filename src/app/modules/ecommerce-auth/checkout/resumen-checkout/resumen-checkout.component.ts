@@ -7,8 +7,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { CheckoutService } from '../../_services/checkoutService';
 import { MinicartService } from 'src/app/services/minicartService.service';
-
-
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function actionNetxCheckout([]):any;
@@ -50,7 +48,7 @@ export class ResumenCheckoutComponent implements OnInit {
   ciudad: string = '';
   email: string = '';
   phone: string = '';
-  
+
   address_client_selected:any = null;
   listCarts:any = [];
   totalCarts:any=null;
@@ -72,15 +70,10 @@ export class ResumenCheckoutComponent implements OnInit {
   validMessage:boolean=false;
   status:boolean=false;
   selectedAddressId:  number | String = 0; // Dirección seleccionada
-
   CURRENT_USER_AUTHENTICATED:any=null;
   CURRENT_USER_GUEST:any=null;
-
-  
-
   private subscriptions: Subscription = new Subscription();
   @Output() activate = new EventEmitter<boolean>();
-
   isPasswordVisible: boolean = false;
   locale: string = "";
   country: string = "";
@@ -97,28 +90,16 @@ export class ResumenCheckoutComponent implements OnInit {
     private cdr: ChangeDetectorRef,
   ) {
     this.routerActived.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado
-      this.country = params.get('country') || 'es'; // Valor predeterminado
+      this.locale = params.get('locale') || 'es';  
+      this.country = params.get('country') || 'es'; 
     });
   }
 
   ngAfterViewInit() {}
 
   ngOnInit(): void {
-    //this.loadLoading();
     this.verifyAuthenticatedUser();
-
     this.currentDataCart();
-
-    // const defaultList = this.CURRENT_USER_AUTHENTICATED ? this.listAddressClients : this.listAddressGuest;
-
-    // if (defaultList.length > 0) {
-    //   this.selectedAddress = defaultList[0];
-    //   this.selectedAddressId = defaultList[0].id;
-    // }
-
-    
-    
     setTimeout(() => {
       this.loadLoading();
       setTimeout(() => {
@@ -149,7 +130,7 @@ export class ResumenCheckoutComponent implements OnInit {
     this._authEcommerce._authService.user.subscribe(user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;
-        this.CURRENT_USER_GUEST = null; // Si hay usuario autenticado, se ignora el invitado
+        this.CURRENT_USER_GUEST = null;
         this.checkIfAddressClientExists();
       } else {
         this._authEcommerce._authService.userGuest.subscribe(guestUser => {
@@ -169,10 +150,8 @@ export class ResumenCheckoutComponent implements OnInit {
       this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
         (resp: any) => {
           this.listAddressClients = resp.address_client;
-
-          if (this.listAddressClients.length > 0) {
-            this.selectedAddress = this.listAddressClients[0];
-          }
+          // ✅ Restaurar dirección seleccionada para autenticado
+          this.restoreSelectedAddress(this.listAddressClients, 'selectedAddressId');
 
           if (this.listAddressClients.length === 0) {
             // GUARDA LA URL ACTUAL EN SESSION STORARE
@@ -192,9 +171,8 @@ export class ResumenCheckoutComponent implements OnInit {
       this._authEcommerce.listAddressGuest().subscribe(
         (resp: any) => {
           this.listAddressGuest = resp.addresses;
-          if (this.listAddressClients.length > 0) {
-            this.selectedAddress = this.listAddressGuest[0];
-          }
+          // ✅ Restaurar dirección seleccionada para invitado
+          this.restoreSelectedAddress(this.listAddressGuest, 'selectedGuestAddressId');
 
           if (this.listAddressGuest.length === 0) {
             this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery']);
@@ -205,6 +183,24 @@ export class ResumenCheckoutComponent implements OnInit {
     }
   }
 
+  restoreSelectedAddress(list: any[], storageKey: string) {
+    const savedAddressId = sessionStorage.getItem(storageKey);
+    if (savedAddressId) {
+      const parsedId = parseInt(savedAddressId, 10);
+      const found = list.find(addr => addr.id === parsedId);
+      if (found) {
+        this.selectedAddressId = parsedId;
+        this.selectedAddress = found;
+        return;
+      }
+    }
+  
+    if (list.length > 0) {
+      this.selectedAddressId = list[0].id;
+      this.selectedAddress = list[0];
+    }
+  }
+  
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
     this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
@@ -232,8 +228,6 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   private listCartsLocalStorage(): void {
-    console.log(this.CURRENT_USER_GUEST.user_guest);
-    
     this._cartService.listCartsCache(this.CURRENT_USER_GUEST.user_guest).subscribe((resp: any) => {
       resp.carts.forEach((cart: any) => {
         console.log(cart);
@@ -359,6 +353,132 @@ export class ResumenCheckoutComponent implements OnInit {
     });
   }
 
+  private hideMessageAfterDelay() {
+    setTimeout(() => {
+      this.validMessage = false;
+    }, 6000);
+  }
+
+  resetForm() {
+    this.name = '';
+    this.surname = '';
+    this.pais = '';
+    this.address = '';
+    this.zipcode = '';
+    this.poblacion = '';
+    this.email = '';
+    this.phone = '';
+  }
+
+  newAddress() {
+    this.show = true;
+    this.resetForm();
+    this.address_client_selected = null;
+  }
+
+  addressClienteSelected(list_address:any) {
+    this.show = true;
+    this.address_client_selected = list_address;
+    this.name = this.address_client_selected.name;
+    this.surname = this.address_client_selected.surname;
+    this.pais = this.address_client_selected.pais;
+    this.address = this.address_client_selected.address;
+    this.ciudad = this.address_client_selected.ciudad;
+    this.phone = this.address_client_selected.telefono;
+    this.email = this.address_client_selected.email;
+    this.zipcode = this.address_client_selected.zipcode;
+    this.poblacion = this.address_client_selected.poblacion;
+    this.phone = this.address_client_selected.phone;
+  }
+
+  onAddressChange(selectedId: string) {
+    const selectedAddress = this.listAddresses.find(address => address.id == selectedId);
+  
+    if (selectedAddress) {
+      this.selectedAddressId = selectedAddress.id;
+      //this.selectedAddress = selectedAddress;  // Actualiza la dirección seleccionada
+      this.addressClienteSelected(selectedAddress);
+      console.log('Dirección seleccionada:', selectedAddress, " Con su selectedAddressId: ", this.selectedAddressId);
+    } else {
+      console.error('ID de dirección no encontrado:', selectedId);
+    }
+  }
+  
+  get listAddresses(): any[] {
+    return this.CURRENT_USER_AUTHENTICATED ? this.listAddressClients : this.listAddressGuest;
+  }
+
+  confirmarDireccion() {
+    console.warn('selectedAddressId', this.selectedAddressId);
+    if (!this.selectedAddressId) {
+      console.warn('No hay dirección seleccionada');
+      return;
+    }
+  
+    const selected = this.listAddresses.find(addr => addr.id === this.selectedAddressId);
+    if (selected) {
+      this.selectedAddress = selected;
+
+      // 🔒 Guardar en localStorage dependiendo del tipo de usuario
+      const storageKey = this.CURRENT_USER_AUTHENTICATED ? 'selectedAddressId' : 'selectedGuestAddressId';
+      sessionStorage.setItem(storageKey, this.selectedAddressId.toString());
+
+      this.closeMiniAdress();
+    } 
+  }
+
+  closeMiniAdress(): void {
+    this.minicartService.closeMiniAddress();
+  }
+
+  openAddressModal() {
+    if (!this.selectedAddressId && this.listAddresses.length > 0) {
+      this.selectedAddressId = this.listAddresses[0].id;
+    }
+    this.minicartService.openMiniAddress();
+  }
+  
+  removeAddressSelected(list_address:any) {
+    this._authEcommerce.deleteAddressClient(list_address.id).subscribe((resp:any) => {      
+      let INDEX = this.listAddressClients.findIndex((item:any) => item.id == list_address.id);
+      // Verifica si se encontró el elemento
+      if (INDEX !== -1) { 
+        this.listAddressClients.splice(INDEX, 1); // Elimina 1 elemento a partir del índice INDEX
+      }
+      alertSuccess(resp.message);
+      this.resetForm();
+    });
+  }
+
+  verifyExistEmail(email: string) {
+    sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
+    this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add'],{ queryParams: { email } });
+  }
+
+  public login() {
+    if (!this.email_identify) {
+      alertDanger("Es necesario ingresar el email");
+    }
+
+    if (!this.password_identify) {
+      alertDanger("Es necesario ingresar el password");
+    }
+
+    const subscriptionLogin =  this._authService.login(this.email_identify, this.password_identify).subscribe(
+      (resp:any) => {
+        if (!resp.error && resp) {
+          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout'])
+          .then(() => {
+            window.location.reload();
+          });
+          this._cartService.resetCart();
+        } else {
+          this.errorAutenticate = true;
+          this.errorMessageAutenticate = resp.error.message;
+        }
+      });
+    this.subscriptions.add(subscriptionLogin);
+  }
 
   /* --------------- EMPIEZA EL CICLO DE ACTUALIZACION DE DIRECCIONES TANTO PARA USUARIOS REGISTRADOS O USUARIO INVITADO -------------- */
   /**
@@ -472,159 +592,7 @@ export class ResumenCheckoutComponent implements OnInit {
     // Usar Angular para manejar la visibilidad del modal o un servicio
     $('#addEditModal').modal('hide');
   }
-  /* -------------------------------------------------------- FIN --------------------------------------------------- */
-
-
-  private hideMessageAfterDelay() {
-    setTimeout(() => {
-      this.validMessage = false;
-    }, 6000);
-  }
-
-  resetForm() {
-    this.name = '';
-    this.surname = '';
-    this.pais = '';
-    this.address = '';
-    this.zipcode = '';
-    this.poblacion = '';
-    this.email = '';
-    this.phone = '';
-  }
-
-  newAddress() {
-    this.show = true;
-    this.resetForm();
-    this.address_client_selected = null;
-  }
-
-  addressClienteSelected(list_address:any) {
-    this.show = true;
-    this.address_client_selected = list_address;
-    this.name = this.address_client_selected.name;
-    this.surname = this.address_client_selected.surname;
-    this.pais = this.address_client_selected.pais;
-    this.address = this.address_client_selected.address;
-    this.ciudad = this.address_client_selected.ciudad;
-    this.phone = this.address_client_selected.telefono;
-    this.email = this.address_client_selected.email;
-    this.zipcode = this.address_client_selected.zipcode;
-    this.poblacion = this.address_client_selected.poblacion;
-    this.phone = this.address_client_selected.phone;
-  }
-
-  /*onAddressChange(event:any) {
-    console.log("Payment onAddressChange: ", event.target);
-    const selectedIndex = event.target.value;
-    // listAddresses
-    if (selectedIndex !== "") {
-      //const selectedAddress = this.listAddressClients[selectedIndex];
-      const selectedAddress = this.listAddresses[selectedIndex];
-      this.addressClienteSelected(selectedAddress);
-    }
-  }*/
-
-  // onAddressChange(event:any) {
-  //   console.log("Payment onAddressChange: ", event.target.value);
-  //   const selectedIndex = event.target.value;
-    
-  //   if (selectedIndex !== "") {
-  //     const selectedAddress = this.listAddresses[selectedIndex];
-      
-      
-  //     this.selectedAddressId = selectedAddress.id;
-  //     this.addressClienteSelected(selectedAddress);
-  //     console.log('Dirección seleccionada:', selectedAddress, " Con su selectedAddressId: ", this.selectedAddressId);
-  //   }
-  // }
-
-  onAddressChange(selectedId: string) {
-    
-  
-    const selectedAddress = this.listAddresses.find(address => address.id == selectedId);
-  
-    if (selectedAddress) {
-      this.selectedAddressId = selectedAddress.id;
-      //this.selectedAddress = selectedAddress;  // Actualiza la dirección seleccionada
-      this.addressClienteSelected(selectedAddress);
-      console.log('Dirección seleccionada:', selectedAddress, " Con su selectedAddressId: ", this.selectedAddressId);
-    } else {
-      console.error('ID de dirección no encontrado:', selectedId);
-    }
-  }
-  
-
-  get listAddresses(): any[] {
-    return this.CURRENT_USER_AUTHENTICATED ? this.listAddressClients : this.listAddressGuest;
-  }
-
- 
-  confirmarDireccion() {
-    console.warn('selectedAddressId', this.selectedAddressId);
-    if (!this.selectedAddressId) {
-      console.warn('No hay dirección seleccionada');
-      return;
-    }
-  
-    const selected = this.listAddresses.find(addr => addr.id === this.selectedAddressId);
-    if (selected) {
-      this.selectedAddress = selected;
-      this.closeMiniAdress();
-    } 
-  }
-  
-  
-  
-  closeMiniAdress(): void {
-    this.minicartService.closeMiniAddress();
-  }
-  
-  
-  
-
-  
-
-  removeAddressSelected(list_address:any) {
-    this._authEcommerce.deleteAddressClient(list_address.id).subscribe((resp:any) => {      
-      let INDEX = this.listAddressClients.findIndex((item:any) => item.id == list_address.id);
-      // Verifica si se encontró el elemento
-      if (INDEX !== -1) { 
-        this.listAddressClients.splice(INDEX, 1); // Elimina 1 elemento a partir del índice INDEX
-      }
-      alertSuccess(resp.message);
-      this.resetForm();
-    });
-  }
-
-  verifyExistEmail(email: string) {
-    sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-    this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add'],{ queryParams: { email } });
-  }
-
-  public login() {
-    if (!this.email_identify) {
-      alertDanger("Es necesario ingresar el email");
-    }
-
-    if (!this.password_identify) {
-      alertDanger("Es necesario ingresar el password");
-    }
-
-    const subscriptionLogin =  this._authService.login(this.email_identify, this.password_identify).subscribe(
-      (resp:any) => {
-        if (!resp.error && resp) {
-          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout'])
-          .then(() => {
-            window.location.reload();
-          });
-          this._cartService.resetCart();
-        } else {
-          this.errorAutenticate = true;
-          this.errorMessageAutenticate = resp.error.message;
-        }
-      });
-    this.subscriptions.add(subscriptionLogin);
-  }
+  /* -------------------------------------------------------- FIN ACTUALIZACION DE DIRECCIONES --------------------------------------------------- */
 
   ngOnDestroy(): void {
     if (this.subscriptions) {
