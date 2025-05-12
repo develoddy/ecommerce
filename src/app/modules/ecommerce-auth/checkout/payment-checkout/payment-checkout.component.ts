@@ -89,9 +89,8 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    //console.log("Guest ID: ", this.CURRENT_USER_GUEST._id);
     
-    const isGuest = !this.CURRENT_USER_AUTHENTICATED; //const isGuest = this.CURRENT_USER_AUTHENTICATED == null;
+    const isGuest = !this.CURRENT_USER_AUTHENTICATED; 
 
     paypal.Buttons({
       // optional styling for buttons
@@ -111,12 +110,15 @@ export class PaymentCheckoutComponent implements OnInit {
             return;
           }
 
-          //if (!this.address_client_selected) {
-            if( !this.listAddresses ) {
+          console.log("Payment-checkout: ver listaddress ", this.listAddresses );
+          
+
+          if( !this.listAddresses || !this.address_client_selected) {
             this.validMessage = true;
             this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
             return;
           }
+
           const createOrderPayload = {
             purchase_units: [
               {
@@ -134,34 +136,30 @@ export class PaymentCheckoutComponent implements OnInit {
       // finalize the transaction
       onApprove: async (data:any, actions:any) => {
           let Order = await actions.order.capture();
-          // Order.purchase_units[0].payments.captures[0].id
           let sale = {
-            user: this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : undefined,
-            guestId: this.CURRENT_USER_GUEST ? this.CURRENT_USER_GUEST._id : null,
+            user            : this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : undefined,
+            guestId         : this.CURRENT_USER_GUEST ? this.CURRENT_USER_GUEST._id : null,
             currency_payment: "EUR",
-            method_payment: "PAYPAL",
-            n_transaction: Order.purchase_units[0].payments.captures[0].id,
-            total: this.totalCarts,
-            //curreny_total: ,
-            //price_dolar: ,
+            method_payment  : "PAYPAL",
+            n_transaction   : Order.purchase_units[0].payments.captures[0].id,
+            total           : this.totalCarts,
           };
 
           let sale_address = {
-            name: this.name,
-            surname: this.surname,
-            pais: this.pais,
-            address: this.address,
+            name      : this.name,
+            surname   : this.surname,
+            pais      : this.pais,
+            address   : this.address,
             referencia: '',
-            ciudad: this.ciudad,
-            region: this.poblacion,
-            telefono: this.phone,
-            email: this.email,
-            nota: '',
+            ciudad    : this.ciudad,
+            region    : this.poblacion,
+            telefono  : this.phone,
+            email     : this.email,
+            nota      : '',
           };
 
           this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}, isGuest).subscribe(
             (resp:any) => {
-              
               this.isLastStepActive_3 = false;
               setTimeout(() => {
                 if (resp.code === 403 ) {
@@ -234,6 +232,7 @@ export class PaymentCheckoutComponent implements OnInit {
     };
   }
   
+  
   private verifyAuthenticatedUser(): void {
     this._authEcommerce._authService.user.subscribe(user => {
       if ( user ) {
@@ -271,9 +270,7 @@ export class PaymentCheckoutComponent implements OnInit {
     }
   }
 
-  get listAddresses(): any[] {
-    return this.CURRENT_USER_AUTHENTICATED ? this.listAddressClients : this.listAddressGuest;
-  }
+ 
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
@@ -484,6 +481,15 @@ export class PaymentCheckoutComponent implements OnInit {
       this.addressClienteSelected(selectedAddress);
     }
   }
+
+  get listAddresses(): any[] {
+    return this.CURRENT_USER_AUTHENTICATED ? this.listAddressClients : this.listAddressGuest;
+  }
+
+  emptyAddress() {
+    this.address_client_selected = null;
+  }
+
 
   removeAddressSelected(list_address:any) {
     this._authEcommerce.deleteAddressClient(list_address.id).subscribe((resp:any) => {      

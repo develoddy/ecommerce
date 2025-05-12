@@ -214,7 +214,7 @@
                     <!-- Address Book -->
                     <div class="tab-pane h-100 " id="address">
                         <div class="address-card mt-0 h-100">
-                            <ng-container *ngIf="listAddressClients.length == 0 && listAddressGuest.length == 0; else allShowListAddress">
+                            <ng-container *ngIf="listAddresses.length == 0; else allShowListAddress">
                                 <div class="d-flex justify-content-center align-items-center">
                                     <div class="p-2 text-center d-flex flex-column">
                                         <div class="inner mb-3 d-none">
@@ -247,12 +247,14 @@
                                     
                                     <div class="row">
                                         <!-- Direcciones de usuarios autenticados -->
-                                        <ng-container *ngFor="let list_address of listAddressClients; let i=index">
+                                        <!-- <ng-container *ngFor="let list_address of listAddressClients; let i=index">
                                             <div class="address-select-box active">
                                                 <div class="address-box bg-block">
                                                     <div class="top d-flex-justify-center justify-content-between">
                                                         <p class="m-0 text-uppercase">{{ list_address.name +' '+ list_address.surname }}</p>
-                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="addressClienteSelected(list_address)" data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button>
+                                                        <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#miniAddress-drawer">
+                                                            <button type="button" class="bottom-btn btn btn-gray btn-sm">Editar</button>
+                                                        </a>
                                                     </div>
                                                     <div class="middle">
                                                         <div class="address"><p class="fw-light"> {{ list_address.address }}</p></div>
@@ -261,38 +263,71 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </ng-container>
+                                        </ng-container> -->
 
-                                        <!-- Direcciones de usuarios invitados -->
-                                        <ng-container *ngFor="let list_address of listAddressGuest; let i=index">
+                                    
+                                        <ng-container *ngIf="selectedAddress">
                                             <div class="address-select-box active">
                                                 <div class="address-box bg-block">
-                                                    <div class="mb-3 d-flex flex-row">
-                                                        <span class="d-flex flex-row">
-                                                            <svg width="24" height="24" aria-hidden="true" class="Icon_icon-content-1__kPDLF" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
-                                                                <path d="M19 20V9.3l.7.5.6-.8L12 2.9 9 5.1V3H6v4.3L3.7 9l.6.8.7-.5V20H3v1h18v-1zM7 4h1v1.8l-1 .8zM6 8.6l6-4.4 6 4.4V12H6zM11 20v-4h2v4zm-1-5v5H6v-7h12v7h-4v-5z"></path>
-                                                                <path d="M12 7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 3c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span class="px-2">Domicilio</span>
-                                                        <span class="">GRATIS</span>
-                                                    </div>
-                                                    <div class="top d-flex-justify-center justify-content-between mb-3">
-                                                        <h5 class="m-0 fw-bold text-uppercase">{{ list_address.name +' '+ list_address.surname }}</h5>
-                                                        <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Casa</span></span>
+                                                    <div class="top d-flex-justify-center justify-content-between">
+                                                        <p class="m-0 text-uppercase">
+                                                            {{ selectedAddress.name + ' ' + selectedAddress.surname }}
+                                                        </p>
+                                                        <!-- <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="addressClienteSelected(list_address)" data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button> -->
+                                                        <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#miniAddress-drawer">
+                                                            <button type="button" class="bottom-btn btn btn-gray btn-sm">Editar</button>
+                                                        </a>
                                                     </div>
                                                     <div class="middle">
-                                                        <div class="address"><p class="fw-light"> {{ list_address.address }}</p></div>
-                                                        <div class="address"><p class="fw-light"> {{ list_address.zipcode }} {{ list_address.poblacion }}, <span class="text-uppercase">{{ list_address.ciudad }}</span> <br/></p></div>
-                                                        <div class="address"><p class="fw-light">Tel. {{ list_address.phone }}</p></div>
-                                                        <div class="form-text px-2 mt-3 text-dark d-none" style="width: fit-content !important; background-color: #f3f3f3;">Dirección de envío habitual</div>
-                                                    </div>
-                                                    <div class="bottom d-flex-justify-center justify-content-between">
-                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="addressClienteSelected(list_address)" data-bs-toggle="modal" data-bs-target="#addEditModal">Añadir o editar dirección</button>
+                                                        <div class="address"><p class="fw-light">{{ selectedAddress.address }}</p></div>
+                                                        <div class="address">
+                                                            <p class="fw-light">
+                                                                {{ selectedAddress.zipcode }} {{ selectedAddress.poblacion }},
+                                                                <span class="text-uppercase">{{ selectedAddress.ciudad }}</span><br/>
+                                                            </p>
+                                                        </div>
+                                                        <div class="address">
+                                                            <p class="fw-light">Tel. +34 {{ selectedAddress.phone }}</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </ng-container>
+                                          
+
+                                        <!-- Direcciones de usuarios invitados -->
+                                         <div class="d-none">
+                                            <ng-container *ngFor="let list_address of listAddressGuest; let i=index">
+                                                <div class="address-select-box active">
+                                                    <div class="address-box bg-block">
+                                                        <div class="mb-3 d-flex flex-row">
+                                                            <span class="d-flex flex-row">
+                                                                <svg width="24" height="24" aria-hidden="true" class="Icon_icon-content-1__kPDLF" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
+                                                                    <path d="M19 20V9.3l.7.5.6-.8L12 2.9 9 5.1V3H6v4.3L3.7 9l.6.8.7-.5V20H3v1h18v-1zM7 4h1v1.8l-1 .8zM6 8.6l6-4.4 6 4.4V12H6zM11 20v-4h2v4zm-1-5v5H6v-7h12v7h-4v-5z"></path>
+                                                                    <path d="M12 7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 3c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1"></path>
+                                                                </svg>
+                                                            </span>
+                                                            <span class="px-2">Domicilio</span>
+                                                            <span class="">GRATIS</span>
+                                                        </div>
+                                                        <div class="top d-flex-justify-center justify-content-between mb-3">
+                                                            <h5 class="m-0 fw-bold text-uppercase">{{ list_address.name +' '+ list_address.surname }}</h5>
+                                                            <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Casa</span></span>
+                                                        </div>
+                                                        <div class="middle">
+                                                            <div class="address"><p class="fw-light"> {{ list_address.address }}</p></div>
+                                                            <div class="address"><p class="fw-light"> {{ list_address.zipcode }} {{ list_address.poblacion }}, <span class="text-uppercase">{{ list_address.ciudad }}</span> <br/></p></div>
+                                                            <div class="address"><p class="fw-light">Tel. {{ list_address.phone }}</p></div>
+                                                            <div class="form-text px-2 mt-3 text-dark d-none" style="width: fit-content !important; background-color: #f3f3f3;">Dirección de envío habitual</div>
+                                                        </div>
+                                                        <div class="bottom d-flex-justify-center justify-content-between">
+                                                            <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="addressClienteSelected(list_address)" data-bs-toggle="modal" data-bs-target="#addEditModal">Añadir o editar dirección</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </ng-template>
@@ -640,3 +675,159 @@
         <button type="button" class="btn btn-primary ms-1 px-5 py-3 text-uppercase fw-normal btnNext" (click)="goToNextStep()">Continuar</button>
     </div>
 </div>
+
+
+<!--MiniCart Drawer-->
+<div id="miniAddress-drawer" class="minicart-right-drawer offcanvas offcanvas-end" tabindex="-1">
+    <!--MiniCart Empty-->
+    <div id="cartEmpty" class="cartEmpty d-flex-justify-center flex-column text-center p-3 text-muted d-none">
+        <div class="minicart-header d-flex-center justify-content-between w-100">
+            <h4 class="fs-6">Your cart (0 Items)</h4>
+            <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i></button>
+        </div>
+        <div class="cartEmpty-content mt-4">
+            <i class="icon anm anm-cart-l fs-1 text-muted"></i> 
+            <p class="my-3">No Products in the Cart</p>
+            <a href="index.html" class="btn btn-primary cart-btn">Continue shopping</a>
+        </div>
+    </div>
+    <!--End MiniCart Empty-->
+
+    <!--MiniCart Content-->
+    <div id="cart-drawer" class="block block-cart" *ngIf="listCarts">
+        <div class="minicart-header">
+            <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i></button>
+            <h4 class="fs-6 text-uppercase fw-bold">Dirección de envío ({{ listAddresses.length }})</h4>
+        </div>
+        <div class="minicart-content d-flex">
+            <ng-container *ngIf="listCarts.length == 0; else allCarts">
+                <div class="d-flex align-items-center">
+                    <div class="p-2 w-100 d-flex flex-column justify-content-center text-center">
+                        <div class="inner mb-3 d-none">
+                            <div class="bradcrumb-thumb">
+                                <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
+                            </div>
+                        </div>
+                        <h5 class="header-title mb-0 text-uppercase">¡Oops! Tu carrito está vacío</h5>
+                        <p>Empieza a llenarlo con cosas que te encantarán.</p>
+                    </div>
+               </div>
+            </ng-container>
+            <ng-template #allCarts>
+                <ul class="m-0 clearfix w-100">
+                    <ng-container *ngFor="let list_address of listAddresses; let i=index">
+                        
+                        <div class="payment-accordion-radio">
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item card mb-2 p-3">
+                                    <div class="card-header" [id]="'heading' + i">
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <div>
+                                                <div class="card-link">
+                                                    <span class="customRadio clearfix mb-0">
+                                                      <input 
+                                                        id="paymentRadio{{i}}" 
+                                                        [value]="list_address.id" 
+                                                        name="payment" 
+                                                        type="radio" 
+                                                        class="radio" 
+                                                        [(ngModel)]="selectedAddressId" 
+                                                        (change)="onAddressChange(list_address.id)" 
+                                                      />
+                                                      <label for="paymentRadio{{i}}" class="mb-0 text-uppercase fw-bold">
+                                                        {{ list_address.name + ' ' + list_address.surname }}
+                                                      </label>
+                                                    </span>
+                                                  </div>
+                                            </div>
+                                            <div>
+                                                <a href="#" onclick="return false;" (click)="addressClienteSelected(list_address)">
+                                                    <button type="button" class="border-0 fw-bold text-decoration-underline"  data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button> 
+                                                </a>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-danger">selectedAddressId = {{ selectedAddressId }}</p>
+                                    <p class="text-primary">list_address.id  = {{ list_address.id }}</p>
+                                    <div 
+                                        [id]="'collapse' + i" 
+                                        class="accordion-collapse collapse show" 
+                                        aria-labelledby="'heading' + i" 
+                                        data-bs-parent="#accordionExample">
+                                        <div class="card-body p-0">
+                                            <p class="fw-light mb-0"> {{ list_address.address }}</p>
+                                            <p class="fw-light mb-0"> {{ list_address.zipcode }} {{ list_address.poblacion }}, <span class="text-uppercase">{{ list_address.ciudad }}</span> <br/></p>
+                                            <p class="fw-light mb-0">Tel. +34 {{ list_address.phone }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                    </ng-container> 
+
+
+                    <!-- <ng-container *ngFor="let cart of listCarts">
+                        <li class="item d-flex flex-column"> 
+                            <div class="d-flex flex-row mb-2">
+                                <div class="">
+                                    <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">
+                                        <img class="blur-up lazyload"
+                                        [src]="cart.product.imagen"
+                                        alt="{{ cart.product.title }}"
+                                        title="{{ cart.product.title }}"
+                                        width="200"
+                                        height="200" />
+                                    </a>
+                                </div>
+                                <div class="d-flex w-100">
+                                    <div class="product-details">
+                                        <div class="priceRow mb-2">
+                                            <div class="product-price d-flex flex-row justify-content-between">
+                                                <a class="product-title text-uppercase fw-bold" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                                <span class="price-small fw-normal">
+                                                    <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
+                                                    <span class="price-decimals-small" style="top: 0.2em !important;">
+                                                        <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
+                                                        <span class="currency-symbol-small">{{ euro }}</span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="variant-cart mb-3" *ngIf="cart.variedad">{{ cart.variedad.color }} / {{ cart.variedad.valor }}</div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <div class="me-3">
+                                    <a href="#" class="remove fw-light" onclick="return false;" (click)="removeCart(cart)"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"></i> Eliminar</a>
+                                </div>
+                                <div class="">
+                                    <a href="#" class="remove fw-light" onclick="return false;"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Favorito"></i> Comprar mas tarde</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ng-container> -->
+                    
+                </ul>
+            </ng-template>
+        </div>
+        <div class="minicart-bottom" *ngIf="listAddressClients.length != 0">
+            <div class="minicart-action d-flex flex-column mt-3">
+                <!-- <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-black w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3">Confirmar dirección</a> -->
+                <button 
+                class="cart-btn btn btn-outline-black w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3"
+                (click)="confirmarDireccion()"
+              >
+                Confirmar dirección
+              </button>
+              
+                <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-white text-black bg-white w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3">Añadir otra dirección</a>
+            </div>
+        </div>
+    </div>
+    <!--MiniCart Content-->
+</div>
+<!--End MiniCart Drawer-->

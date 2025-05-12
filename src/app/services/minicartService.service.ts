@@ -44,5 +44,20 @@ export class MinicartService {
       }
     }
   }
+
+
+  closeMiniAddress() {
+    // Cierra el minicart utilizando Bootstrap
+    const minicart = document.getElementById('miniAddress-drawer');
+    if (minicart) {
+      const bsOffcanvas = bootstrap.Offcanvas.getInstance(minicart);
+      if (bsOffcanvas) {
+        bsOffcanvas.hide();
+      } else {
+        // Crear una nueva instancia si no existe
+        new bootstrap.Offcanvas(minicart).hide();
+      }
+    }
+  }
   
 }

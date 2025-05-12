@@ -27,8 +27,8 @@
             <!--Shipping address-->
             <div class="block payment-methods pb-0 mb-4 p-0">
                 <div class="block-content">
-                    <h3 class="title mb-0 text-uppercase d-none">Dirección de envío</h3>                                     
-                    <div class="payment-accordion-radio d-none">
+                    <h3 class="title mb-0 text-uppercase ">Dirección de envío</h3>                                     
+                    <div class="payment-accordion-radio">
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item card mb-2">
                                 <div class="card-header d-none" id="headingShippingOne">
@@ -63,12 +63,11 @@
                     </div>
 
                     <!-- Mostrar la lista de direcciones -->
-                    <div class="address-book-section" [class.d-none]="loading">
+                    <div class="address-book-section" [class.d-none]="loading" *ngIf="this.address_client_selected">
                         <div class="top-sec mb-3">
                             <h3 class="mb-0 text-uppercase text-uppercase">Dirección de envío</h3>
                         </div>
                         <div class="row">
-
                             <!-- Direcciones de usuarios autenticados -->
                             <ng-container *ngFor="let list_address of listAddressClients; let i=index">
                                 <div class="address-select-box active">

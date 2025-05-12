@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
@@ -6,6 +6,8 @@ import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.servi
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { CheckoutService } from '../../_services/checkoutService';
+import { MinicartService } from 'src/app/services/minicartService.service';
+
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -14,15 +16,28 @@ declare function alertDanger([]):any;
 declare function alertWarning([]):any;
 declare function alertSuccess([]):any;
 
+interface Address {
+  id: string;
+  name: string;
+  surname: string;
+  address: string;
+  zipcode: string;
+  poblacion: string;
+  ciudad: string;
+  phone: string;
+}
+
 @Component({
   selector: 'app-resumen-checkout',
   templateUrl: './resumen-checkout.component.html',
   styleUrls: ['./resumen-checkout.component.css']
 })
+
 export class ResumenCheckoutComponent implements OnInit {
 
   @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   euro = "€";
+  selectedAddress: Address | null = null;
   listAddressClients:any = [];
   listAddressGuest:any = [];
   // Address
@@ -56,9 +71,12 @@ export class ResumenCheckoutComponent implements OnInit {
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
   status:boolean=false;
+  selectedAddressId:  number | String = 0; // Dirección seleccionada
 
   CURRENT_USER_AUTHENTICATED:any=null;
   CURRENT_USER_GUEST:any=null;
+
+  
 
   private subscriptions: Subscription = new Subscription();
   @Output() activate = new EventEmitter<boolean>();
@@ -72,9 +90,11 @@ export class ResumenCheckoutComponent implements OnInit {
     public _authService: AuthService,
     public _cartService: CartService,
     public _router: Router,
+    private minicartService: MinicartService,
     private subscriptionService: SubscriptionService,
     public routerActived: ActivatedRoute,
     private checkoutService: CheckoutService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.routerActived.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  // Valor predeterminado
@@ -87,7 +107,17 @@ export class ResumenCheckoutComponent implements OnInit {
   ngOnInit(): void {
     //this.loadLoading();
     this.verifyAuthenticatedUser();
+
     this.currentDataCart();
+
+    // const defaultList = this.CURRENT_USER_AUTHENTICATED ? this.listAddressClients : this.listAddressGuest;
+
+    // if (defaultList.length > 0) {
+    //   this.selectedAddress = defaultList[0];
+    //   this.selectedAddressId = defaultList[0].id;
+    // }
+
+    
     
     setTimeout(() => {
       this.loadLoading();
@@ -115,7 +145,6 @@ export class ResumenCheckoutComponent implements OnInit {
     );
   }
 
-
   private verifyAuthenticatedUser(): void {
     this._authEcommerce._authService.user.subscribe(user => {
       if ( user ) {
@@ -140,6 +169,11 @@ export class ResumenCheckoutComponent implements OnInit {
       this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
         (resp: any) => {
           this.listAddressClients = resp.address_client;
+
+          if (this.listAddressClients.length > 0) {
+            this.selectedAddress = this.listAddressClients[0];
+          }
+
           if (this.listAddressClients.length === 0) {
             // GUARDA LA URL ACTUAL EN SESSION STORARE
             sessionStorage.setItem('returnUrl', this._router.url); 
@@ -158,6 +192,10 @@ export class ResumenCheckoutComponent implements OnInit {
       this._authEcommerce.listAddressGuest().subscribe(
         (resp: any) => {
           this.listAddressGuest = resp.addresses;
+          if (this.listAddressClients.length > 0) {
+            this.selectedAddress = this.listAddressGuest[0];
+          }
+
           if (this.listAddressGuest.length === 0) {
             this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery']);
           } else {
@@ -171,7 +209,7 @@ export class ResumenCheckoutComponent implements OnInit {
     this.subscriptionService.setShowSubscriptionSection(true);
     this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
   }
-
+  
   goToNextStep() {
     this.checkoutService.setNavigatingToPayment(true);
     this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
@@ -475,13 +513,76 @@ export class ResumenCheckoutComponent implements OnInit {
     this.phone = this.address_client_selected.phone;
   }
 
-  onAddressChange(event:any) {
+  /*onAddressChange(event:any) {
+    console.log("Payment onAddressChange: ", event.target);
     const selectedIndex = event.target.value;
+    // listAddresses
     if (selectedIndex !== "") {
-      const selectedAddress = this.listAddressClients[selectedIndex];
+      //const selectedAddress = this.listAddressClients[selectedIndex];
+      const selectedAddress = this.listAddresses[selectedIndex];
       this.addressClienteSelected(selectedAddress);
     }
+  }*/
+
+  // onAddressChange(event:any) {
+  //   console.log("Payment onAddressChange: ", event.target.value);
+  //   const selectedIndex = event.target.value;
+    
+  //   if (selectedIndex !== "") {
+  //     const selectedAddress = this.listAddresses[selectedIndex];
+      
+      
+  //     this.selectedAddressId = selectedAddress.id;
+  //     this.addressClienteSelected(selectedAddress);
+  //     console.log('Dirección seleccionada:', selectedAddress, " Con su selectedAddressId: ", this.selectedAddressId);
+  //   }
+  // }
+
+  onAddressChange(selectedId: string) {
+    
+  
+    const selectedAddress = this.listAddresses.find(address => address.id == selectedId);
+  
+    if (selectedAddress) {
+      this.selectedAddressId = selectedAddress.id;
+      //this.selectedAddress = selectedAddress;  // Actualiza la dirección seleccionada
+      this.addressClienteSelected(selectedAddress);
+      console.log('Dirección seleccionada:', selectedAddress, " Con su selectedAddressId: ", this.selectedAddressId);
+    } else {
+      console.error('ID de dirección no encontrado:', selectedId);
+    }
   }
+  
+
+  get listAddresses(): any[] {
+    return this.CURRENT_USER_AUTHENTICATED ? this.listAddressClients : this.listAddressGuest;
+  }
+
+ 
+  confirmarDireccion() {
+    console.warn('selectedAddressId', this.selectedAddressId);
+    if (!this.selectedAddressId) {
+      console.warn('No hay dirección seleccionada');
+      return;
+    }
+  
+    const selected = this.listAddresses.find(addr => addr.id === this.selectedAddressId);
+    if (selected) {
+      this.selectedAddress = selected;
+      this.closeMiniAdress();
+    } 
+  }
+  
+  
+  
+  closeMiniAdress(): void {
+    this.minicartService.closeMiniAddress();
+  }
+  
+  
+  
+
+  
 
   removeAddressSelected(list_address:any) {
     this._authEcommerce.deleteAddressClient(list_address.id).subscribe((resp:any) => {      
