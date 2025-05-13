@@ -2,7 +2,7 @@
     <div class="row p-lg-5">
         
         <!-- ======== Columna de la izquierda ======== -->
-        <div class="col-12 col-sm-12 col-md-7 col-lg-8">
+        <div class="col-12 col-sm-12 col-md-7 col-lg-8 order-1 order-md-1" id="main-left">
             <!-- Tipo de envío -->
             <div class="mb-4">
                 <h3 class="mb-0 text-uppercase mb-3">Tipo de envío</h3>
@@ -86,18 +86,23 @@
                                                 <div class="address-box bg-block">
                                                     <div class="top d-flex-justify-center justify-content-between">
                                                         <p class="m-0 text-uppercase">{{ selectedAddress.name + ' ' + selectedAddress.surname }}</p>
-                                                        <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="openAddressModal()">Editar</button>
+                                                        <a href="#" class="text-decoration-underline" onclick="return false;" (click)="openAddressModal()">
+                                                            <button type="button" class="border-0 fw-bold text-decoration-underline">Editar</button>
+                                                        </a>
+                                                        
                                                     </div>
-                                                    <div class="middle">
-                                                        <div class="address"><p class="fw-light">{{ selectedAddress.address }}</p></div>
-                                                        <div class="address">
+                                                    <div class="middle lh-1">
+                                                        <div class="address mb-1"><p class="fw-light">{{ selectedAddress.email}}</p></div>
+                                                        
+                                                        <div class="address mb-1">
+                                                            <p class="fw-light">Tel. +34 {{ selectedAddress.phone }}</p>
+                                                        </div>
+                                                        <div class="address mb-1"><p class="fw-light">{{ selectedAddress.address +', '+ selectedAddress.zipcode +', '+ selectedAddress.ciudad +', '+ selectedAddress.poblacion }}</p></div>
+                                                        <div class="address mb-1 d-none">
                                                             <p class="fw-light">
                                                                 {{ selectedAddress.zipcode }} {{ selectedAddress.poblacion }},
                                                                 <span class="text-uppercase">{{ selectedAddress.ciudad }}</span><br/>
                                                             </p>
-                                                        </div>
-                                                        <div class="address">
-                                                            <p class="fw-light">Tel. +34 {{ selectedAddress.phone }}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -230,233 +235,292 @@
                 </div>
             </div>
 
+            <!--Cart Summary | Cart Summary solo visible en móvil-->
+            <div class="cart-info mb-4 d-block d-md-none">
+                <div class="cart-info mb-4 ">
+                    <h3 class="title mb-3 text-uppercase">Resumen de Precio</h3>
+                    <div class="cart-order-detail cart-col">
+                        
+                        <div class="row g-0 border-bottom pb-2">
+                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Subtotal</strong></span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                                <!-- <span class="money">{{ getFormattedPrice(totalCarts).integerPart }}.{{ getFormattedPrice(totalCarts).decimalPart }} {{ euro }}</span> -->
+                                <span class="money">
+                                    <span class="price-small fw-normal">
+                                        <span class="price-main-small">{{ getFormattedPrice(totalCarts).integerPart }}</span>
+                                        <span class="price-decimals-small">
+                                            <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
+                                            <span class="currency-symbol-small">{{ euro }}</span>
+                                        </span>
+                                    </span>
+                                </span>
+                            </span>
+
+                            <!-- <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                                <span class="money price">
+                                    <span class="price-main">{{ getFormattedPrice(totalCarts).integerPart }}</span>
+                                    <span class="price-decimals">
+                                        <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
+                                        <span class="currency-symbol">{{ euro }}</span>
+                                    </span>
+                                </span>
+                            </span> -->
+                        </div>
+                        <div class="row g-0 border-bottom py-2 d-none">
+                            <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Coupon Discount</strong></span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">-$25.00</span></span>
+                        </div>
+                        <div class="row g-0 border-bottom py-2 d-none">
+                            <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Tax</strong></span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">$10.00</span></span>
+                        </div>
+                        <div class="row g-0 border-bottom py-2">
+                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Envío</strong></span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Gratis</span></span>
+                        </div>
+                        <div class="row g-0 pt-2">
+                            <span class="col-6 col-sm-6 cart-subtotal-title fs-5 text-uppercase"><strong>Total</strong></span>
+                            <!-- <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ totalCarts | number: '1.2-2' }} {{ euro }}</b></span> -->
+                            <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end">
+                                <span class="money price">
+                                    <span class="price-main">{{ getFormattedPrice(totalCarts).integerPart }}</span>
+                                    <span class="price-decimals">
+                                        <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
+                                        <span class="currency-symbol">{{ euro }}</span>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>                               
+                </div>
+            </div>
+            
             <!-- Boton continuar a pago -->
-            <div class="d-flex flex-column">
-                <button type="button" class="btn btn-primary px-5 py-3 text-uppercase fw-normal btnNext w-50" (click)="goToNextStep()">Continuar a pago</button>
+            <div class="d-flex flex-column mb-4" style="max-width: 21.875rem;" >
+                <button type="button" class="btn btn-primary px-5 py-3 fw-normal btnNext" (click)="goToNextStep()">Continuar a pago</button>
                 <p id="" class="fs-12">
                     <small class="text-muted">Al continuar, confirmas que has leído la <a class="text-black fw-bold" href="/es/es" data-testid="checkout.step1.legalpolicy.link" target="" aria-labelledby="checkout.step1.legalpolicy" aria-expanded="false">Política de privacidad</a></small>
                 </p>
             </div>
+
+            
         </div>
 
         <!-- ======== Columna de la derecha ======== -->
-        <div class="col-12 col-sm-12 col-md-5 col-lg-4">
-            <h3 class="title mb-0 text-uppercase mb-3">Pedido</h3>
-
-            <!-- Código promocional -->
-            <div class="mb-3 payment-methods mb-4">
-                <div class="block-content">
-                    <div class="payment-accordion-radio">
-                        <div class="accordion" id="accordionExample">
-                            <div class="accordion-item card mb-2 px-3 border border-muted">
-                                <div class="card-header p-3" id="headingTwo">
-                                    <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        <span class="customRadio clearfix mb-0">
-                                            <input id="paymentRadio2" value="" name="payment" type="radio" class="radio" /> 
-                                            <label for="paymentRadio2" class="mb-0 fw-bold text-uppercase">Código promocional</label>
-                                        </span>
-                                    </button>
-                                </div>
-                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                    <div class="card-body px-0">
-                                        <p>Introduce tu código promocional y disfruta de grandes ahorros en tu compra.</p>
-                                        <div class="input-group mb-0 d-flex">
-                                            <input id="coupon-code" [(ngModel)]="code_cupon" required="" type="text" class="form-control" placeholder="Código de promoción">
-                                            <button class="coupon-btn btn btn-secondary fw-normal text-uppercase" (click)="apllyCupon()" [disabled]="loading" type="submit">
-                                                <div *ngIf="loading" class="loading-spinner justify-content-center align-items-center">
-                                                    <div class="row">
-                                                        <div class="col-sm-2">
-                                                            <div class="sp bg-white sp-bars"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span *ngIf="!loading">Aplicar</span>
+        <div class="col-12 col-sm-12 col-md-5 col-lg-4 order-0 order-md-2" id="main-right">
+            <div class="row">
+                <div class="col-12 order-1 order-md-1">
+                    <h3 class="title mb-0 text-uppercase mb-3">Pedido</h3>
+                    <!-- Código promocional -->
+                    <div class="mb-3 payment-methods mb-4">
+                        <div class="block-content">
+                            <div class="payment-accordion-radio">
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item card mb-2 px-3 border border-muted">
+                                        <div class="card-header p-3" id="headingTwo">
+                                            <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                <span class="customRadio clearfix mb-0">
+                                                    <input id="paymentRadio2" value="" name="payment" type="radio" class="radio" /> 
+                                                    <label for="paymentRadio2" class="mb-0 fw-bold text-uppercase">Código promocional</label>
+                                                </span>
                                             </button>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--Apply Promocode-->
-            <div class="block mb-3 apply-code mb-4 p-0 d-none">
-                <div class="block-content">
-                    <h3 class="title mb-3 text-uppercase">Aplicar código promocional</h3>
-                    <div id="coupon" class="coupon-dec">
-                        <p class="fw-light">Introduce tu código promocional y disfruta de grandes ahorros en tu compra.</p>
-                        <div class="input-group mb-0 d-flex">
-                            <input id="coupon-code" [(ngModel)]="code_cupon" required="" type="text" class="form-control" placeholder="Código de promoción">
-                            <button class="coupon-btn btn btn-secondary fw-normal text-uppercase" (click)="apllyCupon()" [disabled]="loading" type="submit">
-                                <div *ngIf="loading" class="loading-spinner justify-content-center align-items-center">
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <div class="sp bg-white sp-bars"></div>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                            <div class="card-body px-0">
+                                                <p>Introduce tu código promocional y disfruta de grandes ahorros en tu compra.</p>
+                                                <div class="input-group mb-0 d-flex">
+                                                    <input id="coupon-code" [(ngModel)]="code_cupon" required="" type="text" class="form-control" placeholder="Código de promoción">
+                                                    <button class="coupon-btn btn btn-secondary fw-normal text-uppercase" (click)="apllyCupon()" [disabled]="loading" type="submit">
+                                                        <div *ngIf="loading" class="loading-spinner justify-content-center align-items-center">
+                                                            <div class="row">
+                                                                <div class="col-sm-2">
+                                                                    <div class="sp bg-white sp-bars"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <span *ngIf="!loading">Aplicar</span>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <span *ngIf="!loading">Aplicar</span>
-                            </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Apply Promocode-->
+                    <div class="block mb-3 apply-code mb-4 p-0 d-none">
+                        <div class="block-content">
+                            <h3 class="title mb-3 text-uppercase">Aplicar código promocional</h3>
+                            <div id="coupon" class="coupon-dec">
+                                <p class="fw-light">Introduce tu código promocional y disfruta de grandes ahorros en tu compra.</p>
+                                <div class="input-group mb-0 d-flex">
+                                    <input id="coupon-code" [(ngModel)]="code_cupon" required="" type="text" class="form-control" placeholder="Código de promoción">
+                                    <button class="coupon-btn btn btn-secondary fw-normal text-uppercase" (click)="apllyCupon()" [disabled]="loading" type="submit">
+                                        <div *ngIf="loading" class="loading-spinner justify-content-center align-items-center">
+                                            <div class="row">
+                                                <div class="col-sm-2">
+                                                    <div class="sp bg-white sp-bars"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span *ngIf="!loading">Aplicar</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Cart Summary-->      
+                    <div class="cart-info mb-4 d-none d-md-block">
+                        <h3 class="title mb-3 text-uppercase">Resumen de Precio</h3>
+                        <div class="cart-order-detail cart-col">
+                            
+                            <div class="row g-0 border-bottom pb-2">
+                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Subtotal</strong></span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                                    <!-- <span class="money">{{ getFormattedPrice(totalCarts).integerPart }}.{{ getFormattedPrice(totalCarts).decimalPart }} {{ euro }}</span> -->
+                                    <span class="money">
+                                        <span class="price-small fw-normal">
+                                            <span class="price-main-small">{{ getFormattedPrice(totalCarts).integerPart }}</span>
+                                            <span class="price-decimals-small">
+                                                <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
+                                                <span class="currency-symbol-small">{{ euro }}</span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </span>
+
+                                <!-- <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                                    <span class="money price">
+                                        <span class="price-main">{{ getFormattedPrice(totalCarts).integerPart }}</span>
+                                        <span class="price-decimals">
+                                            <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
+                                            <span class="currency-symbol">{{ euro }}</span>
+                                        </span>
+                                    </span>
+                                </span> -->
+                            </div>
+                            <div class="row g-0 border-bottom py-2 d-none">
+                                <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Coupon Discount</strong></span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">-$25.00</span></span>
+                            </div>
+                            <div class="row g-0 border-bottom py-2 d-none">
+                                <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Tax</strong></span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">$10.00</span></span>
+                            </div>
+                            <div class="row g-0 border-bottom py-2">
+                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Envío</strong></span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Gratis</span></span>
+                            </div>
+                            <div class="row g-0 pt-2">
+                                <span class="col-6 col-sm-6 cart-subtotal-title fs-5 text-uppercase"><strong>Total</strong></span>
+                                <!-- <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ totalCarts | number: '1.2-2' }} {{ euro }}</b></span> -->
+                                <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end">
+                                    <span class="money price">
+                                        <span class="price-main">{{ getFormattedPrice(totalCarts).integerPart }}</span>
+                                        <span class="price-decimals">
+                                            <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
+                                            <span class="currency-symbol">{{ euro }}</span>
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>                               
+                    </div>
+                </div>
+                <div class="col-12 order-0 order-md-2">
+                    <!-- Carts List -->
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-7 col-lg-12">
+                        <div class="block order-summary p-0">
+                            
+                            <div class="block-content">
+                                <h3 class="mb-0">Artículos ({{ listCarts.length }})</h3>
+                            <div class="order-list">
+                                <ng-container *ngFor="let cart of listCarts">
+                                <div class="d-flex border-bottom py-3 align-items-start gap-3 flex-wrap">
+                                    <!-- Imagen -->
+                                    <div style="flex: 0 0 auto;">
+                                    <a [routerLink]="['/landing-product', cart.product.slug]">
+                                        <img
+                                        [src]="cart.product.imagen"
+                                        alt="product"
+                                        title="Product"
+                                        style="width: auto; height: 160px; object-fit: cover;"
+                                        class="img-fluid"
+                                        />
+                                    </a>
+                                    </div>
+                    
+                                    <!-- Info del producto -->
+                                    <div class="flex-grow-1 d-flex flex-column justify-content-between">
+                                        <!-- Línea superior: título y precio alineados -->
+                                        <div class="d-flex justify-content-between align-items-start flex-wrap">
+                                        <h5 class="mb-1 me-2">
+                                            <a [routerLink]="['/landing-product', cart.product.slug]" class="text-decoration-none text-dark">
+                                            {{ cart.product.title }}
+                                            </a>
+                                        </h5>
+                                        <div class="fw-bold text-end">
+                                            <span class="price-small fw-bold">
+                                            <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
+                                            <span class="price-decimals-small">
+                                                <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
+                                                <span class="currency-symbol-small">{{ euro }}</span>
+                                            </span>
+                                            </span>
+                                        </div>
+                                        </div>
+                                    
+                                        <!-- Datos adicionales -->
+                                        <div class="mt-2">
+                                        <p class="mb-1 small">Color: {{ cart.variedad.color }}</p>
+                                        <p class="mb-1 small">Talla: {{ cart.variedad.valor }}</p>
+                                        <p class="mb-1 small">Cantidad: {{ cart.cantidad }}</p>
+                                        </div>
+                                    
+                                        <!-- Subtotal -->
+                                        <div class="mt-2 d-none">
+                                            <div class="fw-bold">
+                                                Subtotal:
+                                                <span class="price-small">
+                                                <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
+                                                <span class="price-decimals-small">
+                                                    <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
+                                                    <span class="currency-symbol-small">{{ euro }}</span>
+                                                </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                    
+                                    <!-- Botón eliminar -->
+                                    <div style="flex: 0 0 auto;">
+                                    <a
+                                        href="#"
+                                        onclick="return false;"
+                                        (click)="removeCart(cart)"
+                                        class="btn btn-secondary cart-remove remove-icon"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Eliminar del carrito"
+                                    >
+                                        <i class="icon anm anm-times-r"></i>
+                                    </a>
+                                    </div>
+                                </div>
+                                </ng-container>
+                            </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!--Cart Summary-->      
-            <div class="cart-info mb-4">
-                <h3 class="title mb-3 text-uppercase">Resumen de Precio</h3>
-                <div class="cart-order-detail cart-col">
-                    
-                    <div class="row g-0 border-bottom pb-2">
-                        <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Subtotal</strong></span>
-                        <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                            <!-- <span class="money">{{ getFormattedPrice(totalCarts).integerPart }}.{{ getFormattedPrice(totalCarts).decimalPart }} {{ euro }}</span> -->
-                            <span class="money">
-                                <span class="price-small fw-normal">
-                                    <span class="price-main-small">{{ getFormattedPrice(totalCarts).integerPart }}</span>
-                                    <span class="price-decimals-small">
-                                        <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
-                                        <span class="currency-symbol-small">{{ euro }}</span>
-                                    </span>
-                                </span>
-                            </span>
-                        </span>
-
-                        <!-- <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                            <span class="money price">
-                                <span class="price-main">{{ getFormattedPrice(totalCarts).integerPart }}</span>
-                                <span class="price-decimals">
-                                    <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
-                                    <span class="currency-symbol">{{ euro }}</span>
-                                </span>
-                            </span>
-                        </span> -->
-                    </div>
-                    <div class="row g-0 border-bottom py-2 d-none">
-                        <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Coupon Discount</strong></span>
-                        <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">-$25.00</span></span>
-                    </div>
-                    <div class="row g-0 border-bottom py-2 d-none">
-                        <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Tax</strong></span>
-                        <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">$10.00</span></span>
-                    </div>
-                    <div class="row g-0 border-bottom py-2">
-                        <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Envío</strong></span>
-                        <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Gratis</span></span>
-                    </div>
-                    <div class="row g-0 pt-2">
-                        <span class="col-6 col-sm-6 cart-subtotal-title fs-5 text-uppercase"><strong>Total</strong></span>
-                        <!-- <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ totalCarts | number: '1.2-2' }} {{ euro }}</b></span> -->
-                        <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end">
-                            <span class="money price">
-                                <span class="price-main">{{ getFormattedPrice(totalCarts).integerPart }}</span>
-                                <span class="price-decimals">
-                                    <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
-                                    <span class="currency-symbol">{{ euro }}</span>
-                                </span>
-                            </span>
-                        </span>
-                    </div>
-                </div>                               
-            </div>
-
-            <!-- Carts -->
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-7 col-lg-12">
-                  <!-- Order Summary -->
-                  <div class="block order-summary p-0">
-                    
-                    <div class="block-content">
-                        <h3 class="mb-0">Artículos ({{ listCarts.length }})</h3>
-                      <div class="order-list">
-                        <ng-container *ngFor="let cart of listCarts">
-                          <div class="d-flex border-bottom py-3 align-items-start gap-3 flex-wrap">
-                            <!-- Imagen -->
-                            <div style="flex: 0 0 auto;">
-                              <a [routerLink]="['/landing-product', cart.product.slug]">
-                                <img
-                                  [src]="cart.product.imagen"
-                                  alt="product"
-                                  title="Product"
-                                  style="width: auto; height: 160px; object-fit: cover;"
-                                  class="img-fluid"
-                                />
-                              </a>
-                            </div>
-              
-                            <!-- Info del producto -->
-                            <div class="flex-grow-1 d-flex flex-column justify-content-between">
-                                <!-- Línea superior: título y precio alineados -->
-                                <div class="d-flex justify-content-between align-items-start flex-wrap">
-                                <h5 class="mb-1 me-2">
-                                    <a [routerLink]="['/landing-product', cart.product.slug]" class="text-decoration-none text-dark">
-                                    {{ cart.product.title }}
-                                    </a>
-                                </h5>
-                                <div class="fw-bold text-end">
-                                    <span class="price-small fw-bold">
-                                    <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
-                                    <span class="price-decimals-small">
-                                        <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
-                                        <span class="currency-symbol-small">{{ euro }}</span>
-                                    </span>
-                                    </span>
-                                </div>
-                                </div>
-                            
-                                <!-- Datos adicionales -->
-                                <div class="mt-2">
-                                <p class="mb-1 small">Color: {{ cart.variedad.color }}</p>
-                                <p class="mb-1 small">Talla: {{ cart.variedad.valor }}</p>
-                                <p class="mb-1 small">Cantidad: {{ cart.cantidad }}</p>
-                                </div>
-                            
-                                <!-- Subtotal -->
-                                <div class="mt-2 d-none">
-                                    <div class="fw-bold">
-                                        Subtotal:
-                                        <span class="price-small">
-                                        <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
-                                        <span class="price-decimals-small">
-                                            <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
-                                            <span class="currency-symbol-small">{{ euro }}</span>
-                                        </span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-  
-              
-                            <!-- Botón eliminar -->
-                            <div style="flex: 0 0 auto;">
-                              <a
-                                href="#"
-                                onclick="return false;"
-                                (click)="removeCart(cart)"
-                                class="btn btn-secondary cart-remove remove-icon"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                title="Eliminar del carrito"
-                              >
-                                <i class="icon anm anm-times-r"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </ng-container>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- End Order Summary -->
-                </div>
-            </div>
-   
         </div>
-
-    </div>
-    <div class="d-flex justify-content-center py-5 d-none">
-        <!-- <button type="button" class="btn btn-secondary me-1 btnPrevious">Volver</button> -->
-        <button type="button" class="btn btn-primary ms-1 px-5 py-3 text-uppercase fw-normal btnNext" (click)="goToNextStep()">Continuar</button>
     </div>
 </div>
 
@@ -531,8 +595,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <p class="text-danger">selectedAddressId = {{ selectedAddressId }}</p>
-                                    <p class="text-primary">list_address.id  = {{ list_address.id }}</p> -->
                                     <div 
                                         [id]="'collapse' + i" 
                                         class="accordion-collapse collapse show" 
@@ -548,55 +610,11 @@
                             </div>
                         </div>
                     </ng-container>
-
-                    <!-- <ng-container *ngFor="let cart of listCarts">
-                        <li class="item d-flex flex-column"> 
-                            <div class="d-flex flex-row mb-2">
-                                <div class="">
-                                    <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">
-                                        <img class="blur-up lazyload"
-                                        [src]="cart.product.imagen"
-                                        alt="{{ cart.product.title }}"
-                                        title="{{ cart.product.title }}"
-                                        width="200"
-                                        height="200" />
-                                    </a>
-                                </div>
-                                <div class="d-flex w-100">
-                                    <div class="product-details">
-                                        <div class="priceRow mb-2">
-                                            <div class="product-price d-flex flex-row justify-content-between">
-                                                <a class="product-title text-uppercase fw-bold" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
-                                                <span class="price-small fw-normal">
-                                                    <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
-                                                    <span class="price-decimals-small" style="top: 0.2em !important;">
-                                                        <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
-                                                        <span class="currency-symbol-small">{{ euro }}</span>
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="variant-cart mb-3" *ngIf="cart.variedad">{{ cart.variedad.color }} / {{ cart.variedad.valor }}</div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-row">
-                                <div class="me-3">
-                                    <a href="#" class="remove fw-light" onclick="return false;" (click)="removeCart(cart)"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"></i> Eliminar</a>
-                                </div>
-                                <div class="">
-                                    <a href="#" class="remove fw-light" onclick="return false;"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Favorito"></i> Comprar mas tarde</a>
-                                </div>
-                            </div>
-                        </li>
-                    </ng-container> -->
                 </ul>
             </ng-template>
         </div>
         <div class="minicart-bottom" *ngIf="listAddressClients.length != 0">
             <div class="minicart-action d-flex flex-column mt-3">
-                <!-- <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-black w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3">Confirmar dirección</a> -->
                 <button class="cart-btn btn btn-outline-black w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3" (click)="confirmarDireccion()">Confirmar dirección</button>
                 <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-white text-black bg-white w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3">Añadir otra dirección</a>
             </div>
