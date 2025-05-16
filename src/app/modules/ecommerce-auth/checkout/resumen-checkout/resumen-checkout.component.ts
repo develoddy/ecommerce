@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { CheckoutService } from '../../_services/checkoutService';
+import { Address, CheckoutService } from '../../_services/checkoutService';
 import { MinicartService } from 'src/app/services/minicartService.service';
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -14,17 +14,18 @@ declare function alertDanger([]):any;
 declare function alertWarning([]):any;
 declare function alertSuccess([]):any;
 
-interface Address {
-  id: string;
-  name: string;
-  surname: string;
-  email: string;
-  address: string;
-  zipcode: string;
-  poblacion: string;
-  ciudad: string;
-  phone: string;
-}
+// interface Address {
+//   id: string;
+//   name: string;
+//   surname: string;
+//   email: string;
+//   address: string;
+//   zipcode: string;
+//   poblacion: string;
+//   ciudad: string;
+//   phone: string;
+//   usual_shipping_address: boolean;
+// }
 
 @Component({
   selector: 'app-resumen-checkout',
@@ -49,6 +50,7 @@ export class ResumenCheckoutComponent implements OnInit {
   ciudad: string = '';
   email: string = '';
   phone: string = '';
+  usual_shipping_address:boolean=false;
 
   address_client_selected:any = null;
   listCarts:any = [];
@@ -70,7 +72,7 @@ export class ResumenCheckoutComponent implements OnInit {
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
   status:boolean=false;
-  selectedAddressId:  number | String = 0; // Dirección seleccionada
+  selectedAddressId:  number = 0; // Dirección seleccionada
   CURRENT_USER_AUTHENTICATED:any=null;
   CURRENT_USER_GUEST:any=null;
   private subscriptions: Subscription = new Subscription();
@@ -185,6 +187,16 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   restoreSelectedAddress(list: any[], storageKey: string) {
+
+    // 1. Buscar dirección habitual en db
+    const habitual = list.find(addr => addr.usual_shipping_address === true);
+    if (habitual) {
+      this.selectedAddressId = habitual.id;
+      this.selectedAddress = habitual;
+      return;
+    }
+
+    // 2. Si no hay habitual, buscar en sessionStorage
     const savedAddressId = sessionStorage.getItem(storageKey);
     if (savedAddressId) {
       const parsedId = parseInt(savedAddressId, 10);
@@ -195,7 +207,8 @@ export class ResumenCheckoutComponent implements OnInit {
         return;
       }
     }
-  
+    
+     // 3. Fallback: usar la primera del array
     if (list.length > 0) {
       this.selectedAddressId = list[0].id;
       this.selectedAddress = list[0];
@@ -330,6 +343,7 @@ export class ResumenCheckoutComponent implements OnInit {
         ciudad    : this.ciudad,
         email     : this.email,
         phone     : this.phone,
+        usual_shipping_address: this.usual_shipping_address,
     };
     
     this._authEcommerce.registerAddressClient(data).subscribe(
@@ -369,6 +383,7 @@ export class ResumenCheckoutComponent implements OnInit {
     this.poblacion = '';
     this.email = '';
     this.phone = '';
+    this.usual_shipping_address = false;
   }
 
   newAddress() {
@@ -390,6 +405,7 @@ export class ResumenCheckoutComponent implements OnInit {
     this.zipcode = this.address_client_selected.zipcode;
     this.poblacion = this.address_client_selected.poblacion;
     this.phone = this.address_client_selected.phone;
+    this.usual_shipping_address = this.address_client_selected.usual_shipping_address;
   }
 
   onAddressChange(selectedId: string) {
@@ -397,9 +413,7 @@ export class ResumenCheckoutComponent implements OnInit {
   
     if (selectedAddress) {
       this.selectedAddressId = selectedAddress.id;
-      //this.selectedAddress = selectedAddress;  // Actualiza la dirección seleccionada
       this.addressClienteSelected(selectedAddress);
-      console.log('Dirección seleccionada:', selectedAddress, " Con su selectedAddressId: ", this.selectedAddressId);
     } else {
       console.error('ID de dirección no encontrado:', selectedId);
     }
@@ -410,7 +424,6 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   confirmarDireccion() {
-    console.warn('selectedAddressId', this.selectedAddressId);
     if (!this.selectedAddressId) {
       console.warn('No hay dirección seleccionada');
       return;
@@ -418,15 +431,42 @@ export class ResumenCheckoutComponent implements OnInit {
   
     const selected = this.listAddresses.find(addr => addr.id === this.selectedAddressId);
     if (selected) {
+
+      // 1) Guarda en el servicio de checkout
+      this.checkoutService.setSelectedAddress(selected);
       this.selectedAddress = selected;
 
-      // 🔒 Guardar en localStorage dependiendo del tipo de usuario
+      // 2) Guardar en sessionStorage (según el tipo de usuario)
       const storageKey = this.CURRENT_USER_AUTHENTICATED ? 'selectedAddressId' : 'selectedGuestAddressId';
       sessionStorage.setItem(storageKey, this.selectedAddressId.toString());
+
+      // 3) Si se seleccionó como habitual, actualizar en backend
+      //if (this.usual_shipping_address) {
+        const userId = this.CURRENT_USER_AUTHENTICATED._id; // Asegúrate que esté accesible _authEcommerce
+        this._authEcommerce.setAsUsualShippingAddress(this.selectedAddressId, userId).subscribe({
+          next: () => {
+            console.log("Dirección marcada como habitual");
+      
+            // 🔄 Recargar lista de direcciones
+            this.loadAddresses(); // <-- tu método que llama al backend y actualiza this.listAddresses
+          },
+          error: (err) => console.error("Error al actualizar dirección habitual", err)
+        });
+      //}
 
       this.closeMiniAdress();
     } 
   }
+
+  loadAddresses() {
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      this.checkIfAddressClientExists();
+    } else if (this.CURRENT_USER_GUEST) {
+      this.checkIfAddressGuestExists();
+    }
+  }
+
+  
 
   closeMiniAdress(): void {
     this.minicartService.closeMiniAddress();
@@ -516,6 +556,7 @@ export class ResumenCheckoutComponent implements OnInit {
       poblacion : this.poblacion,
       email     : this.email,
       phone     : this.phone,
+      usual_shipping_address: this.usual_shipping_address,
     };
 
     console.log("369-> data", data);

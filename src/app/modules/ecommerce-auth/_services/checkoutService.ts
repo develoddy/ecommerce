@@ -2,6 +2,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+export interface Address {
+  id: string;
+  name: string;
+  surname: string;
+  email: string;
+  address: string;
+  zipcode: string;
+  poblacion: string;
+  ciudad: string;
+  phone: string;
+  usual_shipping_address: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -43,5 +56,17 @@ export class CheckoutService {
 
   getSaleData(): any {
     return this.saleDataSubject.value;
+  }
+
+  // Nuevo: estado para la dirección seleccionada
+  private selectedAddressSubject = new BehaviorSubject<Address | null>(null);
+  selectedAddress$ = this.selectedAddressSubject.asObservable();
+
+  setSelectedAddress(address: Address) {
+    this.selectedAddressSubject.next(address);
+  }
+
+  getSelectedAddress(): Address | null {
+    return this.selectedAddressSubject.value;
   }
 }

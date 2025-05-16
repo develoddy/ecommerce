@@ -85,7 +85,7 @@
                                             <div class="address-select-box active">
                                                 <div class="address-box bg-block">
                                                     <div class="top d-flex-justify-center justify-content-between">
-                                                        <p class="m-0 text-uppercase">{{ selectedAddress.name + ' ' + selectedAddress.surname }}</p>
+                                                        <p class="m-0">{{ selectedAddress.name + ' ' + selectedAddress.surname }}</p>
                                                         <a href="#" class="text-decoration-underline" onclick="return false;" (click)="openAddressModal()">
                                                             <button type="button" class="border-0 fw-bold text-decoration-underline">Editar</button>
                                                         </a>
@@ -104,6 +104,7 @@
                                                                 <span class="text-uppercase">{{ selectedAddress.ciudad }}</span><br/>
                                                             </p>
                                                         </div>
+                                                        <div class="form-text p-1 px-3 mt-3 text-dark" style="width: fit-content !important; background-color: #f3f3f3;" *ngIf="selectedAddress.usual_shipping_address">Dirección de envío habitual</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -302,8 +303,6 @@
                     <small class="text-muted">Al continuar, confirmas que has leído la <a class="text-black fw-bold" href="/es/es" data-testid="checkout.step1.legalpolicy.link" target="" aria-labelledby="checkout.step1.legalpolicy" aria-expanded="false">Política de privacidad</a></small>
                 </p>
             </div>
-
-            
         </div>
 
         <!-- ======== Columna de la derecha ======== -->

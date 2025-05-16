@@ -77,6 +77,20 @@ export class EcommerceAuthService {
   }
 
   // ------------- ADDRESS FRONT CLIENTE AUTENTICATED ------------
+
+  setAsUsualShippingAddress(addressId: number, userId: number) {
+    this.loadingSubject.next(true);
+    
+    const headers = new HttpHeaders({ 'token': this._authService.token });
+    const URL = URL_SERVICE + "address_client/set-usual-shipping-address";
+    const body = { addressId, userId };
+  
+    return this._http.post(URL, body, { headers }).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    );
+  }
+  
+
   listAddressClient(user_id:any) {
     this.loadingSubject.next(true);
 

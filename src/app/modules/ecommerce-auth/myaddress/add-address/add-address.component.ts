@@ -30,6 +30,7 @@ export class AddAddressComponent implements OnInit {
   ciudad: string = '';
   email: string | null = null;
   phone: string = '';
+  usual_shipping_address:boolean=false;
     
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
@@ -123,6 +124,7 @@ export class AddAddressComponent implements OnInit {
         ciudad    : this.ciudad,
         email     : this.email,
         phone     : this.phone,
+        usual_shipping_address: this.usual_shipping_address,
     };
     
     this._ecommerceAuthService.registerAddressClient(data).subscribe( ( resp:any ) => {
@@ -135,7 +137,7 @@ export class AddAddressComponent implements OnInit {
         this.hideMessageAfterDelay();
         alertSuccess(resp.message);
         this.resetForm();
-        this.router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+        this.router.navigate(['/', this.country, this.locale, 'account', 'myaddresses']);
 
       } else {
         this.status = false;

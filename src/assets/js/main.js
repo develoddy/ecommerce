@@ -191,6 +191,7 @@ function HOMEINITTEMPLATE ($, undefined) {
         $(this).toggleClass('anm-angle-down-l anm-angle-up-l');
         $(this).parent().next().slideToggle();
     });
+    
 
 
     /*--------------------------------------

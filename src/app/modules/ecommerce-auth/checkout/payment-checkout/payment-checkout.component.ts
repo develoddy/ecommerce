@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { CheckoutService } from '../../_services/checkoutService';
+import { Address, CheckoutService } from '../../_services/checkoutService';
 import { LocalizationService } from 'src/app/services/localization.service';
 
 declare var $:any;
@@ -22,10 +22,14 @@ declare var paypal:any;
 })
 export class PaymentCheckoutComponent implements OnInit {
 
-  @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
+  @ViewChild('paypal', { static: false }) paypalElement!: ElementRef;
+  //@ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   euro = "€";
+  selectedAddress: Address | null = null;
+  selectedAddressId:  number = 0; 
   listAddressClients:any = [];
   listAddressGuest:any = [];
+  addressSelected:any;
   // Address
   name: string = '';
   surname: string = '';
@@ -36,6 +40,7 @@ export class PaymentCheckoutComponent implements OnInit {
   ciudad: string = '';
   email: string = '';
   phone: string = '';
+  usual_shipping_address:boolean=false;
   
   address_client_selected:any = null;
   listCarts:any = [];
@@ -66,6 +71,12 @@ export class PaymentCheckoutComponent implements OnInit {
   CURRENT_USER_AUTHENTICATED:any=null;
   CURRENT_USER_GUEST:any=null;
 
+  isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
+  width: number = 100; // valor por defecto
+  height: number = 100; // valor por defecto
+
   private subscriptions: Subscription = new Subscription();
 
   @Output() activate = new EventEmitter<boolean>();
@@ -92,26 +103,45 @@ export class PaymentCheckoutComponent implements OnInit {
     
     const isGuest = !this.CURRENT_USER_AUTHENTICATED; 
 
+    let buttonStyle = {
+      layout: 'horizontal',
+      color: 'gold',
+      shape: 'rect', // rect // pill
+      label: 'paypal', // Alternativa que suele respetar tagline
+      tagline: false
+      
+    };
+  
+    if (this.isMobile) {
+      buttonStyle = {
+        layout: 'horizontal',
+      color: 'gold',
+      shape: 'rect', // rect // pill
+      label: 'paypal', // Alternativa que suele respetar tagline
+      tagline: false
+      };
+    } else if (this.isTablet) {
+      buttonStyle = {
+        layout: 'horizontal',
+      color: 'gold',
+      shape: 'pill', // rect // pill
+      label: 'paypal', // Alternativa que suele respetar tagline
+      tagline: false
+      };
+    } // isDesktop usa el default
+
     paypal.Buttons({
-      // optional styling for buttons
-      // https://developer.paypal.com/docs/checkout/standard/customize/buttons-style-guide/
-      style: {
-        color: "gold",
-        shape: "rect",
-        layout: "vertical"
-      },
+
+      style: buttonStyle,
 
       // set up the transaction
       createOrder: (data:any, actions:any) => {
           // pass in any options from the v2 orders create call:
           // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
-          if (this.listCarts.lenght == 0) {
+          if (this.listCarts.length == 0) {
             alertDanger("No se puede proceder con la orden si el carrito está vacío.");
             return;
           }
-
-          console.log("Payment-checkout: ver listaddress ", this.listAddresses );
-          
 
           if( !this.listAddresses || !this.address_client_selected) {
             this.validMessage = true;
@@ -192,6 +222,22 @@ export class PaymentCheckoutComponent implements OnInit {
     this.loadSPINER();
     this.verifyAuthenticatedUser();
     this.loadCurrentDataCart();
+    this.checkDeviceType();
+
+    // Toma la dirección del servicio
+    // this.address_client_selected = this.checkoutService.getSelectedAddress();
+    // if (!this.address_client_selected) {
+    //   // Si no hay dirección (p.e. entró directo), redirige al resumen
+    //   console.log("Payment compoennte:  Si no hay dirección (p.e. entró directo), redirige al resumen" );
+      
+    //   //this._router.navigate(
+    //   //  ['/', this.country, this.locale, 'account', 'checkout', 'resumen']
+    //   //);
+    // } else {
+    //   // Rellena tus campos
+    //   console.log("Payment compoennte address seleted: ", this.address_client_selected );
+    //   //Object.assign(this, this.address_client_selected);
+    // }
 
     setTimeout(() => {
       HOMEINITTEMPLATE($);
@@ -232,7 +278,6 @@ export class PaymentCheckoutComponent implements OnInit {
     };
   }
   
-  
   private verifyAuthenticatedUser(): void {
     this._authEcommerce._authService.user.subscribe(user => {
       if ( user ) {
@@ -257,7 +302,37 @@ export class PaymentCheckoutComponent implements OnInit {
       this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
         (resp: any) => {
           this.listAddressClients = resp.address_client;
+          this.restoreSelectedAddress(this.listAddressClients, 'selectedAddressId');
       });
+    }
+  }
+
+  restoreSelectedAddress(list: any[], storageKey: string) {
+
+    // 1. Buscar dirección habitual en db
+    const habitual = list.find(addr => addr.usual_shipping_address === true);
+    if (habitual) {
+      this.selectedAddressId = habitual.id;
+      this.selectedAddress = habitual;
+      return;
+    }
+
+    // 2. Si no hay habitual, buscar en sessionStorage
+    const savedAddressId = sessionStorage.getItem(storageKey);
+    if (savedAddressId) {
+      const parsedId = parseInt(savedAddressId, 10);
+      const found = list.find(addr => addr.id === parsedId);
+      if (found) {
+        this.selectedAddressId = parsedId;
+        this.selectedAddress = found;
+        return;
+      }
+    }
+    
+     // 3. Fallback: usar la primera del array
+    if (list.length > 0) {
+      this.selectedAddressId = list[0].id;
+      this.selectedAddress = list[0];
     }
   }
 
@@ -269,8 +344,6 @@ export class PaymentCheckoutComponent implements OnInit {
       });
     }
   }
-
- 
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
@@ -362,6 +435,7 @@ export class PaymentCheckoutComponent implements OnInit {
         ciudad    : this.ciudad,
         email     : this.email,
         phone     : this.phone,
+        usual_shipping_address:  this.usual_shipping_address,
     };
     
     this._authEcommerce.registerAddressClient(data).subscribe(
@@ -406,6 +480,7 @@ export class PaymentCheckoutComponent implements OnInit {
       poblacion : this.poblacion,
       email     : this.email,
       phone     : this.phone,
+      usual_shipping_address:  this.usual_shipping_address,
     };
 
     this._authEcommerce.updateAddressClient( data ).subscribe((resp:any) => {
@@ -446,6 +521,7 @@ export class PaymentCheckoutComponent implements OnInit {
     this.poblacion = '';
     this.email = '';
     this.phone = '';
+    this.usual_shipping_address = false;
   }
 
   newAddress() {
@@ -454,9 +530,12 @@ export class PaymentCheckoutComponent implements OnInit {
     this.address_client_selected = null;
   }
 
+
+  gotoResumen() {
+    this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+  }
+
   addressClienteSelected(list_address:any) {
-    console.log("Payment address Cliente Seletec: ", list_address);
-    
     this.show = true;
     this.address_client_selected = list_address;
     this.name = this.address_client_selected.name;
@@ -469,6 +548,7 @@ export class PaymentCheckoutComponent implements OnInit {
     this.zipcode = this.address_client_selected.zipcode;
     this.poblacion = this.address_client_selected.poblacion;
     this.phone = this.address_client_selected.phone;
+    this.usual_shipping_address = this.address_client_selected.this.usual_shipping_address;
   }
 
   onAddressChange(event:any) {
@@ -489,7 +569,6 @@ export class PaymentCheckoutComponent implements OnInit {
   emptyAddress() {
     this.address_client_selected = null;
   }
-
 
   removeAddressSelected(list_address:any) {
     this._authEcommerce.deleteAddressClient(list_address.id).subscribe((resp:any) => {      
@@ -531,6 +610,22 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   storeAddress() {
+  }
+
+  private checkDeviceType(): void {
+    const width = window.innerWidth;
+    this.isMobile = width <= 480;
+    this.isTablet = width > 480 && width <= 768;
+    this.isDesktop = width > 768;
+
+    // Ajusta el tamaño de la imagen según el tipo de dispositivo
+    if (this.isMobile) {
+        this.width = 80;  // tamaño para móviles
+        this.height = 80; // tamaño para móviles
+    } else {
+        this.width = 100; // tamaño por defecto
+        this.height = 100; // tamaño por defecto
+    }
   }
 
   ngOnDestroy(): void {

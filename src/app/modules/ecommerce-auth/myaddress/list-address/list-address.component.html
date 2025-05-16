@@ -76,7 +76,7 @@
                                                             <div class="address">
                                                                 <p>Tel. {{ list_address.phone }}</p>
                                                             </div>
-                                                            <div class="form-text px-2 mt-3 text-dark" style="width: fit-content !important; background-color: #f3f3f3;">Dirección de envío habitual</div>
+                                                            <div class="form-text px-2 mt-3 text-dark" style="width: fit-content !important; background-color: #f3f3f3;" *ngIf="list_address.usual_shipping_address">Dirección de envío habitual</div>
                                                         </div>
                                                         <div class="bottom d-flex-justify-center justify-content-between">
                                                             <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'myaddresses', list_address.id, 'edit']">

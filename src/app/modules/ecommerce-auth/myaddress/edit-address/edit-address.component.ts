@@ -30,6 +30,7 @@ export class EditAddressComponent implements OnInit {
   ciudad: string = '';
   email: string = '';
   phone: string = '';
+  usual_shipping_address:boolean=false;
 
   idAdressClient:any=null;
   queryParamsSubscription: Subscription | undefined;
@@ -116,6 +117,7 @@ export class EditAddressComponent implements OnInit {
         this.ciudad     = this.address_client_selected.ciudad;
         this.email      = this.address_client_selected.email;
         this.phone      = this.address_client_selected.phone;
+        this.usual_shipping_address = this.address_client_selected.usual_shipping_address;
       }
     });
   }
@@ -147,6 +149,7 @@ export class EditAddressComponent implements OnInit {
       poblacion : this.poblacion,
       email     : this.email,
       phone     : this.phone,
+      usual_shipping_address: this.usual_shipping_address,
     };
 
     this._ecommerceAuthService.updateAddressClient( data ).subscribe((resp:any) => {

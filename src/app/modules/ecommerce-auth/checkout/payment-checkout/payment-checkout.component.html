@@ -8,15 +8,15 @@
                     <h3 class="title mb-3">Delivery Methods</h3>
                     <div class="delivery-methods-content">
                         <div class="customRadio clearfix">
-                            <input id="formcheckoutRadio1" value="" name="radio1" type="radio" class="radio" checked="checked"> 
+                            <input id="formcheckoutRadio1" value="" name="radio1" type="radio" class="radio" checked="checked">
                             <label for="formcheckoutRadio1" class="mb-0">Standard Delivery $2.99 (3-5 days)</label>
                         </div>
                         <div class="customRadio clearfix">
-                            <input id="formcheckoutRadio2" value="" name="radio1" type="radio" class="radio"> 
+                            <input id="formcheckoutRadio2" value="" name="radio1" type="radio" class="radio">
                             <label for="formcheckoutRadio2" class="mb-0">Express Delivery $10.99 (1-2 days)</label>
                         </div>
                         <div class="customRadio clearfix mb-0">
-                            <input id="formcheckoutRadio3" value="" name="radio1" type="radio" class="radio"> 
+                            <input id="formcheckoutRadio3" value="" name="radio1" type="radio" class="radio">
                             <label for="formcheckoutRadio3" class="mb-0">Same-Day $20.00 (Evening Delivery)</label>
                         </div>
                     </div>
@@ -26,14 +26,14 @@
             <!--Shipping address-->
             <div class="block payment-methods pb-0 mb-4 p-0">
                 <div class="block-content">
-                    <h3 class="title mb-0 text-uppercase ">Dirección de envío</h3>                                     
+                    <h3 class="title mb-0 text-uppercase ">Dirección de envío</h3>
                     <div class="payment-accordion-radio">
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item card mb-2">
                                 <div class="card-header d-none" id="headingShippingOne">
                                     <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShippingOne" aria-expanded="true" aria-controls="collapseShippingOne">
                                         <span class="customRadio clearfix mb-0">
-                                            <input id="paymentRadioShipping1" value="" name="shipping" type="radio" class="radio" checked="checked" /> 
+                                            <input id="paymentRadioShipping1" value="" name="shipping" type="radio" class="radio" checked="checked" />
                                             <label for="paymentRadioShipping1" class="mb-0">Dirección de envío</label>
                                         </span>
                                     </button>
@@ -48,7 +48,7 @@
                                                         <option value="">Por favor seleccione</option>
                                                         <!-- <ng-container *ngFor="let list_address of listAddressClients; let i=index"> -->
                                                         <ng-container *ngFor="let list_address of listAddresses; let i=index">
-                                                            <option [value]="i">{{ list_address.name +' '+ list_address.surname +' | '+ list_address.address }}</option> 
+                                                            <option [value]="i">{{ list_address.name +' '+ list_address.surname +' | '+ list_address.address }}</option>
                                                         </ng-container>
                                                     </select>
                                                     <div class="form-text text-danger mt-0" *ngIf="validMessage">{{ errorOrSuccessMessage }}</div>
@@ -62,13 +62,14 @@
                     </div>
 
                     <!-- Mostrar la lista de direcciones -->
-                    <div class="address-book-section" [class.d-none]="loading" *ngIf="this.address_client_selected">
+                    <div class="address-book-section" [class.d-none]="loading" *ngIf="this.selectedAddress">
+                    <!-- <div class="address-book-section" [class.d-none]="loading"> -->
                         <div class="top-sec mb-3">
                             <h3 class="mb-0 text-uppercase text-uppercase">Dirección de envío</h3>
                         </div>
                         <div class="row">
                             <!-- Direcciones de usuarios autenticados -->
-                            <ng-container *ngFor="let list_address of listAddressClients; let i=index">
+                            <!-- <ng-container *ngFor="let list_address of listAddressClients; let i=index"> -->
                                 <div class="address-select-box active">
                                     <div class="address-box border p-4">
                                         <div class="d-flex flex-row justify-content-between">
@@ -80,25 +81,37 @@
                                                 <span class="fw-bold">GRATIS</span>
                                             </div>
                                             <div>
-                                                <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="addressClienteSelected(list_address)" data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button>
+                                                <!-- <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="addressClienteSelected(selectedAddress)" data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button> -->
+                                                <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="gotoResumen()">Editar</button>
+                                                
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <p><span class="fw-bold">Entrega:</span><time datetime="2025-4-9" class="ms-1">viernes, 9 may</time> - <time datetime="2025-4-14">miércoles, 14 may</time></p>
                                         </div>
                                         <div class="top d-flex-justify-center justify-content-between">
-                                            <p class="m-0">{{ list_address.name +' '+ list_address.surname }}</p>
+                                            <p class="m-0">{{ selectedAddress.name +' '+ selectedAddress.surname }}</p>
                                             <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Casa</span></span>
                                         </div>
-                                        <div class="middle">
-                                            <div class="address"><p class="fw-light"> {{ list_address.address }}</p></div>
-                                            <div class="address"><p class="fw-light"> {{ list_address.zipcode }} {{ list_address.poblacion }}, <span class="text-uppercase">{{ list_address.ciudad }}</span> <br/></p></div>
-                                            <div class="address"><p class="fw-light">Tel. +34 {{ list_address.phone }}</p></div>
-                                            <div class="form-text px-2 mt-3 text-dark d-none" style="width: fit-content !important; background-color: #f3f3f3;">Dirección de envío habitual</div>
+                                        <div class="middle lh-1">
+                                            <div class="address mb-1"><p class="fw-light">{{ selectedAddress.email}}</p></div>
+                                            
+                                            <div class="address mb-1">
+                                                <p class="fw-light">Tel. +34 {{ selectedAddress.phone }}</p>
+                                            </div>
+                                            <div class="address mb-1"><p class="fw-light">{{ selectedAddress.address +', '+ selectedAddress.zipcode +', '+ selectedAddress.ciudad +', '+ selectedAddress.poblacion }}</p></div>
+                                            <div class="address mb-1 d-none">
+                                                <p class="fw-light">
+                                                    {{ selectedAddress.zipcode }} {{ selectedAddress.poblacion }},
+                                                    <span class="text-uppercase">{{ selectedAddress.ciudad }}</span><br/>
+                                                </p>
+                                            </div>
+                                            <div class="form-text p-1 px-3 mt-3 text-dark" style="width: fit-content !important; background-color: #f3f3f3;" *ngIf="selectedAddress.usual_shipping_address">Dirección de envío habitual</div>
                                         </div>
+                                        
                                     </div>
                                 </div>
-                            </ng-container>
+                            <!-- </ng-container> -->
 
                             <!-- Direcciones de usuarios invitados -->
                             <ng-container *ngFor="let list_address of listAddressGuest; let i=index">
@@ -192,7 +205,7 @@
                                                 <label for="new-city" class="form-label d-none">Población <span class="required">*</span></label>
                                                 <input name="city" placeholder="Población" value="" required="" [(ngModel)]="poblacion" id="new-city" type="text" />
                                             </div>
-                                        </div>  
+                                        </div>
                                         <!-- Ciudad -->
                                         <div class="row justify-content-center">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
@@ -221,7 +234,7 @@
 
                                         <div class="row justify-content-center mt-0 mb-3">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
-                                                <p class="mt-3">Dirección de envío habitual</p> 
+                                                <p class="mt-3">Dirección de envío habitual</p>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -235,13 +248,13 @@
                                             <!-- <p class="mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p>  -->
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- End Edit Address Modal -->
-                    
+
                 </div>
             </div>
 
@@ -257,7 +270,7 @@
                                         <div class="">
                                             <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                                 <span class="customRadio clearfix mb-0">
-                                                    <input id="paymentRadio1" value="" name="payment" type="radio" class="radio" checked="checked" /> 
+                                                    <input id="paymentRadio1" value="" name="payment" type="radio" class="radio" checked="checked" />
                                                     <label for="paymentRadio1" class="mb-0 text-uppercase fw-bold">Tarjeta bancaria</label>
                                                 </span>
                                             </button>
@@ -325,7 +338,7 @@
                                 <div class="card-header p-3" id="headingTwo">
                                     <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                         <span class="customRadio clearfix mb-0">
-                                            <input id="paymentRadio2" value="" name="payment" type="radio" class="radio" /> 
+                                            <input id="paymentRadio2" value="" name="payment" type="radio" class="radio" />
                                             <label for="paymentRadio2" class="mb-0">Pay with Paypal</label>
                                         </span>
                                     </button>
@@ -346,7 +359,7 @@
                                         <div>
                                             <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                                 <span class="customRadio clearfix mb-0">
-                                                    <input id="paymentRadio3" value="" name="payment" type="radio" class="radio" /> 
+                                                    <input id="paymentRadio3" value="" name="payment" type="radio" class="radio" />
                                                     <label for="paymentRadio3" class="mb-0 text-uppercase fw-bold">Bizum</label>
                                                 </span>
                                             </button>
@@ -368,7 +381,7 @@
                                         <div>
                                             <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
                                                 <span class="customRadio clearfix mb-0">
-                                                    <input id="paymentRadio5" value="" name="payment" type="radio" class="radio" checked="checked" /> 
+                                                    <input id="paymentRadio5" value="" name="payment" type="radio" class="radio" checked="checked" />
                                                     <label for="paymentRadio5" class="mb-0 text-uppercase fw-bold">Paypal / Tarjeta de Crédito o Débito</label>
                                                 </span>
                                             </button>
@@ -378,7 +391,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample"> 
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                                     <div class="card-body px-0">
                                         <p>Pague a través de PayPal; Puedes pagar con tu tarjeta de crédito si no tienes una cuenta PayPal.</p>
                                     </div>
@@ -391,7 +404,7 @@
                                         <div class="block order-summary">
                                             <div class="block-content">
                                                 <h3 class="title mb-3 text-uppercase">Paquete</h3>
-                                                <div class="table-responsive table-bottom-brd order-table"> 
+                                                <div class="table-responsive table-bottom-brd order-table">
                                                     <table class="table table-hover align-middle mb-0">
                                                         <thead>
                                                             <tr>
@@ -460,12 +473,12 @@
                                 <!-- <div class="card-header" id="headingFour">
                                     <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                         <span class="customRadio clearfix mb-0">
-                                            <input id="paymentRadio4" value="" name="payment" type="radio" class="radio" /> 
+                                            <input id="paymentRadio4" value="" name="payment" type="radio" class="radio" />
                                             <label for="paymentRadio4" class="mb-0">Cash On Delivery</label>
                                         </span>
                                     </button>
                                 </div>
-                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample"> 
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                                     <div class="card-body px-0">
                                         <p>Cash on delivery refers to an arrangement in which payment for a purchase is made directly by the purchaser to the person who delivers the item.</p>
                                     </div>
@@ -477,7 +490,7 @@
             </div>
 
             <!--Cart Summary | Cart Summary solo visible en móvil-->
-            <div class="cart-info mb-4 d-block d-md-none">
+            <div class="cart-info mb-4 d-block d-md-none" *ngIf="isMobile">
                 <div class="cart-info mb-3">
                     <div class="cart-order-detail cart-col">
                         <div class="row g-0 border-bottom pb-2">
@@ -523,7 +536,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
 
         <!-- ======== Columna de la derecha ======== -->
@@ -531,16 +544,17 @@
             <div class="row">
                 <div class="col-12 order-1 order-md-1">
                     <h3 class="title mb-0 text-uppercase mb-3">Pago</h3>
+                    <!-- Codigo promocional -->
                     <div class="mb-3 payment-methods mb-4">
                         <div class="block-content">
                             <!-- <h3 class="title mb-3">Payment Methods</h3> -->
                             <div class="payment-accordion-radio">
                                 <div class="accordion" id="accordionExample">
-                                    <div class="accordion-item card mb-2 p-3 border border-muted">
+                                    <div class="accordion-item card mb-2 px-3 border border-muted">
                                         <div class="card-header p-3" id="headingTwo">
                                             <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                 <span class="customRadio clearfix mb-0">
-                                                    <input id="paymentRadio2" value="" name="payment" type="radio" class="radio" /> 
+                                                    <input id="paymentRadio2" value="" name="payment" type="radio" class="radio" />
                                                     <label for="paymentRadio2" class="mb-0 fw-bold text-uppercase">Código promocional</label>
                                                 </span>
                                             </button>
@@ -559,8 +573,9 @@
                             </div>
                         </div>
                     </div>
+
                     <!--Cart Summary | solo visible en escritorio/tablet -->
-                    <div class="cart-info mb-3 d-none d-md-block">
+                    <div class="cart-info mb-3 d-none d-md-block" *ngIf="!isMobile">
                         <div class="cart-order-detail cart-col">
                             <div class="row g-0 border-bottom pb-2">
                                 <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Subtotal</strong></span>
@@ -601,10 +616,11 @@
                                 </span>
                             </div>
                             <div class="mt-3" #paypal></div>
+                            <!-- <div id="paypal-button-container"></div> -->
                             <div class="paymnet-img text-center"><img src="assets/images/icons/safepayment.png" alt="Payment" width="299" height="28" /></div>
                         </div>
                     </div>
-                    
+
                     <!-- Text legal -->
                     <div class="mb-5">
                         <div class="TermsOfSale_terms__2leN4" id="checkout.step2.termsofsale">
@@ -618,85 +634,83 @@
                         <div class="col-12 col-sm-12 col-md-7 col-lg-12">
                         <!-- Order Summary -->
                         <div class="block order-summary p-0">
-                            
                             <div class="block-content">
                                 <h3 class="mb-0">Artículos ({{ listCarts.length }})</h3>
-                            <div class="order-list">
-                                <ng-container *ngFor="let cart of listCarts">
-                                <div class="d-flex border-bottom py-3 align-items-start gap-3 flex-wrap">
-                                    <!-- Imagen -->
-                                    <div style="flex: 0 0 auto;">
-                                    <a [routerLink]="['/landing-product', cart.product.slug]">
-                                        <img
-                                        [src]="cart.product.imagen"
-                                        alt="product"
-                                        title="Product"
-                                        style="width: auto; height: 160px; object-fit: cover;"
-                                        class="img-fluid"
-                                        />
-                                    </a>
-                                    </div>
-                    
-                                    <!-- Info del producto -->
-                                    <div class="flex-grow-1 d-flex flex-column justify-content-between">
-                                        <!-- Línea superior: título y precio alineados -->
-                                        <div class="d-flex justify-content-between align-items-start flex-wrap">
-                                        <h5 class="mb-1 me-2">
-                                            <a [routerLink]="['/landing-product', cart.product.slug]" class="text-decoration-none text-dark">
-                                            {{ cart.product.title }}
-                                            </a>
-                                        </h5>
-                                        <div class="fw-bold text-end">
-                                            <span class="price-small fw-bold">
-                                            <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
-                                            <span class="price-decimals-small">
-                                                <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
-                                                <span class="currency-symbol-small">{{ euro }}</span>
-                                            </span>
-                                            </span>
-                                        </div>
-                                        </div>
-                                    
-                                        <!-- Datos adicionales -->
-                                        <div class="mt-2">
-                                        <p class="mb-1 small">Color: {{ cart.variedad.color }}</p>
-                                        <p class="mb-1 small">Talla: {{ cart.variedad.valor }}</p>
-                                        <p class="mb-1 small">Cantidad: {{ cart.cantidad }}</p>
-                                        </div>
-                                    
-                                        <!-- Subtotal -->
-                                        <div class="mt-2 d-none">
-                                            <div class="fw-bold">
-                                                Subtotal:
-                                                <span class="price-small">
-                                                <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
-                                                <span class="price-decimals-small">
-                                                    <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
-                                                    <span class="currency-symbol-small">{{ euro }}</span>
-                                                </span>
-                                                </span>
+                                <div class="order-list">
+                                    <ng-container *ngFor="let cart of listCarts">
+                                        <div class="d-flex border-bottom py-3 align-items-start gap-3 flex-wrap">
+                                            <!-- Imagen -->
+                                            <div style="flex: 0 0 auto;">
+                                                <a [routerLink]="['/landing-product', cart.product.slug]">
+                                                    <img
+                                                    [src]="cart.product.imagen"
+                                                    alt="product"
+                                                    title="Product"
+                                                    style="width: auto; height: 160px; object-fit: cover;"
+                                                    class="img-fluid"
+                                                    />
+                                                </a>
+                                            </div>
+
+                                            <!-- Info del producto -->
+                                            <div class="flex-grow-1 d-flex flex-column justify-content-between">
+                                                <!-- Línea superior: título y precio alineados -->
+                                                <div class="d-flex justify-content-between align-items-start flex-wrap">
+                                                    <h5 class="mb-1 me-2">
+                                                        <a [routerLink]="['/landing-product', cart.product.slug]" class="text-decoration-none text-dark">
+                                                        {{ cart.product.title }}
+                                                        </a>
+                                                    </h5>
+                                                    <div class="fw-bold text-end">
+                                                        <span class="price-small fw-bold">
+                                                        <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
+                                                        <span class="price-decimals-small">
+                                                            <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
+                                                            <span class="currency-symbol-small">{{ euro }}</span>
+                                                        </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Datos adicionales -->
+                                                <div class="mt-2">
+                                                    <p class="mb-1 small">Color: {{ cart.variedad.color }}</p>
+                                                    <p class="mb-1 small">Talla: {{ cart.variedad.valor }}</p>
+                                                    <p class="mb-1 small">Cantidad: {{ cart.cantidad }}</p>
+                                                </div>
+
+                                                <!-- Subtotal -->
+                                                <div class="mt-2 d-none">
+                                                    <div class="fw-bold">
+                                                        Subtotal:
+                                                        <span class="price-small">
+                                                            <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
+                                                            <span class="price-decimals-small">
+                                                                <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
+                                                                <span class="currency-symbol-small">{{ euro }}</span>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Botón eliminar -->
+                                            <div style="flex: 0 0 auto;">
+                                                <a
+                                                    href="#"
+                                                    onclick="return false;"
+                                                    (click)="removeCart(cart)"
+                                                    class="btn btn-secondary cart-remove remove-icon"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-placement="top"
+                                                    title="Eliminar del carrito"
+                                                >
+                                                    <i class="icon anm anm-times-r"></i>
+                                                </a>
                                             </div>
                                         </div>
-                                    </div>
-        
-                    
-                                    <!-- Botón eliminar -->
-                                    <div style="flex: 0 0 auto;">
-                                    <a
-                                        href="#"
-                                        onclick="return false;"
-                                        (click)="removeCart(cart)"
-                                        class="btn btn-secondary cart-remove remove-icon"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Eliminar del carrito"
-                                    >
-                                        <i class="icon anm anm-times-r"></i>
-                                    </a>
-                                    </div>
+                                    </ng-container>
                                 </div>
-                                </ng-container>
-                            </div>
                             </div>
                         </div>
                         <!-- End Order Summary -->
