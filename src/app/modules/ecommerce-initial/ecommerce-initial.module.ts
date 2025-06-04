@@ -7,12 +7,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EcommerceInitialRoutingModule } from './ecommerce-initial-routing.module';
 import { EcommerceInitialComponent } from './ecommerce-initial.component';
 import { PreHomeComponent } from './pre-home/pre-home.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 
 @NgModule({
   declarations: [
     EcommerceInitialComponent,
-    PreHomeComponent
+    PreHomeComponent,
+    WelcomeComponent
   ],
   imports: [
     CommonModule,
