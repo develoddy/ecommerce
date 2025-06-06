@@ -111,10 +111,10 @@
                                 </p>
                                 <p class="product-vendor d-none">Proveedor:<span class="text"><a href="#">HVL</a></span></p>  
                                 <p class="product-type d-none">Tipo de producto:<span class="text">Tops</span></p> 
-                                <p class="product-sku">REF.<span class="text">{{ product_selected.sku }}</span></p>
+                                <p class="product-sku text-black">REF.<span class="text">{{ product_selected.sku }}</span></p>
                             </div>
                             <!-- Product Reviews -->
-                            <div class="product-review d-flex-center">
+                            <div class="product-review d-flex-center d-none">
                                 <div class="reviewStar d-flex-center">
                                     <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
                                     <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
@@ -135,9 +135,9 @@
                                 <span class="price">{{ euro }}{{ (product_selected.price_usd - getDiscount()).toFixed(2) }}</span>
                             </div>
                             <!-- End Product Price -->
-                            <hr class="">
+                            <hr class="d-none">
                             <!-- Sort Description -->
-                            <div class="sort-description">{{ product_selected.resumen }}</div>
+                            <div class="sort-description d-none">{{ product_selected.resumen }}</div>
                             <!-- End Sort Description -->
                             <hr class="d-none">
                             <!-- Countdown -->
@@ -269,7 +269,7 @@
                         </div>
                         <!-- End Social Sharing -->
 
-                        <div class="trustseal-img mt-4"><img src="assets/images/icons/powerby-cards.jpg" alt="powerby cards" width="470" /></div>
+                        <div class="trustseal-img mt-4 d-none"><img src="assets/images/icons/powerby-cards.jpg" alt="powerby cards" width="470" /></div>
                     </div>
                 </div>
             </div>

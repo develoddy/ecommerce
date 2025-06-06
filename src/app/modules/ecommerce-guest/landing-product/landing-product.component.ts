@@ -65,7 +65,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   coloresDisponibles: { color: string, imagen: string }[] = [];
   variedades: any[] = [];
   availableSizesCamisetas = ['L', 'M', 'S', 'XL', 'XXL'];  
-  availableSizesZapatillas = ["37", "38", "39", "40", "41", "42"];
+  availableSizesHoodies = ["L", "M", "S", "XL", "XXL"];
   availableSizesGorra = ["One size"];
   availableSizesPerfume = ["50ML", "100ML"];
   loading: boolean = false;
@@ -586,12 +586,12 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     const isCamisa = categoryTitle.toLowerCase().includes('t-shirts');
     const allShirts = categoryTitle.toLowerCase().includes('all shirts');
     const isGorra = categoryTitle.toLowerCase().includes('snapbacks');
-    const isZapatos = categoryTitle.toLowerCase().includes('zapatillas');
+    const isHoodies = categoryTitle.toLowerCase().includes('hoodies');
 
     // Determina las tallas disponibles según la categoría
     let filteredSizes: string[] = [];
-    if (isZapatos) {
-        filteredSizes = this.availableSizesZapatillas;
+    if (isHoodies) {
+        filteredSizes = this.availableSizesHoodies;
     } else if (isCamisa) {
         filteredSizes = this.availableSizesCamisetas;
     } else if (isGorra) {

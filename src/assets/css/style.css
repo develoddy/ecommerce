@@ -144,7 +144,7 @@ hr { margin:20px 0; border:0; opacity:1; border-bottom:1px solid #ececec; }
 .col-row-20 { margin-top: -20px; margin-left: -10px; margin-right: -10px; }
 .col-row-20 .col-item { padding-top: 20px; padding-left: 10px; padding-right: 10px; }
 .sp-row { margin-top: -1.5rem; }
-.sp-row .sp-col { padding-top: 1.9rem; }
+.sp-row .sp-col { padding-top: 1.6rem; padding-right: 0.1rem;}
 .list--inline { padding:0; margin:0; }
 .list--inline li { display:inline-block; margin-bottom:0; vertical-align:middle; }
 .display-table { display:table; table-layout:fixed; width:100%; margin:0 !important; }
@@ -411,7 +411,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .slick-slider.gp10 .slick-list { margin:0 -10px; }
 .slick-slider.gp10 .slick-slide { padding:0 5px; }
 .slick-slider.gp15 .slick-list { margin:0 -15px; }
-.slick-slider.gp15 .slick-slide { padding:0 15px; }
+/* .slick-slider.gp15 .slick-slide { padding:0 15px; } */
+.slick-slider.gp15 .slick-slide { padding: 0.1rem; }
 
 .circle-dots .slick-dots li button { position: relative; width: 15px; height: 15px; border-radius: 50%; border: 1px solid #333; background: transparent; }
 .circle-dots .slick-dots li button:after { content: ""; width: 7px; height: 7px; display: block; background: transparent; border-radius: 50%; margin: 0 auto; }
