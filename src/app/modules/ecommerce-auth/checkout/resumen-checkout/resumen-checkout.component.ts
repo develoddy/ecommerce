@@ -466,7 +466,11 @@ export class ResumenCheckoutComponent implements OnInit {
     }
   }
 
-  
+  goToRegisterAddress() {
+    this._router.navigate(['/', this.country, this.locale, 'account', 'myaddresses', 'add'], {
+      queryParams: { returnUrl: `/${this.country}/${this.locale}/account/checkout` }
+    });
+  }
 
   closeMiniAdress(): void {
     this.minicartService.closeMiniAddress();

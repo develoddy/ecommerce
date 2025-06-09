@@ -3369,6 +3369,15 @@ a.logo {
 /* Tamaño del símbolo del euro */
 .currency-symbol {font-size: .85rem; margin-left: 2px;position: relative;top: -0.55em;}
 
+.product-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 100%; /* default para móviles */
+}
+
+
 
 
 

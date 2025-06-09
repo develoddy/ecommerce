@@ -2,7 +2,7 @@
 <div class="page-wrapper">
 
     <!-- Body Container -->
-    <div id="page-content"> 
+    <div id="page-content">
 
         <!--Page Header-->
         <div class="page-header text-center bg-transparent mb-0">
@@ -88,7 +88,7 @@
                                                 <label for="new-city" class="form-label d-none">Población <span class="required">*</span></label>
                                                 <input name="city" placeholder="Población" class="form-control py-4" value="" required="" [(ngModel)]="poblacion" id="new-city" type="text" />
                                             </div>
-                                        </div>  
+                                        </div>
                                         <!-- Ciudad -->
                                         <div class="row justify-content-center">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
@@ -116,14 +116,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <!-- Button register o update -->
                                         <div class="row justify-content-center">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
                                                 <button type="submit" class="btn btn-black me-1 w-100 py-3 text-uppercase fw-normal" (click)="store()">
                                                     <ng-container *ngIf="!loading">Guardar dirección</ng-container>
                                                 </button>
-                                                <p class="mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p> 
+                                                <p class="mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -132,7 +132,7 @@
                         </div>
                         <!-- End Address Book -->
                     </div>
-                <!-- </div> -->
+                </div>
             </div>
         </div>
         <!--End Main Content-->
@@ -142,6 +142,6 @@
     <!--Scoll Top-->
     <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
     <!--End Scoll Top-->
-    
+
 </div>
 <!--End Page Wrapper-->

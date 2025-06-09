@@ -4,7 +4,11 @@
     Version: 2.0
 **********************************************************************************/
 
+
 @media only screen and (max-width: 1540px) {
+    .product-title {
+        max-width: 110px;
+    }
     .arwOut5 .slick-prev { left:-30px; }
     .arwOut5 .slick-next { right:-30px; }
     .container-fluid { padding:0 12px; }
@@ -24,6 +28,7 @@
 }
 
 @media only screen and (max-width: 1320px) {
+ 
     .arwOut5 .slick-prev { left: -10px; }
     .arwOut5 .slick-next { right: -10px; }
 
@@ -40,6 +45,9 @@
 }
 
 @media only screen and (min-width:1200px) {
+    .product-title {
+        max-width: 180px;
+    }
     .row-5col > * { width:20%; }
     .index-demo10 .newsletter-section .newsletter-wrap { padding-right: 145px; padding-left: 175px; }
     .product-notification { margin: 25px; }
@@ -50,6 +58,7 @@
 }
 
 @media only screen and (max-width: 1199px) {
+   
     #page-content { margin: 0 0 50px; }
     .section { padding-top: 50px; padding-bottom: 50px; }
     .text-large { font-size: 18px !important; } 
@@ -115,6 +124,7 @@
 }
 
 @media only screen and (min-width: 992px) {
+    
     .rounded-start-lg-0 { border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important; }
     .rounded-end-lg-0 { border-top-right-radius: 0px !important; border-bottom-right-radius: 0px !important; }
     .mih-75:not(.stickyNav) { min-height: 75px !important; }
@@ -203,6 +213,7 @@
 }
 
 @media only screen and (max-width: 991px) {
+    
     .container-fluid { padding-left:15px; padding-right:15px; }
     .rounded-top-md-0 { border-bottom-left-radius: 0px !important; border-bottom-right-radius: 0px !important; }
     .rounded-bottom-md-0 { border-bottom-left-radius: 0px !important; border-bottom-right-radius: 0px !important; }
@@ -583,6 +594,9 @@
 }
 
 @media only screen and (max-width: 767px) {
+    .product-title {
+        max-width: 300px;
+    }
     body { font-size: 13px; line-height: 1.5; }
     h1, .h1 { font-size:22px; }
     /* h2, .h2 { font-size:18px; } */
@@ -1017,6 +1031,9 @@
 }
 
 @media only screen and (max-width: 575px) {
+    .product-title {
+        max-width: 130px;
+    }
     .xs-hide { display: none !important; }
     .text-medium { font-size: 14px !important; }
 
@@ -1170,6 +1187,7 @@
 }
 
 @media only screen and (max-width: 480px) {
+    
     .iconset { padding:0 10px; }
     .menubar-label, #accountBox { display: none; }
     .select-wrap { margin-left: 10px; }

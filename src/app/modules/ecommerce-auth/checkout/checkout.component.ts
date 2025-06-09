@@ -116,8 +116,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   private initializeExternalScripts(): void {
-
-    
       this.loadLoading();
       setTimeout(() => {
         HOMEINITTEMPLATE($);
@@ -140,8 +138,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     .pipe(takeUntil(this.destroy$))
     .subscribe(value => {
       if (value) {
-        console.log("--> Checkout escuchando navigatingToPayment: ", value);
-        this.currentStep = 'payment'; // o 3 si lo manejas como número
+        // -- ESCUCHANDO NAVIGATE TO PAYMENT
+        this.currentStep = 'payment'; // -- O 3 SI LO MANEJAS COMO NÚMERO
       }
     });
 
@@ -150,7 +148,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     .subscribe(value => {
       if (value) {
         console.log("--> Checkout escuchando isSaleSuccess: ", value);
-        this.currentStep = 'successfull'; // o 4 si lo manejas como número
+        this.currentStep = 'successfull'; // -- O 4 SI LO MANEJAS COMO NÚMERO
       }
     });
   }
@@ -177,7 +175,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     const currentRoute = this.getActiveRoute(this.routerActived);
     if (currentRoute) {
       this.currentStep = currentRoute.snapshot.routeConfig?.path || '';
-      // Ocultar el Nav step si estamos en 'login' o 'delivery'
+      // -- OCULTA EL NAV SI ESTÁ EN EL COMPONENTE LOGIN O DELIVERY
       if (this.currentStep === 'delivery') {
         this.isCheckoutNavVisible = false; // Ocultar el Nav step checkout
       } else {
@@ -187,13 +185,14 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
   
   private getActiveRoute(route: ActivatedRoute): ActivatedRoute {
-    // Recursivamente accede a la ruta hija más profunda
+    // -- RECURSIVAMENTE ACCEDE A LA RUTA HIJA MÁS PROFUNDA
     if (!route.firstChild) {
       return route;
     }
     return this.getActiveRoute(route.firstChild);
   }
 
+  // -- VERIFICA EL ESTADO DEL CURRENT USER
   verifyAuthenticatedUser(): void {
     this._authEcommerce._authService.user.pipe(take(1)).subscribe(user => {
       if (user) {
@@ -213,6 +212,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     });
   }
 
+  
+
   checkIfAddressClientExists() {
     if (this.CURRENT_USER_AUTHENTICATED) {
       this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
@@ -220,9 +221,12 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
           this.listAddressClients = resp.address_client;
           if (this.listAddressClients.length === 0) {
             // GUARDA LA URL ACTUAL EN SESSION STORARE
-            sessionStorage.setItem('returnUrl', this._router.url); 
+            //sessionStorage.setItem('returnUrl', this._router.url); 
             // SOLO REDIRIGE A myaddresses SI NO ESTÁ EN RESUMEN
-            this._router.navigate(['/', this.country, this.locale, 'account', 'myaddresses', 'add']); 
+            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+            // this._router.navigate(['/', this.country, this.locale, 'account', 'myaddresses', 'add'], {
+            //   queryParams: { returnUrl: `/${this.country}/${this.locale}/account/checkout` }
+            // });
           } else {
             if (this.currentStep === 'payment') {
               this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });

@@ -59,14 +59,10 @@ export class AddAddressComponent implements OnInit {
   ngOnInit(): void {
     
     this.SPINNER();
-
-    // Obtiene el valor del returnUrl desde los parámetros de la URL
-    //this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || this.returnUrl;
-    this.returnUrl = sessionStorage.getItem('returnUrl') || this.returnUrl;
-
-    console.log("Debbug Compoennte add-address tiene la url back: ", this.returnUrl);
     
-
+    // Captura la URL de retorno si existe
+    this.returnUrl = this.activatedRoute.snapshot.queryParamMap.get('returnUrl') || `/${this.country}/${this.locale}/account/myaddresses`;
+    
     this.verifyAuthenticatedUser();
     this.subscribeToQueryParams();
   }
@@ -137,7 +133,10 @@ export class AddAddressComponent implements OnInit {
         this.hideMessageAfterDelay();
         alertSuccess(resp.message);
         this.resetForm();
-        this.router.navigate(['/', this.country, this.locale, 'account', 'myaddresses']);
+        //this.router.navigate(['/', this.country, this.locale, 'account', 'myaddresses']);
+        // ... lógica para guardar la dirección ...
+        this.router.navigateByUrl(this.returnUrl);
+
 
       } else {
         this.status = false;
