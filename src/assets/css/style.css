@@ -3377,7 +3377,10 @@ a.logo {
   max-width: 100%; /* default para móviles */
 }
 
-
+.logo-loader {
+  width: 120px;
+  height: auto;
+}
 
 
 

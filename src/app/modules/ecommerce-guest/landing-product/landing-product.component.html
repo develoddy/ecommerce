@@ -3,7 +3,7 @@
 <!-- Loading -->
 <div *ngIf="!loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col col-12 col-lg-12 col-sm-2">
             <div class="sp sp-bars"></div>
         </div>
     </div>
@@ -39,7 +39,6 @@
                             <div class="zoompro-wrap">
                                 <!-- Product Image -->
                                 <div class="zoompro-span">
-                                    <!-- <img id="zoompro" class="zoompro" src="assets/images/products/product1.jpg" data-zoom-image="assets/images/products/product1.jpg" alt="product" width="625" height="808" /> -->
                                     <img id="zoompro" class="zoompro" [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="product" width="625" height="808" />
                                 </div>
                                 <!-- End Product Image -->
@@ -146,7 +145,6 @@
                             <!-- End Countdown -->
                         </div>
                         <!-- End Product Details -->
-
                         <!-- Product Form -->
                         <form method="post" action="#" class="product-form product-form-border hidedropdown">
                             <!-- Swatches -->
@@ -169,7 +167,6 @@
                                     <label class="label d-flex align-items-center text-uppercase fw-normal fs-14 mb-2"> {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} <span class="slVariant ms-1 fw-bold">{{ variedad_selected?.valor || '' }}</span> 
                                         <a href="#sizechart-modal" class="text-link sizelink  size-chart-modal" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Guía de tallas</a>
                                     </label>
-                                  
                                     <ul class="variants-size size-swatches d-flex pt-1 clearfix" [ngClass]="{'border border-danger': tallaError}">
                                         <ng-container *ngFor="let variedad of variedades; let i = index">
                                             <li class="swatch x-large" 
@@ -243,21 +240,14 @@
                             <!-- End Product Info link -->
                         </form>
                         <!-- End Product Form -->
-
                         <!-- Product Info -->
                         <div class="userViewMsg featureText" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div> 
                         <div class="shippingMsg featureText" *ngIf="shippingRate">
                             <!-- <i class="icon anm anm-clock-r"></i>Entrega estimada entre <b id="fromDate">Lunes, 26 de agosto</b> y <b id="toDate">Viernes, 30 de agosto</b>. -->
-                            <!-- <p> -->
-                                <!-- <i class="icon anm anm-clock-r"></i>{{ shippingMethod }} -->
-                                <!-- Precio: {{ shippingRate | currency:'EUR' }} <br />-->
-                                <p><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline">{{ address }}</a> </p>
-
-                            <!-- </p> -->
+                            <p><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline">{{ address }}</a> </p>
                         </div>                             
                         <div class="freeShipMsg featureText" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}30.00</span></b> Más para envío gratis</div>
                         <!-- End Product Info -->
-
                         <!-- Social Sharing -->
                         <div class="social-sharing d-flex-center mt-2 lh-lg">
                             <span class="sharing-lbl fw-600">Compartir :</span>
@@ -268,7 +258,6 @@
                             <a href="#" class="d-flex-center btn btn-link btn--share share-email"><i class="icon anm anm-envelope-l"></i><span class="share-title">Email</span></a>
                         </div>
                         <!-- End Social Sharing -->
-
                         <div class="trustseal-img mt-4 d-none"><img src="assets/images/icons/powerby-cards.jpg" alt="powerby cards" width="470" /></div>
                     </div>
                 </div>

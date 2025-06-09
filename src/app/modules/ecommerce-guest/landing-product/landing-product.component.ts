@@ -575,14 +575,12 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   selectColor(color: { color: string, imagen: string }) {
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
-
-    // Filtrar variedades para el color seleccionado
+    // -- FILTRAR VARIEDADES PARA EL COLOR SELECCIONADO
     const filteredVariedades = this.product_selected.variedades
         .filter((variedad: any) => variedad.color === this.selectedColor)
         .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1)); // Ordenar las tallas de menor a mayor
 
     const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
-    
     const isCamisa = categoryTitle.toLowerCase().includes('t-shirts');
     const allShirts = categoryTitle.toLowerCase().includes('all shirts');
     const isGorra = categoryTitle.toLowerCase().includes('snapbacks');

@@ -660,9 +660,9 @@
                         <li class="item d-flex flex-column"> 
                             <div class="d-flex flex-row mb-2">
                                 <div class="">
-                                    <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">
+                                    <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.variedad.slug]">
                                         <img class="blur-up lazyload"
-                                        [src]="cart.product.imagen"
+                                        [src]="cart.variedad.files[1].thumbnail_url"
                                         alt="{{ cart.product.title }}"
                                         title="{{ cart.product.title }}"
                                         width="200"
@@ -701,36 +701,6 @@
                                     <a href="#" class="remove fw-light" onclick="return false;"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Favorito"></i> Comprar mas tarde</a>
                                 </div>
                             </div>
-
-                            <!-- Old -->
-                            <!-- <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', cart.product.slug]">
-                                <img class="blur-up lazyload"
-                                [src]="cart.product.imagen"
-                                alt="{{ cart.product.title }}"
-                                title="{{ cart.product.title }}"
-                                width="120"
-                                height="170" />
-                            </a>
-                            <div class="product-details">
-                                <a class="product-title text-uppercase fw-bold" href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
-                                <div class="variant-cart my-2" *ngIf="cart.variedad">{{ cart.variedad.color }} / {{ cart.variedad.valor }}</div>
-                                <div class="priceRow">
-                                    <div class="product-price">
-                                        <span class="price">{{ cart.total | number: '1.2-2' }} {{ euro }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="qtyDetail text-center">
-                                <div class="qtyField">
-                                    <a class="qtyBtn minus" href="#;" onclick="return false;" (click)="dec(cart)"><i class="icon anm anm-minus-r"></i></a>
-                                    <input type="text" name="quantity" [value]="cart.cantidad" class="qty">
-                                    <a class="qtyBtn plus" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r"></i></a>
-                                </div>
-                                <a href="#" class="edit-i remove d-none"><i class="icon anm anm-pencil-ar" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"></i></a>
-                                <a href="#" class="edit-i edit d-none"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Comprar mas tarde"></i></a>
-                                <a href="#" class="remove" onclick="return false;" (click)="removeCart(cart)">Eliminar</a>
-                                <a href="#" class="remove" onclick="return false;" (click)="removeCart(cart)"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"></i></a>
-                            </div> -->
                         </li>
                     </ng-container>
                 </ul>

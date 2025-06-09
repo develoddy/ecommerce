@@ -1,44 +1,11 @@
 <!--Page Wrapper-->
 <div class="page-wrapper">
-    <!--Marquee Text-->
-    <!-- <ng-container *ngIf="isCheckoutNavVisible">
-        <div class="topbar-slider clearfix">
-            <div class="container-fluid">
-                <div class="marquee-text">
-                    <div class="top-info-bar d-flex">
-                        <div class="flex-item center">
-                            <a href="#">
-                                <span> <i class="anm anm-worldwide"></i> COMPRA ONLINE Y RECOGE EN TIENDA</span>
-                                <span> <i class="anm anm-truck-l"></i> ENVÍO GRATIS A TODA ESPAÑA EN PEDIDOS SUPERIORES A 50€</span>
-                                <span> <i class="anm anm-redo-ar"></i> DEVOLUCIONES EXTENDIDAS HASTA 30 DÍAS</span>
-                            </a>
-                        </div>
-                        <div class="flex-item center">
-                            <a href="#">
-                                <span> <i class="anm anm-worldwide"></i> COMPRA ONLINE Y RECOGE EN TIENDA</span>
-                                <span> <i class="anm anm-truck-l"></i> ENVÍO GRATIS A TODA ESPAÑA EN PEDIDOS SUPERIORES A 50€</span>
-                                <span> <i class="anm anm-redo-ar"></i> DEVOLUCIONES EXTENDIDAS HASTA 30 DÍAS</span>
-                            </a>
-                        </div>
-                        <div class="flex-item center">
-                            <a href="#">
-                                <span> <i class="anm anm-worldwide"></i> COMPRA ONLINE Y RECOGE EN TIENDA</span>
-                                <span> <i class="anm anm-truck-l"></i> ENVÍO GRATIS A TODA ESPAÑA EN PEDIDOS SUPERIORES A 50€</span>
-                                <span> <i class="anm anm-redo-ar"></i> DEVOLUCIONES EXTENDIDAS HASTA 30 DÍAS</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </ng-container> -->
-    <!--End Marquee Text-->
-
     <!-- Loading -->
     <div *ngIf="!loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
-            <div class="col-sm-2">
-                <div class="sp sp-bars"></div>
+            <div class="col col-12 col-lg-12 col-sm-2">
+                <!-- <div class="sp sp-bars"></div> -->
+                <img src="assets/images/logo/lujandev_loader.gif" alt="Cargando Luján" class="logo-loader" />
             </div>
         </div>
     </div>
@@ -65,47 +32,6 @@
         <div class="container">     
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">  
-                    <!--Nav step checkout-->
-                    <!-- <ng-container *ngIf="isCheckoutNavVisible">
-                        <div id="nav-tabs" class="step-checkout main-vertical-component clearfix">
-                            <div class="row-fluid stepsCheckout">
-                                <div class="span12" role="navigation">
-                                    <div class="row-fluid labelSteps" role="list">
-                                        <div class="span3 margin" [ngClass]="{'medium': !CURRENT_USER_AUTHENTICATED, '':  CURRENT_USER_AUTHENTICATED}" role="listitem" aria-current="step">
-                                            Identifícate
-                                        </div>
-                                        <div class="span3 margin" [ngClass]="{'medium': (CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST), '': !CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST}" role="listitem" aria-current="step">
-                                            Envío
-                                        </div>
-                                        <div class="span3 margin" [ngClass]="{'medium': !CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST || PAYMENT,  '':  !CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST || !PAYMENT}" role="listitem" aria-current="true">
-                                            Pago
-                                        </div>
-                                        <div class="span3 margin" [ngClass]="{'medium': isSaleSuccess, '': !isSaleSuccess}" role="listitem" aria-current="step">
-                                            Confirmación
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="span12" aria-hidden="true">
-                                    <div class="row-fluid bolasSteps">
-                                        <div class="span3" [ngClass]="{'medium1': !CURRENT_USER_AUTHENTICATED,  '':  CURRENT_USER_AUTHENTICATED}">
-                                            <div class="flechaSteps"></div>
-                                        </div> 
-                                        <div class="span3" [ngClass]="{'medium2': (CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST),  '' :  (!CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST) }">
-                                            <div class="flechaSteps"></div>
-                                        </div>
-                                        <div class="span3" [ngClass]="{ 'medium3': !CURRENT_USER_AUTHENTICATED  || CURRENT_USER_GUEST || PAYMENT,  '': !CURRENT_USER_AUTHENTICATED || CURRENT_USER_GUEST || !PAYMENT}">
-                                            <div class="flechaSteps"></div>
-                                        </div>
-                                        <div class="span3" [ngClass]="{ 'medium4': isSaleSuccess,  '':  !isSaleSuccess}">
-                                            <div class="flechaSteps"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </ng-container> -->
-                    <!--End Nav step checkout-->
-
                     <!--Nav step checkout-->
                     <ng-container *ngIf="isCheckoutNavVisible">
                         <div id="nav-tabs" class="step-checkout main-vertical-component clearfix">

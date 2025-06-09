@@ -108,9 +108,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private processUserStatus(): void {
     this.storeListCarts();
     this.storeListWishlists();
-    //if (!this.currentUser?.user_guest) { // Si es un usuario autenticado
     if (this.currentUser && this.currentUser.user_guest !== "Guest") { // Si el usuario no es un invitado
-      
       let user_guest = "Guest";
       this.cartService.listCartsCache(user_guest).subscribe((resp: any) => {
         if (resp.carts.length > 0) {
@@ -224,6 +222,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
+        console.log(this.listCarts);
+        
         this.totalCarts = this.listCarts.reduce((sum, item) => sum + parseFloat(item.total), 0);
       })
     );
