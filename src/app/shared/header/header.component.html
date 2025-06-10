@@ -656,7 +656,6 @@
             <ng-template #allCarts>
                 <ul class="m-0 clearfix">
                     <ng-container *ngFor="let cart of listCarts">
-                        <!-- <li class="item d-flex justify-content-center align-items-center"> -->
                         <li class="item d-flex flex-column"> 
                             <div class="d-flex flex-row mb-2">
                                 <div class="">
@@ -673,9 +672,8 @@
                                     <div class="product-details">
                                         <div class="priceRow mb-2">
                                             <div class="product-price d-flex flex-row justify-content-between">
-                                                <a class="product-title text-uppercase fw-bold" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
-                                                <!-- <span class="price fw-bold">{{ cart.total | number: '1.2-2' }} {{ euro }}</span> -->
-                                                <span class="price-small fw-normal">
+                                                <a class="product-title text-uppercase fw-normal text-truncate d-inline-block product-title" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                                <span class="price-small fw-bold">
                                                     <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
                                                     <span class="price-decimals-small" style="top: 0.2em !important;">
                                                         <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
@@ -684,21 +682,36 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="variant-cart mb-3" *ngIf="cart.variedad">{{ cart.variedad.color }} / {{ cart.variedad.valor }}</div>
-                                        <div class="qtyField">
-                                            <a class="qtyBtn minus text-muted" href="#;" onclick="return false;" (click)="dec(cart)"><i class="icon anm anm-minus-r"></i></a>
-                                            <input type="text" name="quantity" [value]="cart.cantidad" class="qty border-0">
-                                            <a class="qtyBtn plus text-muted" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r"></i></a>
+                                        <div class="d-flex flex-column">
+                                            <div class="variant-cart fw-light d-flex" *ngIf="cart.variedad">
+                                                <span class="w-25">Color</span>
+                                                <span class="">{{ cart.variedad.color }}</span>
+                                            </div>
+                                            <div class="variant-cart fw-light d-flex" *ngIf="cart.variedad">
+                                                <span class="w-25">Talla</span>
+                                                <span class="">{{ cart.variedad.valor }}</span>
+                                            </div>
+                                            <div class="variant-cart fw-light d-flex mb-3">
+                                                <span class="w-25">Cantidad</span>
+                                                <span class="">{{ cart.cantidad}}</span>
+                                            </div>
+
+                                            <div class="qtyField">
+                                                <a class="qtyBtn minus text-muted" href="#;" onclick="return false;" (click)="dec(cart)"><i class="icon anm anm-minus-r text-black fw-bold"></i></a>
+                                                <input type="text" name="quantity" [value]="cart.cantidad" class="qty border-0 text-black fw-bold">
+                                                <a class="qtyBtn plus text-muted" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r text-black fw-bold"></i></a>
+                                            </div>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
                             <div class="d-flex flex-row">
                                 <div class="me-3">
-                                    <a href="#" class="remove fw-light" onclick="return false;" (click)="removeCart(cart)"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"></i> Eliminar</a>
+                                    <a href="#" class="remove fw-light" onclick="return false;"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Favorito"></i> Comprar mas tarde</a>
                                 </div>
                                 <div class="">
-                                    <a href="#" class="remove fw-light" onclick="return false;"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Favorito"></i> Comprar mas tarde</a>
+                                    <a href="#" class="remove fw-light" onclick="return false;" (click)="removeCart(cart)"> Eliminar</a>
                                 </div>
                             </div>
                         </li>
@@ -707,15 +720,6 @@
             </ng-template>
         </div>
         <div class="minicart-bottom" *ngIf="listCarts.length != 0">
-            <!--
-                La frase "Only $199.00 away from Free Shipping" significa que el cliente necesita gastar $199.00 más para calificar para el envío gratuito en su compra. 
-                Esta es una estrategia común en el comercio electrónico para incentivar a los clientes a agregar más productos a su carrito con el fin de alcanzar un umbral 
-                específico de gasto que les permitirá obtener el envío gratuito.
-
-                Por ejemplo, si el umbral para el envío gratuito es de $300.00 y el cliente tiene actualmente $101.00 en su carrito, se le indicará que solo necesita gastar $199.00 más 
-                para obtener el envío sin costo adicional. Esta técnica suele aumentar el valor promedio de los pedidos, ya que los clientes están motivados a agregar más artículos para 
-                evitar los gastos de envío.
-            -->
             <div class="shipinfo d-none">
                 <div class="progress mb-2"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div></div>
                 <div class="freeShipMsg"><i class="icon anm anm-truck-l fs-6 me-2 align-middle"></i>A solo <span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}10.00</span> de envío<b> gratis</b></div>
@@ -727,15 +731,6 @@
                     <div class="item product-price text-capitalize fw-normal d-flex">
                         <span class="fw-normal me-1">{{ totalCarts | number: '1.2-2' }}</span> <span style="font-family: sans-serif;font-size: .85rem;" class="align-self-center fw-normal">{{ euro }}</span>
                     </div>
-                    <!-- <div class="item product-price text-capitalize fw-normal">
-                        <span class="price-small  fw-normal">
-                            <span class="price-main-small fw-normal">{{ getFormattedPrice(totalCarts).integerPart }}</span>
-                            <span class="price-decimals-small d-flex" style="top: 1.2em !important;">
-                                <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
-                                <span class="currency-symbol-small align-self-center  fw-normal" style="top: -1em !important;">{{ euro }}</span>
-                            </span>
-                        </span>
-                    </div> -->
                 </div>
                 <div class="totalInfo clearfix"><span class="text-capitalize fw-light">Envío</span><span class="item product-price text-capitalize fw-light">Gratis</span></div>
                 <div class="totalInfo clearfix">
@@ -743,25 +738,13 @@
                     <div class="item product-price d-flex">
                         <span class="me-1">{{ totalCarts | number: '1.2-2' }}</span><span style="font-family: sans-serif;font-size: .85rem;" class="align-self-center">{{ euro }}</span>
                     </div>
-                    <!-- <div class="item product-price">
-                        <span class="price-small  fw-normal">
-                            <span class="price-main-small">{{ getFormattedPrice(totalCarts).integerPart }}</span>
-                            <span class="price-decimals-small d-flex" style="top: 1.2em !important;">
-                                <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
-                                <span class="currency-symbol-small align-self-center" style="top: -1em !important;">{{ euro }}</span>
-                            </span>
-                        </span>
-                    </div> -->
                 </div>
-                <!-- <div>Impuestos incluidos</div> -->
             </div>
             <div class="agree-check customCheckbox d-none">
                 <input id="prTearm" name="tearm" type="checkbox" value="tearm" required />
                 <label for="prTearm"> I agree with the </label><a href="#" class="ms-1 text-link">Terms &amp; conditions</a>
             </div>
             <div class="minicart-action d-flex mt-3">
-                <!-- <a href="cart-style1.html" [href]="'/cart/'" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a> -->
-                <!-- <a [routerLink]="['/', locale, country, 'shop', 'cart']" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg">Ver carrito</a> -->
                 <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-secondary w-50 me-1 btn-lg text-uppercase fw-normal py-3">Ver carrito</a>
                 <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout btn btn-primary w-50 ms-1 btn-lg text-uppercase fw-normal py-3"> Comenzar pedido</a>
             </div>
