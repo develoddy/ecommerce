@@ -124,7 +124,10 @@ export class LoginCheckoutComponent implements OnInit {
       // Verificar si el cambio fue exitoso antes de redirigir
       const updatedData = JSON.parse(sessionStorage.getItem("user_guest") || '{}');
       if (updatedData.guest === true) {
+        console.log("---> DEBBUG: Resumen.componente > EnterGuest() if");
+        
         this._router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
+        
       } else {
         console.warn('⚠️ No se pudo activar el modo guest correctamente.');
       }
@@ -167,7 +170,6 @@ export class LoginCheckoutComponent implements OnInit {
   }
 
   checkIfAddressClientExists() {
-
     if (this.CURRENT_USER_AUTHENTICATED) {
       // Si el usuario está autenticado, buscar en address_client
       this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
@@ -191,18 +193,7 @@ export class LoginCheckoutComponent implements OnInit {
         (resp: any) => {
           this.listAddressGuest = resp.addresses;
           if (this.listAddressGuest.length === 0) {
-            console.log("LoginCheckout componente ejecuta en la lunea 211, redirigir a delivery");
-            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'delivery']);
-            
-            // // GUARDA LA URL ACTUAL EN SESSION STORAGE
-            // sessionStorage.setItem('returnUrl', this._router.url); 
-            // // SOLO REDIRIGE A ADD SI NO ESTÁ EN RESUMEN
-            // if (!currentUrl.includes('resumen')) {
-            //   this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'delivery']);
-            // }
-          } else {
-            console.log("LoginCheckout componente ejecuta en la lunea 221, redirigir a resumen");
-            this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
           }
       });
     }

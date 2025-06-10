@@ -90,9 +90,9 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   loadSPINER() {
     this.cartService.loading$.subscribe(isLoading => {
       //this.loading = isLoading;
-      //setTimeout(() => {
+      setTimeout(() => {
         this.loading = !isLoading;
-      //}, 550);
+      }, 150);
     });
   }
 

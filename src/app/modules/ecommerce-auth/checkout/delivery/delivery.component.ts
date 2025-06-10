@@ -18,7 +18,7 @@ export class DeliveryComponent implements OnInit {
   address_client_selected:any = null;
     listAddressGuest:any = [];
   
-    //returnUrl: string = 'myaddresses';  // Valor por defecto si no se pasa ningún returnUrl
+    returnUrl: string = 'myaddresses';  // Valor por defecto si no se pasa ningún returnUrl
   
     // Address
     guest_id: any = 0
@@ -59,10 +59,9 @@ export class DeliveryComponent implements OnInit {
     ngOnInit(): void {
       
       this.SPINNER();
-  
-      // Obtiene el valor del returnUrl desde los parámetros de la URL
-      //this.returnUrl = sessionStorage.getItem('returnUrl') || this.returnUrl;
-      //console.log("Debbug Compoennte add-address tiene la url back: ", this.returnUrl);
+      
+      // Captura la URL de retorno si existe
+      this.returnUrl = this.activatedRoute.snapshot.queryParamMap.get('returnUrl') || `/${this.country}/${this.locale}/account/myaddresses`;
       this.verifyAuthenticatedUser();
       this.subscribeToQueryParams();
     }
@@ -144,7 +143,8 @@ export class DeliveryComponent implements OnInit {
           this.hideMessageAfterDelay();
           alertSuccess(resp.message);
           this.resetForm();
-          this.router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+          this.router.navigateByUrl(this.returnUrl);
+          //this.router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
         } else {
           this.status = false;
           this.errorOrSuccessMessage = "Error al registrar la dirección.";

@@ -4,8 +4,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
 import { catchError, map, of, BehaviorSubject, finalize, window, Observable, tap, filter, throwError, switchMap, take } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
-import { GuestCleanupService } from '../../ecommerce-guest/_service/guestCleanup.service';
-import { EcommerceAuthService } from '../../ecommerce-auth/_services/ecommerce-auth.service';
+//import { GuestCleanupService } from '../../ecommerce-guest/_service/guestCleanup.service';
+//import { EcommerceAuthService } from '../../ecommerce-auth/_services/ecommerce-auth.service';
 
 
 @Injectable({
@@ -24,12 +24,7 @@ export class AuthService {
   public userGuestSubject = new BehaviorSubject<any>(this.getGuestUser());
   userGuest = this.userGuestSubject.asObservable();
   
-  constructor(
-    private _http: HttpClient,
-    private _router: Router,
-    private localizationService: LocalizationService,
-     //private authEcommerce: EcommerceAuthService,
-  ) {
+  constructor(private _http: HttpClient, private _router: Router, private localizationService: LocalizationService) {
     this.addGuestLocalStorage();
     this.getLocalStorage();
   }
@@ -68,7 +63,6 @@ export class AuthService {
     }
   }
 
-  // FUNCION PARA OBTENER EL COUNTRY Y LOCALE DE LOCALIZATIONSERVICE
   getLocaleAndCountry(): { locale: string, country: string } {
     return {
       locale: this.localizationService.locale,
@@ -81,7 +75,6 @@ export class AuthService {
     this.accessTokenSubject.next(accessToken); // Emitir el nuevo token
   }
 
-  // METODO PARA OBTENER EL TOKEN
   public getAccessToken(): string | null {
     return sessionStorage.getItem('access_token');
   }
@@ -101,16 +94,7 @@ export class AuthService {
         if (  resp.USER_FRONTED  && resp.USER_FRONTED.accessToken && resp.USER_FRONTED.refreshToken ) {
           this.localStorageSave(resp.USER_FRONTED);
           this.removeUserGuestLocalStorage();
-          // this.deleteGuestAndAddresses().subscribe({
-          //   next: (resp: any) => {
-          //     this.removeUserGuestLocalStorage();
-          //   },
-          //   error: err => {
-          //       console.error("❌ Error al limpiar datos guest al salir del checkout", err);
-          //   }
-          // });
           return true;
-
         } else {
           return resp;
         }
@@ -137,33 +121,38 @@ export class AuthService {
     this.userSubject.next(USER_FRONTED.user);  
   }
 
-  /* ------------------ ZONA DE GUESTS --------------- */
-  /* Generar un ID único para guardar en usuarios guests en session storage
-   * y posteriomente guardarlo en la base de datos en la tabla guest
-   */
   addGuestLocalStorage() {
-    
-    const storedUser = sessionStorage.getItem("user");
+
+    //const storedUser = sessionStorage.getItem("user");
     const storedUserGuest = sessionStorage.getItem("user_guest");
     if(!storedUserGuest) {
-      let data = {
-        _id:0,
-        user_guest: "Guest",
-        name: 'Anonymous',
-        guest: false,
-        session_id: this.generateSessionId(), // Usamos la función generateUniqueId() en lugar de uuidv4()
-      }
-      sessionStorage.setItem("user_guest", JSON.stringify(data));
-      this.userGuestSubject.next(data);
+      this.deleteGuestAndAddresses().subscribe({
+        next: () => {
+          let data = {
+            _id:0,
+            user_guest: "Guest",
+            name: 'Anonymous',
+            guest: false,
+            session_id: this.generateSessionId(), // Usamos la función generateUniqueId() en lugar de uuidv4()
+          }
+          sessionStorage.setItem("user_guest", JSON.stringify(data));
+          this.userGuestSubject.next(data);
 
-      // Solo enviar al backend 'name' y 'session_id'
-      const guestData = {
-        name: data.name,
-        session_id: data.session_id
-      };
-      // Enviar datos al backend (por ejemplo, POST request)
-      this.sendGuestDataToBackend(guestData);
-   
+          // Solo enviar al backend 'name' y 'session_id'
+          const guestData = {
+            name: data.name,
+            session_id: data.session_id
+          };
+
+          // Enviar datos al backend (por ejemplo, POST request)
+          this.sendGuestDataToBackend(guestData);
+          
+        },
+
+        error: (err) => {
+          console.error("❌ Error al eliminar los guests anteriores:", err);
+        }
+      });
     } else {
         // Si ya existe, lo mantiene como está
         const parsedUserGuest = JSON.parse(storedUserGuest);
@@ -172,7 +161,6 @@ export class AuthService {
   }
 
   sendGuestDataToBackend(data:any) {
-
     this.loadingSubject.next(true);
     let URL = URL_SERVICE + "guests/register";
 
@@ -206,7 +194,6 @@ export class AuthService {
      });
   }
 
-  // FUNCION PARA GENERAR UN ID ÚNICO SIMILIAR A UUID
   generateSessionId(): string {
     const array = new Uint8Array(16);
     crypto.getRandomValues(array);  // Esto llena el array con valores aleatorios
@@ -438,7 +425,6 @@ export class AuthService {
   }
 
   deleteGuestAndAddresses(): Observable<any> {
-    
     this.loadingSubject.next(true);
     let URL = URL_SERVICE+"guests/removeAll";
     return this._http.delete<any>(URL).pipe(
@@ -451,5 +437,3 @@ export class AuthService {
     this.userGuestSubject.next(null);
   }
 }
-
-

@@ -49,13 +49,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
-  // isLastStepActive_1: boolean = false;
-  // isLastStepActive_2: boolean = false;
-  // isLastStepActive_3: boolean = false;
-  // isLastStepActive_4: boolean = false;
   url: string = "";
 
-  //isNavigatingToPayment: boolean = false;
   errorAutenticate:boolean=false;
   errorMessageAutenticate:string="";
   password_identify:string = "";
@@ -75,6 +70,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   currentStep: string = '';  // Paso actual de checkout
   
   isCheckoutNavVisible: boolean = true; // Inicializa en true para mostrar el Nav step de manera predeterminada
+
+  shouldCleanGuest: boolean = true;
+
 
   private destroy$ = new Subject<void>();
 
@@ -147,7 +145,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     .pipe(takeUntil(this.destroy$))
     .subscribe(value => {
       if (value) {
-        console.log("--> Checkout escuchando isSaleSuccess: ", value);
         this.currentStep = 'successfull'; // -- O 4 SI LO MANEJAS COMO NÚMERO
       }
     });
@@ -177,6 +174,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       this.currentStep = currentRoute.snapshot.routeConfig?.path || '';
       // -- OCULTA EL NAV SI ESTÁ EN EL COMPONENTE LOGIN O DELIVERY
       if (this.currentStep === 'delivery') {
+         console.log("---> DEBBUG: checkout.componente > updateCurrentStep() if");
         this.isCheckoutNavVisible = false; // Ocultar el Nav step checkout
       } else {
         this.isCheckoutNavVisible = true; // Mostrar el Nav step checkout
@@ -212,8 +210,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     });
   }
 
-  
-
   checkIfAddressClientExists() {
     if (this.CURRENT_USER_AUTHENTICATED) {
       this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
@@ -245,7 +241,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         (resp: any) => {
           this.listAddressGuest = resp.addresses;
           if (this.listAddressGuest.length === 0) {
-            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery']);
+            //this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery']);
+            console.log("----> Debbug: Resumen.componente adress=0");
+            
+            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
           } else {
             if (this.currentStep === 'payment') {
               this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
@@ -258,8 +257,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   navigateToCart() {
+    this.shouldCleanGuest = false;
     this.subscriptionService.setShowSubscriptionSection(true);
-    this._router.navigate(['/', this.country , this.locale, 'shop', 'cart']);
+    //this._router.navigate(['/', this.country , this.locale, 'shop', 'filter-products']);
+    this._router.navigate(['/', this.locale, this.country, 'shop', 'cart']);
   }
 
   onCheckboxChange(event: any) {
@@ -525,25 +526,26 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       this.subscriptions.unsubscribe();
     }
     
+    // if (this.shouldCleanGuest) {
+    //   const guestData = sessionStorage.getItem("user_guest");
+    //   if (guestData) {
+    //     const parsedGuest = JSON.parse(guestData);
 
-    const guestData = sessionStorage.getItem("user_guest");
-    if (guestData) {
-      const parsedGuest = JSON.parse(guestData);
+    //     const deleteSubscription = this._authEcommerce.deleteGuestAndAddresses().subscribe(
+    //       (resp:any) => {
+    //         sessionStorage.removeItem("user_guest");
+    //         this._authEcommerce._authService.userGuestSubject.next(null);
+    //         this._authService.addGuestLocalStorage();
+    //       }, error => {
+    //         console.error("Error eliminando guest y addresses", error);
+    //       }
+    //     );
 
-      const deleteSubscription = this._authEcommerce.deleteGuestAndAddresses().subscribe(
-        (resp:any) => {
-          sessionStorage.removeItem("user_guest");
-          this._authEcommerce._authService.userGuestSubject.next(null);
-          this._authService.addGuestLocalStorage();
-        }, error => {
-          console.error("Error eliminando guest y addresses", error);
-        }
-      );
-
-      this.subscriptions.add(deleteSubscription);
-    }
-
-    this.destroy$.next();
-    this.destroy$.complete();
+    //     this.subscriptions.add(deleteSubscription);
+    //   }  
+    // }
+    
+    // this.destroy$.next();
+    // this.destroy$.complete();
   }
 }

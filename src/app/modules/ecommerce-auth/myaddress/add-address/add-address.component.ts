@@ -39,7 +39,7 @@ export class AddAddressComponent implements OnInit {
   //loadingSubscription: Subscription = new Subscription();
   private subscriptions: Subscription = new Subscription();
   CURRENT_USER_AUTHENTICATED:any=null;
-
+  CURRENT_USER_GUEST:any=null;
 
   locale: string = "";
   country: string = "";
@@ -87,7 +87,6 @@ export class AddAddressComponent implements OnInit {
         this.CURRENT_USER_AUTHENTICATED = user;
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
-        //this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
       }
     });
   }
@@ -98,6 +97,9 @@ export class AddAddressComponent implements OnInit {
     } 
   }
 
+  /**
+   * REGISTRAR ADDRESS EN MODO AUTENTICADOS
+   */
   private registerAddress() {
 
     if ( !this.name || !this.surname || !this.pais || !this.address || !this.zipcode || !this.poblacion || !this.ciudad || !this.email || !this.phone ) {
@@ -133,11 +135,7 @@ export class AddAddressComponent implements OnInit {
         this.hideMessageAfterDelay();
         alertSuccess(resp.message);
         this.resetForm();
-        //this.router.navigate(['/', this.country, this.locale, 'account', 'myaddresses']);
-        // ... lógica para guardar la dirección ...
         this.router.navigateByUrl(this.returnUrl);
-
-
       } else {
         this.status = false;
         this.errorOrSuccessMessage = "Error al registrar la dirección.";

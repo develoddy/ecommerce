@@ -24,10 +24,23 @@ export class GuestCleanupService {
     });
   }
 
+  //private shouldCleanup(nextUrl: string): boolean {
+  //  const isLeavingCheckout = this.currentUrl.includes('/checkout') && !nextUrl.includes('/checkout');
+  //  return isLeavingCheckout;
+  // }
+
   private shouldCleanup(nextUrl: string): boolean {
     const isLeavingCheckout = this.currentUrl.includes('/checkout') && !nextUrl.includes('/checkout');
-    return isLeavingCheckout;
+
+    // Rutas a las que NO queremos borrar guest porque se puede seguir comprando
+    const safeRoutes = ['/cart', '/home', '/filter-products'];
+
+    const isSafeRoute = safeRoutes.some(route => nextUrl.includes(route));
+
+    // Solo limpiar si sale de checkout y no va a una ruta segura
+    return isLeavingCheckout && !isSafeRoute;
   }
+
 
   cleanGuestData(): void {
     
@@ -35,7 +48,6 @@ export class GuestCleanupService {
     const accessToken = localStorage.getItem("access_token");
     const guestData = sessionStorage.getItem("user_guest");
 
-    console.log("entra en clean Guest Data", guestData);
     //if (guestData && !accessToken) {
     if (!accessToken) {
         // Solo si es un invitado y no está logueado

@@ -156,14 +156,15 @@ export class ResumenCheckoutComponent implements OnInit {
           // ✅ Restaurar dirección seleccionada para autenticado
           this.restoreSelectedAddress(this.listAddressClients, 'selectedAddressId');
 
-          if (this.listAddressClients.length === 0) {
+          //if (this.listAddressClients.length === 0) {
+          //  console.log("--------> DEBUG: Resumen.componente > modo auth > no hay address");
             // GUARDA LA URL ACTUAL EN SESSION STORARE
-            sessionStorage.setItem('returnUrl', this._router.url); 
+          //  sessionStorage.setItem('returnUrl', this._router.url); 
             // SOLO REDIRIGE A myaddresses SI NO ESTÁ EN RESUMEN
-            this._router.navigate(['/', , this.country, this.locale, 'account', 'myaddresses', 'add']); 
-          } else {
-            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
-          }
+          //  this._router.navigate(['/', , this.country, this.locale, 'account', 'myaddresses', 'add']); 
+          //} else {
+          //  this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+          //}
       });
     }
   }
@@ -177,11 +178,13 @@ export class ResumenCheckoutComponent implements OnInit {
           // ✅ Restaurar dirección seleccionada para invitado
           this.restoreSelectedAddress(this.listAddressGuest, 'selectedGuestAddressId');
 
-          if (this.listAddressGuest.length === 0) {
-            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery']);
-          } else {
-            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
-          }
+          //if (this.listAddressGuest.length === 0) {
+          //  console.log("--------> DEBUG: Resumen.componente > modo guest > no hay address");
+            
+            //this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery']);
+          //} else {
+          //  this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+         // }
       });
     }
   }
@@ -467,9 +470,17 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   goToRegisterAddress() {
-    this._router.navigate(['/', this.country, this.locale, 'account', 'myaddresses', 'add'], {
-      queryParams: { returnUrl: `/${this.country}/${this.locale}/account/checkout` }
-    });
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      this._router.navigate(['/', this.country, this.locale, 'account', 'myaddresses', 'add'], {
+        queryParams: { returnUrl: `/${this.country}/${this.locale}/account/checkout` }
+      });
+    } else if (this.CURRENT_USER_GUEST) {
+      this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery'], {
+        queryParams: { 
+          returnUrl: `/${this.locale}/${this.country}/account/checkout/resumen?initialized=true&from=step2` 
+        }
+      });
+    }
   }
 
   closeMiniAdress(): void {
@@ -644,24 +655,5 @@ export class ResumenCheckoutComponent implements OnInit {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     }
-
-    // const guestData = sessionStorage.getItem("user_guest");
-    // if (guestData) {
-    //   const parsedGuest = JSON.parse(guestData);
-
-    //   const deleteSubscription = this._authEcommerce.deleteGuestAndAddresses().subscribe({
-    //     next: () => {
-    //       console.log("Datos de invitado eliminados con éxito.");
-    //       sessionStorage.removeItem("user_guest");
-    //       this._authEcommerce._authService.userGuestSubject.next(null);
-    //     },
-    //     error: err => {
-    //       console.error("Error eliminando guest y addresses", err);
-    //     }
-    //   });
-
-    //   this.subscriptions.add(deleteSubscription); // Añadimos la suscripción a la lista para asegurar que se mantenga activa
-    // }
-    
   }
 }
