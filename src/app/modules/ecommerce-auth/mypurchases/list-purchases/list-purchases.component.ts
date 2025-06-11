@@ -92,6 +92,9 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
     this.paginatedSaleDetails = this.sale_details.slice(start, end);
+
+    console.log(this.paginatedSaleDetails);
+    
   }
 
   // Función para cambiar de página

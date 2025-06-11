@@ -173,8 +173,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     if (currentRoute) {
       this.currentStep = currentRoute.snapshot.routeConfig?.path || '';
       // -- OCULTA EL NAV SI ESTÁ EN EL COMPONENTE LOGIN O DELIVERY
-      if (this.currentStep === 'delivery') {
-         console.log("---> DEBBUG: checkout.componente > updateCurrentStep() if");
+      if (this.currentStep === 'delivery' || this.currentStep === 'login') {
         this.isCheckoutNavVisible = false; // Ocultar el Nav step checkout
       } else {
         this.isCheckoutNavVisible = true; // Mostrar el Nav step checkout
@@ -216,13 +215,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         (resp: any) => {
           this.listAddressClients = resp.address_client;
           if (this.listAddressClients.length === 0) {
-            // GUARDA LA URL ACTUAL EN SESSION STORARE
-            //sessionStorage.setItem('returnUrl', this._router.url); 
-            // SOLO REDIRIGE A myaddresses SI NO ESTÁ EN RESUMEN
             this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
-            // this._router.navigate(['/', this.country, this.locale, 'account', 'myaddresses', 'add'], {
-            //   queryParams: { returnUrl: `/${this.country}/${this.locale}/account/checkout` }
-            // });
           } else {
             if (this.currentStep === 'payment') {
               this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
@@ -241,9 +234,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         (resp: any) => {
           this.listAddressGuest = resp.addresses;
           if (this.listAddressGuest.length === 0) {
-            //this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery']);
-            console.log("----> Debbug: Resumen.componente adress=0");
-            
             this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
           } else {
             if (this.currentStep === 'payment') {
@@ -259,7 +249,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   navigateToCart() {
     this.shouldCleanGuest = false;
     this.subscriptionService.setShowSubscriptionSection(true);
-    //this._router.navigate(['/', this.country , this.locale, 'shop', 'filter-products']);
     this._router.navigate(['/', this.locale, this.country, 'shop', 'cart']);
   }
 

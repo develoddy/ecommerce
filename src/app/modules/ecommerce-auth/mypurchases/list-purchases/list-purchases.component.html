@@ -18,7 +18,7 @@
         <div class="page-header text-center bg-transparent mb-0 p-3">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-start">
                         <div class="page-title "><h2 class="fw-bold text-uppercase">Mis compras</h2></div>
                         <!--Breadcrumbs-->
                         <div class="breadcrumbs d-none"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Mis compras</span></div>
@@ -30,7 +30,7 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container py-3">
+        <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="dashboard-content h-100">
@@ -57,16 +57,13 @@
                                     <!-- <hr> -->
                                 </ng-container>
                                 <ng-template #allShowOrders>
-                                    <div class="top-sec d-flex-justify-center justify-content-center mb-4">
-                                        <h2 class="mb-0 text-uppercase ">Mis pedidos</h2>
-                                    </div>
                                     <div class="table-bottom-brd table-responsive">
                                         <table class="table align-middle text-center order-table">
                                             <thead>
                                                 <tr class="table-head text-nowrap">
                                                     <th scope="col" class="text-uppercase ls-2">Imagen</th>
-                                                    <th scope="col" class="text-uppercase ls-2">ID del pedido</th>
-                                                    <th scope="col" class="text-uppercase ls-2">ID del producto</th>
+                                                    <!-- <th scope="col" class="text-uppercase ls-2">ID del pedido</th> -->
+                                                    <!-- <th scope="col" class="text-uppercase ls-2">ID del producto</th> -->
                                                     <th scope="col" class="text-uppercase ls-2">Detalles del producto</th>
                                                     <th scope="col" class="text-uppercase ls-2">Precio</th>
                                                     <th scope="col" class="text-uppercase ls-2">Estado</th>
@@ -78,15 +75,15 @@
                                                 <ng-container *ngFor="let order of paginatedSaleDetails">
                                                     <tr>
                                                         <td><img class="blur-up lazyload" [attr.data-src]="order.product.imagen" [src]="order.product.imagen" width="50" alt="product" title="product" /></td>
-                                                        <td><span class="id">#{{ order.sale.id }}</span></td>
-                                                        <td><span class="id">#{{ order._id }}</span></td>
+                                                        <!-- <td><span class="id">#{{ order.sale.id }}</span></td> -->
+                                                        <!-- <td><span class="id">#{{ order._id }}</span></td> -->
                                                         <td><span class="name">{{ order.product.title }}</span></td>
                                                         <td><span class="price fw-500">{{ euro }}{{ order.total }}</span></td>
                                                         <!-- <td><span class="badge rounded-pill bg-success custom-badge">Enviado</span></td> -->
                                                         <!-- <td><span class="badge rounded-pill bg-danger custom-badge">Pendiente</span></td> -->
                                                         <td><span class="badge rounded-pill bg-dark custom-badge">Processing</span></td>
                                                         <!-- <td><span class="badge rounded-pill bg-secondary custom-badge">Cancelada</span></td> -->
-                                                        <td><a href="product-layout1.html" onclick="return false;" [routerLink]="['/landing-product', order.product.slug]" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
+                                                        <td><a href="product-layout1.html" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', order.product.slug]" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td>
                                                         <!-- <td><a href="product-layout1.html" onclick="return false" (click)="viewDetailSale(order)" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a></td> -->
                                                     </tr>
                                                 </ng-container>

@@ -222,8 +222,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
-        console.log(this.listCarts);
-        
         this.totalCarts = this.listCarts.reduce((sum, item) => sum + parseFloat(item.total), 0);
       })
     );

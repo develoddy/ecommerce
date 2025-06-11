@@ -35,7 +35,7 @@
             <div class="block h-100">
                 <div class="block-content">
                     <form method="post" action="#" class="login-form">	
-                        <h3 class="title text-uppercase fs-22">Continuar como invitado/a</h3>
+                        <h2 class="title text-uppercase fs-22">Continuar como invitado/a</h2>
                         <p class="text-black lh-sm">Completa tu pedido sin crear una cuenta. Podrás guardar tus datos en el siguiente paso y ahorrar tiempo en próximas compras.</p>
                         <div class="row">
                             <div class="col-12 form-group">
@@ -61,7 +61,7 @@
             <div class="block h-100">
                 <div class="block-content">
                     <form method="post" action="#" class="login-form">	
-                        <h3 class="title text-uppercase fs-22">Inicia sesión</h3>
+                        <h2 class="title text-uppercase fs-26">Inicia sesión</h2>
                         <p class="text-black d-none">Haz tu pedido en menos pasos con tu cuenta</p>
                         <div class="row mb-4">
                             <div class="col-12 form-group">
@@ -94,8 +94,8 @@
                             </div>
                             <div class="col-12 form-group">
                                 <div class="remember-me customCheckbox">
-                                    <input id="remember" name="remember" type="checkbox" value="remember me" required />
-                                    <label for="remember"> Mantener la sesión iniciada</label>
+                                    <input id="remember" name="remember" type="checkbox" value="remember me" class="" required />
+                                    <label for="remember text-black fw-normal"> Mantener la sesión iniciada</label>
                                 </div>
                             </div>
                             <div class="form-group col-12 mt-3" *ngIf="this.errorAutenticate">
@@ -110,13 +110,13 @@
                                   </ng-container>
                                 </button>
                             </div>
-                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'auth', 'resetpassword']" class="btn-link p-3 text-center fw-bold text-decoration-underline">¿Has olvidado tu contraseña?</a>
+                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'auth', 'resetpassword']" class="btn-link p-3 text-center text-black fw-nornal text-decoration-underline">¿Has olvidado tu contraseña?</a>
                         </div>
 
 
                         <div class="row mb-4">
                             <div class="col-12 form-group">
-                                <h3 class="fw-bold text-uppercase">Crea tu cuenta</h3>
+                                <h2 class="fw-bold text-uppercase fs-26">Crea tu cuenta</h2>
                             </div>
                             <ul class="Benefits_benefits__kDX0o">
                                 <li class="Benefits_benefit__VNfg7">
@@ -127,7 +127,7 @@
                                     <svg width="16" height="16" aria-hidden="true" class="Icon_icon-content-1__kPDLF Benefits_icon__UCCFg" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="m9 19.707-5.854-5.853.708-.708L9 18.293 20.146 7.146l.708.708z"></path>
                                     </svg>Localiza y gestiona tu pedido más fácil
                                 </li>
-                                <li class="Benefits_benefit__VNfg7">
+                                <li class="Benefits_benefit__VNfg7 d-none">
                                     <svg width="16" height="16" aria-hidden="true" class="Icon_icon-content-1__kPDLF Benefits_icon__UCCFg" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="m9 19.707-5.854-5.853.708-.708L9 18.293 20.146 7.146l.708.708z"></path>
                                     </svg>Accede a las ventajas y experiencias del Club LujanDev likes you
                                 </li>
@@ -142,7 +142,7 @@
                         <div class="row mb-4">
                             <!-- <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'checkout', 'resumen']" class="btn-link p-3 text-center fw-bold text-decoration-underline">Continuar sin cuenta</a> -->
                             <!-- <a [routerLink]="['/', locale, country, 'account', 'checkout', 'resumen']" [queryParams]="{ initialized: true, from: 'step2' }" class="btn-link p-3 text-center fw-bold text-decoration-underline" (click)="enterAsGuest()" >Continuar sin cuenta</a> -->
-                            <a href="#" onclick="return false;" class="btn-link p-3 text-center fw-bold text-decoration-underline" (click)="enterAsGuest()" >Continuar sin cuenta</a>
+                            <a href="#" onclick="return false;" class="btn-link p-3 text-center fw-normal text-black text-decoration-underline" (click)="enterAsGuest()" >Continuar sin cuenta</a>
                         </div>
                     </form>
                 </div>

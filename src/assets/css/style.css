@@ -67,9 +67,11 @@ Table of Content:
 @import url('//fonts.googleapis.com/css2?family=Heebo:wght@300;500;600;700;800;900&display=swap');
 @import url('//fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,400;1,500;1,600&display=swap');
 @import url('//fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400;500;600;700&display=swap');
-
-
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+
 
 /*======================================================================
   2. Basic Styles
@@ -207,12 +209,16 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 { color:#000000; margin:0 0
 h1, .h1 { font-size:24px; }
 /* h2, .h2 { font-size:20px; } */
 h2, .h2  {
-  font-family: 'Zen Kaku Gothic New', 'Zen Kaku Gothic Antique', sans-serif;
-  font-weight: 700; /* Bold para resaltar el título */
+  /* font-family: 'Zen Kaku Gothic New', 'Zen Kaku Gothic Antique', sans-serif; */
+  /*font-weight: 700;*/ /* Bold para resaltar el título */
   font-size: 3.5rem; /* Ajusta según el tamaño que prefieras 2.75rem */
   line-height: 1.4;
   letter-spacing: 0.5px;
   color: #171717; /* Color oscuro para buen contraste */
+
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 h3, .h3 { font-size:18px; }
 h4, .h4 { font-size:17px; }

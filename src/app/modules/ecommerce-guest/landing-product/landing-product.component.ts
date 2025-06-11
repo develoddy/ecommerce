@@ -239,12 +239,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       locale: 'es_ES'
     };
 
-    console.log("DEBBUG: loadShippingRateWithAddress - payload: ", payload);
-  
     this.ecommerceAuthService.getShippingRates(payload).subscribe({
       next: (res:any) => {
-        console.log("DEBBUG: Respuesta de Shipping Rate: ", res);
-        
         const rate = res.result?.[0];
         if (rate) {
           this.shippingRate = parseFloat(rate.rate); // 4.29
@@ -313,11 +309,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       return; // Salir si no hay datos de producto
     }
     this.product_selected = resp.product;
-    console.log("FRONT DEBBUG - HANdLE PRoduct Response ---> ", this.product_selected);
-
-    // Hay que pensar como obtener los address para pasar al payloas
-    
-
     this.related_products = resp.related_products;
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
@@ -469,6 +460,9 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         uniqueImages.add(galeria.imagen);
         return !isDuplicate;
       });
+
+      console.log(this.uniqueGalerias);
+      
   }
 
   setFirstImage() {

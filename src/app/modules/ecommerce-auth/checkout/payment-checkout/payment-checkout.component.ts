@@ -105,7 +105,7 @@ export class PaymentCheckoutComponent implements OnInit {
 
     let buttonStyle = {
       layout: 'horizontal',
-      color: 'gold',
+      color: 'black', // gold
       shape: 'rect', // rect // pill
       label: 'paypal', // Alternativa que suele respetar tagline
       tagline: false
@@ -115,7 +115,7 @@ export class PaymentCheckoutComponent implements OnInit {
     if (this.isMobile) {
       buttonStyle = {
         layout: 'horizontal',
-      color: 'gold',
+      color: 'black', // gold
       shape: 'rect', // rect // pill
       label: 'paypal', // Alternativa que suele respetar tagline
       tagline: false
@@ -123,8 +123,8 @@ export class PaymentCheckoutComponent implements OnInit {
     } else if (this.isTablet) {
       buttonStyle = {
         layout: 'horizontal',
-      color: 'gold',
-      shape: 'pill', // rect // pill
+      color: 'black', //gold
+      shape: 'rect', // rect // pill
       label: 'paypal', // Alternativa que suele respetar tagline
       tagline: false
       };

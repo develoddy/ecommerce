@@ -18,7 +18,7 @@
         <div class="page-header text-center bg-transparent mb-0 p-3">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-start">
                         <div class="page-title fw-bold text-uppercase fw-normal"><h2>Favoritos</h2></div>
                         <!--Breadcrumbs-->
                         <div class="breadcrumbs d-none"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Favoritos</span></div>
@@ -50,44 +50,6 @@
             
             
             <ng-template #allWishlists>
-                <!--Toolbar-->
-                <div class="toolbar toolbar-wrapper shop-toolbar">
-                    <div class="row align-items-center">
-                        <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 d-none">
-                            <button type="button" name="add" class="btn btn-secondary"><span>Todo Añadir al carrito</span></button>
-                        </div>
-                        <div class="col-12 col-sm-4 col-md-4 col-lg-4 text-center product-count order-0 order-md-1 mb-3 mb-sm-0 d-none">
-                            <span class="toolbar-product-count">Mostrando: 5 productos</span>
-                        </div>
-                        <div class="col-8 col-sm-6 col-md-4 col-lg-4 text-right filters-toolbar-item d-flex justify-content-end order-2 order-sm-2 d-none">
-                            <div class="filters-item d-flex align-items-center">
-                                <label for="ShowBy" class="mb-0 me-2 text-nowrap d-none d-sm-inline-flex">Ver:</label>
-                                <select name="ShowBy" id="ShowBy" class="filters-toolbar-show">
-                                    <option value="title-ascending" selected="selected">10</option>
-                                    <option>15</option>
-                                    <option>20</option>
-                                    <option>25</option>
-                                    <option>30</option>
-                                </select>
-                            </div>
-                            <div class="filters-item d-flex align-items-center ms-2 ms-lg-3">
-                                <label for="SortBy" class="mb-0 me-2 text-nowrap d-none">Sort by:</label>
-                                <select name="SortBy" id="SortBy" class="filters-toolbar-sort">
-                                    <option value="featured" selected="selected">Featured</option>
-                                    <option value="best-selling">Best selling</option>
-                                    <option value="title-ascending">Alphabetically, A-Z</option>
-                                    <option value="title-descending">Alphabetically, Z-A</option>
-                                    <option value="price-ascending">Price, low to high</option>
-                                    <option value="price-descending">Price, high to low</option>
-                                    <option value="created-ascending">Date, old to new</option>
-                                    <option value="created-descending">Date, new to old</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--End Toolbar-->    
-
                 <!--Product Grid-->
                 <div class="grid-products grid-view-items">
                     <div class="row col-row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-2">
@@ -109,9 +71,6 @@
                                                 <!-- End Hover Image -->
                                             </a>
                                             <!-- End Product Image -->
-                                            <!-- Product label -->
-                                            <div class="product-labels"><span class="lbl on-sale">Sale</span></div>
-                                            <!-- End Product label -->
                                             <!--Product Button-->
                                             <div class="button-set style2">
                                                 <!--Quick View Button-->
@@ -130,17 +89,34 @@
                                         </div>
                                         <!-- End Product Image -->
                                         <!-- Start Product Details -->
-                                        <div class="product-details text-center">
+                                        <div class="product-details text-start px-3">
                                             <!-- Product Name -->
                                             <div class="product-name">
-                                                <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', wishlist.product ? wishlist.product.slug : wishlist.slug]">{{ wishlist.product ? wishlist.product.title : wishlist.title || '' }}</a>
+                                                <a href="#" onclick="return false;" class="" [routerLink]="['/', locale, country, 'shop', 'product', wishlist.product ? wishlist.product.slug : wishlist.slug]">{{ wishlist.product ? wishlist.product.title : wishlist.title || '' }}</a>
                                             </div>
                                             <!-- End Product Name -->
                                             <!-- Product Price -->
                                             <div class="product-price">
-                                                <span class="price old-price d-none">$115.00</span>
-                                                <span class="price">$115.00</span>
+                                                <!-- <span class="price old-price d-none">$115.00</span> -->
+                                                <!-- <span class="price px-0">$115.00</span> -->
                                                 <!-- <span class="price">{{ euro }}{{ wishlist.product ? wishlist.subtotal | number: '1.2-2' : wishlist.price_soles | number: '1.2-2' }}</span> -->
+
+                                                <ng-container *ngIf="getDiscount() > 0; else priceNormal">
+                                                    <span class="price old-price">{{ wishlist?.product.price_usd }} {{ euro }}</span>
+                                                </ng-container>
+                                                <ng-template #priceNormal>
+                                                    <!-- <span class="price">{{ (related_product.price_usd - getDiscount()).toFixed(2) }} {{ euro }}</span> -->
+                                                    <span class="money">
+                                                        <span class="price-small fw-bold">
+                                                            <span class="price-main-small">{{ getFormattedPrice(wishlist?.product.price_usd).integerPart }}</span>
+                                                            <span class="price-decimals-small">
+                                                                <sup>{{ getFormattedPrice(wishlist?.product.price_usd).decimalPart }}</sup>
+                                                                <span class="currency-symbol-small">{{ euro }}</span>
+                                                            </span>
+                                                        </span>
+                                                    </span>
+                                                </ng-template>
+                                                
                                             </div>
                                             <!-- End Product Price -->
                                             <!-- Product Review -->

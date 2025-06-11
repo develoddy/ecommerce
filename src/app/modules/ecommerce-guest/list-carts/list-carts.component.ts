@@ -310,7 +310,6 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   clearCartsCache(): void {
     const isGuest = "Guest";  // O alguna otra lógica para obtener el identificador de invitados
     this.cartService.deleteAllCartCache(isGuest).subscribe((resp: any) => {
-      console.log("Carrito de invitado vaciado:", resp);
       this.listCarts = [];  // Limpiar la lista de artículos localmente
       this.updateTotalCarts();  // Actualizar el total de artículos
     }, (error: any) => {
@@ -325,7 +324,6 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   
     this.cartService.deleteAllCart(this.currentUser._id).subscribe((resp: any) => {
-      console.log("Carrito de usuario autenticado vaciado:", resp);
       this.listCarts = [];  // Limpiar la lista de artículos localmente
       this.updateTotalCarts();  // Actualizar el total de artículos
     }, (error: any) => {

@@ -52,6 +52,8 @@ export class WishlistComponent implements OnInit {
   locale: string = "";
   country: string = "";
 
+  SALE_FLASH:any = null;
+
   constructor(
     public _ecommerceAuthService: EcommerceAuthService,
     public _router: Router,
@@ -80,13 +82,44 @@ export class WishlistComponent implements OnInit {
 
     this.listAllCarts();
     this._wishlistService.currenteDataWishlist$.subscribe((resp:any) => {
+      console.log("---> Debbug: Whisilist.componmente : ", resp);
+      
       this.listWishlists      = resp;
       this.REVIEWS            = resp.REVIEWS;
       this.AVG_REVIEW         = resp.AVG_REVIEW;
       this.COUNT_REVIEW       = resp.COUNT_REVIEW;
+      this.SALE_FLASH         = resp.SALE_FLASH;
       this.totalWishlists = this.listWishlists.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
       this.totalWishlists = parseFloat(this.totalWishlists.toFixed(2));
     });
+  }
+
+  getFormattedPrice(price: any) {
+    if (typeof price === 'string') {
+      price = parseFloat(price); // Convertir a número
+    }
+  
+    if (isNaN(price)) {
+      return { integerPart: "0", decimalPart: "00" }; // Manejo de error si el valor no es válido
+    }
+    
+    const formatted = price.toFixed(2).split('.'); // Asegura siempre dos decimales
+    return {
+      integerPart: formatted[0], // Parte entera
+      decimalPart: formatted[1]  // Parte decimal
+    };
+  }
+
+  getDiscount() {
+    let discount = 0;
+    if ( this.SALE_FLASH ) {
+      if (this.SALE_FLASH.type_discount == 1) {
+        return (this.SALE_FLASH.discount*this.product_selected.price_usd*0.01).toFixed(2);
+      } else {
+        return this.SALE_FLASH.discount;
+      }
+    }
+    return discount;
   }
 
   private verifyAuthenticatedUser(): void {
