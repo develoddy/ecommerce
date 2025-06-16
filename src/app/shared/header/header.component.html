@@ -63,13 +63,17 @@
                         <li class="lvl1 parent megamenu text-uppercase fw-bold"><a href="#" onclick="return false;">Hombre <i class="icon anm anm-angle-down-l"></i></a>
                             <div class="megamenu style1">
                                 <ul class="row grid--uniform mmWrapper">
-                                    <li class="lvl-1 col-md-3 col-lg-3 w-22"><a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Zapatillas</a>
+                                    <li class="lvl-1 col-md-3 col-lg-3 w-22"><a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Camisetas</a>
                                         <ul class="subLinks">
-                                            <li class="lvl-2"><a onclick="return false;" href="collection-style1.html" class="site-nav lvl-2">Air Max</a></li>
-                                            <li class="lvl-2"><a onclick="return false;" href="collection-style2.html" class="site-nav lvl-2">Skechers</a></li>
+                                            <li class="lvl-2">
+                                                <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central']" class="site-nav lvl-2 text-small">Camisetas logo Central</a>
+                                            </li>
+                                            <li class="lvl-2">
+                                                <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral']" class="site-nav lvl-2 text-small">Camisetas Logo Lateral</a>
+                                            </li>
                                         </ul>
                                     </li>
-                                    <li class="lvl-1 col-md-3 col-lg-3 w-22"><a href="#;" class="site-nav lvl-1 menu-title">Ropa</a>
+                                    <li class="lvl-1 col-md-3 col-lg-3 w-22 d-none"><a href="#;" class="site-nav lvl-1 menu-title">Ropa</a>
                                         <ul class="subLinks">
                                             <li class="lvl-2"><a href="shop-grid-view.html" onclick="return false;" class="site-nav lvl-2">Toda la ropa</a></li>
                                             <li class="lvl-2"><a href="shop-list-view.html" onclick="return false;" class="site-nav lvl-2">Tops y camisetas</a></li>
@@ -88,7 +92,7 @@
                                             <li class="lvl-2"><a href="order-success.html" class="site-nav lvl-2">Order Success</a></li>
                                         </ul>
                                     </li>
-                                    <li class="lvl-1 col-md-3 col-lg-3 w-34 banner-col">
+                                    <li class="lvl-1 col-md-3 col-lg-3 w-34 banner-col d-none">
                                         <div class="banner-wrap">
                                             <a href="shop-left-sidebar.html"><img class="blur-up lazyload" data-src="assets/images/megamenu/banner-menu.png" src="assets/images/megamenu/banner-menu.png" alt="banner" width="600" height="440" /></a>
                                             <div class="banner-content">

@@ -21,6 +21,10 @@ const routes: Routes = [
         component: FilterProductsComponent,
       },
       {
+        path: 'filter-products/:slug',
+        component: FilterProductsComponent,
+      },
+      {
         path: 'filter-products/:slug/:idCategorie',
         component: FilterProductsComponent,
       },

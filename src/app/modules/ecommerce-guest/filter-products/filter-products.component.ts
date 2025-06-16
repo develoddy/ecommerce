@@ -57,6 +57,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   country: string = "";
   private subscription: Subscription = new Subscription();
   loading: boolean = false;
+
+  logo_position_selected: string = "";
   
   /* ------------------ CONSTRUCTOR ------------------ */
   constructor(
@@ -110,6 +112,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
       this.idCategorie = resp["idCategorie"];
+      console.log("---> DEBBUG: > filer.componente: slug: ", this.slug);
+
       if (this.idCategorie) {
         // LIMPIAR FILTROS ANTES
         this.categories_selecteds = [];
@@ -117,7 +121,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         this.is_discount = 1;
         this.filterForCategorie(this.idCategorie); 
       }
-      this.filterProduct(); // ¡Ahora sí después de aplicar la categoría!
+      this.filterProduct(this.slug); // ¡Ahora sí después de aplicar la categoría!
     });
 
     this.configInitial();
@@ -169,7 +173,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     });
   }
 
-  filterProduct() {
+  filterProduct(logo_position:string='') {
     // SE LIMPIA LOS PRODUCTOS ACTUALES
     this.products = []; 
     setTimeout(() => {
@@ -191,9 +195,17 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       let priceMin = priceArray[0] ? parseFloat(priceArray[0].trim()) : null;
       let priceMax = priceArray[1] ? parseFloat(priceArray[1].trim()) : null;
 
+      if (logo_position && logo_position !== '') {
+          if (logo_position == 'camisetas-logo-central') {
+            this.logo_position_selected = 'center';
+          } else if (logo_position == 'camisetas-logo-lateral') {
+            this.logo_position_selected = 'right_top';
+          }            
+        }
+
       // ACTUALIZA LA VARIABLE FILTERAPPLIED
       // LA LÓGICA REVISA SI LOS VALORES DE PRECIO SON DIFERENTES DE LOS PREDETERMINADOS
-      this.filtersApplied = this.categories_selecteds.length > 0 || this.selectedColors.length > 0 || this.variedad_selected.length > 0 || this.variedad_selected != '' || priceMin !== defaultMin || priceMax !== defaultMax;
+      this.filtersApplied = this.categories_selecteds.length > 0 || this.selectedColors.length > 0 || this.variedad_selected.length > 0 || this.variedad_selected != '' || priceMin !== defaultMin || priceMax !== defaultMax || this.logo_position_selected !== '' ;
 
       let data = {
         categories_selecteds  : this.categories_selecteds,
@@ -202,11 +214,14 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         price_min             : priceMin,
         price_max             : priceMax,
         selectedColors        : this.selectedColors, 
+        logo_position_selected: this.logo_position_selected // center_top or right_top
       }
 
       // LLAMADA AL SERVICIO PARA OBTENER LOS PRODUCTOS FILTRADOS
       this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
         this.products = resp.products;
+        console.log("---> DEBBUG: > gett products filter: ", this.products);
+        
       });
     }, 500);
   }
