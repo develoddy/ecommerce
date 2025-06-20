@@ -220,27 +220,58 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       // LLAMADA AL SERVICIO PARA OBTENER LOS PRODUCTOS FILTRADOS
       this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
         this.products = resp.products;
+
+         if (this.products) {
+          this.setColoresDisponibles();
+        }
         console.log("---> DEBBUG: > gett products filter: ", this.products);
         
       });
     }, 500);
   }
 
+  changeProductImage(product: any, imageUrl: string) {
+    product.imagen = imageUrl; 
+  }
+
   setColoresDisponibles() {
-    const uniqueColors = new Map<string, string>();
-    this.variedades.forEach((variedad: any) => {
-      const colorName = variedad.color;
-      if (!uniqueColors.has(colorName)) {
-        const colorHex = this.getColorHex(colorName);
-        uniqueColors.set(colorName, colorHex);
-      }
+    this.products.forEach((product: any) => {
+      const uniqueColors = new Map();
+      product.galerias.forEach((tag: any) => {
+        if (!uniqueColors.has(tag.color)) {
+          uniqueColors.set(tag.color, { imagen: tag.imagen, hex: this.getColorHex(tag.color) });
+        }
+      });
+  
+      // Agrega los colores únicos de cada producto al propio producto
+      product.colores = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
+
+      // Agregar propiedad `selectedImage` con la imagen principal del producto
+      product.imagen = product.imagen;
     });
+  }
+
+  getPriceParts(price: number) {
+    const [integer, decimals] = price.toFixed(2).split('.');
+    return { integer, decimals };
+  }
+  
+
+  //setColoresDisponibles() {
+  //  const uniqueColors = new Map<string, string>();
+  //  this.variedades.forEach((variedad: any) => {
+  //    const colorName = variedad.color;
+  //    if (!uniqueColors.has(colorName)) {
+  //      const colorHex = this.getColorHex(colorName);
+  //      uniqueColors.set(colorName, colorHex);
+  //    }
+  //  });
   
     // CONVERTIMOS EL MAP A UN ARRAY
-    const coloresDisponibles = Array.from(uniqueColors, ([name, hex]) => ({ name, hex }));  
+  //  const coloresDisponibles = Array.from(uniqueColors, ([name, hex]) => ({ name, hex }));  
     // PUEDES ASIGNARLO A UNA VARIABLE SI ES NECESARIO
-    this.coloresDisponibles = coloresDisponibles;
-  }
+  //  this.coloresDisponibles = coloresDisponibles;
+  //}
   
   getColorHex(color: string): string {
     // MAPEA LOS NOMBRES DE LOS COLORES A SUS VALORES HEXADECIMALES CORRESPONDIENTE

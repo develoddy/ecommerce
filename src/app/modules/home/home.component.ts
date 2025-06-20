@@ -1,13 +1,14 @@
-import { Component, OnInit, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit, OnDestroy, NgZone } from '@angular/core';
 import { HomeService } from './_services/home.service';
 import { CartService } from '../ecommerce-guest/_service/cart.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/services/language.service';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { WishlistService } from '../ecommerce-guest/_service/wishlist.service';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { AuthService } from '../auth-profile/_services/auth.service';
+import { MinicartService } from 'src/app/services/minicartService.service';
 //import { GuestCleanupService } from '../ecommerce-guest/_service/guestCleanup.service';
 
 declare var bootstrap: any;
@@ -35,6 +36,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   euro = "€";
   sliders:any = [];
   categories:any = [];
+  SALE_FLASH:any = null;
   besProducts:any = [];
   ourProducts:any = [];
   product_selected:any=null;
@@ -63,11 +65,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   locale: string = "";
   country: string = "";
   CURRENT_USER_AUTHENTICATED:any=null;
+  currentUser: any = null;
   private subscription: Subscription | undefined;
   private subscriptions: Subscription = new Subscription();
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
+  tallaError = false; 
+  cantidadError = false; 
 
   constructor(
     
@@ -78,7 +83,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     public translate: TranslateService,
     public _wishlistService: WishlistService,
     public _authService: AuthService,
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+    private ngZone: NgZone,
+    private minicartService: MinicartService,
   ) { 
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -124,6 +131,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.ourProducts || this.besProducts) {
         this.setColoresDisponibles();
       }
+
+      this.setFirstImage();
+      this.setColoresDisponibles();
+      
 
       setTimeout(() => {
         this.loadSPINER();
@@ -233,14 +244,25 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private verifyAuthenticatedUser(): void {
-    this.subscription  = this._cartService._authService.user.subscribe( user => {
-      if ( user ) {
-        this.CURRENT_USER_AUTHENTICATED = user;
-      } else {
-        this.CURRENT_USER_AUTHENTICATED = null;
-      }
-    });
-  }
+      this.subscriptions.add(
+        combineLatest([
+          this._authService.user,
+          this._authService.userGuest
+        ]).subscribe(([user, userGuest]) => {
+          this.currentUser = user || userGuest;
+        })
+      );
+    }
+
+  // private verifyAuthenticatedUser(): void {
+  //   this.subscription  = this._cartService._authService.user.subscribe( user => {
+  //     if ( user ) {
+  //       this.CURRENT_USER_AUTHENTICATED = user;
+  //     } else {
+  //       this.CURRENT_USER_AUTHENTICATED = null;
+  //     }
+  //   });
+  // }
 
   navigateToProduct(slug: string, discountId?: string) {
     // Guarda el estado para hacer scroll hacia arriba
@@ -291,12 +313,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedColor = this.allTags[0][0]; // Seleccionar el primer color del primer producto
     }
   }
-  
-  qselectColor(color: { color: string, imagen: string }) {
-    this.selectedColor = color.color;
-    this.firstImage = color.imagen;
-  }
 
+ 
+  
   reinitializeSliders(): void {
     this.destroyLargeSlider();
     this.destroySmallSlider();
@@ -315,6 +334,23 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       uniqueImages.add(galeria.imagen);
       return !isDuplicate;
     });
+  }
+
+  setFirstImage() {
+    if ( this.filteredGallery.length > 0 ) {
+      this.firstImage = this.filteredGallery[ 0 ].imagen;
+    }
+  }
+
+  selectColor(color: { color: string, imagen: string }) {
+    console.log("Selector color imagen: ", color.imagen);
+    
+    this.selectedColor = color.color;
+    this.firstImage = color.imagen; 
+  }
+
+  changeImage(imagen: string) {
+    this.firstImage = imagen;
   }
 
   initializeLargeSlider(): void {
@@ -383,13 +419,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     return colorMap[color] || ''; // Devuelve el valor hexadecimal correspondiente al color
   }
 
-  selectColor(color: { color: string, imagen: string }) {
-    this.selectedColor = color.color;
-    this.firstImage = color.imagen; 
-  }
-
   changeProductImage(product: any, imageUrl: string) {
-    product.imagen = imageUrl; // console.log("Selectre Image: ", product);
+    product.imagen = imageUrl;
   }
 
   setColoresDisponibles() {
@@ -478,94 +509,165 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     return {};
   }
 
-  addCart(product:any) {
-    if (!this._cartService._authService.user) {
-      alertDanger("Necesitas autenticarte para poder agregar el producto al carrito");
-      return;
-    }
+  // addCart(product:any) {
+  //   if (!this._cartService._authService.user) {
+  //     alertDanger("Necesitas autenticarte para poder agregar el producto al carrito");
+  //     return;
+  //   }
+
+  //   if ($("#qty-cart").val() == 0) {
+  //     alertDanger("Necesitas agregar una cantidad mayor a 0 para el carrito");
+  //     return;
+  //   }
+  //   //if (product.type_inventario == 2) {
+  //   //  if ( !this.variedad_selected ) {
+  //   //    alertDanger("Necesitas seleccinonar una variedad para el carrito...");
+  //   //    return;
+  //   //  }
+  //   //  if (this.variedad_selected) {
+  //   //    if (this.variedad_selected.stock < $("#qty-cart").val()) {
+  //   //      alertDanger("Necesitas agregar una cantidad menor porque no se tiene el stock suficiente");
+  //   //      return;
+  //   //    }
+  //   //  }
+  //   //}
+    
+  //   if (product.type_inventario == 2) { // Si el producto tiene variedad multiple, entonces redirigir a la landing de product para que de esa manera el cliente pueda seleccionar la variedad (talla)
+  //     let LINK_DISCOUNT = "";
+  //     if (this.FlashSale && this.FlashSale.type_discount) {
+  //       LINK_DISCOUNT = "?_id="+this.FlashSale.id;
+  //     } else { // Si el producto es de inventario unitario, se envia el producto de manera directa al carrito
+  //       if (product.campaing_discount) {
+  //         LINK_DISCOUNT = "?_id="+product.campaing_discount.id;
+  //       }
+  //     }
+  //     this._router.navigateByUrl("/landing-product/"+product.slug+LINK_DISCOUNT);
+  //   }
+
+  //   let type_discount = null;
+  //   let discount = 0;
+  //   let code_discount = null;
+  //   if (this.FlashSale && this.FlashSale.type_discount) {
+  //     type_discount = this.FlashSale.type_discount;
+  //     discount = this.FlashSale.discount;
+  //     code_discount = this.FlashSale._id;
+  //   } else {
+  //     if (product.campaing_discount) {
+  //       type_discount  = product.campaing_discount.type_discount;
+  //       discount = product.campaing_discount.discount;
+  //       code_discount = product.campaing_discount._id;
+  //     }
+  //   }
+
+  //   const valoresUnitarios = ['S', 'M', 'L', 'XL'];
+  //   const isProductUnitario = this.esProductoUnitario(product.variedades, valoresUnitarios);
+
+  //   let data = {
+  //     user: this.CURRENT_USER_AUTHENTICATED._id,
+  //     product: product._id,
+  //     type_discount: type_discount,
+  //     discount: discount,
+  //     cantidad: 1,
+  //     variedad: isProductUnitario ? null : "multiple",
+  //     code_cupon: null,
+  //     code_discount: code_discount,
+  //     price_unitario: product.price_usd,
+  //     subtotal: product.price_usd - this.getDiscountProduct(product),
+  //     total: (product.price_usd - this.getDiscountProduct(product))*1,
+  //   }
+
+  //   const cartSubscription = this._cartService.registerCart(data).subscribe((resp:any) => {
+  //     if (resp.message == 403) {
+  //       alertDanger(resp.message_text);
+  //         return;
+  //     } else {
+  //       this._cartService.changeCart(resp.cart);
+  //       alertSuccess("El producto se ha agregado correctamente al cesta de compra.");
+  //     }
+  //   }, error => {
+  //     console.log(error);
+  //     if (error.error.message == "EL TOKEN NO ES VALIDO") {
+        
+  //       this._cartService._authService.logout();
+  //     }
+  //   });
+
+  //   this.subscription?.add(cartSubscription);
+  // }
+
+
+
+  storeCart(product:any) {
+    this.saveCart(product);
+  }
+
+   private saveCart(product:any) {
     if ($("#qty-cart").val() == 0) {
-      alertDanger("Necesitas agregar una cantidad mayor a 0 para el carrito");
+      this.errorResponse = true;
+      this.errorMessage = "Elija una cantidad válida para añadir al carrito";
+      this.cantidadError = true;
       return;
     }
-    /*if (product.type_inventario == 2) {
-      if ( !this.variedad_selected ) {
-        alertDanger("Necesitas seleccinonar una variedad para el carrito...");
+
+    if (this.product_selected.type_inventario == 2) {
+      if (!this.variedad_selected) {
+        this.tallaError = true; // Establecer el error de talla
+        this.errorResponse = true;
+        this.errorMessage = "Por favor seleccione una talla";
         return;
       }
-      if (this.variedad_selected) {
-        if (this.variedad_selected.stock < $("#qty-cart").val()) {
-          alertDanger("Necesitas agregar una cantidad menor porque no se tiene el stock suficiente");
-          return;
-        }
-      }
-    }*/
-    
-    if (product.type_inventario == 2) { // Si el producto tiene variedad multiple, entonces redirigir a la landing de product para que de esa manera el cliente pueda seleccionar la variedad (talla)
-      let LINK_DISCOUNT = "";
-      //if (is_sale_flash) {
-      if (this.FlashSale && this.FlashSale.type_discount) {
-        LINK_DISCOUNT = "?_id="+this.FlashSale.id;
-      } else { // Si el producto es de inventario unitario, se envia el producto de manera directa al carrito
-        if (product.campaing_discount) {
-          LINK_DISCOUNT = "?_id="+product.campaing_discount.id;
-        }
-      }
-      this._router.navigateByUrl("/landing-product/"+product.slug+LINK_DISCOUNT);
-    }
-
-    let type_discount = null;
-    let discount = 0;
-    let code_discount = null;
-    //if (is_sale_flash) {
-    if (this.FlashSale && this.FlashSale.type_discount) {
-      type_discount = this.FlashSale.type_discount;
-      discount = this.FlashSale.discount;
-      code_discount = this.FlashSale._id;
-    } else {
-      if (product.campaing_discount) {
-        type_discount  = product.campaing_discount.type_discount;
-        discount = product.campaing_discount.discount;
-        code_discount = product.campaing_discount._id;
+      if (this.variedad_selected.stock < $("#qty-cart").val()) {
+        this.errorResponse = true;
+        this.errorMessage = "La Cantidad excede el stock disponible. Elija menos unidades";
+        this.cantidadError = true;
+        return;
       }
     }
-
-    const valoresUnitarios = ['S', 'M', 'L', 'XL'];
-    const isProductUnitario = this.esProductoUnitario(product.variedades, valoresUnitarios);
 
     let data = {
-      user: this.CURRENT_USER_AUTHENTICATED._id, //this.userId,//this._cartService._authService.user._id,
-      product: product._id,
-      type_discount: type_discount,
-      discount: discount,
-      cantidad: 1,
-      variedad: isProductUnitario ? null : "multiple", //product.variedades ? product.variedades : null,
+      user: this.currentUser._id,
+      user_status: this.currentUser.user_guest,
+      product: this.product_selected._id,
+      type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
+      discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
+      cantidad: parseInt($("#qty-cart").val() as string, 10), //cantidad: $("#qty-cart").val(),
+      variedad: this.variedad_selected ? this.variedad_selected.id : null,
       code_cupon: null,
-      code_discount: code_discount,
-      price_unitario: product.price_usd,
-      subtotal: product.price_usd - this.getDiscountProduct(product),//this.getDiscountProduct(product, is_sale_flash),  //*1,
-      total: (product.price_usd - this.getDiscountProduct(product))*1, //1, // De momento es igual, luego aplicamos el descuento
+      code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
+      price_unitario: this.product_selected.price_usd,
+      subtotal: this.product_selected.price_usd - this.getDiscount(),
+      total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
+    };
+
+    if (this.currentUser.user_guest == "Guest") {
+      this._cartService.registerCartCache(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
+    } else {
+      this._cartService.registerCart(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
     }
+  }
 
-    console.log("----- data: ", data);
-    
-
-    const cartSubscription = this._cartService.registerCart(data).subscribe((resp:any) => {
+  private handleCartResponse(resp: any) {
       if (resp.message == 403) {
-        alertDanger(resp.message_text);
-          return;
+          this.errorResponse = true;
+          this.errorMessage = resp.message_text;
       } else {
-        this._cartService.changeCart(resp.cart);
-        alertSuccess("El producto se ha agregado correctamente al cesta de compra.");
+          this._cartService.changeCart(resp.cart);
+          this.minicartService.openMinicart();
+          this.closeModal();
       }
-    }, error => {
-      console.log(error);
-      if (error.error.message == "EL TOKEN NO ES VALIDO") {
-        
+  }
+
+  getPriceWithDiscount() {
+    const priceWithDiscount = this.product_selected.price_usd - this.getDiscount();
+    const integerPart = Math.floor(priceWithDiscount); // Parte entera
+    const decimalPart = ((priceWithDiscount - integerPart) * 100).toFixed(0); // Parte decimal
+    return { integerPart, decimalPart };
+  }
+
+  private handleCartError(error: any) {
+      if (error.error.message === "EL TOKEN NO ES VALIDO") {
         this._cartService._authService.logout();
       }
-    });
-
-    this.subscription?.add(cartSubscription);
   }
 
   esProductoUnitario(variedades:any, valoresUnitarios:any)  {
@@ -578,21 +680,46 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openModalToCart(besProduct:any) {
+    console.log("----> DEBBUG openModalToCart: ", besProduct);
+    
     this.product_selected = besProduct;
+
+    this.filterUniqueGalerias(this.product_selected); // <-- primero
+    this.setFirstImage(); // <-- después
+    
     setTimeout(() => {  
+     
       // Filtrar tallas duplicadas y eliminar tallas no disponibles
       this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
       // Seleccionar automáticamente la primera talla si hay alguna disponible
       this.variedad_selected = this.variedades[0] || null;
       this.activeIndex = 0;
+      
       this.setColoresDisponibles();
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
-      setTimeout(() => {
+
+      this.filterUniqueGalerias( this.product_selected );
+      
+      
+      //setTimeout(() => {
         //LandingProductDetail($);
-        pswp($);
-        productZoom($);
-      }, 50);
-    }, 150);
+        //HOMEINITTEMPLATE($);
+        //pswp($);
+        //productZoom($);
+      //}, 150);
+    }, 350);
+
+    this.ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          (window as any).cleanupSliders($);
+          (window as any).HOMEINITTEMPLATE($);
+          (window as any).productZoom($);
+          (window as any).pswp($);
+          (window as any).productSlider5items($);
+          (window as any).menuProductSlider($);
+          (window as any).sliderRefresh($);
+        }, 150);
+      });
   }
 
   // open model
@@ -613,6 +740,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         productZoom($);
       }, 50);
     }, 150);
+  }
+
+   private closeModal(): void {
+    // Usar Angular para manejar la visibilidad del modal o un servicio
+    $('#quickview_modal').modal('hide');
   }
 
   getDiscount(FlashSale:any=null) {
@@ -730,9 +862,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.subscriptions.unsubscribe();
     }
 
-    cleanupHOMEINITTEMPLATE($);
     cleanupProductZoom($);
     this.cleanupPSWP();
+    cleanupHOMEINITTEMPLATE($);
+   
   }
 
   /*getDiscountProduct(besProduct:any, is_sale_flash:any=null) {

@@ -233,29 +233,23 @@ export class WishlistComponent implements OnInit {
   }
 
   showModalSelectedProduct(wishlist:any) {
-    console.log("Agregar al carrito: ", wishlist);
+     console.log("----> DEBBUG showModalSelectedProduct: ", wishlist);
     this.product_selected = wishlist.product;
-
     setTimeout(() => {
-
       this.filterUniqueGalerias( this.product_selected );
-
       // Filtrar tallas duplicadas y eliminar tallas no disponibles
       this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
       this.variedad_selected = this.variedades[0] || null;
       this.activeIndex = 0;
       this.setColoresDisponibles();
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
-      console.log("Selected color: ", this.selectedColor);
 
       setTimeout(() => {
         HOMEINITTEMPLATE($);
         pswp($);
         productZoom($);
       }, 50);
-
     }, 150);
-
   }
 
   filterUniqueGalerias(product_selected:any) {
@@ -300,7 +294,6 @@ export class WishlistComponent implements OnInit {
     return colorMap[color] || ''; // Devuelve el valor hexadecimal correspondiente al color
   }
 
-
   getSwatchClass(imagen: string, color: string): any {
     return {
       'active': imagen === this.firstImage,
@@ -309,20 +302,9 @@ export class WishlistComponent implements OnInit {
     };
   }
 
-
-  // selectColor(color: { color: string, imagen: string }) {
-  //   console.log("New Selected color: ", color);
-    
-  //   this.selectedColor = color.color;
-  //   this.firstImage = color.imagen;
-  // }
-
   selectColor(color: { color: string, imagen: string }) {
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
-    console.log("Select color Proudct: ", this.product_selected.variedades);
-    
-
 
     // Filtrar las tallas disponibles para el color seleccionado
     const filteredVariedades = this.product_selected.variedades
@@ -335,13 +317,9 @@ export class WishlistComponent implements OnInit {
         return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
     });
 
-    console.log(`New Selected color: ${this.variedades}`);
-
     // Seleccionar automáticamente la primera talla disponible
     this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
     this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
-
-    //console.log(`New Selected color: ${this.variedad_selected?.valor || 'Ninguna disponible'}`);
   }
 
   selectedVariedad(variedad:any, index: number) {
@@ -355,10 +333,7 @@ export class WishlistComponent implements OnInit {
     return wishlists.map((item: any) => item.product);
   }
 
-  removeWishlist(wishlist:any) {
-
-    console.log("Remove wishlist: ", wishlist);
-    
+  removeWishlist(wishlist:any) {    
     this._wishlistService.deleteWishlist(wishlist._id).subscribe((resp:any) => {
       this._wishlistService.removeItemWishlist(wishlist);
     });

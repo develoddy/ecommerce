@@ -116,43 +116,31 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit(): void {
-      this.ngZone.runOutsideAngular(() => {
-        setTimeout(() => {
-          (window as any).cleanupSliders($);
-          (window as any).HOMEINITTEMPLATE($);
-          (window as any).productZoom($);
-          (window as any).pswp($);
-          (window as any).productSlider5items($);
-          (window as any).menuProductSlider($);
-          (window as any).sliderRefresh($);
-    
-          // Si necesitas actualizar algo en Angular (por ejemplo, una bandera, vista, etc.)
-          this.ngZone.run(() => {
-            this.cdRef.detectChanges();
-          });
-    
-        }, 150);
-      });
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        (window as any).cleanupSliders($);
+        (window as any).HOMEINITTEMPLATE($);
+        (window as any).productZoom($);
+        (window as any).pswp($);
+        (window as any).productSlider5items($);
+        (window as any).menuProductSlider($);
+        (window as any).sliderRefresh($);
+  
+        // Si necesitas actualizar algo en Angular (por ejemplo, una bandera, vista, etc.)
+        this.ngZone.run(() => {
+          this.cdRef.detectChanges();
+        });
+  
+      }, 150);
+    });
   }
 
   ngOnInit(): void {
-   
     this.loadSPINNER();
     this.checkUserAuthenticationStatus(); 
     this.subscribeToRouteParams();
     this.subscribeToQueryParams();
     this.checkDeviceType();
-
-    // Verifica si se debe hacer scroll hacia arriba
-    // if (sessionStorage.getItem('scrollToTop') === 'true') {
-    //   // Usar el evento load para asegurarse de que la página se haya cargado completamente
-    //   window.addEventListener('load', () => {
-    //       // Simula un clic en el botón de scroll hacia arriba
-    //       $('#site-scroll').trigger('click');
-    //       // Limpia la bandera
-    //       sessionStorage.removeItem('scrollToTop');
-    //   });
-    // }
   }
 
   loadSPINNER() {
@@ -263,9 +251,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     });
   }
   
-
-
-
   private subscribeToRouteParams(): void {
     const routeParamsSubscription = this.routerActived.params.subscribe((resp: any) => {
       this.slug = resp["slug"];
@@ -459,10 +444,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         const isDuplicate = uniqueImages.has(galeria.imagen);
         uniqueImages.add(galeria.imagen);
         return !isDuplicate;
-      });
-
-      console.log(this.uniqueGalerias);
-      
+      });      
   }
 
   setFirstImage() {

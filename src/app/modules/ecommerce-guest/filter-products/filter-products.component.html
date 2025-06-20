@@ -68,8 +68,8 @@
                     <div class="col-12 col-sm-4 col-md-4 col-lg-4 text-center product-count order-0 order-md-1 mb-3 mb-sm-0 d-none">
                         <span class="toolbar-product-count">Demostración: {{ products.length }} productos</span>
                     </div>
-                    <ng-container *ngIf=" products.length > 10 ">
-                        <div class="col-8 col-sm-6 col-md-4 col-lg-4 text-right filters-toolbar-item d-flex justify-content-end order-2 order-sm-2">
+                    <ng-container *ngIf="products.length > 10">
+                        <div class="col-8 col-sm-6 col-md-4 col-lg-4 text-right filters-toolbar-item d-flex justify-content-end order-2 order-sm-2 d-none">
                             <div class="filters-item d-flex align-items-center">
                                 <label for="ShowBy" class="mb-0 me-2 text-nowrap d-none d-sm-inline-flex">Mostrar:</label>
                                 <select name="ShowBy" id="ShowBy" class="filters-toolbar-show">
@@ -255,16 +255,17 @@
                                         <!-- Start Product Image -->
                                         <div class="product-image">
                                             <!-- Start Product Image -->
-                                            <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]"  [queryParams]="getRouterDiscount(product)" class="product-img rounded-0">
-                                            <!-- <a href="#" onclick="return false;" (click)="navigateToProduct(product.slug, product.campaing_discount?.id)" class="product-img rounded-0"> -->
+                                            <a href="#" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" onclick="return false;" class="product-img rounded-0">
                                                 <!-- Image -->
-                                                <img class="primary rounded-0 blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="808" />
+                                                <img class="primary blur-up lazyload rounded-0 w-100 h-100" data-src="{{ product.imagen }}"  src="{{ product.imagen }}" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
                                                 <!-- End Image -->
                                                 <!-- Hover Image -->
-                                                <img class="hover rounded-0 blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="808" />
+                                                <ng-container *ngIf="product.imagen_two">
+                                                    <img class="hover blur-up lazyload rounded-0 w-100 h-100" data-src="{{ product.imagen_two }}" src="{{ product.imagen_two }}" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>
+                                                </ng-container>
                                                 <!-- End Hover Image -->
                                             </a>
-                                            <!-- End Product Image -->
+                                            <!-- End Product Image -->                                            
                                             <!-- Product label -->
                                             <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div>
                                             <!-- End Product label -->
@@ -300,13 +301,23 @@
                                                 <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" [queryParams]="getRouterDiscount(product)">{{ product.title }}</a>
                                             </div>
                                             <!-- End Product Name -->
-                                            <!-- Product Price -->                                         
+                                            <!-- Product Price -->
                                             <div class="product-price">
                                                 <span class="price old-price" *ngIf="product.campaing_discount">{{ product.price_usd }} {{ euro }}</span>
-                                                <span class="price">{{ product.price_usd - getDiscountProduct(product) }} {{ euro }}</span>
+                                                <span class="price">
+                                                    <span class="price-main">{{ getPriceParts(product.price_usd).integer }}</span>
+                                                    <span class="price-decimals">
+                                                        <sup>{{ getPriceParts(product.price_usd).decimals }}</sup>
+                                                        <span class="currency-symbol">{{ euro }}</span>
+                                                    </span>
+                                                </span>
                                             </div>
-                                            <div class="form-text mt-0 d-none">4 colores</div>
                                             <!-- End Product Price -->
+
+                                            <!-- Total colores -->
+                                            <div class="form-text mt-0 d-none">4 colores</div> 
+                                            <!-- End Total colores -->
+
                                             <!-- Product Review -->
                                             <div class="product-review d-none">
                                                 <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
@@ -316,8 +327,20 @@
                                             <!--Sort Description-->
                                             <p class="sort-desc hidden">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage...</p>
                                             <!--End Sort Description-->
-                                            <!-- Variant -->
+                                            <!-- Swatches Color -->
                                             <ul class="variants-clr swatches">
+                                                <ng-container *ngFor="let item of product.colores">
+                                                    <li class="swatch medium rounded" [ngClass]=" item.color.replace(' ', '-')" (click)="changeProductImage(product, item.imagen)">
+                                                        <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}"></span>
+                                                    </li>
+                                                </ng-container>
+                                            </ul>
+                                            <!-- End Swatches Color -->
+
+
+
+                                            <!-- Variant -->
+                                            <ul class="variants-clr swatches d-none">
                                                 <li class="swatch medium rounded gray"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="gray"></span></li>
                                                 <li class="swatch medium rounded orange"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="orange"></span></li>
                                                 <li class="swatch medium rounded black"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black"></span></li>

@@ -287,10 +287,9 @@
             </div>
         </section>
         <!--End Popular Categories-->
-
-        <!-- --------------- Nuevo diseño de productos ----------------- -->
-         <!--Toolbar-->
-            <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5">
+        
+        <!--Toolbar-->
+        <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5">
                 <div class="row align-items-center">
                     <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-end">
                         <div class="filters-item d-flex align-items-center">
@@ -305,110 +304,112 @@
                         </div>
                     </div>         
                 </div>
-            </div>
+        </div>
         <!--End Toolbar-->
+        
         <!--Product Grid-->
         <div class="grid-products grid-view-items">
             <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 g-1">  
-                <ng-container *ngFor="let ourProduct of ourProducts">
-                    <div class="item col-item">
-                        <div class="product-box">
-                            <!-- Start Product Image -->
-                            <div class="product-image">
+                <ng-container *ngIf="ourProducts.length > 0">
+                    <ng-container *ngFor="let ourProduct of ourProducts">
+                        <div class="item col-item">
+                            <div class="product-box">
                                 <!-- Start Product Image -->
-                                <a href="product-layout1.html" (click)="navigateToProduct(ourProduct.slug, ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
-                                    <!-- Image -->
-                                    <img class="primary blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen }}"  src="{{ ourProduct.imagen }}" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
-                                    <!-- End Image -->
-                                     <!-- Hover Image -->
-                                    <ng-container *ngIf="ourProduct.imagen_two">
-                                        <img class="hover blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen_two }}" src="{{ ourProduct.imagen_two }}" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>
-                                    </ng-container>
-                                    <!-- End Hover Image -->
-                                </a>
-                                <!-- End Product Image -->
-                                <!-- Product label -->
-                                <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div>
-                                <!-- End Product label -->
-                                <!--Product Button-->
-                                <div class="button-set style1">
-                                    <!--Cart Button-->
-                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal d-none" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
+                                <div class="product-image">
+                                    <!-- Start Product Image -->
+                                    <a href="#" (click)="navigateToProduct(ourProduct.slug, ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
+                                        <!-- Image -->
+                                        <img class="primary blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen }}"  src="{{ ourProduct.imagen }}" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
+                                        <!-- End Image -->
+                                        <!-- Hover Image -->
+                                        <ng-container *ngIf="ourProduct.imagen_two">
+                                            <img class="hover blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen_two }}" src="{{ ourProduct.imagen_two }}" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>
+                                        </ng-container>
+                                        <!-- End Hover Image -->
                                     </a>
-                                    <!--End Cart Button-->
-                                    <!--Quick View Button-->
-                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Vista rápida</span></span>
-                                    </a>
-                                    <!--End Quick View Button-->
-                                    <!--Wishlist Button-->
-                                    <!-- <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a> -->
-                                    <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a favoritos" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a>
-                                    <!--End Wishlist Button-->
-                                    <!--Compare Button-->
-                                    <a href="compare-style2.html" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Añadir para comparar</span></a>
-                                    <!--End Compare Button-->
-                                </div>
-                                <!--End Product Button-->
-                            </div>
-                            <!-- End Product Image -->
-                            <!-- Start Product Details -->
-                            <div class="product-details px-3">
-                                <!--Product Vendor-->
-                                <div class="product-vendor d-none">Footwear</div>
-                                <!--End Product Vendor-->
-                                <!-- Product Name -->
-                                <div class="product-name">
-                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" [queryParams]="getRouterDiscount(ourProduct)">{{ ourProduct.title }}</a>
-                                </div>
-                                <!-- End Product Name -->
-                                <!-- Product Price -->
-                                <div class="product-price">
-                                    <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} {{ euro }}</span>
-                                    <!-- <span class="price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} {{ euro }}</span> -->
-                                    <span class="price">
-                                        <span class="price-main">{{ getPriceParts(ourProduct.finalPrice).integer }}</span>
-                                        <span class="price-decimals">
-                                            <sup>{{ getPriceParts(ourProduct.finalPrice).decimals }}</sup>
-                                            <span class="currency-symbol">{{ euro }}</span>
-                                        </span>
-                                    </span>
-                                </div>
-                                <!-- End Product Price -->
-                                <!-- Product Review -->
-                                <div class="product-review d-none">
-                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                    <span class="caption hidden ms-1">10 Reviews</span>
-                                </div>
-                                <!-- End Product Review -->
-                                <!--Sort Description-->
-                                <p class="sort-desc hidden">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage...</p>
-                                <!--End Sort Description-->
-                                <!-- Swatches Color -->
-                                <ul class="variants-clr swatches">
-                                    <ng-container *ngFor="let item of ourProduct.colores">
-                                        <li class="swatch medium rounded" [ngClass]=" item.color.replace(' ', '-')" (click)="changeProductImage(ourProduct, item.imagen)">
-                                            <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}"></span>
-                                        </li>
-                                    </ng-container>
-                                </ul>
-                                <!-- End Swatches Color -->
-                                <!-- Product Button -->
-                                <div class="button-action hidden">
-                                    <div class="addtocart-btn">
-                                        <form class="addtocart" action="#" method="post">
-                                            <a href="#addtocart-modal" class="btn btn-md add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                                <i class="icon anm anm-cart-l me-2"></i><span class="text">Add to Cart</span>
-                                            </a>
-                                        </form>
+                                    <!-- End Product Image -->
+                                    <!-- Product label -->
+                                    <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div>
+                                    <!-- End Product label -->
+                                    <!--Product Button-->
+                                    <div class="button-set style1">
+                                        <!--Cart Button-->
+                                        <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal " data-bs-toggle="modal" data-bs-target="#addtocart_modal" (click)="openModalToCart(ourProduct)">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
+                                        </a>
+                                        <!--End Cart Button-->
+                                        <!--Quick View Button-->
+                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModalToCart(ourProduct)">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Vista rápida</span></span>
+                                        </a>
+                                        <!--End Quick View Button-->
+                                        <!--Wishlist Button-->
+                                        <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a favoritos" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a>
+                                        <!--End Wishlist Button-->
+                                        <!--Compare Button-->
+                                        <a href="#" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare" ><i class="icon anm anm-random-r"></i><span class="text">Añadir para comparar</span></a>
+                                        <!--End Compare Button-->
                                     </div>
+                                    <!--End Product Button-->
                                 </div>
-                                <!-- End Product Button -->
+                                <!-- End Product Image -->
+                                <!-- Start Product Details -->
+                                <div class="product-details px-3">
+                                    <!--Product Vendor-->
+                                    <div class="product-vendor d-none">Footwear</div>
+                                    <!--End Product Vendor-->
+                                    <!-- Product Name -->
+                                    <div class="product-name">
+                                        <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" [queryParams]="getRouterDiscount(ourProduct)">{{ ourProduct.title }}</a>
+                                    </div>
+                                    <!-- End Product Name -->
+                                    <!-- Product Price -->
+                                    <div class="product-price">
+                                        <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} {{ euro }}</span>
+                                        <!-- <span class="price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} {{ euro }}</span> -->
+                                        <span class="price">
+                                            <span class="price-main">{{ getPriceParts(ourProduct.finalPrice).integer }}</span>
+                                            <span class="price-decimals">
+                                                <sup>{{ getPriceParts(ourProduct.finalPrice).decimals }}</sup>
+                                                <span class="currency-symbol">{{ euro }}</span>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <!-- End Product Price -->
+                                    <!-- Product Review -->
+                                    <div class="product-review d-none">
+                                        <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                        <span class="caption hidden ms-1">10 Reviews</span>
+                                    </div>
+                                    <!-- End Product Review -->
+                                    <!--Sort Description-->
+                                    <p class="sort-desc hidden">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage...</p>
+                                    <!--End Sort Description-->
+                                    <!-- Swatches Color -->
+                                    <ul class="variants-clr swatches">
+                                        <ng-container *ngFor="let item of ourProduct.colores">
+                                            <li class="swatch medium rounded" [ngClass]=" item.color.replace(' ', '-')" (click)="changeProductImage(ourProduct, item.imagen)">
+                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}"></span>
+                                            </li>
+                                        </ng-container>
+                                    </ul>
+                                    <!-- End Swatches Color -->
+                                    <!-- Product Button -->
+                                    <div class="button-action hidden">
+                                        <div class="addtocart-btn">
+                                            <form class="addtocart" action="#" method="post">
+                                                <a href="#addtocart-modal" class="btn btn-md add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                                    <i class="icon anm anm-cart-l me-2"></i><span class="text">Añadir al carrito</span>
+                                                </a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- End Product Button -->
+                                </div>
+                                <!-- End product details -->
                             </div>
-                            <!-- End product details -->
                         </div>
-                    </div>
+                    </ng-container>
                 </ng-container>
             </div>
             <div class="view-collection text-center mt-5 mb-5 mt-md-5">
@@ -639,7 +640,7 @@
     <!--End Scoll Top-->
 
     <!-- Product Quickshop Modal-->
-    <div class="quickshop-modal modal fade" id="quickshop_modal" tabindex="-1" aria-hidden="true">           
+    <div class="quickshop-modal modal fade d-none" id="quickshop_modal" tabindex="-1" aria-hidden="true">           
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body" *ngIf="product_selected">
@@ -698,7 +699,7 @@
                         <!-- End Swatches Size -->
                         <!-- Product Action -->
                         <div class="product-form-submit d-flex-justify-center">
-                            <button type="submit" name="add" class="btn product-cart-submit me-2" (click)="addCart(product_selected)"><span>Add to cart</span></button>
+                            <button type="submit" name="add" class="btn product-cart-submit me-2" (click)="storeCart(product_selected)"><span>Add to cart</span></button>
                             <button type="submit" name="sold" class="btn btn-secondary product-sold-out d-none" disabled="disabled">Sold out</button>
                             <button type="submit" name="buy" class="btn btn-secondary proceed-to-checkout" onclick="return false;" routerLink="/payment-process">Buy it now</button>
                         </div>
@@ -712,10 +713,10 @@
     <!-- End Product Quickshop Modal -->
 
     <!-- Product Addtocart Modal-->
-    <div class="addtocart-modal modal fade" id="addtocart_modal" tabindex="-1" aria-hidden="true" *ngIf="product_selected">           
+    <div class="addtocart-modal modal fade" id="addtocart_modal" tabindex="-1" aria-hidden="true">  
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-body" *ngIf="product_selected">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <form method="post" action="#" id="product-form-addtocart" class="product-form align-items-center">
                         <h3 class="title mb-3 text-success text-center">Added to cart Successfully!</h3>
@@ -765,7 +766,7 @@
                             <!-- Model Thumbnail -->
                             <div id="quickView" class="carousel slide">
                                 <!-- Image Slide carousel items -->
-                                <div class="carousel-inner">
+                                <div class="carousel-inner d-none" *ngIf="filteredGallery.length">
                                     <ng-container *ngFor="let item of filteredGallery">
                                         <div class="item carousel-item active" data-bs-slide-number="0">
                                             <img class="blur-up lazyload" [attr.data-src]="item.imagen" [src]="item.imagen" alt="product" title="Product" width="625" height="808" />
@@ -773,12 +774,29 @@
                                     </ng-container>
                                 </div>
                                 <!-- End Image Slide carousel items -->
+
+                                <!-- Product Main -->
+                                <div class="zoompro-wrap" *ngIf="firstImage">
+                                    <!-- Product Image -->
+                                    <div class="zoompro-span">
+                                        <img id="zoompro" class="zoompro" [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="product" width="625" height="808" />
+                                    </div>
+                                </div>
+                                <!-- End Product Main -->
+
                                 <!-- Thumbnail image -->
                                 <div class="model-thumbnail-img">
                                     <!-- Thumbnail slide -->
                                     <div class="carousel-indicators list-inline">
                                         <ng-container *ngFor="let item of filteredGallery">
-                                            <div class="list-inline-item active" id="carousel-selector-0" data-bs-slide-to="0" data-bs-target="#quickView">
+                                            <div 
+                                                class="list-inline-item active"
+                                                [ngClass]="{ 'active': item.imagen === firstImage }"
+                                                (click)="changeImage(item.imagen)"
+                                                id="carousel-selector-0" 
+                                                data-bs-slide-to="0" 
+                                                data-bs-target="#quickView"
+                                            >
                                                 <img class="blur-up lazyload" [attr.data-src]="item.imagen" [src]="item.imagen" alt="product" title="Product" width="625" height="808" />
                                             </div>
                                         </ng-container>
@@ -798,7 +816,7 @@
                             <div class="product-arrow d-flex justify-content-between">
                                 <h2 class="product-title">{{product_selected.title}}</h2>
                             </div>
-                            <div class="product-review d-flex mt-0 mb-2">
+                            <div class="product-review d-flex mt-0 mb-2 d-none">
                                 <div class="rating">
                                     <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
                                     <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
@@ -809,32 +827,44 @@
                                 <div class="reviews ms-2"><a href="#">{{ COUNT_REVIEW }} Reviews</a></div>
                             </div>
                             <div class="product-info">
-                                <p class="product-vendor">Vendor:<span class="text"><a href="#">Sparx</a></span></p>  
-                                <p class="product-type">Product Type:<span class="text">Caps</span></p> 
-                                <p class="product-sku">SKU:<span class="text">RF104456</span></p>
+                                <p class="product-vendor d-none">Vendor:<span class="text"><a href="#">Sparx</a></span></p>  
+                                <p class="product-type d-none">Product Type:<span class="text">Caps</span></p> 
+                                <p class="product-sku">REF.:<span class="text">{{ product_selected.sku }}</span></p>
                             </div>
-                            <div class="pro-stockLbl my-2">
+                            <div class="pro-stockLbl my-2 d-none">
                                 <span class="d-flex-center stockLbl instock d-none"><i class="icon anm anm-check-cil"></i><span> In stock</span></span>
                                 <span class="d-flex-center stockLbl preorder d-none"><i class="icon anm anm-clock-r"></i><span> Pre-order Now</span></span>
                                 <span class="d-flex-center stockLbl outstock d-none"><i class="icon anm anm-times-cil"></i> <span>Sold out</span></span>
                                 <span class="d-flex-center stockLbl lowstock" data-qty="15"><i class="icon anm anm-exclamation-cir"></i><span> Order now, Only  <span class="items">10</span>  left!</span></span>
                             </div>
                             <div class="product-price d-flex-center my-3">
-                                <span class="price">{{ euro }}{{product_selected.price_usd}}</span>
+                                <!-- <span class="price">{{ euro }}{{product_selected.price_usd}}</span> -->
+                                <span class="price">
+                                        <span class="price-main">
+                                            {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
+                                        </span>
+                                        <span class="price-decimals">
+                                            <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
+                                            <span class="currency-symbol">€</span>
+                                        </span>
+                                    </span>
                             </div>
-                            <div class="sort-description">The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.</div>
+                            <div class="sort-description">{{ product_selected.resumen }}</div>
                             <form id="product_form--option" class="product-form">
                                 <div class="product-options d-flex-wrap">
                                     <div class="product-item swatches-image w-100 mb-3 swatch-0 option1" data-option-index="0">
                                         <label class="label d-flex align-items-center">Color:<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label>
+                                        <!-- Swatches Color -->
                                         <ul class="variants-clr swatches d-flex-center pt-1 clearfix"> 
-                                            <ng-container *ngFor="let color of coloresDisponibles">
+                                            <ng-container *ngFor="let color of product_selected.colores">
+                                                <!-- <li class="swatch medium rounded" [ngClass]=" item.color.replace(' ', '-')" (click)="changeProductImage(product_selected, item.imagen)"> -->
                                                 <li class="swatch x-large available" [ngClass]="getSwatchClass(color.imagen, color.color)" (click)="selectColor(color)">
                                                     <img [src]="color.imagen" alt="image" width="80" height="80" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="color.color" />
                                                     <div class="color-swatch-indicator" [ngStyle]="{'background-color': getColorHex(color.color)}"></div>
                                                 </li>
                                             </ng-container>
                                         </ul>
+                                        <!-- End Swatches Color -->
                                     </div>
                                     <div class="product-item swatches-size w-100 mb-3 swatch-1 option2" data-option-index="1">
                                         <!-- <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">S</span></label> -->
@@ -851,23 +881,23 @@
                                         <div class="quantity">
                                             <div class="qtyField">
                                                 <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
-                                                <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty" />
+                                                <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty border-0" />
                                                 <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
                                             </div>
                                         </div>                                
                                         <div class="addtocart ms-3 fl-1">
-                                            <button type="submit" name="add" class="btn product-cart-submit w-100" (click)="addCart(product_selected)"><span>Add to cart</span></button>
+                                            <button type="submit" name="add" class="btn product-cart-submit w-100 text-uppercase py-4" (click)="storeCart(product_selected)"><span>Añadir al carrito</span></button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                             <div class="wishlist-btn d-flex-center">
-                                <a class="add-wishlist d-flex-center me-3" href="wishlist-style1.html" title="Add to Wishlist"><i class="icon anm anm-heart-l me-1"></i> <span>Add to Wishlist</span></a>
-                                <a class="add-compare d-flex-center" href="compare-style1.html" title="Add to Compare"><i class="icon anm anm-random-r me-2"></i> <span>Add to Compare</span></a>
+                                <a class="add-wishlist d-flex-center me-3" href="wishlist-style1.html" title="Add to Wishlist"><i class="icon anm anm-heart-l me-1"></i> <span>Añadir a favoritos</span></a>
+                                <a class="add-compare d-flex-center" href="compare-style1.html" title="Add to Compare"><i class="icon anm anm-random-r me-2"></i> <span>Envió y devoluciones</span></a>
                             </div>
                             <!-- Social Sharing -->
                             <div class="social-sharing share-icon d-flex-center mx-0 mt-3">
-                                <span class="sharing-lbl">Share :</span>
+                                <span class="sharing-lbl">Compartir :</span>
                                 <a href="#" class="d-flex-center btn btn-link btn--share share-facebook" data-bs-toggle="tooltip" data-bs-placement="top" title="Share on Facebook"><i class="icon anm anm-facebook-f"></i><span class="share-title d-none">Facebook</span></a>
                                 <a href="#" class="d-flex-center btn btn-link btn--share share-twitter" data-bs-toggle="tooltip" data-bs-placement="top" title="Tweet on Twitter"><i class="icon anm anm-twitter"></i><span class="share-title d-none">Tweet</span></a>
                                 <a href="#" class="d-flex-center btn btn-link btn--share share-pinterest" data-bs-toggle="tooltip" data-bs-placement="top" title="Pin on Pinterest"><i class="icon anm anm-pinterest-p"></i> <span class="share-title d-none">Pin it</span></a>
