@@ -2,12 +2,13 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CartService } from '../_service/cart.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Title, Meta } from '@angular/platform-browser';
+//import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { Subscription, combineLatest } from 'rxjs';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { WishlistService } from '../_service/wishlist.service';
+import { SeoService } from 'src/app/services/seo.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -56,12 +57,13 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     private cartService: CartService,
     private authService: AuthService,
     private subscriptionService: SubscriptionService,
-    private titleService: Title, // seo
-    private metaService: Meta,
+    //private titleService: Title, // seo
+    //private metaService: Meta,
+    private seoService: SeoService,
     public _wishlistService: WishlistService,
   ) {
    
-    this.updateSeo();
+    
 
     // Obtenemos `locale` y `country` de la ruta actual
     this.activatedRoute.paramMap.subscribe(params => {
@@ -73,7 +75,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {}
 
   ngOnInit() {
-  
+    this.updateSeo();
     this.checkUserAuthenticationStatus();
     this.getCarts();
     this.showRelatedProducts();
@@ -350,32 +352,39 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private updateSeo(): void {
 
-    let data = {
-      title: "Lista de carrito",
-      description: "Esta seccion de carritos contiene camisetas para programadores",
-      imagen: ""
-    }
 
-    const { title, description, imagen } =  data;
-    const productUrl = ``;
-    this.titleService.setTitle(`${title} | LujanDev Oficial`);
-    this.metaService.updateTag({ name: 'description', content: description || 'Descripción del producto' });
-    this.updateMetaTags(productUrl, title, description, imagen);
+    this.seoService.updateSeo({
+      title: 'Lista de carrito',
+      description: 'Esta sección de carritos contiene camisetas para programadores',
+      image: '' // opcional
+    });
+
+    // let data = {
+    //   title: "Lista de carrito",
+    //   description: "Esta seccion de carritos contiene camisetas para programadores",
+    //   imagen: ""
+    // }
+
+    // const { title, description, imagen } =  data;
+    // const productUrl = ``;
+    // this.titleService.setTitle(`${title} | LujanDev Oficial`);
+    // this.metaService.updateTag({ name: 'description', content: description || 'Descripción del producto' });
+    // this.updateMetaTags(productUrl, title, description, imagen);
   }
 
-  private updateMetaTags(url: string, title: string, description: string, imageUrl: string): void {
-    const metaTags = [
-      { property: 'og:title', content: title },
-      { property: 'og:description', content: description },
-      { property: 'og:image', content: imageUrl },
-      { property: 'og:url', content: url },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: title },
-      { name: 'twitter:description', content: description },
-      { name: 'twitter:image', content: imageUrl },
-    ];
-    metaTags.forEach((tag:any) => this.metaService.updateTag(tag));
-  }
+  // private updateMetaTags(url: string, title: string, description: string, imageUrl: string): void {
+  //   const metaTags = [
+  //     { property: 'og:title', content: title },
+  //     { property: 'og:description', content: description },
+  //     { property: 'og:image', content: imageUrl },
+  //     { property: 'og:url', content: url },
+  //     { name: 'twitter:card', content: 'summary_large_image' },
+  //     { name: 'twitter:title', content: title },
+  //     { name: 'twitter:description', content: description },
+  //     { name: 'twitter:image', content: imageUrl },
+  //   ];
+  //   metaTags.forEach((tag:any) => this.metaService.updateTag(tag));
+  // }
 
   private subscribeToWishlistData(): void {
     this.subscriptions.add(

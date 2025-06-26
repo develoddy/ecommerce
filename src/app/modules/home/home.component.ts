@@ -9,6 +9,7 @@ import { WishlistService } from '../ecommerce-guest/_service/wishlist.service';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { AuthService } from '../auth-profile/_services/auth.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
+import { SeoService } from 'src/app/services/seo.service';
 //import { GuestCleanupService } from '../ecommerce-guest/_service/guestCleanup.service';
 
 declare var bootstrap: any;
@@ -86,6 +87,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private localizationService: LocalizationService,
     private ngZone: NgZone,
     private minicartService: MinicartService,
+    private seoService: SeoService,
   ) { 
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -97,7 +99,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   ngOnInit(): void {
-    
+    this.setupSEO();
     this.loadSPINER();
     this.checkCookieConsent();
     this.verifyAuthenticatedUser();
@@ -163,6 +165,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     
     this.subscription?.add(listHomeSubscription);
+  }
+
+  setupSEO() {
+    this.seoService.updateSeo({
+      title: 'Camisetas para Programadores | Tienda Lujandev',
+      description: 'Explora nuestras últimas camisetas para programadores con diseños únicos. Estilo, código y humor geek en cada prenda.',
+      image: '' // opcional
+    });
   }
 
   loadSPINER() {
