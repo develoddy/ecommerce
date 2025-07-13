@@ -4,7 +4,6 @@ export const environment = {
     URL_BACKEND: 'https://api.lujandev.com/',
     URL_SERVICE: 'https://api.lujandev.com/api/',
     URL_FRONTEND: 'https://tienda.lujandev.com/',
+    stripePublicKey: 'pk_test_TU_CLAVE_PUBLICA_AQUI'
 };
 
-
-console.log('Production environment loaded', environment);

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, firstValueFrom } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
@@ -7,6 +7,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Address, CheckoutService } from '../../_services/checkoutService';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { environment } from 'src/environments/environment';
+import { loadStripe } from '@stripe/stripe-js';
+import { StripePayService } from '../../_services/stripePay.service';
+
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -85,6 +89,8 @@ export class PaymentCheckoutComponent implements OnInit {
   locale: string = "";
   country: string = "";
 
+  stripePromise = loadStripe(environment.stripePublicKey);
+
   constructor(
     public _authEcommerce: EcommerceAuthService,
     public _authService: AuthService,
@@ -93,7 +99,8 @@ export class PaymentCheckoutComponent implements OnInit {
     private subscriptionService: SubscriptionService,
     public routerActived: ActivatedRoute,
     private checkoutService: CheckoutService,
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+    private stripePayService: StripePayService,
   ) {
       this.country = this.localizationService.country;
       this.locale = this.localizationService.locale;
@@ -244,6 +251,66 @@ export class PaymentCheckoutComponent implements OnInit {
       actionNetxCheckout($);
     }, 150);
   }
+
+  async payWithStripe() {
+    const stripe = await loadStripe(environment.stripePublicKey);
+    if (!stripe) {
+      alert('Stripe no pudo cargarse');
+      return;
+    }
+
+    if (!this.listCarts || this.listCarts.length === 0) {
+      alert("El carrito está vacío.");
+      return;
+    }
+
+    if( !this.listAddresses || !this.address_client_selected) {
+      this.validMessage = true;
+      this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
+      return;
+    }
+
+    const payload = {
+      cart: this.listCarts,
+      user: this.CURRENT_USER_AUTHENTICATED?._id || null,
+      guestId: this.CURRENT_USER_GUEST?._id || null,
+      address: {
+        name: this.name,
+        surname: this.surname,
+        email: this.email,
+        pais: this.pais,
+        ciudad: this.ciudad,
+        region: this.poblacion,
+        telefono: this.phone,
+        address: this.address
+      }
+    };
+
+    // Aquí llama a tu backend para crear la sesión
+    try {
+      console.log(payload);
+
+      
+      // const session: any = await firstValueFrom(
+      //   this.stripePayService.createStripeSession(payload)
+      // );
+
+      //  if (!session?.id) {
+      //   throw new Error("El backend no devolvió un ID de sesión.");
+      // }
+
+      // const result = await stripe.redirectToCheckout({ sessionId: session.id });
+
+      // if (result.error) {
+      //   console.error('Stripe error:', result.error.message);
+      // }
+
+    } catch (err) {
+      console.error('Error al crear la sesión de Stripe', err);
+    }
+
+  }
+
 
   loadSPINER() {
     this.subscriptionService.setShowSubscriptionSection(false);

@@ -8,6 +8,7 @@ import { catchError, finalize, Observable, of, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class EcommerceAuthService {
 
   private loadingSubject = new BehaviorSubject<boolean>(false); // Para manejar el estado de carga
