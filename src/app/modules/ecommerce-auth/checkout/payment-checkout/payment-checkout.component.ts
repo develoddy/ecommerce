@@ -11,7 +11,6 @@ import { environment } from 'src/environments/environment';
 import { loadStripe } from '@stripe/stripe-js';
 import { StripePayService } from '../../_services/stripePay.service';
 
-
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function actionNetxCheckout([]):any;
@@ -64,6 +63,8 @@ export class PaymentCheckoutComponent implements OnInit {
   isLastStepActive_3: boolean = false;
   isLastStepActive_4: boolean = false;
 
+  paypalButtonsInstance: any;
+
   errorAutenticate:boolean=false;
   errorMessageAutenticate:string="";
   password_identify:string = "";
@@ -80,6 +81,7 @@ export class PaymentCheckoutComponent implements OnInit {
   isDesktop: boolean = false;
   width: number = 100; // valor por defecto
   height: number = 100; // valor por defecto
+  
 
   private subscriptions: Subscription = new Subscription();
 
@@ -90,6 +92,9 @@ export class PaymentCheckoutComponent implements OnInit {
   country: string = "";
 
   stripePromise = loadStripe(environment.stripePublicKey);
+
+  selectedPaymentMethod: 'card' | 'paypal' = 'card';
+  paypalRendered: boolean = false;
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
@@ -106,8 +111,110 @@ export class PaymentCheckoutComponent implements OnInit {
       this.locale = this.localizationService.locale;
   }
 
-  ngAfterViewInit() {
-    
+ 
+  ngOnInit(): void {
+    this.loadSPINER();
+    this.verifyAuthenticatedUser();
+    this.loadCurrentDataCart();
+    this.checkDeviceType();
+
+    // Toma la dirección del servicio
+    // this.address_client_selected = this.checkoutService.getSelectedAddress();
+    // if (!this.address_client_selected) {
+    //   // Si no hay dirección (p.e. entró directo), redirige al resumen
+    //   console.log("Payment compoennte:  Si no hay dirección (p.e. entró directo), redirige al resumen" );
+      
+    //   //this._router.navigate(
+    //   //  ['/', this.country, this.locale, 'account', 'checkout', 'resumen']
+    //   //);
+    // } else {
+    //   // Rellena tus campos
+    //   console.log("Payment compoennte address seleted: ", this.address_client_selected );
+    //   //Object.assign(this, this.address_client_selected);
+    // }
+
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+      actionNetxCheckout($);
+    }, 150);
+  }
+
+  onPaymentMethodChange() {
+    if (this.selectedPaymentMethod === 'paypal') {
+      // Esperar que Angular cree el div y luego renderizar
+      setTimeout(() => this.payWithPaypal(), 0);
+    } else {
+      // Si cambia a tarjeta, eliminar botón PayPal para evitar duplicados
+      this.destroyPaypalButtons();
+    }
+  }
+
+
+
+  async payWithStripe() {
+    const stripe = await loadStripe(environment.stripePublicKey);
+    if (!stripe) {
+      alert('Stripe no pudo cargarse');
+      return;
+    }
+
+    if (!this.listCarts || this.listCarts.length === 0) {
+      alert("El carrito está vacío.");
+      return;
+    }
+
+    if( !this.listAddresses || !this.address_client_selected) {
+      this.validMessage = true;
+      this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
+      return;
+    }
+
+    const payload = {
+      cart: this.listCarts,
+      user: this.CURRENT_USER_AUTHENTICATED?._id || null,
+      guestId: this.CURRENT_USER_GUEST?._id || null,
+      address: {
+        name: this.name,
+        surname: this.surname,
+        email: this.email,
+        pais: this.pais,
+        ciudad: this.ciudad,
+        region: this.poblacion,
+        telefono: this.phone,
+        address: this.address
+      }
+    };
+
+    // Aquí llama a tu backend para crear la sesión
+    try {
+      console.log(payload);
+
+      
+      const session: any = await firstValueFrom(
+        this.stripePayService.createStripeSession(payload)
+      );
+
+      if (!session?.id) {
+        throw new Error("El backend no devolvió un ID de sesión.");
+      }
+
+      const result = await stripe.redirectToCheckout({ sessionId: session.id });
+
+      if (result.error) {
+        console.error('Stripe error:', result.error.message);
+      }
+
+    } catch (err) {
+      console.error('Error al crear la sesión de Stripe', err);
+    }
+
+  }
+
+  payWithPaypal() {
+    if (this.paypalRendered || !this.paypalElement?.nativeElement) return;
+
+    this.paypalRendered = true;
+
     const isGuest = !this.CURRENT_USER_AUTHENTICATED; 
 
     let buttonStyle = {
@@ -143,8 +250,6 @@ export class PaymentCheckoutComponent implements OnInit {
 
       // set up the transaction
       createOrder: (data:any, actions:any) => {
-          // pass in any options from the v2 orders create call:
-          // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
           if (this.listCarts.length == 0) {
             alertDanger("No se puede proceder con la orden si el carrito está vacío.");
             return;
@@ -225,92 +330,13 @@ export class PaymentCheckoutComponent implements OnInit {
     }).render(this.paypalElement?.nativeElement);
   }
 
-  ngOnInit(): void {
-    this.loadSPINER();
-    this.verifyAuthenticatedUser();
-    this.loadCurrentDataCart();
-    this.checkDeviceType();
-
-    // Toma la dirección del servicio
-    // this.address_client_selected = this.checkoutService.getSelectedAddress();
-    // if (!this.address_client_selected) {
-    //   // Si no hay dirección (p.e. entró directo), redirige al resumen
-    //   console.log("Payment compoennte:  Si no hay dirección (p.e. entró directo), redirige al resumen" );
-      
-    //   //this._router.navigate(
-    //   //  ['/', this.country, this.locale, 'account', 'checkout', 'resumen']
-    //   //);
-    // } else {
-    //   // Rellena tus campos
-    //   console.log("Payment compoennte address seleted: ", this.address_client_selected );
-    //   //Object.assign(this, this.address_client_selected);
-    // }
-
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
-      actionNetxCheckout($);
-    }, 150);
+  destroyPaypalButtons() {
+    this.paypalRendered = false;
+    if (this.paypalElement?.nativeElement) {
+      this.paypalElement.nativeElement.innerHTML = ''; // limpia el contenedor
+    }
   }
-
-  async payWithStripe() {
-    const stripe = await loadStripe(environment.stripePublicKey);
-    if (!stripe) {
-      alert('Stripe no pudo cargarse');
-      return;
-    }
-
-    if (!this.listCarts || this.listCarts.length === 0) {
-      alert("El carrito está vacío.");
-      return;
-    }
-
-    if( !this.listAddresses || !this.address_client_selected) {
-      this.validMessage = true;
-      this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
-      return;
-    }
-
-    const payload = {
-      cart: this.listCarts,
-      user: this.CURRENT_USER_AUTHENTICATED?._id || null,
-      guestId: this.CURRENT_USER_GUEST?._id || null,
-      address: {
-        name: this.name,
-        surname: this.surname,
-        email: this.email,
-        pais: this.pais,
-        ciudad: this.ciudad,
-        region: this.poblacion,
-        telefono: this.phone,
-        address: this.address
-      }
-    };
-
-    // Aquí llama a tu backend para crear la sesión
-    try {
-      console.log(payload);
-
-      
-      // const session: any = await firstValueFrom(
-      //   this.stripePayService.createStripeSession(payload)
-      // );
-
-      //  if (!session?.id) {
-      //   throw new Error("El backend no devolvió un ID de sesión.");
-      // }
-
-      // const result = await stripe.redirectToCheckout({ sessionId: session.id });
-
-      // if (result.error) {
-      //   console.error('Stripe error:', result.error.message);
-      // }
-
-    } catch (err) {
-      console.error('Error al crear la sesión de Stripe', err);
-    }
-
-  }
-
+  
 
   loadSPINER() {
     this.subscriptionService.setShowSubscriptionSection(false);
@@ -699,5 +725,6 @@ export class PaymentCheckoutComponent implements OnInit {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     }
+    this.destroyPaypalButtons();
   }
 }

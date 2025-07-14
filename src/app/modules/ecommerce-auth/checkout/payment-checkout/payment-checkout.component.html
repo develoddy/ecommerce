@@ -574,9 +574,10 @@
       <div class="mb-3 payment-methods mb-4">
         <div class="block-content">
           <h3 class="title mb-3 text-uppercase">Método de pago</h3>
-          <div class="payment-accordion-radio">
+          <div class="payment-accordion-radio" [(ngModel)]="selectedPaymentMethod">
             <div class="accordion" id="accordionExample">
-              <div class="accordion-item card mb-2 p-4 border border-muted">
+              <!-- TARJETA -->
+              <div class="accordion-item card mb-2 p-3 border border-muted">
                 <div class="card-header" id="headingOne">
                   <div class="d-flex flex-row justify-content-between">
                     <div class="">
@@ -591,16 +592,19 @@
                         <span class="customRadio clearfix mb-0">
                           <input
                             id="paymentRadio1"
-                            value=""
-                            name="payment"
+                            value="card"
+                            name="paymentMethod"
                             type="radio"
                             class="radio"
                             checked="checked"
+                            [(ngModel)]="selectedPaymentMethod"
+                            (change)="onPaymentMethodChange()"
+                            checked
                           />
                           <label
                             for="paymentRadio1"
                             class="mb-0 text-uppercase fw-bold"
-                            >Tarjeta bancaria</label
+                            >Tarjeta</label
                           >
                         </span>
                       </button>
@@ -651,7 +655,7 @@
                 </div>
                 <div
                   id="collapseOne"
-                  class="accordion-collapse collapse"
+                  class="accordion-collapse collapse d-none"
                   aria-labelledby="headingOne"
                   data-bs-parent="#accordionExample"
                 >
@@ -776,8 +780,8 @@
                   </div>
                 </div>
               </div>
-              <div
-                class="accordion-item card mb-2 p-3 border border-muted d-none"
+              <!-- END TARJETA -->
+              <div class="accordion-item card mb-2 p-3 border border-muted d-none"
               >
                 <div class="card-header p-3" id="headingTwo">
                   <button
@@ -827,7 +831,8 @@
                   </div>
                 </div>
               </div>
-              <div class="accordion-item card mb-2 p-3 border border-muted">
+              <!-- BIZUM -->
+              <div class="accordion-item card mb-2 p-3 border border-muted d-none">
                 <div class="card-header p-3" id="headingThree">
                   <div class="d-flex flex-row justify-content-between">
                     <div>
@@ -895,31 +900,36 @@
                   </div>
                 </div>
               </div>
-              <div class="accordion-item card mb-0 p-3 border border-muted">
-                <div class="card-header p-3" id="headingFour">
-                  <div class="d-flex flex-row justify-content-between">
-                    <div>
+              <!-- END BIZUM -->
+              <!-- PAYPAL -->
+              <div class="accordion-item card mb-0 p-3 border border-muted"  >
+                <div class="card-header" id="headingFour">
+                  <div class="d-flex flex-row border border-info">
+                    <div class="flex-grow-1">
                       <button
-                        class="card-link"
+                        class="card-link border border-danger "
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#collapseFour"
                         aria-expanded="true"
                         aria-controls="collapseFour"
+                        (change)="onPaymentMethodChange()"
                       >
                         <span class="customRadio clearfix mb-0">
                           <input
                             id="paymentRadio5"
-                            value=""
-                            name="payment"
+                            value="paypal"
+                            name="paymentMethod"
                             type="radio"
                             class="radio"
                             checked="checked"
+                            [(ngModel)]="selectedPaymentMethod"
+                            
                           />
                           <label
                             for="paymentRadio5"
                             class="mb-0 text-uppercase fw-bold"
-                            >Paypal / Tarjeta de Crédito o Débito</label
+                            >Paypal</label
                           >
                         </span>
                       </button>
@@ -964,14 +974,14 @@
                   aria-labelledby="headingFour"
                   data-bs-parent="#accordionExample"
                 >
-                  <div class="card-body px-0">
-                    <p>
-                      Pague a través de PayPal; Puedes pagar con tu tarjeta de
-                      crédito si no tienes una cuenta PayPal.
+                  <div class="px-0">
+                    <p class="lh-1 text-dark">
+                      Después de hacer clic en “Completar la compra”, aparecerá una ventana emergente que te pedirá que inicies sesión en tu cuenta de PayPal. Revisa el pago y los detalles de envío para completar la compra. A continuación, irás a la página de confirmación del pedido de www.tienda.lujandev.com
                     </p>
                   </div>
                 </div>
               </div>
+              <!-- END PAYPAL -->
               <div class="accordion-item card mb-2 d-none">
                 <div class="row">
                   <div class="col-12 col-sm-12 col-md-7 col-lg-12">
@@ -1372,9 +1382,21 @@
                   </strong>
                 </span>
               </div>
-              <div class="mt-3" #paypal></div>
 
-              <button (click)="payWithStripe()" class="btn btn-primary mt-3">
+              <!-- <div class="mt-3" #paypal></div> -->
+              <!-- Este div solo se muestra si eligió PayPal -->
+              <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-3" #paypal></div>
+
+              <!-- <button (click)="payWithStripe()" class="btn btn-primary mt-3">
+                Pagar con tarjeta 💳
+              </button> -->
+              <!-- Único botón de pagar -->
+              <!-- <button (click)="pay()" class="btn btn-primary mt-3" [disabled]="!selectedPaymentMethod">Pagar ahora</button> -->
+              <!-- Botón que cambia según método -->
+              <button 
+                *ngIf="selectedPaymentMethod === 'card'" 
+                (click)="payWithStripe()" 
+                class="btn btn-primary mt-3">
                 Pagar con tarjeta 💳
               </button>
 
