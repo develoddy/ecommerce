@@ -161,7 +161,7 @@ export class PaymentCheckoutComponent implements OnInit {
       alert("El carrito está vacío.");
       return;
     }
-
+    
     if( !this.listAddresses || !this.address_client_selected) {
       this.validMessage = true;
       this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
@@ -186,9 +186,6 @@ export class PaymentCheckoutComponent implements OnInit {
 
     // Aquí llama a tu backend para crear la sesión
     try {
-      console.log(payload);
-
-      
       const session: any = await firstValueFrom(
         this.stripePayService.createStripeSession(payload)
       );
@@ -222,7 +219,7 @@ export class PaymentCheckoutComponent implements OnInit {
       shape: 'rect', // rect // pill
       label: 'paypal', // Alternativa que suele respetar tagline
       tagline: false,
-      height: 45
+      height: 50
     };
   
     if (this.isMobile) {
@@ -401,12 +398,14 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   restoreSelectedAddress(list: any[], storageKey: string) {
-
     // 1. Buscar dirección habitual en db
     const habitual = list.find(addr => addr.usual_shipping_address === true);
+    console.log(habitual);
+    
     if (habitual) {
       this.selectedAddressId = habitual.id;
       this.selectedAddress = habitual;
+      this.addressClienteSelected(this.selectedAddress);
       return;
     }
 
@@ -645,7 +644,6 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   onAddressChange(event:any) {
-    console.log("Payment onAddressChange: ", event.target);
     const selectedIndex = event.target.value;
     // listAddresses
     if (selectedIndex !== "") {

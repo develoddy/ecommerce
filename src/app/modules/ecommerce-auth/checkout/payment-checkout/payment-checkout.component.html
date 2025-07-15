@@ -54,8 +54,8 @@
       <!--Shipping address-->
       <div class="block payment-methods pb-0 mb-4 p-0">
         <div class="block-content">
-          <h3 class="title mb-0 text-uppercase">Dirección de envío</h3>
-          <div class="payment-accordion-radio">
+          <h3 class="title mb-0 text-uppercase d-none">Dirección de envío</h3>
+          <div class="payment-accordion-radio d-none">
             <div class="accordion" id="accordionExample">
               <div class="accordion-item card mb-2">
                 <div class="card-header d-none" id="headingShippingOne">
@@ -95,7 +95,7 @@
                           >
                           <select
                             name="country_id"
-                            class="form-control"
+                            class="form-control rounded"
                             (change)="onAddressChange($event)"
                           >
                             <option value="">Por favor seleccione</option>
@@ -176,7 +176,7 @@
                       <!-- <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="addressClienteSelected(selectedAddress)" data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button> -->
                       <button
                         type="button"
-                        class="bottom-btn btn btn-gray btn-sm"
+                        class="btn btn-dark-ld btn-sm rounded"
                         (click)="gotoResumen()"
                       >
                         Editar
@@ -1384,12 +1384,13 @@
               </div>
 
               <!-- Este div solo se muestra si eligió PayPal -->
-              <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4" #paypal></div>
+              <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4 d-none" #paypal></div>
 
+              <!-- Color button #2C2E2F -->
               <button 
                 *ngIf="selectedPaymentMethod === 'card'" 
                 (click)="payWithStripe()" 
-                class="btn btn-primary mt-4 mb-4 rounded w-100 text-uppercase fw-bold fs-16" style="height: 45px;">
+                class="btn btn-dark-ld mt-4 mb-4 rounded w-100 fw-bold fs-20" style="height: 50px;" disabled>
                 Pagar con tarjeta
               </button>
 

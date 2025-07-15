@@ -260,6 +260,18 @@ p:last-child { margin-bottom:0; }
 /*======================================================================
   4. Buttons 
 ========================================================================*/
+.btn, .btn-dark-ld {
+  background-color: #2C2E2F !important;
+  color: #fff !important;
+  border: 1px solid #2C2E2F !important;
+  font-family: "Zen Kaku Gothic Antique", sans-serif !important;
+}
+.btn-dark-ld:hover {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 1px solid #2C2E2F !important;
+  font-family: "Zen Kaku Gothic Antique", sans-serif !important;
+}
 .btn, .btn-primary {  
     font-family: "Zen Kaku Gothic Antique", sans-serif; background-color:#131313; color:#ffffff; border:1px solid #131313; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; 
     font-size:14px; font-weight:600; line-height:normal; white-space:normal; opacity:1; outline:none !important; box-shadow:none !important; -ms-transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; transition:all 0.3s ease-in-out; 
