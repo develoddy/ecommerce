@@ -242,19 +242,19 @@ p:last-child { margin-bottom:0; }
 .fw-700 { font-weight:700 !important; }
 .fw-800 { font-weight:800 !important; }
 
-.fs-8 {font-size: 8px;}
-.fs-10 {font-size: 10px;}
-.fs-12 {font-size: 12px;}
-.fs-14 {font-size: 14px;}
-.fs-16 {font-size: 16px;}
-.fs-18 {font-size: 18px;}
-.fs-20 {font-size: 20px;}
-.fs-22 {font-size: 22px;}
-.fs-24 {font-size: 24px;}
-.fs-26 {font-size: 26px;}
-.fs-28 {font-size: 28px;}
-.fs-30 {font-size: 30px;}
-.fs-32 {font-size: 32px;}
+.fs-8 {font-size: 8px !important;}
+.fs-10 {font-size: 10px !important;}
+.fs-12 {font-size: 12px !important;}
+.fs-14 {font-size: 14px !important;}
+.fs-16 {font-size: 16px !important;}
+.fs-18 {font-size: 18px !important;}
+.fs-20 {font-size: 20px !important;}
+.fs-22 {font-size: 22px !important;}
+.fs-24 {font-size: 24px !important;}
+.fs-26 {font-size: 26px !important;}
+.fs-28 {font-size: 28px !important;}
+.fs-30 {font-size: 30px !important;}
+.fs-32 {font-size: 32px !important;}
 
 
 /*======================================================================
@@ -2528,6 +2528,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .payment-accordion-radio .card .card-header .card-link[aria-expanded="true"] { color:#131313; border-radius: 0; }
 .payment-accordion-radio .card .card-header .card-link:before { content: none; }
 
+.paypal-button.paypal-button-shape-rect {
+  border-radius: 0 !important;
+}
 
 /* ------------------ pasos checkout ------------ */
 #mainDivSections, .posRelative {max-width: 100% !important;width: 100%;}

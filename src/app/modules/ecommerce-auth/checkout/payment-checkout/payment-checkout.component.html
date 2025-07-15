@@ -902,12 +902,12 @@
               </div>
               <!-- END BIZUM -->
               <!-- PAYPAL -->
-              <div class="accordion-item card mb-0 p-3 border border-muted"  >
+              <div class="accordion-item card mb-0 p-3 border border-muted">
                 <div class="card-header" id="headingFour">
-                  <div class="d-flex flex-row border border-info">
+                  <div class="d-flex flex-row">
                     <div class="flex-grow-1">
                       <button
-                        class="card-link border border-danger "
+                        class="card-link"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#collapseFour"
@@ -1383,21 +1383,14 @@
                 </span>
               </div>
 
-              <!-- <div class="mt-3" #paypal></div> -->
               <!-- Este div solo se muestra si eligió PayPal -->
-              <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-3" #paypal></div>
+              <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4" #paypal></div>
 
-              <!-- <button (click)="payWithStripe()" class="btn btn-primary mt-3">
-                Pagar con tarjeta 💳
-              </button> -->
-              <!-- Único botón de pagar -->
-              <!-- <button (click)="pay()" class="btn btn-primary mt-3" [disabled]="!selectedPaymentMethod">Pagar ahora</button> -->
-              <!-- Botón que cambia según método -->
               <button 
                 *ngIf="selectedPaymentMethod === 'card'" 
                 (click)="payWithStripe()" 
-                class="btn btn-primary mt-3">
-                Pagar con tarjeta 💳
+                class="btn btn-primary mt-4 mb-4 rounded w-100 text-uppercase fw-bold fs-16" style="height: 45px;">
+                Pagar con tarjeta
               </button>
 
               <div class="d-flex mb-3">

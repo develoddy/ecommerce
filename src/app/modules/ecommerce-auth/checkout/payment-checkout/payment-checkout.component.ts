@@ -137,6 +137,7 @@ export class PaymentCheckoutComponent implements OnInit {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
     }, 150);
+
   }
 
   onPaymentMethodChange() {
@@ -148,8 +149,6 @@ export class PaymentCheckoutComponent implements OnInit {
       this.destroyPaypalButtons();
     }
   }
-
-
 
   async payWithStripe() {
     const stripe = await loadStripe(environment.stripePublicKey);
@@ -222,25 +221,27 @@ export class PaymentCheckoutComponent implements OnInit {
       color: 'black', // gold
       shape: 'rect', // rect // pill
       label: 'paypal', // Alternativa que suele respetar tagline
-      tagline: false
-      
+      tagline: false,
+      height: 45
     };
   
     if (this.isMobile) {
       buttonStyle = {
         layout: 'horizontal',
-      color: 'black', // gold
-      shape: 'rect', // rect // pill
-      label: 'paypal', // Alternativa que suele respetar tagline
-      tagline: false
+        color: 'black', // gold
+        shape: 'rect', // rect // pill
+        label: 'paypal', // Alternativa que suele respetar tagline
+        tagline: false,
+        height: 45
       };
     } else if (this.isTablet) {
       buttonStyle = {
         layout: 'horizontal',
-      color: 'black', //gold
-      shape: 'rect', // rect // pill
-      label: 'paypal', // Alternativa que suele respetar tagline
-      tagline: false
+        color: 'black', //gold
+        shape: 'rect', // rect // pill
+        label: 'paypal', // Alternativa que suele respetar tagline
+        tagline: false,
+        height: 45
       };
     } // isDesktop usa el default
 
@@ -336,7 +337,6 @@ export class PaymentCheckoutComponent implements OnInit {
       this.paypalElement.nativeElement.innerHTML = ''; // limpia el contenedor
     }
   }
-  
 
   loadSPINER() {
     this.subscriptionService.setShowSubscriptionSection(false);
