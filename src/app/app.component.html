@@ -1,2 +1,35 @@
-<!-- <app-header (forceLogin)="handleForceLogin()"></app-header> -->
+
 <router-outlet></router-outlet>
+
+<!--Newsletter Modal-->
+    <div class="newsletter-modal modal fade" id="cookie_modal" tabindex="-1" aria-hidden="true">           
+        <div class="modal-dialog modal-lg modal-dialog-centered p-0">
+            <div class="modal-content border-0">
+                <div class="modal-header border-bottom-0 d-none">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">    
+                    <div class="newsletter-wrap d-flex flex-column">
+                        <div class="newsltr-text text-start">
+                            <div class="wraptext mw-100">
+                                <p class="text">
+                                    Utilizamos cookies propias y de terceros para fines analíticos y para mostrarte publicidad y contenido personalizado en base a un perfil elaborado a partir de tus hábitos de navegación. Puedes aceptar todas las cookies o gestionar tus preferencias en el panel de configuración. Consulta más información en <a class="fw-normal text-decoration-underline" href="#"  onclick="return false;" (click)="gotoPoliticaCookie()" >Política de cookies</a>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between border-top-0">
+                    <!-- Enlace alineado a la izquierda -->
+                    <a href="/configurar-preferencias" onclick="return false;" class="text-black text-decoration-underline">Configurar preferencias</a>
+                    
+                    <!-- Botones alineados a la derecha -->
+                    <div>
+                    <button type="button" class="btn btn-dark-ld fw-light text-uppercase me-2 px-5" data-bs-dismiss="modal" (click)="rejectCookies()">Rechazar</button>
+                    <button type="button" class="btn btn-dark-ld fw-light text-uppercase px-5" (click)="acceptCookies()">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Newsletter Modal-->    

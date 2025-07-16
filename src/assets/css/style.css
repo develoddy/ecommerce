@@ -272,7 +272,7 @@ p:last-child { margin-bottom:0; }
   border: 1px solid #2C2E2F !important;
   font-family: "Zen Kaku Gothic Antique", sans-serif !important;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25) !important; /* sombra elegante */
-  transform: translateY(-2px) !important; /* pequeño "salto" visual */
+  
 }
 .btn, .btn-primary {  
     font-family: "Zen Kaku Gothic Antique", sans-serif; background-color:#131313; color:#ffffff; border:1px solid #131313; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; 

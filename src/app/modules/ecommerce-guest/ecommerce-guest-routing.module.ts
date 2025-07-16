@@ -4,6 +4,7 @@ import { EcommerceGuestComponent } from './ecommerce-guest.component';
 import { LandingProductComponent } from './landing-product/landing-product.component';
 import { FilterProductsComponent } from './filter-products/filter-products.component';
 import { ListCartsComponent } from './list-carts/list-carts.component';
+import { PrivacyPolicyComponent } from './legales/privacy-policy/privacy-policy.component';
 
 
 const routes: Routes = [
@@ -12,7 +13,6 @@ const routes: Routes = [
     component: EcommerceGuestComponent,
     children: [
       {
-        //path: 'landing-product/:slug',
         path: 'product/:slug',
         component: LandingProductComponent
       },
@@ -31,6 +31,10 @@ const routes: Routes = [
       {
         path: "cart",
         component: ListCartsComponent,
+      },
+      { 
+        path: 'privacy-policy', 
+        component: PrivacyPolicyComponent 
       },
     ]
   }

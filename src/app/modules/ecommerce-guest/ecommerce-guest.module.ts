@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FilterProductsComponent } from './filter-products/filter-products.component';
+import { PrivacyPolicyComponent } from './legales/privacy-policy/privacy-policy.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { FilterProductsComponent } from './filter-products/filter-products.compo
     EcommerceGuestComponent,
     LandingProductComponent,
     FilterProductsComponent,
+    PrivacyPolicyComponent,
   ],
   imports: [
     CommonModule,

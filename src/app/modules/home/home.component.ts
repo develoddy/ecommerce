@@ -10,6 +10,7 @@ import { LocalizationService } from 'src/app/services/localization.service';
 import { AuthService } from '../auth-profile/_services/auth.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { SeoService } from 'src/app/services/seo.service';
+import { CookieConsentService } from 'src/app/services/cookie-consent.service';
 //import { GuestCleanupService } from '../ecommerce-guest/_service/guestCleanup.service';
 
 declare var bootstrap: any;
@@ -32,6 +33,7 @@ declare function cleanupProductZoom($: any): any;
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   euro = "€";
@@ -74,9 +76,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   isDesktop: boolean = false;
   tallaError = false; 
   cantidadError = false; 
+  private modalInstance: any;
 
   constructor(
-    
     public homeService: HomeService,
     public _cartService: CartService,
     public _router: Router,
@@ -88,6 +90,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private ngZone: NgZone,
     private minicartService: MinicartService,
     private seoService: SeoService,
+    private cookieConsentService: CookieConsentService,
   ) { 
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -100,8 +103,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   
   ngOnInit(): void {
     this.setupSEO();
+    //this.setupCookieModal();
     this.loadSPINER();
-    this.checkCookieConsent();
+    //this.checkCookieConsent();
     this.verifyAuthenticatedUser();
     this.checkDeviceType();
     this.subscribeToCartData(); 
@@ -163,9 +167,38 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       }, 800);
     });
 
-    
     this.subscription?.add(listHomeSubscription);
   }
+
+  // setupCookieModal() {
+  //   const consentGiven = this.cookieConsentService.hasUserConsented();
+  //   if (!consentGiven) {
+  //     const modalElement = document.getElementById('cookie_modal');
+  //     this.modalInstance = new bootstrap.Modal(modalElement);
+  //     this.modalInstance.show();
+  //   }
+  // }
+
+  //  acceptCookies(): void {
+  //   localStorage.setItem('cookieAccepted', 'true');
+  //   const modalElement = document.getElementById('newsletter_modal');
+  //   if (modalElement) {
+  //     const modal = bootstrap.Modal.getInstance(modalElement);
+  //     modal?.hide();
+  //   }
+  // }
+
+  // acceptCookies() {
+  //   this.cookieConsentService.setConsent('accepted');
+  //   this.modalInstance?.hide();
+  // }
+
+  // rejectCookies() {
+  //   this.cookieConsentService.setConsent('rejected');
+  //   this.modalInstance?.hide();
+  // }
+
+  
 
   setupSEO() {
     this.seoService.updateSeo({
@@ -208,16 +241,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     return parseFloat((product.price_usd - discount).toFixed(2));
   }
 
-  checkCookieConsent(): void {
-    const isCookieAccepted = localStorage.getItem('cookieAccepted');
-    if (!isCookieAccepted) {
-      const modalElement = document.getElementById('newsletter_modal');
-      if (modalElement) {
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-      }
-    }
-  }
+  // checkCookieConsent(): void {
+  //   const isCookieAccepted = localStorage.getItem('cookieAccepted');
+  //   if (!isCookieAccepted) {
+  //     const modalElement = document.getElementById('newsletter_modal');
+  //     if (modalElement) {
+  //       const modal = new bootstrap.Modal(modalElement);
+  //       modal.show();
+  //     }
+  //   }
+  // }
 
   generateSlug(title: string): string {
     return title
@@ -225,15 +258,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       .replace(/[^a-z0-9 -]/g, '')     // Eliminar caracteres no alfanuméricos
       .replace(/\s+/g, '-')            // Reemplazar los espacios por guiones
       .replace(/-+/g, '-');            // Reemplazar múltiples guiones por uno solo
-  }
-
-  acceptCookies(): void {
-    localStorage.setItem('cookieAccepted', 'true');
-    const modalElement = document.getElementById('newsletter_modal');
-    if (modalElement) {
-      const modal = bootstrap.Modal.getInstance(modalElement);
-      modal?.hide();
-    }
   }
 
   private checkDeviceType() {
