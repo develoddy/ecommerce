@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -61,6 +62,7 @@ export class RegisterComponent implements OnInit {
     public _router: Router,
     public translate: TranslateService,
     public routerActived: ActivatedRoute,
+    private recaptchaV3Service: ReCaptchaV3Service
   ) {
     
     this.routerActived.paramMap.subscribe(params => {
@@ -133,6 +135,8 @@ export class RegisterComponent implements OnInit {
 
   register() {
 
+    
+
     // Resetear errores antes de la validación
     this.errorName = !this.name;
     this.errorEmail = !this.email;
@@ -157,62 +161,66 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    let data = {
-      name: this.name ,
-      email: this.email, 
-      surname: "",
-      password: this.password,
-      repeat_password: this.repeat_password,
-      zipcode: this.zipcode,
-      phone: this.phone,
-      birthday: this.birthday, // Asegúrate de que la API acepte birthday
-      rol: "cliente"
-    };
+    // Ejecutar reCAPTCHA v3 antes de enviar datos al servidor
+    this.recaptchaV3Service.execute('registro').subscribe((token: string) => {
+      const data = {
+        name: this.name ,
+        email: this.email, 
+        surname: "",
+        password: this.password,
+        repeat_password: this.repeat_password,
+        zipcode: this.zipcode,
+        phone: this.phone,
+        birthday: this.birthday, // Asegúrate de que la API acepte birthday
+        rol: "cliente",
+        recaptchaToken: token  // ✅ AÑADIDO
+      };
 
-    this._authService.register(data).subscribe(
-      (resp:any) => {
-        if ( resp.status === 200 ) {
-          // Registro exitoso, ahora intentamos loguear al usuario
-          this._authService.login(this.email, this.password).subscribe(
-            (loginResp: any) => {
-              //if (loginResp === true) {
-              if ( !loginResp.error && loginResp ) {
-                // Login exitoso, redirige al usuario a la página de inicio
-                this._router.navigate(['/']);
-              } else {
+      this._authService.register(data).subscribe(
+        (resp:any) => {
+          if ( resp.status === 200 ) {
+            // Registro exitoso, ahora intentamos loguear al usuario
+            this._authService.login(this.email, this.password).subscribe(
+              (loginResp: any) => {
+                //if (loginResp === true) {
+                if ( !loginResp.error && loginResp ) {
+                  // Login exitoso, redirige al usuario a la página de inicio
+                  this._router.navigate(['/']);
+                } else {
+                  this.errorRegister = true;
+                  this.errorMessage = "Ha ocurrido un error durante el inicio de sesión posterior al registro. Por favor, inténtelo nuevamente.";
+                }
+              },
+              (error) => {
                 this.errorRegister = true;
                 this.errorMessage = "Ha ocurrido un error durante el inicio de sesión posterior al registro. Por favor, inténtelo nuevamente.";
               }
-            },
-            (error) => {
-              this.errorRegister = true;
-              this.errorMessage = "Ha ocurrido un error durante el inicio de sesión posterior al registro. Por favor, inténtelo nuevamente.";
-            }
-          );
+            );
 
 
-        } else {
-          //alertDanger("Hubo un problema al registrar tus datos. Por favor, intentalo nuevamente.");
-          this.errorRegister = true;
-          this.errorMessage = "Se ha producido un inconveniente al registrar sus datos. Por favor, intente nuevamente.";
+          } else {
+            //alertDanger("Hubo un problema al registrar tus datos. Por favor, intentalo nuevamente.");
+            this.errorRegister = true;
+            this.errorMessage = "Se ha producido un inconveniente al registrar sus datos. Por favor, intente nuevamente.";
+          }
+        
+        },
+        (error) => {
+          // Manejo de errores específicos del backend
+          if ( error.status === 400 ) {
+            // Manejo de error por duplicidad de correo electrónico
+            //alertDanger("Este correo electrónico ya está registrado en nuestro sistema.");
+            this.errorRegister = true;
+            this.errorMessage = "El correo electrónico proporcionado ya se encuentra en uso en nuestro sistema.";
+          } else {
+            // Otros errores
+            //alertDanger("Hubo un problema al registrar tus datos. Por favor, intenta nuevamente.");
+            this.errorRegister = true;
+            this.errorMessage = "Se ha producido un error al intentar registrar su información. Le solicitamos que lo intente de nuevo.";
+          }
         }
-      
-      },
-      (error) => {
-        // Manejo de errores específicos del backend
-        if ( error.status === 400 ) {
-          // Manejo de error por duplicidad de correo electrónico
-          //alertDanger("Este correo electrónico ya está registrado en nuestro sistema.");
-          this.errorRegister = true;
-          this.errorMessage = "El correo electrónico proporcionado ya se encuentra en uso en nuestro sistema.";
-        } else {
-          // Otros errores
-          //alertDanger("Hubo un problema al registrar tus datos. Por favor, intenta nuevamente.");
-          this.errorRegister = true;
-          this.errorMessage = "Se ha producido un error al intentar registrar su información. Le solicitamos que lo intente de nuevo.";
-        }
-      }
-    );
+      );
+    });
   }
 
 
