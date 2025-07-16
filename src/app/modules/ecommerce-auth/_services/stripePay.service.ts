@@ -16,13 +16,12 @@ export class StripePayService {
     ) { }
   
     createStripeSession(data:any) {
-        // http://localhost:3500/api/stripe/create-checkout-session
         let headers = new HttpHeaders({
             'token': this._authService.token
         });
 
         let URL = URL_SERVICE+"stripe/create-checkout-session";
-        
+
         return this._http.post(URL, data, {headers: headers});
     }
 

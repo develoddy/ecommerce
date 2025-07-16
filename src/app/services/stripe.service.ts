@@ -24,7 +24,7 @@ export class StripeService {
   }
 
   createStripeSession(data: any) {
-  return this.http.post(`${environment.URL_SERVICE}stripe/create-session`, data);
-}
+    return this.http.post(`${environment.URL_SERVICE}stripe/create-session`, data);
+  }
 
 }
