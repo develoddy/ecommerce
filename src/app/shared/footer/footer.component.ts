@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
+import { LocalizationService } from 'src/app/services/localization.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 
 @Component({
@@ -12,14 +13,20 @@ export class FooterComponent implements OnInit {
 
   CURRENT_USER_AUTHENTICATED:any=null;
   showSubscriptionSection: boolean = true;
+  locale: string = "";
+  country: string = "";
 
   constructor(
     public _router: Router,
     public _cartService: CartService,
     private subscriptionService: SubscriptionService,
+     private localizationService: LocalizationService,
   ) {}
 
   ngOnInit(): void {
+
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
 
     this.subscriptionService.showSubscriptionSection$.subscribe(value => {
       this.showSubscriptionSection = value;
