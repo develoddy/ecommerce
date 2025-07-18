@@ -140,7 +140,7 @@
           >
             <!-- <div class="address-book-section" [class.d-none]="loading"> -->
             <div class="top-sec mb-3">
-              <h3 class="mb-0 text-uppercase text-uppercase">
+              <h3 class="mb-0 text-uppercase">
                 Dirección de envío
               </h3>
             </div>
@@ -176,7 +176,7 @@
                       <!-- <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="addressClienteSelected(selectedAddress)" data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button> -->
                       <button
                         type="button"
-                        class="btn btn-dark-ld btn-sm rounded"
+                        class="btn btn-dark-ld btn-sm text-uppercase"
                         (click)="gotoResumen()"
                       >
                         Editar
@@ -603,7 +603,7 @@
                           />
                           <label
                             for="paymentRadio1"
-                            class="mb-0 text-uppercase fw-bold"
+                            class="mb-0 text-uppercase fw-normal"
                             >Tarjeta</label
                           >
                         </span>
@@ -928,7 +928,7 @@
                           />
                           <label
                             for="paymentRadio5"
-                            class="mb-0 text-uppercase fw-bold"
+                            class="mb-0 text-uppercase fw-normal"
                             >Paypal</label
                           >
                         </span>
@@ -1312,9 +1312,9 @@
           </div>
 
           <!--Cart Summary | solo visible en escritorio/tablet -->
-          <div class="cart-info mb-3 d-none d-md-block" *ngIf="!isMobile">
+          <div class="cart-info mb-3 d-none d-md-block bg-white border-0" *ngIf="!isMobile">
             <div class="cart-order-detail cart-col">
-              <div class="row g-0 border-bottom pb-2">
+              <div class="row g-0">
                 <span class="col-6 col-sm-6 cart-subtotal-title fw-light"
                   ><strong>Subtotal</strong></span
                 >
@@ -1332,7 +1332,7 @@
                   </span>
                 </span>
               </div>
-              <div class="row g-0 border-bottom py-2 d-none">
+              <div class="row g-0 d-none">
                 <span class="col-6 col-sm-6 cart-subtotal-title"
                   ><strong>Coupon Discount</strong></span
                 >
@@ -1341,7 +1341,7 @@
                   ><span class="money">-$25.00</span></span
                 >
               </div>
-              <div class="row g-0 border-bottom py-2 d-none">
+              <div class="row g-0 d-none">
                 <span class="col-6 col-sm-6 cart-subtotal-title"
                   ><strong>Tax</strong></span
                 >
@@ -1350,7 +1350,7 @@
                   ><span class="money">$10.00</span></span
                 >
               </div>
-              <div class="row g-0 border-bottom py-2">
+              <div class="row g-0 py-2">
                 <span class="col-6 col-sm-6 cart-subtotal-title fw-light"
                   ><strong>Envío</strong></span
                 >
@@ -1359,7 +1359,7 @@
                   ><span class="money">Gratis</span></span
                 >
               </div>
-              <div class="row g-0 pt-2">
+              <div class="row g-0">
                 <span
                   class="col-6 col-sm-6 cart-subtotal-title fs-5 ls-1 text-uppercase"
                   ><strong>Total</strong></span
@@ -1384,13 +1384,13 @@
               </div>
 
               <!-- Este div solo se muestra si eligió PayPal -->
-              <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4 d-none" #paypal></div>
+              <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4" #paypal></div>
 
               <!-- Color button #2C2E2F -->
               <button 
                 *ngIf="selectedPaymentMethod === 'card'" 
                 (click)="payWithStripe()" 
-                class="btn btn-dark-ld mt-4 mb-4 rounded w-100 fw-bold fs-20" style="height: 50px;" disabled>
+                class="btn btn-dark-ld mt-4 mb-4 rounded w-100 fw-light text-uppercase fs-20" style="height: 50px;">
                 Pagar con tarjeta
               </button>
 

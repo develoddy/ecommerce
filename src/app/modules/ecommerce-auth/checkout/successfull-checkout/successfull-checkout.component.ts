@@ -35,7 +35,6 @@ export class SuccessfullCheckoutComponent implements OnInit {
   ciudad: string = '';
   email: string = '';
   phone: string = '';
-  
   address_client_selected:any = null;
   shippingAddress:any=null;
   listCarts:any = [];
@@ -55,7 +54,6 @@ export class SuccessfullCheckoutComponent implements OnInit {
   isLastStepActive_2: boolean = false;
   isLastStepActive_3: boolean = false;
   isLastStepActive_4: boolean = false;
-
   errorAutenticate:boolean=false;
   errorMessageAutenticate:string="";
   password_identify:string = "";
@@ -63,79 +61,146 @@ export class SuccessfullCheckoutComponent implements OnInit {
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
   status:boolean=false;
-
   private subscriptions: Subscription = new Subscription();
-
   @Output() activate = new EventEmitter<boolean>();
-
   isPasswordVisible: boolean = false;
   locale: string = "";
   country: string = "";
+  saleData: any = null;
 
   constructor(
-    public _authEcommerce: EcommerceAuthService,
-    public _authService: AuthService,
-    public _cartService: CartService,
-    public _router: Router,
-    private subscriptionService: SubscriptionService,
-    public routerActived: ActivatedRoute,
-    private checkoutService: CheckoutService,
-    private localizationService: LocalizationService
+    public _authEcommerce       : EcommerceAuthService  ,
+    public _authService         : AuthService           ,
+    public _cartService         : CartService           ,
+    public _router              : Router                ,
+    private subscriptionService : SubscriptionService   ,
+    public routerActived        : ActivatedRoute        ,
+    private checkoutService     : CheckoutService       ,
+    private localizationService : LocalizationService   ,
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
   }
 
-  ngAfterViewInit() {
-   
-  }
-
   ngOnInit(): void {
+    const fromStripe = this.routerActived.snapshot.queryParamMap.get('fromStripe');
+    if ( fromStripe === '1' ) {
+      this.registerStripeSale();
+    } else {
+      this.saleData = this.checkoutService.getSaleData(); // Venta ya registrada desde PayPal
+      this.successPayStripe(); // Procesa datos de venta
+    }
 
-    // Emitir un evento con el valor que desees
     this.activate.emit(true);
-
     this.subscriptionService.setShowSubscriptionSection(false);
     this._authEcommerce.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
 
     this.verifyAuthenticatedUser();
-
     this.checkIfAddressClientExists();
   
-    this._cartService.currenteDataCart$.subscribe((resp:any) => {
-      this.sale = resp;
-      this.totalCarts = this.sale.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
-      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-    });
-
-
-    this.checkoutService.saleData$.subscribe((sale) => {
-      if (sale) {
-        this.sale = sale.sale;
-
-        console.log("sale.sale: ", sale.sale);
-        console.log("this.checkoutService.saleData$.subscribe((sale): ", this.sale);
-        this.totalCarts = parseFloat(sale.sale.total); // Extraemos el total directamente
-        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-
-
-        this.saleDetails = sale.saleDetails; // Extraer y asignar los detalles de la venta
-        console.log("Detalles de la venta:", this.saleDetails);
-      }
-    });
-    
-
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
     }, 50);
   }
 
+  successPayStripe() {
+    this._cartService.currenteDataCart$.subscribe(
+    ( resp:any ) => {
+      this.sale       = resp;
+      this.totalCarts = this.sale.reduce(
+        ( sum: number, item: any ) => sum + parseFloat( item.total ), 0
+      );
+
+      this.totalCarts = parseFloat( 
+        this.totalCarts.toFixed(2) 
+      );
+    });
+
+    this.checkoutService.saleData$.subscribe(
+    ( sale ) => {
+      if ( sale ) {
+        this.sale           = sale.sale;
+        const totalFromSale = sale.sale?.total;
+
+        if ( typeof totalFromSale === 'number' ) {
+          this.totalCarts = parseFloat(
+            totalFromSale.toFixed(2)
+          );
+
+        } else {
+          // backup: calcularlo desde saleDetails si total no vino bien
+          this.totalCarts = sale.saleDetails.reduce(
+            (sum: number, item: any) => sum + parseFloat(item.total), 0
+          );
+
+          this.totalCarts = parseFloat(
+            this.totalCarts.toFixed(2)
+          );
+        }
+        this.saleDetails = sale.saleDetails; 
+      }
+    });
+  }
+
+  registerStripeSale() {
+    const payload = this.checkoutService.getSalePayload();
+    if ( !payload ) {
+      alertDanger("No se encontraron los datos necesarios de la venta.");
+      return;
+    }
+
+    const isGuest = !payload.user;
+
+    const sale = {
+      user            : payload.user                      ,
+      guestId         : payload.guestId                   ,
+      currency_payment: "EUR"                             ,
+      method_payment  : "STRIPE"                          ,
+      n_transaction   : "STRIPE_CHECKOUT"                 ,
+      total           : this.calculateTotal(payload.cart) ,
+    };
+
+    const sale_address = payload.address;
+
+    this._authEcommerce.registerSale({ sale, sale_address }, isGuest).subscribe(
+      ( resp: any ) => {
+        if ( resp.code === 403 ) {
+          alertDanger( resp.message );
+          return;
+        }
+
+        alertSuccess(resp.message);
+        this.checkoutService.setSaleData(resp);
+        this.checkoutService.setSaleSuccess(true);
+        this._cartService.resetCart();
+        this.checkoutService.setSaleSuccess(true);
+        this.saleData = resp;
+        this.successPayStripe();
+      },
+      ( err ) => {
+        alertDanger("Ocurrió un error al registrar la venta con Stripe.");
+        console.error(err);
+      }
+    );
+  }
+
+   calculateTotal( cart: any[] ): number {
+    return cart.reduce(( sum, item ) => {
+      const price = Number( item.product?.price_usd || 0 );
+      return sum + ( price * item.cantidad );
+    }, 0);
+  }
+
   formatDate(dateString: string): string {
     const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    return date.toLocaleDateString('es-ES', { 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric' 
+    });
   }
 
   /*private verifyAuthenticatedUser(): void {
@@ -182,11 +247,7 @@ export class SuccessfullCheckoutComponent implements OnInit {
     if (this.CURRENT_USER_GUEST) {
       this._authEcommerce.listAddressGuest().subscribe(
         (resp: any) => {
-          console.log("Successfull: ver address_guest ", resp);
-          
           this.listAddressGuest = resp.addresses;
-
-          console.log("Successfull: ver address_guest ", this.listAddressGuest);
           this.shippingAddress = this.listAddressGuest[0];
       });
     }

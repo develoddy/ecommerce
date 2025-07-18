@@ -26,7 +26,6 @@ declare var paypal:any;
 export class PaymentCheckoutComponent implements OnInit {
 
   @ViewChild('paypal', { static: false }) paypalElement!: ElementRef;
-  //@ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   euro = "€";
   selectedAddress: Address | null = null;
   selectedAddressId:  number = 0; 
@@ -44,7 +43,6 @@ export class PaymentCheckoutComponent implements OnInit {
   email: string = '';
   phone: string = '';
   usual_shipping_address:boolean=false;
-  
   address_client_selected:any = null;
   listCarts:any = [];
   totalCarts:any=null;
@@ -54,7 +52,6 @@ export class PaymentCheckoutComponent implements OnInit {
   sale: any;
   saleDetails: any =[];
   isSaleSuccess = false;
-  
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
@@ -62,9 +59,7 @@ export class PaymentCheckoutComponent implements OnInit {
   isLastStepActive_2: boolean = false;
   isLastStepActive_3: boolean = false;
   isLastStepActive_4: boolean = false;
-
   paypalButtonsInstance: any;
-
   errorAutenticate:boolean=false;
   errorMessageAutenticate:string="";
   password_identify:string = "";
@@ -72,67 +67,42 @@ export class PaymentCheckoutComponent implements OnInit {
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
   status:boolean=false;
-
   CURRENT_USER_AUTHENTICATED:any=null;
   CURRENT_USER_GUEST:any=null;
-
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
-  width: number = 100; // valor por defecto
-  height: number = 100; // valor por defecto
-  
-
+  width: number = 100; 
+  height: number = 100; 
   private subscriptions: Subscription = new Subscription();
-
   @Output() activate = new EventEmitter<boolean>();
-
   isPasswordVisible: boolean = false;
   locale: string = "";
   country: string = "";
-
   stripePromise = loadStripe(environment.stripePublicKey);
-
   selectedPaymentMethod: 'card' | 'paypal' = 'card';
   paypalRendered: boolean = false;
 
   constructor(
-    public _authEcommerce: EcommerceAuthService,
-    public _authService: AuthService,
-    public _cartService: CartService,
-    public _router: Router,
-    private subscriptionService: SubscriptionService,
-    public routerActived: ActivatedRoute,
-    private checkoutService: CheckoutService,
-    private localizationService: LocalizationService,
-    private stripePayService: StripePayService,
+    public _authEcommerce       : EcommerceAuthService  ,
+    public _authService         : AuthService           ,
+    public _cartService         : CartService           ,
+    public _router              : Router                ,
+    private subscriptionService : SubscriptionService   ,
+    public routerActived        : ActivatedRoute        ,
+    private checkoutService     : CheckoutService       ,
+    private localizationService : LocalizationService   ,
+    private stripePayService    : StripePayService      ,
   ) {
       this.country = this.localizationService.country;
       this.locale = this.localizationService.locale;
   }
 
- 
   ngOnInit(): void {
     this.loadSPINER();
     this.verifyAuthenticatedUser();
     this.loadCurrentDataCart();
     this.checkDeviceType();
-
-    // Toma la dirección del servicio
-    // this.address_client_selected = this.checkoutService.getSelectedAddress();
-    // if (!this.address_client_selected) {
-    //   // Si no hay dirección (p.e. entró directo), redirige al resumen
-    //   console.log("Payment compoennte:  Si no hay dirección (p.e. entró directo), redirige al resumen" );
-      
-    //   //this._router.navigate(
-    //   //  ['/', this.country, this.locale, 'account', 'checkout', 'resumen']
-    //   //);
-    // } else {
-    //   // Rellena tus campos
-    //   console.log("Payment compoennte address seleted: ", this.address_client_selected );
-    //   //Object.assign(this, this.address_client_selected);
-    // }
-
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
@@ -148,6 +118,13 @@ export class PaymentCheckoutComponent implements OnInit {
       // Si cambia a tarjeta, eliminar botón PayPal para evitar duplicados
       this.destroyPaypalButtons();
     }
+  }
+
+  calculateTotal(cart: any[]): number {
+    return cart.reduce((sum, item) => {
+      const price = Number(item.product?.price_usd || 0);
+      return sum + (price * item.cantidad);
+    }, 0);
   }
 
   async payWithStripe() {
@@ -169,20 +146,23 @@ export class PaymentCheckoutComponent implements OnInit {
     }
 
     const payload = {
-      cart: this.listCarts,
-      user: this.CURRENT_USER_AUTHENTICATED?._id || null,
-      guestId: this.CURRENT_USER_GUEST?._id || null,
-      address: {
-        name: this.name,
-        surname: this.surname,
-        email: this.email,
-        pais: this.pais,
-        ciudad: this.ciudad,
-        region: this.poblacion,
-        telefono: this.phone,
-        address: this.address
+      cart    : this.listCarts,
+      user    : this.CURRENT_USER_AUTHENTICATED?._id || null,
+      guestId : this.CURRENT_USER_GUEST?._id || null,
+      address : {
+        name      : this.name       ,
+        surname   : this.surname    ,
+        email     : this.email      ,
+        pais      : this.pais       ,
+        ciudad    : this.ciudad     ,
+        region    : this.poblacion  ,
+        telefono  : this.phone      ,
+        address   : this.address    ,
       }
     };
+
+    // Guarda el payload antes de redirigir
+    this.checkoutService.setSalePayload(payload);
 
     // Aquí llama a tu backend para crear la sesión
     try {
@@ -207,29 +187,29 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   payWithPaypal() {
-    if (this.paypalRendered || !this.paypalElement?.nativeElement) return;
+    if ( this.paypalRendered || !this.paypalElement?.nativeElement ) return;
 
     this.paypalRendered = true;
 
     const isGuest = !this.CURRENT_USER_AUTHENTICATED; 
 
     let buttonStyle = {
-      layout: 'horizontal',
-      color: 'black', // gold
-      shape: 'rect', // rect // pill
-      label: 'paypal', // Alternativa que suele respetar tagline
-      tagline: false,
-      height: 50
+      layout  : 'horizontal'  ,
+      color   : 'black'       , // gold
+      shape   : 'rect'        , // rect or pill
+      label   : 'paypal'      , 
+      tagline : false         ,
+      height  : 50            ,
     };
   
     if (this.isMobile) {
       buttonStyle = {
-        layout: 'horizontal',
-        color: 'black', // gold
-        shape: 'rect', // rect // pill
-        label: 'paypal', // Alternativa que suele respetar tagline
-        tagline: false,
-        height: 45
+        layout    : 'horizontal'  ,
+        color     : 'black'       , // gold
+        shape     : 'rect'        , // rect or pill
+        label     : 'paypal'      , 
+        tagline   : false         ,
+        height    : 45            ,
       };
     } else if (this.isTablet) {
       buttonStyle = {
@@ -248,26 +228,24 @@ export class PaymentCheckoutComponent implements OnInit {
 
       // set up the transaction
       createOrder: (data:any, actions:any) => {
-          if (this.listCarts.length == 0) {
+          if ( this.listCarts.length == 0 ) {
             alertDanger("No se puede proceder con la orden si el carrito está vacío.");
             return;
           }
 
-          if( !this.listAddresses || !this.address_client_selected) {
+          if( !this.listAddresses || !this.address_client_selected ) {
             this.validMessage = true;
             this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
             return;
           }
 
           const createOrderPayload = {
-            purchase_units: [
-              {
+            purchase_units: [{
                 amount: {
                     description: "COMPRAR POR EL ECOMMERCE",
                     value: this.totalCarts
                 }
-              }
-            ]
+              }]
           };
 
           return actions.order.create(createOrderPayload);
@@ -277,44 +255,51 @@ export class PaymentCheckoutComponent implements OnInit {
       onApprove: async (data:any, actions:any) => {
           let Order = await actions.order.capture();
           let sale = {
-            user            : this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : undefined,
-            guestId         : this.CURRENT_USER_GUEST ? this.CURRENT_USER_GUEST._id : null,
-            currency_payment: "EUR",
-            method_payment  : "PAYPAL",
-            n_transaction   : Order.purchase_units[0].payments.captures[0].id,
-            total           : this.totalCarts,
+            user            : this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : undefined    ,
+            guestId         : this.CURRENT_USER_GUEST ? this.CURRENT_USER_GUEST._id : null                        ,
+            currency_payment: "EUR"                                                                               ,
+            method_payment  : "PAYPAL"                                                                            ,
+            n_transaction   : "PAYPAL_CHECKOUT_"+Order.purchase_units[0].payments.captures[0].id                   ,
+            total           : this.totalCarts                                                                     ,
           };
 
           let sale_address = {
-            name      : this.name,
-            surname   : this.surname,
-            pais      : this.pais,
-            address   : this.address,
-            referencia: '',
-            ciudad    : this.ciudad,
+            name      : this.name     ,
+            surname   : this.surname  ,
+            pais      : this.pais     ,
+            address   : this.address  ,
+            referencia: ''            ,
+            ciudad    : this.ciudad   ,
             region    : this.poblacion,
-            telefono  : this.phone,
-            email     : this.email,
-            nota      : '',
+            telefono  : this.phone    ,
+            email     : this.email    ,
+            nota      : ''            ,
           };
 
           this._authEcommerce.registerSale({sale: sale, sale_address:sale_address}, isGuest).subscribe(
-            (resp:any) => {
+            ( resp:any ) => {
+
               this.isLastStepActive_3 = false;
+
               setTimeout(() => {
-                if (resp.code === 403 ) {
+
+                if ( resp.code === 403 ) {
                   alertDanger(resp.message);
                   return;
+
                 } else {
                   alertSuccess(resp.message);
                   this.subscriptionService.setShowSubscriptionSection(false);
                   this._cartService.resetCart();
-
-                  // Actualiza el servicio para indicar que la venta fue exitosa
-                  this.checkoutService.setSaleSuccess(true);
-
+                  this.checkoutService.setSaleSuccess(true); // Actualiza el servicio para indicar que la venta fue exitosa
                   this.checkoutService.setSaleData(resp);
-                  this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'successfull']);
+                  this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'successfull'
+                  ], { 
+                    queryParams: { 
+                      initialized: true, 
+                      from: 'step4' 
+                    } 
+                  });
                 }
               }, 100);  
           });

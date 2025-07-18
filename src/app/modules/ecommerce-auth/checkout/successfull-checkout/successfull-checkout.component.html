@@ -83,7 +83,7 @@
                 <!--Cart Summary-->
                 <div class="cart-info mt-4 mb-4 mb-lg-0">
                     <div class="cart-order-detail cart-col">
-                        <div class="row g-0 border-bottom pb-2">
+                        <div class="row g-0 border-bottom pb-2" *ngIf="this.totalCarts">
                             <span class="col-6 col-sm-6 cart-subtotal-title fw-light"><strong>Subtotal</strong></span>
                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                 <!-- <span class="money">{{ totalCarts }} {{ euro }}</span> -->
@@ -108,7 +108,7 @@
                             <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Shipping</strong></span>
                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Free shipping</span></span>
                         </div>
-                        <div class="row g-0 pt-2">
+                        <div class="row g-0 pt-2" *ngIf="this.totalCarts">
                             <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase"><strong>Total</strong></span>
                             <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end text-primary">
                                 <!-- <b class="money">{{ totalCarts }} {{ euro }}</b> -->

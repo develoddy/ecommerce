@@ -260,29 +260,32 @@ p:last-child { margin-bottom:0; }
 /*======================================================================
   4. Buttons 
 ========================================================================*/
-.btn, x {
-  background-color: #000 !important;
-  color: #fff !important;
-  border: 1px solid #000 !important;
+.btn, .btn-dark-ld {
+  background: linear-gradient(135deg, #000, #000) !important;
+  color: #ffffff !important;
   font-family: "Zen Kaku Gothic Antique", sans-serif !important;
-  padding: 12px 24px !important;
+  padding: 12px 28px !important;
   font-size: 16px !important;
+  font-weight: 300 !important;
+  border: none !important;
   border-radius: 0px !important;
-  transition: all 0.3s ease !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important; /* sombra suave */
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.3s ease-in-out !important;
+  letter-spacing: 0.3px !important;
+  cursor: pointer !important;
 }
 
 .btn-dark-ld:hover {
-  background-color: #2C2E2F !important;
-  border-color: #2C2E2F !important;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important; /* sombra más profunda al pasar el ratón */
-  transform: translateY(-2px) !important; /* sutil efecto de elevación */
+  background: linear-gradient(135deg, #2e2e2e, #444) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
 }
 
 .btn-dark-ld:active {
-  transform: translateY(0) !important;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+  transform: scale(0.98) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
+
 
 
 

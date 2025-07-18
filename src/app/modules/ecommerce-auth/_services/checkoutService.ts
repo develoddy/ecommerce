@@ -23,6 +23,9 @@ export class CheckoutService {
   private navigatingToPaymentSubject = new BehaviorSubject<boolean>(false);
   navigatingToPayment$ = this.navigatingToPaymentSubject.asObservable();
 
+  //private salePayloadSubject = new BehaviorSubject<any>(null);
+  //salePayload$ = this.salePayloadSubject.asObservable();
+
   // Estado para saber si la venta se ha realizado con éxito
   private isSaleSuccessSubject = new BehaviorSubject<boolean>(false);
   isSaleSuccess$ = this.isSaleSuccessSubject.asObservable();
@@ -30,6 +33,9 @@ export class CheckoutService {
   // Datos relacionados con la venta final
   private saleDataSubject = new BehaviorSubject<any>(null);
   saleData$ = this.saleDataSubject.asObservable();
+
+
+  salePayload:any=null;
 
   // -- Navegación a paso de pago --
   setNavigatingToPayment(value: boolean): void {
@@ -68,5 +74,30 @@ export class CheckoutService {
 
   getSelectedAddress(): Address | null {
     return this.selectedAddressSubject.value;
+  }
+
+  setSalePayload(payload: any) {
+    //this.salePayloadSubject.next(payload);
+    this.salePayload = payload;
+    sessionStorage.setItem('salePayload', JSON.stringify(payload)); // 👈 backup en sessionStorage
+  }
+
+  getSalePayload(): any {
+    //return this.salePayloadSubject.value;
+    if (this.salePayload) return this.salePayload;
+
+    // Si se perdió, intenta recuperar desde sessionStorage
+    const fromStorage = sessionStorage.getItem('salePayload');
+    if (fromStorage) {
+      this.salePayload = JSON.parse(fromStorage);
+      return this.salePayload;
+    }
+
+    return null;
+  }
+
+  clearSalePayload(): void {
+    this.salePayload = null;
+    sessionStorage.removeItem('salePayload');
   }
 }
