@@ -682,7 +682,10 @@
                                     <label for="cart-tearm">Estoy de acuerdo con los términos y condiciones</label>
                                 </div>
                                 <!-- <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" id="cartCheckout" class="btn btn-secondary btn-lg my-4 checkout w-100">Comenzar pedido</a> -->
-                                <a [href]="'/' + locale + '/' + country + '/account/checkout'" id="cartCheckout" class="btn btn-dark-ld btn-lg my-3 p-3 checkout fw-light fs-16 w-100 text-uppercase">Continuar con el pago</a>
+                                <!-- <a [href]="'/' + locale + '/' + country + '/account/checkout'" id="cartCheckout" class="btn btn-dark-ld btn-lg my-3 p-3 checkout fw-light fs-16 w-100 text-uppercase">Continuar con el pago</a> -->
+                                <a [href]="'/' + locale + '/' + country + '/account/checkout'" id="cartCheckout" class="">
+                                    <button _ngcontent-serverapp-c57="" type="submit" name="add" class="btn-dark-ld product-form-cart-submit text-uppercase fw-normal mt-3 mb-2"><span>Continuar con el pago</span></button>
+                                </a>
                                 <div class="paymnet-img text-center mb-3 d-none"><img src="assets/images/icons/safepayment.png" alt="Payment" width="299" height="28" /></div>
                                 
                                 <div class="d-flex mb-3">
@@ -750,7 +753,12 @@
                                             <input type="checkbox" value="allen-vela" id="cart-tearm">
                                             <label for="cart-tearm">Estoy de acuerdo con los términos y condiciones</label>
                                         </div>
-                                        <a [href]="'/' + locale + '/' + country + '/account/checkout'" id="cartCheckout" class="btn btn-dark-ld fw-light btn-lg my-4 checkout w-100">Continuar con el pago</a>
+                                        <!-- <a [href]="'/' + locale + '/' + country + '/account/checkout'" id="cartCheckout" class="btn btn-dark-ld fw-light btn-lg my-4 checkout w-100">Continuar con el pago
+                                            <button _ngcontent-serverapp-c57="" type="submit" name="add" class="btn btn-dark-ld product-form-cart-submit py-4 text-uppercase fw-normal"><span _ngcontent-serverapp-c57="">Añadir al carrito</span></button>
+                                        </a> -->
+                                        <a [href]="'/' + locale + '/' + country + '/account/checkout'" id="cartCheckout" class="">
+                                            <button _ngcontent-serverapp-c57="" type="submit" name="add" class="btn-dark-ld product-form-cart-submit text-uppercase fw-normal mt-3 mb-2"><span>Continuar con el pago</span></button>
+                                        </a>
                                         <div class="paymnet-img text-center"><img src="assets/images/icons/safepayment.png" alt="Payment" width="299" height="28" /></div>
                                     </div>                               
                                 </div>

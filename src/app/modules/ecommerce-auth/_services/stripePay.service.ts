@@ -10,19 +10,29 @@ import { catchError, finalize, Observable, of, tap } from 'rxjs';
 })
 
 export class StripePayService {
+    
+    private loadingSubject = new BehaviorSubject<boolean>(false);
+    public loading$ = this.loadingSubject.asObservable();
+
     constructor(
         public _authService: AuthService,
         public _http: HttpClient,
     ) { }
   
     createStripeSession(data:any) {
+
+        this.loadingSubject.next(true);
+
         let headers = new HttpHeaders({
             'token': this._authService.token
         });
 
         let URL = URL_SERVICE+"stripe/create-checkout-session";
 
-        return this._http.post(URL, data, {headers: headers});
+        //return this._http.post(URL, data, {headers: headers});
+        return this._http.post(URL, data, { headers }).pipe(
+            finalize(() => this.loadingSubject.next(false)) 
+        );
     }
 
 }

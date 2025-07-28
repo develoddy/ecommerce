@@ -207,21 +207,16 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         (resp: any) => {
           this.listAddressClients = resp.address_client;
           if (this.listAddressClients.length === 0) {
-            console.log("entra por aca listadress == 0 1.");
-            
             this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
           } else {
             if (this.currentStep === 'successfull') {
-              console.log("entra por aca successfull.");
               this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'successfull'], { queryParams: { initialized: true, from: 'step4' } });
               return;
             }
-            console.log("entra por aca else payment 2.");
             if (this.currentStep === 'payment') {
               this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
             }
              else {
-              console.log("entra por aca  resumen 3.");
               this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
             }
           }

@@ -377,7 +377,7 @@
                         <div class="customer-links">
                             <ul class="m-0 m-0 list-group list-group-flush">
                                 <li class="mt-3 mb-3" *ngIf="currentUser.user_guest else isAuthenticated">
-                                    <button class="btn mb-2 btn-secondary btn-lg w-100 text-uppercase fw-bold">
+                                    <button class="btn-dark-ld mb-3 text-uppercase">
                                         <!-- <a href="login.html" onclick="return false;" [routerLink]="['/', country, locale, 'auth', 'login']" class="text-white"><i class="icon anm anm-sign-in-al d-none"></i>Iniciar sesión</a> -->
                                         <a href="login.html" onclick="return false;" (click)="goLogin()" class="text-white"><i class="icon anm anm-sign-in-al d-none"></i>Iniciar sesión</a>
                                     </button>
@@ -749,8 +749,8 @@
                 <label for="prTearm"> I agree with the </label><a href="#" class="ms-1 text-link">Terms &amp; conditions</a>
             </div>
             <div class="minicart-action d-flex mt-3">
-                <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-dark-ld w-50 me-1 btn-lg text-uppercase fw-light py-3">Ver carrito</a>
-                <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout btn btn-dark-ld w-50 ms-1 btn-lg text-uppercase fw-light py-3"> Comenzar pedido</a>
+                <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn-dark-ld w-50 me-1 text-uppercase ">Ver carrito</a>
+                <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout btn-dark-ld w-50 ms-1 text-uppercase"> Comenzar pedido</a>
             </div>
         </div>
     </div>

@@ -9,10 +9,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center align-items-center">
-                        <div class="page-title"><h2 class="text-uppercase">Crear una cuenta</h2></div>
-                        <!--Breadcrumbs-->
-                        <div class="breadcrumbs d-none"><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Crear una cuenta</span></div>
-                        <!--End Breadcrumbs-->
+                        <div class="page-title"><h2 class="text-uppercase mb-0">Crear una cuenta</h2></div>
                     </div>
                 </div>
             </div>
@@ -30,10 +27,10 @@
                 <p class="mb-1">Por favor revise su correo electrónico para verificar su cuenta y completar el proceso de registro.</p>
             </div>
             <!--End Order success-->
-            <div class="login-register pt-4">
+            <div class="login-register">
                 <div class="row justify-content-center">
                     <!-- <div class="col-12 col-sm-12 col-md-8 offset-md-2 col-lg-5 offset-lg-4"> -->
-                    <div class="col-12 col-sm-12 col-md-8 col-lg-4" [ngClass]="{'px-5': isDesktop, 'px-3': isMobile}">
+                    <div class="col-12 col-sm-12 col-md-8 col-lg-5" [ngClass]="{'px-5': isDesktop, 'px-2': isMobile}">
                         <div class="inner h-100">
                             <form class="customer-form">	
                                 <h2 class="text-center text-uppercase mb-4 d-none">Crea tu cuenta</h2>
@@ -76,7 +73,7 @@
                                         <div class="form-text text-danger mt-0" *ngIf="touchedFields['repeat_password'] && !repeat_password">Completa este campo para continuar</div>
                                     </div>
                                     <div class="form-group col-12 mt-3 mb-3">
-                                        <button type="submit" class="btn btn-secondary btn-lg py-3 w-100 text-uppercase fw-normal" (click)="register()" [disabled]="loading">
+                                        <button type="submit" class="btn-dark-ld text-uppercase" (click)="register()" [disabled]="loading">
                                             <ng-container *ngIf="!loading">Crear cuenta</ng-container>
                                             <ng-container *ngIf="loading">
                                                 <div class="sp sp-bars bg-light" style="width: 7px !important; height: 21px !important; margin: 0px auto !important;"></div>

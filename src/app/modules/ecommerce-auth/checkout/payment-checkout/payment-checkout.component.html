@@ -1,4 +1,19 @@
+<!-- LOADING -->
+<!-- 
+<div *ngIf="!loading || isLoadingStripe" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+  <div class="row">
+    <div class="col col-12 col-lg-12 col-sm-2">
+      <div class="sp sp-bars"></div>
+    </div>
+  </div>
+</div> 
+-->
+<!-- END LOADING -->
+
 <div id="steps3">
+
+
+
   <div class="row p-lg-5">
     <!-- ======== Columna de la izquierda ======== -->
     <div
@@ -176,7 +191,7 @@
                       <!-- <button type="button" class="bottom-btn btn btn-gray btn-sm" (click)="addressClienteSelected(selectedAddress)" data-bs-toggle="modal" data-bs-target="#addEditModal">Editar</button> -->
                       <button
                         type="button"
-                        class="btn btn-dark-ld btn-sm text-uppercase"
+                        class="btn-dark-ld text-uppercase"
                         (click)="gotoResumen()"
                       >
                         Editar
@@ -1384,15 +1399,29 @@
               </div>
 
               <!-- Este div solo se muestra si eligió PayPal -->
-              <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4" #paypal></div>
+              <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4" #paypal [class.disabled]="disablePayments"></div>
 
               <!-- Color button #2C2E2F -->
               <button 
                 *ngIf="selectedPaymentMethod === 'card'" 
                 (click)="payWithStripe()" 
-                class="btn btn-dark-ld mt-4 mb-4 rounded w-100 fw-light text-uppercase fs-20" style="height: 50px;">
-                Pagar con tarjeta
+                [disabled]="disablePayments || isLoadingStripe"
+                class="btn-dark-ld mt-3 mb-2 text-uppercase">
+                  <ng-container *ngIf="!isLoadingStripe; else loadingStripe">
+                    Pagar con tarjeta
+                  </ng-container>
+
+                  <ng-template #loadingStripe>
+                    <!-- <span class="spinner-border spinner-border-sm" role="status"></span>
+                    Procesando... -->
+                    <span class="loading-spinner">
+                      <div class="sp sp-bars"></div>
+                    </span> 
+                  </ng-template>
               </button>
+
+
+              
 
               <div class="d-flex mb-3">
                 <ul class="d-flex flex-row">

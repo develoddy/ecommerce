@@ -55,6 +55,7 @@ export class PaymentCheckoutComponent implements OnInit {
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
+  public isLoadingStripe = false;
   isLastStepActive_1: boolean = false;
   isLastStepActive_2: boolean = false;
   isLastStepActive_3: boolean = false;
@@ -81,7 +82,9 @@ export class PaymentCheckoutComponent implements OnInit {
   country: string = "";
   stripePromise = loadStripe(environment.stripePublicKey);
   selectedPaymentMethod: 'card' | 'paypal' = 'card';
-  paypalRendered: boolean = false;
+  paypalRendered: boolean = false;  
+  disablePayments: boolean = false;
+  
 
   constructor(
     public _authEcommerce       : EcommerceAuthService  ,
@@ -99,6 +102,7 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     this.loadSPINER();
     this.verifyAuthenticatedUser();
     this.loadCurrentDataCart();
@@ -128,6 +132,7 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   async payWithStripe() {
+    this.disablePayments = true;
     const stripe = await loadStripe(environment.stripePublicKey);
     if (!stripe) {
       alert('Stripe no pudo cargarse');
@@ -187,6 +192,7 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   payWithPaypal() {
+    this.disablePayments = false;
     if ( this.paypalRendered || !this.paypalElement?.nativeElement ) return;
 
     this.paypalRendered = true;
@@ -321,6 +327,11 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   loadSPINER() {
+
+    this.stripePayService.loading$.subscribe(isLoading => {
+      this.isLoadingStripe = isLoading;
+    });
+    
     this.subscriptionService.setShowSubscriptionSection(false);
     this._authEcommerce.loading$.subscribe(isLoading => {
       this.loading = isLoading;
