@@ -23,6 +23,7 @@ export class StripeService {
     return this.stripePromise;
   }
 
+  //return this.http.post(`${environment.URL_SERVICE}stripe/create-checkout-session`, data);
   createStripeSession(data: any) {
     return this.http.post(`${environment.URL_SERVICE}stripe/create-session`, data);
   }

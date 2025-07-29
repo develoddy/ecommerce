@@ -31,6 +31,7 @@ export class DeliveryComponent implements OnInit {
     ciudad: string = '';
     email: string | null = null;
     phone: string = '';
+    usual_shipping_address:boolean=false;
       
     errorOrSuccessMessage:any="";
     validMessage:boolean=false;
@@ -43,6 +44,10 @@ export class DeliveryComponent implements OnInit {
   
     locale: string = "";
     country: string = "";
+
+    isMobile: boolean = false;
+    isTablet: boolean = false;
+    isDesktop: boolean = false;
   
     constructor(
       public _ecommerceAuthService: EcommerceAuthService,
@@ -59,11 +64,19 @@ export class DeliveryComponent implements OnInit {
     ngOnInit(): void {
       
       this.SPINNER();
+      this.checkDeviceType();
       
       // Captura la URL de retorno si existe
       this.returnUrl = this.activatedRoute.snapshot.queryParamMap.get('returnUrl') || `/${this.country}/${this.locale}/account/myaddresses`;
       this.verifyAuthenticatedUser();
       this.subscribeToQueryParams();
+    }
+
+    private checkDeviceType(): void {
+      const width = window.innerWidth;
+      this.isMobile = width <= 480;
+      this.isTablet = width > 480 && width <= 768;
+      this.isDesktop = width > 768;
     }
   
     private subscribeToQueryParams(): void {
@@ -73,6 +86,11 @@ export class DeliveryComponent implements OnInit {
       // Añadir todas las suscripciones al objeto compuesto
       this.subscriptions.add(queryParamsSubscription);
     }
+
+    goToBackResumenStep() {
+    //this.checkoutService.setNavigatingToPayment(true);
+    this.router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+  }
   
     private SPINNER() {
       this.subscriptions = this._ecommerceAuthService.loading$.subscribe(isLoading => {
@@ -105,13 +123,19 @@ export class DeliveryComponent implements OnInit {
     // }
   
     public store() {
+      
+      
       if ( !this.address_client_selected ) {
+        console.log("--- 2. dentro: ", this.address_client_selected);
         this.registerAddress();
       } 
     }
   
     private registerAddress() {
-  
+      
+      console.log("--- Debbug: Entraa en registerAddress para guest");
+      
+
       if (!this.CURRENT_USER_GUEST || !this.name || !this.surname || !this.pais || !this.address || !this.zipcode || !this.poblacion || !this.ciudad || !this.email || !this.phone ) {
         this.status = false;
         this.validMessage = true;
@@ -122,7 +146,7 @@ export class DeliveryComponent implements OnInit {
       }
   
       let data = {    
-          guest_id  : this.CURRENT_USER_GUEST._id,
+          guest     : this.CURRENT_USER_GUEST._id,
           name      : this.name,
           surname   : this.surname,
           pais      : this.pais,
@@ -132,11 +156,14 @@ export class DeliveryComponent implements OnInit {
           ciudad    : this.ciudad,
           email     : this.email,
           phone     : this.phone,
+          usual_shipping_address: this.usual_shipping_address,
       };
+
+      
       
       this._ecommerceAuthService.registerAddressGuest(data).subscribe( ( resp:any ) => {
   
-        if ( resp.status == 201 ) {
+        if ( resp.status == 200 ) {
           this.status = true;
           this.validMessage = true;
           this.errorOrSuccessMessage = resp.message;

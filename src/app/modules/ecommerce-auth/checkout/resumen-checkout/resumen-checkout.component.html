@@ -1,7 +1,8 @@
 <div id="steps2">
   <div class="row p-lg-5">
     <!-- ======== Columna de la izquierda ======== -->
-    <div
+    <ng-container *ngIf="listCarts.length > 0; else showAddress">
+      <div
       class="col-12 col-sm-12 col-md-7 col-lg-8 order-1 order-md-1"
       id="main-left"
     >
@@ -92,14 +93,12 @@
           <!-- Address Book -->
           <div class="tab-pane h-100" id="address">
             <div class="address-card mt-0 h-100">
-              <ng-container
-                *ngIf="listAddresses.length == 0; else allShowListAddress"
-              >
+              <ng-container *ngIf="listAddresses.length == 0; else allShowListAddress">
                 <div class="d-flex justify-content-start align-items-center">
                   <div class="d-flex flex-column">
-                    <h5 class="header-title mb-0 text-uppercase">
+                    <h3 class="header-title mb-0 text-uppercase">
                       Libreta de direcciones
-                    </h5>
+                    </h3>
                     <small class="mb-3"
                       >Por favor, registre una dirección para continuar.</small
                     >
@@ -122,10 +121,7 @@
               <!-- Address List -->
               <ng-template #allShowListAddress>
                 <!-- Spinner -->
-                <div
-                  *ngIf="loading"
-                  class="loading-spinner d-flex justify-content-center h-100 align-items-center"
-                >
+                <div *ngIf="loading" class="loading-spinner d-flex justify-content-center h-100 align-items-center">
                   <div class="text-center">
                     <div class="spinner-border text-muted" role="status">
                       <span class="sr-only"></span>
@@ -143,16 +139,8 @@
                     <ng-container *ngIf="selectedAddress">
                       <div class="address-select-box active">
                         <div class="address-box bg-block">
-                          <div
-                            class="top d-flex-justify-center justify-content-between"
-                          >
-                            <p class="m-0">
-                              {{
-                                selectedAddress.name +
-                                  " " +
-                                  selectedAddress.surname
-                              }}
-                            </p>
+                          <div class="top d-flex-justify-center justify-content-between">
+                            <p class="m-0">{{selectedAddress.name + " " + selectedAddress.surname}}</p>
                             <a
                               href="#"
                               class="text-decoration-underline"
@@ -804,15 +792,6 @@
                 </span>
               </span>
 
-              <!-- <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                <span class="money price">
-                                    <span class="price-main">{{ getFormattedPrice(totalCarts).integerPart }}</span>
-                                    <span class="price-decimals">
-                                        <sup>{{ getFormattedPrice(totalCarts).decimalPart }}</sup>
-                                        <span class="currency-symbol">{{ euro }}</span>
-                                    </span>
-                                </span>
-                            </span> -->
             </div>
             <div class="row g-0 d-none">
               <span class="col-6 col-sm-6 cart-subtotal-title"
@@ -895,6 +874,22 @@
         </div>
       </ng-container>
     </div>
+    </ng-container>
+    
+    
+    <ng-template #showAddress>
+      <div class="col-12 col-sm-12 col-md-7 col-lg-8 d-flex flex-column justify-content-start">
+        <!-- <h3>Tu carrito está vacío</h3> -->
+        <!-- <h5 class="header-title mb-2 d-none">Tu carrito está vacío</h5> -->
+        <strong class="h3 text-uppercase">Tu carrito de la compra está vacía</strong>
+        <p class="pt-2">Inspírate con las últimas tendencias y descubre algo <br /> nuevo para renovar tu armario</p>
+        <div class="view-collection mt-4 mb-4 mt-md-5 w-50">
+            <a onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">
+              <button class="btn-dark-ld text-uppercase">Descubrir novedades</button>
+            </a>
+        </div>
+      </div>
+    </ng-template>
 
     <!-- ======== Columna de la derecha ======== -->
     <div
@@ -1398,10 +1393,10 @@
         </ul>
       </ng-template>
     </div>
-    <div class="minicart-bottom" *ngIf="listAddressClients.length != 0">
+    <div class="minicart-bottom" *ngIf="listAddressClients.length != 0 || listAddressGuest.length != 0">
       <div class="minicart-action d-flex flex-column mt-3">
         <button
-          class="cart-btn btn btn-outline-black w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3"
+          class="cart-btn btn-dark-ld me-1 text-uppercase py-3 mb-3"
           (click)="confirmarDireccion()"
         >
           Confirmar dirección
@@ -1410,7 +1405,7 @@
           href="#"
           onclick="return false;"
           (click)="goToRegisterAddress()"
-          class="cart-btn btn btn-outline-white text-black bg-white w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3"
+          class="cart-btn btn-outline-white-ld text-black me-1 text-uppercase py-3 mb-3"
           >Añadir otra dirección</a
         >
         <!-- <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-white text-black bg-white w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3">Añadir otra dirección</a> -->

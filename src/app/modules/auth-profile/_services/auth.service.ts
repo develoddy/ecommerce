@@ -24,8 +24,14 @@ export class AuthService {
   public userGuestSubject = new BehaviorSubject<any>(this.getGuestUser());
   userGuest = this.userGuestSubject.asObservable();
   
-  constructor(private _http: HttpClient, private _router: Router, private localizationService: LocalizationService) {
-    this.addGuestLocalStorage();
+  constructor(
+    private _http: HttpClient, 
+    private _router: Router, 
+    private localizationService: LocalizationService
+  ) {
+    if(!this.isAuthenticatedUser()) {
+      this.addGuestLocalStorage();
+    }
     this.getLocalStorage();
   }
 
@@ -59,7 +65,6 @@ export class AuthService {
     } else {
       this.token = null;
       this.userSubject.next(null);
-
     }
   }
 
@@ -122,8 +127,6 @@ export class AuthService {
   }
 
   addGuestLocalStorage() {
-
-    //const storedUser = sessionStorage.getItem("user");
     const storedUserGuest = sessionStorage.getItem("user_guest");
     if(!storedUserGuest) {
       this.deleteGuestAndAddresses().subscribe({
@@ -135,6 +138,7 @@ export class AuthService {
             guest: false,
             session_id: this.generateSessionId(), // Usamos la función generateUniqueId() en lugar de uuidv4()
           }
+
           sessionStorage.setItem("user_guest", JSON.stringify(data));
           this.userGuestSubject.next(data);
 

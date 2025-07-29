@@ -266,9 +266,7 @@
               <!-- </ng-container> -->
 
               <!-- Direcciones de usuarios invitados -->
-              <ng-container
-                *ngFor="let list_address of listAddressGuest; let i = index"
-              >
+              <!--<ng-container *ngFor="let list_address of listAddressGuest; let i = index">
                 <div class="address-select-box active">
                   <div class="address-box bg-block">
                     <div class="mb-3 d-flex flex-row">
@@ -330,9 +328,7 @@
                         Dirección de envío habitual
                       </div>
                     </div>
-                    <div
-                      class="bottom d-flex-justify-center justify-content-between"
-                    >
+                    <div class="bottom d-flex-justify-center justify-content-between">
                       <button
                         type="button"
                         class="bottom-btn btn btn-gray btn-sm"
@@ -345,7 +341,7 @@
                     </div>
                   </div>
                 </div>
-              </ng-container>
+              </ng-container>-->
             </div>
           </div>
 
@@ -1404,8 +1400,7 @@
               <!-- Color button #2C2E2F -->
               <button 
                 *ngIf="selectedPaymentMethod === 'card'" 
-                (click)="payWithStripe()" 
-                [disabled]="disablePayments || isLoadingStripe"
+                (click)="payWithStripe()"
                 class="btn-dark-ld mt-3 mb-2 text-uppercase">
                   <ng-container *ngIf="!isLoadingStripe; else loadingStripe">
                     Pagar con tarjeta

@@ -132,7 +132,7 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   async payWithStripe() {
-    this.disablePayments = true;
+    //this.disablePayments = true;
     const stripe = await loadStripe(environment.stripePublicKey);
     if (!stripe) {
       alert('Stripe no pudo cargarse');
@@ -152,8 +152,9 @@ export class PaymentCheckoutComponent implements OnInit {
 
     const payload = {
       cart    : this.listCarts,
-      user    : this.CURRENT_USER_AUTHENTICATED?._id || null,
-      guestId : this.CURRENT_USER_GUEST?._id || null,
+      //user    : this.CURRENT_USER_AUTHENTICATED?._id || null,
+      //guestId : this.CURRENT_USER_GUEST?._id || null,
+      guestId: this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED?._id : this.CURRENT_USER_GUEST?._id,
       address : {
         name      : this.name       ,
         surname   : this.surname    ,
@@ -165,6 +166,8 @@ export class PaymentCheckoutComponent implements OnInit {
         address   : this.address    ,
       }
     };
+
+    console.log(payload);
 
     // Guarda el payload antes de redirigir
     this.checkoutService.setSalePayload(payload);
@@ -393,10 +396,19 @@ export class PaymentCheckoutComponent implements OnInit {
     }
   }
 
+  checkIfAddressGuestExists() {
+    if (this.CURRENT_USER_GUEST) {
+      this._authEcommerce.listAddressGuest().subscribe(
+        (resp: any) => {
+          this.listAddressGuest = resp.addresses;
+          this.restoreSelectedAddress(this.listAddressGuest, 'selectedGuestAddressId');
+      });
+    }
+  }
+
   restoreSelectedAddress(list: any[], storageKey: string) {
     // 1. Buscar dirección habitual en db
     const habitual = list.find(addr => addr.usual_shipping_address === true);
-    console.log(habitual);
     
     if (habitual) {
       this.selectedAddressId = habitual.id;
@@ -421,15 +433,6 @@ export class PaymentCheckoutComponent implements OnInit {
     if (list.length > 0) {
       this.selectedAddressId = list[0].id;
       this.selectedAddress = list[0];
-    }
-  }
-
-  checkIfAddressGuestExists() {
-    if (this.CURRENT_USER_GUEST) {
-      this._authEcommerce.listAddressGuest().subscribe(
-        (resp: any) => {
-          this.listAddressGuest = resp.addresses;
-      });
     }
   }
 

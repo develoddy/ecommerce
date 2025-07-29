@@ -23,13 +23,17 @@ export class StripePayService {
 
         this.loadingSubject.next(true);
 
-        let headers = new HttpHeaders({
-            'token': this._authService.token
-        });
+        //let headers = new HttpHeaders({
+        //    'token': this._authService.token
+        //});
+
+        let headers = new HttpHeaders();
+        if (this._authService.token) {
+            headers = headers.set('token', this._authService.token);
+        }
 
         let URL = URL_SERVICE+"stripe/create-checkout-session";
 
-        //return this._http.post(URL, data, {headers: headers});
         return this._http.post(URL, data, { headers }).pipe(
             finalize(() => this.loadingSubject.next(false)) 
         );

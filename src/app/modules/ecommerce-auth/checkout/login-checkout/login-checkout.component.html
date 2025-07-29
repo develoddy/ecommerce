@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-8 col-lg-4">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-5">
             <div class="block h-100">
                 <div class="block-content">
                     <form method="post" action="#" class="login-form">	
@@ -102,7 +102,7 @@
                                 <p class="text-danger">{{ this.errorMessageAutenticate }}</p>
                             </div>
                             <div class="form-group col-12 mt-3 mb-3">
-                                <button type="submit" class="btn btn-secondary text-uppercase fw-normal py-3 w-100" (click)="login()" [disabled]="loading">
+                                <button type="submit" class="btn-dark-ld text-uppercase" (click)="login()" [disabled]="loading">
                                     <ng-container *ngIf="!loading">Iniciar sesión</ng-container>
                                     <ng-container *ngIf="loading">
                                         <!-- <div class="sp sp-bars bg-light" style="width: 7px !important; height: 21px !important; margin: 0px auto !important;"></div> -->
@@ -110,13 +110,13 @@
                                   </ng-container>
                                 </button>
                             </div>
-                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'auth', 'resetpassword']" class="btn-link p-3 text-center text-black fw-nornal text-decoration-underline">¿Has olvidado tu contraseña?</a>
+                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'auth', 'resetpassword']" class="btn-link p-3 text-center fw-light text-uppercase text-decoration-underline">¿Has olvidado tu contraseña?</a>
                         </div>
 
 
                         <div class="row mb-4">
                             <div class="col-12 form-group">
-                                <h2 class="fw-bold text-uppercase fs-26">Crea tu cuenta</h2>
+                                <h2 class="fw-bold text-uppercase fs-26 mb-2">Crea tu cuenta</h2>
                             </div>
                             <ul class="Benefits_benefits__kDX0o">
                                 <li class="Benefits_benefit__VNfg7">
@@ -134,7 +134,8 @@
                             </ul>
                             <div class="form-group col-12 ">
                                 <a href="register.html" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'register']" class="btn-link">
-                                    <input type="submit" class="btn btn-outline-secondary btn-lg py-3 w-100 text-uppercase fw-normal" value="Crear cuenta" />
+                                    <!-- <input type="submit" class="btn btn-outline-secondary btn-lg py-3 w-100 text-uppercase fw-normal" value="Crear cuenta" /> -->
+                                    <button type="submit" class="btn-outline-white-ld text-uppercase">Crear cuenta</button>
                                 </a>
                             </div>
                         </div>
@@ -142,7 +143,7 @@
                         <div class="row mb-4">
                             <!-- <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'checkout', 'resumen']" class="btn-link p-3 text-center fw-bold text-decoration-underline">Continuar sin cuenta</a> -->
                             <!-- <a [routerLink]="['/', locale, country, 'account', 'checkout', 'resumen']" [queryParams]="{ initialized: true, from: 'step2' }" class="btn-link p-3 text-center fw-bold text-decoration-underline" (click)="enterAsGuest()" >Continuar sin cuenta</a> -->
-                            <a href="#" onclick="return false;" class="btn-link p-3 text-center fw-normal text-black text-decoration-underline" (click)="enterAsGuest()" >Continuar sin cuenta</a>
+                            <a href="#" onclick="return false;" class="btn-link p-3 text-center fw-light text-uppercase text-decoration-underline" (click)="enterAsGuest()" >Continuar sin cuenta</a>
                         </div>
                     </form>
                 </div>
