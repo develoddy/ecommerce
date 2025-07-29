@@ -148,9 +148,7 @@ export class EcommerceAuthService {
   registerSale(data:any, isGuest: boolean = false) {
     this.loadingSubject.next(true);
     
-    const headers = isGuest
-    ? {}
-    : new HttpHeaders({ token: this._authService.token });
+    const headers = isGuest ? {} : new HttpHeaders({ token: this._authService.token });
 
     const URL = isGuest
     ? URL_SERVICE + "sale/register-guest"

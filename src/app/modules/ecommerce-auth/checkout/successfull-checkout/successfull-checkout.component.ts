@@ -151,11 +151,9 @@ export class SuccessfullCheckoutComponent implements OnInit {
       alertDanger("No se encontraron los datos necesarios de la venta.");
       return;
     }
-
-    const isGuest = !payload.user;
-
+  
     const sale = {
-      user            : payload.user                      ,
+      user            : payload.userId                      ,
       guestId         : payload.guestId                   ,
       currency_payment: "EUR"                             ,
       method_payment  : "STRIPE"                          ,
@@ -164,6 +162,8 @@ export class SuccessfullCheckoutComponent implements OnInit {
     };
 
     const sale_address = payload.address;
+
+    const isGuest = !payload.userId;
 
     this._authEcommerce.registerSale({ sale, sale_address }, isGuest).subscribe(
       ( resp: any ) => {
