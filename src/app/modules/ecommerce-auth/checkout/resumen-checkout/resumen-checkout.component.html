@@ -10,7 +10,7 @@
       <div class="mb-4">
         <h3 class="mb-0 text-uppercase mb-3">Tipo de envío</h3>
         <div class="d-flex flex-row mb-3">
-          <div class="p-3 border border-dark w-25 me-3">
+          <div class="p-5 border border-dark me-3">
             <div class="d-flex flex-column justify-content-center">
               <span class="text-center">
                 <svg
@@ -54,7 +54,7 @@
               <span class="texts_uppercaseL__dKrzo">GRATIS</span>
             </div>
           </div>
-          <div class="p-3 border border-muted w-25">
+          <div class="p-3 border border-muted w-25 d-none">
             <div class="d-flex flex-column justify-content-center">
               <span class="text-center">
                 <svg
@@ -79,7 +79,7 @@
       </div>
 
       <!-- Shipping rates -->
-      <div class="d-flex flex-row mb-5">
+      <div class="d-flex flex-row mb-lg-5 mb-3">
         <p>
           <span class="fw-bold me-2">Entrega:</span
           ><time datetime="2025-4-9">viernes, 9 may</time> -
@@ -88,7 +88,7 @@
       </div>
 
       <!--Address-->
-      <div class="d-flex flex-row mb-4">
+      <div class="d-flex flex-row mb-lg-5 mb-3">
         <div class="dashboard-content h-100 w-100 mb-3" id="top-tabContent">
           <!-- Address Book -->
           <div class="tab-pane h-100" id="address">
@@ -768,17 +768,12 @@
 
       <!--Cart Summary | Cart Summary solo visible en móvil-->
       <div class="cart-info mb-4 d-block d-md-none bg-white border-0 p-0">
-        <div class="cart-info mb-4 bg-white border-0">
-          <h3 class="title mb-3 text-uppercase">Resumen de Precio</h3>
+        <div class="cart-info mb-4 bg-white border-0 p-0">
+          <h3 class="title mb-3 text-uppercase d-none">Resumen de Precio</h3>
           <div class="cart-order-detail cart-col">
             <div class="row g-0">
-              <span class="col-6 col-sm-6 cart-subtotal-title fw-light"
-                ><strong>Subtotal</strong></span
-              >
-              <span
-                class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"
-              >
-                <!-- <span class="money">{{ getFormattedPrice(totalCarts).integerPart }}.{{ getFormattedPrice(totalCarts).decimalPart }} {{ euro }}</span> -->
+              <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
+              <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                 <span class="money">
                   <span class="price-small fw-normal">
                     <span class="price-main-small">{{
@@ -823,7 +818,7 @@
             <div class="row g-0">
               <span
                 class="col-6 col-sm-6 cart-subtotal-title fs-5 text-uppercase"
-                ><strong>Total</strong></span
+                >Total</span
               >
               <!-- <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end"><b class="money">{{ totalCarts | number: '1.2-2' }} {{ euro }}</b></span> -->
               <span
@@ -856,10 +851,9 @@
             Continuar a pago
           </button>
           <p id="" class="fs-12">
-            <small class="text-muted"
-              >Al continuar, confirmas que has leído la
+            <small class="fw-light">Al finalizar la compra, confirmas que has leído, entendido y que aceptas la
               <a
-                class="text-black fw-bold text-decoration-underline"
+                class="text-black fw-normal text-decoration-underline"
                 href="#"
                 [routerLink]="['/', locale, country, 'shop', 'privacy-policy']"
                 onclick="return false;"
@@ -900,7 +894,7 @@
         <div class="col-12 order-1 order-md-1">
           <h3 class="title mb-0 text-uppercase mb-3">Pedido</h3>
           <!-- Código promocional -->
-          <div class="mb-3 payment-methods mb-4">
+          <div class="mb-3 payment-methods mb-3">
             <div class="block-content">
               <div class="payment-accordion-radio">
                 <div class="accordion" id="accordionExample">
@@ -939,7 +933,7 @@
                       data-bs-parent="#accordionExample"
                     >
                       <div class="card-body px-0">
-                        <p>
+                        <p class="fw-light">
                           Introduce tu código promocional y disfruta de grandes
                           ahorros en tu compra.
                         </p>
@@ -949,11 +943,11 @@
                             [(ngModel)]="code_cupon"
                             required=""
                             type="text"
-                            class="form-control"
+                            class="form-control border border-muted mb-3"
                             placeholder="Código de promoción"
                           />
                           <button
-                            class="coupon-btn btn btn-secondary fw-normal text-uppercase"
+                            class="coupon-btn border-muted btn-dark-ld text-uppercase"
                             (click)="apllyCupon()"
                             [disabled]="loading"
                             type="submit"
