@@ -55,8 +55,8 @@ export class GuestCleanupService {
             next: (resp: any) => {
                 console.log("🧹 Guest y direcciones eliminadas al salir del checkout", resp);
                 sessionStorage.removeItem("user_guest");
-                //this.authService.addGuestLocalStorage();
-                //this.authEcommerce._authService.userGuestSubject.next(null);
+                this.authService.addGuestLocalStorage();
+                this.authEcommerce._authService.userGuestSubject.next(null);
             },
             error: err => {
                 console.error("❌ Error al limpiar datos guest al salir del checkout", err);

@@ -233,6 +233,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
           if (this.listAddressGuest.length === 0) {
             this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
           } else {
+            if (this.currentStep === 'successfull') {
+              this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'successfull'], { queryParams: { initialized: true, from: 'step4' } });
+              return;
+            }
             if (this.currentStep === 'payment') {
               this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
             } else {
@@ -511,27 +515,5 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     }
-    
-    // if (this.shouldCleanGuest) {
-    //   const guestData = sessionStorage.getItem("user_guest");
-    //   if (guestData) {
-    //     const parsedGuest = JSON.parse(guestData);
-
-    //     const deleteSubscription = this._authEcommerce.deleteGuestAndAddresses().subscribe(
-    //       (resp:any) => {
-    //         sessionStorage.removeItem("user_guest");
-    //         this._authEcommerce._authService.userGuestSubject.next(null);
-    //         this._authService.addGuestLocalStorage();
-    //       }, error => {
-    //         console.error("Error eliminando guest y addresses", error);
-    //       }
-    //     );
-
-    //     this.subscriptions.add(deleteSubscription);
-    //   }  
-    // }
-    
-    // this.destroy$.next();
-    // this.destroy$.complete();
   }
 }

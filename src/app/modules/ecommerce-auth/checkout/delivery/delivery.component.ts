@@ -112,19 +112,8 @@ export class DeliveryComponent implements OnInit {
         }
       });
     }
-    // private verifyAuthenticatedUser(): void {
-    //   this._ecommerceAuthService._authService.user.subscribe( user => {
-    //     if ( user ) {
-    //       this.CURRENT_USER_AUTHENTICATED = user;
-    //     } else {
-    //       this.CURRENT_USER_AUTHENTICATED = null;
-    //     }
-    //   });
-    // }
-  
-    public store() {
-      
-      
+    
+    public store() {  
       if ( !this.address_client_selected ) {
         console.log("--- 2. dentro: ", this.address_client_selected);
         this.registerAddress();

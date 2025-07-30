@@ -14,19 +14,6 @@ declare function alertDanger([]):any;
 declare function alertWarning([]):any;
 declare function alertSuccess([]):any;
 
-// interface Address {
-//   id: string;
-//   name: string;
-//   surname: string;
-//   email: string;
-//   address: string;
-//   zipcode: string;
-//   poblacion: string;
-//   ciudad: string;
-//   phone: string;
-//   usual_shipping_address: boolean;
-// }
-
 @Component({
   selector: 'app-resumen-checkout',
   templateUrl: './resumen-checkout.component.html',
@@ -155,16 +142,6 @@ export class ResumenCheckoutComponent implements OnInit {
           this.listAddressClients = resp.address_client;
           // ✅ Restaurar dirección seleccionada para autenticado
           this.restoreSelectedAddress(this.listAddressClients, 'selectedAddressId');
-
-          //if (this.listAddressClients.length === 0) {
-          //  console.log("--------> DEBUG: Resumen.componente > modo auth > no hay address");
-            // GUARDA LA URL ACTUAL EN SESSION STORARE
-          //  sessionStorage.setItem('returnUrl', this._router.url); 
-            // SOLO REDIRIGE A myaddresses SI NO ESTÁ EN RESUMEN
-          //  this._router.navigate(['/', , this.country, this.locale, 'account', 'myaddresses', 'add']); 
-          //} else {
-          //  this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
-          //}
       });
     }
   }
@@ -177,14 +154,6 @@ export class ResumenCheckoutComponent implements OnInit {
           this.listAddressGuest = resp.addresses;
           // ✅ Restaurar dirección seleccionada para invitado
           this.restoreSelectedAddress(this.listAddressGuest, 'selectedGuestAddressId');
-
-          //if (this.listAddressGuest.length === 0) {
-          //  console.log("--------> DEBUG: Resumen.componente > modo guest > no hay address");
-            
-            //this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery']);
-          //} else {
-          //  this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
-         // }
       });
     }
   }
@@ -247,7 +216,6 @@ export class ResumenCheckoutComponent implements OnInit {
   private listCartsLocalStorage(): void {
     this._cartService.listCartsCache(this.CURRENT_USER_GUEST.user_guest).subscribe((resp: any) => {
       resp.carts.forEach((cart: any) => {
-        console.log(cart);
         this._cartService.changeCart(cart);
       });
     });

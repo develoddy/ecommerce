@@ -154,7 +154,6 @@ export class PaymentCheckoutComponent implements OnInit {
       cart    : this.listCarts,
       userId    : this.CURRENT_USER_AUTHENTICATED?._id || null,
       guestId : this.CURRENT_USER_GUEST?._id || null,
-      //guestId: this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED?._id : this.CURRENT_USER_GUEST?._id,
       address : {
         name      : this.name       ,
         surname   : this.surname    ,

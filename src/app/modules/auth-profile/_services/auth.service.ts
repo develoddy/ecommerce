@@ -4,13 +4,11 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
 import { catchError, map, of, BehaviorSubject, finalize, window, Observable, tap, filter, throwError, switchMap, take } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
-//import { GuestCleanupService } from '../../ecommerce-guest/_service/guestCleanup.service';
-//import { EcommerceAuthService } from '../../ecommerce-auth/_services/ecommerce-auth.service';
-
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
@@ -99,6 +97,7 @@ export class AuthService {
         if (  resp.USER_FRONTED  && resp.USER_FRONTED.accessToken && resp.USER_FRONTED.refreshToken ) {
           this.localStorageSave(resp.USER_FRONTED);
           this.removeUserGuestLocalStorage();
+          this.deleteGuestAndAddresses();
           return true;
         } else {
           return resp;
@@ -150,7 +149,6 @@ export class AuthService {
 
           // Enviar datos al backend (por ejemplo, POST request)
           this.sendGuestDataToBackend(guestData);
-          
         },
 
         error: (err) => {
