@@ -66,9 +66,10 @@
                                         <p class="ss-small-title">Código y estilo</p>
                                         <h2 class="ss-mega-title">Vístete como <br>piensas: con lógica</h2>
                                         <p class="ss-sub-title xs-hide">Ropa diseñada para los que crean el futuro, con el máximo confort y personalidad</p>
-                                        <div class="ss-btnWrap">
-                                            <!-- ['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id] -->
-                                            <a class="btn btn-black px-5 py-3 text-uppercase" href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">Descúbrelas ahora!</a>
+                                        <div class="ss-btnWrap d-flex">
+                                            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">
+                                                <button class="btn-dark-ld text-uppercase">Descúbrelas ahora!</button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -88,8 +89,10 @@
                                     <div class="wrap-caption animation style1">
                                         <h2 class="ss-mega-title">Sudaderas tech <br>Comodidad en cada línea</h2>
                                         <p class="ss-sub-title xs-hide">La mejor compañía para tus largas sesiones de programación</p>
-                                        <div class="ss-btnWrap d-flex-justify-start">
-                                            <a class="btn btn-black px-5 py-3 text-uppercase" href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">Descúbrelas ahora!</a>
+                                        <div class="ss-btnWrap d-flex">
+                                            <a href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">
+                                                 <button class="btn-dark-ld text-uppercase">Descúbrelas ahora!</button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -412,8 +415,10 @@
                     </ng-container>
                 </ng-container>
             </div>
-            <div class="view-collection text-center mt-5 mb-5 mt-md-5">
-                <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="btn btn-secondary btn-lg px-5 text-uppercase">Ver colección</a>
+            <div class="view-collection text-center mt-5 mb-5 mt-md-5 justify-content-center align-item-center d-flex">
+                <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">
+                    <button class="btn-dark-ld text-uppercase">Ver colección</button>
+                </a>
             </div>
         </div>
         <!--End Product Grid-->

@@ -260,69 +260,22 @@ p:last-child { margin-bottom:0; }
 /*======================================================================
   4. Buttons 
 ========================================================================*/
-.btn, .btn-dark-ld {
-  background: linear-gradient(135deg, #000, #000) !important;
-  color: #ffffff !important;
-  font-family: "Zen Kaku Gothic Antique", sans-serif !important;
-  padding: 12px 28px !important;
-  font-size: 16px !important;
-  font-weight: 300 !important;
-  border-radius: 0px !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
-  transition: all 0.3s ease-in-out !important;
-  letter-spacing: 0.3px !important;
-  cursor: pointer !important;
-  text-align: center;
-  width: 100%;
-}
+/* Button principal color dark & hover*/
+.btn, .btn-dark-ld {background: linear-gradient(135deg, #000, #000) !important;color: #ffffff !important;font-family: "Zen Kaku Gothic Antique", sans-serif !important;padding: 12px 28px !important;font-size: 16px !important;font-weight: 300 !important;border-radius: 0px !important;box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;transition: all 0.3s ease-in-out !important;letter-spacing: 0.3px !important;cursor: pointer !important;text-align: center;width: 100%;}
+.btn-dark-ld:hover {background: linear-gradient(135deg, #2e2e2e, #444) !important;transform: translateY(-2px) scale(1.02) !important;box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;}
+.btn-dark-ld:active {transform: scale(0.98) !important;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;}
 
-.btn, .btn-outline-white-ld {
-  background: linear-gradient(135deg, #fff, #fff) !important;
-  color: #000 !important;
-  font-family: "Zen Kaku Gothic Antique", sans-serif !important;
-  padding: 12px 28px !important;
-  font-size: 16px !important;
-  font-weight: 300 !important;
-  border-radius: 0px !important;
-  border: 1px solid #000;
-  transition: all 0.3s ease-in-out !important;
-  letter-spacing: 0.3px !important;
-  cursor: pointer !important;
-  text-align: center;
-  width: 100%;
-}
+/* Button principal color white & hover*/
+.btn, .btn-outline-white-ld {background: linear-gradient(135deg, #fff, #fff) !important;color: #000 !important;font-family: "Zen Kaku Gothic Antique", sans-serif !important;padding: 12px 28px !important;font-size: 16px !important;font-weight: 300 !important;border-radius: 0px !important;border: 1px solid #000;transition: all 0.3s ease-in-out !important;letter-spacing: 0.3px !important;cursor: pointer !important;text-align: center;width: 100%;}
+.btn-outline-white-ld:hover {background: linear-gradient(135deg, #000, #000) !important;transform: translateY(-2px) scale(1.02) !important;box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;color: #fff !important;}
+.btn-outline-white-ld:active {transform: scale(0.98) !important;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;color: #fff !important;}
 
-.btn-dark-ld:hover {
-  background: linear-gradient(135deg, #2e2e2e, #444) !important;
-  transform: translateY(-2px) scale(1.02) !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
-}
+/* Button principal color transparent & hover*/
+.btn, .btn-transparent-ld {background: transparent !important;border: 1px solid #fff;color: #ffffff !important;font-family: "Zen Kaku Gothic Antique", sans-serif !important;padding: 12px 28px !important;font-size: 16px !important;font-weight: 300 !important;border-radius: 0px !important;box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;transition: all 0.3s ease-in-out !important;letter-spacing: 0.3px !important;cursor: pointer !important;text-align: center;width: 100%;}
+.btn-transparent-ld:hover {background: linear-gradient(135deg, #2e2e2e, #444) !important;transform: translateY(-2px) scale(1.02) !important;box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;}
+.btn-transparent-ld:active {transform: scale(0.98) !important;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;}
 
-.btn-dark-ld:active {
-  transform: scale(0.98) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
-}
-
-
-.btn-outline-white-ld:hover {
-  background: linear-gradient(135deg, #000, #000) !important;
-  transform: translateY(-2px) scale(1.02) !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
-  color: #fff !important;
-}
-
-.btn-outline-white-ld:active {
-  transform: scale(0.98) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
-  color: #fff !important;
-}
-
-
-
-.btn, .btn-primary {  
-    font-family: "Zen Kaku Gothic Antique", sans-serif; background-color:#131313; color:#ffffff; border:1px solid #131313; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; 
-    font-size:14px; font-weight:600; line-height:normal; white-space:normal; opacity:1; outline:none !important; box-shadow:none !important; -ms-transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; transition:all 0.3s ease-in-out; 
-}
+.btn, .btn-primary {font-family: "Zen Kaku Gothic Antique", sans-serif; background-color:#131313; color:#ffffff; border:1px solid #131313; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; font-size:14px; font-weight:600; line-height:normal; white-space:normal; opacity:1; outline:none !important; box-shadow:none !important; -ms-transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; transition:all 0.3s ease-in-out; }
 .btn:hover, .btn:focus { background-color:#131313; color:#ffffff; border-color:#131313; text-decoration:none; opacity:1; }
 
 .btn-secondary,.btn-secondary:focus { background-color:#131313; color:#ffffff; border:1px solid #131313; }
