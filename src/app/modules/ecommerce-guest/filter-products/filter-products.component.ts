@@ -57,8 +57,12 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   country: string = "";
   private subscription: Subscription = new Subscription();
   loading: boolean = false;
-
   logo_position_selected: string = "";
+  isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
+  width: number = 100; // valor por defecto
+  height: number = 100; // valor por defecto
   
   /* ------------------ CONSTRUCTOR ------------------ */
   constructor(
@@ -125,13 +129,29 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     });
 
     this.configInitial();
+    this.checkDeviceType();
 
     setTimeout(() => {
       productSlider5items($);
       // REFRESCAR EL SLIDER
       (window as any).sliderRefresh($);
     }, 150);
+  }
 
+  private checkDeviceType(): void {
+    const width = window.innerWidth;
+    this.isMobile = width <= 480;
+    this.isTablet = width > 480 && width <= 768;
+    this.isDesktop = width > 768;
+
+    // Ajusta el tamaño de la imagen según el tipo de dispositivo
+    if (this.isMobile) {
+        this.width = 80;  // tamaño para móviles
+        this.height = 80; // tamaño para móviles
+    } else {
+        this.width = 100; // tamaño por defecto
+        this.height = 100; // tamaño por defecto
+    }
   }
 
    /* ------------------ INIT FUCTIONS ------------------ */
@@ -442,6 +462,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   openModal(product:any) {
+  console.log(product);
+  
     this.product_selected = null;
     setTimeout(() => {
       this.product_selected = product;
@@ -487,4 +509,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     cleanupSliders($);
     cleanupHOMEINITTEMPLATE($);
   }
+
+  @HostListener('window:resize', ['$event'])
+    onResize(event: Event): void {
+      this.checkDeviceType(); // Verifica el tamaño de la pantalla
+    } 
 }

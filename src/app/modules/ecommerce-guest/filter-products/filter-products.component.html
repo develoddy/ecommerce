@@ -29,7 +29,7 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container-fluid">
+        <div class="container-fluid" [ngClass]="{ 'px-0': isMobile }" >
             <!--Category Slider-->
             <div class="collection-slider-8items gp10 slick-arrow-dots sub-collection section" *ngIf="categories">
                 <ng-container *ngFor="let categorie of categories">
@@ -50,10 +50,15 @@
             <!--End Category Slider-->
 
             <!--Toolbar-->
-            <div class="toolbar toolbar-wrapper shop-toolbar px-4">
+            <div class="toolbar toolbar-wrapper shop-toolbar" [ngClass]="{ 'px-4': isDesktop, 'px-2': isMobile  }">
                 <div class="row align-items-center">
                     <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-between">
-                        <button type="button" class="btn btn-filter text icon anm anm-sliders-hr d-inline-flex me-2 me-lg-3 btn-lg text-uppercase">Filtrar y ordenar</button>
+                        <button 
+                        type="button" 
+                        class="btn-dark-ld text-uppercase" 
+                        [ngClass]="{ 'w-25': isDesktop }" 
+                        >Filtrar y ordenar</button>
+
                         <div class="filters-item d-flex align-items-center">
                             <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
                             <div class="grid-options view-mode d-flex">
@@ -99,6 +104,7 @@
             </div>
             <!--End Toolbar-->
 
+            <!-- Show Sidebar -->
             <div class="row">
                 <!--Sidebar-->
                 <div class="col-12 col-sm-12 col-md-12 col-lg-3 sidebar sidebar-bg filterbar">
@@ -245,7 +251,7 @@
                 <!--End Sidebar-->
 
                 <!--Products-->
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col g-1">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col g-1 p-0">
                     <!--Product Grid-->
                     <div class="grid-products grid-view-items">
                         <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 g-1">  
@@ -270,7 +276,7 @@
                                             <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div>
                                             <!-- End Product label -->
                                             <!--Product Button-->
-                                            <div class="button-set style1">
+                                            <div class="button-set style1 d-none">
                                                 <!--Cart Button-->
                                                 <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal d-none" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
                                                     <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
@@ -298,7 +304,7 @@
                                             <!--End Product Vendor-->
                                             <!-- Product Name -->
                                             <div class="product-name">
-                                                <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" [queryParams]="getRouterDiscount(product)">{{ product.title }}</a>
+                                                <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" [queryParams]="getRouterDiscount(product)" class="text-truncate d-inline-block product-title">{{ product.title }}</a>
                                             </div>
                                             <!-- End Product Name -->
                                             <!-- Product Price -->
@@ -365,7 +371,7 @@
                         </div>
 
                         <!-- Pagination -->
-                        <nav class="clearfix pagination-bottom">
+                        <nav class="clearfix pagination-bottom d-none">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item disabled"><a class="page-link" href="#"><i class="icon anm anm-angle-left-l"></i></a></li>
                                 <li class="page-item active"><a class="page-link" href="#">1</a></li>

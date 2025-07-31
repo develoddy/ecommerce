@@ -1766,8 +1766,6 @@ function cleanupProductZoom($) {
 }
 
 function productSlider5items($) {
-    
-    
     if ($('.product-slider-5items').length) {
         console.log("$('.product-slider-5items').length: ", $('.product-slider-5items').length);
         $('.product-slider-5items').slick({
