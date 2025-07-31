@@ -336,7 +336,7 @@
                                     <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div>
                                     <!-- End Product label -->
                                     <!--Product Button-->
-                                    <div class="button-set style1">
+                                    <div class="button-set style1" [ngClass]="{'d-none': isMobile}">
                                         <!--Cart Button-->
                                         <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal " data-bs-toggle="modal" data-bs-target="#addtocart_modal" (click)="openModalToCart(ourProduct)">
                                             <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
@@ -364,7 +364,12 @@
                                     <!--End Product Vendor-->
                                     <!-- Product Name -->
                                     <div class="product-name">
-                                        <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" [queryParams]="getRouterDiscount(ourProduct)">{{ ourProduct.title }}</a>
+                                        <a 
+                                            href="#" 
+                                            onclick="return false;" 
+                                            [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" 
+                                            [queryParams]="getRouterDiscount(ourProduct)" 
+                                            class="text-truncate d-inline-block product-title">{{ ourProduct.title }}</a>
                                     </div>
                                     <!-- End Product Name -->
                                     <!-- Product Price -->
@@ -417,7 +422,11 @@
                 </ng-container>
             </div>
             <div class="view-collection text-center mt-5 mb-5 mt-md-5 justify-content-center align-item-center d-flex">
-                <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">
+                <a 
+                href="shop-left-sidebar.html" 
+                onclick="return false;" 
+                [routerLink]="['/', locale, country, 'shop', 'filter-products']" 
+                [ngClass]="{'w-100': isMobile, 'px-2': isMobile}">
                     <button class="btn-dark-ld text-uppercase">Ver colección</button>
                 </a>
             </div>

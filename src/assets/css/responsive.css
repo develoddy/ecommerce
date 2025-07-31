@@ -46,8 +46,7 @@
 
 @media only screen and (min-width:1200px) {
     
-    
-    .product-title {max-width: 180px;}
+    /* .product-title {max-width: 180px;} */
     .row-5col > * { width:20%; }
     .index-demo10 .newsletter-section .newsletter-wrap { padding-right: 145px; padding-left: 175px; }
     .product-notification { margin: 25px; }
@@ -58,7 +57,7 @@
 }
 
 @media only screen and (max-width: 1199px) {
-   
+    .product-title {max-width: 180px;}
     #page-content { margin: 0 0 50px; }
     .section { padding-top: 50px; padding-bottom: 50px; }
     .text-large { font-size: 18px !important; } 
