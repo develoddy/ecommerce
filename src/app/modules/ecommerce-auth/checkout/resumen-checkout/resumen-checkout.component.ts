@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter, HostListener, ChangeDetectorRef } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
@@ -67,6 +67,11 @@ export class ResumenCheckoutComponent implements OnInit {
   isPasswordVisible: boolean = false;
   locale: string = "";
   country: string = "";
+  isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
+  width: number = 100; // valor por defecto
+  height: number = 100; // valor por defecto
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
@@ -619,9 +624,30 @@ export class ResumenCheckoutComponent implements OnInit {
   }
   /* -------------------------------------------------------- FIN ACTUALIZACION DE DIRECCIONES --------------------------------------------------- */
 
+  private checkDeviceType(): void {
+    const width = window.innerWidth;
+    this.isMobile = width <= 480;
+    this.isTablet = width > 480 && width <= 768;
+    this.isDesktop = width > 768;
+
+    // Ajusta el tamaño de la imagen según el tipo de dispositivo
+    if (this.isMobile) {
+        this.width = 80;  // tamaño para móviles
+        this.height = 80; // tamaño para móviles
+    } else {
+        this.width = 100; // tamaño por defecto
+        this.height = 100; // tamaño por defecto
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     }
   }
+
+  @HostListener('window:resize', ['$event'])
+    onResize(event: Event): void {
+      this.checkDeviceType(); // Verifica el tamaño de la pantalla
+  } 
 }

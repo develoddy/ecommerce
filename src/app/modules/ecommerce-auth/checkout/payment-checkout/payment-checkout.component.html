@@ -913,7 +913,7 @@
               </div>
               <!-- END BIZUM -->
               <!-- PAYPAL -->
-              <div class="accordion-item card mb-0 p-3 border border-muted">
+              <div class="accordion-item card mb-0 p-3 border border-muted" [ngClass]="{ 'd-none': isMobile }">
                 <div class="card-header" id="headingFour">
                   <div class="d-flex flex-row">
                     <div class="flex-grow-1">
@@ -1210,7 +1210,25 @@
                 </strong>
               </span>
             </div>
-            <div class="" #paypal></div>
+            <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4" #paypal [class.disabled]="disablePayments"></div>
+
+            <!-- Color button #2C2E2F -->
+            <button 
+              *ngIf="selectedPaymentMethod === 'card'" 
+              (click)="payWithStripe()"
+              class="btn-dark-ld mt-3 mb-2 text-uppercase">
+                <ng-container *ngIf="!isLoadingStripe; else loadingStripe">
+                  Pagar con tarjeta
+                </ng-container>
+
+                <ng-template #loadingStripe>
+                  <!-- <span class="spinner-border spinner-border-sm" role="status"></span>
+                  Procesando... -->
+                  <span class="loading-spinner">
+                    <div class="sp sp-bars"></div>
+                  </span> 
+                </ng-template>
+            </button>
 
             <div class="d-flex mb-3">
               <ul class="d-flex flex-row">

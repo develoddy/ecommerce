@@ -2037,7 +2037,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .blog-article .publish-detail .icon { font-size: 13px; margin-right:7px; margin-top: -2px; }
 
 .blog-action .tags-list li a { padding: 0; border: none; }
-.social-sharing .btn { color: #333333; background-color: transparent; padding: 0; justify-content: center; margin: 0 0 0 15px; }
+.social-sharing .btn { color: #333333 !important; background-color: transparent !important; padding: 0 !important; justify-content: center; margin: 0 0 0 15px; }
 .social-sharing .btn:hover { color: #131313; background-color: transparent; }
 .social-sharing .btn:first-child { margin-left: 0; }
 .social-sharing .share-title { font-size: 13px; font-weight: 400; text-transform: none; margin-left: 8px; display: none; }

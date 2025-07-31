@@ -1,64 +1,8 @@
 <div [ngClass]="{'tab-pane': true, 'active': !CURRENT_USER_AUTHENTICATED, 'fade': CURRENT_USER_AUTHENTICATED}" id="steps1">
     <div class="row justify-content-center">
-        <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-4 mb-md-0 border border-primary d-none">
-            <div class="block h-100">
-                <div class="block-content">
-                    <h3 class="title">Continuar como invitado/a</h3>
-                    <p class="text-gray">Registrate con nosotros para futura conveniencia:</p>
-                    <ul class="list-unstyled radio-group mb-4">
-                        <li>
-                            <div class="checkout customRadio">
-                                <input type="radio" id="option-1" name="selector" checked="" />
-                                <label for="option-1"> Pagar como invitado</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="checkout customRadio">
-                                <input type="radio" id="option-2" name="selector" />
-                                <label for="option-2"> Registro</label>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <h3 class="title">Regístrate y ahorra tiempo !</h3>
-                    <p class="text-gray">Registrate con nosotras para futura conveniencia:</p>
-                    <ul class="lists-style1 text-gray mb-3">
-                        <li>Pago rápido y sencillo</li>
-                        <li>Fácil acceso a su historial y estado de pedidos</li>
-                    </ul>
-                    <button type="submit" name="Continue" class="btn btn-primary w-100">Continuar pedido</button>
-                    <!-- <button type="submit" name="Continue" class="btn btn-secondary ms-2 btnNext">Próxima dirección</button> -->
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-4 mb-md-0 d-none">
-            <div class="block h-100">
-                <div class="block-content">
-                    <form method="post" action="#" class="login-form">	
-                        <h2 class="title text-uppercase fs-22">Continuar como invitado/a</h2>
-                        <p class="text-black lh-sm">Completa tu pedido sin crear una cuenta. Podrás guardar tus datos en el siguiente paso y ahorrar tiempo en próximas compras.</p>
-                        <div class="row">
-                            <div class="col-12 form-group">
-                                <label for="CustomerEmail" class="form-label">E-mail <span class="required">*</span></label>
-                                <input type="email" name="customer[email]" [(ngModel)]="email_identify" placeholder="E-mail" id="CustomerEmail" autofocus="" class="form-control py-4">
-                            </div>
-                            <div class="col-12 form-group">
-                                <p class="title" style="font-weight: 500; font-size: 12px;">PROMOCIONES Y NOVEDADES</p>
-                                <div class="remember-me customCheckbox">
-                                    <input id="remember" name="remember" type="checkbox" value="remember me" required />
-                                    <label for="remember lh-sm"> Quiero recibir promociones exclusivas, novedades y contenidos personalizados.</label>
-                                </div>
-                            </div>
-                            <div class="col-12 d-flex justify-content-between align-items-center mt-3">
-                                <input type="submit" class="btn py-3 text-uppercase fw-normal w-100" value="Continuar sesión" (click)="verifyExistEmail(email_identify)">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        
         <div class="col-12 col-sm-12 col-md-8 col-lg-5">
-            <div class="block h-100">
+            <div class="block h-100" [ngClass]="{ 'p-0': isMobile }">
                 <div class="block-content">
                     <form method="post" action="#" class="login-form">	
                         <h2 class="title text-uppercase fs-26">Inicia sesión</h2>

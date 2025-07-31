@@ -748,9 +748,9 @@
                 <input id="prTearm" name="tearm" type="checkbox" value="tearm" required />
                 <label for="prTearm"> I agree with the </label><a href="#" class="ms-1 text-link">Terms &amp; conditions</a>
             </div>
-            <div class="minicart-action d-flex mt-3">
-                <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn-dark-ld w-50 me-1 text-uppercase ">Ver carrito</a>
-                <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout btn-dark-ld w-50 ms-1 text-uppercase"> Comenzar pedido</a>
+            <div class="minicart-action d-flex flex-lg-row flex-column mt-3">
+                <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn-dark-ld w-50 me-1 text-uppercase mb-2" [ngClass]="{ 'w-100': isMobile }">Ver carrito</a>
+                <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout mb-2 btn-dark-ld w-50 ms-lg-1 text-uppercase" [ngClass]="{ 'w-100': isMobile }" > Comenzar pedido</a>
             </div>
         </div>
     </div>

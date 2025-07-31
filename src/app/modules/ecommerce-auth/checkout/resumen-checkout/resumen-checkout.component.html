@@ -95,7 +95,7 @@
             <div class="address-card mt-0 h-100">
               <ng-container *ngIf="listAddresses.length == 0; else allShowListAddress">
                 <div class="d-flex justify-content-start align-items-center">
-                  <div class="d-flex flex-column">
+                  <div class="d-flex flex-column" [ngClass]="{ 'w-100': isMobile }">
                     <h3 class="header-title mb-0 text-uppercase">
                       Libreta de direcciones
                     </h3>
