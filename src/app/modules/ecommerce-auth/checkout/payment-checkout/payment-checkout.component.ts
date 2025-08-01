@@ -166,8 +166,6 @@ export class PaymentCheckoutComponent implements OnInit {
       }
     };
 
-    console.log(payload);
-
     // Guarda el payload antes de redirigir
     this.checkoutService.setSalePayload(payload);
 

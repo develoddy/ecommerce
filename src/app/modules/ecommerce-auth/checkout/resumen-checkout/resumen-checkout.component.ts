@@ -95,6 +95,7 @@ export class ResumenCheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.verifyAuthenticatedUser();
     this.currentDataCart();
+    this.checkDeviceType();
     setTimeout(() => {
       this.loadLoading();
       setTimeout(() => {
