@@ -3,30 +3,33 @@
 
 <!--Newsletter Modal-->
     <div class="newsletter-modal modal fade" id="cookie_modal" tabindex="-1" aria-hidden="true">           
-        <div class="modal-dialog modal-lg modal-dialog-centered p-0">
-            <div class="modal-content border-0">
-                <div class="modal-header border-bottom-0 d-none">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog modal-lg modal-dialog-centered p-0" [ngClass]="{'ms-4': isMobile, 'me-4': isMobile}">
+            <div class="modal-content border-0 py-4">
+                <div class="modal-header border-0" [ngClass]="{ 'px-5': isDesktop }">
+                    <h5 class="modal-title text-uppercase">Tu privacidad es importante para nosotros</h5>
+                    <button type="button" class="btn-close d-none" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">    
+                <div class="modal-body" [ngClass]="{'p-0': isMobile, 'px-2': isDesktop, 'py-0': isDesktop}">    
                     <div class="newsletter-wrap d-flex flex-column">
-                        <div class="newsltr-text text-start">
+                        <div class="newsltr-text text-start" [ngClass]="{'py-2': isMobile, 'py-0': isDesktop}">
                             <div class="wraptext mw-100">
-                                <p class="text">
-                                    Utilizamos cookies propias y de terceros para fines analíticos y para mostrarte publicidad y contenido personalizado en base a un perfil elaborado a partir de tus hábitos de navegación. Puedes aceptar todas las cookies o gestionar tus preferencias en el panel de configuración. Consulta más información en <a class="fw-normal text-decoration-underline" href="#"  onclick="return false;" (click)="gotoPoliticaCookie()" >Política de cookies</a>.
+                                <p class="text fw-light" style="line-height: 1.3 !important;">
+                                    Utilizamos cookies propias y de terceros para fines analíticos y para mostrarte publicidad y contenido personalizado en base a un perfil elaborado a partir de tus hábitos de navegación. Puedes aceptar todas las cookies o gestionar tus preferencias en el panel de configuración. Consulta más información en <a class="fw-bold text-decoration-underline" href="#" onclick="return false;" (click)="gotoPoliticaCookie()" >Política de cookies</a>.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer d-flex justify-content-between border-top-0">
-                    <!-- Enlace alineado a la izquierda -->
-                    <a href="/configurar-preferencias" onclick="return false;" class="text-black text-decoration-underline">Configurar preferencias</a>
-                    
-                    <!-- Botones alineados a la derecha -->
-                    <div class="d-flex">
-                    <button type="button" class="btn-outline-white-ld text-uppercase me-2" data-bs-dismiss="modal" (click)="rejectCookies()">Rechazar</button>
-                    <button type="button" class="btn-dark-ld text-uppercase" (click)="acceptCookies()">Aceptar</button>
+                <div class="modal-footer border-top-0">
+                    <div class="d-flex justify-content-end" [ngClass]="{'flex-column' : isMobile , 'w-100' : isMobile}">
+                        <div class="d-flex" [ngClass]="{'flex-column' : isMobile, 'me-3' : isDesktop, 'flex-row' : isDesktop, 'align-self-center':isDesktop}">
+                            <a href="#" onclick="return false;" class="fw-normal text-decoration-underline" [ngClass]="{'text-center': isMobile, 'mb-3': isMobile}">Configurar preferencias</a>
+                        </div>
+                        <div class="d-flex" [ngClass]="{'flex-column' : isMobile , 'flex-row' : isDesktop}">
+                            <button type="button" class="btn-outline-white-ld text-uppercase me-2" [ngClass]="{'mb-3' : isMobile}" data-bs-dismiss="modal" (click)="rejectCookies()">Rechazar</button>
+                            <button type="button" class="btn-dark-ld text-uppercase" (click)="acceptCookies()">Aceptar</button>
+                        </div>
+                        
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, HostListener } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { BodyClassService } from './services/body-class.service';
@@ -26,6 +26,11 @@ export class AppComponent implements AfterViewInit {
   locale: string = "";
   country: string = "";  
   private modalInstance: any;
+  isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
+  width: number = 100; 
+  height: number = 100; 
 
   constructor(
     private translate: TranslateService, 
@@ -63,6 +68,7 @@ export class AppComponent implements AfterViewInit {
     this.headerEventsService.forceLogin$.subscribe(() => {
       this.handleForceLogin();
     });
+    this.checkDeviceType();
   }
 
   handleForceLogin() {
@@ -81,9 +87,29 @@ export class AppComponent implements AfterViewInit {
   }
 
   gotoPoliticaCookie() {
-
     this.router.navigate(['/', this.locale, this.country, 'shop', 'privacy-policy']);
     this.modalInstance?.hide();
   }
+
+  private checkDeviceType(): void {
+    const width = window.innerWidth;
+    this.isMobile = width <= 480;
+    this.isTablet = width > 480 && width <= 768;
+    this.isDesktop = width > 768;
+
+    // Ajusta el tamaño de la imagen según el tipo de dispositivo
+    if (this.isMobile) {
+        this.width = 80;  // tamaño para móviles
+        this.height = 80; // tamaño para móviles
+    } else {
+        this.width = 100; // tamaño por defecto
+        this.height = 100; // tamaño por defecto
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+    onResize(event: Event): void {
+      this.checkDeviceType(); // Verifica el tamaño de la pantalla
+  } 
 }
 
