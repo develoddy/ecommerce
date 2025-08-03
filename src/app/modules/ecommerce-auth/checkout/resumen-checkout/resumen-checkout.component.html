@@ -8,7 +8,7 @@
         [ngClass]="{ 'px-5': isDesktop }"
       >
         <!-- Tipo de envío -->
-        <div class="mb-4">
+        <div class="mb-5">
           <h3 class="mb-0 text-uppercase mb-3">Tipo de envío</h3>
           <div class="d-flex flex-row mb-3">
             <div class="p-5 border border-dark me-3">
@@ -78,14 +78,20 @@
             </div>
           </div>
         </div>
-
+        
         <!-- Shipping rates -->
-        <div class="d-flex flex-row mb-lg-5 mb-3">
-          <p>
-            <span class="fw-bold me-2">Entrega:</span
-            ><time datetime="2025-4-9">viernes, 9 may</time> -
-            <time datetime="2025-4-14">miércoles, 14 may</time>
-          </p>
+        <div class="d-flex flex-row align-items-center mb-lg-5 mb-3 d-none">
+          <h3 class="fw-bold text-uppercase mb-0">
+            Entrega:
+            <span class="fw-normal text-capitalize">
+              <ng-container *ngIf="entregaUnica">
+                {{ fechaEntregaLabel }}
+              </ng-container>
+              <ng-container *ngIf="!entregaUnica">
+                {{ fechaEntregaMin }} - {{ fechaEntregaMax }}
+              </ng-container>
+            </span>
+          </h3>
         </div>
 
         <!--Address-->
@@ -133,7 +139,7 @@
 
                   <!-- Mostrar la lista de direcciones -->
                   <div class="address-book-section" [class.d-none]="loading">
-                    <div class="top-sec d-flex mb-3 d-flex justify-content-between" [class.d-none]="loading">
+                    <div class="top-sec d-flex mb-2 d-flex justify-content-between" [class.d-none]="loading">
                       <h3 class="mb-0 text-uppercase">Datos de envío</h3>
                       <a
                         href="#"
@@ -153,8 +159,47 @@
                       <ng-container *ngIf="selectedAddress">
                         <div class="address-select-box active">
                           <div class="address-box bg-block">
+                            <div class="d-flex flex-row justify-content-between mb-3">
+                              <div class="d-flex flex-row">
+                                <span class="d-flex flex-row">
+                                  <svg
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    class="Icon_icon-content-1__kPDLF"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    xml:space="preserve"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M19 20V9.3l.7.5.6-.8L12 2.9 9 5.1V3H6v4.3L3.7 9l.6.8.7-.5V20H3v1h18v-1zM7 4h1v1.8l-1 .8zM6 8.6l6-4.4 6 4.4V12H6zM11 20v-4h2v4zm-1-5v5H6v-7h12v7h-4v-5z"
+                                    ></path>
+                                    <path
+                                      d="M12 7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 3c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1"
+                                    ></path>
+                                  </svg>
+                                </span>
+                                <span class="px-2 fw-bold">Domicilio</span>
+                                <span class="fw-bold">GRATIS</span>
+                              </div>
+                            </div>
+                            <div class="mb-3">
+                              <!-- Shipping rates -->
+                              <p class="fw-bold text-uppercase mb-0">
+                                Entrega:
+                                <span class="fw-normal text-capitalize">
+                                  <ng-container *ngIf="entregaUnica">
+                                    {{ fechaEntregaLabel }}
+                                  </ng-container>
+                                  <ng-container *ngIf="!entregaUnica">
+                                    {{ fechaEntregaMin }} - {{ fechaEntregaMax }}
+                                  </ng-container>
+                                </span>
+                              </p>
+                            </div>
+
                             <div class="top d-flex-justify-center justify-content-between">
-                              <p class="m-0 fw-light12">{{selectedAddress.name + " " + selectedAddress.surname}}</p>
+                              <p class="m-0 fw-light">{{selectedAddress.name + " " + selectedAddress.surname}}</p>
                             </div>
                             <div class="middle lh-1">
                               <div class="address mb-1">
@@ -870,7 +915,6 @@
       </div>
     </ng-container>
     
-    
     <ng-template #showAddress>
       <div class="col-12 col-sm-12 col-md-7 col-lg-8 d-flex flex-column justify-content-start">
         <!-- <h3>Tu carrito está vacío</h3> -->
@@ -1093,6 +1137,7 @@
             </div>
           </div>
         </div>
+        <!-- Cart List -->
         <div class="col-12 order-0 order-md-2">
           <!-- Carts List -->
           <div class="row">
@@ -1228,6 +1273,7 @@
             </div>
           </div>
         </div>
+        <!-- End Cart List -->
       </div>
     </div>
   </div>

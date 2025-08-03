@@ -20,7 +20,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer border-top-0">
+                <div class="modal-footer border-top-0" [ngClass]="{'px-5':isDesktop}">
                     <div class="d-flex justify-content-end" [ngClass]="{'flex-column' : isMobile , 'w-100' : isMobile}">
                         <div class="d-flex" [ngClass]="{'flex-column' : isMobile, 'me-3' : isDesktop, 'flex-row' : isDesktop, 'align-self-center':isDesktop}">
                             <a href="#" onclick="return false;" class="fw-normal text-decoration-underline" [ngClass]="{'text-center': isMobile, 'mb-3': isMobile}">Configurar preferencias</a>

@@ -12,8 +12,6 @@
 
 <div id="steps3">
 
-
-
   <div class="row p-lg-5">
     <!-- ======== Columna de la izquierda ======== -->
     <div
@@ -70,104 +68,18 @@
       <!--Shipping address-->
       <div class="block payment-methods pb-0 mb-4 p-0">
         <div class="block-content">
-          <h3 class="title mb-0 text-uppercase d-none">Dirección de envío</h3>
-          <div class="payment-accordion-radio d-none">
-            <div class="accordion" id="accordionExample">
-              <div class="accordion-item card mb-2">
-                <div class="card-header d-none" id="headingShippingOne">
-                  <button
-                    class="card-link"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseShippingOne"
-                    aria-expanded="true"
-                    aria-controls="collapseShippingOne"
-                  >
-                    <span class="customRadio clearfix mb-0">
-                      <input
-                        id="paymentRadioShipping1"
-                        value=""
-                        name="shipping"
-                        type="radio"
-                        class="radio"
-                        checked="checked"
-                      />
-                      <label for="paymentRadioShipping1" class="mb-0"
-                        >Dirección de envío</label
-                      >
-                    </span>
-                  </button>
-                </div>
-                <div id="collapseShippingOne">
-                  <div class="card-body px-0">
-                    <fieldset>
-                      <div class="row">
-                        <div
-                          class="form-group col-12 col-sm-6 col-md-6 col-lg-6"
-                        >
-                          <label
-                            >Envío Seleccionado
-                            <span class="required">*</span></label
-                          >
-                          <select
-                            name="country_id"
-                            class="form-control rounded"
-                            (change)="onAddressChange($event)"
-                          >
-                            <option value="">Por favor seleccione</option>
-                            <!-- <ng-container *ngFor="let list_address of listAddressClients; let i=index"> -->
-                            <ng-container
-                              *ngFor="
-                                let list_address of listAddresses;
-                                let i = index
-                              "
-                            >
-                              <option [value]="i">
-                                {{
-                                  list_address.name +
-                                    " " +
-                                    list_address.surname +
-                                    " | " +
-                                    list_address.address
-                                }}
-                              </option>
-                            </ng-container>
-                          </select>
-                          <div
-                            class="form-text text-danger mt-0"
-                            *ngIf="validMessage"
-                          >
-                            {{ errorOrSuccessMessage }}
-                          </div>
-                        </div>
-                      </div>
-                    </fieldset>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- Mostrar la lista de direcciones -->
           <div
             class="address-book-section"
             [class.d-none]="loading"
             *ngIf="this.selectedAddress"
           >
-            <!-- <div class="address-book-section" [class.d-none]="loading"> -->
             <div class="top-sec mb-3 d-flex justify-content-between">
               <h3 class="mb-0 text-uppercase">
                 Dirección de envío
               </h3>
               <div>
-                <a href="#" onclick="return false;" class="text-decoration-underline fw-bold" (click)="gotoResumen()">Editar</a>                      
-                <!-- <button
-                  type="button"
-                  class="btn-dark-ld text-uppercase"
-                  (click)="gotoResumen()"
-                >
-                  Editar
-                </button> -->
+                <a href="#" onclick="return false;" class="text-decoration-underline fw-bold" (click)="gotoResumen()">Editar</a>
               </div>
             </div>
             <div class="row">

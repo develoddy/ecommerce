@@ -73,6 +73,26 @@ export class ResumenCheckoutComponent implements OnInit {
   width: number = 100; // valor por defecto
   height: number = 100; // valor por defecto
 
+  shippingRate: number = 0;
+  fechaEntregaMin: string = '';
+  fechaEntregaMax: string = '';
+  shippingMethod: string = '';
+  fechaEntregaMinISO: string = '';
+  fechaEntregaMaxISO: string = '';
+
+  fechaEntregaLabel: string = '';
+  fechaEntregaISO: string = '';
+  entregaUnica: boolean = false;
+
+  fallbackAddress = {
+    address: 'Gran Vía, 1',
+    ciudad: 'Madrid',
+    pais: 'España',
+    zipcode: '28013'
+  };
+  
+  usandoFallback: boolean = false;
+
   constructor(
     public _authEcommerce: EcommerceAuthService,
     public _authService: AuthService,
@@ -105,21 +125,141 @@ export class ResumenCheckoutComponent implements OnInit {
     }, 1000);
   }
 
+  // loadShippingRateWithAddress(address: any, isFallback: boolean = false) {
+  loadShippingRateWithAddress(address: any, items: {variant_id: number, quantity: number}[], isFallback: boolean = false) {
+
+    console.log("loadShippingRateWithAddress: ", items);
+    
+
+     // Si address es un array, tomamos el primero
+  const addressObj = Array.isArray(address) ? address[0] : address;
+
+    // Si la dirección está incompleta, no seguimos
+    if (
+      !addressObj ||
+      !addressObj.address ||
+      !addressObj.ciudad ||
+      !addressObj.zipcode ||
+      !addressObj.pais
+    ) {
+      console.warn("Dirección incompleta:", addressObj);
+      this.shippingRate = 0;
+      this.shippingMethod = '';
+      this.fechaEntregaMin = '';
+      this.fechaEntregaMax = '';
+      return;
+    }
+
+    console.log("addressObj: ", addressObj);
+
+    this.address = addressObj.address;
+    this.usandoFallback = isFallback;
+
+    const countryMap: Record<string, string> = {
+      'España': 'ES',
+      'Spain': 'ES',
+      'France': 'FR',
+      'Francia': 'FR',
+      'Germany': 'DE',
+      'Alemania': 'DE',
+      'Italy': 'IT',
+      'Italia': 'IT',
+      'Portugal': 'PT',
+      'Países Bajos': 'NL',
+      'Netherlands': 'NL',
+      'Bélgica': 'BE',
+      'Austria': 'AT',
+      'Suecia': 'SE',
+      'Dinamarca': 'DK',
+      'Finlandia': 'FI',
+      'Noruega': 'NO',
+      'Irlanda': 'IE',
+      'Polonia': 'PL',
+      'Grecia': 'GR'
+      // Puedes agregar más si los necesitas
+    };
+
+    // Lista de países permitidos
+    const allowedCountries = ['ES', 'FR', 'DE', 'IT', 'PT', 'NL', 'BE', 'AT', 'SE', 'DK', 'FI', 'NO', 'IE', 'PL', 'GR'];
+    const countryCode = countryMap[address.pais as string] || 'ES';
+
+    if (!allowedCountries.includes(countryCode)) {
+      console.warn("País no permitido:", countryCode);
+      this.shippingRate = 0;
+      this.shippingMethod = '';
+      this.fechaEntregaMin = '';
+      this.fechaEntregaMax = '';
+      return;
+    }
+
+    const payload = {
+      recipient: {
+        address1: addressObj.address,
+        city: addressObj.ciudad,
+        country_code: countryMap[address.pais as string] || 'ES',
+        zip: addressObj.zipcode,
+      },
+      items: items, // Aquí pasas el array completo de productos con variantes y cantidades
+      currency: 'EUR',
+      locale: 'es_ES'
+    };
+
+    this._authEcommerce.getShippingRates(payload).subscribe({
+      next: (res:any) => {
+        console.log("Respuesta shipping rate:", res);
+        const rate = res.result?.[0];
+        if (rate) {
+          this.shippingRate = parseFloat(rate.rate);
+          const fechaMin = this.formatearFechaEntrega(rate.minDeliveryDate);
+          const fechaMax = this.formatearFechaEntrega(rate.maxDeliveryDate);
+
+          if (rate.minDeliveryDate === rate.maxDeliveryDate) {
+            this.fechaEntregaLabel = fechaMin.label;
+            this.fechaEntregaISO = fechaMin.datetime;
+            this.entregaUnica = true;
+          } else {
+            this.fechaEntregaMin = fechaMin.label;
+            this.fechaEntregaMax = fechaMax.label;
+            this.fechaEntregaMinISO = fechaMin.datetime;
+            this.fechaEntregaMaxISO = fechaMax.datetime;
+            this.entregaUnica = false;
+          }
+
+          this.shippingMethod = rate.name; // "Envío estándar..."
+        } else {
+          this.shippingRate = 0;
+          this.shippingMethod = '';
+          this.fechaEntregaMin = '';
+          this.fechaEntregaMax = '';
+        }
+      },
+      error: (err) => {
+      console.error("Error al calcular tarifas de envío", err);
+        this.shippingRate = 0;
+        this.shippingMethod = '';
+        this.fechaEntregaMin = '';
+        this.fechaEntregaMax = '';
+      }
+    });
+  }
+
+  formatearFechaEntrega(fecha: string): { label: string, datetime: string } {
+    const date = new Date(fecha);
+      return {
+      label: date.toLocaleDateString('es-ES', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'short'
+      }).toLowerCase(),
+      datetime: date.toISOString().split('T')[0]
+    };
+  }
+
   private loadLoading() {
     this.subscriptionService.setShowSubscriptionSection(false);
     this.subscriptions = this._authEcommerce.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
-  }
-
-  private currentDataCart() {
-    this.subscriptions.add(
-      this._cartService.currenteDataCart$.subscribe((resp:any) => {
-        this.listCarts = resp;
-        this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
-        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-      })
-    );
   }
 
   private verifyAuthenticatedUser(): void {
@@ -165,7 +305,6 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   restoreSelectedAddress(list: any[], storageKey: string) {
-
     // 1. Buscar dirección habitual en db
     const habitual = list.find(addr => addr.usual_shipping_address === true);
     if (habitual) {
@@ -191,6 +330,30 @@ export class ResumenCheckoutComponent implements OnInit {
       this.selectedAddressId = list[0].id;
       this.selectedAddress = list[0];
     }
+    
+    // Generar items para envío
+    const items = this.listCarts.map((item: any) => ({
+      variant_id: item.variedad.variant_id,
+      quantity: item.cantidad
+    }));
+
+    // Aquí llamas a loadShippingRateWithAddress con dirección y los items
+    if (this.selectedAddress) { // si ya tienes la dirección cargada
+      
+      this.loadShippingRateWithAddress(this.listAddressClients || this.listAddressGuest, items);
+    }
+  }
+
+  private currentDataCart() {
+    this.subscriptions.add(
+      this._cartService.currenteDataCart$.subscribe((resp:any) => {
+        this.listCarts = resp;
+        this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+      })
+    );
+
+    
   }
   
   navigateToHome() {

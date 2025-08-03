@@ -93,7 +93,7 @@ label { margin-bottom:5px; }
 */
 html, button, input, select, textarea { font-family:'sans-serif', sans-serif; }
 input, textarea, .form-control { padding:10px 15px; }
-input, button, select, textarea, .form-control { font-size:14px; font-family: "Zen Kaku Gothic Antique", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #171717; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
+input, button, select, textarea, .form-control { font-size:16px; font-family: "Zen Kaku Gothic Antique", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #171717; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
 input:focus, input:active, button:focus, button:active, select:focus, select:active, textarea:focus, textarea:active, .form-control:focus { outline:none; border-color:#131313; }
 input, select, textarea { width: 100%; }
 input, select { height:40px; }
@@ -2376,6 +2376,13 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 
 .product-three-loadmore .item,.product-four-loadmore .item, .product-listview-loadmore .item,
 .blog-listview-loadmore .blog-article { display: none; }
+
+.time-aligned {
+  line-height: 1;
+  vertical-align: baseline;
+  display: inline-block;
+}
+
 
 .category-image { background-color:#f7f7f7; }
 .category-image .image { width:100px; min-width:100px; }

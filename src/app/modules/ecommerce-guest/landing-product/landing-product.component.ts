@@ -198,6 +198,20 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   loadShippingRateWithAddress(address: any, isFallback: boolean = false) {
+
+    // Si la dirección está incompleta, no seguimos
+    if (!address?.address || !address?.ciudad || !address?.zipcode || !address?.pais) {
+      console.warn("Dirección incompleta:", address);
+      this.shippingRate = 0;
+      this.shippingMethod = '';
+      this.fechaEntregaMin = '';
+      this.fechaEntregaMax = '';
+      return;
+    }
+
+    console.log(address);
+    
+
     this.address = address.address;
     this.usandoFallback = isFallback;
 
@@ -207,8 +221,36 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       'France': 'FR',
       'Francia': 'FR',
       'Germany': 'DE',
-      // ...
+      'Alemania': 'DE',
+      'Italy': 'IT',
+      'Italia': 'IT',
+      'Portugal': 'PT',
+      'Países Bajos': 'NL',
+      'Netherlands': 'NL',
+      'Bélgica': 'BE',
+      'Austria': 'AT',
+      'Suecia': 'SE',
+      'Dinamarca': 'DK',
+      'Finlandia': 'FI',
+      'Noruega': 'NO',
+      'Irlanda': 'IE',
+      'Polonia': 'PL',
+      'Grecia': 'GR'
+      // Puedes agregar más si los necesitas
     };
+
+    // Lista de países permitidos
+    const allowedCountries = ['ES', 'FR', 'DE', 'IT', 'PT', 'NL', 'BE', 'AT', 'SE', 'DK', 'FI', 'NO', 'IE', 'PL', 'GR'];
+    const countryCode = countryMap[address.pais as string] || 'ES';
+
+    if (!allowedCountries.includes(countryCode)) {
+      console.warn("País no permitido:", countryCode);
+      this.shippingRate = 0;
+      this.shippingMethod = '';
+      this.fechaEntregaMin = '';
+      this.fechaEntregaMax = '';
+      return;
+    }
 
     const payload = {
       recipient: {
@@ -235,9 +277,20 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
           this.fechaEntregaMin = this.formatearFechaEntrega(rate.minDeliveryDate); // "2025-05-13"
           this.fechaEntregaMax = this.formatearFechaEntrega(rate.maxDeliveryDate); // "2025-05-13"
           this.shippingMethod = rate.name; // "Envío estándar..."
+        } else {
+          this.shippingRate = 0;
+          this.shippingMethod = '';
+          this.fechaEntregaMin = '';
+          this.fechaEntregaMax = '';
         }
       },
-      error: (err) => console.error("Error al calcular tarifas de envío", err)
+      error: (err) => {
+        console.error("Error al calcular tarifas de envío", err);
+        this.shippingRate = 0;
+        this.shippingMethod = '';
+        this.fechaEntregaMin = '';
+        this.fechaEntregaMax = '';
+      }
     });
 
   }

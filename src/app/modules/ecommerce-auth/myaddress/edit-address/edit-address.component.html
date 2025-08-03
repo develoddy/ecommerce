@@ -122,7 +122,7 @@
                                         <!-- Button register o update -->
                                         <div class="row justify-content-center">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <button type="submit" class="btn btn-secondary me-1 w-100 py-3" (click)="store()">
+                                                <button type="submit" class="btn-dark-ld text-uppercase me-1" (click)="store()">
                                                     <ng-container *ngIf="!loading">Guardar dirección</ng-container>
                                                 </button>
                                                 <p class="mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p> 

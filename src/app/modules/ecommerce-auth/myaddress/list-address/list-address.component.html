@@ -61,12 +61,12 @@
                                         <div class="row g-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 justify-content-center">
                                             <ng-container *ngFor="let list_address of listAddressClients; let i=index">
                                                 <div class="address-select-box active">
-                                                    <div class="address-box bg-block">
+                                                    <div class="address-box bg-block d-flex flex-column">
                                                         <div class="top d-flex-justify-center justify-content-between mb-3">
                                                             <h5 class="m-0 fw-bold">{{ list_address.name +' '+ list_address.surname }}</h5>
                                                             <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Casa</span></span>
                                                         </div>
-                                                        <div class="middle">
+                                                        <div class="middle flex-grow-1">
                                                             <div class="address">
                                                                 <p> {{ list_address.address }}</p>
                                                             </div>
@@ -74,15 +74,17 @@
                                                                 <p> {{ list_address.zipcode }} {{ list_address.poblacion }}, <span class="text-uppercase">{{ list_address.ciudad }}</span> <br/></p>
                                                             </div>
                                                             <div class="address">
-                                                                <p>Tel. {{ list_address.phone }}</p>
+                                                                <p>Tel. (+34) {{ list_address.phone }}</p>
                                                             </div>
                                                             <div class="form-text px-2 mt-3 text-dark" style="width: fit-content !important; background-color: #f3f3f3;" *ngIf="list_address.usual_shipping_address">Dirección de envío habitual</div>
                                                         </div>
                                                         <div class="bottom d-flex-justify-center justify-content-between">
                                                             <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'myaddresses', list_address.id, 'edit']">
-                                                                <button type="button" class="bottom-btn btn btn-gray btn-sm text-uppercase">Editar</button>
+                                                                <button type="button" class="btn-dark-ld text-uppercase">Editar</button>
                                                             </a>
-                                                            <button type="button" class="bottom-btn btn btn-gray btn-sm text-uppercase" (click)="removeAddressSelected(list_address)">Eliminar</button>
+                                                            <a href="#" onclick="return false;" (click)="removeAddressSelected(list_address)">
+                                                                <button type="button" class="btn-dark-ld text-uppercase" >Eliminar</button>
+                                                            </a>                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -92,7 +94,7 @@
 
                                     <div class="top-sec d-flex-justify-center justify-content-center mt-5">
                                         <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'myaddresses', 'add']">
-                                            <button type="button" class="btn btn-primary btn-lg px-5 text-uppercase">Añadir dirección</button>
+                                            <button type="button" class="btn-dark-ld text-uppercase">Añadir dirección</button>
                                         </a>
                                     </div>
                                 </ng-template>

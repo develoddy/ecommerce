@@ -626,7 +626,7 @@
     .btn-sm { padding: 8px 15px; }
     .btn.rounded-pill { padding-left: 20px; padding-right: 20px; }
     .btn-link, .btn-brd { padding: 0; }
-    input, button, select, textarea, .form-control { font-size: 13px; }
+    input, button, select, textarea, .form-control { font-size: 16px; }
     input, select, .input-group > .form-control, .input-group > .btn { height: 40px; }
     .small-hide { display: none !important; }
     .section-md { padding-top: 30px; padding-bottom: 30px; }
