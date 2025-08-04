@@ -84,6 +84,19 @@ export class PaymentCheckoutComponent implements OnInit {
   selectedPaymentMethod: 'card' | 'paypal' = 'card';
   paypalRendered: boolean = false;  
   disablePayments: boolean = false;
+
+  shippingRate: number = 0;
+  fechaEntregaMin: string = '';
+  fechaEntregaMax: string = '';
+  shippingMethod: string = '';
+  fechaEntregaMinISO: string = '';
+  fechaEntregaMaxISO: string = '';
+
+  fechaEntregaLabel: string = '';
+  fechaEntregaISO: string = '';
+  entregaUnica: boolean = false;
+
+   usandoFallback: boolean = false;
   
 
   constructor(
@@ -102,7 +115,6 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
     this.loadSPINER();
     this.verifyAuthenticatedUser();
     this.loadCurrentDataCart();
@@ -112,6 +124,129 @@ export class PaymentCheckoutComponent implements OnInit {
       actionNetxCheckout($);
     }, 150);
 
+  }
+
+  loadShippingRateWithAddress(address: any, items: {variant_id: number, quantity: number}[], isFallback: boolean = false) {
+    
+    // Si address es un array, tomamos el primero
+    const addressObj = Array.isArray(address) ? address[0] : address;
+
+    // Si la dirección está incompleta, no seguimos
+    if (
+      !addressObj ||
+      !addressObj.address ||
+      !addressObj.ciudad ||
+      !addressObj.zipcode ||
+      !addressObj.pais
+    ) {
+      console.warn("Dirección incompleta:", addressObj);
+      this.shippingRate = 0;
+      this.shippingMethod = '';
+      this.fechaEntregaMin = '';
+      this.fechaEntregaMax = '';
+      return;
+    }
+
+    this.address = addressObj.address;
+    this.usandoFallback = isFallback;
+
+    const countryMap: Record<string, string> = {
+      'España': 'ES',
+      'Spain': 'ES',
+      'France': 'FR',
+      'Francia': 'FR',
+      'Germany': 'DE',
+      'Alemania': 'DE',
+      'Italy': 'IT',
+      'Italia': 'IT',
+      'Portugal': 'PT',
+      'Países Bajos': 'NL',
+      'Netherlands': 'NL',
+      'Bélgica': 'BE',
+      'Austria': 'AT',
+      'Suecia': 'SE',
+      'Dinamarca': 'DK',
+      'Finlandia': 'FI',
+      'Noruega': 'NO',
+      'Irlanda': 'IE',
+      'Polonia': 'PL',
+      'Grecia': 'GR'
+      // Puedes agregar más si los necesitas
+    };
+
+    // Lista de países permitidos
+    const allowedCountries = ['ES', 'FR', 'DE', 'IT', 'PT', 'NL', 'BE', 'AT', 'SE', 'DK', 'FI', 'NO', 'IE', 'PL', 'GR'];
+    const countryCode = countryMap[address.pais as string] || 'ES';
+
+    if (!allowedCountries.includes(countryCode)) {
+      console.warn("País no permitido:", countryCode);
+      this.shippingRate = 0;
+      this.shippingMethod = '';
+      this.fechaEntregaMin = '';
+      this.fechaEntregaMax = '';
+      return;
+    }
+
+    const payload = {
+      recipient: {
+        address1: addressObj.address,
+        city: addressObj.ciudad,
+        country_code: countryMap[address.pais as string] || 'ES',
+        zip: addressObj.zipcode,
+      },
+      items: items, // Aquí pasas el array completo de productos con variantes y cantidades
+      currency: 'EUR',
+      locale: 'es_ES'
+    };
+
+    this._authEcommerce.getShippingRates(payload).subscribe({
+      next: (res:any) => {
+        const rate = res.result?.[0];
+        if (rate) {
+          this.shippingRate = parseFloat(rate.rate);
+          const fechaMin = this.formatearFechaEntrega(rate.minDeliveryDate);
+          const fechaMax = this.formatearFechaEntrega(rate.maxDeliveryDate);
+
+          if (rate.minDeliveryDate === rate.maxDeliveryDate) {
+            this.fechaEntregaLabel = fechaMin.label;
+            this.fechaEntregaISO = fechaMin.datetime;
+            this.entregaUnica = true;
+          } else {
+            this.fechaEntregaMin = fechaMin.label;
+            this.fechaEntregaMax = fechaMax.label;
+            this.fechaEntregaMinISO = fechaMin.datetime;
+            this.fechaEntregaMaxISO = fechaMax.datetime;
+            this.entregaUnica = false;
+          }
+
+          this.shippingMethod = rate.name; // "Envío estándar..."
+        } else {
+          this.shippingRate = 0;
+          this.shippingMethod = '';
+          this.fechaEntregaMin = '';
+          this.fechaEntregaMax = '';
+        }
+      },
+      error: (err) => {
+      console.error("Error al calcular tarifas de envío", err);
+        this.shippingRate = 0;
+        this.shippingMethod = '';
+        this.fechaEntregaMin = '';
+        this.fechaEntregaMax = '';
+      }
+    });
+  }
+
+  formatearFechaEntrega(fecha: string): { label: string, datetime: string } {
+    const date = new Date(fecha);
+      return {
+      label: date.toLocaleDateString('es-ES', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'short'
+      }).toLowerCase(),
+      datetime: date.toISOString().split('T')[0]
+    };
   }
 
   onPaymentMethodChange() {
@@ -132,12 +267,16 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   async payWithStripe() {
+    console.log('1. payWithStripe');
+    
     //this.disablePayments = true;
     const stripe = await loadStripe(environment.stripePublicKey);
     if (!stripe) {
       alert('Stripe no pudo cargarse');
       return;
     }
+
+    console.log('2. payWithStripe');
 
     if (!this.listCarts || this.listCarts.length === 0) {
       alert("El carrito está vacío.");
@@ -149,6 +288,8 @@ export class PaymentCheckoutComponent implements OnInit {
       this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
       return;
     }
+
+    console.log('3. payWithStripe');
 
     const payload = {
       cart    : this.listCarts,
@@ -165,6 +306,9 @@ export class PaymentCheckoutComponent implements OnInit {
         address   : this.address    ,
       }
     };
+
+    console.log(payload);
+    
 
     // Guarda el payload antes de redirigir
     this.checkoutService.setSalePayload(payload);
@@ -410,7 +554,11 @@ export class PaymentCheckoutComponent implements OnInit {
     if (habitual) {
       this.selectedAddressId = habitual.id;
       this.selectedAddress = habitual;
-      this.addressClienteSelected(this.selectedAddress);
+      if (this.selectedAddress) {
+        this.addressClienteSelected(this.selectedAddress);
+        this.generateShippingRate(this.selectedAddress);
+      }
+      
       return;
     }
 
@@ -430,8 +578,27 @@ export class PaymentCheckoutComponent implements OnInit {
     if (list.length > 0) {
       this.selectedAddressId = list[0].id;
       this.selectedAddress = list[0];
+      if (this.selectedAddress) {
+        this.addressClienteSelected(this.selectedAddress);
+        this.generateShippingRate(this.selectedAddress);
+      }
     }
   }
+
+  generateShippingRate(selectedAddress: Address | null = null) {
+    // Generar items para envío
+    const items = this.listCarts.map((item: any) => ({
+      variant_id: item.variedad.variant_id,
+      quantity: item.cantidad
+    }));
+
+    // si ya tienes la dirección cargada
+    if ( selectedAddress ) { 
+      // Llamar a loadShippingRateWithAddress con dirección y los items
+      this.loadShippingRateWithAddress(selectedAddress, items);
+    }
+  }
+
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);

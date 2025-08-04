@@ -275,7 +275,7 @@ p:last-child { margin-bottom:0; }
 .btn-transparent-ld:hover {background: linear-gradient(135deg, #2e2e2e, #444) !important;transform: translateY(-2px) scale(1.02) !important;box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;}
 .btn-transparent-ld:active {transform: scale(0.98) !important;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;}
 
-.btn, .btn-primary {font-family: "Zen Kaku Gothic Antique", sans-serif; background-color:#131313; color:#ffffff; border:1px solid #131313; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; font-size:14px; font-weight:600; line-height:normal; white-space:normal; opacity:1; outline:none !important; box-shadow:none !important; -ms-transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; transition:all 0.3s ease-in-out; }
+.btn, .btn-primary {font-family: "Zen Kaku Gothic Antique", sans-serif; background-color:#131313 !important; color:#ffffff !important; border:1px solid #131313; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; font-size:14px; font-weight:600; line-height:normal; white-space:normal; opacity:1; outline:none !important; box-shadow:none !important; -ms-transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; transition:all 0.3s ease-in-out; }
 .btn:hover, .btn:focus { background-color:#131313; color:#ffffff; border-color:#131313; text-decoration:none; opacity:1; }
 
 .btn-secondary,.btn-secondary:focus { background-color:#131313; color:#ffffff; border:1px solid #131313; }
@@ -2852,13 +2852,13 @@ a.logo {
 /* Product Sticky Bottom Cart */
 .stickyCart { display:none; background-color:#fff; color:#ffffff; position:fixed; border-top: 1px solid #ccc; bottom:0; left:0; right:0; z-index:99; width:100%; padding:10px 0; }
 .stickyCart .product-featured-img { max-width:50px; }
-.stickyCart .stickyOptions .selectedOpt, .stickyCart .selectbox { position:relative; background-color:#333333; color:#ffffff;border:1px solid #535353; padding:0 30px 0 15px; height:40px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:200px; cursor:pointer; display:flex; align-items:center; }
+.stickyCart .stickyOptions .selectedOpt, .stickyCart .selectbox { position:relative; background-color:#000; color:#ffffff;border:1px solid #535353; padding:0 30px 0 15px; height:52px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:200px; cursor:pointer; display:flex; align-items:center; }
 .stickyCart .stickyOptions .selectedOpt:after { content:"\ea45"; font-family:"annimex-icons"; font-size:14px; position:absolute; top:9px; right:10px; }
 .stickyCart .stickyOptions ul { position:absolute; bottom:115%; left:0; display:none; list-style:none; min-width:100%; max-height:300px; overflow:auto; background-color:#333333; margin:0 0; }
 .stickyCart .stickyOptions ul li { font-size:90%; overflow:hidden; border-bottom:1px solid #353535; padding:7px 12px; white-space:nowrap; text-overflow:ellipsis; cursor:pointer; }
 .stickyCart .stickyOptions ul li.soldout { opacity:0.5; text-decoration:line-through; }
-.stickyCart .qtyField .qtyBtn { background:transparent; color:#ffffff; height:40px; }
-.stickyCart .qtyField .qty { background:#333333; color:#ffffff; border-color:#535353; height:40px; }
+.stickyCart .qtyField .qtyBtn { background:transparent; color:#fff; height:40px; }
+.stickyCart .qtyField .qty { background:#000; color:#ffffff; border-color:#535353; height:40px; }
 .stickyCart .qtyField .qty:focus { border-color:#848484; }
 .stickyCart .btn { padding: 8px 20px; }
 

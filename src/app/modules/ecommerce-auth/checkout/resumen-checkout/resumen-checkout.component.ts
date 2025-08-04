@@ -125,14 +125,10 @@ export class ResumenCheckoutComponent implements OnInit {
     }, 1000);
   }
 
-  // loadShippingRateWithAddress(address: any, isFallback: boolean = false) {
   loadShippingRateWithAddress(address: any, items: {variant_id: number, quantity: number}[], isFallback: boolean = false) {
-
-    console.log("loadShippingRateWithAddress: ", items);
     
-
-     // Si address es un array, tomamos el primero
-  const addressObj = Array.isArray(address) ? address[0] : address;
+    // Si address es un array, tomamos el primero
+    const addressObj = Array.isArray(address) ? address[0] : address;
 
     // Si la dirección está incompleta, no seguimos
     if (
@@ -149,8 +145,6 @@ export class ResumenCheckoutComponent implements OnInit {
       this.fechaEntregaMax = '';
       return;
     }
-
-    console.log("addressObj: ", addressObj);
 
     this.address = addressObj.address;
     this.usandoFallback = isFallback;
@@ -206,7 +200,6 @@ export class ResumenCheckoutComponent implements OnInit {
 
     this._authEcommerce.getShippingRates(payload).subscribe({
       next: (res:any) => {
-        console.log("Respuesta shipping rate:", res);
         const rate = res.result?.[0];
         if (rate) {
           this.shippingRate = parseFloat(rate.rate);
@@ -310,6 +303,9 @@ export class ResumenCheckoutComponent implements OnInit {
     if (habitual) {
       this.selectedAddressId = habitual.id;
       this.selectedAddress = habitual;
+      if (this.selectedAddress) {
+        this.generateShippingRate(this.selectedAddress);
+      }
       return;
     }
 
@@ -329,18 +325,23 @@ export class ResumenCheckoutComponent implements OnInit {
     if (list.length > 0) {
       this.selectedAddressId = list[0].id;
       this.selectedAddress = list[0];
+      if (this.selectedAddress) {
+        this.generateShippingRate(this.selectedAddress);
+      }
     }
-    
+  }
+
+  generateShippingRate(selectedAddress: Address | null = null) {
     // Generar items para envío
     const items = this.listCarts.map((item: any) => ({
       variant_id: item.variedad.variant_id,
       quantity: item.cantidad
     }));
 
-    // Aquí llamas a loadShippingRateWithAddress con dirección y los items
-    if (this.selectedAddress) { // si ya tienes la dirección cargada
-      
-      this.loadShippingRateWithAddress(this.listAddressClients || this.listAddressGuest, items);
+    // si ya tienes la dirección cargada
+    if ( selectedAddress ) { 
+      // Llamar a loadShippingRateWithAddress con dirección y los items
+      this.loadShippingRateWithAddress(selectedAddress, items);
     }
   }
 
@@ -421,7 +422,6 @@ export class ResumenCheckoutComponent implements OnInit {
   removeAllCart(user_id: any) {
     this._cartService.deleteAllCart(user_id).subscribe(
       (resp: any) => {
-        console.log(resp.message_text);
         this._cartService.resetCart();
     }, (error) => {
         console.error("Error al eliminar el carrito:", error);
@@ -571,7 +571,6 @@ export class ResumenCheckoutComponent implements OnInit {
   
     const selected = this.listAddresses.find(addr => addr.id === this.selectedAddressId);
     if (selected) {
-
       // 1) Guarda en el servicio de checkout
       this.checkoutService.setSelectedAddress(selected);
       this.selectedAddress = selected;
@@ -585,9 +584,7 @@ export class ResumenCheckoutComponent implements OnInit {
         const userId = this.CURRENT_USER_AUTHENTICATED._id; // Asegúrate que esté accesible _authEcommerce
         this._authEcommerce.setAsUsualShippingAddress(this.selectedAddressId, userId).subscribe({
           next: () => {
-            console.log("Dirección marcada como habitual");
-      
-            // 🔄 Recargar lista de direcciones
+            // Recargar lista de direcciones
             this.loadAddresses(); // <-- tu método que llama al backend y actualiza this.listAddresses
           },
           error: (err) => console.error("Error al actualizar dirección habitual", err)
@@ -710,9 +707,7 @@ export class ResumenCheckoutComponent implements OnInit {
       phone     : this.phone,
       usual_shipping_address: this.usual_shipping_address,
     };
-
-    console.log("369-> data", data);
-  
+      
     // VERIFICAR SI SE ESTÁ MODIFICANDO EN USUARIO REGISTRADO O INVITADO
     this.CURRENT_USER_AUTHENTICATED ? this.updateAddressClient(data) : this.updateAddressGuest(data);
   }

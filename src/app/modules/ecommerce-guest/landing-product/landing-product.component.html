@@ -1500,7 +1500,7 @@
                 <div class="product-featured-img">
                     <img class="blur-up lazyload" [attr.data-src]="firstImage" [src]="firstImage" alt="product" width="120" height="170" />
                 </div>
-                <div class="sticky-title ms-2 ps-1 text-secondary fw-bold text-uppercase ls-1 pe-5" style="font-size: 12;">{{ product_selected.title }}</div>
+                <div class="sticky-title ms-2 ps-1 text-secondary fw-bold text-uppercase  pe-5" style="font-size: 12;">{{ product_selected.title }}</div>
                 <div class="stickyOptions position-relative" [ngClass]="{'border border-danger': tallaError}">
                     <!-- <div class="selectedOpt">Red / S - <span class="money">$130.00</span></div> -->
                     <div class="selectedOpt">Seleccionar</div>
@@ -1512,12 +1512,12 @@
                         </ng-container>
                     </ul>
                 </div>
-                <div class="qtyField mx-2" [ngClass]="{'border border-danger': cantidadError}">
+                <div class="qtyField mx-2 bg-black" [ngClass]="{'border border-danger': cantidadError}">
                     <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
-                    <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty" />
+                    <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty border-0" />
                     <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
                 </div>
-                <button type="submit" name="add" class="btn btn-secondary product-form-cart-submit" (click)="storeCart()">
+                <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit text-uppercase" [ngClass]="{'w-25': isDesktop}" (click)="storeCart()">
                     <span>Añadir al carrito</span>
                 </button>
             </form>

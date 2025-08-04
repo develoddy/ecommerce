@@ -106,19 +106,27 @@
                           ></path>
                         </svg>
                       </span>
-                      <span class="px-2">Domicilio</span>
-                      <span class="">GRATIS</span>
+                      <span class="px-2 fw-bold">Domicilio</span>
+                      <span class="fw-bold">GRATIS</span>
                     </div>
                   </div>
+
+                  <!-- Shipping rates -->
                   <div class="mb-3">
-                    <p class="fw-light">
-                      <span class="fw-bold text-uppercase">Entrega:</span
-                      ><time datetime="2025-4-9" class="ms-1"
-                        >viernes, 9 may</time
-                      >
-                      - <time datetime="2025-4-14">miércoles, 14 may</time>
+                    <p class="fw-bold text-uppercase mb-0">
+                        Entrega:
+                        <span class="fw-light text-capitalize">
+                          <ng-container *ngIf="entregaUnica">
+                              {{ fechaEntregaLabel }}
+                          </ng-container>
+                          <ng-container *ngIf="!entregaUnica">
+                              {{ fechaEntregaMin }} - {{ fechaEntregaMax }}
+                          </ng-container>
+                        </span>
                     </p>
                   </div>
+                  <!-- End Shipping rates -->
+
                   <div
                     class="top d-flex-justify-center justify-content-between"
                   >
@@ -1055,8 +1063,6 @@
                 </ng-container>
 
                 <ng-template #loadingStripe>
-                  <!-- <span class="spinner-border spinner-border-sm" role="status"></span>
-                  Procesando... -->
                   <span class="loading-spinner">
                     <div class="sp sp-bars"></div>
                   </span> 
