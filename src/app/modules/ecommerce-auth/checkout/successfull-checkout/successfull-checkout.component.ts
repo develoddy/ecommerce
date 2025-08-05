@@ -74,6 +74,9 @@ export class SuccessfullCheckoutComponent implements OnInit {
   width: number = 100; // valor por defecto
   height: number = 100; // valor por defecto
 
+  minDeliveryDate: string | null = null;
+  maxDeliveryDate: string | null = null;
+
   constructor(
     public _authEcommerce       : EcommerceAuthService  ,
     public _authService         : AuthService           ,
@@ -200,6 +203,11 @@ export class SuccessfullCheckoutComponent implements OnInit {
         this.checkoutService.setSaleSuccess(true);
         this._cartService.resetCart();
         this.checkoutService.setSaleSuccess(true);
+
+        // 🆕 Guardar fechas de entrega estimada si existen
+        this.minDeliveryDate = resp?.deliveryEstimate?.min || null;
+        this.maxDeliveryDate = resp?.deliveryEstimate?.max || null;
+
         this.saleData = resp;
         this.successPayStripe();
       },
@@ -209,6 +217,19 @@ export class SuccessfullCheckoutComponent implements OnInit {
       }
     );
   }
+
+  formatearFechaEntrega(fecha: string): { label: string, datetime: string } {
+    const date = new Date(fecha);
+      return {
+      label: date.toLocaleDateString('es-ES', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'short'
+      }).toLowerCase(),
+      datetime: date.toISOString().split('T')[0]
+    };
+  }
+
 
    calculateTotal( cart: any[] ): number {
     return cart.reduce(( sum, item ) => {
@@ -225,17 +246,6 @@ export class SuccessfullCheckoutComponent implements OnInit {
         year: 'numeric' 
     });
   }
-
-  /*private verifyAuthenticatedUser(): void {
-    this._authEcommerce._authService.user.subscribe(user => {
-      if ( user ) {
-        this.CURRENT_USER_AUTHENTICATED = user;
-      } else {
-        this.CURRENT_USER_AUTHENTICATED = null;
-        this.isLastStepActive_1 = true;
-      }
-    });
-  }*/
 
   private verifyAuthenticatedUser(): void {
     this._authEcommerce._authService.user.subscribe(user => {
@@ -306,6 +316,21 @@ export class SuccessfullCheckoutComponent implements OnInit {
   }
 
   getFormattedPrice(price: any) {
+    const parsed = parseFloat(price);
+    if (isNaN(parsed)) {
+      return { integerPart: "0", decimalPart: "00" };
+    }
+    const [integerPart, decimalPart] = parsed.toFixed(2).split('.');
+    return { integerPart, decimalPart };
+  }
+
+  getFormattedPriceOLD(price: any) {
+
+    // 🔒 Protección contra null, undefined o cualquier valor "falsy"
+    if (price === null || price === undefined) {
+      return { integerPart: "0", decimalPart: "00" };
+    }
+
     if (typeof price === 'string') {
       price = parseFloat(price); // Convertir a número
     }

@@ -134,9 +134,6 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-
-    
-
     // Resetear errores antes de la validación
     this.errorName = !this.name;
     this.errorEmail = !this.email;

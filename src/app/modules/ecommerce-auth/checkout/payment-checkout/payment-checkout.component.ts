@@ -128,10 +128,10 @@ export class PaymentCheckoutComponent implements OnInit {
 
   loadShippingRateWithAddress(address: any, items: {variant_id: number, quantity: number}[], isFallback: boolean = false) {
     
-    // Si address es un array, tomamos el primero
+    /** SI ADDRESS ES UN ARRAY, ENTONCES TOMAMOS EL PRIMERO */
     const addressObj = Array.isArray(address) ? address[0] : address;
 
-    // Si la dirección está incompleta, no seguimos
+    /** SI LA DIRECCIÓN ESTÁ INCOMPLETA, NO SEGUIMOS */
     if (
       !addressObj ||
       !addressObj.address ||
@@ -150,6 +150,7 @@ export class PaymentCheckoutComponent implements OnInit {
     this.address = addressObj.address;
     this.usandoFallback = isFallback;
 
+    /** ARRAY DE PAISES DE EUROPA */
     const countryMap: Record<string, string> = {
       'España': 'ES',
       'Spain': 'ES',
@@ -174,10 +175,11 @@ export class PaymentCheckoutComponent implements OnInit {
       // Puedes agregar más si los necesitas
     };
 
-    // Lista de países permitidos
+    /** LISTA DE PAISES PERMITIDOS */
     const allowedCountries = ['ES', 'FR', 'DE', 'IT', 'PT', 'NL', 'BE', 'AT', 'SE', 'DK', 'FI', 'NO', 'IE', 'PL', 'GR'];
     const countryCode = countryMap[address.pais as string] || 'ES';
 
+    /** VERIFICA SI EL PAIS ESTÁ DENTRO DE LA UNIÓN EUROPEA */
     if (!allowedCountries.includes(countryCode)) {
       console.warn("País no permitido:", countryCode);
       this.shippingRate = 0;
@@ -187,20 +189,24 @@ export class PaymentCheckoutComponent implements OnInit {
       return;
     }
 
+    /** SE CONFIGURA EL PAYLOAD */
     const payload = {
       recipient: {
-        address1: addressObj.address,
-        city: addressObj.ciudad,
-        country_code: countryMap[address.pais as string] || 'ES',
-        zip: addressObj.zipcode,
+        address1     : addressObj.address,
+        city         : addressObj.ciudad,
+        country_code : countryMap[address.pais as string] || 'ES',
+        zip          : addressObj.zipcode,
       },
-      items: items, // Aquí pasas el array completo de productos con variantes y cantidades
-      currency: 'EUR',
-      locale: 'es_ES'
+      items    : items, // AQUI SE PASA EL ARRAY COMPLETO DE PRODUCTOS CON VIARIANTES Y CANTIDADES
+      currency : 'EUR',
+      locale   : 'es_ES'
     };
 
+    /** LLAMAR AL SERIVIO GET SHIPPING RATES - BACKEND */
     this._authEcommerce.getShippingRates(payload).subscribe({
       next: (res:any) => {
+        console.log("---> DEBBUG getShippingRates: ", res);
+        
         const rate = res.result?.[0];
         if (rate) {
           this.shippingRate = parseFloat(rate.rate);
@@ -306,9 +312,6 @@ export class PaymentCheckoutComponent implements OnInit {
         address   : this.address    ,
       }
     };
-
-    console.log(payload);
-    
 
     // Guarda el payload antes de redirigir
     this.checkoutService.setSalePayload(payload);
@@ -548,21 +551,21 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   restoreSelectedAddress(list: any[], storageKey: string) {
-    // 1. Buscar dirección habitual en db
+
+    /** 1. BUSCAR DIRECCION HABITUAL EN DB **/
     const habitual = list.find(addr => addr.usual_shipping_address === true);
-    
-    if (habitual) {
+    if( habitual ) {
       this.selectedAddressId = habitual.id;
-      this.selectedAddress = habitual;
-      if (this.selectedAddress) {
-        this.addressClienteSelected(this.selectedAddress);
-        this.generateShippingRate(this.selectedAddress);
+      this.selectedAddress   = habitual;
+      if ( this.selectedAddress ) {
+        this.generateShippingRate( this.selectedAddress );
+        this.addressClienteSelected( this.selectedAddress );
       }
-      
       return;
     }
 
-    // 2. Si no hay habitual, buscar en sessionStorage
+    /** 2. SI NO HAY DIRECCION HABITUAL, 
+    ENTONCES BUSCA EN SESSION STORAGE **/
     const savedAddressId = sessionStorage.getItem(storageKey);
     if (savedAddressId) {
       const parsedId = parseInt(savedAddressId, 10);
@@ -574,31 +577,31 @@ export class PaymentCheckoutComponent implements OnInit {
       }
     }
     
-     // 3. Fallback: usar la primera del array
-    if (list.length > 0) {
+    /** 3. FALLBACK: USAR LA PRIMERA DIRECCIÓN DEL ARRAY **/
+    if( list.length > 0 ) {
       this.selectedAddressId = list[0].id;
       this.selectedAddress = list[0];
-      if (this.selectedAddress) {
-        this.addressClienteSelected(this.selectedAddress);
-        this.generateShippingRate(this.selectedAddress);
+      if( this.selectedAddress ) {
+        this.generateShippingRate( this.selectedAddress );
+        this.addressClienteSelected( this.selectedAddress );
       }
     }
   }
 
   generateShippingRate(selectedAddress: Address | null = null) {
-    // Generar items para envío
-    const items = this.listCarts.map((item: any) => ({
+ 
+    /* GENERAR ITEMS PARA ENVÍO */
+    const items = this.listCarts.map(( item: any ) => ({
       variant_id: item.variedad.variant_id,
       quantity: item.cantidad
     }));
 
-    // si ya tienes la dirección cargada
+    /* SI YA ESTÁ LA DIRECCIÓN CARGADA */
     if ( selectedAddress ) { 
-      // Llamar a loadShippingRateWithAddress con dirección y los items
+      /* SE LLAMA A LOAD SHIPPING PASANDOLE LA DIRECCIÓN CARGADA + LOS ITEMS */
       this.loadShippingRateWithAddress(selectedAddress, items);
     }
   }
-
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
