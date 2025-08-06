@@ -203,10 +203,20 @@ export class ResumenCheckoutComponent implements OnInit {
         const rate = res.result?.[0];
         if (rate) {
           this.shippingRate = parseFloat(rate.rate);
-          const fechaMin = this.formatearFechaEntrega(rate.minDeliveryDate);
-          const fechaMax = this.formatearFechaEntrega(rate.maxDeliveryDate);
 
-          if (rate.minDeliveryDate === rate.maxDeliveryDate) {
+          const fechaMinRaw = new Date(rate.minDeliveryDate);
+          const fechaMaxRaw = new Date(rate.maxDeliveryDate);
+
+          /** 🚀 AÑADIR MARGEN DE +9 DÍAS */
+          const fechaMaxConMargen = new Date(fechaMaxRaw);
+          fechaMaxConMargen.setDate(fechaMaxConMargen.getDate() + 7);
+
+          //const fechaMin = this.formatearFechaEntrega(rate.minDeliveryDate);
+          //const fechaMax = this.formatearFechaEntrega(rate.maxDeliveryDate);
+          const fechaMin = this.formatearFechaEntrega(fechaMinRaw.toISOString());
+          const fechaMax = this.formatearFechaEntrega(fechaMaxConMargen.toISOString());
+
+          if (fechaMin.label === fechaMax.label) { //if (rate.minDeliveryDate === rate.maxDeliveryDate) {
             this.fechaEntregaLabel = fechaMin.label;
             this.fechaEntregaISO = fechaMin.datetime;
             this.entregaUnica = true;
