@@ -9,8 +9,8 @@ import { URL_SERVICE } from 'src/app/config/config';
   providedIn: 'root'
 })
 export class TokenService {
-  private accessTokenSubject = new BehaviorSubject<string | null>(sessionStorage.getItem('access_token'));
-  private refreshTokenSubject = new BehaviorSubject<string | null>(sessionStorage.getItem('refresh_token'));
+  private accessTokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('access_token'));
+  private refreshTokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('refresh_token'));
   //private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
     isRefreshing = false;
@@ -31,9 +31,9 @@ export class TokenService {
   set accessToken(token: string | null) {
     this.accessTokenSubject.next(token);
     if (token) {
-      sessionStorage.setItem('access_token', token);
+      localStorage.setItem('access_token', token);
     } else {
-      sessionStorage.removeItem('access_token');
+      localStorage.removeItem('access_token');
     }
   }
 
@@ -46,23 +46,23 @@ export class TokenService {
   set refreshToken(token: string | null) {
     this.refreshTokenSubject.next(token);
     if (token) {
-      sessionStorage.setItem('refresh_token', token);
+      localStorage.setItem('refresh_token', token);
     } else {
-      sessionStorage.removeItem('refresh_token');
+      localStorage.removeItem('refresh_token');
     }
   }
 
 handleLogout(): void {
     const country = this.localizationService.country;
     const locale = this.localizationService.locale;
-    sessionStorage.removeItem('access_token');
-    sessionStorage.removeItem('refresh_token');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
   }
 
    refreshingToken(): Observable<string> {
   
-      const refreshToken = sessionStorage.getItem('refresh_token');
+      const refreshToken = localStorage.getItem('refresh_token');
       const URL = URL_SERVICE + "users/refresh-token";
   
       if ( !refreshToken ) {

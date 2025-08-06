@@ -10,14 +10,18 @@ export class CookieConsentService {
   constructor() { }
 
   hasUserConsented(): boolean {
-    return sessionStorage.getItem(this.COOKIE_KEY) !== null;
+    return localStorage.getItem(this.COOKIE_KEY) !== null;
   }
 
   setConsent(consent: 'accepted' | 'rejected') {
-    sessionStorage.setItem(this.COOKIE_KEY, consent);
+    localStorage.setItem(this.COOKIE_KEY, consent);
   }
 
   getConsent(): 'accepted' | 'rejected' | null {
-    return sessionStorage.getItem(this.COOKIE_KEY) as any;
+    return localStorage.getItem(this.COOKIE_KEY) as any;
+  }
+
+  clearConsent() {
+    localStorage.removeItem(this.COOKIE_KEY);
   }
 }

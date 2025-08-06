@@ -12,7 +12,7 @@ import { LocalizationService } from 'src/app/services/localization.service';
 export class AuthService {
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
-  private loadingSubject = new BehaviorSubject<boolean>(false); // Para manejar el estado de carga
+  private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
   public accessTokenSubject = new BehaviorSubject<string | null>(this.getAccessToken());
   public accessToken$ = this.accessTokenSubject.asObservable();
@@ -23,9 +23,9 @@ export class AuthService {
   userGuest = this.userGuestSubject.asObservable();
   
   constructor(
-    private _http: HttpClient, 
-    private _router: Router, 
-    private localizationService: LocalizationService
+    private _http               : HttpClient, 
+    private _router             : Router, 
+    private localizationService : LocalizationService
   ) {
     if(!this.isAuthenticatedUser()) {
       this.addGuestLocalStorage();
@@ -34,12 +34,12 @@ export class AuthService {
   }
 
   private getAuthenticatedUser(): any {
-    const authenticatedUser = sessionStorage.getItem("user");
+    const authenticatedUser = localStorage.getItem("user");
     return authenticatedUser ? JSON.parse(authenticatedUser) : null;
   }
 
   private getGuestUser(): any {
-    const guestUser = sessionStorage.getItem("user_guest");
+    const guestUser = localStorage.getItem("user_guest");
     return guestUser ? JSON.parse(guestUser) : null;
   }
 
@@ -52,14 +52,13 @@ export class AuthService {
   }
 
   private getLocalStorage() {
-    const token = sessionStorage.getItem('access_token');
-    const storedUser = sessionStorage.getItem("user");
+    const token = localStorage.getItem('access_token');
+    const storedUser = localStorage.getItem("user");
 
     if ( storedUser ) {
       this.userSubject.next(JSON.parse(storedUser));
       this.accessTokenSubject.next(token);
-      this.token = sessionStorage.getItem("access_token");
-
+      this.token = localStorage.getItem("access_token");
     } else {
       this.token = null;
       this.userSubject.next(null);
@@ -74,27 +73,28 @@ export class AuthService {
   }
 
   public setAccessToken(accessToken:any) {
-    sessionStorage.setItem("access_token", accessToken);
-    this.accessTokenSubject.next(accessToken); // Emitir el nuevo token
+    localStorage.setItem("access_token", accessToken);
+    this.accessTokenSubject.next(accessToken); 
   }
 
   public getAccessToken(): string | null {
-    return sessionStorage.getItem('access_token');
+    return localStorage.getItem('access_token');
   }
 
   getRefreshToken(): string | null {
-    return sessionStorage.getItem('refresh_token');
+    return localStorage.getItem('refresh_token');
   }
 
   login(email: string, password: string) {
-
     this.loadingSubject.next(true);
-
     const URL = URL_SERVICE + "users/login";
-
     return this._http.post( URL, { email, password } ).pipe(
       map(( resp: any ) => {
-        if (  resp.USER_FRONTED  && resp.USER_FRONTED.accessToken && resp.USER_FRONTED.refreshToken ) {
+        if (  
+          resp.USER_FRONTED  && 
+          resp.USER_FRONTED.accessToken && 
+          resp.USER_FRONTED.refreshToken 
+        ){
           this.localStorageSave(resp.USER_FRONTED);
           this.removeUserGuestLocalStorage();
           this.deleteGuestAndAddresses();
@@ -102,15 +102,12 @@ export class AuthService {
         } else {
           return resp;
         }
-
       }),
       catchError(( error: any ) => {
         console.error(error);
         return of(error);
-
       }),
       finalize(() => {
-        // FINALIZA EL LOADING CUANDO TERMINA LA LLAMADA
         this.loadingSubject.next(false);
 
       })
@@ -118,15 +115,15 @@ export class AuthService {
   }
 
   localStorageSave(USER_FRONTED: any) {
-    sessionStorage.setItem("access_token", USER_FRONTED.accessToken);
-    sessionStorage.setItem("refresh_token", USER_FRONTED.refreshToken);
-    sessionStorage.setItem("user", JSON.stringify(USER_FRONTED.user));
+    localStorage.setItem("access_token", USER_FRONTED.accessToken);
+    localStorage.setItem("refresh_token", USER_FRONTED.refreshToken);
+    localStorage.setItem("user", JSON.stringify(USER_FRONTED.user));
     this.token = USER_FRONTED.accessToken;
     this.userSubject.next(USER_FRONTED.user);  
   }
 
   addGuestLocalStorage() {
-    const storedUserGuest = sessionStorage.getItem("user_guest");
+    const storedUserGuest = localStorage.getItem("user_guest");
     if(!storedUserGuest) {
       this.deleteGuestAndAddresses().subscribe({
         next: () => {
@@ -135,22 +132,19 @@ export class AuthService {
             user_guest: "Guest",
             name: 'Anonymous',
             guest: false,
-            session_id: this.generateSessionId(), // Usamos la función generateUniqueId() en lugar de uuidv4()
+            session_id: this.generateSessionId(),
           }
 
-          sessionStorage.setItem("user_guest", JSON.stringify(data));
+          localStorage.setItem("user_guest", JSON.stringify(data));
           this.userGuestSubject.next(data);
 
-          // Solo enviar al backend 'name' y 'session_id'
           const guestData = {
             name: data.name,
             session_id: data.session_id
           };
 
-          // Enviar datos al backend (por ejemplo, POST request)
           this.sendGuestDataToBackend(guestData);
         },
-
         error: (err) => {
           console.error("❌ Error al eliminar los guests anteriores:", err);
         }
@@ -171,22 +165,17 @@ export class AuthService {
        next: (resp: any) => {
         if (resp?.status === 200 && resp?.data) {
           const guestData = {
-            _id: resp.data.id || 0,
+            _id       : resp.data.id || 0,
             user_guest: "Guest",
-            name: resp.data.name || "Anonymous",
-            guest: false,
-            state: resp.data.state,
+            name      : resp.data.name || "Anonymous",
+            guest     : false,
+            state     : resp.data.state,
             session_id: resp.data.session_id
           };
-  
-          // ✅ Guardar en sessionStorage
-          sessionStorage.setItem("user_guest", JSON.stringify(guestData));
-  
-          // ✅ Notificar al observable
+          localStorage.setItem("user_guest", JSON.stringify(guestData));
           this.userGuestSubject.next(guestData);
         }
       },
-
       error: (err) => {
         console.error("❌ Error al registrar el invitado:", err);
       },
@@ -238,7 +227,7 @@ export class AuthService {
 
       if ( decoded.exp < currentTimestamp ) {  
         // INTENTAR REFRESCAR EL TOKEN SI HAY UN refresh_token DISPONIBLE
-        const refreshToken = sessionStorage.getItem('refresh_token');
+        const refreshToken = localStorage.getItem('refresh_token');
         if ( refreshToken ) {
 
           this.refreshToken().subscribe({
@@ -288,14 +277,14 @@ export class AuthService {
   private handleLogout(): void {
     const country = this.localizationService.country;
     const locale = this.localizationService.locale;
-    sessionStorage.removeItem('access_token');
-    sessionStorage.removeItem('refresh_token');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
   }
   
   refreshToken(): Observable<string> {
 
-    const refreshToken = sessionStorage.getItem('refresh_token');
+    const refreshToken = localStorage.getItem('refresh_token');
     const URL = URL_SERVICE + "users/refresh-token";
 
     if ( !refreshToken ) {
@@ -325,8 +314,8 @@ export class AuthService {
           console.warn("📅 REFRESH TOKEN EXPIRA EN:", new Date(decodedPayload.exp * 1000).toLocaleString());
 
           // GUARDA EL NUEVO accessToken
-          sessionStorage.setItem("access_token", response.accessToken);
-          sessionStorage.setItem('refresh_token', response.refreshToken);
+          localStorage.setItem("access_token", response.accessToken);
+          localStorage.setItem('refresh_token', response.refreshToken);
           this.accessTokenSubject.next(response.accessToken); // EMITIMOS NUEVO TOKEN A LOS QUE ESTÁN ESPERANDO
           this.isRefreshing = false;
 
@@ -356,7 +345,7 @@ export class AuthService {
   }
 
   getSessionId(): string | null {
-    const guestUser = sessionStorage.getItem("user_guest");
+    const guestUser = localStorage.getItem("user_guest");
     return guestUser ? JSON.parse(guestUser).session_id : null;
   }
 
@@ -404,17 +393,17 @@ export class AuthService {
   }
 
   logout() {
-    sessionStorage.removeItem('access_token');
-    sessionStorage.removeItem('refresh_token');
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem("user_guest");
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem("user");
+    localStorage.removeItem("user_guest");
     this.token = null;
     this.userSubject.next(null);
     this.userGuestSubject.next(null);
 
     this.deleteGuestAndAddresses().subscribe({
       next: (resp: any) => {
-          sessionStorage.removeItem("user_guest");
+          localStorage.removeItem("user_guest");
           this.addGuestLocalStorage();
       },
       error: err => {
@@ -435,7 +424,7 @@ export class AuthService {
   }
 
   removeUserGuestLocalStorage() {
-    sessionStorage.removeItem("user_guest");
+    localStorage.removeItem("user_guest");
     this.userGuestSubject.next(null);
   }
 }

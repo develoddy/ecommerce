@@ -138,7 +138,7 @@ export class LoginCheckoutComponent implements OnInit {
   }
 
   enterAsGuest() {
-    let existingGuestData = sessionStorage.getItem("user_guest");
+    let existingGuestData = localStorage.getItem("user_guest");
 
     if (existingGuestData) {
       let parsedData = JSON.parse(existingGuestData);
@@ -148,7 +148,7 @@ export class LoginCheckoutComponent implements OnInit {
       this._authEcommerce._authService.userGuestSubject.next(parsedData);
 
       // Verificar si el cambio fue exitoso antes de redirigir
-      const updatedData = JSON.parse(sessionStorage.getItem("user_guest") || '{}');
+      const updatedData = JSON.parse(localStorage.getItem("user_guest") || '{}');
       if (updatedData.guest === true) {
         console.log("---> DEBBUG: Resumen.componente > EnterGuest() if");
         

@@ -46,7 +46,7 @@ export class GuestCleanupService {
     
     
     const accessToken = localStorage.getItem("access_token");
-    const guestData = sessionStorage.getItem("user_guest");
+    const guestData = localStorage.getItem("user_guest");
 
     //if (guestData && !accessToken) {
     if (!accessToken) {
