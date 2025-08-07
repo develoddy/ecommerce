@@ -38,7 +38,6 @@ export class ResumenCheckoutComponent implements OnInit {
   email: string = '';
   phone: string = '';
   usual_shipping_address:boolean=false;
-
   address_client_selected:any = null;
   listCarts:any = [];
   totalCarts:any=null;
@@ -59,7 +58,7 @@ export class ResumenCheckoutComponent implements OnInit {
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
   status:boolean=false;
-  selectedAddressId:  number = 0; // Dirección seleccionada
+  selectedAddressId:  number = 0;
   CURRENT_USER_AUTHENTICATED:any=null;
   CURRENT_USER_GUEST:any=null;
   private subscriptions: Subscription = new Subscription();
@@ -70,16 +69,14 @@ export class ResumenCheckoutComponent implements OnInit {
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
-  width: number = 100; // valor por defecto
-  height: number = 100; // valor por defecto
-
+  width: number = 100; 
+  height: number = 100; 
   shippingRate: number = 0;
   fechaEntregaMin: string = '';
   fechaEntregaMax: string = '';
   shippingMethod: string = '';
   fechaEntregaMinISO: string = '';
   fechaEntregaMaxISO: string = '';
-
   fechaEntregaLabel: string = '';
   fechaEntregaISO: string = '';
   entregaUnica: boolean = false;

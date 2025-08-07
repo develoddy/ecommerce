@@ -33,13 +33,11 @@ export class LoginCheckoutComponent implements OnInit {
   ciudad: string = '';
   email: string = '';
   phone: string = '';
-
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
-  width: number = 100; // valor por defecto
-  height: number = 100; // valor por defecto
-  
+  width: number = 100;
+  height: number = 100; 
   address_client_selected:any = null;
   listCarts:any = [];
   totalCarts:any=null;
@@ -49,7 +47,6 @@ export class LoginCheckoutComponent implements OnInit {
   sale: any;
   saleDetails: any =[];
   isSaleSuccess = false;
-
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
@@ -57,7 +54,6 @@ export class LoginCheckoutComponent implements OnInit {
   isLastStepActive_2: boolean = false;
   isLastStepActive_3: boolean = false;
   isLastStepActive_4: boolean = false;
-
   errorAutenticate:boolean=false;
   errorMessageAutenticate:string="";
   password_identify:string = "";
@@ -65,13 +61,10 @@ export class LoginCheckoutComponent implements OnInit {
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
   status:boolean=false;
-
   CURRENT_USER_AUTHENTICATED:any=null;
   CURRENT_USER_GUEST:any=null;
-
   private subscriptions: Subscription = new Subscription();
   @Output() activate = new EventEmitter<boolean>();
-
   isPasswordVisible: boolean = false;
   locale: string = "";
   country: string = "";
@@ -93,20 +86,13 @@ export class LoginCheckoutComponent implements OnInit {
   ngAfterViewInit() {}
 
   ngOnInit(): void {
-
-    // Emitir un evento con el valor que desees
     this.activate.emit(true);
-
-    
-
     this.subscriptionService.setShowSubscriptionSection(false);
     this._authEcommerce.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
 
-    //this.checkIfAddressClientExists();
     this.verifyAuthenticatedUser();
-  
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
       this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
@@ -163,17 +149,6 @@ export class LoginCheckoutComponent implements OnInit {
     
   }
 
-  // private verifyAuthenticatedUser(): void {
-  //   this._authEcommerce._authService.user.subscribe(user => {
-  //     if ( user ) {
-  //       this.CURRENT_USER_AUTHENTICATED = user;
-  //     } else {
-  //       this.CURRENT_USER_AUTHENTICATED = null;
-  //       this.isLastStepActive_1 = true;
-  //     }
-  //   });
-  // }
-
   private verifyAuthenticatedUser(): void {
     this._authEcommerce._authService.user.subscribe(user => {
       if ( user ) {
@@ -225,7 +200,6 @@ export class LoginCheckoutComponent implements OnInit {
     }
   }
 
-
   goToNextStep() {
     this.isLastStepActive_2 = true;
     this.isLastStepActive_3 = true;
@@ -258,6 +232,30 @@ export class LoginCheckoutComponent implements OnInit {
     });
   }
 
+  public login() {
+    if ( !this.email_identify ) {
+      alertDanger("Debe ingresar el correo electrónico");
+    }
+
+    if (!this.password_identify) {
+      alertDanger("Debe ingresar la contraseña");
+    }
+
+    const subscriptionLogin = this._authService.login(this.email_identify, this.password_identify).subscribe(
+      ( resp:any ) => {
+        if ( !resp.error && resp ) {
+          setTimeout(() => {
+          this._router.navigate(['/',this.country, this.locale, 'account', 'checkout', 'resumen']);
+          }, 150);
+          this._cartService.resetCart();
+        } else {
+          this.errorAutenticate = true;
+          this.errorMessageAutenticate = resp.error.message;
+        }
+      });
+    this.subscriptions.add(subscriptionLogin);
+  }
+
   store() {
     this.address_client_selected ? this.updateAddress(): this.registerAddress();
   }
@@ -276,9 +274,9 @@ export class LoginCheckoutComponent implements OnInit {
     ) {
       this.status = false;
       this.validMessage = true;
-      this.errorOrSuccessMessage = "Rellene los campos obligatorios de la dirección de envío";
+      this.errorOrSuccessMessage = "Complete los campos obligatorios de la dirección de envío";
       this.hideMessageAfterDelay();
-      alertDanger("Rellene los campos obligatorios de la dirección de envío");
+      alertDanger("Complete los campos obligatorios de la dirección de envío");
       return;
     }
 
@@ -421,35 +419,12 @@ export class LoginCheckoutComponent implements OnInit {
   }
 
   verifyExistEmail(email: string) {
+    alert("entra en verify email");
     sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
     this._router.navigate(['/', this.country, this.locale,  'account', 'myaddresses', 'add'],{ queryParams: { email } });
   }
 
-  public login() {
-    if (!this.email_identify) {
-      alertDanger("Es necesario ingresar el email");
-    }
-
-    if (!this.password_identify) {
-      alertDanger("Es necesario ingresar el password");
-    }
-
-    const subscriptionLogin = this._authService.login(this.email_identify, this.password_identify).subscribe(
-      (resp:any) => {
-        if (!resp.error && resp) {
-          
-          setTimeout(() => {
-            //this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']).then(() => {window.location.reload();});
-          this._router.navigate(['/',this.country, this.locale, 'account', 'checkout', 'resumen']);
-          }, 150);
-          this._cartService.resetCart();
-        } else {
-          this.errorAutenticate = true;
-          this.errorMessageAutenticate = resp.error.message;
-        }
-      });
-    this.subscriptions.add(subscriptionLogin);
-  }
+  
 
   ngOnDestroy(): void {
     if (this.subscriptions) {

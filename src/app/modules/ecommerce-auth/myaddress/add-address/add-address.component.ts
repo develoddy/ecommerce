@@ -97,12 +97,19 @@ export class AddAddressComponent implements OnInit {
     } 
   }
 
-  /**
-   * REGISTRAR ADDRESS EN MODO AUTENTICADOS
-   */
+  /** Metodo para registrar direcciones de usuarios autenticados */
   private registerAddress() {
-
-    if ( !this.name || !this.surname || !this.pais || !this.address || !this.zipcode || !this.poblacion || !this.ciudad || !this.email || !this.phone ) {
+    if (
+      !this.name || 
+      !this.surname || 
+      !this.pais || 
+      !this.address || 
+      !this.zipcode || 
+      !this.poblacion || 
+      !this.ciudad || 
+      !this.email || 
+      !this.phone 
+    ) {
       this.status = false;
       this.validMessage = true;
       this.errorOrSuccessMessage = "Por favor, complete los campos obligatorios de la dirección de envío";
@@ -125,10 +132,9 @@ export class AddAddressComponent implements OnInit {
         usual_shipping_address: this.usual_shipping_address,
     };
     
-    this._ecommerceAuthService.registerAddressClient(data).subscribe( ( resp:any ) => {
-
+    this._ecommerceAuthService.registerAddressClient(data).subscribe(
+    ( resp:any ) => {
       if ( resp.status == 200 ) {
-
         this.status = true;
         this.validMessage = true;
         this.errorOrSuccessMessage = resp.message;
@@ -139,7 +145,7 @@ export class AddAddressComponent implements OnInit {
       } else {
         this.status = false;
         this.errorOrSuccessMessage = "Error al registrar la dirección.";
-        this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+        this.hideMessageAfterDelay();  // Ocultar el mensaje después de X segundos
       }
     }, error => {
       this.status = false;
