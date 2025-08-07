@@ -28,11 +28,11 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container" [ngClass]="{ 'px-0': isMobile }" >
+        <div class="container" [ngClass]="{ 'px-0': isMobile }">
             <!--Product Content-->
             <div class="product-single">
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-img mb-4 mb-md-0">
+                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 product-layout-img mb-4 mb-md-0 px-0">
                         <!-- Product Horizontal -->
                         <div class="product-details-img product-horizontal-style">
                             <!-- Product Main -->
@@ -75,11 +75,11 @@
                         </div>
                         <!-- End Product Horizontal -->
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-info px-4">
+                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 product-layout-info" [ngClass]="{'px-5':isDesktop, 'px-4':isMobile }">
                         <!-- Product Details -->
                         <div class="product-single-meta ">
                             <div class="d-flex mb-0">
-                                <h2 class="flex-grow-1 product-main-title mb-0 text-uppercase">{{ product_selected.title }}</h2>
+                                <p class="flex-grow-1 product-main-title mb-0 text-uppercase">{{ product_selected.title }}</p>
                                 <div class="product-price d-flex-center">
                                     <ng-container *ngIf="getDiscount() > 0">
                                         <span class="price old-price">{{ product_selected.price_usd }} €</span>
@@ -99,29 +99,29 @@
                             </div>
 
                             <!-- Product Info -->
-                            <div class="product-info">
-                                <p class="product-stock d-flex d-none">Disponibilidad:
-                                    <span class="pro-stockLbl ps-0 d-none">
-                                        <span class="d-flex-center stockLbl instock ">En stock</span>
-                                    </span>
-                                </p>
-                                <p class="product-vendor d-none">Proveedor:<span class="text"><a href="#">HVL</a></span></p>
-                                <p class="product-type d-none">Tipo de producto:<span class="text">Tops</span></p>
-                                <p class="product-sku text-black">REF.<span class="text">{{ product_selected.sku }}</span></p>
-                            </div>
-                            <!-- Product Reviews -->
-                            <div class="product-review d-flex-center d-none">
-                                <div class="reviewStar d-flex-center">
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
-                                    <span class="caption ms-2">{{ COUNT_REVIEW }} Reseñas</span>
+                                <div class="product-info">
+                                    <p class="product-stock d-flex d-none">Disponibilidad:
+                                        <span class="pro-stockLbl ps-0 d-none">
+                                            <span class="d-flex-center stockLbl instock ">En stock</span>
+                                        </span>
+                                    </p>
+                                    <p class="product-vendor d-none">Proveedor:<span class="text"><a href="#">HVL</a></span></p>
+                                    <p class="product-type d-none">Tipo de producto:<span class="text">Tops</span></p>
+                                    <p class="product-sku text-black">REF.<span class="text fw-normal">{{ product_selected.sku }}</span></p>
                                 </div>
-                                <a class="reviewLink d-flex-center" href="#reviews">Escribe una reseña</a>
-                            </div>
-                            <!-- End Product Reviews -->
+                                <!-- Product Reviews -->
+                                <div class="product-review d-flex-center d-none">
+                                    <div class="reviewStar d-flex-center">
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
+                                        <span class="caption ms-2">{{ COUNT_REVIEW }} Reseñas</span>
+                                    </div>
+                                    <a class="reviewLink d-flex-center" href="#reviews">Escribe una reseña</a>
+                                </div>
+                                <!-- End Product Reviews -->
                             <!-- End Product Info -->
                             <!-- Product Price -->
                             <div class="product-price d-flex-center my-3 d-none">
@@ -143,12 +143,12 @@
                         </div>
                         <!-- End Product Details -->
                         <!-- Product Form -->
-                        <form method="post" action="#" class="product-form product-form-border hidedropdown">
+                        <form method="post" action="#" class="product-form product-form-border hidedropdown mb-0 mt-0">
                             <!-- Swatches -->
                             <div class="product-swatches-option">
                                 <!-- Swatches Color -->
                                 <div class="product-item swatches-image w-100 mb-4 swatch-0 option1" data-option-index="0">
-                                    <label class="label d-flex align-items-center text-uppercase fw-normal fs-14">Color: <span class="slVariant ms-1 fw-bold">{{ selectedColor || '' }}</span></label>
+                                    <label class="label d-flex align-items-center text-uppercase fw-light fs-14 d-none">Color: <span class="slVariant ms-1 fw-normal">{{ selectedColor || '' }}</span></label>
                                     <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
                                         <ng-container *ngFor="let color of coloresDisponibles">
                                             <li class="swatch x-large available rounded" [ngClass]="getSwatchClass(color.imagen, color.color)" (click)="selectColor(color)">
@@ -191,7 +191,7 @@
                             <!-- End Swatches -->
 
                             <!-- Product Action -->
-                            <div class="product-action d-flex flex-lg-row flex-column  d-flex-wrap my-3 my-md-4">
+                            <div class="product-action d-flex flex-lg-column flex-column  d-flex-wrap my-3 my-md-4">
                                 <!-- Product Quantity -->
                                 <div class="product-form-quantity d-flex-center mb-3" [ngClass]="{'border border-danger': cantidadError}">
                                     <div class="qtyField w-100">
@@ -202,7 +202,7 @@
                                 </div>
                                 <!-- End Product Quantity -->
                                 <!-- Product Add -->
-                                <div class="product-form-submit addcart fl-1 ms-lg-3">
+                                <div class="product-form-submit addcart fl-1">
                                     <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit text-uppercase" (click)="storeCart()">
                                         <span>Añadir al carrito</span>
                                     </button>
@@ -228,23 +228,22 @@
 
                             <!-- Product Info link -->
                             <p class="infolinks d-flex-center justify-content-between">
-                                <a class="text-link wishlist" href="wishlist-style1.html" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
+                                <a class="text-link wishlist fw-light" href="wishlist-style1.html" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
                                 <a class="text-link compare d-none" href="compare-style1.html"><i class="icon anm anm-sync-ar me-2"></i> <span>Añadir para comparar</span></a>
-                                <a href="#shippingInfo-modal" class="text-link shippingInfo" data-bs-toggle="modal" data-bs-target="#shippingInfo_modal"><i class="icon anm anm-paper-l-plane me-2"></i> <span>Envío y devoluciones</span></a>
-                                <a href="#productInquiry-modal" class="text-link emaillink me-0" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>
+                                <a href="#shippingInfo-modal" class="text-link shippingInfo d-none" data-bs-toggle="modal" data-bs-target="#shippingInfo_modal"><i class="icon anm anm-paper-l-plane me-2"></i> <span>Envío y devoluciones</span></a>
+                                <a href="#productInquiry-modal" class="text-link emaillink me-0 d-none" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>
                             </p>
                             <!-- End Product Info link -->
                         </form>
                         <!-- End Product Form -->
                         <!-- Product Info -->
-                        <div class="userViewMsg featureText" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div>
+                        <div class="userViewMsg featureText d-none" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div>
                         <div class="shippingMsg featureText" *ngIf="shippingRate > 0 && fechaEntregaMin">
-                            <!-- <i class="icon anm anm-clock-r"></i>Entrega estimada entre <b id="fromDate">Lunes, 26 de agosto</b> y <b id="toDate">Viernes, 30 de agosto</b>. -->
-                            <p><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline">{{ address }}</a> </p>
+                            <p class="fw-light"><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline">{{ address }}</a> </p>
                         </div>
                         <!-- Mostrar mensaje alternativo cuando no hay tarifa -->
                         <div class="shippingMsg featureText" *ngIf="shippingRate === 0">
-                        <p>
+                        <p class="fw-normal">
                             <i class="icon anm anm-alert-circle"></i>
                             Envío no disponible para la dirección seleccionada.
                         </p>
@@ -252,7 +251,7 @@
                         <div class="freeShipMsg featureText d-none" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}30.00</span></b> Más para envío gratis</div>
                         <!-- End Product Info -->
                         <!-- Social Sharing -->
-                        <div class="social-sharing d-flex-center mt-2 lh-lg">
+                        <div class="social-sharing d-flex-center mt-2 lh-lg d-none">
                             <span class="sharing-lbl fw-600">Compartir :</span>
                             <a href="#" class="d-flex-center btn btn-link btn--share share-facebook"><i class="icon anm anm-facebook-f"></i><span class="share-title">Facebook</span></a>
                             <a href="#" class="d-flex-center btn btn-link btn--share share-twitter"><i class="icon anm anm-twitter"></i><span class="share-title">Tweet</span></a>
@@ -598,7 +597,7 @@
                 <div class="container">
                     <div class="section-header">
                         <p class="mb-1 mt-0">Descubra similares</p>
-                        <h2 class="ls-2 fs-6">Del mismo estilo</h2>
+                        <h6 class="fs-6 text-uppercase">Del mismo estilo</h6>
                     </div>
 
                     <!--Product Grid-->

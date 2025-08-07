@@ -2693,7 +2693,7 @@ a.logo {
 .product-thumb-left-style .product-thumb .slick-next:before { content:"\ea8a"; }
 .product-thumb-right-style .product-zoom-right { margin: 0 15px 0 0; }
 
-.product-main-title { color:#333333; font-size:28px; font-weight:700; margin-bottom:12px; }
+.product-main-title { color:#333333; font-size:16px; font-weight:700; margin-bottom:12px; }
 .product-main-subtitle { color:#9b9b9b; font-size:14px; margin:0 0 6px; }
 .product-main-title + .product-main-subtitle { margin: -5px 0 10px; }
 
@@ -2714,7 +2714,7 @@ a.logo {
 .featureText { margin-bottom:10px; }
 .featureText .icon { min-width:25px; font-size:16px; vertical-align:sub; text-align:left; }
 .uersView { font-size: 13px; font-weight: 700; min-width: 30px; display: inline-block; text-align: center; border-radius: 3px; background: #131313; color: #ffffff; padding: 1px 5px; margin: 0 5px 0 3px; }
-.product-form-border { border-top: 1px solid #dddddd; border-bottom: 1px solid #dddddd; padding: 15px 0 15px; margin: 20px 0 15px; }
+.product-form-border { border-top: 0px solid #dddddd; border-bottom: 0px solid #dddddd; padding: 15px 0 15px; margin: 20px 0 15px; }
 .variable-select select { height: 40px; }
 .product-two-gallery .product-labels { left: 0.5rem; top: 1.5rem; }
 
