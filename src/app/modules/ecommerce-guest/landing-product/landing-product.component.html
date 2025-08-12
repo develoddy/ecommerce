@@ -32,14 +32,14 @@
             <!--Product Content-->
             <div class="product-single">
                 <div class="row">
-                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 product-layout-img mb-4 mb-md-0 px-0">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-img mb-4 mb-md-0 px-0">
                         <!-- Product Horizontal -->
                         <div class="product-details-img product-horizontal-style">
                             <!-- Product Main -->
                             <div class="zoompro-wrap">
                                 <!-- Product Image -->
                                 <div class="zoompro-span">
-                                    <img id="zoompro" class="zoompro" [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="product" width="625" height="808" />
+                                    <img id="zoompro" class="zoompro" [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="product" width="665" height="808" />
                                 </div>
                                 <!-- End Product Image -->
                                 <!-- Product Label -->
@@ -75,11 +75,11 @@
                         </div>
                         <!-- End Product Horizontal -->
                     </div>
-                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 product-layout-info" [ngClass]="{'px-5':isDesktop, 'px-4':isMobile }">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-info" [ngClass]="{'px-4':isMobile, 'px-5': isDesktop }">
                         <!-- Product Details -->
                         <div class="product-single-meta ">
                             <div class="d-flex mb-0">
-                                <p class="flex-grow-1 product-main-title mb-0 text-uppercase">{{ product_selected.title }}</p>
+                                <h2 class="flex-grow-1 product-main-title mb-0 text-uppercase">{{ product_selected.title }}</h2>
                                 <div class="product-price d-flex-center">
                                     <ng-container *ngIf="getDiscount() > 0">
                                         <span class="price old-price">{{ product_selected.price_usd }} €</span>
@@ -193,7 +193,7 @@
                             <!-- Product Action -->
                             <div class="product-action d-flex flex-lg-column flex-column  d-flex-wrap my-3 my-md-4">
                                 <!-- Product Quantity -->
-                                <div class="product-form-quantity d-flex-center mb-3" [ngClass]="{'border border-danger': cantidadError}">
+                                <div class="product-form-quantity d-flex-center mb-3 d-none" [ngClass]="{'border border-danger': cantidadError}">
                                     <div class="qtyField w-100">
                                         <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
                                         <input type="number" name="quantity" value="1" id="qty-cart" class="product-form-input qty border-0" [ngClass]="{ 'w-100': isMobile }" />
@@ -298,7 +298,7 @@
                     <div id="description" class="tab-content" >
                         <div class="product-description mb-3">
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description"></div>
+                                <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description_en"></div>
                                 <div class="col-12 col-sm-12 col-md-4 col-lg-4">
                                     <img [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="image" width="600" height="600" />
                                 </div>
@@ -597,7 +597,7 @@
                 <div class="container">
                     <div class="section-header">
                         <p class="mb-1 mt-0">Descubra similares</p>
-                        <h6 class="fs-6 text-uppercase">Del mismo estilo</h6>
+                        <h2 class=" text-uppercase">Del mismo estilo</h2>
                     </div>
 
                     <!--Product Grid-->

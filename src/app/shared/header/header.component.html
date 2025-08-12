@@ -253,16 +253,12 @@
             <div class="logo col-4 col-sm-3 col-md-3 d-flex  align-self-center" [ngClass]="{'col-lg-4 justify-content-center': isDesktop, 'col-lg-3 justify-content-start': isMobile}">
                 <!--Mobile Toggle-->
                 <button type="button" class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none px-0" title="Menu">
-                    <!-- <i class="hdr-icon icon anm anm-times-l"></i> -->
-                    <!-- <i class="hdr-icon icon anm anm-bars-r"></i> -->
-                    <!-- <svg width="24" height="24" role="img" aria-hidden="true" class="hdr-icon icon anm anm-times-l Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="M17.354 7.354 12.707 12l4.647 4.646-.708.708L12 12.707l-4.646 4.647-.708-.708L11.293 12 6.646 7.354l.708-.708L12 11.293l4.646-4.647z"></path></svg> -->
                     <svg width="24" height="24" role="img" aria-hidden="true" class="hdr-icon icon anm anm-bars-r Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="M21 13H3v-1h18zm0-6H3v1h18zm0 10H3v1h18z"></path></svg>
-                    <!-- <small class="ls-1">Menú</small> -->
                 </button>
                 <!--End Mobile Toggle-->
-                <!-- <a class="logoImg" [href]="['/']"> -->
                 <a class="logoImg" href="#" onclick="return false;" [routerLink]="['/',country, locale, 'home']">
-                    <img src="assets/images/logo.png" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" [attr.width]="width" [attr.height]="height" />
+                    <!-- <img src="assets/images/logo-desktop.svg" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" [attr.width]="width" [attr.height]="height" /> -->
+                     <img src="assets/images/logo.svg" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" />
                 </a>
             </div>
             <!--End Logo-->
@@ -643,17 +639,18 @@
             <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i></button>
             <h4 class="fs-6 text-uppercase fw-bold">Carrito ({{ listCarts.length }})</h4>
         </div>
-        <div class="minicart-content d-flex justify-content-center">
+        <div class="minicart-content d-flex">
             <ng-container *ngIf="listCarts.length == 0; else allCarts">
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center w-100">
                     <div class="p-2 w-100 d-flex flex-column justify-content-center text-center">
                         <div class="inner mb-3 d-none">
                             <div class="bradcrumb-thumb">
                                 <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
                             </div>
                         </div>
-                        <h5 class="header-title mb-0 text-uppercase">¡Oops! Tu carrito está vacío</h5>
-                        <p>Empieza a llenarlo con cosas que te encantarán.</p>
+                        <h5 class="header-title mb-0 text-uppercase mb-3">¡Tu carrito está vacío!</h5>
+                        <p class="lh-1">Explora nuestra colección y encuentra camisetas <br> que te representen.</p>
+                        <a  class="btn-dark-ld text-uppercase"  href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" >Descubrir lo último</a>
                     </div>
                </div>
             </ng-container>

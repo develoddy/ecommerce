@@ -15,7 +15,8 @@ export class FooterComponent implements OnInit {
   showSubscriptionSection: boolean = true;
   locale: string = "";
   country: string = "";
-
+  private modalInstance: any;
+  
   constructor(
     public _router: Router,
     public _cartService: CartService,
@@ -42,6 +43,11 @@ export class FooterComponent implements OnInit {
     if ( currentUrl === '/myaddresses' || currentUrl === '/myaddresses/add' || currentUrl.includes('/edit') || currentUrl.includes('/my-account') || currentUrl.includes('/checkout') || currentUrl.includes('/registered') || currentUrl.includes('/mypurchases') ) {
       this.showSubscriptionSection = false;
     }
+  }
+
+  gotoPoliticaCookie() {
+    this._router.navigate(['/', this.locale, this.country, 'shop', 'privacy-policy']);
+    this.modalInstance?.hide();
   }
 
   private verifyAuthenticatedUser(): void {

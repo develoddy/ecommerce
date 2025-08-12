@@ -10,11 +10,13 @@
                         <div class="inner h-100">
                             <form class="customer-form ">	
                                 <div class="form-row d-flex flex-column align-items-center justify-content-center vh-100">
-                                    <div class="form-group col-12 col-lg-12 mb-5 text-center">
+                                    <div class="form-group col-12 col-lg-12 mb-4 text-center">
                                         <a class="logoImg" [href]="['/']" >
-                                            <img src="assets/images/logo-white.png" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" width="200" height="200" />
+                                            <img src="assets/images/logo-white.svg" alt="Lujandev | Tu código, tu estilo" title="Lujandev | Tu código, tu estilo" />
                                         </a>
-                                        <div class="form-text text-uppercase ls-1 text-white">Entra y descubre las últimas tendencias de moda.</div>
+                                        <div class="form-text text-uppercase ls-1 text-white mt-4">
+                                            Exprésate con ropa inspirada en el mundo del código
+                                        </div>
                                     </div>
                                     <div class="form-group col-12 col-lg-12">
                                         <label for="address_country1" class="form-label text-uppercase ls-1 form-text text-white">Selecciona un país o región</label>
@@ -26,15 +28,10 @@
                                     <div class="form-group col-12 col-lg-12">
                                         <label for="address_language" class="form-label text-uppercase ls-1 form-text text-white">Idioma</label>
                                         <select style="font-size: 15px; height: 50px;" id="address_language" [(ngModel)]="selectedLocale" name="address[language]" class="form-control border border-secondary ls-1">
-                                            <!-- <option value="" disabled selected>Idioma</option> -->
                                             <option *ngFor="let locale of availableLocales" [value]="locale.code">{{ locale.name }}</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-12 col-lg-12 mt-3">
-                                        <!-- <button  style="font-size: 15px; height: 50px; background-color: transparent;" type="submit" class="text-white w-100 border border-white text-uppercase fw-normal" (click)="gotoHome()">
-                                            Aceptar
-                                        </button> -->
-
                                         <button  type="submit" class="btn-transparent-ld text-uppercase" (click)="gotoHome()">
                                             Aceptar
                                         </button>

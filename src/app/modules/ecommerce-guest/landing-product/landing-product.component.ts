@@ -209,9 +209,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       return;
     }
 
-    console.log(address);
-    
-
     this.address = address.address;
     this.usandoFallback = isFallback;
 
@@ -346,6 +343,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       console.error("No product data available");
       return; // Salir si no hay datos de producto
     }
+    console.log("BUUGER: handleProductResponse > ", resp);
+    
     this.product_selected = resp.product;
     this.related_products = resp.related_products;
     this.SALE_FLASH = resp.SALE_FLASH;

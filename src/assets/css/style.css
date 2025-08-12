@@ -717,7 +717,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
         -webkit-transition:all 0.3s ease; transition:all 0.3s ease; max-height:600px; overflow:auto; box-shadow:0px 0px 15px rgba(0,0,0,0.1); 
     }
     #siteNav > li .megamenu ul { padding:0; list-style:none; }
-    #siteNav > li:hover > .megamenu { top:100%; opacity:1; visibility:visible; pointer-events:visible; }
+    #siteNav > li:hover > .megamenu { top:73%; opacity:1; visibility:visible; pointer-events:visible; }
     #siteNav > li .megamenu .menu-title { color:#171717; font-size:14px; text-transform:uppercase; padding:0 0 8px !important; font-weight:400; }
     #siteNav > li .megamenu li.lvl-1 li .site-nav { color:#171717; padding:3px 0; font-weight:400; }
     #siteNav > li .megamenu li.lvl-1 li .site-nav:hover { color:#424242; }
@@ -2676,7 +2676,7 @@ a.logo {
 .product-details-img .product-thumb .slick-next { right: 0px; }
 .product-details-img .product-thumb .slick-slide img { border:1px solid transparent; }
 .product-details-img .product-thumb .slick-slide.active img { border-color: #c1c1c1; }
-.product-details-img .product-buttons { position:absolute; right:10px; bottom:10px; z-index:99; }
+.product-details-img .product-buttons { position:absolute; right:10px; bottom:0px; z-index:99; }
 .product-details-img .product-buttons .btn { font-size:15px; height:36px; width:36px; text-align:center; margin-top:5px; clear:both; padding:0; }
 
 .product-thumb-left-style .thumb-left { width: 15.5%; padding: 0; margin: 0; }
@@ -2693,7 +2693,7 @@ a.logo {
 .product-thumb-left-style .product-thumb .slick-next:before { content:"\ea8a"; }
 .product-thumb-right-style .product-zoom-right { margin: 0 15px 0 0; }
 
-.product-main-title { color:#333333; font-size:16px; font-weight:700; margin-bottom:12px; }
+.product-main-title { color:#333333; font-size:28px; font-weight:700; margin-bottom:12px; }
 .product-main-subtitle { color:#9b9b9b; font-size:14px; margin:0 0 6px; }
 .product-main-title + .product-main-subtitle { margin: -5px 0 10px; }
 
