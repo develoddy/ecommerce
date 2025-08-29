@@ -810,7 +810,7 @@
     .stickyCart .product-featured-img, .stickyCart .sticky-title, .stickyCart .qtyField { display:none; }
     .stickyCart .stickyOptions { width:50%; }
     .stickyCart .stickyOptions .selectedOpt { width:100%; }
-    .stickyCart .product-form-cart-submit { width:calc(100% - 20px);  margin-left:10px; }
+    .stickyCart .product-form-cart-submit { width:calc(100% - 30px);  margin-left:10px; }
 
     .service-info .fs-5 { font-size: 16px !important; }
     .service-info h6 { font-size: 13px; }
