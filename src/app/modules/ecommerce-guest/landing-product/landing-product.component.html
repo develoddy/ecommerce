@@ -298,7 +298,7 @@
                     <div id="description" class="tab-content" >
                         <div class="product-description mb-3">
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description_en"></div>
+                                <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description_es"></div>
                                 <div class="col-12 col-sm-12 col-md-4 col-lg-4">
                                     <img [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="image" width="600" height="600" />
                                 </div>
@@ -1502,7 +1502,7 @@
                 <div class="sticky-title ms-2 ps-1 text-secondary fw-bold text-uppercase  pe-5" style="font-size: 12;">{{ product_selected.title }}</div>
                 <div class="stickyOptions position-relative" [ngClass]="{'border border-danger': tallaError}">
                     <!-- <div class="selectedOpt">Red / S - <span class="money">$130.00</span></div> -->
-                    <div class="selectedOpt">Seleccionar</div>
+                    <div class="selectedOpt text-uppercase fw-light">Seleccionar</div>
                     <ul>
                         <ng-container *ngFor="let variedad of variedades; let i = index">
                             <li class="vrOpt" data-val="31677941252156" data-no="0" [ngClass]="{ 'available': variedad.stock > 0, 'soldout': variedad.stock === 0, 'active': variedad.valor === variedad_selected?.valor}" (click)="selectedVariedad(variedad, i)">
@@ -1516,9 +1516,12 @@
                     <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty border-0" />
                     <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
                 </div>
-                <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit text-uppercase" [ngClass]="{'w-25': isDesktop}" (click)="storeCart()">
-                    <span>Añadir al carrito</span>
-                </button>
+                <div class="stickyOptions position-relative">
+                     <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit text-uppercase" [ngClass]="{'w-25': isDesktop}" (click)="storeCart()">
+                        <span class="fw-normal">Añadir</span>
+                    </button>
+                </div>
+               
             </form>
         </div>
     </div>
