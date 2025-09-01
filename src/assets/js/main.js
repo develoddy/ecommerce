@@ -292,21 +292,21 @@ function HOMEINITTEMPLATE ($, undefined) {
     /*----------------------------------
      08. Quantity Plus Minus
      -----------------------------------*/
-    function qnt_incre() {
-        $(".qtyBtn").on("click", function() {
-            var qtyField = $(this).parent(".qtyField"),
-                    oldValue = $(qtyField).find(".qty").val(),
-                    newVal = 1;
+    // function qnt_incre() {
+    //     $(".qtyBtn").on("click", function() {
+    //         var qtyField = $(this).parent(".qtyField"),
+    //                 oldValue = $(qtyField).find(".qty").val(),
+    //                 newVal = 1;
 
-            if ($(this).is(".plus")) {
-                newVal = parseInt(oldValue) + 1;
-            } else if (oldValue > 1) {
-                newVal = parseInt(oldValue) - 1;
-            }
-            $(qtyField).find(".qty").val(newVal);
-        });
-    }
-    qnt_incre();
+    //         if ($(this).is(".plus")) {
+    //             newVal = parseInt(oldValue) + 1;
+    //         } else if (oldValue > 1) {
+    //             newVal = parseInt(oldValue) - 1;
+    //         }
+    //         $(qtyField).find(".qty").val(newVal);
+    //     });
+    // }
+    // qnt_incre();
 
 
     /*-------------------------------
@@ -1523,24 +1523,24 @@ function HOMEINITTEMPLATE ($, undefined) {
     /*----------------------------
      28. Sticky Header and Product Sticky Bottom Cart
      ------------------------------ */
-    function sticky_cart() {
-        window.onscroll = function() {
-            $(window).scrollTop() > 600 && $(".stickyCart").length ? (
-                    $("body.template-product").css("padding-bottom", "70px"),
-                    $(".stickyCart").slideDown()) : ($("body.template-product").css("padding-bottom", "0"),
-                    $(".stickyCart").slideUp());
-        };
-        $(".stickyOptions .selectedOpt").on("click", function() {
-            $(".stickyOptions ul").slideToggle("fast");
-        }),
-                $(".stickyOptions .vrOpt").on("click", function(e) {
-            var t = $(this).attr("data-val"),
-                    s = $(this).attr("data-no"),
-                    a = $(this).text();
-            $(".selectedOpt").text(a), $(".stickyCart .selectbox").val(t).trigger("change"), $(".stickyOptions ul").slideUp("fast"), this.productvariants = JSON.parse(document.getElementById("ProductJson-" + i).innerHTML), $(".stickyCart .product-featured-img").attr("src", this.productvariants.variants[s].featured_image.src.replace(/(\.[^\.]*$|$)/, "_60x60$&"));
-        });
-    }
-    sticky_cart();
+    // function sticky_cart() {
+    //     window.onscroll = function() {
+    //         $(window).scrollTop() > 600 && $(".stickyCart").length ? (
+    //                 $("body.template-product").css("padding-bottom", "70px"),
+    //                 $(".stickyCart").slideDown()) : ($("body.template-product").css("padding-bottom", "0"),
+    //                 $(".stickyCart").slideUp());
+    //     };
+    //     $(".stickyOptions .selectedOpt").on("click", function() {
+    //         $(".stickyOptions ul").slideToggle("fast");
+    //     }),
+    //             $(".stickyOptions .vrOpt").on("click", function(e) {
+    //         var t = $(this).attr("data-val"),
+    //                 s = $(this).attr("data-no"),
+    //                 a = $(this).text();
+    //         $(".selectedOpt").text(a), $(".stickyCart .selectbox").val(t).trigger("change"), $(".stickyOptions ul").slideUp("fast"), this.productvariants = JSON.parse(document.getElementById("ProductJson-" + i).innerHTML), $(".stickyCart .product-featured-img").attr("src", this.productvariants.variants[s].featured_image.src.replace(/(\.[^\.]*$|$)/, "_60x60$&"));
+    //     });
+    // }
+    // sticky_cart();
 
     /*----------------------------
      29. Checkout Style2 Tabs

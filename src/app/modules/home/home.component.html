@@ -53,54 +53,33 @@
         <!--Home Slideshow-->
         <section class="slideshow slideshow-wrapper">
             <div class="home-slideshow slick-arrow-dots">
-                <div class="slide">
-                    <div class="slideshow-wrap">
-                        <picture>
-                            <source media="(max-width:767px)" srcset="assets/images/slideshow/banner-01-mbl.png" width="1150" height="800">
-                            <img class="blur-up lazyload" src="assets/images/slideshow/banner-01.png" alt="slideshow" title="" width="1920" height="795" />
-                        </picture> 
-                        <div class="container">
-                            <div class="slideshow-content slideshow-overlay middle-left">
-                                <div class="slideshow-content-in">
-                                    <div class="wrap-caption animation style1">
-                                        <p class="ss-small-title">Código y estilo</p>
-                                        <h2 class="ss-mega-title">Vístete como <br>piensas: con lógica</h2>
-                                        <p class="ss-sub-title xs-hide">Ropa diseñada para los que crean el futuro, con el máximo confort y personalidad</p>
-                                        <div class="ss-btnWrap d-flex">
+
+                <ng-container *ngFor="let slider of sliders">
+                    <div class="slide">
+                        <div class="slideshow-wrap">
+                            <picture>
+                                <source media="(max-width:767px)" [attr.srcset]="slider.imagen_mobile_url" width="1150" height="800">
+                                <img class="blur-up lazyload" [attr.src]="slider.imagen_desktop_url" [src]="slider.imagen_desktop_url" alt="slideshow" title="" width="1920" height="795" />
+                            </picture> 
+                            <div class="container">
+                                <div class="slideshow-content slideshow-overlay" [ngClass]="slider.position">
+                                    <div class="slideshow-content-in">
+                                        <div class="wrap-caption animation style1">
+                                            <p class="ss-small-title">{{ slider.subtitle || 'no hay subtitle'}}</p>
+                                            <h2 class="ss-mega-title">{{ slider.title }}</h2>
+                                            <p class="ss-sub-title xs-hide">{{ slider.description }}</p>
+                                            <div class="ss-btnWrap d-flex">
                                             <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">
                                                 <button class="btn-dark-ld text-uppercase">Descúbrelas ahora!</button>
                                             </a>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="slide">
-                    <div class="slideshow-wrap">
-                        <picture>
-                            <source media="(max-width:767px)" srcset="assets/images/slideshow/banner-02-mbl.png" width="1150" height="800">
-                            <img class="blur-up lazyload" src="assets/images/slideshow/banner-02.png" alt="slideshow" title="" width="1920" height="795" />
-                        </picture> 
-                        <div class="container">
-                            <div class="slideshow-content slideshow-overlay middle-right">
-                                <div class="slideshow-content-in">
-                                    <div class="wrap-caption animation style1">
-                                        <h2 class="ss-mega-title">Sudaderas tech <br>Comodidad en cada línea</h2>
-                                        <p class="ss-sub-title xs-hide">La mejor compañía para tus largas sesiones de programación</p>
-                                        <div class="ss-btnWrap d-flex">
-                                            <a href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">
-                                                
-                                                 <button class="btn-dark-ld text-uppercase">Descúbrelas ahora!</button>
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
                     </div>
-                </div>
+                </ng-container>
             </div>
         </section>
         <!--End Home Slideshow-->

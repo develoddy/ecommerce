@@ -62,9 +62,6 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     private seoService: SeoService,
     public _wishlistService: WishlistService,
   ) {
-   
-    
-
     // Obtenemos `locale` y `country` de la ruta actual
     this.activatedRoute.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
@@ -222,12 +219,14 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   changeQuantity(cart: any, increment: boolean): void {
     const quantityChange = increment ? 1 : -1;
 
-    if (cart.cantidad + quantityChange === 0) {
+    const newQty = parseInt(cart.cantidad, 10) + quantityChange;
+
+    if (newQty < 1) {
       alertDanger("Debes tener al menos un producto en el carrito.");
       return;
     }
 
-    cart.cantidad += quantityChange;
+    cart.cantidad = newQty; //cart.cantidad += quantityChange;
     cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
     cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
 
@@ -246,6 +245,13 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.updateUserCart(cartData);
     }
   }
+
+  validateCartQuantity(cart: any) {
+    if(cart.cantidad < 1) cart.cantidad = 1;
+    cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+    cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+  }
+
 
   // Actualizar carrito del usuario autenticado
   private updateUserCart(cartData: any): void {
@@ -351,40 +357,12 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private updateSeo(): void {
-
-
     this.seoService.updateSeo({
       title: 'Lista de carrito',
       description: 'Esta sección de carritos contiene camisetas para programadores',
       image: '' // opcional
     });
-
-    // let data = {
-    //   title: "Lista de carrito",
-    //   description: "Esta seccion de carritos contiene camisetas para programadores",
-    //   imagen: ""
-    // }
-
-    // const { title, description, imagen } =  data;
-    // const productUrl = ``;
-    // this.titleService.setTitle(`${title} | LujanDev Oficial`);
-    // this.metaService.updateTag({ name: 'description', content: description || 'Descripción del producto' });
-    // this.updateMetaTags(productUrl, title, description, imagen);
   }
-
-  // private updateMetaTags(url: string, title: string, description: string, imageUrl: string): void {
-  //   const metaTags = [
-  //     { property: 'og:title', content: title },
-  //     { property: 'og:description', content: description },
-  //     { property: 'og:image', content: imageUrl },
-  //     { property: 'og:url', content: url },
-  //     { name: 'twitter:card', content: 'summary_large_image' },
-  //     { name: 'twitter:title', content: title },
-  //     { name: 'twitter:description', content: description },
-  //     { name: 'twitter:image', content: imageUrl },
-  //   ];
-  //   metaTags.forEach((tag:any) => this.metaService.updateTag(tag));
-  // }
 
   private subscribeToWishlistData(): void {
     this.subscriptions.add(

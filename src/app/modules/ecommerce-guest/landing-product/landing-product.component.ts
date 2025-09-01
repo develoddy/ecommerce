@@ -49,7 +49,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   order_selected:any=null;
   sale_orders:any = [];
   sale_details:any = [];
-  cantidad:any=0;
+  cantidad:any=1;
   title:any=null;
   description:any=null;
   sale_detail_selected:any=null;
@@ -96,6 +96,12 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
   private subscriptions: Subscription = new Subscription();
 
+  showOptions: boolean = false;
+  showStickyCart = false;
+  //variedad_selected: any = null;
+  featuredImage: string = '';
+  //cantidad = 1;
+
   constructor(
     private cdRef: ChangeDetectorRef,
     public ecommerceGuestService: EcommerceGuestService,
@@ -136,6 +142,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnInit(): void {
+    this.showStickyCart = window.scrollY > 600;
     this.loadSPINNER();
     this.checkUserAuthenticationStatus(); 
     this.subscribeToRouteParams();
@@ -343,7 +350,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       console.error("No product data available");
       return; // Salir si no hay datos de producto
     }
-    console.log("BUUGER: handleProductResponse > ", resp);
     
     this.product_selected = resp.product;
     this.related_products = resp.related_products;
@@ -636,12 +642,28 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
     this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
   }
-  
+
+  toggleOptions() {
+    this.showOptions = !this.showOptions;
+  }
+
   selectedVariedad(variedad:any, index: number) {
     this.variedad_selected = variedad;
     this.activeIndex = index;
     this.tallaError = false;
+    this.showOptions = false;
   }
+
+  incrementQty() {
+    this.cantidad++;
+    this.cantidadError = false;
+  }
+
+  decrementQty() {
+    if (this.cantidad > 1) this.cantidad--;
+    this.cantidadError = false;
+  }
+
 
   addWishlist(product:any) {
     if(!this.currentUser) {
@@ -685,21 +707,22 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private saveCart() {
-    if ($("#qty-cart").val() == 0) {
+   if (this.cantidad <= 0) { //if ($("#qty-cart").val() == 0) {
       this.errorResponse = true;
-      this.errorMessage = "Elija una cantidad válida para añadir al carrito";
+      this.errorMessage = "Debe seleccionar al menos 1 unidad";
+      alertDanger("Debe seleccionar al menos 1 unidad");
       this.cantidadError = true;
       return;
     }
 
     if (this.product_selected.type_inventario == 2) {
       if (!this.variedad_selected) {
-        this.tallaError = true; // Establecer el error de talla
+        this.tallaError = true;
         this.errorResponse = true;
         this.errorMessage = "Por favor seleccione una talla";
         return;
       }
-      if (this.variedad_selected.stock < $("#qty-cart").val()) {
+      if (this.variedad_selected.stock < this.cantidad) { //if (this.variedad_selected.stock < $("#qty-cart").val()) {
         this.errorResponse = true;
         this.errorMessage = "La Cantidad excede el stock disponible. Elija menos unidades";
         this.cantidadError = true;
@@ -713,19 +736,23 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       product: this.product_selected._id,
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
-      cantidad: parseInt($("#qty-cart").val() as string, 10), //cantidad: $("#qty-cart").val(),
+      cantidad: this.cantidad, //parseInt($("#qty-cart").val() as string, 10), 
       variedad: this.variedad_selected ? this.variedad_selected.id : null,
       code_cupon: null,
       code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
       price_unitario: this.product_selected.price_usd,
       subtotal: this.product_selected.price_usd - this.getDiscount(),
-      total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
+      total: (this.product_selected.price_usd - this.getDiscount()) * this.cantidad //total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
     };
 
     if (this.currentUser.user_guest == "Guest") {
-      this.cartService.registerCartCache(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
+      this.cartService.registerCartCache(data).subscribe(
+        this.handleCartResponse.bind(this), this.handleCartError.bind(this)
+      );
     } else {
-      this.cartService.registerCart(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
+      this.cartService.registerCart(data).subscribe(
+        this.handleCartResponse.bind(this), this.handleCartError.bind(this)
+      );
     }
   }
 
@@ -802,10 +829,16 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.subscriptions.add(reviewUpdateSubscription);
   }
 
+  @HostListener('window:scroll', [])
+  onScroll() {
+    this.showStickyCart = window.scrollY > 600;
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    this.checkDeviceType(); // Vuelve a verificar el tamaño en caso de cambio de tamaño de pantalla
+    this.checkDeviceType();
   }
+
   
   private updateSeo(): void {
     const { title, resumen: description, imagen } = this.product_selected;

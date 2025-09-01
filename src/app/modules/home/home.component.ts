@@ -11,10 +11,8 @@ import { AuthService } from '../auth-profile/_services/auth.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { SeoService } from 'src/app/services/seo.service';
 import { CookieConsentService } from 'src/app/services/cookie-consent.service';
-//import { GuestCleanupService } from '../ecommerce-guest/_service/guestCleanup.service';
 
 declare var bootstrap: any;
-
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function LandingProductDetail($: any):any;
@@ -122,7 +120,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         return product;
       });
 
-      this.sliders = resp.sliders;
+      // Filtrar solo sliders activos (state == 1)
+      this.sliders = resp.sliders.filter((slider: any) => slider.state == 1);
+      console.log("----> SLIDERS ACTIVOS: ", this.sliders);
+      
       this.categories = resp.categories;
       // Generar slug para cada categoría sin modificar el título original
       this.categories.forEach((category:any) => {
@@ -141,10 +142,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setFirstImage();
       this.setColoresDisponibles();
       
-
       setTimeout(() => {
         this.loadSPINER();
-
         setTimeout(() => {
           if (this.FlashSale) {
             var eventCounter = $(".sale-countdown");
@@ -170,36 +169,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription?.add(listHomeSubscription);
   }
 
-  // setupCookieModal() {
-  //   const consentGiven = this.cookieConsentService.hasUserConsented();
-  //   if (!consentGiven) {
-  //     const modalElement = document.getElementById('cookie_modal');
-  //     this.modalInstance = new bootstrap.Modal(modalElement);
-  //     this.modalInstance.show();
-  //   }
-  // }
-
-  //  acceptCookies(): void {
-  //   localStorage.setItem('cookieAccepted', 'true');
-  //   const modalElement = document.getElementById('newsletter_modal');
-  //   if (modalElement) {
-  //     const modal = bootstrap.Modal.getInstance(modalElement);
-  //     modal?.hide();
-  //   }
-  // }
-
-  // acceptCookies() {
-  //   this.cookieConsentService.setConsent('accepted');
-  //   this.modalInstance?.hide();
-  // }
-
-  // rejectCookies() {
-  //   this.cookieConsentService.setConsent('rejected');
-  //   this.modalInstance?.hide();
-  // }
-
   
-
   setupSEO() {
     this.seoService.updateSeo({
       title: 'Camisetas para Programadores | Tienda Lujandev',
@@ -241,17 +211,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     return parseFloat((product.price_usd - discount).toFixed(2));
   }
 
-  // checkCookieConsent(): void {
-  //   const isCookieAccepted = localStorage.getItem('cookieAccepted');
-  //   if (!isCookieAccepted) {
-  //     const modalElement = document.getElementById('newsletter_modal');
-  //     if (modalElement) {
-  //       const modal = new bootstrap.Modal(modalElement);
-  //       modal.show();
-  //     }
-  //   }
-  // }
-
   generateSlug(title: string): string {
     return title
       .toLowerCase()                  // Convertir a minúsculas
@@ -278,25 +237,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private verifyAuthenticatedUser(): void {
-      this.subscriptions.add(
-        combineLatest([
-          this._authService.user,
-          this._authService.userGuest
-        ]).subscribe(([user, userGuest]) => {
-          this.currentUser = user || userGuest;
-        })
-      );
-    }
+    this.subscriptions.add(
+      combineLatest([
+        this._authService.user,
+        this._authService.userGuest
+      ]).subscribe(([user, userGuest]) => {
+        this.currentUser = user || userGuest;
+      })
+    );
+  }
 
-  // private verifyAuthenticatedUser(): void {
-  //   this.subscription  = this._cartService._authService.user.subscribe( user => {
-  //     if ( user ) {
-  //       this.CURRENT_USER_AUTHENTICATED = user;
-  //     } else {
-  //       this.CURRENT_USER_AUTHENTICATED = null;
-  //     }
-  //   });
-  // }
 
   navigateToProduct(slug: string, discountId?: string) {
     // Guarda el estado para hacer scroll hacia arriba
@@ -347,9 +297,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedColor = this.allTags[0][0]; // Seleccionar el primer color del primer producto
     }
   }
-
  
-  
   reinitializeSliders(): void {
     this.destroyLargeSlider();
     this.destroySmallSlider();

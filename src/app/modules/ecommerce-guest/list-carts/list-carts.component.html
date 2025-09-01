@@ -120,7 +120,13 @@
                                             <div class="cart-qty d-flex">
                                                 <div class="qtyField">
                                                     <a class="qtyBtn minus text-muted" href="#;" onclick="return false;" (click)="dec(cart)"><i class="icon anm anm-minus-r fs-5 text-black"></i></a>
-                                                    <input class="cart-qty-input qty border-0 fs-5 text-black" type="text" name="updates[]" [value]="cart.cantidad" pattern="[0-9]*" />
+                                                    <input 
+                                                    class="cart-qty-input qty border-0 fs-5 text-black" 
+                                                    type="number"
+                                                    [(ngModel)]="cart.cantidad" 
+                                                    min="1" 
+                                                    (blur)="validateCartQuantity(cart)"
+                                                />
                                                     <a class="qtyBtn plus text-muted" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r fs-5 text-black"></i></a>
                                                 </div>
                                             </div>

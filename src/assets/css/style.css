@@ -2850,7 +2850,7 @@ a.logo {
 .product-nav .price { margin-top:10px; display:block; }
 
 /* Product Sticky Bottom Cart */
-.stickyCart { display:none; background-color:#fff; color:#ffffff; position:fixed; border-top: 1px solid #ccc; bottom:0; left:0; right:0; z-index:99; width:100%; padding:10px 0; }
+.stickyCart { background-color:#fff; color:#ffffff; position:fixed; border-top: 1px solid #ccc; bottom:0; left:0; right:0; z-index:99; width:100%; padding:10px 0; }
 .stickyCart .product-featured-img { max-width:50px; }
 .stickyCart .stickyOptions .selectedOpt, .stickyCart .selectbox { position:relative; background-color:#000; color:#ffffff;border:1px solid #535353; padding:0 30px 0 15px; height:52px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:200px; cursor:pointer; display:flex; align-items:center; }
 .stickyCart .stickyOptions .selectedOpt:after { content:"\ea45"; font-family:"annimex-icons"; font-size:14px; position:absolute; top:9px; right:10px; }
