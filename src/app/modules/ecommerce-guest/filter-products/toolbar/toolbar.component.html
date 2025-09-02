@@ -1,14 +1,17 @@
 <!--Toolbar-->
 <div class="toolbar toolbar-wrapper shop-toolbar" [ngClass]="{ 'px-4': isDesktop, 'px-2': isMobile  }">
 	<div class="row align-items-center">
-		<div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-between">
+		<!-- <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-between"> -->
+		<div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item" 
+			 [ngClass]="{ 'd-flex': isDesktop, 'w-100': isDesktop || isMobile, 'justify-content-between': isDesktop }"
+		>
 			<button 
 			type="button" 
 			class="btn-dark-ld text-uppercase" 
-			[ngClass]="{ 'w-25': isDesktop }"
-			 (click)="openSidebar.emit()">Filtrar y ordenar</button>
+			[ngClass]="{ 'w-100': isMobile, 'w-25': isDesktop, 'mb-3': isMobile }"
+			 (click)="openSidebar.emit()">Filtrar</button>
 
-			<div class="filters-item d-flex align-items-center">
+			<div class="filters-item d-flex align-items-center justify-content-center">
 				<!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
 				<div class="grid-options view-mode d-flex">
 					<a class="icon-mode mode-list d-block" data-col="1"></a>

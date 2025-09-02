@@ -2272,7 +2272,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .swatches li.soldout img, .size-swatches li.soldout .swatchLbl,.swatches li.soldout .swatchLbl { position:relative; z-index:2; }
 
 /* Toolbar */
-.toolbar .view-mode .icon-mode { position: relative; min-width: 19px; height: 26px; display: none; border: 1px solid #9b9b9b; margin-left: 5px; cursor: pointer; }
+.toolbar .view-mode .icon-mode { position: relative; min-width: 19px; height: 26px; display: none; /*border: 1px solid #9b9b9b;*/ margin-left: 5px; cursor: pointer; }
 .toolbar .view-mode .icon-mode:first-of-type { margin-left: 0; }
 .toolbar .view-mode .icon-mode:before { content: ""; background: #9b9b9b; position: absolute; top: 3px; left: 3px; }
 .toolbar .view-mode .icon-mode.mode-list:before { width: 18px; height: 4px; box-shadow: 0 7px 0 #9b9b9b,0 14px 0 #9b9b9b; }
