@@ -1,0 +1,54 @@
+<div class="sidebar sidebar-bg filterbar" [class.active]="!noneSidebar">
+    <div class="closeFilter" (click)="closeSidebar.emit()"><i class="icon anm anm-times-r"></i></div>
+    <div class="sidebar-tags clearfix">
+        <!-- Talla -->
+        <div class="sidebar-widget filterBox filter-widget pt-5">
+            <div class="widget-title active"><h2>Talla</h2></div>
+            <div class="widget-content filter-size filterDD" style="display: none;">
+                <ul class="swacth-list size-swatches d-flex-center clearfix">
+                    <ng-container *ngFor="let variedad of variedades">
+                        <li [ngClass]="{'chosen': variedad_selected.id == variedad.id}" class="chosen">
+                            <a href="#" onclick="return false;" (click)="onSelectVariedad(variedad)"> {{variedad.valor}} </a>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+        <!-- Color -->
+        <div class="sidebar-widget filterBox filter-widget">
+            <div class="widget-title active"><h2>Color</h2></div>
+            <div class="widget-content filter-color filterDD" style="display: none;">
+                <ul class="swacth-list swatches d-flex-center clearfix pt-0">
+                    <li *ngFor="let color of coloresDisponibles"
+                        class="swatch large radius available"
+                        [ngStyle]="{'background-color': color.hex}"
+                        [attr.title]="color.name"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        (click)="onToggleColor(color.name)"
+                    >
+                    <span class="swatchLbl"></span>
+                </ul>
+            </div>
+        </div>
+
+        <!--Price Filter-->
+        <div class="sidebar-widget filterBox filter-widget">
+            <div class="widget-title active"><h2>Precio</h2></div>
+            <form class="widget-content price-filter filterDD" style="display: none;" action="#" method="post">
+                <div id="slider-range" class="mt-2"></div>
+                <div class="row">
+                    <div class="col-6"><input id="amount" class="w-100" type="text" /></div>
+                    <div class="col-6 text-right"><button class="btn btn-sm text-uppercase fw-normal" type="button" (click)="filterProduct($event)">filtrar</button></div>
+                </div>
+            </form>
+        </div>
+        <!--End Price Filter-->
+
+
+        <!-- Borrar filtros -->
+        <div class="sidebar-widget filterBox filter-widget brand-filter pt-3">
+            <a href="#;" onclick="return false;" (click)="onClearFilters()" [ngClass]="{'disabled-link': !filtersApplied}" class="cart-btn btn btn-black w-100 btn-lg me-1 text-uppercase fw-normal">Borrar filtros</a>
+        </div>
+    </div>
+</div>

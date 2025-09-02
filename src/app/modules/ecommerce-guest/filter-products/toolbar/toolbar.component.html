@@ -1,0 +1,54 @@
+<!--Toolbar-->
+<div class="toolbar toolbar-wrapper shop-toolbar" [ngClass]="{ 'px-4': isDesktop, 'px-2': isMobile  }">
+	<div class="row align-items-center">
+		<div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-between">
+			<button 
+			type="button" 
+			class="btn-dark-ld text-uppercase" 
+			[ngClass]="{ 'w-25': isDesktop }"
+			 (click)="openSidebar.emit()">Filtrar y ordenar</button>
+
+			<div class="filters-item d-flex align-items-center">
+				<!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
+				<div class="grid-options view-mode d-flex">
+					<a class="icon-mode mode-list d-block" data-col="1"></a>
+					<a class="icon-mode mode-grid grid-2 d-block" data-col="2"></a>
+					<a class="icon-mode mode-grid grid-3 d-md-block" data-col="3"></a>
+					<a class="icon-mode mode-grid grid-4 d-lg-block" data-col="4"></a>
+					<a class="icon-mode mode-grid grid-5 d-xl-block" data-col="5"></a>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-sm-4 col-md-4 col-lg-4 text-center product-count order-0 order-md-1 mb-3 mb-sm-0 d-none">
+			<span class="toolbar-product-count">Demostración: {{ products.length }} productos</span>
+		</div>
+		<ng-container *ngIf="products.length > 10">
+			<div class="col-8 col-sm-6 col-md-4 col-lg-4 text-right filters-toolbar-item d-flex justify-content-end order-2 order-sm-2 d-none">
+				<div class="filters-item d-flex align-items-center">
+					<label for="ShowBy" class="mb-0 me-2 text-nowrap d-none d-sm-inline-flex">Mostrar:</label>
+					<select name="ShowBy" id="ShowBy" class="filters-toolbar-show">
+						<option value="title-ascending" selected="selected">10</option>
+						<option>15</option>
+						<option>20</option>
+						<option>25</option>
+						<option>30</option>
+					</select>
+				</div>
+				<div class="filters-item d-flex align-items-center ms-2 ms-lg-3">
+					<label for="SortBy" class="mb-0 me-2 text-nowrap d-none">Ordenar por:</label>
+					<select name="SortBy" id="SortBy" class="filters-toolbar-sort">
+						<option value="featured" selected="selected">Featured</option>
+						<option value="best-selling">Best selling</option>
+						<option value="title-ascending">Alphabetically, A-Z</option>
+						<option value="title-descending">Alphabetically, Z-A</option>
+						<option value="price-ascending">Price, low to high</option>
+						<option value="price-descending">Price, high to low</option>
+						<option value="created-ascending">Date, old to new</option>
+						<option value="created-descending">Date, new to old</option>
+					</select>
+				</div>
+			</div>
+		</ng-container>                    
+	</div>
+</div>
+<!--End Toolbar-->

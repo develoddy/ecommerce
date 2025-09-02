@@ -28,11 +28,11 @@ declare function sliderRefresh(): any;
 export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy {
 
   /* ------------------ PROPERTIES  ------------------ */
-  @ViewChild('grid1') grid1!: ElementRef;
-  @ViewChild('grid2') grid2!: ElementRef;
-  @ViewChild('grid3') grid3!: ElementRef;
-  @ViewChild('grid4') grid4!: ElementRef;
-  @ViewChild('grid5') grid5!: ElementRef;
+  // @ViewChild('grid1') grid1!: ElementRef;
+  // @ViewChild('grid2') grid2!: ElementRef;
+  // @ViewChild('grid3') grid3!: ElementRef;
+  // @ViewChild('grid4') grid4!: ElementRef;
+  // @ViewChild('grid5') grid5!: ElementRef;
   
   euro = "€";
   categories:any=[];
@@ -40,7 +40,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   categories_selecteds:any = [];
   is_discount:any = 1; // 1 ES NORMAL, Y 2 ES PRODUCTO CON DESCUENTO
   variedad_selected:any = {_id: null};
-  products:any = [];
+  products: any[] = [];
   product_selected:any=null;
   categoryTitle: string = '';
   slug:any=null;
@@ -84,19 +84,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   ngAfterViewInit(): void {
     setTimeout(() => {
       HOMEINITTEMPLATE($);
-      const contentWidth = window.innerWidth;
-      if (contentWidth < 1999) {
-        this.grid5.nativeElement.click();
-      }
-      if (contentWidth < 1199) {
-        this.grid4.nativeElement.click();
-      }
-      if (contentWidth < 991) {
-        this.grid3.nativeElement.click();
-      }
-      if (contentWidth < 767) {
-        this.grid2.nativeElement.click();
-      }
+      // Lógica de gridX eliminada porque los elementos ya no existen en el padre
     }, 150);
 
   }
@@ -199,58 +187,46 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     });
   }
 
-  filterProduct(logo_position:string='') {
-    // SE LIMPIA LOS PRODUCTOS ACTUALES
-    this.products = []; 
+  filterProduct(logo_position: string = '', priceRange?: string) {
+    this.products = [];
     setTimeout(() => {
-      // OBTIENE EL VALOR DEL INPUT, EJ "15 € - 100 €"
-      let priceRange = $("#amount").val();
+      // Si priceRange viene del hijo, úsalo. Si no, usa el valor por defecto.
       if (!priceRange) {
-        console.error("El input #amount no tiene valor definido.");
-        return;
+        priceRange = '15 - 100';
       }
-      
-      // ELIMINA TODOS LOS '$'
       let priceArray = priceRange.replace(/\$/g, "").split(" - ");
-
-      // ESTABLECEMOS LOS VALORES PREDETERMINADOS DEL SLIDER
       let defaultMin = 15;
       let defaultMax = 100;
-
-      // CONVERTIMOS LOS VALORES DEL PRECIO
       let priceMin = priceArray[0] ? parseFloat(priceArray[0].trim()) : null;
       let priceMax = priceArray[1] ? parseFloat(priceArray[1].trim()) : null;
-
       if (logo_position && logo_position !== '') {
-          if (logo_position == 'camisetas-logo-central') {
-            this.logo_position_selected = 'center';
-          } else if (logo_position == 'camisetas-logo-lateral') {
-            this.logo_position_selected = 'right_top';
-          }            
+        if (logo_position == 'camisetas-logo-central') {
+          this.logo_position_selected = 'center';
+        } else if (logo_position == 'camisetas-logo-lateral') {
+          this.logo_position_selected = 'right_top';
         }
-
-      // ACTUALIZA LA VARIABLE FILTERAPPLIED
-      // LA LÓGICA REVISA SI LOS VALORES DE PRECIO SON DIFERENTES DE LOS PREDETERMINADOS
-      this.filtersApplied = this.categories_selecteds.length > 0 || this.selectedColors.length > 0 || this.variedad_selected.length > 0 || this.variedad_selected != '' || priceMin !== defaultMin || priceMax !== defaultMax || this.logo_position_selected !== '' ;
-
-      let data = {
-        categories_selecteds  : this.categories_selecteds,
-        is_discount           : this.is_discount,
-        variedad_selected     : this.variedad_selected.id ? this.variedad_selected : null,
-        price_min             : priceMin,
-        price_max             : priceMax,
-        selectedColors        : this.selectedColors, 
-        logo_position_selected: this.logo_position_selected // center_top or right_top
       }
-
-      // LLAMADA AL SERVICIO PARA OBTENER LOS PRODUCTOS FILTRADOS
-      this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
+      this.filtersApplied = this.categories_selecteds.length > 0 || this.selectedColors.length > 0 || this.variedad_selected.length > 0 || this.variedad_selected != '' || priceMin !== defaultMin || priceMax !== defaultMax || this.logo_position_selected !== '';
+      let data = {
+        categories_selecteds: this.categories_selecteds,
+        is_discount: this.is_discount,
+        variedad_selected: this.variedad_selected.id ? this.variedad_selected : null,
+        price_min: priceMin,
+        price_max: priceMax,
+        selectedColors: this.selectedColors,
+        logo_position_selected: this.logo_position_selected
+      };
+      this._ecommerceGuestService.filterProduct(data).subscribe((resp: any) => {
         this.products = resp.products;
-         if (this.products) {
+        if (this.products) {
           this.setColoresDisponibles();
         }
       });
     }, 500);
+  }
+
+  onFilterByPrice(priceRange: string) {
+    this.filterProduct('', priceRange);
   }
 
   changeProductImage(product: any, imageUrl: string) {
@@ -326,8 +302,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   toggleColor(colorName: string) {
-    this.selectedColors = [];
-    this.selectedColors.push(colorName);
+    this.selectedColors = [colorName];
     this.filterProduct();
   }
   
@@ -347,8 +322,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
   selectedVariedad(variedad:any) {
     this.variedad_selected = variedad;
-    console.log( typeof this.variedad_selected);
-    
     this.filterProduct();
   }
 
@@ -383,7 +356,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       alertDanger("Necesitas autenticarte para poder agregar el producto al carrito");
       return;
     }
-    if ($("#qty-cart").val() == 0) {
+    if ( $("#qty-cart").val() == 0) {
       alertDanger("Necesitas agregar una cantidad mayor a 0 para el carrito");
       return;
     }
@@ -416,7 +389,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     }
    
     let data = {
-      user: this.userId,//this._cartService._authService.user._id,
+      user: this.userId,
       product: product._id,
       type_discount: type_discount,
       discount: discount,
@@ -425,9 +398,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       code_cupon: null,
       code_discount: code_discount,
       price_unitario: product.price_usd,
-      subtotal: product.price_usd - this.getDiscountProduct(product),  //*1,
+      subtotal: product.price_usd - this.getDiscountProduct(product),  
       total: (product.price_usd - this.getDiscountProduct(product))*1, // De momento es igual, luego aplicamos el descuento
-    }
+    };
 
     this._cartService.registerCart(data).subscribe((resp:any) => {
       if (resp.message == 403) {
@@ -445,8 +418,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     });
   }
 
-  openModal(product:any) {
-  
+  openModal(product:any) {
     this.product_selected = null;
     setTimeout(() => {
       this.product_selected = product;
@@ -468,14 +440,11 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   clearFilters() {
-    //this.categories_selecteds = [];
     this.variedad_selected = { _id: null };
     this.is_discount = 1;
-    this.variedad_selected = [];
     this.selectedColors = [];
-    $("#slider-range").slider("values", [15, 100]); // Restablecer el slider (ajusta los valores según tu configuración)
-    $("#amount").val("15.00 € - 100.00 €"); // Actualizar el valor del input del rango de precios
-    this.filtersApplied = false; // Deshabilitar el botón
+    // Si tienes lógica de UI para el slider de precio, deberías moverla a un Output del sidebar si el control está ahí
+    this.filtersApplied = false;
     this.filterProduct();
   }
   

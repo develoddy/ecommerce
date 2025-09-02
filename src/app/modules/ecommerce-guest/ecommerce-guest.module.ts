@@ -9,6 +9,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FilterProductsComponent } from './filter-products/filter-products.component';
+import { CategorySliderComponent } from './filter-products/category-slider/category-slider.component';
+import { ToolbarComponent } from './filter-products/toolbar/toolbar.component';
+import { SidebarFilterComponent } from './filter-products/sidebar-filter/sidebar-filter.component';
+import { ProductsListComponent } from './filter-products/products-list/products-list.component';
 import { PrivacyPolicyComponent } from './legales/privacy-policy/privacy-policy.component';
 
 
@@ -18,6 +22,10 @@ import { PrivacyPolicyComponent } from './legales/privacy-policy/privacy-policy.
     LandingProductComponent,
     FilterProductsComponent,
     PrivacyPolicyComponent,
+    CategorySliderComponent,
+    ToolbarComponent,
+    SidebarFilterComponent,
+    ProductsListComponent,
   ],
   imports: [
     CommonModule,

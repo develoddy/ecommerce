@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col g-1 p-0">
+        <div class="grid-products grid-view-items">
+            <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 g-1">
+                <ng-container *ngFor="let product of products">
+                    <div class="item col-item">
+                        <div class="product-box">
+                            <div class="product-image">
+                                <a href="#" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" onclick="return false;" class="product-img rounded-0">
+                                    <img class="primary blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
+                                    <ng-container *ngIf="product.imagen_two">
+                                        <img class="hover blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen_two" [src]="product.imagen_two" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>
+                                    </ng-container>
+                                </a>
+                            </div>
+                            <div class="product-details px-3">
+                                <div class="product-name">
+                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" [queryParams]="getRouterDiscount(product)" class="text-truncate d-inline-block product-title">{{ product.title }}</a>
+                                </div>
+                                <div class="product-price">
+                                    <span class="price old-price" *ngIf="product.campaing_discount">{{ product.price_usd }} {{ euro }}</span>
+                                    <span class="price">
+                                        <span class="price-main">{{ getPriceParts(product.price_usd).integer }}</span>
+                                        <span class="price-decimals">
+                                            <sup>{{ getPriceParts(product.price_usd).decimals }}</sup>
+                                            <span class="currency-symbol">{{ euro }}</span>
+                                        </span>
+                                    </span>
+                                </div>
+                                <ul class="variants-clr swatches">
+                                    <ng-container *ngFor="let item of product.colores">
+                                        <li class="swatch medium rounded" [ngClass]="item.color.replace(' ', '-')" (click)="changeProductImage(product, item.imagen)">
+                                            <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}"></span>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <!-- Pagination -->
+            <nav class="clearfix pagination-bottom d-none">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled"><a class="page-link" href="#"><i class="icon anm anm-angle-left-l"></i></a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link" href="#"><i class="icon anm anm-angle-right-l"></i></a></li>
+                </ul>
+            </nav>
+            <!-- End Pagination -->
+        </div>
+    </div>
+</div>
