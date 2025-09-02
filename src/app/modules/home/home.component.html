@@ -51,37 +51,7 @@
     <!-- Body Container -->
     <div id="page-content" class="mb-0" [class.d-none]="!loading">
         <!--Home Slideshow-->
-        <section class="slideshow slideshow-wrapper">
-            <div class="home-slideshow slick-arrow-dots">
-
-                <ng-container *ngFor="let slider of sliders">
-                    <div class="slide">
-                        <div class="slideshow-wrap">
-                            <picture>
-                                <source media="(max-width:767px)" [attr.srcset]="slider.imagen_mobile_url" width="1150" height="800">
-                                <img class="blur-up lazyload" [attr.src]="slider.imagen_desktop_url" [src]="slider.imagen_desktop_url" alt="slideshow" title="" width="1920" height="795" />
-                            </picture> 
-                            <div class="container">
-                                <div class="slideshow-content slideshow-overlay" [ngClass]="slider.position">
-                                    <div class="slideshow-content-in">
-                                        <div class="wrap-caption animation style1">
-                                            <p class="ss-small-title">{{ slider.subtitle || 'no hay subtitle'}}</p>
-                                            <h2 class="ss-mega-title">{{ slider.title }}</h2>
-                                            <p class="ss-sub-title xs-hide">{{ slider.description }}</p>
-                                            <div class="ss-btnWrap d-flex">
-                                            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">
-                                                <button class="btn-dark-ld text-uppercase">Descúbrelas ahora!</button>
-                                            </a>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>
-                </ng-container>
-            </div>
-        </section>
+        <app-slider-home [sliders]="sliders" [locale]="locale" [country]="country"></app-slider-home>
         <!--End Home Slideshow-->
 
         <!--Service Section-->
@@ -138,7 +108,7 @@
                             <div class="collection-item sp-col">
                                 <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
                                     <div class="img">
-                                        <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img1.png" src="assets/images/collection/demo1-ct-img1.png" alt="Women Wear" title="Women Wear" width="645" height="723" />
+                                        <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img1.jpg" src="assets/images/collection/demo1-ct-img1.jpg" alt="Women Wear" title="Women Wear" width="645" height="723" />
                                     </div>
                                     <div class="details middle-right">
                                         <div class="inner">
@@ -153,53 +123,40 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item px-0">
-                            <div class="collection-item sp-col">
-                                <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
-                                    <div class="img">
-                                        <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img3.png" src="assets/images/collection/demo1-ct-img3.png" alt="Women Wear" title="Women Wear" width="645" height="723" />
-                                    </div>
-                                    <div class="details middle-right">
-                                        <div class="inner">
-                                            <p class="mb-2 text-white d-none">Jersey en producción</p>
-                                             <h3 class="title text-white">Jerséis</h3>
-                                            <!-- <h3 class="title">Women Wear</h3> -->
-                                            <!-- <button type="button"  class="btn btn-outline-dark btn-md text-uppercase">Compra ahora</button> -->
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item d-none">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item">
                             <div class="row">
-                                <div class="col-12 col-lg-12"><div class="collection-item sp-col">
-                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
-                                        <div class="img">
-                                            <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img3.png" src="assets/images/collection/demo1-ct-img3.png" alt="Mens Wear" title="Mens Wear" width="645" height="350" />
-                                        </div>
-                                        <div class="details middle-left">
-                                            <div class="inner">
-                                                <p class="mb-2">Jersey en producción</p>
-                                                <h3 class="title">Jerséis</h3>
-                                                <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span>
+                                <div class="col-12 col-lg-12">
+                                    <div class="collection-item sp-col">
+                                        <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
+                                            <div class="img">
+                                                <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img3.jpg" src="assets/images/collection/demo1-ct-img3.jpg" alt="Mens Wear" title="Mens Wear" width="645" height="350" />
                                             </div>
-                                        </div>
-                                    </a>
-                                </div></div>
-                                <div class="col-12 col-lg-12"><div class="collection-item sp-col">
-                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
-                                        <div class="img">
-                                            <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img3.png" src="assets/images/collection/demo1-ct-img3.jpg" alt="Kids Wear" title="Kids Wear" width="645" height="350" />
-                                        </div>
-                                        <div class="details middle-right">
-                                            <div class="inner">
-                                                <p class="mb-2">Gorra master</p>
-                                                <h3 class="title">Gorras</h3>
-                                                <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span>
+                                            <div class="details middle-left">
+                                                <div class="inner">
+                                                    <p class="mb-2">Jersey en producción</p>
+                                                    <h3 class="title">Jerséis</h3>
+                                                    <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </div></div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-12">
+                                    <div class="collection-item sp-col">
+                                        <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
+                                            <div class="img">
+                                                <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img3.jpg" src="assets/images/collection/demo1-ct-img3.jpg" alt="Kids Wear" title="Kids Wear" width="645" height="350" />
+                                            </div>
+                                            <div class="details middle-right">
+                                                <div class="inner">
+                                                    <p class="mb-2">Gorra master</p>
+                                                    <h3 class="title">Gorras</h3>
+                                                    <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -208,7 +165,7 @@
                             <div class="collection-item sp-col">
                                 <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
                                     <div class="img">
-                                        <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img2.png" src="assets/images/collection/demo1-ct-img2.png" alt="Women Wear" title="Women Wear" width="645" height="723" />
+                                        <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img2.jpg" src="assets/images/collection/demo1-ct-img2.jpg" alt="Women Wear" title="Women Wear" width="645" height="723" />
                                     </div>
                                     <div class="details middle-right">
                                         <div class="inner">
@@ -226,7 +183,7 @@
                             <div class="collection-item sp-col">
                                 <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
                                     <div class="img">
-                                        <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img4.png" src="assets/images/collection/demo1-ct-img4.png" alt="Women Wear" title="Women Wear" width="645" height="723" />
+                                        <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo3-ct-img4.jpg" src="assets/images/collection/demo3-ct-img4.jpg" alt="Women Wear" title="Women Wear" width="645" height="723" />
                                     </div>
                                     <div class="details middle-right">
                                         <div class="inner">
@@ -246,29 +203,7 @@
         <!--End Collection banner-->
 
         <!--Popular Categories-->
-        <section class="section collection-slider pb-0" *ngIf="categories.length != 0">
-            <div class="container">
-                <div class="section-header">
-                    <p class="mb-2 mt-0">Comprar por categoría</p>
-                    <h2>Colecciones populares</h2>
-                </div>
-                <div class="collection-slider-5items gp15 arwOut5 hov-arrow">
-                    <ng-container *ngFor="let categorie of categories">
-                        <div class="category-item zoomscal-hov">
-                            <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" class="category-link clr-none">
-                                <div class="zoom-scal zoom-scal-nopb rounded-3">
-                                    <img class="blur-up lazyload" [attr.data-src]="categorie.imagen_home" [src]="categorie.imagen_home" alt="{{ categorie.title }}" title="{{ categorie.title }}" width="365" height="365" />
-                                </div>
-                                <div class="details mt-3 text-center">
-                                    <h4 class="category-title mb-0 text-uppercase">{{ categorie.title }}</h4>
-                                    <p class="counts d-none">20 Productos</p>
-                                </div>
-                            </a>
-                        </div>
-                    </ng-container>
-                </div>
-            </div>
-        </section>
+        <app-category-list [categories]="categories" [locale]="locale" [country]="country"></app-category-list>
         <!--End Popular Categories-->
         
         <!--Toolbar-->
@@ -291,125 +226,20 @@
         <!--End Toolbar-->
         
         <!--Product Grid-->
-        <div class="grid-products grid-view-items">
-            <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 g-1">  
-                <ng-container *ngIf="ourProducts.length > 0">
-                    <ng-container *ngFor="let ourProduct of ourProducts">
-                        <div class="item col-item">
-                            <div class="product-box">
-                                <!-- Start Product Image -->
-                                <div class="product-image">
-                                    <!-- Start Product Image -->
-                                    <a href="#" (click)="navigateToProduct(ourProduct.slug, ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
-                                        <!-- Image -->
-                                        <img class="primary blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen }}"  src="{{ ourProduct.imagen }}" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
-                                        <!-- End Image -->
-                                        <!-- Hover Image -->
-                                        <ng-container *ngIf="ourProduct.imagen_two">
-                                            <img class="hover blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen_two }}" src="{{ ourProduct.imagen_two }}" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>
-                                        </ng-container>
-                                        <!-- End Hover Image -->
-                                    </a>
-                                    <!-- End Product Image -->
-                                    <!-- Product label -->
-                                    <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div>
-                                    <!-- End Product label -->
-                                    <!--Product Button-->
-                                    <div class="button-set style1" [ngClass]="{'d-none': isMobile}">
-                                        <!--Cart Button-->
-                                        <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal " data-bs-toggle="modal" data-bs-target="#addtocart_modal" (click)="openModalToCart(ourProduct)">
-                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
-                                        </a>
-                                        <!--End Cart Button-->
-                                        <!--Quick View Button-->
-                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModalToCart(ourProduct)">
-                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Vista rápida</span></span>
-                                        </a>
-                                        <!--End Quick View Button-->
-                                        <!--Wishlist Button-->
-                                        <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a favoritos" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a>
-                                        <!--End Wishlist Button-->
-                                        <!--Compare Button-->
-                                        <a href="#" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare" ><i class="icon anm anm-random-r"></i><span class="text">Añadir para comparar</span></a>
-                                        <!--End Compare Button-->
-                                    </div>
-                                    <!--End Product Button-->
-                                </div>
-                                <!-- End Product Image -->
-                                <!-- Start Product Details -->
-                                <div class="product-details px-3">
-                                    <!--Product Vendor-->
-                                    <div class="product-vendor d-none">Footwear</div>
-                                    <!--End Product Vendor-->
-                                    <!-- Product Name -->
-                                    <div class="product-name">
-                                        <a 
-                                            href="#" 
-                                            onclick="return false;" 
-                                            [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" 
-                                            [queryParams]="getRouterDiscount(ourProduct)" 
-                                            class="text-truncate d-inline-block product-title">{{ ourProduct.title }}</a>
-                                    </div>
-                                    <!-- End Product Name -->
-                                    <!-- Product Price -->
-                                    <div class="product-price">
-                                        <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} {{ euro }}</span>
-                                        <!-- <span class="price">{{ ourProduct.price_usd - getDiscountProduct(ourProduct) }} {{ euro }}</span> -->
-                                        <span class="price">
-                                            <span class="price-main">{{ getPriceParts(ourProduct.finalPrice).integer }}</span>
-                                            <span class="price-decimals">
-                                                <sup>{{ getPriceParts(ourProduct.finalPrice).decimals }}</sup>
-                                                <span class="currency-symbol">{{ euro }}</span>
-                                            </span>
-                                        </span>
-                                    </div>
-                                    <!-- End Product Price -->
-                                    <!-- Product Review -->
-                                    <div class="product-review d-none">
-                                        <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                        <span class="caption hidden ms-1">10 Reviews</span>
-                                    </div>
-                                    <!-- End Product Review -->
-                                    <!--Sort Description-->
-                                    <p class="sort-desc hidden">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage...</p>
-                                    <!--End Sort Description-->
-                                    <!-- Swatches Color -->
-                                    <ul class="variants-clr swatches">
-                                        <ng-container *ngFor="let item of ourProduct.colores">
-                                            <li class="swatch medium rounded" [ngClass]=" item.color.replace(' ', '-')" (click)="changeProductImage(ourProduct, item.imagen)">
-                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}"></span>
-                                            </li>
-                                        </ng-container>
-                                    </ul>
-                                    <!-- End Swatches Color -->
-                                    <!-- Product Button -->
-                                    <div class="button-action hidden">
-                                        <div class="addtocart-btn">
-                                            <form class="addtocart" action="#" method="post">
-                                                <a href="#addtocart-modal" class="btn btn-md add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                                    <i class="icon anm anm-cart-l me-2"></i><span class="text">Añadir al carrito</span>
-                                                </a>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <!-- End Product Button -->
-                                </div>
-                                <!-- End product details -->
-                            </div>
-                        </div>
-                    </ng-container>
-                </ng-container>
-            </div>
-            <div class="view-collection text-center mt-5 mb-5 mt-md-5 justify-content-center align-item-center d-flex">
-                <a 
-                href="shop-left-sidebar.html" 
-                onclick="return false;" 
-                [routerLink]="['/', locale, country, 'shop', 'filter-products']" 
-                [ngClass]="{'w-100': isMobile, 'px-2': isMobile}">
-                    <button class="btn-dark-ld text-uppercase">Ver colección</button>
-                </a>
-            </div>
-        </div>
+        <app-product-grid
+            [ourProducts]="ourProducts"
+            [locale]="locale"
+            [country]="country"
+            [euro]="euro"
+            [isMobile]="isMobile"
+            [getRouterDiscount]="getRouterDiscount"
+            [getPriceParts]="getPriceParts"
+                [openModalToCart]="openModalToCart"
+                [addWishlist]="addWishlist"
+                [changeProductImage]="changeProductImage"
+                [navigateToProduct]="navigateToProduct"
+                [FlashSale]="FlashSale"
+        ></app-product-grid>
         <!--End Product Grid-->
 
         <!--Parallax Banner-->
@@ -553,45 +383,6 @@
                             </div>
                         </div>
                     </ng-container>
-                    <div class="blog-item d-none">
-                        <div class="blog-article zoomscal-hov">
-                            <div class="blog-img">
-                                <a class="featured-image zoom-scal" href="blog-details.html"><img class="blur-up lazyload" data-src="assets/images/blog/post-img1.jpg" src="assets/images/blog/post-img1.jpg" alt="New shop collection our shop" width="740" height="410" /></a>
-                                <div class="date"><span class="dt">25</span> <span class="mt">Apr<br> <b>2023</b></span></div>
-                            </div>
-                            <div class="blog-content">
-                                <h2 class="h3 mb-3"><a href="blog-details.html">New shop collection our shop</a></h2>
-                                <p class="content">There are many variations of passages of Lorem Ipsum available, but the majority have suffered.</p>
-                                <a href="blog-details.html" class="btn btn-secondary btn-sm">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="blog-item d-none">
-                        <div class="blog-article zoomscal-hov">
-                            <div class="blog-img">
-                                <a class="featured-image zoom-scal" href="blog-details.html"><img class="blur-up lazyload" data-src="assets/images/blog/post-img1.jpg" src="assets/images/blog/post-img1.jpg" alt="Gift ideas for everyone" width="740" height="410" /></a>
-                                <div class="date"><span class="dt">31</span> <span class="mt">Mar<br> <b>2023</b></span></div>
-                            </div>
-                            <div class="blog-content">
-                                <h2 class="h3 mb-3"><a href="blog-details.html">Gift ideas for everyone</a></h2>
-                                <p class="content">There are many variations of passages of Lorem Ipsum available, but the majority suffered.</p>
-                                <a href="blog-details.html" class="btn btn-secondary btn-sm">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="blog-item d-none">
-                        <div class="blog-article zoomscal-hov">
-                            <div class="blog-img">
-                                <a class="featured-image zoom-scal" href="blog-details.html"><img class="blur-up lazyload" data-src="assets/images/blog/post-img1.jpg" src="assets/images/blog/post-img1.jpg" alt="Sales with best collection" width="740" height="410" /></a>
-                                <div class="date"><span class="dt">30</span> <span class="mt">Jan<br> <b>2023</b></span></div>
-                            </div>
-                            <div class="blog-content">
-                                <h2 class="h3 mb-3"><a href="blog-details.html">Sales with best collection</a></h2>
-                                <p class="content">There are many variations of passages of Lorem Ipsum available, but the majority.</p>
-                                <a href="blog-details.html" class="btn btn-secondary btn-sm">Read more</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -707,46 +498,11 @@
     <!-- End Product Quickshop Modal -->
 
     <!-- Product Addtocart Modal-->
-    <div class="addtocart-modal modal fade" id="addtocart_modal" tabindex="-1" aria-hidden="true">  
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body" *ngIf="product_selected">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <form method="post" action="#" id="product-form-addtocart" class="product-form align-items-center">
-                        <h3 class="title mb-3 text-success text-center">Added to cart Successfully!</h3>
-                        <div class="row d-flex-center text-center">
-                            <div class="col-md-6">
-                                <!-- Product Image -->
-                                <a class="product-image" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product_selected.slug]" [queryParams]="{_id: product_selected.campaing_discount?.id}">
-                                    <img class="blur-up lazyload" [attr.data-src]="product_selected.imagen" [src]="product_selected.imagen" alt="Product" title="Product" width="625" height="808" />
-                                </a>
-                                <!-- End Product Image -->
-                            </div>
-                            <div class="col-md-6 mt-3 mt-md-0">
-                                <!-- Product Info -->
-                                <div class="product-details">
-                                    <a class="product-title" href="product-layout1.html">{{product_selected.title}}</a>
-                                    <p class="product-clr my-2 text-muted">Black / XL {{ variedades[0]?.valor }}</p>
-                                </div>
-                                <div class="addcart-total rounded-5">
-                                    <p class="product-items mb-2">There are <strong>1</strong> items in your cart</p>
-                                    <p class="d-flex-justify-center">Total: <span class="price">{{ euro }}{{product_selected.price_usd}}</span></p>
-                                </div>
-                                <!-- End Product Info -->
-                                <!-- Product Action -->
-                                <div class="product-form-submit d-flex-justify-center">
-                                    <a href="#"  class="btn btn-outline-primary product-continue w-100">Continue Shopping</a>
-                                    <a href="cart-style1.html" class="btn btn-secondary product-viewcart w-100 my-2 my-md-3">View Cart</a>
-                                    <a href="checkout-style1.html" class="btn btn-primary product-checkout w-100">Proceed to checkout</a>
-                                </div>
-                                <!-- End Product Action -->
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <app-add-to-cart-modal
+        [product_selected]="product_selected"
+        [variedades]="variedades"
+        [euro]="euro"
+    ></app-add-to-cart-modal>
     <!-- End Product Addtocart Modal -->
 
     <!-- Product Quickview Modal-->

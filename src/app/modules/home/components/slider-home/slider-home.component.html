@@ -1,0 +1,30 @@
+<section class="slideshow slideshow-wrapper">
+  <div class="home-slideshow slick-arrow-dots">
+    <ng-container *ngFor="let slider of sliders">
+      <div class="slide">
+        <div class="slideshow-wrap">
+          <picture>
+            <source media="(max-width:767px)" [attr.srcset]="slider.imagen_mobile_url" width="1150" height="800">
+            <img class="blur-up lazyload" [attr.src]="slider.imagen_desktop_url" [src]="slider.imagen_desktop_url" alt="slideshow" title="" width="1920" height="795" />
+          </picture>
+          <div class="container">
+            <div class="slideshow-content slideshow-overlay" [ngClass]="slider.position">
+              <div class="slideshow-content-in">
+                <div class="wrap-caption animation style1">
+                  <p class="ss-small-title">{{ slider.subtitle || 'no hay subtitle'}}</p>
+                  <h2 class="ss-mega-title">{{ slider.title }}</h2>
+                  <p class="ss-sub-title xs-hide">{{ slider.description }}</p>
+                  <div class="ss-btnWrap d-flex">
+                    <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">
+                      <button class="btn-dark-ld text-uppercase">Descúbrelas ahora!</button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</section>

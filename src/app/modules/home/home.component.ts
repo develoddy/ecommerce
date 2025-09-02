@@ -122,7 +122,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Filtrar solo sliders activos (state == 1)
       this.sliders = resp.sliders.filter((slider: any) => slider.state == 1);
-      console.log("----> SLIDERS ACTIVOS: ", this.sliders);
       
       this.categories = resp.categories;
       // Generar slug para cada categoría sin modificar el título original
@@ -248,15 +247,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  navigateToProduct(slug: string, discountId?: string) {
+  navigateToProduct = (slug: string, discountId?: string) => {
     // Guarda el estado para hacer scroll hacia arriba
     sessionStorage.setItem('scrollToTop', 'true');
     // Navega a la página del producto
     this._router.navigate(['/', this.locale, this.country, 'shop', 'product', slug])
-    //this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
       .then(() => {
-          // Recarga la página
-          window.location.reload();
+        window.location.reload();
       });
   }
 
@@ -661,47 +658,44 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       return true; // Si no encuentra ninguna de las variedades en valoresUnitarios, es un producto unitario
   }
 
-  openModalToCart(besProduct:any) {
+  openModalToCart = (besProduct: any) => {
     console.log("----> DEBBUG openModalToCart: ", besProduct);
-    
     this.product_selected = besProduct;
-
     this.filterUniqueGalerias(this.product_selected); // <-- primero
     this.setFirstImage(); // <-- después
-    
-    setTimeout(() => {  
-     
+    setTimeout(() => {
       // Filtrar tallas duplicadas y eliminar tallas no disponibles
       this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
       // Seleccionar automáticamente la primera talla si hay alguna disponible
       this.variedad_selected = this.variedades[0] || null;
       this.activeIndex = 0;
-      
       this.setColoresDisponibles();
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
-
-      this.filterUniqueGalerias( this.product_selected );
-      
-      
-      //setTimeout(() => {
-        //LandingProductDetail($);
-        //HOMEINITTEMPLATE($);
-        //pswp($);
-        //productZoom($);
-      //}, 150);
+      this.filterUniqueGalerias(this.product_selected);
     }, 350);
-
-    this.ngZone.runOutsideAngular(() => {
-        setTimeout(() => {
-          (window as any).cleanupSliders($);
-          (window as any).HOMEINITTEMPLATE($);
-          (window as any).productZoom($);
-          (window as any).pswp($);
-          (window as any).productSlider5items($);
-          (window as any).menuProductSlider($);
-          (window as any).sliderRefresh($);
-        }, 150);
-      });
+    setTimeout(() => {
+      // Usar querySelector para máxima compatibilidad
+      const modalElement = document.querySelector('#addtocart_modal');
+      // No inicializar sliders que no existen en este modal
+      if (modalElement && (window as any).bootstrap) {
+        const modalInstance = new (window as any).bootstrap.Modal(modalElement);
+        modalElement.addEventListener('shown.bs.modal', () => {
+          // Solo inicializar plugins realmente presentes en el modal
+          (window as any).productZoom && (window as any).productZoom($);
+          (window as any).pswp && (window as any).pswp($);
+        }, { once: true });
+        modalInstance.show();
+      }
+      // Fallback jQuery (Bootstrap 4/5)
+      if ((window as any).$) {
+        (window as any).$('#addtocart_modal').on('shown.bs.modal', function () {
+          (window as any).productZoom && (window as any).productZoom($);
+          (window as any).pswp && (window as any).pswp($);
+          (window as any).$('#addtocart_modal').off('shown.bs.modal');
+        });
+        (window as any).$('#addtocart_modal').modal('show');
+      }
+    }, 400);
   }
 
   // open model
