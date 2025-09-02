@@ -592,103 +592,13 @@
         <!--End Main Content-->
 
         <!--Related Products-->
-        <ng-container *ngIf="related_products.length > 0">
-            <section class="section product-slider pb-0">
-                <div class="container">
-                    <div class="section-header">
-                        <p class="mb-1 mt-0">Descubra similares</p>
-                        <h2 class=" text-uppercase">Del mismo estilo</h2>
-                    </div>
-
-                    <!--Product Grid-->
-                    <div class="product-slider-5items gp10 arwOut5 grid-product">
-                        <ng-container *ngFor="let product of related_products">
-                            <div class="item col-item">
-                                <div class="product-box">
-                                    <!-- Start Product Image -->
-                                    <div class="product-image">
-                                        <!-- <a href="#" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="{_id: product.campaing_discount?.id}" class="product-img">
-                                            <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="808" />
-                                        </a> -->
-                                        <a href="#" onclick="return false;" (click)="navigateToProduct(product.slug, product.campaing_discount?.id)" class="product-img">
-                                            <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="{{product.title}}" title="{{product.title}}" width="625" height="808" />
-                                        </a>
-                                        <!-- End Product Image -->
-                                        <!-- Product label -->
-                                        <div class="product-labels d-none"><span class="lbl on-sale">Sale</span></div>
-                                        <!-- End Product label -->
-                                        <!--Product Button-->
-                                        <div class="button-set style1">
-                                            <!--Cart Button-->
-                                            <a href="#quickshop-modal" class="btn-icon addtocart quick-shop-modal" data-bs-toggle="modal" data-bs-target="#quickshop_modal">
-                                                <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick Shop"><i class="icon anm anm-cart-l"></i><span class="text">Quick Shop</span></span>
-                                            </a>
-                                            <!--End Cart Button-->
-                                            <!--Quick View Button-->
-                                            <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                                <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                            </a>
-                                            <!--End Quick View Button-->
-                                            <!--Wishlist Button-->
-                                            <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                            <!--End Wishlist Button-->
-                                            <!--Compare Button-->
-                                            <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                            <!--End Compare Button-->
-                                        </div>
-                                        <!--End Product Button-->
-                                    </div>
-                                    <!-- End Product Image -->
-                                    <!-- Start Product Details -->
-                                    <div class="product-details">
-                                        <!-- Product Name -->
-                                        <div class="product-name">
-                                            <!-- <a href="#" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="{_id: product.campaing_discount?.id}">{{product.title}}</a> -->
-                                            <a href="#" onclick="return false;" (click)="navigateToProduct(product.slug, product.campaing_discount?.id)" class="product-img text-uppercase">
-                                                {{product.title}}
-                                            </a>
-                                        </div>
-                                        <!-- End Product Name -->
-                                        <!-- Product Price -->
-                                        <div class="product-price">
-                                            <ng-container *ngIf="getDiscount() > 0">
-                                                <span class="price old-price">{{ product_selected.price_usd }} {{ euro }}</span>
-                                            </ng-container>
-                                            <!-- <span class="price">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} {{ euro }}</span> -->
-
-                                            <span class="price">
-                                                <span class="price-main">
-                                                    {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
-                                                </span>
-                                                <span class="price-decimals">
-                                                    <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
-                                                    <span class="currency-symbol">€</span>
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <!-- End Product Price -->
-                                        <!-- Product Review -->
-                                        <div class="product-review d-none">
-                                            <div class="reviewStar d-flex-center">
-                                                <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
-                                                <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
-                                                <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
-                                                <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
-                                                <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
-                                            </div>
-                                            <span class="caption hidden ms-1">3 Reviews</span>
-                                        </div>
-                                        <!-- End Product Review -->
-                                    </div>
-                                    <!-- End product details -->
-                                </div>
-                            </div>
-                        </ng-container>
-                    </div>
-                    <!--End Product Grid-->
-                </div>
-            </section>
-        </ng-container>
+        <app-related-products
+            [related_products]="related_products"
+            [product_selected]="product_selected"
+            [euro]="euro"
+            (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
+            [getDiscount]="getDiscount"
+        ></app-related-products>
         <!--End Related Products-->
 
         <!--Recently Viewed Products-->

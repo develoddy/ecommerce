@@ -9,12 +9,14 @@ import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory } from '../app.module';
 import { AddToCartModalComponent } from './modals/add-to-cart-modal/add-to-cart-modal.component';
+import { RelatedProductsComponent } from './related-products/related-products.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
-    AddToCartModalComponent
+    AddToCartModalComponent,
+    RelatedProductsComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,8 @@ import { AddToCartModalComponent } from './modals/add-to-cart-modal/add-to-cart-
   exports: [
     HeaderComponent,
     FooterComponent,
-    AddToCartModalComponent
+    AddToCartModalComponent,
+    RelatedProductsComponent
   ]
 })
 export class SharedModule { }

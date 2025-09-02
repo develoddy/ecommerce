@@ -116,7 +116,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
       this.idCategorie = resp["idCategorie"];
-      console.log("---> DEBBUG: > filer.componente: slug: ", this.slug);
 
       if (this.idCategorie) {
         // LIMPIAR FILTROS ANTES
@@ -136,6 +135,13 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       // REFRESCAR EL SLIDER
       (window as any).sliderRefresh($);
     }, 150);
+  }
+
+  openSidebar() {
+    this.noneSidebar = false;
+  }
+  closeSidebar() {
+    this.noneSidebar = true;
   }
 
   private checkDeviceType(): void {
@@ -240,12 +246,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       // LLAMADA AL SERVICIO PARA OBTENER LOS PRODUCTOS FILTRADOS
       this._ecommerceGuestService.filterProduct(data).subscribe((resp:any) => {
         this.products = resp.products;
-
          if (this.products) {
           this.setColoresDisponibles();
         }
-        console.log("---> DEBBUG: > gett products filter: ", this.products);
-        
       });
     }, 500);
   }
@@ -275,23 +278,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     const [integer, decimals] = price.toFixed(2).split('.');
     return { integer, decimals };
   }
-  
-
-  //setColoresDisponibles() {
-  //  const uniqueColors = new Map<string, string>();
-  //  this.variedades.forEach((variedad: any) => {
-  //    const colorName = variedad.color;
-  //    if (!uniqueColors.has(colorName)) {
-  //      const colorHex = this.getColorHex(colorName);
-  //      uniqueColors.set(colorName, colorHex);
-  //    }
-  //  });
-  
-    // CONVERTIMOS EL MAP A UN ARRAY
-  //  const coloresDisponibles = Array.from(uniqueColors, ([name, hex]) => ({ name, hex }));  
-    // PUEDES ASIGNARLO A UNA VARIABLE SI ES NECESARIO
-  //  this.coloresDisponibles = coloresDisponibles;
-  //}
   
   getColorHex(color: string): string {
     // MAPEA LOS NOMBRES DE LOS COLORES A SUS VALORES HEXADECIMALES CORRESPONDIENTE
@@ -324,7 +310,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       this.categories_selecteds.push(idCategorie);
     }
     this.nameCategorie = this.slug;
-    this.noneSidebar = false;
     this.idCategorie = idCategorie;
     this.updateCategoryTitle();
   }
@@ -453,16 +438,14 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         alertSuccess("El producto se ha agregado correctamente al carrito");
       }
     }, error => {
-      console.log(error);
       if (error.error.message == "EL TOKEN NO ES VALIDO") {
-        console.log("el token expiro...");
+        console.log("🛑 [DEBUG][FilterProductsComponent] El token expiró. Usuario será deslogueado. Detalle:", error);
         this._cartService._authService.logout();
       }
     });
   }
 
   openModal(product:any) {
-  console.log(product);
   
     this.product_selected = null;
     setTimeout(() => {

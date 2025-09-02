@@ -384,21 +384,21 @@ function HOMEINITTEMPLATE ($, undefined) {
     /*-------------------------------
      12. Show hide Product Filters
      ----------------------------------*/
-    $('.btn-filter').on("click", function() {
-        console.log('entra fuera el clock filter');
+    // $('.btn-filter').on("click", function() {
+    //     console.log('entra fuera el clock filter');
         
-        $(".filterbar").toggleClass("active");
-    });
-    $('.closeFilter').on("click", function() {
-        $(".filterbar").removeClass("active");
-    });
-    // Hide Cart on document click
-    $("body").on('click', function(event) {
-        var $target = $(event.target);
-        if (!$target.parents().is(".filterbar") && !$target.is(".btn-filter")) {
-            $(".filterbar").removeClass("active");
-        }
-    });
+    //     $(".filterbar").toggleClass("active");
+    // });
+    // $('.closeFilter').on("click", function() {
+    //     $(".filterbar").removeClass("active");
+    // });
+    // // Hide Cart on document click
+    // $("body").on('click', function(event) {
+    //     var $target = $(event.target);
+    //     if (!$target.parents().is(".filterbar") && !$target.is(".btn-filter")) {
+    //         $(".filterbar").removeClass("active");
+    //     }
+    // });
 
 
     /*-----------------------------------------

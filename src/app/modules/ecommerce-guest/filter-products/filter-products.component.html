@@ -57,7 +57,7 @@
                         type="button" 
                         class="btn-dark-ld text-uppercase" 
                         [ngClass]="{ 'w-25': isDesktop }"
-                        >Filtrar y ordenar</button>
+                         (click)="openSidebar()">Filtrar y ordenar</button>
 
                         <div class="filters-item d-flex align-items-center">
                             <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
@@ -105,10 +105,11 @@
             <!--End Toolbar-->
 
             <!-- Show Sidebar -->
-            <div class="row">
-                <!--Sidebar-->
-                <div class="col-12 col-sm-12 col-md-12 col-lg-3 sidebar sidebar-bg filterbar">
-                    <div class="closeFilter"><i class="icon anm anm-times-r"></i></div>
+            <!--Sidebar-->
+            <div class="sidebar-filter">
+                <div class="sidebar sidebar-bg filterbar" 
+                    [class.active]="!noneSidebar">
+                    <div class="closeFilter" (click)="closeSidebar()"><i class="icon anm anm-times-r"></i></div>
                     <div class="sidebar-tags clearfix">
                         <!--Filter By-->
                         <div class="sidebar-widget filterBox filter-widget">
@@ -248,8 +249,10 @@
                         </div>
                     </div>
                 </div>
-                <!--End Sidebar-->
+            </div>
+            <!--End Sidebar-->
 
+            <div class="row">
                 <!--Products-->
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col g-1 p-0">
                     <!--Product Grid-->
