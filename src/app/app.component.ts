@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit, HostListener } from '@angular/core';
+import { AuthService } from './modules/auth-profile/_services/auth.service';
 import { Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { BodyClassService } from './services/body-class.service';
@@ -41,6 +42,7 @@ export class AppComponent implements AfterViewInit {
     private headerEventsService: HeaderEventsService,
     private guestCleanupService: GuestCleanupService,
     private cookieConsentService: CookieConsentService,
+    private authService: AuthService // <-- Inyecta AuthService para inicializarlo siempre
   ) {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translate.get('app.title').subscribe((res: string) => {

@@ -28,9 +28,50 @@ export class AuthService {
     private localizationService : LocalizationService
   ) {
     if(!this.isAuthenticatedUser()) {
-      this.addGuestLocalStorage();
+      this.validateOrCreateGuest();
     }
     this.getLocalStorage();
+  }
+
+  /**
+   * Valida si el guest de localStorage existe en la base de datos.
+   * Si no existe, borra el guest viejo y crea uno nuevo.
+   * Si no hay guest, crea uno nuevo.
+   */
+  validateOrCreateGuest(): void {
+    const storedUserGuest = localStorage.getItem("user_guest");
+    if (storedUserGuest) {
+      const parsedUserGuest = JSON.parse(storedUserGuest);
+      // Llama al backend para validar si el guest existe
+      this.validateGuestInBackend(parsedUserGuest.session_id).subscribe({
+        next: (resp: any) => {
+          if (resp && resp.exists) {
+            // Guest válido, actualiza el subject
+            this.userGuestSubject.next(parsedUserGuest);
+          } else {
+            // Guest inválido, borra y crea uno nuevo
+            this.addGuestLocalStorage(true).subscribe();
+          }
+        },
+        error: () => {
+          // Si hay error de red o backend, crea uno nuevo por seguridad
+          this.addGuestLocalStorage(true).subscribe();
+        }
+      });
+    } else {
+      // No hay guest, crea uno nuevo
+      this.addGuestLocalStorage().subscribe();
+    }
+  }
+
+  /**
+   * Llama al backend para validar si el guest existe (debes implementar este endpoint en el backend)
+   * @param session_id string
+   * @returns Observable<{exists: boolean}>
+   */
+  validateGuestInBackend(session_id: string): Observable<any> {
+    const URL = URL_SERVICE + `guests/validate/${session_id}`;
+    return this._http.get<{exists: boolean}>(URL);
   }
 
   private getAuthenticatedUser(): any {
@@ -122,47 +163,65 @@ export class AuthService {
     this.userSubject.next(USER_FRONTED.user);  
   }
 
-  addGuestLocalStorage() {
-    const storedUserGuest = localStorage.getItem("user_guest");
-    if(!storedUserGuest) {
-      this.deleteGuestAndAddresses().subscribe({
-        next: () => {
-          let data = {
-            _id:0,
-            user_guest: "Guest",
-            name: 'Anonymous',
-            guest: false,
-            session_id: this.generateSessionId(),
+  /**
+   * Crea un guest en localStorage y backend. Si forceNew es true, borra el guest viejo antes de crear uno nuevo.
+   */
+  addGuestLocalStorage(forceNew: boolean = false): Observable<any> {
+    return new Observable(observer => {
+      if (forceNew) {
+        localStorage.removeItem("user_guest");
+      }
+      const storedUserGuest = localStorage.getItem("user_guest");
+      if (!storedUserGuest) {
+        this.deleteGuestAndAddresses().subscribe({
+          next: () => {
+            let data = {
+              _id: 0,
+              user_guest: "Guest",
+              name: 'Anonymous',
+              guest: false,
+              session_id: this.generateSessionId(),
+            };
+            // No guardar aún en localStorage, espera a la respuesta del backend
+            const guestData = {
+              name: data.name,
+              session_id: data.session_id
+            };
+            this.sendGuestDataToBackend(guestData).subscribe({
+              next: (resp: any) => {
+
+                // Guarda en localStorage
+                localStorage.setItem("user_guest", JSON.stringify(resp));
+                // 🚀 Propaga inmediatamente
+                this.userGuestSubject.next(resp);
+
+                observer.next(resp);
+                observer.complete();
+              },
+              error: (err) => {
+                observer.error(err);
+              }
+            });
+          },
+          error: (err) => {
+            observer.error(err);
           }
-
-          localStorage.setItem("user_guest", JSON.stringify(data));
-          this.userGuestSubject.next(data);
-
-          const guestData = {
-            name: data.name,
-            session_id: data.session_id
-          };
-
-          this.sendGuestDataToBackend(guestData);
-        },
-        error: (err) => {
-          console.error("❌ Error al eliminar los guests anteriores:", err);
-        }
-      });
-    } else {
-        // Si ya existe, lo mantiene como está
+        });
+      } else {
         const parsedUserGuest = JSON.parse(storedUserGuest);
         this.userGuestSubject.next(parsedUserGuest);
-    }
+        observer.next(parsedUserGuest);
+        observer.complete();
+      }
+    });
   }
 
-  sendGuestDataToBackend(data:any) {
+  sendGuestDataToBackend(data: any): Observable<any> {
     this.loadingSubject.next(true);
     let URL = URL_SERVICE + "guests/register";
-
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-     return this._http.post(URL, data, { headers }).subscribe({
-       next: (resp: any) => {
+    return this._http.post(URL, data, { headers }).pipe(
+      tap((resp: any) => {
         if (resp?.status === 200 && resp?.data) {
           const guestData = {
             _id       : resp.data.id || 0,
@@ -175,14 +234,8 @@ export class AuthService {
           localStorage.setItem("user_guest", JSON.stringify(guestData));
           this.userGuestSubject.next(guestData);
         }
-      },
-      error: (err) => {
-        console.error("❌ Error al registrar el invitado:", err);
-      },
-      complete: () => {
-        console.log("Llamada completada");
-      }
-     });
+      })
+    );
   }
 
   generateSessionId(): string {
@@ -401,7 +454,7 @@ export class AuthService {
     this.userSubject.next(null);
     this.userGuestSubject.next(null);
 
-    this.deleteGuestAndAddresses().subscribe({
+    /*this.deleteGuestAndAddresses().subscribe({
       next: (resp: any) => {
           localStorage.removeItem("user_guest");
           this.addGuestLocalStorage();
@@ -409,10 +462,27 @@ export class AuthService {
       error: err => {
           console.error("❌ Error al limpiar datos guest al salir del checkout", err);
       }
+    });*/
+    this.deleteGuestAndAddresses().subscribe({
+      next: () => {
+        this.addGuestLocalStorage().subscribe({
+          next: () => {
+            const { country, locale } = this.getLocaleAndCountry();
+            this._router.navigate(['/', country, locale, 'home']);
+          },
+          error: (err) => {
+            console.error("❌ Error al crear guest tras logout", err);
+          }
+        });
+      },
+      error: (err) => {
+        console.error("❌ Error al limpiar datos guest al salir del checkout", err);
+      }
     });
+
     
-    const { country, locale } = this.getLocaleAndCountry();
-    this._router.navigate(['/', country, locale, 'home']);
+    //const { country, locale } = this.getLocaleAndCountry();
+    //this._router.navigate(['/', country, locale, 'home']);
   }
 
   deleteGuestAndAddresses(): Observable<any> {

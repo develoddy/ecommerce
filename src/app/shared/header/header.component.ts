@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, HostListener, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, debounceTime, forkJoin, fromEvent, Observable, of, Subscription, tap } from 'rxjs';
@@ -28,6 +28,10 @@ declare function cleanupHOMEINITTEMPLATE($: any): any;
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  // Abrir el menú de cuenta (mouseover)
+
+  // Ya no es necesario cerrar por click fuera, el mouseleave lo gestiona
 
   @Output() forceLogin = new EventEmitter<void>();
 
@@ -87,6 +91,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscribeToWishlistData();
     this.subscribeToEcommerceConfig();
     this.checkDeviceType();
+
+    // Escuchar el evento forceLogin para abrir el menú de cuenta automáticamente
+    this.subscriptions.add(
+      this.headerEventsService.forceLogin$.subscribe(() => {
+        // No hace nada, jQuery controla el menú de cuenta
+      })
+    );
   }
 
   private checkUserAuthenticationStatus(): void {
@@ -96,6 +107,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.authService.userGuest
       ]).subscribe(([user, userGuest]) => {
         this.currentUser = user || userGuest; // Usa el usuario autenticado o invitado
+        console.log("-----> Usuario actual en HeaderComponent: ", this.currentUser);
+        
         if (this.currentUser) {
           this.processUserStatus();  // Procesar el usuario
         } else {
@@ -469,8 +482,5 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.minicartService.closeMinicart();
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event): void {
-    this.checkDeviceType(); // Verifica el tamaño de la pantalla
-  } 
+  // onResize eliminado, ya no se usa HostListener para el menú de cuenta
 }

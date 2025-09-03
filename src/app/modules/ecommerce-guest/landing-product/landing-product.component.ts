@@ -767,9 +767,32 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private handleCartError(error: any) {
-      if (error.error.message === "EL TOKEN NO ES VALIDO") {
-        this.cartService._authService.logout();
-      }
+    if (error?.error?.message === "EL TOKEN NO ES VALIDO") {
+      this.cartService._authService.logout();
+      return;
+    }
+    // Manejo de error: guest no existe
+    if (
+      error?.error?.message_text === "El invitado (guest) no existe o la sesión ha expirado. Por favor, recarga la página o inicia una nueva sesión."
+    ) {
+      this.errorResponse = true;
+      this.errorMessage = error.error.message_text;
+      alertDanger(error.error.message_text);
+      // Crear guest y reintentar añadir al carrito SOLO cuando el guest esté creado
+      // this.cartService._authService.addGuestLocalStorage().subscribe({
+      //   next: () => {
+      //     this.saveCart();
+      //   },
+      //   error: (err) => {
+      //     alertDanger('No se pudo crear el invitado. Intenta de nuevo.');
+      //   }
+      // });
+      // return;
+    }
+    // Otros errores
+    this.errorResponse = true;
+    this.errorMessage = error?.error?.message_text || 'Ocurrió un error inesperado al añadir al carrito.';
+    alertDanger(this.errorMessage);
   }
 
   addCantidad(cantidad:number) {
