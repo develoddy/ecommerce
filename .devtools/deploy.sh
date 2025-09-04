@@ -19,7 +19,7 @@ divider="========================================================="
 # ===================== BANNER PRINCIPAL =====================
 echo -e "${MAGENTA}$divider${NC}"
 echo -e "${MAGENTA}##                                                     ##${NC}"
-echo -e "${MAGENTA}##       🚀🚀🚀 DEPLOY ECOMMERCE 🚀🚀🚀               ##${NC}"
+echo -e "${MAGENTA}##       🚀🚀🚀 DEPLOY ECOMMERCE 🚀🚀🚀                ##${NC}"
 echo -e "${MAGENTA}##                                                     ##${NC}"
 echo -e "${MAGENTA}$divider${NC}"
 echo -e "${YELLOW}🚀 Iniciando proceso de Deploy de ECOMMERCE${NC}"
