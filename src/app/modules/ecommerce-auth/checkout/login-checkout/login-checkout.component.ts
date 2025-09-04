@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, HostListener, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
@@ -148,7 +148,6 @@ export class LoginCheckoutComponent implements OnInit {
   // }
 
   enterAsGuest() {
-    console.log("Intentando entrar como invitado...");
     //  this._router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
       this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { 
           queryParams: { 
@@ -158,26 +157,33 @@ export class LoginCheckoutComponent implements OnInit {
         });
   }
 
-  private verifyAuthenticatedUser(): void {
-    this._authEcommerce._authService.user.subscribe(user => {
-      if ( user ) {
+  // -- VERIFICA EL ESTADO DEL CURRENT USER
+  verifyAuthenticatedUser(): void {
+    this._authEcommerce._authService.user.pipe(take(1)).subscribe(user => {
+      if (user) {
+        // ✅ Usuario autenticado
         this.CURRENT_USER_AUTHENTICATED = user;
-        this.CURRENT_USER_GUEST = null; // Si hay usuario autenticado, se ignora el invitado
-        console.log("Compra como usuario registrado", this.CURRENT_USER_AUTHENTICATED);
+        this.CURRENT_USER_GUEST = null;
         this.checkIfAddressClientExists();
       } else {
-        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
-          if (guestUser?.guest) {
+        // 🔎 Verificamos si existe invitado
+        this._authEcommerce._authService.userGuest.pipe(take(1)).subscribe(guestUser => {
+          if (guestUser && guestUser.state === 1) {
+            // ⚠️ Modo invitado detectado → forzar login
+            this.CURRENT_USER_AUTHENTICATED = null;
             this.CURRENT_USER_GUEST = guestUser;
-            console.log("Compra como invitado", this.CURRENT_USER_GUEST);
-            this.checkIfAddressGuestExists();
+            //this.checkIfAddressGuestExists();
+
           } else {
+            // ❌ Ningún usuario válido → también forzar login
+            this.CURRENT_USER_AUTHENTICATED = null;
             this.CURRENT_USER_GUEST = null;
           }
         });
       }
     });
   }
+
 
   checkIfAddressClientExists() {
     if (this.CURRENT_USER_AUTHENTICATED) {
@@ -190,9 +196,6 @@ export class LoginCheckoutComponent implements OnInit {
             this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
           }
       });
-    } else if (this.CURRENT_USER_GUEST) {
-      // Si es un usuario invitado, buscar en address_guest
-      console.log("Si es un usuario invitado, buscar en address_guest", this.CURRENT_USER_GUEST);
     }
   }
 
@@ -227,7 +230,6 @@ export class LoginCheckoutComponent implements OnInit {
   removeAllCart(user_id: any) {
     this._cartService.deleteAllCart(user_id).subscribe(
       (resp: any) => {
-        console.log(resp.message_text);
         this._cartService.resetCart();
     }, (error) => {
         console.error("Error al eliminar el carrito:", error);

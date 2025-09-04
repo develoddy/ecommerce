@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Subscription, firstValueFrom } from 'rxjs';
+import { Subscription, firstValueFrom, take } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
@@ -281,16 +281,12 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   async payWithStripe() {
-    console.log('1. payWithStripe');
-    
     //this.disablePayments = true;
     const stripe = await loadStripe(environment.stripePublicKey);
     if (!stripe) {
       alert('Stripe no pudo cargarse');
       return;
     }
-
-    console.log('2. payWithStripe');
 
     if (!this.listCarts || this.listCarts.length === 0) {
       alert("El carrito está vacío.");
@@ -302,8 +298,6 @@ export class PaymentCheckoutComponent implements OnInit {
       this.errorOrSuccessMessage = "Por favor, seleccione la dirección de envío correspondiente.";
       return;
     }
-
-    console.log('3. payWithStripe');
 
     const payload = {
       cart    : this.listCarts,
@@ -518,25 +512,30 @@ export class PaymentCheckoutComponent implements OnInit {
       decimalPart: formatted[1]  // Parte decimal
     };
   }
-  
+
   private verifyAuthenticatedUser(): void {
-    this._authEcommerce._authService.user.subscribe(user => {
-      if ( user ) {
+    this._authEcommerce._authService.user.pipe(take(1)).subscribe(user => {
+      if (user) {
         this.CURRENT_USER_AUTHENTICATED = user;
         this.CURRENT_USER_GUEST = null;
         this.checkIfAddressClientExists();
       } else {
-        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
-          if (guestUser?.guest) {
+        this._authEcommerce._authService.userGuest.pipe(take(1)).subscribe(guestUser => {
+          if (guestUser && guestUser.state === 1) {
+            // ⚠️ Modo invitado detectado → forzar login
+            this.CURRENT_USER_AUTHENTICATED = null;
             this.CURRENT_USER_GUEST = guestUser;
             this.checkIfAddressGuestExists();
           } else {
+            // ❌ Ningún usuario válido → también forzar login
+            this.CURRENT_USER_AUTHENTICATED = null;
             this.CURRENT_USER_GUEST = null;
           }
         });
       }
     });
   }
+  
 
   checkIfAddressClientExists() {
     if (this.CURRENT_USER_AUTHENTICATED) {
@@ -627,7 +626,6 @@ export class PaymentCheckoutComponent implements OnInit {
   removeAllCart(user_id: any) {
     this._cartService.deleteAllCart(user_id).subscribe(
       (resp: any) => {
-        console.log(resp.message_text);
         this._cartService.resetCart();
     }, (error) => {
         console.error("Error al eliminar el carrito:", error);

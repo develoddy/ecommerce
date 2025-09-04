@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter, HostListener, ChangeDetectorRef } from '@angular/core';
-import { forkJoin, Subscription } from 'rxjs';
+import { forkJoin, Subscription, take } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
@@ -262,7 +262,7 @@ export class ResumenCheckoutComponent implements OnInit {
     });
   }
 
-  private verifyAuthenticatedUser(): void {
+  /**private verifyAuthenticatedUser(): void {
     this._authEcommerce._authService.user.subscribe(user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;
@@ -279,7 +279,29 @@ export class ResumenCheckoutComponent implements OnInit {
         });
       }
     });
-  }
+  }**/
+ private verifyAuthenticatedUser(): void {
+     this._authEcommerce._authService.user.pipe(take(1)).subscribe(user => {
+       if (user) {
+         this.CURRENT_USER_AUTHENTICATED = user;
+         this.CURRENT_USER_GUEST = null;
+         this.checkIfAddressClientExists();
+       } else {
+         this._authEcommerce._authService.userGuest.pipe(take(1)).subscribe(guestUser => {
+            if (guestUser && guestUser.state === 1) {
+              // ⚠️ Modo invitado detectado → forzar login
+              this.CURRENT_USER_AUTHENTICATED = null;
+              this.CURRENT_USER_GUEST = guestUser;
+              this.checkIfAddressGuestExists();
+            } else {
+              // ❌ Ningún usuario válido → también forzar login
+              this.CURRENT_USER_AUTHENTICATED = null;
+              this.CURRENT_USER_GUEST = null;
+            }
+         });
+       }
+     });
+   }
 
   checkIfAddressClientExists() {
     if (this.CURRENT_USER_AUTHENTICATED) {
@@ -391,7 +413,7 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   private listCartsLocalStorage(): void {
-    this._cartService.listCartsCache(this.CURRENT_USER_GUEST.user_guest).subscribe((resp: any) => {
+    this._cartService.listCartsCache('guest').subscribe((resp: any) => { //this._cartService.listCartsCache(this.CURRENT_USER_GUEST.user_guest).subscribe((resp: any) => {
       resp.carts.forEach((cart: any) => {
         this._cartService.changeCart(cart);
       });
@@ -575,32 +597,55 @@ export class ResumenCheckoutComponent implements OnInit {
       console.warn('No hay dirección seleccionada');
       return;
     }
-  
+
     const selected = this.listAddresses.find(addr => addr.id === this.selectedAddressId);
-    if (selected) {
-      // 1) Guarda en el servicio de checkout
-      this.checkoutService.setSelectedAddress(selected);
-      this.selectedAddress = selected;
+    if (!selected) return;
 
-      // 2) Guardar en sessionStorage (según el tipo de usuario)
-      const storageKey = this.CURRENT_USER_AUTHENTICATED ? 'selectedAddressId' : 'selectedGuestAddressId';
-      sessionStorage.setItem(storageKey, this.selectedAddressId.toString());
+    // 1) Guarda en el servicio de checkout
+    this.checkoutService.setSelectedAddress(selected);
+    this.selectedAddress = selected;
 
-      // 3) Si se seleccionó como habitual, actualizar en backend
-      //if (this.usual_shipping_address) {
-        const userId = this.CURRENT_USER_AUTHENTICATED._id; // Asegúrate que esté accesible _authEcommerce
-        this._authEcommerce.setAsUsualShippingAddress(this.selectedAddressId, userId).subscribe({
-          next: () => {
-            // Recargar lista de direcciones
-            this.loadAddresses(); // <-- tu método que llama al backend y actualiza this.listAddresses
-          },
-          error: (err) => console.error("Error al actualizar dirección habitual", err)
-        });
-      //}
+    // 2) Guardar en sessionStorage según tipo de usuario
+    let storageKey = '';
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      storageKey = 'selectedAddressId';
+    } else if (this.CURRENT_USER_GUEST) {
+      storageKey = 'selectedGuestAddressId';
+    }
+    sessionStorage.setItem(storageKey, this.selectedAddressId.toString());
 
-      this.closeMiniAdress();
-    } 
+    // 3) Si es usuario autenticado → actualizar dirección habitual
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      const userId = this.CURRENT_USER_AUTHENTICATED._id;
+      this._authEcommerce.setAsUserAuthenticatedUsualShippingAddress(this.selectedAddressId, userId).subscribe({
+        next: (res:any) => {
+          if (res.status == 200) {
+              alertSuccess(res.message)
+              this.loadAddresses();
+          }
+      },
+        error: (err) => console.error("Error al actualizar dirección habitual", err)
+      });
+    } else if (this.CURRENT_USER_GUEST) {
+      // 🚀 Aquí decides qué hacer en modo invitado:
+      // - Guardar la dirección en backend asociada al guest.id
+      // - O solo mantenerla en sessionStorage
+
+      const guestId = this.CURRENT_USER_GUEST.id;
+      this._authEcommerce.setGuestUsualShippingAddress(this.selectedAddressId, guestId).subscribe({
+        next: (res:any) => {
+          if (res.status == 200) {
+            alertSuccess(res.message)
+            this.loadAddresses();
+          }
+      },
+        error: (err) => console.error("Error al actualizar dirección invitado", err)
+      });
+    }
+
+    this.closeMiniAdress();
   }
+
 
   loadAddresses() {
     if (this.CURRENT_USER_AUTHENTICATED) {
