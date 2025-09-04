@@ -87,6 +87,11 @@ else
 fi
 
 # ================= FIN =================
-echo -e "${MAGENTA}$divider${NC}"
-echo -e "${GREEN}🎉 DEPLOY ECOMMERCE completado con éxito!${NC}"
-echo -e "${MAGENTA}$divider${NC}\n"
+echo -e "${MAGENTA}=========================================================${NC}"
+echo -e "${MAGENTA}##                                                     ##${NC}"
+echo -e "${MAGENTA}##    🎉🎉🎉 DEPLOY ECOMMERCE COMPLETADO 🎉🎉🎉       ##${NC}"
+echo -e "${MAGENTA}##       ✅ Todo actualizado y en producción ✅       ##${NC}"
+echo -e "${MAGENTA}##          🥳🚀🎊 FELICIDADES 🚀🎊🥳                 ##${NC}"
+echo -e "${MAGENTA}##                                                     ##${NC}"
+echo -e "${MAGENTA}=========================================================${NC}\n"
+
