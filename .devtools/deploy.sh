@@ -30,29 +30,39 @@ echo -e "${BLUE}$divider${NC}"
 echo -e "🚀 ${YELLOW}Iniciando proceso de Deploy de ECOMMERCE${NC}"
 echo -e "${BLUE}$divider${NC}"
 
-# Guardar cambios en el repo del proyecto Angular
+# 1️⃣ Guardar cambios en el repo del proyecto Angular
 echo -e "\n${CYAN}>>> 💾 Guardando cambios en repo de ecommerce...${NC}"
 git add .
 git commit -m "💾 Pre-Deploy commit $(date '+%Y-%m-%d %H:%M:%S')" >/dev/null 2>&1
 git push origin main
+if [ $? -eq 0 ]; then
+  echo -e "${GREEN}✅ Cambios guardados y enviados a GitHub correctamente${NC}"
+else
+  echo -e "${RED}❌ Error al guardar/enviar cambios a GitHub. Se detiene la ejecución${NC}"
+  exit 1
+fi
 
-# Compilar Angular
+# 2️⃣ Compilar Angular
 echo -e "\n${CYAN}>>> 🛠️ Construyendo proyecto Angular...${NC}"
 ng build --configuration=production
 if [ $? -ne 0 ]; then
-  echo -e "\n${RED}❌ Error en la compilación de Angular${NC}"
+  echo -e "\n${RED}❌ Error en la compilación de Angular. Se detiene la ejecución${NC}"
   exit 1
+else
+  echo -e "${GREEN}✅ Compilación Angular completada correctamente${NC}"
 fi
 
-# Sincronizar archivos
+# 3️⃣ Sincronizar archivos con la carpeta de deploy
 echo -e "\n${CYAN}>>> 📂 Sincronizando archivos con la carpeta de deploy...${NC}"
 rsync -a --delete --exclude='._*' "$BUILD_DIR/" "$DEPLOY_DIR/"
 if [ $? -ne 0 ]; then
-  echo -e "\n${RED}❌ Error al copiar los archivos con rsync${NC}"
+  echo -e "\n${RED}❌ Error al copiar los archivos con rsync. Se detiene la ejecución${NC}"
   exit 1
+else
+  echo -e "${GREEN}✅ Archivos sincronizados correctamente${NC}"
 fi
 
-# Git push final en carpeta de deploy (opcional)
+# 4️⃣ Git push final en carpeta de deploy (opcional)
 echo -e "\n${CYAN}>>> 📤 Subiendo cambios a GitHub desde deploy...${NC}"
 cd "$(dirname "$DEPLOY_DIR")" || exit
 git add .
@@ -64,6 +74,6 @@ if [ $? -eq 0 ]; then
   echo -e "👉 ${YELLOW}Ahora entra al servidor y ejecuta:${NC} ${CYAN}git pull origin main${NC}"
   echo -e "${GREEN}$divider${NC}\n"
 else
-  echo -e "\n${RED}❌ Error al hacer push a GitHub desde deploy${NC}"
+  echo -e "\n${RED}❌ Error al hacer push a GitHub desde deploy. Se detiene la ejecución${NC}"
   exit 1
 fi
