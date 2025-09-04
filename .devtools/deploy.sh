@@ -25,8 +25,9 @@ echo -e "${MAGENTA}$divider${NC}"
 echo -e "${YELLOW}🚀 Iniciando proceso de Deploy de ECOMMERCE${NC}"
 echo -e "${BLUE}$divider${NC}"
 
-# ===================== 1️⃣ Guardar cambios en repo =====================
-echo -e "\n${CYAN}>>> 💾 Guardando cambios en repo de ecommerce...${NC}"
+# ===================== PASO 1 =====================
+echo -e "\n${CYAN}1️⃣ PASO 1: Guardar cambios en el repo del proyecto Angular${NC}"
+echo -e "${CYAN}>>> 💾 Guardando cambios en repo de ecommerce...${NC}"
 git add .
 git commit -m "💾 Pre-Deploy commit $(date '+%Y-%m-%d %H:%M:%S')" >/dev/null 2>&1
 git push origin main
@@ -37,8 +38,9 @@ else
   exit 1
 fi
 
-# ===================== 2️⃣ Compilar Angular =====================
-echo -e "\n${CYAN}>>> 🛠️ Construyendo proyecto Angular...${NC}"
+# ===================== PASO 2 =====================
+echo -e "\n${CYAN}2️⃣ PASO 2: Compilar Angular${NC}"
+echo -e "${CYAN}>>> 🛠️ Construyendo proyecto Angular...${NC}"
 ng build --configuration=production
 if [ $? -ne 0 ]; then
   echo -e "\n${RED}❌ Error en la compilación de Angular. Se detiene la ejecución${NC}"
@@ -47,8 +49,9 @@ else
   echo -e "${GREEN}✅ Compilación Angular completada correctamente${NC}"
 fi
 
-# ===================== 3️⃣ Sincronizar archivos =====================
-echo -e "\n${CYAN}>>> 📂 Sincronizando archivos con la carpeta de deploy...${NC}"
+# ===================== PASO 3 =====================
+echo -e "\n${CYAN}3️⃣ PASO 3: Sincronizar archivos con la carpeta de deploy${NC}"
+echo -e "${CYAN}>>> 📂 Sincronizando archivos...${NC}"
 rsync -a --delete --exclude='._*' "$BUILD_DIR/" "$DEPLOY_DIR/"
 if [ $? -ne 0 ]; then
   echo -e "\n${RED}❌ Error al copiar los archivos con rsync. Se detiene la ejecución${NC}"
@@ -57,8 +60,8 @@ else
   echo -e "${GREEN}✅ Archivos sincronizados correctamente${NC}"
 fi
 
-# ===================== 4️⃣ Git push final =====================
-echo -e "\n${CYAN}>>> 📤 Subiendo cambios a GitHub desde deploy...${NC}"
+# ===================== PASO 4 =====================
+echo -e "\n${CYAN}4️⃣ PASO 4: Git push final desde la carpeta de deploy${NC}"
 cd "$(dirname "$DEPLOY_DIR")" || exit
 git add .
 git commit -m "🚀 Deploy ECOMMERCE $(date '+%Y-%m-%d %H:%M:%S')" >/dev/null 2>&1
