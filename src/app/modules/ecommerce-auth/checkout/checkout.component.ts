@@ -189,13 +189,32 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         this.CURRENT_USER_GUEST = null;
         this.checkIfAddressClientExists();
       } else {
+        
         this._authEcommerce._authService.userGuest.pipe(take(1)).subscribe(guestUser => {
-          if (guestUser?.guest) {
+          
+          // if (guestUser?.guest) {
+          //   this.CURRENT_USER_GUEST = guestUser;
+          //   this.checkIfAddressGuestExists();
+          // } else {
+          //   this.showLogin();
+          // }
+
+           if (guestUser && guestUser.state === 1) {
+            // ⚠️ Modo invitado detectado → forzar login
+            this.CURRENT_USER_AUTHENTICATED = null;
             this.CURRENT_USER_GUEST = guestUser;
-            this.checkIfAddressGuestExists();
+            console.log("⚠️ Modo invitado detectado → forzar login");
+            
+            this.showLogin();
           } else {
+            // ❌ Ningún usuario válido → también forzar login
+            this.CURRENT_USER_AUTHENTICATED = null;
+            this.CURRENT_USER_GUEST = null;
+            console.log("❌ Ningún usuario válido → también forzar login");
+            
             this.showLogin();
           }
+
         });
       }
     });

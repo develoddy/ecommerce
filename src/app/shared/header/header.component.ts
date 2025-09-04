@@ -107,8 +107,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.authService.userGuest
       ]).subscribe(([user, userGuest]) => {
         this.currentUser = user || userGuest; // Usa el usuario autenticado o invitado
-        console.log("-----> Usuario actual en HeaderComponent: ", this.currentUser);
-        
         if (this.currentUser) {
           this.processUserStatus();  // Procesar el usuario
         } else {
@@ -121,7 +119,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private processUserStatus(): void {
     this.storeListCarts();
     this.storeListWishlists();
-    if (this.currentUser && this.currentUser.user_guest !== "Guest") { // Si el usuario no es un invitado
+    if (this.currentUser && !this.currentUser.email) { //if (this.currentUser && this.currentUser.user_guest !== "Guest") { // Si el usuario no es un invitado
       let user_guest = "Guest";
       this.cartService.listCartsCache(user_guest).subscribe((resp: any) => {
         if (resp.carts.length > 0) {
@@ -132,10 +130,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private storeListCarts(): void {
-    const isGuest = this.currentUser?.user_guest;
-    if (isGuest) { // Es un invitado
+  
+    if (this.currentUser && !this.currentUser.email) { // Es un invitado
       this.listCartsLocalStorage();
-    } else if (!isGuest) { // Está autenticado
+    } else if (this.currentUser && this.currentUser.email) { // Está autenticado
       this.cartService.resetCart();
       this.listCartsDatabase();
     } else {
@@ -199,7 +197,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private listCartsDatabase(): void {
-    if (!this.currentUser || !this.currentUser._id) {
+    //if (!this.currentUser || !this.currentUser._id) {
+    if(this.currentUser && !this.currentUser.email) {
       console.error("Error: Intentando acceder a la base de datos sin un usuario autenticado.");
       return;
     }
@@ -241,11 +240,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   private storeListWishlists(): void {
-    const isGuest = this.currentUser?.user_guest;
-  
-    if (isGuest) {
+    if (this.currentUser && !this.currentUser.email) { // Es un invitado
       this.listWishlistsLocalStorage();
-    } else if (!isGuest) {
+    } else if (this.currentUser && this.currentUser.email) { // Autenticado
       this.listWishlistsDatabase();
     } else {
       console.warn("Error: Estado de usuario no definido");
@@ -253,7 +250,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   private listWishlistsDatabase(): void {
-    if (!this.currentUser || !this.currentUser._id) {
+    if(this.currentUser && !this.currentUser.email) { //if (!this.currentUser || !this.currentUser._id) {
       console.error("Error: Intentando acceder a la base de datos sin un usuario autenticado.");
       return;
     }
@@ -345,7 +342,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   removeCart(cart: any) {
     // Si es un usuario autenticado
-    if(!this.currentUser?.user_guest) { 
+    if(this.currentUser && this.currentUser.email) {  //if(!this.currentUser?.user_guest) { 
       this.cartService.deleteCart(cart._id).subscribe((resp: any) => {
         this.cartService.removeItemCart(cart);
         if (resp.message === 403) {
@@ -355,7 +352,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         alertSuccess("El producto ha sido eliminado del carrito");
         this.updateTotalCarts();
       });
-    } else {
+    } else if(this.currentUser && !this.currentUser.email) {
       this.cartService.deleteCartCache(cart._id).subscribe((resp: any) => {
         this.cartService.removeItemCart(cart);
         if (resp.message === 403) {
@@ -396,7 +393,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       product: cart.product._id,
     };
 
-    if(this.currentUser.user_guest) {
+    if( this.currentUser && !this.currentUser.email) { // Es un invitado //if(this.currentUser.user_guest) {
       this.updateGuestCart(cartData);
     } else {
       this.updateUserCart(cartData);

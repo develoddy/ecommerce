@@ -731,8 +731,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     let data = {
-      user: this.currentUser._id,
-      user_status: this.currentUser.user_guest,
+      user: this.currentUser.email ? this.currentUser._id : this.currentUser.id,
+      user_status: this.currentUser.email ? 'authenticated' : 'guest',
       product: this.product_selected._id,
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
@@ -745,7 +745,12 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       total: (this.product_selected.price_usd - this.getDiscount()) * this.cantidad //total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
     };
 
-    if (this.currentUser.user_guest == "Guest") {
+    console.log("------> Data para registrar en carrito: ", data);
+    
+
+    if (this.currentUser && !this.currentUser.email ) { //if (this.currentUser.user_guest == "Guest") {
+      console.log("Registrando carrito en cache para invitado", this.currentUser);
+      
       this.cartService.registerCartCache(data).subscribe(
         this.handleCartResponse.bind(this), this.handleCartError.bind(this)
       );
@@ -778,18 +783,9 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       this.errorResponse = true;
       this.errorMessage = error.error.message_text;
       alertDanger(error.error.message_text);
-      // Crear guest y reintentar añadir al carrito SOLO cuando el guest esté creado
-      // this.cartService._authService.addGuestLocalStorage().subscribe({
-      //   next: () => {
-      //     this.saveCart();
-      //   },
-      //   error: (err) => {
-      //     alertDanger('No se pudo crear el invitado. Intenta de nuevo.');
-      //   }
-      // });
-      // return;
     }
     // Otros errores
+
     this.errorResponse = true;
     this.errorMessage = error?.error?.message_text || 'Ocurrió un error inesperado al añadir al carrito.';
     alertDanger(this.errorMessage);

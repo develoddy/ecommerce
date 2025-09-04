@@ -175,27 +175,20 @@ export class AuthService {
       if (!storedUserGuest) {
         this.deleteGuestAndAddresses().subscribe({
           next: () => {
-            let data = {
-              _id: 0,
-              user_guest: "Guest",
-              name: 'Anonymous',
-              guest: false,
-              session_id: this.generateSessionId(),
-            };
             // No guardar aún en localStorage, espera a la respuesta del backend
             const guestData = {
-              name: data.name,
-              session_id: data.session_id
+              name: 'Anonymous',
+              session_id: this.generateSessionId()
             };
             this.sendGuestDataToBackend(guestData).subscribe({
               next: (resp: any) => {
-
                 // Guarda en localStorage
-                localStorage.setItem("user_guest", JSON.stringify(resp));
+                localStorage.setItem("user_guest", JSON.stringify(resp.data));
+                
                 // 🚀 Propaga inmediatamente
-                this.userGuestSubject.next(resp);
+                this.userGuestSubject.next(resp.data);
 
-                observer.next(resp);
+                observer.next(resp.data);
                 observer.complete();
               },
               error: (err) => {
@@ -222,6 +215,7 @@ export class AuthService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this._http.post(URL, data, { headers }).pipe(
       tap((resp: any) => {
+        
         if (resp?.status === 200 && resp?.data) {
           const guestData = {
             _id       : resp.data.id || 0,

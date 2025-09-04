@@ -146,8 +146,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public sotoreCarts() {
     this.cartService.resetCart();
-    const isGuest = this.currentUser?.user_guest;
-    if (isGuest) {
+    if (this.currentUser && !this.currentUser.email) {
       this.listCartsLocalStorage();
     } else {
       this.listCartsDatabase();
@@ -163,7 +162,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private listCartsLocalStorage(): void {
-    this.cartService.listCartsCache(this.currentUser.user_guest).subscribe((resp: any) => {
+    this.cartService.listCartsCache("guest").subscribe((resp: any) => {
       resp.carts.forEach((cart: any) => {
         this.cartService.changeCart(cart);
       });
@@ -239,7 +238,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       product: cart.product._id,
     };
 
-    if(this.currentUser.user_guest) {
+    if(this.currentUser && !this.currentUser.email) { //if(this.currentUser.user_guest) {
       this.updateGuestCart(cartData);
     } else {
       this.updateUserCart(cartData);
@@ -306,7 +305,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   storeClearCart(): void {
-    if (this.currentUser && this.currentUser.user_guest) {
+    if (this.currentUser && !this.currentUser.email) {
       this.clearCartsCache();  // Limpiar carrito para invitados
     } else if (this.currentUser && this.currentUser._id) {
       this.clearCartsDatabase();  // Limpiar carrito para usuarios autenticados

@@ -123,30 +123,39 @@ export class LoginCheckoutComponent implements OnInit {
     }
   }
 
-  enterAsGuest() {
-    let existingGuestData = localStorage.getItem("user_guest");
+  // enterAsGuest() {
+  //   let existingGuestData = localStorage.getItem("user_guest");
 
-    if (existingGuestData) {
-      let parsedData = JSON.parse(existingGuestData);
-      parsedData.guest = true;
+  //   if (existingGuestData) {
+      
+  //     let parsedData = JSON.parse(existingGuestData);
+  //     parsedData.guest = true;
 
-      sessionStorage.setItem("user_guest", JSON.stringify(parsedData));
-      this._authEcommerce._authService.userGuestSubject.next(parsedData);
+  //     sessionStorage.setItem("user_guest", JSON.stringify(parsedData));
+  //     this._authEcommerce._authService.userGuestSubject.next(parsedData);
 
-      // Verificar si el cambio fue exitoso antes de redirigir
-      const updatedData = JSON.parse(localStorage.getItem("user_guest") || '{}');
-      if (updatedData.guest === true) {
-        console.log("---> DEBBUG: Resumen.componente > EnterGuest() if");
-        
-        this._router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
-        
-      } else {
-        console.warn('⚠️ No se pudo activar el modo guest correctamente.');
-      }
-    } else {
-      console.error('❌ No se encontró información de guest en el sessionStorage.');
-    }
+  //     const updatedData = JSON.parse(localStorage.getItem("user_guest") || '{}');
+      
+  //     if (updatedData.session_id) {
+  //       this._router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
+  //     } else {
+  //       console.warn('⚠️ No se pudo activar el modo guest correctamente.');
+  //     }
+  //   } else {
+  //     console.error('❌ No se encontró información de guest en el sessionStorage.');
+  //   }
     
+  // }
+
+  enterAsGuest() {
+    console.log("Intentando entrar como invitado...");
+    //  this._router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
+      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { 
+          queryParams: { 
+            initialized: true, 
+            from: 'step2' 
+          }
+        });
   }
 
   private verifyAuthenticatedUser(): void {

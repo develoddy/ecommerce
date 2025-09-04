@@ -121,11 +121,18 @@ export class DeliveryComponent implements OnInit {
     }
   
     private registerAddress() {
-      
-      console.log("--- Debbug: Entraa en registerAddress para guest");
-      
-
-      if (!this.CURRENT_USER_GUEST || !this.name || !this.surname || !this.pais || !this.address || !this.zipcode || !this.poblacion || !this.ciudad || !this.email || !this.phone ) {
+      if (
+        !this.CURRENT_USER_GUEST || 
+        !this.name || 
+        !this.surname || 
+        !this.pais || 
+        !this.address || 
+        !this.zipcode || 
+        !this.poblacion || 
+        !this.ciudad || 
+        !this.email || 
+        !this.phone 
+      ) {
         this.status = false;
         this.validMessage = true;
         this.errorOrSuccessMessage = "Por favor, complete los campos obligatorios de la dirección de envío";
@@ -135,7 +142,7 @@ export class DeliveryComponent implements OnInit {
       }
   
       let data = {    
-          guest     : this.CURRENT_USER_GUEST._id,
+          guest     : this.CURRENT_USER_GUEST.id,
           name      : this.name,
           surname   : this.surname,
           pais      : this.pais,
@@ -148,8 +155,6 @@ export class DeliveryComponent implements OnInit {
           usual_shipping_address: this.usual_shipping_address,
       };
 
-      
-      
       this._ecommerceAuthService.registerAddressGuest(data).subscribe( ( resp:any ) => {
   
         if ( resp.status == 200 ) {

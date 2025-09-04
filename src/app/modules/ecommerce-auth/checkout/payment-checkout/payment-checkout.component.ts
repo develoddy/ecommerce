@@ -308,7 +308,7 @@ export class PaymentCheckoutComponent implements OnInit {
     const payload = {
       cart    : this.listCarts,
       userId    : this.CURRENT_USER_AUTHENTICATED?._id || null,
-      guestId : this.CURRENT_USER_GUEST?._id || null,
+      guestId : this.CURRENT_USER_GUEST?.id || null,
       address : {
         name      : this.name       ,
         surname   : this.surname    ,
