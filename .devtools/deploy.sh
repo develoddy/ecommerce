@@ -16,12 +16,16 @@ DEPLOY_DIR="/Volumes/lujandev/dev/projects/ECOMMERCE/ECOMMERCE-RECURSOS/PRO-DIST
 divider="---------------------------------------------------------"
 
 # Banner ASCII
-echo -e "${CYAN}"
-echo "==========================================="
-echo "           🚀 DEPLOY ECOMMERCE 🚀           "
-echo "==========================================="
-echo -e "${NC}"
+echo -e "${CYAN}
+  ______                           _                                
+ |  ____|                         | |                               
+ | |__   _ __   ___  _ __ ___  ___| |__   ___ _ __ ___   ___  _   _ 
+ |  __| | '_ \ / _ \| '__/ _ \/ __| '_ \ / _ \ '_ \` _ \ / _ \| | | |
+ | |____| | | |  __/| | |  __/\__ \ | | |  __/ | | | | | (_) | |_| |
+ |______|_| |_|\___||_|  \___||___/_| |_|\___|_| |_| |_|\___/ \__,_|  
 
+               >>> DEPLOY ECOMMERCE <<<
+${NC}"
 echo -e "${BLUE}$divider${NC}"
 echo -e "🚀 ${YELLOW}Iniciando proceso de Deploy de ECOMMERCE${NC}"
 echo -e "${BLUE}$divider${NC}"
