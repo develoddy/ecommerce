@@ -886,13 +886,13 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     const product = this.product_selected;
 
     // Title más descriptivo y con palabras clave
-    const title = `${product.title} - Camisetas para Programadores | Tienda LujanDev`;
+    const title = `Camiseta ${product.title} | Ropa para Programadores en LujanDev`;
 
     // Description más atractiva y útil para buscadores
     // Así usas la descripción real si está disponible, y el fallback solo si hace falta.
     const description = product.description_es && product.description_es !== 'Descripción no disponible'
     ? product.description_es
-    : `Compra ${product.title} en LujanDev. Diseño exclusivo para desarrolladores, envío a todo el mundo.`;
+    : `Compra la camiseta ${product.title} en LujanDev. Moda exclusiva para programadores, envío internacional rápido.`;
 
 
     // Imagen principal
@@ -905,47 +905,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       image,
     });
   }
-
-
-  
-  /**private updateSeo(): void {
-    const { title, resumen: description, imagen, slug } = this.product_selected;
-    const productUrl = `${URL_FRONTEND}product/${slug}`;//const productUrl = `${URL_FRONTEND}product/${this.product_selected.slug}`;
-
-     // 🔹 Title & description
-    this.titleService.setTitle(`${title} | LujanDev Oficial`);
-    this.metaService.updateTag({ name: 'description', content: description || 'Descripción del producto' });
-
-    // 🔹 OpenGraph & Twitter
-    this.updateMetaTags(productUrl, title, description, imagen);
-
-    // 🔹 Canonical
-    this.setCanonicalUrl(productUrl);
-  }
-
-  private updateMetaTags(url: string, title: string, description: string, imageUrl: string): void {
-    const metaTags = [
-      { property: 'og:title', content: title },
-      { property: 'og:description', content: description },
-      { property: 'og:image', content: imageUrl },
-      { property: 'og:url', content: url },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: title },
-      { name: 'twitter:description', content: description },
-      { name: 'twitter:image', content: imageUrl },
-    ];
-    metaTags.forEach((tag:any) => this.metaService.updateTag(tag));
-  }
-
-  private setCanonicalUrl(url: string): void {
-    let link: HTMLLinkElement =
-      this.doc.querySelector("link[rel='canonical']") || this.doc.createElement('link');
-    link.setAttribute('rel', 'canonical');
-    link.setAttribute('href', url);
-    if (!link.parentNode) {
-      this.doc.head.appendChild(link);
-    }
-  }**/
 
   private checkDeviceType() {
     const width = window.innerWidth;

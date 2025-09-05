@@ -8,12 +8,12 @@
             <div class="product-image">
               <!-- Start Product Image -->
               <a href="#" (click)="navigateToProduct(ourProduct.slug, ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
-                <!-- Image -->
+                <!-- Image alt="Camiseta {{ product_selected.title }} para programadores LujanDev"-->
                 <img class="primary blur-up lazyload rounded-0 w-100 h-100" 
                      data-src="{{ ourProduct.imagen }}" 
                      src="{{ ourProduct.imagen }}" 
-                     [alt]="ourProduct.title"
-                     [title]="ourProduct.title"
+                     alt="Camiseta {{ ourProduct.title }} para programadores LujanDev" 
+                     title="Camiseta {{ ourProduct.title }} para programadores LujanDev"
                      width="625" 
                      height="608" 
                      style="object-fit: cover;" />
@@ -23,8 +23,8 @@
                   <img class="hover blur-up lazyload rounded-0 w-100 h-100" 
                        data-src="{{ ourProduct.imagen_two }}" 
                        src="{{ ourProduct.imagen_two }}" 
-                       [alt]="ourProduct.title"
-                       [title]="ourProduct.title" 
+                       alt="Camiseta {{ ourProduct.title }} para programadores LujanDev" 
+                       title="Camiseta {{ ourProduct.title }} para programadores LujanDev"
                        width="625" 
                        height="808" 
                        style="object-fit: cover;"/>
