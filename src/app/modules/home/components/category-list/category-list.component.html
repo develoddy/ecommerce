@@ -7,9 +7,14 @@
     <div class="collection-slider-5items gp15 arwOut5 hov-arrow">
       <ng-container *ngFor="let categorie of categories">
         <div class="category-item zoomscal-hov">
-          <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" class="category-link clr-none">
+          <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" class="category-link clr-none">
             <div class="zoom-scal zoom-scal-nopb rounded-3">
-              <img class="blur-up lazyload" [attr.data-src]="categorie.imagen_home" [src]="categorie.imagen_home" alt="{{ categorie.title }}" title="{{ categorie.title }}" width="365" height="365" />
+              <img class="blur-up lazyload" 
+                   [attr.data-src]="categorie.imagen_home" 
+                   [src]="categorie.imagen_home" 
+                   alt="{{ categorie.title }}" 
+                   title="{{ categorie.title }}" 
+                   width="365" height="365" />
             </div>
             <div class="details mt-3 text-center">
               <h4 class="category-title mb-0 text-uppercase">{{ categorie.title }}</h4>

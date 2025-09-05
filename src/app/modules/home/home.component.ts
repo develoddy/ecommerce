@@ -35,6 +35,7 @@ declare function cleanupProductZoom($: any): any;
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   euro = "€";
+  currentUrl: string = window.location.href;
   sliders:any = [];
   categories:any = [];
   SALE_FLASH:any = null;

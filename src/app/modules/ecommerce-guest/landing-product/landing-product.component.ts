@@ -39,6 +39,7 @@ declare function menuProductSlider($: any):any;
 })
 export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  currentUrl: string = '';
   euro = "€";
   listAddressClients:any = [];
   listAddressGuest:any = [];
@@ -146,6 +147,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnInit(): void {
+    
+    this.currentUrl = window.location.href; // Captura la URL completa de la página
     this.showStickyCart = window.scrollY > 600;
     this.loadSPINNER();
     this.checkUserAuthenticationStatus(); 

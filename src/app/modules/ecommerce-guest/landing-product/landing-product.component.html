@@ -171,6 +171,14 @@
                                         </span>
                                     </span>
                                 </div>
+                                <!-- Schema.org Offer -->
+                                <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                                    <link itemprop="url" [href]="currentUrl" />
+                                    <meta itemprop="priceCurrency" content="EUR" />
+                                    <meta itemprop="price" content="{{ getPriceWithDiscount().integerPart }}" />
+                                    <link itemprop="availability" href="https://schema.org/InStock" />
+                                </div>
+
                             </div>
 
                             <!-- Product Info -->

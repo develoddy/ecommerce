@@ -2,18 +2,32 @@
   <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 g-1">  
     <ng-container *ngIf="ourProducts.length > 0">
       <ng-container *ngFor="let ourProduct of ourProducts">
-        <div class="item col-item">
+        <div class="item col-item" itemscope itemtype="https://schema.org/Product">
           <div class="product-box">
             <!-- Start Product Image -->
             <div class="product-image">
               <!-- Start Product Image -->
               <a href="#" (click)="navigateToProduct(ourProduct.slug, ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
                 <!-- Image -->
-                <img class="primary blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen }}"  src="{{ ourProduct.imagen }}" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
+                <img class="primary blur-up lazyload rounded-0 w-100 h-100" 
+                     data-src="{{ ourProduct.imagen }}" 
+                     src="{{ ourProduct.imagen }}" 
+                     [alt]="ourProduct.title"
+                     [title]="ourProduct.title"
+                     width="625" 
+                     height="608" 
+                     style="object-fit: cover;" />
                 <!-- End Image -->
                 <!-- Hover Image -->
                 <ng-container *ngIf="ourProduct.imagen_two">
-                  <img class="hover blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen_two }}" src="{{ ourProduct.imagen_two }}" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>
+                  <img class="hover blur-up lazyload rounded-0 w-100 h-100" 
+                       data-src="{{ ourProduct.imagen_two }}" 
+                       src="{{ ourProduct.imagen_two }}" 
+                       [alt]="ourProduct.title"
+                       [title]="ourProduct.title" 
+                       width="625" 
+                       height="808" 
+                       style="object-fit: cover;"/>
                 </ng-container>
                 <!-- End Hover Image -->
               </a>
@@ -50,14 +64,21 @@
               <!--End Product Vendor-->
               <!-- Product Name -->
               <div class="product-name">
-                <a 
-                  href="#" 
-                  onclick="return false;" 
-                  [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" 
-                  [queryParams]="getRouterDiscount(ourProduct)" 
-                  class="text-truncate d-inline-block product-title">{{ ourProduct.title }}</a>
+                <a [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" 
+                   [queryParams]="getRouterDiscount(ourProduct)" 
+                   class="text-truncate d-inline-block product-title"
+                   itemprop="name">
+                   {{ ourProduct.title }}
+                </a>
+              </div>
+              <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                <link itemprop="url" [href]="currentUrl" />
+                <meta itemprop="priceCurrency" content="EUR" />
+                <meta itemprop="price" content="{{ ourProduct.finalPrice }}" />
+                <link itemprop="availability" href="https://schema.org/InStock" />
               </div>
               <!-- End Product Name -->
+               
               <!-- Product Price -->
               <div class="product-price">
                 <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} {{ euro }}</span>

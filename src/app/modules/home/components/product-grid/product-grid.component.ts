@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./product-grid.component.scss']
 })
 export class ProductGridComponent {
+  @Input() currentUrl: string = '';
   @Input() ourProducts: any[] = [];
   @Input() locale: string = '';
   @Input() country: string = '';
