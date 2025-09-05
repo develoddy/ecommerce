@@ -873,7 +873,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       title: 'Camisetas para Programadores | Tienda Lujandev',
       description: 'Explora nuestras últimas camisetas para programadores con diseños únicos. Estilo, código y humor geek en cada prenda.',
       image: '', // opcional
-      slug: this.product_selected ? this.product_selected.slug : ''
     });
   }
 

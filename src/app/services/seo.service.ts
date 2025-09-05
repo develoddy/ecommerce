@@ -17,24 +17,14 @@ export class SeoService {
    * Actualiza el SEO de la página
    * @param data title, description, image opcional y slug opcional
    */
-  updateSeo(data: { title: string; description: string; image?: string; slug?: string }) {
-    const { title, description, image, slug } = data;
+  updateSeo(data: { title: string; description: string; image?: string }) {
+    const { title, description, image } = data;
 
-    const domain = URL_FRONTEND.replace(/\/$/, ''); //'https://tienda.lujandev.com'; 
-    console.log("----> DEBBUG Service SEO metodo updateSeo() imprime doman : ", domain);
-    
-    // Genera la ruta limpia
-    let path: string;
-    if (slug) {
-      path = `product/${slug}`; // producto
-    } else {
-      // Para otras páginas, usa la ruta limpia del router
-      //path = this.router.url.split('?')[0];
-      path = this.router.url.split('?')[0].replace(/^\//, ''); // otras páginas, sin slash inicial
-    }
+    const domain = URL_FRONTEND.replace(/\/$/, ''); 
 
-    //const cleanPath = this.router.url.split('?')[0]; // ✅ sin parámetros
-    const fullUrl = `${domain}/${path}`; // siempre un solo slash
+    // ✅ Siempre usa la ruta real del navegador (sin query params)
+    const cleanPath = this.router.url.split('?')[0]; 
+    const fullUrl = `${domain}${cleanPath}`;
 
     // Title y description
     this.titleService.setTitle(`${title} | LujanDev Oficial`);
@@ -54,20 +44,19 @@ export class SeoService {
     ];
     metaTags.forEach((tag:any) => this.metaService.updateTag(tag));
 
-    // Canonical
+    // Canonical = URL real
     this.setCanonicalUrl(fullUrl);
   }
 
-    private setCanonicalUrl(url: string): void {
-        let link = document.querySelector("link[rel='canonical']");
-        if (link) {
-            link.setAttribute('href', url);
-        } else {
-            const newLink: HTMLLinkElement = document.createElement('link');
-            newLink.setAttribute('rel', 'canonical');
-            newLink.setAttribute('href', url);
-            document.head.appendChild(newLink);
-        }
-    }
-  
+  private setCanonicalUrl(url: string): void {
+      let link = document.querySelector("link[rel='canonical']");
+      if (link) {
+          link.setAttribute('href', url);
+      } else {
+          const newLink: HTMLLinkElement = document.createElement('link');
+          newLink.setAttribute('rel', 'canonical');
+          newLink.setAttribute('href', url);
+          document.head.appendChild(newLink);
+      }
+  }
 }
