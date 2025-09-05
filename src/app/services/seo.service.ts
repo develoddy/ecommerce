@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { URL_FRONTEND } from 'src/app/config/config';
 
 @Injectable({
   providedIn: 'root',
@@ -12,12 +13,28 @@ export class SeoService {
     private router: Router
   ) {}
 
-  updateSeo(data: { title: string; description: string; image?: string }) {
-    const { title, description, image } = data;
-    //const url = 'https://tienda.lujandev.com/' + this.router.url;
-    const domain = 'https://tienda.lujandev.com'; // ✅ cambia si es necesario
-    const cleanPath = this.router.url.split('?')[0]; // ✅ sin parámetros
-    const fullUrl = `${domain}${cleanPath}`;
+  /**
+   * Actualiza el SEO de la página
+   * @param data title, description, image opcional y slug opcional
+   */
+  updateSeo(data: { title: string; description: string; image?: string; slug?: string }) {
+    const { title, description, image, slug } = data;
+
+    const domain = URL_FRONTEND.replace(/\/$/, ''); //'https://tienda.lujandev.com'; 
+    console.log("----> DEBBUG Service SEO metodo updateSeo() imprime doman : ", domain);
+    
+    // Genera la ruta limpia
+    let path: string;
+    if (slug) {
+      path = `product/${slug}`; // producto
+    } else {
+      // Para otras páginas, usa la ruta limpia del router
+      //path = this.router.url.split('?')[0];
+      path = this.router.url.split('?')[0].replace(/^\//, ''); // otras páginas, sin slash inicial
+    }
+
+    //const cleanPath = this.router.url.split('?')[0]; // ✅ sin parámetros
+    const fullUrl = `${domain}/${path}`; // siempre un solo slash
 
     // Title y description
     this.titleService.setTitle(`${title} | LujanDev Oficial`);

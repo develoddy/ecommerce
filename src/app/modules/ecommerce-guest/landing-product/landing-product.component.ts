@@ -1,4 +1,5 @@
-import { AfterViewInit, NgZone, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, NgZone, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
@@ -11,6 +12,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { SeoService } from 'src/app/services/seo.service';
 
 declare var $:any;
 
@@ -112,8 +114,10 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     public authService: AuthService,
     public wishlistService: WishlistService,
     private minicartService: MinicartService,
-    private titleService: Title, // seo
-    private metaService: Meta,
+    //private titleService: Title, // seo
+    //private metaService: Meta,
+    private seoService: SeoService,
+    @Inject(DOCUMENT) private doc: Document,
     private ngZone: NgZone,
     private localizationService: LocalizationService
   ) {
@@ -170,7 +174,13 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   storeIfAddressExists() {
-    this.currentUser?.user_guest == 'Guest' ? this.checkIfAddressGuestExists() : this.checkIfAddressClientExists();
+    //this.currentUser?.user_guest == 'Guest' ? this.checkIfAddressGuestExists() : this.checkIfAddressClientExists();
+    // Si es un invitado
+    if ( this.currentUser && !this.currentUser.email ) {
+      this.checkIfAddressGuestExists()
+    } else { // Si está autenticado
+      this.checkIfAddressClientExists()
+    }
   }
 
   checkIfAddressClientExists() {
@@ -359,11 +369,12 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.COUNT_REVIEW = resp.COUNT_REVIEW;
 
     if (this.product_selected) {
-      this.updateSeo();
+      // 🚀 Aquí llamamos a SEO
+      this.setupSEO();
       this.storeIfAddressExists();
 
-      if (this.currentUser && this.currentUser.user_guest !== "Guest") {
-        // Si el usuario no es un invitado (user_guest !== "Guest"), entonces muestra el perfil
+      // Si el usuario no es un invitado (Guest), entonces muestra el perfil
+      if (this.currentUser && this.currentUser.email ) { //if (this.currentUser && this.currentUser.user_guest !== "Guest") {
         this.showProfileClient(this.currentUser);
       }
       
@@ -391,11 +402,10 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     sessionStorage.setItem('scrollToTop', 'true');
     // Navega a la página del producto
     this._router.navigate(['/', this.locale, this.country, 'shop', 'product', slug])
-    //this._router.navigate(['/product', slug], { queryParams: { _id: discountId } })
-      .then(() => {
-          // Recarga la página
-          window.location.reload();
-      });
+    .then(() => {
+        // Recarga la página
+        window.location.reload();
+    });
   }
   
   private sortVariedades() {
@@ -858,13 +868,29 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.checkDeviceType();
   }
 
+  setupSEO() {
+    this.seoService.updateSeo({
+      title: 'Camisetas para Programadores | Tienda Lujandev',
+      description: 'Explora nuestras últimas camisetas para programadores con diseños únicos. Estilo, código y humor geek en cada prenda.',
+      image: '', // opcional
+      slug: this.product_selected ? this.product_selected.slug : ''
+    });
+  }
+
   
-  private updateSeo(): void {
-    const { title, resumen: description, imagen } = this.product_selected;
-    const productUrl = `${URL_FRONTEND}product/${this.product_selected.slug}`;
+  /**private updateSeo(): void {
+    const { title, resumen: description, imagen, slug } = this.product_selected;
+    const productUrl = `${URL_FRONTEND}product/${slug}`;//const productUrl = `${URL_FRONTEND}product/${this.product_selected.slug}`;
+
+     // 🔹 Title & description
     this.titleService.setTitle(`${title} | LujanDev Oficial`);
     this.metaService.updateTag({ name: 'description', content: description || 'Descripción del producto' });
+
+    // 🔹 OpenGraph & Twitter
     this.updateMetaTags(productUrl, title, description, imagen);
+
+    // 🔹 Canonical
+    this.setCanonicalUrl(productUrl);
   }
 
   private updateMetaTags(url: string, title: string, description: string, imageUrl: string): void {
@@ -880,6 +906,16 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     ];
     metaTags.forEach((tag:any) => this.metaService.updateTag(tag));
   }
+
+  private setCanonicalUrl(url: string): void {
+    let link: HTMLLinkElement =
+      this.doc.querySelector("link[rel='canonical']") || this.doc.createElement('link');
+    link.setAttribute('rel', 'canonical');
+    link.setAttribute('href', url);
+    if (!link.parentNode) {
+      this.doc.head.appendChild(link);
+    }
+  }**/
 
   private checkDeviceType() {
     const width = window.innerWidth;
