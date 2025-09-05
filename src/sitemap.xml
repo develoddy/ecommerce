@@ -31,5 +31,49 @@
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
-
+    <url>
+        <loc>https://tienda.lujandev.com/es/es/shop/product/hello-world</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://tienda.lujandev.com/es/es/shop/product/chatgpt</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://tienda.lujandev.com/es/es/shop/product/camiseta-logo-dev-kotlin-lt</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://tienda.lujandev.com/es/es/shop/product/camiseta-logo-dev-swift-lt</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://tienda.lujandev.com/es/es/shop/product/camiseta-logo-dev-python-pack</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://tienda.lujandev.com/es/es/shop/product/camiseta-logo-developer-github</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://tienda.lujandev.com/es/es/shop/product/camiseta-logo-developer-react</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://tienda.lujandev.com/es/es/shop/product/camiseta-logo-developer-php</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://tienda.lujandev.com/es/es/shop/product/camiseta-logo-developer-docker</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
 </urlset>
