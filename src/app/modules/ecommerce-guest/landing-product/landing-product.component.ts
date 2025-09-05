@@ -367,7 +367,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.REVIEWS = resp.REVIEWS;
     this.AVG_REVIEW = resp.AVG_REVIEW;
     this.COUNT_REVIEW = resp.COUNT_REVIEW;
-
+    
     if (this.product_selected) {
       // 🚀 Aquí llamamos a SEO
       this.setupSEO();
@@ -755,9 +755,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       total: (this.product_selected.price_usd - this.getDiscount()) * this.cantidad //total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
     };
 
-    console.log("------> Data para registrar en carrito: ", data);
-    
-
     if (this.currentUser && !this.currentUser.email ) { //if (this.currentUser.user_guest == "Guest") {
       console.log("Registrando carrito en cache para invitado", this.currentUser);
       
@@ -870,9 +867,9 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
   setupSEO() {
     this.seoService.updateSeo({
-      title: 'Camisetas para Programadores | Tienda Lujandev',
-      description: 'Explora nuestras últimas camisetas para programadores con diseños únicos. Estilo, código y humor geek en cada prenda.',
-      image: '', // opcional
+      title: `${this.product_selected.title} | Tienda LujanDev`,
+      description: this.product_selected.description_es || this.product_selected.description_en || 'Explora nuestras camisetas para programadores.',
+      image: this.product_selected.imagen || '', // usa la imagen principal
     });
   }
 
