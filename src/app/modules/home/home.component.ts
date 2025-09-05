@@ -124,6 +124,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.sliders = resp.sliders.filter((slider: any) => slider.state == 1);
       
       this.categories = resp.categories;
+      console.log(this.categories);
+      
       // Generar slug para cada categoría sin modificar el título original
       this.categories.forEach((category:any) => {
         category.slug = this.generateSlug(category.title);  // Genera el slug y lo agrega al objeto categoria

@@ -368,15 +368,21 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.AVG_REVIEW = resp.AVG_REVIEW;
     this.COUNT_REVIEW = resp.COUNT_REVIEW;
     
+    
     if (this.product_selected) {
       // 🚀 Aquí llamamos a SEO
       this.setupSEO();
       this.storeIfAddressExists();
 
+      let titleCategory = this.product_selected.categorie.title;
+      this.product_selected.categorie.slug = this.generateSlug(titleCategory);
+
       // Si el usuario no es un invitado (Guest), entonces muestra el perfil
       if (this.currentUser && this.currentUser.email ) { //if (this.currentUser && this.currentUser.user_guest !== "Guest") {
         this.showProfileClient(this.currentUser);
       }
+
+      console.log(this.product_selected);
       
       this.filterUniqueGalerias();
       this.setFirstImage();
@@ -395,6 +401,14 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         }, 150);
       });
     }
+  }
+
+  generateSlug(title: string): string {
+    return title
+      .toLowerCase()                  // Convertir a minúsculas
+      .replace(/[^a-z0-9 -]/g, '')     // Eliminar caracteres no alfanuméricos
+      .replace(/\s+/g, '-')            // Reemplazar los espacios por guiones
+      .replace(/-+/g, '-');            // Reemplazar múltiples guiones por uno solo
   }
   
   navigateToProduct(slug: string, discountId?: string) {

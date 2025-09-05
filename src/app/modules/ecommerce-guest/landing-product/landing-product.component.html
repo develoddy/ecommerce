@@ -26,6 +26,69 @@
             </div>
         </div>
         <!--End Page Header-->
+        <!--Page Header-->
+        <div class="page-header text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12  d-flex justify-content-between align-items-center" >
+                        <!-- Breadcrumbs visual -->
+                        <div class="breadcrumbs">
+                            <a routerLink="/" title="Back to the home page">Lujandev.com</a>
+                            <span class="main-title fw-bold">
+                                <i class="icon anm anm-angle-right-l"></i>
+                                <!-- Categoría clicable -->
+                                <a *ngIf="product_selected.categorie"
+                                [routerLink]="['/', locale, country, 'shop', 'filter-products', product_selected.categorie.slug, product_selected.categorie.id]">
+                                {{ product_selected.categorie.title || 'Categoría' }}
+                                </a>
+                                <i *ngIf="product_selected.categorie" class="icon anm anm-angle-right-l"></i>
+                                {{ product_selected.title }}
+                            </span>
+                        </div>
+                        <!-- End Breadcrumbs visual -->
+
+                        <!-- Breadcrumbs SEO invisible -->
+                        <nav aria-label="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList"
+                            style="position:absolute; left:-9999px; top:-9999px;">
+                            <ol>
+                                <!-- Home -->
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                <a itemprop="item" routerLink="/">
+                                    <span itemprop="name">Inicio</span>
+                                </a>
+                                <meta itemprop="position" content="1" />
+                                </li>
+
+                                <!-- Categoría -->
+                                <li *ngIf="product_selected.categorie" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                <a itemprop="item"
+                                    [routerLink]="['/', locale, country, 'shop', 'filter-products', product_selected.categorie.slug, product_selected.categorie.id]">
+                                    <span itemprop="name">{{ product_selected.categorie.title || 'Categoría' }}</span>
+                                </a>
+                                <meta itemprop="position" content="2" />
+                                </li>
+
+                                <!-- Producto -->
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                <span itemprop="name">{{ product_selected.title }}</span>
+                                <meta itemprop="position" content="{{ product_selected.categorie ? 3 : 2 }}" />
+                                </li>
+                            </ol>
+                        </nav>
+                        <!-- End Breadcrumbs SEO invisible -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Page Header-->
+
+        
+
+
+
+
+        
+
 
         <!--Main Content-->
         <div class="container" [ngClass]="{ 'px-0': isMobile }">
@@ -39,7 +102,14 @@
                             <div class="zoompro-wrap">
                                 <!-- Product Image -->
                                 <div class="zoompro-span">
-                                    <img id="zoompro" class="zoompro" [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="product" width="665" height="808" />
+                                    <img id="zoompro" 
+                                         class="zoompro" 
+                                         [src]="firstImage" 
+                                         [attr.data-zoom-image]="firstImage" 
+                                         alt="{{ product_selected.title }} - Imagen principal"
+                                         width="665" 
+                                         height="808" 
+                                         itemprop="image"/>
                                 </div>
                                 <!-- End Product Image -->
                                 <!-- Product Label -->
@@ -58,7 +128,12 @@
                                 <div id="gallery" class="product-thumb-horizontal">
                                     <ng-container *ngFor="let item of uniqueGalerias">
                                         <a [attr.data-image]="item.imagen" [attr.data-zoom-image]="item.imagen" class="slick-slide slick-cloned active">
-                                            <img class="blur-up lazyload" [attr.data-src]="item.imagen" [src]="item.imagen" alt="product" width="625" height="808" />
+                                            <img class="blur-up lazyload" 
+                                                 [attr.data-src]="item.imagen" 
+                                                 [src]="item.imagen" 
+                                                 alt="{{ product_selected.title }} - {{ item.color || 'vista del producto' }}" 
+                                                 width="625" 
+                                                 height="808" />
                                         </a>
                                     </ng-container>
                                 </div>
@@ -79,15 +154,15 @@
                         <!-- Product Details -->
                         <div class="product-single-meta ">
                             <div class="d-flex mb-0">
-                                <h2 class="flex-grow-1 product-main-title mb-0 text-uppercase">{{ product_selected.title }}</h2>
+                                <h1 class="flex-grow-1 product-main-title mb-0 text-uppercase">{{ product_selected.title }}</h1>
                                 <div class="product-price d-flex-center">
                                     <ng-container *ngIf="getDiscount() > 0">
                                         <span class="price old-price">{{ product_selected.price_usd }} €</span>
                                     </ng-container>
                                     <!-- <span class="price">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} €</span> -->
                                     <!-- Mostrar precio con descuento -->
-                                    <span class="price">
-                                        <span class="price-main">
+                                    <span class="price" itemprop="priceCurrency" content="EUR">
+                                        <span class="price-main" itemprop="price">
                                             {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
                                         </span>
                                         <span class="price-decimals">
@@ -107,7 +182,9 @@
                                     </p>
                                     <p class="product-vendor d-none">Proveedor:<span class="text"><a href="#">HVL</a></span></p>
                                     <p class="product-type d-none">Tipo de producto:<span class="text">Tops</span></p>
-                                    <p class="product-sku text-black">REF.<span class="text fw-normal">{{ product_selected.sku }}</span></p>
+                                    <p class="product-sku text-black">REF.<span class="text fw-normal" itemprop="sku">{{ product_selected.sku }}</span></p>
+                                    <meta itemprop="productID" content="{{ product_selected.sku }}">
+                                    <meta itemprop="availability" content="https://schema.org/InStock" />
                                 </div>
                                 <!-- Product Reviews -->
                                 <div class="product-review d-flex-center d-none">
@@ -133,7 +210,7 @@
                             <!-- End Product Price -->
                             <hr class="d-none">
                             <!-- Sort Description -->
-                            <div class="sort-description d-none">{{ product_selected.resumen }}</div>
+                            <div class="sort-description d-none" itemprop="description">{{ product_selected.resumen }}</div>
                             <!-- End Sort Description -->
                             <hr class="d-none">
                             <!-- Countdown -->
@@ -152,7 +229,13 @@
                                     <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
                                         <ng-container *ngFor="let color of coloresDisponibles">
                                             <li class="swatch x-large available rounded" [ngClass]="getSwatchClass(color.imagen, color.color)" (click)="selectColor(color)">
-                                                <img [src]="color.imagen" alt="image" width="80" height="80" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="color.color" />
+                                                <img [src]="color.imagen" 
+                                                     alt="{{ product_selected.title }} - color {{ color.color }}" 
+                                                     width="80" 
+                                                     height="80" 
+                                                     [attr.data-bs-toggle]="'tooltip'" 
+                                                     [attr.data-bs-placement]="'top'" 
+                                                     [attr.title]="color.color" />
                                                 <div class="color-swatch-indicator" [ngStyle]="{'background-color': getColorHex(color.color)}"></div>
                                             </li>
                                         </ng-container>
