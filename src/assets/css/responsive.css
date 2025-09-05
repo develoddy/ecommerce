@@ -654,6 +654,8 @@
 
     .section-header { margin-bottom: 20px; }
     .section-header h2 { font-size: 18px; }
+    .page-header h2 { font-size: 18px; }
+    .page-header p { font-size:  14px;}
     .section-header br { display: none; }
     .top-header { font-size: 13px; }
     .page-header { padding: 30px 0; margin-bottom: 30px; }
