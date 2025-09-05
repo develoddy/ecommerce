@@ -866,12 +866,29 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   setupSEO() {
+    const product = this.product_selected;
+
+    // Title más descriptivo y con palabras clave
+    const title = `${product.title} - Camisetas para Programadores | Tienda LujanDev`;
+
+    // Description más atractiva y útil para buscadores
+    // Así usas la descripción real si está disponible, y el fallback solo si hace falta.
+    const description = product.description_es && product.description_es !== 'Descripción no disponible'
+    ? product.description_es
+    : `Compra ${product.title} en LujanDev. Diseño exclusivo para desarrolladores, envío a todo el mundo.`;
+
+
+    // Imagen principal
+    const image = product.imagen || '';
+
+    // Llamada al servicio SEO
     this.seoService.updateSeo({
-      title: `${this.product_selected.title} | Tienda LujanDev`,
-      description: this.product_selected.description_es || this.product_selected.description_en || 'Explora nuestras camisetas para programadores.',
-      image: this.product_selected.imagen || '', // usa la imagen principal
+      title,
+      description,
+      image,
     });
   }
+
 
   
   /**private updateSeo(): void {
