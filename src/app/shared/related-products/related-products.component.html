@@ -10,7 +10,7 @@
           <div class="item col-item">
             <div class="product-box">
               <div class="product-image">
-                <a href="#" onclick="return false;" (click)="navigateToProduct.emit({slug: product.slug, discountId: product.campaing_discount?.id})" class="product-img">
+                <a  (click)="navigateToProduct.emit({slug: product.slug, discountId: product.campaing_discount?.id})" class="product-img">
                   <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="{{product.title}}" title="{{product.title}}" width="625" height="808" />
                 </a>
                 <div class="product-labels d-none"><span class="lbl on-sale">Sale</span></div>

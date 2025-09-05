@@ -20,6 +20,16 @@ select:disabled, select[disabled], select option:disabled {
   background-color: #f5f5f5 !important;
 }
 
+/*Pointers*/
+a.product-title,
+a.category-link {
+  cursor: pointer;
+}
+
+a.product-img {
+  cursor: pointer;
+}
+
 
 /*********************************************************************************
     Template Name: Hema Multipurpose eCommerce Bootstrap 5 Template 
