@@ -53,6 +53,9 @@ export class SeoService {
 
     // Canonical = URL real
     this.setCanonicalUrl(fullUrl);
+
+    // Hreflangs dinámicos
+    this.setDynamicHreflangs();
   }
 
   private setCanonicalUrl(url: string): void {
@@ -66,4 +69,40 @@ export class SeoService {
           document.head.appendChild(newLink);
       }
   }
+
+  /**
+   * Genera hreflangs dinámicos según country/lang de la tienda
+   */
+  private setDynamicHreflangs() {
+    // Eliminar hreflangs previos
+    document.head.querySelectorAll('link[rel="alternate"]').forEach(el => el.remove());
+
+    const baseUrl = URL_FRONTEND.replace(/\/$/, '');
+    const pathSegments = this.router.url.split('?')[0].split('/');
+
+    // Extraer la ruta limpia (después de /country/lang)
+    const restPath = pathSegments.slice(3).join('/');
+
+    // Map de idiomas → country correspondiente
+    const hreflangMap = {
+      es: 'es', // España
+      en: 'us', // EE.UU.
+    };
+
+    Object.entries(hreflangMap).forEach(([lang, country]) => {
+      const link: HTMLLinkElement = document.createElement('link');
+      link.rel = 'alternate';
+      link.href = `${baseUrl}/${country}/${lang}/${restPath}`;
+      link.hreflang = lang;
+      document.head.appendChild(link);
+    });
+
+    // x-default → versión principal en inglés
+    const defaultLink: HTMLLinkElement = document.createElement('link');
+    defaultLink.rel = 'alternate';
+    defaultLink.href = `${baseUrl}/es/es/${restPath}`;
+    defaultLink.hreflang = 'x-default';
+    document.head.appendChild(defaultLink);
+  }
+
 }

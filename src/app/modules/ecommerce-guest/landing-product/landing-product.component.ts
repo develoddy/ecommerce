@@ -115,8 +115,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     public authService: AuthService,
     public wishlistService: WishlistService,
     private minicartService: MinicartService,
-    //private titleService: Title, // seo
-    //private metaService: Meta,
     private seoService: SeoService,
     @Inject(DOCUMENT) private doc: Document,
     private ngZone: NgZone,
@@ -147,7 +145,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnInit(): void {
-    
     this.currentUrl = window.location.href; // Captura la URL completa de la página
     this.showStickyCart = window.scrollY > 600;
     this.loadSPINNER();

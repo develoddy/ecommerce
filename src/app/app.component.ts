@@ -8,6 +8,7 @@ import { LocalizationService } from './services/localization.service';
 import { GuestCleanupService } from './modules/ecommerce-guest/_service/guestCleanup.service';
 import { HeaderEventsService } from './services/headerEvents.service';
 import { CookieConsentService } from './services/cookie-consent.service';
+import { SeoService } from './services/seo.service';
 declare var bootstrap: any;
 
 declare var $:any;
@@ -40,7 +41,6 @@ export class AppComponent implements AfterViewInit {
     private bodyClassService: BodyClassService,
     private localizationService: LocalizationService,
     private headerEventsService: HeaderEventsService,
-    private guestCleanupService: GuestCleanupService,
     private cookieConsentService: CookieConsentService,
     private authService: AuthService // <-- Inyecta AuthService para inicializarlo siempre
   ) {
