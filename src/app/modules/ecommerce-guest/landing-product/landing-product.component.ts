@@ -355,7 +355,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     const priceWithDiscount = this.product_selected.price_usd - this.getDiscount();
     const integerPart = Math.floor(priceWithDiscount); // Parte entera
     const decimalPart = ((priceWithDiscount - integerPart) * 100).toFixed(0); // Parte decimal
-    return { integerPart, decimalPart };
+    return { 
+      integerPart, 
+      decimalPart,
+      total: priceWithDiscount.toFixed(2) // 21.99 por ejemplo 
+    };
   }
   
   private handleProductResponse(resp: any): void {
