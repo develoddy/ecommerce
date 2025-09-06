@@ -186,10 +186,17 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  // getPriceParts(price: number) {
+  //   const [integer, decimals] = price.toFixed(2).split('.');
+  //   return { integer, decimals };
+  // }
   getPriceParts(price: number) {
-    const [integer, decimals] = price.toFixed(2).split('.');
-    return { integer, decimals };
+    const priceFixed = price.toFixed(2);           // Precio con 2 decimales
+    const [integer, decimals] = priceFixed.split('.');
+    const total = priceFixed;                      // Total como string para SEO
+    return { integer, decimals, total };
   }
+
   
   calculateFinalPrice(product: any): number {
     let discount = 0;

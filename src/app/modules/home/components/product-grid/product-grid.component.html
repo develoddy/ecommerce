@@ -71,14 +71,15 @@
                    {{ ourProduct.title }}
                 </a>
               </div>
+              <!-- End Product Name -->
+              <!-- Schema.org Offer -->
               <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                 <link itemprop="url" [href]="currentUrl" />
                 <meta itemprop="priceCurrency" content="EUR" />
-                <meta itemprop="price" content="{{ ourProduct.finalPrice }}" />
+                <meta itemprop="price" content="{{ getPriceParts(ourProduct.finalPrice).total }}" />
                 <link itemprop="availability" href="https://schema.org/InStock" />
               </div>
-              <!-- End Product Name -->
-               
+              <!-- End Schema.org Offer -->
               <!-- Product Price -->
               <div class="product-price">
                 <span class="price old-price" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }} {{ euro }}</span>
