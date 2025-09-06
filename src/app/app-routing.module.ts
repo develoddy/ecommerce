@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './modules/auth-profile/_services/guards/auth.guard';
 import { CheckFirstVisitGuard } from './modules/auth-profile/_services/guards/check-first-visit.guard';
+import { CustomPreloadingStrategy } from './services/customPreLoadingStrategy.service';
 
 const routes: Routes = [
 
@@ -14,7 +15,8 @@ const routes: Routes = [
   // Ruta para preHome fuera de la estructura de locale/country
   { 
     path: 'preHome', 
-    loadChildren: () => import('./modules/ecommerce-initial/ecommerce-initial.module').then(m => m.EcommerceInitialModule) 
+    loadChildren: () => import('./modules/ecommerce-initial/ecommerce-initial.module').then(m => m.EcommerceInitialModule),
+    data: { preload: true } // Podemos precargar 
   },
   {
     path: ':country/:locale',
@@ -23,10 +25,12 @@ const routes: Routes = [
         path: 'home',
         canActivate: [CheckFirstVisitGuard],
         loadChildren: () => import("./modules/home/home.module").then(m => m.HomeModule),
+        data: { preload: true } // PRELOAD para Home
       },
       {
         path: 'shop',
         loadChildren: () => import("./modules/ecommerce-guest/ecommerce-guest.module").then(m => m.EcommerceGuestModule),
+        data: { preload: false } // 🔹 solo se carga cuando el usuario entra
       },
       {
         path: 'account',
@@ -37,9 +41,10 @@ const routes: Routes = [
         path: 'auth',
         loadChildren: () => import("./modules/auth-profile/auth-profile.module").then(m => m.AuthProfileModule),
       },
+      // Redirección al home por defecto si solo ponen /:country/:locale
       {
         path: '',
-        redirectTo: '/',
+        redirectTo: 'home',
         pathMatch: 'full'
       },
       {
@@ -57,7 +62,8 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
-    initialNavigation: 'enabledBlocking'
+    initialNavigation: 'enabledBlocking',
+    preloadingStrategy: CustomPreloadingStrategy
 })],
   exports: [RouterModule],
 })
