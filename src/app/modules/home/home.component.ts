@@ -175,8 +175,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   setupSEO() {
     this.seoService.updateSeo({
       title: 'Camisetas para Programadores | Tienda Lujandev',
-      description: 'Explora nuestras últimas camisetas para programadores con diseños únicos. Estilo, código y humor geek en cada prenda.',
-      image: '' // opcional
+      description: 'Camisetas para Programadores | Tienda Lujandev | LujanDev Oficial',
+      image: 'https://api.lujandev.com/api/products/uploads/product/fc98c0234bb7cf915c79c2949e8b0047_preview.png' // hay que ver como se inserta imagen a mano: https://tienda.lujandev.com/assets/images/og-home.jpg
     });
   }
 
