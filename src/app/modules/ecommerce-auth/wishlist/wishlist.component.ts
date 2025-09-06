@@ -82,8 +82,6 @@ export class WishlistComponent implements OnInit {
 
     this.listAllCarts();
     this._wishlistService.currenteDataWishlist$.subscribe((resp:any) => {
-      console.log("---> Debbug: Whisilist.componmente : ", resp);
-      
       this.listWishlists      = resp;
       this.REVIEWS            = resp.REVIEWS;
       this.AVG_REVIEW         = resp.AVG_REVIEW;

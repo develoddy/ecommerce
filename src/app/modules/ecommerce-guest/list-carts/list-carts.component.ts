@@ -2,7 +2,6 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CartService } from '../_service/cart.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-//import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { Subscription, combineLatest } from 'rxjs';
@@ -72,7 +71,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {}
 
   ngOnInit() {
-    this.updateSeo();
+    this.setupSEO();
     this.checkUserAuthenticationStatus();
     this.getCarts();
     this.showRelatedProducts();
@@ -355,11 +354,11 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private updateSeo(): void {
+  private setupSEO(): void {
     this.seoService.updateSeo({
       title: 'Lista de carrito',
       description: 'Esta sección de carritos contiene camisetas para programadores',
-      image: '' // opcional
+      image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/images/logo.svg`
     });
   }
 

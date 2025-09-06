@@ -11,6 +11,7 @@ import { AuthService } from '../auth-profile/_services/auth.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { SeoService } from 'src/app/services/seo.service';
 import { CookieConsentService } from 'src/app/services/cookie-consent.service';
+import { URL_FRONTEND } from 'src/app/config/config';
 
 declare var bootstrap: any;
 declare var $:any;
@@ -176,7 +177,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.seoService.updateSeo({
       title: 'Camisetas para Programadores | Tienda Lujandev',
       description: 'Camisetas para Programadores | Tienda Lujandev | LujanDev Oficial',
-      image: 'https://api.lujandev.com/api/products/uploads/product/fc98c0234bb7cf915c79c2949e8b0047_preview.png' // hay que ver como se inserta imagen a mano: https://tienda.lujandev.com/assets/images/og-home.jpg
+      image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/images/logo.svg`
     });
   }
 

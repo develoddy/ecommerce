@@ -20,13 +20,6 @@ export class SeoService {
   updateSeo(data: { title: string; description: string; image?: string }) {
     const { title, description, image } = data;
 
-    // ✅ Agregar debug para ver qué llega
-    console.log('--- SEO Service updateSeo() ---');
-    console.log('Title:', title);
-    console.log('Description:', description);
-    console.log('Image:', image);
-    console.log('Current URL:', this.router.url);
-
     const domain = URL_FRONTEND.replace(/\/$/, ''); 
 
     // ✅ Siempre usa la ruta real del navegador (sin query params)
