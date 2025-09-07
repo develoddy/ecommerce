@@ -177,7 +177,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.seoService.updateSeo({
       title: 'Camisetas para Programadores | Tienda Lujandev',
       description: 'Camisetas para Programadores | Tienda Lujandev | LujanDev Oficial',
-      image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/images/logo.svg`
+      image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/images/logo.png`
     });
   }
 

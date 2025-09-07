@@ -358,7 +358,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.seoService.updateSeo({
       title: 'Lista de carrito',
       description: 'Esta sección de carritos contiene camisetas para programadores',
-      image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/images/logo.svg`
+      image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/images/logo.png`
     });
   }
 
