@@ -60,7 +60,7 @@
             <!-- Start Product Details -->
             <div class="product-details px-3">
               <!--Product Vendor-->
-              <div class="product-vendor d-none">Footwear</div>
+              <div class="product-vendor">Camisetas Dev</div>
               <!--End Product Vendor-->
               <!-- Product Name -->
               <div class="product-name">
@@ -74,7 +74,7 @@
               <!-- End Product Name -->
               <!-- Schema.org Offer -->
               <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                <link itemprop="url" [href]="currentUrl" />
+                <link itemprop="url" [href]="sanitizedUrl" />
                 <meta itemprop="priceCurrency" content="EUR" />
                 <meta itemprop="price" content="{{ getPriceParts(ourProduct.finalPrice).total }}" />
                 <link itemprop="availability" href="https://schema.org/InStock" />
@@ -99,7 +99,7 @@
               </div>
               <!-- End Product Review -->
               <!--Sort Description-->
-              <p class="sort-desc hidden">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage...</p>
+              <p class="sort-desc hidden">{{ ourProduct.description_en }}</p>
               <!--End Sort Description-->
               <!-- Swatches Color -->
               <ul class="variants-clr swatches">
@@ -111,7 +111,7 @@
               </ul>
               <!-- End Swatches Color -->
               <!-- Product Button -->
-              <div class="button-action hidden">
+              <div class="button-action hidden d-none">
                 <div class="addtocart-btn">
                   <form class="addtocart" action="#" method="post">
                     <a href="#addtocart-modal" class="btn btn-md add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">

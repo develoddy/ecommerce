@@ -134,6 +134,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       
       this.ourProducts = resp.our_products;
+      console.log(this.ourProducts);
+      
       this.besProducts = resp.bes_products;
       this.FlashSale = resp.FlashSale;
       this.FlashProductList = resp.campaign_products;
