@@ -40,6 +40,63 @@
   <link rel="stylesheet" href="assets/css/vendor/photoswipe.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/responsive.css">
+
+
+  <!-- Script SEO -->
+  <script>
+  (function() {
+    const path = window.location.pathname.toLowerCase();
+
+    // ---------------- Home ----------------
+    if (path.endsWith("/home") || path === "/es/es" || path === "/us/en") {
+      document.title = "LujanDev | Camisetas Exclusivas para Programadores y Developers - Ropa Geek Elegante";
+      document.querySelector('meta[name="description"]').content =
+        "Tienda online de camisetas exclusivas para programadores y amantes del código. Diseños únicos inspirados en la cultura dev. ¡Exprésate con estilo y código!";
+      document.querySelector('meta[property="og:title"]').setAttribute("content", document.title);
+      document.querySelector('meta[property="og:description"]').setAttribute("content", document.querySelector('meta[name="description"]').content);
+      document.querySelector('meta[property="og:image"]').setAttribute("content", "https://tienda.lujandev.com/assets/images/logo.png");
+      document.querySelector('meta[property="og:url"]').setAttribute("content", window.location.href);
+      document.querySelector('meta[name="twitter:title"]').setAttribute("content", document.title);
+      document.querySelector('meta[name="twitter:description"]').setAttribute("content", document.querySelector('meta[name="description"]').content);
+      document.querySelector('meta[name="twitter:image"]').setAttribute("content", "https://tienda.lujandev.com/assets/images/logo.png");
+    }
+
+    // ---------------- Carrito ----------------
+    else if (path.includes("/shop/cart")) {
+      document.title = "Lista de carrito | LujanDev Oficial";
+      document.querySelector('meta[name="description"]').content =
+        "Esta sección de carritos contiene camisetas para programadores";
+      document.querySelector('meta[property="og:title"]').setAttribute("content", document.title);
+      document.querySelector('meta[property="og:description"]').setAttribute("content", document.querySelector('meta[name="description"]').content);
+      document.querySelector('meta[property="og:image"]').setAttribute("content", "https://tienda.lujandev.com/assets/images/logo.png");
+      document.querySelector('meta[property="og:url"]').setAttribute("content", window.location.href);
+      document.querySelector('meta[name="twitter:title"]').setAttribute("content", document.title);
+      document.querySelector('meta[name="twitter:description"]').setAttribute("content", document.querySelector('meta[name="description"]').content);
+      document.querySelector('meta[name="twitter:image"]').setAttribute("content", "https://tienda.lujandev.com/assets/images/logo.png");
+    }
+
+    // ---------------- Producto ----------------
+    else if (path.includes("/shop/product/")) {
+      // Extraer el slug del producto de la URL
+      const slug = path.split("/shop/product/")[1] || "";
+      const productTitle = `Camiseta ${slug.replace(/-/g, " ")} | LujanDev`; 
+      const productDesc = "Camiseta exclusiva para programadores. Diseño tech, cómodo y geek."; // descripción genérica
+      
+      document.title = productTitle;
+      document.querySelector('meta[name="description"]').content = productDesc;
+      document.querySelector('meta[property="og:title"]').setAttribute("content", productTitle);
+      document.querySelector('meta[property="og:description"]').setAttribute("content", productDesc);
+      document.querySelector('meta[property="og:image"]').setAttribute("content", "https://tienda.lujandev.com/assets/images/logo.png");
+      document.querySelector('meta[property="og:url"]').setAttribute("content", window.location.href);
+      document.querySelector('meta[name="twitter:title"]').setAttribute("content", productTitle);
+      document.querySelector('meta[name="twitter:description"]').setAttribute("content", productDesc);
+      document.querySelector('meta[name="twitter:image"]').setAttribute("content", "https://tienda.lujandev.com/assets/images/logo.png");
+    }
+
+  })();
+  </script>
+
+
 </head>
 
 
