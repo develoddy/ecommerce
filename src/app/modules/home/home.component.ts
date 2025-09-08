@@ -124,9 +124,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Filtrar solo sliders activos (state == 1)
       this.sliders = resp.sliders.filter((slider: any) => slider.state == 1);
+      console.log("----> Home.componente > this.slider: ", this.sliders);
       
       this.categories = resp.categories;
-      console.log(this.categories);
       
       // Generar slug para cada categoría sin modificar el título original
       this.categories.forEach((category:any) => {
