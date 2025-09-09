@@ -1776,20 +1776,20 @@ function alertSuccess(TEXT){
     }, 6000);
 }
 
-function LandingProductDetail($) {
-    $(".qtyBtn").on("click", function() {
-        var qtyField = $(this).parent(".qtyField"),
-                oldValue = $(qtyField).find(".qty").val(),
-                newVal = 1;
+// function LandingProductDetail($) {
+//     $(".qtyBtn").on("click", function() {
+//         var qtyField = $(this).parent(".qtyField"),
+//                 oldValue = $(qtyField).find(".qty").val(),
+//                 newVal = 1;
 
-        if ($(this).is(".plus")) {
-            newVal = parseInt(oldValue) + 1;
-        } else if (oldValue > 1) {
-            newVal = parseInt(oldValue) - 1;
-        }
-        $(qtyField).find(".qty").val(newVal);
-    });
-}
+//         if ($(this).is(".plus")) {
+//             newVal = parseInt(oldValue) + 1;
+//         } else if (oldValue > 1) {
+//             newVal = parseInt(oldValue) - 1;
+//         }
+//         $(qtyField).find(".qty").val(newVal);
+//     });
+// }
 
 function sliderRefresh($) {
     /*-----------------------------------
@@ -1912,7 +1912,7 @@ window.productZoom = productZoom;
 window.alertDanger = alertDanger;
 window.alertWarning = alertWarning;
 window.alertSuccess = alertSuccess;
-window.LandingProductDetail = LandingProductDetail;
+//window.LandingProductDetail = LandingProductDetail;
 window.sliderRefresh = sliderRefresh;
 window.cleanupSliders = cleanupSliders;
 window.cleanupHOMEINITTEMPLATE = cleanupHOMEINITTEMPLATE;

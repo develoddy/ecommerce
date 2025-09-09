@@ -730,6 +730,24 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     });
   }
 
+  increaseQuantity() {
+    this.cantidad++;
+    this.cantidadError = false; // resetea error si lo había
+    }
+
+  decreaseQuantity() {
+    if (this.cantidad > 1) {
+      this.cantidad--;
+      this.cantidadError = false;
+    }
+  }
+
+  onQuantityChange(event: any) {
+    const value = Number(event.target.value);
+    this.cantidad = value > 0 ? value : 1; // nunca menor que 1
+    this.cantidadError = false;
+  }
+
   storeCart() {
     this.saveCart();
   }
@@ -773,6 +791,9 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       total: (this.product_selected.price_usd - this.getDiscount()) * this.cantidad //total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
     };
 
+    console.log("-----> SaveCart cantidad :", this.cantidad);
+    console.log("-----> SaveCart data :", data);
+    
     if (this.currentUser && !this.currentUser.email ) { //if (this.currentUser.user_guest == "Guest") {
       console.log("Registrando carrito en cache para invitado", this.currentUser);
       

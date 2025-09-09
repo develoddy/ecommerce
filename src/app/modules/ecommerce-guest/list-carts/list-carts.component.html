@@ -117,7 +117,7 @@
                                             </span>
                                         </div>
                                         <div class="">
-                                            <div class="cart-qty d-flex">
+                                            <!-- <div class="cart-qty d-flex">
                                                 <div class="qtyField">
                                                     <a class="qtyBtn minus text-muted" href="#;" onclick="return false;" (click)="dec(cart)"><i class="icon anm anm-minus-r fs-5 text-black"></i></a>
                                                     <input 
@@ -129,7 +129,31 @@
                                                 />
                                                     <a class="qtyBtn plus text-muted" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r fs-5 text-black"></i></a>
                                                 </div>
+                                            </div> -->
+
+                                            <div class="cart-qty d-flex">
+                                                <div class="qtyField">
+                                                    <!-- Botón menos -->
+                                                    <a class="qtyBtn minus text-muted" href="#" (click)="dec(cart); $event.preventDefault()">
+                                                    <i class="icon anm anm-minus-r fs-5 text-black"></i>
+                                                    </a>
+
+                                                    <!-- Input cantidad -->
+                                                    <input 
+                                                    class="cart-qty-input qty border-0 fs-5 text-black" 
+                                                    type="number"
+                                                    [(ngModel)]="cart.cantidad"
+                                                    min="1"
+                                                    (blur)="validateCartQuantity(cart)"
+                                                    />
+
+                                                    <!-- Botón más -->
+                                                    <a class="qtyBtn plus text-muted" href="#" (click)="inc(cart); $event.preventDefault()">
+                                                    <i class="icon anm anm-plus-r fs-5 text-black"></i>
+                                                    </a>
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>

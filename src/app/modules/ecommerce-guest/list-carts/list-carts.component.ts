@@ -214,17 +214,68 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.changeQuantity(cart, false);
   }
 
+  // changeQuantity(cart: any, increment: boolean): void {
+  //   const quantityChange = increment ? 1 : -1;
+
+  //   let newQty = Number(cart.cantidad) + quantityChange; //const newQty = parseInt(cart.cantidad, 10) + quantityChange;
+
+  //   if (newQty < 1) {
+  //     alertDanger("Debes tener al menos un producto en el carrito");
+  //     return;
+  //   }
+
+  //   cart.cantidad = newQty; //cart.cantidad += quantityChange;
+  //   cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+  //   cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+
+  //   const cartData = {
+  //     _id: cart._id,
+  //     cantidad: cart.cantidad,
+  //     subtotal: cart.subtotal,
+  //     total: cart.total,
+  //     variedad: cart.variedad ? cart.variedad.id : null,
+  //     product: cart.product._id,
+  //   };
+
+  //   if(this.currentUser && !this.currentUser.email) { //if(this.currentUser.user_guest) {
+  //     this.updateGuestCart(cartData);
+  //   } else {
+  //     this.updateUserCart(cartData);
+  //   }
+  // } 
+
   changeQuantity(cart: any, increment: boolean): void {
     const quantityChange = increment ? 1 : -1;
-
-    const newQty = parseInt(cart.cantidad, 10) + quantityChange;
+    let newQty = Number(cart.cantidad) + quantityChange;
 
     if (newQty < 1) {
       alertDanger("Debes tener al menos un producto en el carrito.");
       return;
     }
 
-    cart.cantidad = newQty; //cart.cantidad += quantityChange;
+    cart.cantidad = newQty;
+    this.updateCartItem(cart);
+  }
+
+  validateCartQuantity(cart: any): void {
+    let newQty = Number(cart.cantidad);
+
+    if (isNaN(newQty) || newQty < 1) {
+      newQty = 1;
+      alertDanger("Debes tener al menos un producto en el carrito.");
+    }
+
+    cart.cantidad = newQty;
+    this.updateCartItem(cart);
+  }
+
+  // validateCartQuantity(cart: any) {
+  //   if(cart.cantidad < 1) cart.cantidad = 1;
+  //   cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+  //   cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+  // }
+
+  private updateCartItem(cart: any): void {
     cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
     cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
 
@@ -237,23 +288,20 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       product: cart.product._id,
     };
 
-    if(this.currentUser && !this.currentUser.email) { //if(this.currentUser.user_guest) {
+    if (this.currentUser && !this.currentUser.email) {
       this.updateGuestCart(cartData);
     } else {
       this.updateUserCart(cartData);
     }
   }
 
-  validateCartQuantity(cart: any) {
-    if(cart.cantidad < 1) cart.cantidad = 1;
-    cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
-    cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
-  }
-
-
   // Actualizar carrito del usuario autenticado
   private updateUserCart(cartData: any): void {
+    console.log("-------> updateUserCart");
+    
     this.cartService.updateCart(cartData).subscribe((resp: any) => {
+      console.log(resp);
+      
       if (resp.message === 403) {
         alertDanger(resp.message_text);
         return;
@@ -265,6 +313,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Actualizar carrito del usuario invitado
   private updateGuestCart(cartData: any): void {
+    console.log("-------> updateGuestCart");
     this.cartService.updateCartCache(cartData).subscribe((resp: any) => {
       if (resp.message === 403) {
         alertDanger(resp.message_text);
@@ -275,19 +324,18 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  public storeRemoveCart(cart : any) {
-    const isGuest = this.currentUser?.user_guest;
-    if (isGuest) {
+  public storeRemoveCart(cart: any) {
+    if( this.currentUser && !this.currentUser.email) {
       this.removeCartLocalStorage(cart);
       setTimeout(() => {
         this.showRelatedProducts();
-      }, 150);
+      }, 350);
       
     } else {
       this.removeCartDatabase(cart);
       setTimeout(() => {
         this.showRelatedProducts();
-      }, 150);
+      }, 350);
     }
   }
 
