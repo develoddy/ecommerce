@@ -71,6 +71,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   availableSizesHoodies = ["L", "M", "S", "XL", "XXL"];
   availableSizesGorra = ["One size"];
   availableSizesPerfume = ["50ML", "100ML"];
+  availableSizesMugs = ["11 oz", "15 oz"];
   loading: boolean = false;
   tallaError = false; 
   cantidadError = false; 
@@ -438,6 +439,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     let availableSizes:any = [];
     if (categoryTitle.toLowerCase().includes('t-shirts')) {
       availableSizes = this.availableSizesCamisetas;
+    } else if (categoryTitle.toLowerCase().includes('mugs')) {
+      availableSizes = this.availableSizesMugs;
     } else if (categoryTitle.toLowerCase().includes('snapbacks')) {
       availableSizes = this.availableSizesGorra;
     } else if (categoryTitle.toLowerCase().includes('all shirts')) {
