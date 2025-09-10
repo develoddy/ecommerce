@@ -133,42 +133,26 @@ export class SuccessfullCheckoutComponent implements OnInit {
   }
 
   successPayStripe() {
-    this._cartService.currenteDataCart$.subscribe(
-    ( resp:any ) => {
-      this.sale       = resp;
-      this.totalCarts = this.sale.reduce(
-        ( sum: number, item: any ) => sum + parseFloat( item.total ), 0
-      );
 
-      this.totalCarts = parseFloat( 
-        this.totalCarts.toFixed(2) 
-      );
-    });
-
-    this.checkoutService.saleData$.subscribe(
-    ( sale ) => {
-      if ( sale ) {
-        this.sale           = sale.sale;
-        const totalFromSale = sale.sale?.total;
-
-        if ( typeof totalFromSale === 'number' ) {
-          this.totalCarts = parseFloat(
-            totalFromSale.toFixed(2)
-          );
-
-        } else {
-          // backup: calcularlo desde saleDetails si total no vino bien
-          this.totalCarts = sale.saleDetails.reduce(
-            (sum: number, item: any) => sum + parseFloat(item.total), 0
-          );
-
-          this.totalCarts = parseFloat(
-            this.totalCarts.toFixed(2)
-          );
-        }
-        this.saleDetails = sale.saleDetails; 
-      }
-    });
+        this.checkoutService.saleData$.subscribe(saleDataPayload => {
+          const saleInfo = saleDataPayload?.sale;
+          const saleDetails = saleDataPayload?.saleDetails || [];
+          if ( saleInfo ) {
+            this.sale = saleInfo;
+            // Recalcular subtotal a partir de los detalles de venta en UI
+            this.totalCarts = saleDetails
+              .reduce((sum: number, item: any) => {
+                const unitPrice = Number(item.variedade?.retail_price ?? item.price_unitario ?? 0);
+                return sum + (unitPrice * item.cantidad);
+              }, 0);
+            this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+            this.saleDetails = saleDetails;
+            // Depurar datos de la venta en UI
+            console.log('DEBUG UI saleInfo:', this.sale);
+            console.log('DEBUG UI saleDetails:', this.saleDetails);
+            console.log('DEBUG UI totalCarts:', this.totalCarts);
+          }
+        });
   }
 
   registerStripeSale() {
@@ -179,12 +163,19 @@ export class SuccessfullCheckoutComponent implements OnInit {
     }
   
     const sale = {
-      user            : payload.userId                      ,
-      guestId         : payload.guestId                   ,
-      currency_payment: "EUR"                             ,
-      method_payment  : "STRIPE"                          ,
-      n_transaction   : "STRIPE_CHECKOUT"                 ,
-      total           : this.calculateTotal(payload.cart) ,
+      user            : payload.userId,
+      guestId         : payload.guestId,
+      currency_payment: "EUR",
+      method_payment  : "STRIPE",
+      n_transaction   : "STRIPE_CHECKOUT",
+      // Usar precio de variante o unitario para calcular total real
+      total           : parseFloat(
+                          payload.cart.reduce((sum: number, item: any) => {
+                            const price = Number(item.variedade?.retail_price ?? item.price_unitario ?? item.product?.price_usd ?? 0);
+                            return sum + (price * item.cantidad);
+                          }, 0)
+                        .toFixed(2)
+                        ),
     };
 
     const sale_address = payload.address;
@@ -231,9 +222,9 @@ export class SuccessfullCheckoutComponent implements OnInit {
   }
 
 
-   calculateTotal( cart: any[] ): number {
+  calculateTotal( cart: any[] ): number {
     return cart.reduce(( sum, item ) => {
-      const price = Number( item.product?.price_usd || 0 );
+      const price = Number(item.variedade?.retail_price ?? item.price_unitario ?? item.product?.price_usd ?? 0);
       return sum + ( price * item.cantidad );
     }, 0);
   }

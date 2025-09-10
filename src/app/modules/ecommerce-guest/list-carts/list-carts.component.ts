@@ -202,7 +202,10 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateTotalCarts(): void {
-    this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+    this.totalCarts = this.listCarts.reduce((sum: number, item: any) => {
+      const unitPrice = item.variedad?.retail_price || item.price_unitario;
+      return sum + (unitPrice * item.cantidad);
+    }, 0);
     this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
   }
 

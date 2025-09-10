@@ -491,7 +491,13 @@ export class PaymentCheckoutComponent implements OnInit {
     this.subscriptions.add(
       this._cartService.currenteDataCart$.subscribe((resp:any) => {
         this.listCarts = resp;
-        this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+        this.totalCarts = this.listCarts.reduce((sum: number, item: any) => {
+          // Usar retail_price de la variante o price_usd del producto, fallback a price_unitario
+          const unitPrice = parseFloat(
+            (item.variedad?.retail_price as any) ?? item.product.price_usd ?? item.price_unitario
+          );
+          return sum + (unitPrice * item.cantidad);
+        }, 0);
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       })
     );

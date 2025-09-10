@@ -676,9 +676,9 @@
                                             <div class="product-price d-flex flex-row justify-content-between">
                                                 <a class="product-title text-uppercase fw-normal text-truncate d-inline-block product-title" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
                                                 <span class="price-small fw-bold">
-                                                    <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
+                                                    <span class="price-main-small">{{ getFormattedPrice((cart.variedad?.retail_price || cart.product.price_usd) * cart.cantidad).integerPart }}</span>
                                                     <span class="price-decimals-small" style="top: 0.2em !important;">
-                                                        <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
+                                                        <sup>{{ getFormattedPrice((cart.variedad?.retail_price || cart.product.price_usd) * cart.cantidad).decimalPart }}</sup>
                                                         <span class="currency-symbol-small">{{ euro }}</span>
                                                     </span>
                                                 </span>

@@ -50,9 +50,9 @@
                                                         <div class="mb-2">
                                                             <span class="money">
                                                                 <span class="price-small fw-bold">
-                                                                    <span class="price-main-small">{{ getFormattedPrice(sale.price_unitario).integerPart }}</span>
+                                                                    <span class="price-main-small">{{ getFormattedPrice(sale.variedade?.retail_price || sale.price_unitario).integerPart }}</span>
                                                                     <span class="price-decimals-small">
-                                                                        <sup>{{ getFormattedPrice(sale.price_unitario).decimalPart }}</sup>
+                                                                        <sup>{{ getFormattedPrice(sale.variedade?.retail_price || sale.price_unitario).decimalPart }}</sup>
                                                                         <span class="currency-symbol-small">{{ euro }}</span>
                                                                     </span>
                                                                 </span>
@@ -82,9 +82,9 @@
                                                             <span class="w-25">Total</span>
                                                             <span class="money ms-lg-3 ms-5">
                                                                 <span class="price-small fw-bold">
-                                                                    <span class="price-main-small">{{ getFormattedPrice(sale.total).integerPart }}</span>
+                                                                    <span class="price-main-small">{{ getFormattedPrice((sale.variedade?.retail_price || sale.price_unitario) * sale.cantidad).integerPart }}</span>
                                                                     <span class="price-decimals-small">
-                                                                        <sup>{{ getFormattedPrice(sale.total).decimalPart }}</sup>
+                                                                        <sup>{{ getFormattedPrice((sale.variedade?.retail_price || sale.price_unitario) * sale.cantidad).decimalPart }}</sup>
                                                                         <span class="currency-symbol-small">{{ euro }}</span>
                                                                     </span>
                                                                 </span>

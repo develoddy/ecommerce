@@ -84,9 +84,9 @@
                                         <div class="mb-2">
                                             <span class="money">
                                                 <span class="price-small fw-bold">
-                                                    <span class="price-main-small">{{ getFormattedPrice(cart.price_unitario).integerPart }}</span>
+                                                    <span class="price-main-small">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}</span>
                                                     <span class="price-decimals-small">
-                                                        <sup>{{ getFormattedPrice(cart.price_unitario).decimalPart }}</sup>
+                                                        <sup>{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</sup>
                                                         <span class="currency-symbol-small">{{ euro }}</span>
                                                     </span>
                                                 </span>
@@ -108,9 +108,9 @@
                                             <span class="w-25">Total</span>
                                             <span class="money ms-lg-3 ms-5">
                                                 <span class="price-small fw-bold">
-                                                    <span class="price-main-small">{{ getFormattedPrice(cart.total).integerPart }}</span>
+                                                    <span class="price-main-small">{{ getFormattedPrice((cart.variedad?.retail_price || cart.price_unitario) * cart.cantidad).integerPart }}</span>
                                                     <span class="price-decimals-small">
-                                                        <sup>{{ getFormattedPrice(cart.total).decimalPart }}</sup>
+                                                        <sup>{{ getFormattedPrice((cart.variedad?.retail_price || cart.price_unitario) * cart.cantidad).decimalPart }}</sup>
                                                         <span class="currency-symbol-small">{{ euro }}</span>
                                                     </span>
                                                 </span>

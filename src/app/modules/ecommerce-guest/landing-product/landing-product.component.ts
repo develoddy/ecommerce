@@ -756,7 +756,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private saveCart() {
-   if (this.cantidad <= 0) { //if ($("#qty-cart").val() == 0) {
+   if (this.cantidad <= 0) {
       this.errorResponse = true;
       this.errorMessage = "Debe seleccionar al menos 1 unidad";
       alertDanger("Debe seleccionar al menos 1 unidad");
@@ -794,12 +794,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       total: (this.product_selected.price_usd - this.getDiscount()) * this.cantidad //total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
     };
 
-    console.log("-----> SaveCart cantidad :", this.cantidad);
-    console.log("-----> SaveCart data :", data);
     
-    if (this.currentUser && !this.currentUser.email ) { //if (this.currentUser.user_guest == "Guest") {
-      console.log("Registrando carrito en cache para invitado", this.currentUser);
-      
+    if (this.currentUser && !this.currentUser.email ) {
       this.cartService.registerCartCache(data).subscribe(
         this.handleCartResponse.bind(this), this.handleCartError.bind(this)
       );

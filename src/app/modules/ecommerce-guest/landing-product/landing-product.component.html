@@ -149,11 +149,11 @@
                                 <h1 class="flex-grow-1 product-main-title mb-0">{{ product_selected.title }}</h1>
                                 <div class="product-price d-flex-center">
                                     <ng-container *ngIf="getDiscount() > 0">
-                                        <span class="price old-price">{{ product_selected.price_usd }} €</span>
+                                        <span class="price old-price">{{ variedad_selected?.retail_price || product_selected.price_usd }} €</span>
                                     </ng-container>
-                                    <!-- <span class="price">{{ (product_selected.price_usd - getDiscount()).toFixed(2) }} €</span> -->
+                                    <span class="price">{{ ((variedad_selected?.retail_price || product_selected.price_usd) - getDiscount()).toFixed(2) }} €</span>
                                     <!-- Mostrar precio con descuento -->
-                                    <span class="price" itemprop="priceCurrency" content="EUR">
+                                    <span class="price d-none" itemprop="priceCurrency" content="EUR">
                                         <span class="price-main" itemprop="price">
                                             {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
                                         </span>
@@ -167,7 +167,7 @@
                                 <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                     <link itemprop="url" [href]="currentUrl" />
                                     <meta itemprop="priceCurrency" content="EUR" />
-                                    <meta itemprop="price" content="{{ getPriceWithDiscount().total }}" />
+                                    <meta itemprop="price" content="{{ (variedad_selected?.retail_price || getPriceWithDiscount().total) }}" />
                                     <link itemprop="availability" href="https://schema.org/InStock" />
                                 </div>
                             </div>
@@ -315,10 +315,6 @@
                                     </button>
                                 </div>
                                 <!-- Product Add -->
-
-
-
-
                                 <!-- Product Buy -->
                                 <div class="product-form-submit buyit fl-1 ms-3 d-none">
                                     <button type="submit" class="btn btn-outline-secondary proceed-to-checkout" onclick="return false;" routerLink="/payment-process"><span>Compre ya</span></button>

@@ -2245,7 +2245,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .swatches li.rounded:after, .size-swatches li.rounded:after { border-radius:50% !important; }
 
 .swatches li:hover, .swatches li.active,
-.filterBox .swatches li:hover, .filterBox .swatches li.active { border-color:#ffffff; box-shadow:0 0 0 3px #9941bf,0 0 0 0px #fff inset; }
+.filterBox .swatches li:hover, .filterBox .swatches li.active { border-color:#ffffff; box-shadow:0 0 0 3px #000,0 0 0 0px #fff inset; }
 
 .swatches li.small { border-width: 2px; }
 .swatches li.rectangle { width:34px; height:24px; }

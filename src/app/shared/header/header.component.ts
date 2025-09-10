@@ -234,7 +234,14 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
-        this.totalCarts = this.listCarts.reduce((sum, item) => sum + parseFloat(item.total), 0);
+        console.log("--- Header - listCarts:", this.listCarts);
+        
+        // Recalcular total usando retail_price de variedad o price_usd
+        this.totalCarts = this.listCarts.reduce((sum, item) => {
+          const unitPrice = parseFloat(item.variedad?.retail_price ?? item.product.price_usd ?? 0);
+          return sum + (unitPrice * item.cantidad);
+        }, 0);
+        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       })
     );
   }
@@ -433,7 +440,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   updateTotalCarts(): void {
-    this.totalCarts = this.listCarts.reduce((sum, item) => sum + parseFloat(item.total), 0);
+    // Recalcular total del minicart drawer
+    this.totalCarts = this.listCarts.reduce((sum, item) => {
+      const unitPrice = parseFloat(item.variedad?.retail_price ?? item.product.price_usd ?? 0);
+      return sum + (unitPrice * item.cantidad);
+    }, 0);
     this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
   }
 
