@@ -40,7 +40,7 @@ a.product-img {
 .page-header h2 {
   font-size: 2rem; 
   margin-bottom: 1rem;
-  letter-spacing: -2px !important;
+  /* letter-spacing: -2px !important; */
 }
 
 .page-header p {
