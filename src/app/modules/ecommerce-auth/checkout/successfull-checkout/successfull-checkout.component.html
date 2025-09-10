@@ -1,8 +1,15 @@
 <div [ngClass]="{'tab-pane': true, 'active': isLastStepActive_4 && isSaleSuccess}" id="steps4" [class.d-none]="loading">
     <ng-container >
         <!--Order success-->
-        <div class="success-text checkout-card text-center mb-4 mb-md-5">
+        <div class="success-text checkout-card text-center py-5 mb-md-5">
             <i class="icon anm anm-shield-check"></i>
+             <!-- <div class="p-2 text-center">
+                <div class="inner mb-3">
+                    <div class="bradcrumb-thumb">
+                        <img src="assets/images/logo.png" alt="LujanDev" title="LujanDev">
+                    </div>
+                </div>
+            </div> -->
             <h2>¡Gracias por su compra!</h2>
             <p class="mb-1 lh-1">Su pago se ha realizado con éxito. El pedido está en camino.</p>
             <p class="mb-1 lh-1">Recibirá un correo con los detalles y un enlace para seguir el envío.</p>                                      
@@ -16,7 +23,7 @@
                         <!--Order Summary-->
                         <div class="block order-summary p-2 mb-5">
                             <div class="block-content">
-                                <h3 class="title mb-3 text-uppercase">Pedido</h3>
+                                <h3 class="title mb-3">Pedido</h3>
                                 <div class="row">
                                     <!--Cart Content-->
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-8 main-col">
@@ -172,7 +179,7 @@
                     <!-- Cart Summary -->
                         <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-5 mt-lg-0">
                             <div class="cart-info sidebar-sticky bg-transparent border-0">
-                                <h3  class="title mb-3 ls-2 text-uppercase d-none">Resumen de Precio</h3>
+                                <h3  class="title mb-3">Resumen de Precio</h3>
                                 <div class="cart-order-detail cart-col">
                                     <!-- Sumaty subtotal -->
                                     <div class="row g-0">
@@ -296,7 +303,7 @@
                         <div class="block p-0">
                             <div class="block-content"> 
                                 <div class="shipping-details mb-4 mb-sm-0 lh-1">
-                                    <h3 class="title mb-3 text-uppercase">Dirección de envío</h3>
+                                    <h3 class="title mb-3">Dirección de envío</h3>
                                     <ng-container *ngIf="this.shippingAddress">
                                         <p class="text-bold">{{ shippingAddress.name }} {{ shippingAddress.surname }}</p>
                                         <p>{{ shippingAddress.address }}</p>
@@ -313,7 +320,7 @@
                         <div class="block p-0">
                             <div class="block-content">
                                 <div class="billing-details lh-1">
-                                    <h3 class="title mb-3 text-uppercase">Método de pago</h3>
+                                    <h3 class="title mb-3">Método de pago</h3>
                                     <ng-container *ngIf="this.sale">
                                         <p>{{ sale.method_payment }}</p>
                                     </ng-container>
@@ -325,7 +332,7 @@
                         <div class="block p-0">
                             <div class="block-content">
                                 <div class="shipping-details mb-4 mb-sm-0 lh-1">
-                                    <h3 class="title mb-3 text-uppercase">Detalles del pedido</h3>
+                                    <h3 class="title mb-3">Detalles del pedido</h3>
                                     <ng-container *ngIf="this.sale">
                                         <p>ID del pedido: {{ sale.n_transaction }}</p>
                                         <p>Fecha de pedido: {{ formatDate(sale.updatedAt) }}</p>
@@ -339,7 +346,7 @@
                         <div class="block p-0">
                             <div class="block-content">
                                 <div class="billing-details lh-1">
-                                    <h3 class="title mb-3 text-uppercase">Fecha prevista de entrega</h3>
+                                    <h3 class="title mb-3">Fecha prevista de entrega</h3>
                                     <!-- <p class="h5 my-2">18 de octubre de 2023</p> -->
                                      <p *ngIf="minDeliveryDate && maxDeliveryDate">
                                         Fecha estimada de entrega:
@@ -363,7 +370,7 @@
                 <!--Order Delivery-->
                 <div class="d-flex-wrap mt-4 text-center justify-content-center">
                     <a [href]="'/' + country + '/' + locale + '/home'" class="d-inline-flex align-items-center" [ngClass]="{'w-100': isMobile , 'w-25': isDesktop }">
-                        <button class="btn-dark-ld text-uppercase">
+                        <button class="btn-dark-ld fw-light">
                             <i class="me-2 icon an an-angle-left-r"></i>Seguir comprando
                         </button>     
                     </a>

@@ -14,13 +14,13 @@
     <!-- Body Container -->
     <div id="page-content" [class.d-none]="!loading">
         <!--Page Header-->
-        <div class="page-header mb-0 py-4 bg-transparent">
+        <div *ngIf="currentStep !== 'successfull'" class="page-header mb-0 py-4 bg-transparent">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center align-items-center">
                         <!-- <a class="logoImg" href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'cart']"> -->
                         <a class="logoImg" (click)="navigateToCart()">
-                            <img src="assets/images/logo.png" alt="Hema Multipurpose Html Template" title="Hema Multipurpose Html Template" />
+                            <img src="assets/images/logo.png" alt="Lujan Ecommerce" title="Lujan Ecommerce" />
                         </a>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">  
                     <!--Nav step checkout-->
-                    <ng-container *ngIf="isCheckoutNavVisible">
+                    <ng-container *ngIf="isCheckoutNavVisible && currentStep !== 'successfull'">
                         <div id="nav-tabs" class="step-checkout main-vertical-component clearfix">
                         <div class="row-fluid stepsCheckout">
                             <div class="span12" role="navigation">

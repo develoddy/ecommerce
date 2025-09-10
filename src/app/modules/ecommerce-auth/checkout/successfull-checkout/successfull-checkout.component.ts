@@ -113,7 +113,7 @@ export class SuccessfullCheckoutComponent implements OnInit {
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
-    }, 50);
+    }, 750);
   }
 
   private checkDeviceType(): void {
@@ -133,26 +133,42 @@ export class SuccessfullCheckoutComponent implements OnInit {
   }
 
   successPayStripe() {
-
-        this.checkoutService.saleData$.subscribe(saleDataPayload => {
-          const saleInfo = saleDataPayload?.sale;
-          const saleDetails = saleDataPayload?.saleDetails || [];
-          if ( saleInfo ) {
-            this.sale = saleInfo;
-            // Recalcular subtotal a partir de los detalles de venta en UI
-            this.totalCarts = saleDetails
-              .reduce((sum: number, item: any) => {
-                const unitPrice = Number(item.variedade?.retail_price ?? item.price_unitario ?? 0);
-                return sum + (unitPrice * item.cantidad);
-              }, 0);
-            this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-            this.saleDetails = saleDetails;
-            // Depurar datos de la venta en UI
-            console.log('DEBUG UI saleInfo:', this.sale);
-            console.log('DEBUG UI saleDetails:', this.saleDetails);
-            console.log('DEBUG UI totalCarts:', this.totalCarts);
-          }
-        });
+    // Initial synchronous load from CheckoutService
+    const initialData = this.checkoutService.getSaleData();
+    if (initialData?.sale) {
+      const saleInfo = initialData.sale;
+      const saleDetails = initialData.saleDetails || [];
+      this.sale = saleInfo;
+      // Calculate total immediately
+      this.totalCarts = saleDetails
+        .reduce((sum: number, item: any) => {
+          const unitPrice = Number(item.variedade?.retail_price ?? item.price_unitario ?? 0);
+          return sum + (unitPrice * item.cantidad);
+        }, 0);
+      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+      this.saleDetails = saleDetails;
+      console.log('DEBUG initial saleInfo:', this.sale);
+      console.log('DEBUG initial saleDetails:', this.saleDetails);
+      console.log('DEBUG initial totalCarts:', this.totalCarts);
+    }
+    // Subscribe to updates (e.g., after Stripe)
+    this.checkoutService.saleData$.subscribe(saleDataPayload => {
+      const saleInfo = saleDataPayload?.sale;
+      const saleDetails = saleDataPayload?.saleDetails || [];
+      if (saleInfo) {
+        this.sale = saleInfo;
+        this.totalCarts = saleDetails
+          .reduce((sum: number, item: any) => {
+            const unitPrice = Number(item.variedade?.retail_price ?? item.price_unitario ?? 0);
+            return sum + (unitPrice * item.cantidad);
+          }, 0);
+        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+        this.saleDetails = saleDetails;
+        console.log('DEBUG updated saleInfo:', this.sale);
+        console.log('DEBUG updated saleDetails:', this.saleDetails);
+        console.log('DEBUG updated totalCarts:', this.totalCarts);
+      }
+    });
   }
 
   registerStripeSale() {
