@@ -55,7 +55,7 @@ export class PaymentCheckoutComponent implements OnInit {
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
   public loading: boolean = false;
-  public isLoadingStripe = false;
+  public isLoadingStripe: boolean = false;
   isLastStepActive_1: boolean = false;
   isLastStepActive_2: boolean = false;
   isLastStepActive_3: boolean = false;
@@ -281,15 +281,14 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   async payWithStripe() {
-    //this.disablePayments = true;
     const stripe = await loadStripe(environment.stripePublicKey);
     if (!stripe) {
-      alert('Stripe no pudo cargarse');
+      alertDanger("Stripe no pudo cargarse");
       return;
     }
 
     if (!this.listCarts || this.listCarts.length === 0) {
-      alert("El carrito está vacío.");
+      alertDanger("El carrito está vacío");
       return;
     }
     
@@ -301,7 +300,7 @@ export class PaymentCheckoutComponent implements OnInit {
 
     const payload = {
       cart    : this.listCarts,
-      userId    : this.CURRENT_USER_AUTHENTICATED?._id || null,
+      userId  : this.CURRENT_USER_AUTHENTICATED?._id || null,
       guestId : this.CURRENT_USER_GUEST?.id || null,
       address : {
         name      : this.name       ,
@@ -323,11 +322,7 @@ export class PaymentCheckoutComponent implements OnInit {
       const session: any = await firstValueFrom(
         this.stripePayService.createStripeSession(payload)
       );
-
-      if (!session?.id) {
-        throw new Error("El backend no devolvió un ID de sesión.");
-      }
-
+      
       const result = await stripe.redirectToCheckout({ sessionId: session.id });
 
       if (result.error) {

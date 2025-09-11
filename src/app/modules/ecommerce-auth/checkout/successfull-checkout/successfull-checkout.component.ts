@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, HostListener, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { OnDestroy } from '@angular/core';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
@@ -7,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { CheckoutService } from '../../_services/checkoutService';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { Location } from '@angular/common';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -19,7 +21,7 @@ declare function alertSuccess([]):any;
   templateUrl: './successfull-checkout.component.html',
   styleUrls: ['./successfull-checkout.component.css']
 })
-export class SuccessfullCheckoutComponent implements OnInit {
+export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
   @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   euro = "€";
@@ -82,6 +84,7 @@ export class SuccessfullCheckoutComponent implements OnInit {
     public _authService         : AuthService           ,
     public _cartService         : CartService           ,
     public _router              : Router                ,
+    private location            : Location              ,
     private subscriptionService : SubscriptionService   ,
     public routerActived        : ActivatedRoute        ,
     private checkoutService     : CheckoutService       ,
@@ -92,19 +95,46 @@ export class SuccessfullCheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
     const fromStripe = this.routerActived.snapshot.queryParamMap.get('fromStripe');
-    if ( fromStripe === '1' ) {
+    
+    if (sessionId) {
+      // Intentar recuperar orden existente por stripeSessionId
+      this._authEcommerce.getSaleBySession(sessionId).subscribe(resp => {
+        this.saleData = resp.sale;
+        this.saleDetails = resp.saleDetails;
+        this.totalCarts = this.saleDetails
+          .reduce((sum: number, it: any) => sum + (Number(it.unitPrice ?? it.price_unitario) * it.cantidad), 0);
+        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+        this.successPayStripe();
+      }, err => {
+        if (err.status === 404) {
+          console.debug('Sale no encontrada, ejecutando registro fallback');
+          this.registerStripeSale();
+        } else {
+          console.error('Error fetching sale by session:', err);
+        }
+      });
+    } else if (fromStripe === '1') {
+      // Flujo legacy: registrar la venta directamente desde frontend
       this.registerStripeSale();
     } else {
-      this.saleData = this.checkoutService.getSaleData(); // Venta ya registrada desde PayPal
-      this.successPayStripe(); // Procesa datos de venta
+      // Mostrar venta ya registrada o en caché
+      this.saleData = this.checkoutService.getSaleData();
+      this.successPayStripe();
+    }
+    
+    // Limpiar parámetros de URL para evitar re-procesar en recarga
+    if (sessionId || fromStripe) {
+      const cleanPath = this._router.url.split('?')[0];
+      this.location.replaceState(cleanPath);
     }
 
     this.activate.emit(true);
     this.subscriptionService.setShowSubscriptionSection(false);
-    this._authEcommerce.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
-    });
+      this._authEcommerce.loading$.subscribe(isLoading => {
+        this.loading = isLoading;
+      });
 
     this.verifyAuthenticatedUser();
     this.checkIfAddressClientExists();
@@ -113,7 +143,7 @@ export class SuccessfullCheckoutComponent implements OnInit {
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
-    }, 750);
+    }, 150);
   }
 
   private checkDeviceType(): void {
@@ -147,9 +177,6 @@ export class SuccessfullCheckoutComponent implements OnInit {
         }, 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       this.saleDetails = saleDetails;
-      console.log('DEBUG initial saleInfo:', this.sale);
-      console.log('DEBUG initial saleDetails:', this.saleDetails);
-      console.log('DEBUG initial totalCarts:', this.totalCarts);
     }
     // Subscribe to updates (e.g., after Stripe)
     this.checkoutService.saleData$.subscribe(saleDataPayload => {
@@ -164,9 +191,6 @@ export class SuccessfullCheckoutComponent implements OnInit {
           }, 0);
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
         this.saleDetails = saleDetails;
-        console.log('DEBUG updated saleInfo:', this.sale);
-        console.log('DEBUG updated saleDetails:', this.saleDetails);
-        console.log('DEBUG updated totalCarts:', this.totalCarts);
       }
     });
   }
@@ -178,12 +202,15 @@ export class SuccessfullCheckoutComponent implements OnInit {
       return;
     }
   
+    // Incluir stripeSessionId para evitar duplicados en recargas
+    const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
     const sale = {
       user            : payload.userId,
       guestId         : payload.guestId,
       currency_payment: "EUR",
       method_payment  : "STRIPE",
       n_transaction   : "STRIPE_CHECKOUT",
+      stripeSessionId : sessionId || undefined,
       // Usar precio de variante o unitario para calcular total real
       total           : parseFloat(
                           payload.cart.reduce((sum: number, item: any) => {
@@ -356,7 +383,6 @@ export class SuccessfullCheckoutComponent implements OnInit {
   removeAllCart(user_id: any) {
     this._cartService.deleteAllCart(user_id).subscribe(
       (resp: any) => {
-        console.log(resp.message_text);
         this._cartService.resetCart();
     }, (error) => {
         console.error("Error al eliminar el carrito:", error);
@@ -463,6 +489,7 @@ export class SuccessfullCheckoutComponent implements OnInit {
       return;
     }
 
+    // Preparar datos de dirección a actualizar
     let data = {
       _id       : this.address_client_selected.id,
       user      : this.CURRENT_USER_AUTHENTICATED._id,
@@ -472,11 +499,13 @@ export class SuccessfullCheckoutComponent implements OnInit {
       address   : this.address,
       zipcode   : this.zipcode,
       poblacion : this.poblacion,
+      ciudad    : this.ciudad,
       email     : this.email,
       phone     : this.phone,
+      usual_shipping_address: this.address_client_selected.usual_shipping_address
     };
 
-    this._authEcommerce.updateAddressClient( data ).subscribe((resp:any) => {
+    this._authEcommerce.updateAddressClient(data).subscribe((resp:any) => {
       if (resp.status == 200) {
         let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
         this.listAddressClients[INDEX] = resp.address_client;
@@ -587,14 +616,15 @@ export class SuccessfullCheckoutComponent implements OnInit {
     this.subscriptions.add(subscriptionLogin);
   }
 
-  ngOnDestroy(): void {
-    if (this.subscriptions) {
-      this.subscriptions.unsubscribe();
-    }
-  }
 
   @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
       this.checkDeviceType(); // Verifica el tamaño de la pantalla
   } 
+  
+  ngOnDestroy(): void {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
+  }
 }

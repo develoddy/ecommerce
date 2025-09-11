@@ -89,7 +89,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {}
 
   ngOnInit(): void {
-    this.loadLoading();
+  this.loadLoading();
 
     this.checkoutService.isSaleSuccess$.subscribe((success: boolean) => {
       if (success) {
@@ -106,12 +106,11 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   private initializeExternalScripts(): void {
-      this.loadLoading();
-      setTimeout(() => {
-        HOMEINITTEMPLATE($);
-        actionNetxCheckout($);
-      }, 150);
-    
+    this.loadLoading();
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+      actionNetxCheckout($);
+    }, 150);
   }
 
   private watchRouteChanges(): void {
@@ -192,15 +191,15 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         this._authEcommerce._authService.userGuest.pipe(take(1)).subscribe(guestUser => {
           
            if (guestUser && guestUser.state === 1) {
-            // ⚠️ Modo invitado detectado → forzar login
+            // ⚠️ Modo invitado detectado
             this.CURRENT_USER_AUTHENTICATED = null;
             this.CURRENT_USER_GUEST = guestUser;
-            this.showLogin();
-          } else {
-            // ❌ Ningún usuario válido → también forzar login
+            // No forzar login para invitados
+           } else {
+            // ❌ Ningún usuario válido
             this.CURRENT_USER_AUTHENTICATED = null;
             this.CURRENT_USER_GUEST = null;
-          }
+           }
         });
       }
     });
@@ -485,12 +484,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     const subscriptionLogin =  this._authService.login(this.email_identify, this.password_identify).subscribe(
       (resp:any) => {
         if (!resp.error && resp) {
-          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout'])
-          .then(() => {
-            window.location.reload();
-          });
+          // Tras login en checkout padre, ir al paso de resumen sin recargar
           this._cartService.resetCart();
-        } else {
+          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'login' } });
+         } else {
           this.errorAutenticate = true;
           this.errorMessageAutenticate = resp.error.message;
         }

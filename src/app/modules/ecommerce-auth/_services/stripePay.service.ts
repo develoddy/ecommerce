@@ -23,10 +23,6 @@ export class StripePayService {
 
         this.loadingSubject.next(true);
 
-        //let headers = new HttpHeaders({
-        //    'token': this._authService.token
-        //});
-
         let headers = new HttpHeaders();
         if (this._authService.token) {
             headers = headers.set('token', this._authService.token);

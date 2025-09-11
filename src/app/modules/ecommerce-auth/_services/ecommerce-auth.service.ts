@@ -157,17 +157,13 @@ export class EcommerceAuthService {
   }
 
   registerSale(data:any, isGuest: boolean = false) {
+    console.debug('EcomAuthService.registerSale → payload:', data, 'isGuest:', isGuest);
     this.loadingSubject.next(true);
-    
     const headers = isGuest ? {} : new HttpHeaders({ token: this._authService.token });
-
-    const URL = isGuest
-    ? URL_SERVICE + "sale/register-guest"
-    : URL_SERVICE + "sale/register";
-
-
-    return this._http.post(URL, data, { headers: headers }).pipe(
-      finalize(() => this.loadingSubject.next(false))
+    const URL = isGuest ? URL_SERVICE + "sale/register-guest" : URL_SERVICE + "sale/register";
+    return this._http.post<any>(URL, data, { headers }).pipe(
+      finalize(() => this.loadingSubject.next(false)),
+      tap(resp => console.debug('EcomAuthService.registerSale ← resp:', resp))
     );
   }
 
@@ -207,4 +203,12 @@ export class EcommerceAuthService {
     );
   }
 
+  // Obtener venta existente según session_id de Stripe
+  getSaleBySession(sessionId: string) {
+    this.loadingSubject.next(true);
+    const URL = URL_SERVICE + `sale/by-session/${sessionId}`;
+    return this._http.get<any>(URL).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    );
+  }
 }
