@@ -1847,6 +1847,49 @@ function cleanupProductZoom($) {
     }
 }
 
+
+function productSlider8items() {
+    //var $slider = $('.collection-slider-8items');
+    if ($('.collection-slider-8items').length) { //if ($slider.length) {
+
+        $('.collection-slider-8items').slick({ //$slider.slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 8,
+            slidesToScroll: 1,
+            arrows: true,
+            autoplay: true,
+            autoplaySpeed: 4000,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 7
+                    }
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 4
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                }
+            ]
+        });
+    }
+}
+
 function productSlider5items($) {
     if ($('.product-slider-5items').length) {
         
@@ -1918,4 +1961,5 @@ window.cleanupSliders = cleanupSliders;
 window.cleanupHOMEINITTEMPLATE = cleanupHOMEINITTEMPLATE;
 window.cleanupProductZoom = cleanupProductZoom;
 window.productSlider5items = productSlider5items;
+window.productSlider8items = productSlider8items;
 window.menuProductSlider = menuProductSlider;

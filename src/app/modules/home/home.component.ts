@@ -16,6 +16,7 @@ import { URL_FRONTEND } from 'src/app/config/config';
 declare var bootstrap: any;
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
+declare function productSlider5items($: any): any;
 declare function LandingProductDetail($: any):any;
 declare function pswp([]):any;
 declare function productZoom([]):any;
@@ -102,6 +103,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   ngOnInit(): void {
+    this.loadSPINER();
     this.setupSEO();
     //this.setupCookieModal();
     this.loadSPINER();
@@ -124,7 +126,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Filtrar solo sliders activos (state == 1)
       this.sliders = resp.sliders.filter((slider: any) => slider.state == 1);
-      console.log("----> Home.componente > this.slider: ", this.sliders);
       
       this.categories = resp.categories;
       
@@ -134,7 +135,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       
       this.ourProducts = resp.our_products;
-      console.log(this.ourProducts);
       
       this.besProducts = resp.bes_products;
       this.FlashSale = resp.FlashSale;
@@ -148,7 +148,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setColoresDisponibles();
       
       setTimeout(() => {
-        this.loadSPINER();
+        
         setTimeout(() => {
           if (this.FlashSale) {
             var eventCounter = $(".sale-countdown");
@@ -165,10 +165,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             }
           }
-          HOMEINITTEMPLATE($);
           this.extractTags();
-        }, 50);
-      }, 800);
+          //(window as any).sliderRefresh($);
+        }, 150);
+        HOMEINITTEMPLATE($);
+        productSlider5items($);
+        //(window as any).sliderRefresh($);
+      }, 150);
     });
 
     this.subscription?.add(listHomeSubscription);

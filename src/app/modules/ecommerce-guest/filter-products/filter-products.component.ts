@@ -12,11 +12,14 @@ declare function alertDanger([]):any;
 declare function alertSuccess([]):any;
 declare function priceRangeSlider():any;
 declare function ModalProductDetail():any;
+// Función global del slider de categorías (definida en main.js)
+//declare var collection_slider_8items: any;
 
 // ------------------ DESTRUIR DESDE EL MAIN.JS ------------------
 declare function cleanupHOMEINITTEMPLATE($: any): any;
 declare function cleanupSliders($: any): any;
 declare function productSlider5items($: any): any;
+declare function productSlider8items($: any): any; 
 declare function sliderRefresh(): any;
 
 @Component({
@@ -110,19 +113,24 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         this.categories_selecteds = [];
         this.variedad_selected = {_id: null};
         this.is_discount = 1;
-        this.filterForCategorie(this.idCategorie); 
+        this.filterForCategorie(this.idCategorie);
       }
-      this.filterProduct(this.slug); // ¡Ahora sí después de aplicar la categoría!
+      this.filterProduct(); // Aplicar filtros (principalmente categoría) sin tratar slug como posición de logo
+      // Re-inicializar slider de categorías tras navegar
+      //  setTimeout(() => {
+      //    collection_slider_8items($);
+      //  }, 350);
     });
 
     this.configInitial();
     this.checkDeviceType();
 
-    setTimeout(() => {
-      productSlider5items($);
-      // REFRESCAR EL SLIDER
-      (window as any).sliderRefresh($);
-    }, 150);
+    // PRObando a cargar el componente si esto
+    // setTimeout(() => {
+    //   productSlider5items($);
+    //   productSlider8items($);
+    //   (window as any).sliderRefresh($);
+    // }, 550);
   }
 
   openSidebar() {
@@ -159,8 +167,13 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         category.slug = this.generateSlug(category.title);
       });
 
+      console.log("🛑 [DEBUG][FilterProductsComponent] configInitial - this.idCategorie:", this.idCategorie);
+      
+
       // BUSCAR EL TITULO DE LA CATEGORIA BASADA EN EL IDCATEGORIE
       const category = this.categories.find((cat:any) => cat._id === Number(this.idCategorie));
+      console.log("🛑 [DEBUG][FilterProductsComponent] configInitial - category found:", category);
+      
       if (category) {
         // ASIGNCAR EL TITULO DE LA CATEGORIA
         this.categoryTitle = category.title;
@@ -190,15 +203,24 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   filterProduct(logo_position: string = '', priceRange?: string) {
     this.products = [];
     setTimeout(() => {
-      // Si priceRange viene del hijo, úsalo. Si no, usa el valor por defecto.
-      if (!priceRange) {
-        priceRange = '15 - 100';
+      // Lógica de filtrado de precio: omitir rango si hay categoría seleccionada
+      const defaultMin = 15;
+      const defaultMax = 100;
+      let priceMin: number | null = null;
+      let priceMax: number | null = null;
+      if (priceRange) {
+        const priceArray = priceRange.replace(/\$/g, "").split(" - ");
+        priceMin = priceArray[0] ? parseFloat(priceArray[0].trim()) : null;
+        priceMax = priceArray[1] ? parseFloat(priceArray[1].trim()) : null;
+      } else if (this.categories_selecteds.length > 0) {
+        // Filtrado inicial por categoría: no aplicar filtro de precio
+        priceMin = 0;
+        priceMax = 0;
+      } else {
+        // Rango predeterminado
+        priceMin = defaultMin;
+        priceMax = defaultMax;
       }
-      let priceArray = priceRange.replace(/\$/g, "").split(" - ");
-      let defaultMin = 15;
-      let defaultMax = 100;
-      let priceMin = priceArray[0] ? parseFloat(priceArray[0].trim()) : null;
-      let priceMax = priceArray[1] ? parseFloat(priceArray[1].trim()) : null;
       if (logo_position && logo_position !== '') {
         if (logo_position == 'camisetas-logo-central') {
           this.logo_position_selected = 'center';
@@ -216,6 +238,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         selectedColors: this.selectedColors,
         logo_position_selected: this.logo_position_selected
       };
+      console.log("🛑 [DEBUG][FilterProductsComponent] filterProduct - data payload:", data);
+      
       this._ecommerceGuestService.filterProduct(data).subscribe((resp: any) => {
         this.products = resp.products;
         if (this.products) {
@@ -287,6 +311,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     }
     this.nameCategorie = this.slug;
     this.idCategorie = idCategorie;
+    console.log("🛑 [DEBUG][FilterProductsComponent] filterForCategorie - idCategorie:", idCategorie);
+    
     this.updateCategoryTitle();
   }
 

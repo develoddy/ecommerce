@@ -650,11 +650,14 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     const allShirts = categoryTitle.toLowerCase().includes('all shirts');
     const isGorra = categoryTitle.toLowerCase().includes('snapbacks');
     const isHoodies = categoryTitle.toLowerCase().includes('hoodies');
+    const isMugs = categoryTitle.toLowerCase().includes('mugs');
 
     // Determina las tallas disponibles según la categoría
     let filteredSizes: string[] = [];
     if (isHoodies) {
         filteredSizes = this.availableSizesHoodies;
+     } else if (isMugs) {
+        filteredSizes = this.availableSizesMugs;
     } else if (isCamisa) {
         filteredSizes = this.availableSizesCamisetas;
     } else if (isGorra) {

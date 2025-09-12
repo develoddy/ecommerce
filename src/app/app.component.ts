@@ -12,7 +12,8 @@ import { SeoService } from './services/seo.service';
 declare var bootstrap: any;
 
 declare var $:any;
-declare function HOMEINITTEMPLATE($: any): any;//declare function HOMEINITTEMPLATE([]):any;
+declare function HOMEINITTEMPLATE($: any): any;
+declare function productSlider5items($: any): any;
 declare function sliderRefresh(): any;
 declare function pswp([]):any;
 declare function productZoom([]):any;
@@ -71,6 +72,12 @@ export class AppComponent implements AfterViewInit {
       this.handleForceLogin();
     });
     this.checkDeviceType();
+
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+      productSlider5items($);
+      (window as any).sliderRefresh($);
+    }, 150);
   }
 
   
