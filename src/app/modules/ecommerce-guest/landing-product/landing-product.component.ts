@@ -12,6 +12,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { LoaderService } from 'src/app/services/loader.service';
 import { SeoService } from 'src/app/services/seo.service';
 
 declare var $:any;
@@ -72,7 +73,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   availableSizesGorra = ["One size"];
   availableSizesPerfume = ["50ML", "100ML"];
   availableSizesMugs = ["11 oz", "15 oz"];
-  loading: boolean = false;
   tallaError = false; 
   cantidadError = false; 
   isMobile: boolean = false;
@@ -119,7 +119,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     private seoService: SeoService,
     @Inject(DOCUMENT) private doc: Document,
     private ngZone: NgZone,
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+    public loader: LoaderService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -148,20 +149,38 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnInit(): void {
     this.currentUrl = window.location.href; // Captura la URL completa de la página
     this.showStickyCart = window.scrollY > 600;
-    this.loadSPINNER();
+  // Spinner now handled globally via LoaderInterceptor + LoaderService
     this.checkUserAuthenticationStatus(); 
     this.subscribeToRouteParams();
     this.subscribeToQueryParams();
     this.checkDeviceType();
+
+    // Subscribe to loader to initialize and cleanup sliders when HTTP calls complete
+    this.subscriptions.add(
+      this.loader.loading$.subscribe(isLoading => {
+        if (!isLoading) {
+          this.ngZone.runOutsideAngular(() => {
+            setTimeout(() => {
+              // Initialize sliders and templates
+              cleanupHOMEINITTEMPLATE($);
+              cleanupProductZoom($);
+              HOMEINITTEMPLATE($);
+              productZoom($);
+              pswp($);
+              productSlider5items($);
+              menuProductSlider($);
+              sliderRefresh();
+            }, 150);
+          });
+        } else {
+          // Cleanup on loading start
+          cleanupHOMEINITTEMPLATE($);
+          cleanupProductZoom($);
+        }
+      })
+    );
   }
 
-  loadSPINNER() {
-    setTimeout(() => {
-      this.subscriptions = this.ecommerceGuestService.loading$.subscribe(isLoading => {
-        this.loading = !isLoading;
-      });
-    }, 1000);
-  }
 
   private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(
@@ -219,7 +238,6 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
     // Si la dirección está incompleta, no seguimos
     if (!address?.address || !address?.ciudad || !address?.zipcode || !address?.pais) {
-      console.warn("Dirección incompleta:", address);
       this.shippingRate = 0;
       this.shippingMethod = '';
       this.fechaEntregaMin = '';

@@ -1,4 +1,4 @@
-<div class="collection-slider-8items gp10 slick-arrow-dots sub-collection section" *ngIf="categories">
+<div class="collection-slider-8items gp10 slick-arrow-dots sub-collection section">
     <ng-container *ngFor="let categorie of categories">
         <div class="category-item zoomscal-hov">
             <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" class="category-link clr-none">

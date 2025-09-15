@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { WishlistService } from '../../ecommerce-guest/_service/wishlist.service';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
 import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { LoaderService } from 'src/app/services/loader.service';
 
 declare var $:any;
 declare function pswp([]):any;
@@ -19,7 +21,7 @@ declare var bootstrap: any;  // Declarar Bootstrap para usar sus métodos
   templateUrl: './wishlist.component.html',
   styleUrls: ['./wishlist.component.css']
 })
-export class WishlistComponent implements OnInit {
+export class WishlistComponent implements OnInit, OnDestroy {
 
   euro = "€";
   listWishlists: any[] = [];
@@ -28,6 +30,7 @@ export class WishlistComponent implements OnInit {
 
   CURRENT_USER_AUTHENTICATED:any=null;
   loading: boolean = false;
+  private subscriptions: Subscription = new Subscription();
 
   REVIEWS:any=null;
   AVG_REVIEW:any=null;
@@ -61,7 +64,8 @@ export class WishlistComponent implements OnInit {
     public _cartService: CartService,
     private minicartService: MinicartService,
     private activatedRoute: ActivatedRoute, 
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+    public loader: LoaderService
   ) {
     // this.activatedRoute.paramMap.subscribe(params => {
     //   this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
@@ -76,9 +80,19 @@ export class WishlistComponent implements OnInit {
 
     this.verifyAuthenticatedUser()
 
-    this._wishlistService.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
-    });
+    this.subscriptions.add(
+      this.loader.loading$.subscribe(isLoading => {
+        this.loading = isLoading;
+        if (!isLoading) {
+          setTimeout(() => {
+            // Inicializa templates y plugins al terminar carga
+            HOMEINITTEMPLATE($);
+            pswp($);
+            productZoom($);
+          }, 150);
+        }
+      })
+    );
 
     this.listAllCarts();
     this._wishlistService.currenteDataWishlist$.subscribe((resp:any) => {
@@ -91,6 +105,8 @@ export class WishlistComponent implements OnInit {
       this.totalWishlists = parseFloat(this.totalWishlists.toFixed(2));
     });
   }
+  
+  
 
   getFormattedPrice(price: any) {
     if (typeof price === 'string') {
@@ -231,7 +247,6 @@ export class WishlistComponent implements OnInit {
   }
 
   showModalSelectedProduct(wishlist:any) {
-     console.log("----> DEBBUG showModalSelectedProduct: ", wishlist);
     this.product_selected = wishlist.product;
     setTimeout(() => {
       this.filterUniqueGalerias( this.product_selected );
@@ -335,6 +350,11 @@ export class WishlistComponent implements OnInit {
     this._wishlistService.deleteWishlist(wishlist._id).subscribe((resp:any) => {
       this._wishlistService.removeItemWishlist(wishlist);
     });
+  }
+
+  ngOnDestroy(): void {
+    // Desuscribir todas las subscripciones
+    this.subscriptions.unsubscribe();
   }
 
 }

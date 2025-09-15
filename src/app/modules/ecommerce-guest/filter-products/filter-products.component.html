@@ -1,69 +1,71 @@
- <!--Page Wrapper-->
- <div class="page-wrapper" >
-
-    <!-- Loading -->
-    <div *ngIf="isLoading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+ <!-- Loading -->
+    <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
-            <div class="col col-12 col-lg-12 col-sm-2">
+            <div class="col col-12 col-lg-12  col-sm-2">
                 <div class="sp sp-bars"></div>
             </div>
         </div>
     </div>
-    <!-- End Loading -->
-
-    <!-- Body Container -->
-    <div id="page-content" [class.d-none]="isLoading">
-        <!--Page Header-->
-        <div class="page-header text-center bg-transparent mb-0 p-3">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-start align-items-center">
-                        <div class="page-title"><h2 class="text-uppercase">{{ categoryTitle || 'Novedades' }}</h2></div>
-                        <!--Breadcrumbs-->
-                        <div class="breadcrumbs d-none"><a href="index.html" title="Back to the home page">LUJANDEV.COM</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Todos los productos</span></div>
-                        <!--End Breadcrumbs-->
+<!-- End Loading -->
+ 
+ 
+ <!--Page Wrapper-->
+ <div class="page-wrapper">
+    <ng-container [class.d-none]="loader.loading$ | async">
+        <!-- Body Container -->
+        <div id="page-content">
+            <!--Page Header-->
+            <div class="page-header text-center bg-transparent mb-0 p-3">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-start align-items-center">
+                            <div class="page-title"><h2 class="text-uppercase">{{ categoryTitle || 'Novedades' }}</h2></div>
+                            <!--Breadcrumbs-->
+                            <div class="breadcrumbs d-none"><a href="index.html" title="Back to the home page">LUJANDEV.COM</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Todos los productos</span></div>
+                            <!--End Breadcrumbs-->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--End Page Header-->
+            <!--End Page Header-->
 
-        <!--Main Content-->
-        <div class="container-fluid" [ngClass]="{ 'px-0': isMobile }">
-            <app-category-slider [categories]="categories" [locale]="locale" [country]="country"></app-category-slider>
-            <app-toolbar [isDesktop]="isDesktop" [isMobile]="isMobile" [products]="products" (openSidebar)="openSidebar()"></app-toolbar>
-            <app-sidebar-filter
-                [noneSidebar]="noneSidebar"
-                [categories]="categories"
-                [variedades]="variedades"
-                [coloresDisponibles]="coloresDisponibles"
-                [filtersApplied]="filtersApplied"
-                [selectedColors]="selectedColors"
-                [variedad_selected]="variedad_selected"
-                [is_discount]="is_discount"
-                [categoryTitle]="categoryTitle"
-                [locale]="locale"
-                [country]="country"
-                (closeSidebar)="closeSidebar()"
-                (clearFilters)="clearFilters()"
-                (selectedVariedad)="selectedVariedad($event)"
-                (toggleColor)="toggleColor($event)"
-                (filterByPrice)="onFilterByPrice($event)"
-            ></app-sidebar-filter>
-            <app-products-list
-                [products]="products"
-                [euro]="euro"
-                [locale]="locale"
-                [country]="country"
-                [getPriceParts]="getPriceParts.bind(this)"
-                [getRouterDiscount]="getRouterDiscount.bind(this)"
-                [changeProductImage]="changeProductImage.bind(this)"
-            >
-            </app-products-list>
+            <!--Main Content-->
+            <div class="container-fluid" [ngClass]="{ 'px-0': isMobile }">
+                <app-category-slider [categories]="categories" [locale]="locale" [country]="country"></app-category-slider>
+                <app-toolbar [isDesktop]="isDesktop" [isMobile]="isMobile" [products]="products" (openSidebar)="openSidebar()"></app-toolbar>
+                <app-sidebar-filter
+                    [noneSidebar]="noneSidebar"
+                    [categories]="categories"
+                    [variedades]="variedades"
+                    [coloresDisponibles]="coloresDisponibles"
+                    [filtersApplied]="filtersApplied"
+                    [selectedColors]="selectedColors"
+                    [variedad_selected]="variedad_selected"
+                    [is_discount]="is_discount"
+                    [categoryTitle]="categoryTitle"
+                    [locale]="locale"
+                    [country]="country"
+                    (closeSidebar)="closeSidebar()"
+                    (clearFilters)="clearFilters()"
+                    (selectedVariedad)="selectedVariedad($event)"
+                    (toggleColor)="toggleColor($event)"
+                    (filterByPrice)="onFilterByPrice($event)"
+                ></app-sidebar-filter>
+                <app-products-list
+                    [products]="products"
+                    [euro]="euro"
+                    [locale]="locale"
+                    [country]="country"
+                    [getPriceParts]="getPriceParts.bind(this)"
+                    [getRouterDiscount]="getRouterDiscount.bind(this)"
+                    [changeProductImage]="changeProductImage.bind(this)"
+                >
+                </app-products-list>
+            </div>
+            <!--End Main Content-->
         </div>
-        <!--End Main Content-->
-    </div>
-    <!-- End Body Container -->
+        <!-- End Body Container -->
+    </ng-container>
 
     <!--Scoll Top-->
     <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>

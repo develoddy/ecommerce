@@ -8,6 +8,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { WishlistService } from '../_service/wishlist.service';
 import { SeoService } from 'src/app/services/seo.service';
+import { LoaderService } from 'src/app/services/loader.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -17,6 +18,7 @@ declare function alertSuccess(message: string): any;
 // ---------- Destruir desde main ----------
 declare function cleanupHOMEINITTEMPLATE($: any): any;
 declare function cleanupSliders($: any): any;
+declare function collectionSlider4items($: any): any;
 
 @Component({
   selector: 'app-list-carts',
@@ -60,6 +62,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     //private metaService: Meta,
     private seoService: SeoService,
     public _wishlistService: WishlistService,
+    public loader: LoaderService
   ) {
     // Obtenemos `locale` y `country` de la ruta actual
     this.activatedRoute.paramMap.subscribe(params => {
@@ -77,22 +80,23 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.showRelatedProducts();
     this.subscribeToWishlistData();
 
-    setTimeout(() => {
-      this.loadSPINER();
-      setTimeout(() => {
-        HOMEINITTEMPLATE($);
-      }, 50);
-    }, 750);
+    // Subscribe to loader to initialize carousel after content loads
+    this.subscriptions.add(
+      this.loader.loading$.subscribe(isLoading => {
+        if (!isLoading) {
+          setTimeout(() => {
+            HOMEINITTEMPLATE($);
+            collectionSlider4items($);
+          }, 150);
+        } else {
+          cleanupSliders($);
+          cleanupHOMEINITTEMPLATE($);
+          collectionSlider4items($);
+        }
+      })
+    );
   }
 
-  loadSPINER() {
-    this.cartService.loading$.subscribe(isLoading => {
-      //this.loading = isLoading;
-      //setTimeout(() => {
-        this.loading = !isLoading;
-      //}, 550);
-    });
-  }
 
   private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(

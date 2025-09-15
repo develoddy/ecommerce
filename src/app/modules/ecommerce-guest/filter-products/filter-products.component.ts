@@ -3,6 +3,7 @@ import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { LoaderService } from 'src/app/services/loader.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -59,8 +60,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   locale: string = "";
   country: string = "";
   private subscription: Subscription = new Subscription();
-  //loading: boolean = false;
-  isLoading: boolean = false;
   logo_position_selected: string = "";
   isMobile: boolean = false;
   isTablet: boolean = false;
@@ -75,6 +74,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     public _cartService: CartService,
     public _router: Router,
     public _routerActived: ActivatedRoute,
+    public loader: LoaderService
   ) {
     
     this._routerActived.paramMap.subscribe(params => {
@@ -95,11 +95,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   
   /* ------------------ CYCLE INIT ------------------ */
   ngOnInit(): void {
-    // this.subscription =  this._ecommerceGuestService.loading$.subscribe(isLoading => {
-    //   this.loading = isLoading;
-    // });
-
-    this.subscription = this._ecommerceGuestService.loading$.subscribe(isLoading => this.isLoading = isLoading);
 
     this._ecommerceGuestService._authService.user.subscribe(user => {
       if (user) {
@@ -128,12 +123,23 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     this.configInitial();
     this.checkDeviceType();
 
-    // PRObando a cargar el componente si
-    setTimeout(() => {
-      productSlider5items($);
-      productSlider8items($);
-      (window as any).sliderRefresh($);
-    }, 550);
+    // Slider initialization handled by loader subscription
+
+    // Subscribe to loader to initialize and cleanup sliders
+    this.subscription.add(
+      this.loader.loading$.subscribe(isLoading => {
+        if (!isLoading) {
+          setTimeout(() => {
+            productSlider5items($);
+            productSlider8items($);
+            (window as any).sliderRefresh($);
+          }, 150);
+        } else {
+          cleanupHOMEINITTEMPLATE($);
+          cleanupSliders($);
+        }
+      })
+    );
   }
 
   openSidebar() {

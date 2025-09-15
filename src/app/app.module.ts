@@ -8,6 +8,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './modules/auth-profile/_services/guards/auth.interceptor';
+import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { RecaptchaModule, RecaptchaFormsModule, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 
@@ -41,6 +42,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
       multi: true
     }, {
       provide: RECAPTCHA_V3_SITE_KEY,

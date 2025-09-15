@@ -4,13 +4,14 @@ import { CartService } from '../ecommerce-guest/_service/cart.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/services/language.service';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest, Subscription, take } from 'rxjs';
 import { WishlistService } from '../ecommerce-guest/_service/wishlist.service';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { AuthService } from '../auth-profile/_services/auth.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { SeoService } from 'src/app/services/seo.service';
 import { CookieConsentService } from 'src/app/services/cookie-consent.service';
+import { LoaderService } from 'src/app/services/loader.service';
 import { URL_FRONTEND } from 'src/app/config/config';
 
 declare var bootstrap: any;
@@ -65,10 +66,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   variedades: any[] = [];
   errorResponse:boolean=false;
   errorMessage:any="";
-  isLoading: boolean = false;
+  // isLoading flag removed: using LoaderService.loading$ in template via async pipe
   locale: string = "";
   country: string = "";
   CURRENT_USER_AUTHENTICATED:any=null;
+  CURRENT_USER_GUEST:any=null;
   currentUser: any = null;
   private subscription: Subscription | undefined;
   private subscriptions: Subscription = new Subscription();
@@ -83,15 +85,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     public homeService: HomeService,
     public _cartService: CartService,
     public _router: Router,
-    private activatedRoute: ActivatedRoute,
     public translate: TranslateService,
     public _wishlistService: WishlistService,
     public _authService: AuthService,
     private localizationService: LocalizationService,
-    private ngZone: NgZone,
     private minicartService: MinicartService,
     private seoService: SeoService,
-    private cookieConsentService: CookieConsentService,
+    public loader: LoaderService
   ) { 
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -103,10 +103,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   ngOnInit(): void {
-    this.loadSpinner();
     this.setupSEO();
-    //this.setupCookieModal();
-    //this.checkCookieConsent();
     this.verifyAuthenticatedUser();
     this.checkDeviceType();
     this.subscribeToCartData(); 
@@ -146,36 +143,47 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setFirstImage();
       this.setColoresDisponibles();
       
-      //setTimeout(() => {
-        setTimeout(() => {
-          if (this.FlashSale) {
-            var eventCounter = $(".sale-countdown");
-            let PARSE_DATE = new Date(this.FlashSale.end_date);
-            
-            let DATE = PARSE_DATE.getFullYear() + "/" + (PARSE_DATE.getMonth()+1) + "/" + (PARSE_DATE.getDate())
-            if (eventCounter.length) {
-                eventCounter.countdown(DATE, function(e:any) {
-                  eventCounter.html(
-                        e.strftime(
-                            "<div class='countdown-section'><div><div class='countdown-number'>%-D</div> <div class='countdown-unit'>Day</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%H</div> <div class='countdown-unit'>Hrs</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%M</div> <div class='countdown-unit'>Min</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%S</div> <div class='countdown-unit'>Sec</div> </div></div>"
-                        )
-                    );
-                });
-            }
-          }
-          HOMEINITTEMPLATE($);
-          productSlider5items($);
-          (window as any).sliderRefresh($);
-          this.extractTags();
-        }, 350);
-        
-      //}, 350);
+    
     });
 
-    this.subscription?.add(listHomeSubscription);
+    this.subscriptions.add(listHomeSubscription);
+
+    // Subscribe to loader to initialize sliders after HTTP calls complete
+    this.subscriptions.add(
+      this.loader.loading$.subscribe(isLoading => {
+        if (!isLoading) {
+          setTimeout(() => {
+            // Countdown de FlashSale si existe
+            if (this.FlashSale) {
+              const eventCounter = $(".sale-countdown");
+              const parseDate = new Date(this.FlashSale.end_date);
+              const dateStr = `${parseDate.getFullYear()}/${parseDate.getMonth()+1}/${parseDate.getDate()}`;
+              if (eventCounter.length) {
+                eventCounter.countdown(dateStr, (e: any) => {
+                  eventCounter.html(
+                    e.strftime(
+                      "<div class='countdown-section'><div><div class='countdown-number'>%-D</div><div class='countdown-unit'>Day</div></div></div>" +
+                      "<div class='countdown-section'><div><div class='countdown-number'>%H</div><div class='countdown-unit'>Hrs</div></div></div>" +
+                      "<div class='countdown-section'><div><div class='countdown-number'>%M</div><div class='countdown-unit'>Min</div></div></div>" +
+                      "<div class='countdown-section'><div><div class='countdown-number'>%S</div><div class='countdown-unit'>Sec</div></div></div>"
+                    )
+                  );
+                });
+              }
+            }
+            HOMEINITTEMPLATE($);
+            productSlider5items($);
+            (window as any).sliderRefresh($);
+            this.extractTags();
+          }, 50);
+        } else {
+          cleanupHOMEINITTEMPLATE($);
+          cleanupProductZoom($);
+        }
+      })
+    );
   }
 
-  
   setupSEO() {
     this.seoService.updateSeo({
       title: 'Camisetas para Programadores | Tienda Lujandev',
@@ -184,23 +192,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  /** Suscribe al estado de carga desde el servicio */
-  private loadSpinner(): void {
-    this.subscription = this.homeService.loading$
-      .subscribe(isLoading => this.isLoading = isLoading);
-  }
-
-  // getPriceParts(price: number) {
-  //   const [integer, decimals] = price.toFixed(2).split('.');
-  //   return { integer, decimals };
-  // }
   getPriceParts(price: number) {
     const priceFixed = price.toFixed(2);           // Precio con 2 decimales
     const [integer, decimals] = priceFixed.split('.');
     const total = priceFixed;                      // Total como string para SEO
     return { integer, decimals, total };
   }
-
   
   calculateFinalPrice(product: any): number {
     let discount = 0;
@@ -250,16 +247,40 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private verifyAuthenticatedUser(): void {
+    // Asignación inicial síncrona desde localStorage para disponibilidad inmediata
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      this.CURRENT_USER_AUTHENTICATED = user;
+      this.currentUser = user;
+    } else {
+      const storedGuest = localStorage.getItem('user_guest');
+      if (storedGuest) {
+        const guest = JSON.parse(storedGuest);
+        this.CURRENT_USER_GUEST = guest;
+        this.currentUser = guest;
+      }
+    }
+    // Suscribirse para futuras actualizaciones desde AuthService
     this.subscriptions.add(
-      combineLatest([
-        this._authService.user,
-        this._authService.userGuest
-      ]).subscribe(([user, userGuest]) => {
-        this.currentUser = user || userGuest;
+      combineLatest([this._authService.user, this._authService.userGuest])
+      .subscribe(([user, guestUser]) => {
+        if (user) {
+          this.CURRENT_USER_AUTHENTICATED = user;
+          this.CURRENT_USER_GUEST = null;
+          this.currentUser = user;
+        } else if (guestUser && guestUser.state === 1) {
+          this.CURRENT_USER_AUTHENTICATED = null;
+          this.CURRENT_USER_GUEST = guestUser;
+          this.currentUser = guestUser;
+        } else {
+          this.CURRENT_USER_AUTHENTICATED = null;
+          this.CURRENT_USER_GUEST = null;
+          this.currentUser = null;
+        }
       })
     );
   }
-
 
   navigateToProduct = (slug: string, discountId?: string) => {
     // Guarda el estado para hacer scroll hacia arriba
@@ -588,8 +609,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   //   this.subscription?.add(cartSubscription);
   // }
 
-
-
   storeCart(product:any) {
     this.saveCart(product);
   }
@@ -618,8 +637,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     let data = {
-      user: this.currentUser._id,
-      user_status: this.currentUser.user_guest,
+      user: this.currentUser.email ? this.currentUser._id : this.currentUser.id,
+      user_status: this.currentUser.email ? null : "guest",
       product: this.product_selected._id,
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
@@ -632,7 +651,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
     };
 
-    if (this.currentUser.user_guest == "Guest") {
+    if(this.currentUser && !this.currentUser.email) { //if (this.currentUser.user_guest == "Guest") {
       this._cartService.registerCartCache(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
     } else {
       this._cartService.registerCart(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
@@ -673,7 +692,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openModalToCart = (besProduct: any) => {
-    console.log("----> DEBBUG openModalToCart: ", besProduct);
     this.product_selected = besProduct;
     this.filterUniqueGalerias(this.product_selected); // <-- primero
     this.setFirstImage(); // <-- después
@@ -712,7 +730,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 400);
   }
 
-  // open model
   openModal(besProduct:any, FlashSale:any=null) {
     this.product_selected = besProduct;
     setTimeout(() => {
@@ -732,13 +749,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 150);
   }
 
-   private closeModal(): void {
+  private closeModal(): void {
     // Usar Angular para manejar la visibilidad del modal o un servicio
     $('#quickview_modal').modal('hide');
   }
 
   getDiscount(FlashSale:any=null) {
-
     let discount = 0;
     if ( FlashSale ) {
       if (FlashSale.type_discount == 1) {
@@ -751,22 +767,23 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Wishlist
-  addWishlist(product:any,  FlashSale:any=null) {
-
-    let data: any = {};
-
-    if( !this.CURRENT_USER_AUTHENTICATED ) {
+  addWishlist = (product:any,  FlashSale:any=null) => {
+    // Leer usuario autenticado directamente desde this.currentUser o localStorage
+    const user = this.currentUser || (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null);
+    console.log('DEBUG addWishlist user:', user);
+    // Requiere usuario autenticado con email
+    if (!user || !user.email) {
       this.errorResponse = true;
-      this.errorMessage = "Por favor, autentifíquese para poder añadir el producto a favoritos";
-      alertSuccess("Autentifíquese para poder añadir el producto a favoritos");
+      this.errorMessage = 'Por favor, autentifíquese para poder añadir el producto a favoritos';
+      alertSuccess('Autentifíquese para poder añadir el producto a favoritos');
       this._router.navigate(['/', this.locale, this.country, 'auth', 'login']);
       return;
     }
 
-    let variedad_selected = product.variedades.find( (v:any) => v.stock > 0 ) || null;
+    let variedad_selected = product.variedades.find((v:any) => v.stock > 0) || null;
 
-    data = {
-      user          : this.CURRENT_USER_AUTHENTICATED._id                               ,
+    let data = {
+      user          : user._id                                                       ,
       product       : product._id                                                       ,
       type_discount : FlashSale ? FlashSale.type_discount : null                        ,
       discount      : FlashSale ? FlashSale.discount : 0                                ,
@@ -779,7 +796,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       total         : (product.price_usd - this.getDiscount(FlashSale))*1               , 
     }
 
-    this.subscription = this._wishlistService.registerWishlist( data ).subscribe( ( resp:any ) => {
+    this.subscription = this._wishlistService.registerWishlist(data).subscribe((resp:any) => {
       
       if ( resp.message == 403 ) {
         this.errorResponse = true;
@@ -788,8 +805,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       } else {
         this._wishlistService.changeWishlist(resp.wishlist);
-        //this.minicartService.openMinicart();
-        // Aqui puedes decidir, si redrigir a la pangila de favoritos.
         alertSuccess( resp.message_text );
       }
     }, error => {

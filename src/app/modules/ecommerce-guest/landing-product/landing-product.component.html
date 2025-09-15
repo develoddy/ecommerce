@@ -1,7 +1,7 @@
 <!--Page Wrapper-->
 
 <!-- Loading -->
-<div *ngIf="!loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+<div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
     <div class="row">
         <div class="col col-12 col-lg-12 col-sm-2">
             <div class="sp sp-bars"></div>
@@ -10,9 +10,11 @@
 </div>
 <!-- End Loading -->
 
+
 <div class="page-wrapper py-3" *ngIf="product_selected && related_products">
+    <ng-container [class.d-none]="loader.loading$ | async">
     <!-- Body Container -->
-    <div id="page-content py-5" [class.d-none]="!loading">
+    <div id="page-content py-5">
         <!--Page Header-->
         <div class="page-header text-center d-none">
             <div class="container">
@@ -987,6 +989,7 @@
         <!--End Recently Viewed Products-->
     </div>
     <!-- End Body Container -->
+     </ng-container>
 
     <!--Scoll Top-->
     <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
@@ -1570,6 +1573,5 @@
             </div>
         </div>
     </div>
-
 </div>
 <!--End Page Wrapper-->

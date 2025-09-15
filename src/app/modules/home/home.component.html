@@ -1,711 +1,679 @@
 <!-- <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a> -->
-
-<!--Page Wrapper-->
-<div class="page-wrapper">
+<!-- Loading -->
+    <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
             <div class="col col-12 col-lg-12  col-sm-2">
                 <div class="sp sp-bars"></div>
-            <div class="marquee-text">
-                <div class="top-info-bar d-flex">
-                    <div class="flex-item center">
-                        <a href="#">
-                            <span> <i class="anm anm-worldwide"></i> BUY ONLINE PICK UP IN STORE</span>
-                            <span> <i class="anm anm-truck-l"></i> FREE WORLDWIDE SHIPPING ON ALL ORDERS ABOVE $100</span>
-                            <span> <i class="anm anm-redo-ar"></i> EXTENDED RETURN UNTIL 30 DAYS</span>
-                        </a>
-                        <!--Home Slideshow-->
-                        </div>
-                    <div class="flex-item center">
-                        <a href="#">
-                            <span> <i class="anm anm-worldwide"></i> BUY ONLINE PICK UP IN STORE</span>
-                            <span> <i class="anm anm-truck-l"></i> FREE WORLDWIDE SHIPPING ON ALL ORDERS ABOVE $100</span>
-                            <span> <i class="anm anm-redo-ar"></i> EXTENDED RETURN UNTIL 30 DAYS</span>
-                        </a>
-                    </div>
-                    <div class="flex-item center">
-                        <a href="#">
-                            <span> <i class="anm anm-worldwide"></i> BUY ONLINE PICK UP IN STORE</span>
-                            <span> <i class="anm anm-truck-l"></i> FREE WORLDWIDE SHIPPING ON ALL ORDERS ABOVE $100</span>
-                            <span> <i class="anm anm-redo-ar"></i> EXTENDED RETURN UNTIL 30 DAYS</span>
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-    <!--End Marquee Text-->
+<!-- End Loading -->
+
+
+
+
+<!--Page Wrapper-->
+<div class="page-wrapper">
 
     <!--Header-->
     <app-header></app-header>
     <!--End Header-->
     
-    <!-- Loading -->
-    <div *ngIf="isLoading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
-        <div class="row">
-            <div class="col col-12 col-lg-12  col-sm-2">
-                <div class="sp sp-bars"></div>
-            </div>
-        </div>
-    </div>
-    <!-- End Loading -->
-    
     <!-- Body Container -->
-    <div id="page-content" class="mb-0" [class.d-none]="isLoading">
-        <!--Home Slideshow-->
-        <ng-container *ngIf="sliders && sliders.length > 0">
+    <ng-container [class.d-none]="loader.loading$ | async">
+        <div id="page-content" class="mb-0">
+            <!--Home Slideshow-->
+            <!-- <ng-container *ngIf="sliders && sliders.length > 0"> -->
             <app-slider-home [sliders]="sliders" [locale]="locale" [country]="country"></app-slider-home>
-        </ng-container>
-        <!--End Home Slideshow-->
+            <!-- </ng-container> -->
+            <!--End Home Slideshow-->
 
-        <!-- PAGE HEADER -->
-        <div class="page-header bg-black">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center align-items-center">
-                        <div class="page-title">
-                            <h2 class="fw-bold text-white">En LujanDev creemos que programar es más que código</h2>
-                            <p class="lead text-white">Es cultura, estilo y actitud. Nuestras camisetas están hechas para developers que quieren vestir su pasión con elegancia.</p>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END PAGE HEADER -->
-
-        <!-- Storytelling / Brand Message -->
-        <section class="brand-message text-center py-5 bg-light d-none">
-        <div class="container">
-            <h2 class="mb-3">En LujanDev creemos que programar es más que código</h2>
-            <p class="lead">Es cultura, estilo y actitud. Nuestras camisetas están hechas para developers que quieren vestir su pasión con elegancia.</p>
-        </div>
-        </section>
-
-        <!--Service Section-->
-        <section class="section service-section pb-0">
-            <div class="container">
-                <div class="service-info row col-row row-cols-lg-4 row-cols-md-4 row-cols-sm-2 row-cols-2 text-center">
-                    <div class="service-wrap col-item">
-                        <div class="service-icon mb-3">
-                            <i class="icon anm anm-phone-call-l"></i>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="title mb-2">Contáctanos cuando quieras</h3>
-                            <span class="text-muted">Atención al cliente 24/7 por email.</span>
-                        </div>
-                    </div>
-                    <div class="service-wrap col-item">
-                        <div class="service-icon mb-3">
-                            <i class="icon anm anm-truck-l"></i>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="title mb-2">Envío rápido y seguimiento incluido</h3>
-                            <span class="text-muted">Tu pedido se fabrica y envía directamente a tu puerta.</span>
-                        </div>
-                    </div>
-                    <div class="service-wrap col-item">
-                        <div class="service-icon mb-3">
-                            <i class="icon anm anm-credit-card-l"></i>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="title mb-2">Pago 100% seguro</h3>
-                            <span class="text-muted">Paga con tarjeta de crédito o débito, o con tu cuenta PayPal.</span>
-                        </div>
-                    </div>
-                    <div class="service-wrap col-item">
-                        <div class="service-icon mb-3">
-                            <i class="icon anm anm-redo-l"></i>
-                        </div>
-                        <div class="service-content">
-                            <h3 class="title mb-2">Devoluciones fáciles</h3>
-                            <span class="text-muted">Tienes 30 días para solicitar cambios o devoluciones.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--End Service Section-->
-
-        <!-- Collection banner -->
-        <section class="section collection-banners pb-0 pt-0 d-none">
-            <div class="container-fluid p-0">                      
-                <div class="collection-banner-grid">
-                    <div class="row sp-row">
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item px-0">
-                            <div class="collection-item sp-col">
-                                <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
-                                    <div class="img">
-                                        <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img1.jpg" src="assets/images/collection/demo1-ct-img1.jpg" alt="Women Wear" title="Women Wear" width="645" height="723" />
-                                    </div>
-                                    <div class="details middle-right">
-                                        <div class="inner">
-                                            <p class="mb-2 text-white d-none">Compila tu look</p>
-                                            <h3 class="title text-white">Camisetas</h3>
-                                            <!-- <h3 class="title">Women Wear</h3> -->
-                                            <!-- <button class="btn btn-outline-white btn-md text-uppercase">Compra ahora</button> -->
-                                            <!-- <button type="button" class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</button> -->
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item">
-                            <div class="row">
-                                <div class="col-12 col-lg-12">
-                                    <div class="collection-item sp-col">
-                                        <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
-                                            <div class="img">
-                                                <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img3.jpg" src="assets/images/collection/demo1-ct-img3.jpg" alt="Mens Wear" title="Mens Wear" width="645" height="350" />
-                                            </div>
-                                            <div class="details middle-left">
-                                                <div class="inner">
-                                                    <p class="mb-2">Jersey en producción</p>
-                                                    <h3 class="title">Jerséis</h3>
-                                                    <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-12">
-                                    <div class="collection-item sp-col">
-                                        <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
-                                            <div class="img">
-                                                <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img3.jpg" src="assets/images/collection/demo1-ct-img3.jpg" alt="Kids Wear" title="Kids Wear" width="645" height="350" />
-                                            </div>
-                                            <div class="details middle-right">
-                                                <div class="inner">
-                                                    <p class="mb-2">Gorra master</p>
-                                                    <h3 class="title">Gorras</h3>
-                                                    <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row sp-row">
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-12 collection-banner-item px-0">
-                            <div class="collection-item sp-col">
-                                <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
-                                    <div class="img">
-                                        <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img2.jpg" src="assets/images/collection/demo1-ct-img2.jpg" alt="Women Wear" title="Women Wear" width="645" height="723" />
-                                    </div>
-                                    <div class="details middle-right">
-                                        <div class="inner">
-                                            <p class="mb-2 d-none">Compila tu look</p>
-                                            <h3 class="title text-white">Colección</h3>
-                                            <!-- <h3 class="title">Women Wear</h3> -->
-                                            <!-- <button type="button"  class="btn btn-outline-dark btn-md text-uppercase">Compra ahora</button>  -->
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item px-1 d-none">
-                            <div class="collection-item sp-col">
-                                <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
-                                    <div class="img">
-                                        <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo3-ct-img4.jpg" src="assets/images/collection/demo3-ct-img4.jpg" alt="Women Wear" title="Women Wear" width="645" height="723" />
-                                    </div>
-                                    <div class="details middle-right">
-                                        <div class="inner">
-                                            <p class="mb-2 d-none">Gorra master</p>
-                                            <h3 class="title text-white">Gorras</h3>
-                                            <!-- <h3 class="title">Women Wear</h3> -->
-                                            <!-- <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span> -->
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--End Collection banner-->
-
-        <!--Popular Categories-->
-        <app-category-list [categories]="categories" [locale]="locale" [country]="country"></app-category-list>
-        <!--End Popular Categories-->
-        
-        <!--Toolbar-->
-        <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5">
-                <div class="row align-items-center">
-                    <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-end">
-                        <div class="filters-item d-flex align-items-center">
-                            <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
-                            <div class="grid-options view-mode d-flex">
-                                <a class="icon-mode mode-list d-block" data-col="1" #grid1></a>
-                                <a class="icon-mode mode-grid grid-2 d-block" data-col="2" #grid2></a>
-                                <a class="icon-mode mode-grid grid-3 d-md-block" data-col="3" #grid3></a>
-                                <a class="icon-mode mode-grid grid-4 d-lg-block" data-col="4" #grid4></a>
-                                <a class="icon-mode mode-grid grid-5 d-xl-block" data-col="5" #grid5></a>
-                            </div>
-                        </div>
-                    </div>         
-                </div>
-        </div>
-        <!--End Toolbar-->
-        
-        <!--Product Grid-->
-        <app-product-grid
-            [ourProducts]="ourProducts"
-            [locale]="locale"
-            [country]="country"
-            [euro]="euro"
-            [currentUrl]="currentUrl"
-            [isMobile]="isMobile"
-            [getRouterDiscount]="getRouterDiscount"
-            [getPriceParts]="getPriceParts"
-            [openModalToCart]="openModalToCart"
-            [addWishlist]="addWishlist"
-            [changeProductImage]="changeProductImage"
-            [navigateToProduct]="navigateToProduct"
-            [FlashSale]="FlashSale"
-        ></app-product-grid>
-        <!--End Product Grid-->
-
-        <!--Parallax Banner-->
-        <div class="section parallax-banner-style1">
-            <div class="hero hero-large hero-overlay bg-size">
-                <img class="bg-img" src="assets/images/parallax/banner-sale.png" alt="¡Oferta exclusiva! 30% de descuento en camisetas para developers" width="1920" height="645" />
-                <div class="hero-inner d-flex-justify-center">
-                    <div class="container">
-                        <div class="wrap-text center text-white">
-                            <h2 class="hero-title text-white">¡Oferta exclusiva! 30% de descuento en camisetas para developers</h2>
-                            <p class="hero-subtitle h3 text-white">Aprovecha antes que se agoten</p>
-                            <!--Countdown Timer-->
-                            <div class="hero-saleTime d-flex-center text-center justify-content-center" data-countdown="2025/09/30"></div>
-                            <!--End Countdown Timer-->
-                            <p class="hero-details">Camisetas únicas con diseños de Swift, Python, ChatGPT y más. Calidad premium para que lleves tu pasión por el código siempre contigo.</p>
-                            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="hero-btn btn btn-light text-uppercase">Compra ahora</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--End Parallax Banner-->
-
-        <!--Testimonial Section-->
-        <section class="section testimonial-slider style1 ">
-            <div class="container">
-                <div class="section-header">
-                    <p class="mb-2 mt-0">Satisfacción garantizada</p>
-                    <h2>Ellos ya lo probaron y te lo cuentan</h2>
-                </div>
-
-                <div class="testimonial-wraper">
-                    <!--Testimonial Slider Items-->
-                    <div class="testimonial-slider-3items gp15 slick-arrow-dots arwOut5">
-                        <div class="testimonial-slide">
-                            <div class="testimonial-content text-center">     
-                                <div class="quote-icon mb-3 mb-lg-4"><img class="blur-up lazyload mx-auto" data-src="assets/images/icons/demo1-quote-icon.png" src="assets/images/icons/demo1-quote-icon.png" alt="icon" width="40" height="40" /></div>
-                                <div class="content">  
-                                    <div class="text mb-2"><p>Usé la de Python para dar clase y terminé regalando el enlace de la tienda a medio grupo. Se nota que está hecha por alguien que sabe lo que es un buen print… y un buen lenguaje 😎</p></div>
-                                    <div class="product-review my-3">
-                                        <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i>
-                                        <span class="caption hidden ms-1">24 Reviews</span>
-                                    </div>
-                                </div>
-                                <div class="auhimg d-flex-justify-center text-left">
-                                    <div class="image"><img class="rounded-circle blur-up lazyload" data-src="assets/images/users/luciaM.jpg" src="assets/images/users/luciaM.jpeg" alt="John Doe" width="65" height="65" /></div>
-                                    <div class="auhtext ms-3">
-                                        <h5 class="authour mb-1">Lucia M.</h5>
-                                        <p class="text-muted">Profesora de programación</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-slide">
-                            <div class="testimonial-content text-center">                                                     
-                                <div class="quote-icon mb-3 mb-lg-4"><img class="blur-up lazyload mx-auto" data-src="assets/images/icons/demo1-quote-icon.png" src="assets/images/icons/demo1-quote-icon.png" alt="icon" width="40" height="40" /></div>
-                                <div class="content">  
-                                    <div class="text mb-2"><p>La camiseta de Swift me acompaña en todas mis sesiones de código. Calidad increíble y diseño que no pasa desapercibido. Perfecta para los que vivimos programando en iOS.</p></div>
-                                    <div class="product-review my-3">
-                                        <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i>
-                                        <span class="caption hidden ms-1">15 Reviews</span>
-                                    </div>
-                                </div>
-                                <div class="auhimg d-flex-justify-center text-left">
-                                    <div class="image"><img class="rounded-circle blur-up lazyload" data-src="assets/images/users/diegoF.jpg" src="assets/images/users/diegoF.jpeg" alt="Jessica Doe" width="65" height="65" /></div>
-                                    <div class="auhtext ms-3">
-                                        <h5 class="authour mb-1">Diego F.</h5>
-                                        <p class="text-muted">Full Stack</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-slide">
-                            <div class="testimonial-content text-center">                                                     
-                                <div class="quote-icon mb-3 mb-lg-4"><img class="blur-up lazyload mx-auto" data-src="assets/images/icons/demo1-quote-icon.png" src="assets/images/icons/demo1-quote-icon.png" alt="icon" width="40" height="40" /></div>
-                                <div class="content">  
-                                    <div class="text mb-2"><p>Me compré la camiseta con el logo de ChatGPT y terminé dando una charla improvisada sobre IA en la oficina. Literalmente, una prenda que inicia conversaciones.</p></div>
-                                    <div class="product-review my-3">
-                                        <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                        <span class="caption hidden ms-1">17 Reviews</span>
-                                    </div>
-                                </div>
-                                <div class="auhimg d-flex-justify-center text-left">
-                                    <div class="image"><img class="rounded-circle blur-up lazyload" data-src="assets/images/users/jorjeT.jpg" src="assets/images/users/jorjeT.jpeg" alt="Rick Edward" width="65" height="65" /></div>
-                                    <div class="auhtext ms-3">
-                                        <h5 class="authour mb-1">Jorge T.</h5>
-                                        <p class="text-muted">DevOps</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-slide rounded-3">
-                            <div class="testimonial-content text-center">                                                     
-                                <div class="quote-icon mb-3 mb-lg-4"><img class="blur-up lazyload mx-auto" data-src="assets/images/icons/demo1-quote-icon.png" src="assets/images/icons/demo1-quote-icon.png" alt="icon" width="40" height="40" /></div>
-                                <div class="content">  
-                                    <div class="text mb-2"><p>La de ‘Code Style’ fue un golpe bajo para los que usan Python, pero bueno, alguien tenía que decirlo 😎</p></div>
-                                    <div class="product-review my-3">
-                                        <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                        <span class="caption hidden ms-1">29 Reviews</span>
-                                    </div>
-                                </div>
-                                <div class="auhimg d-flex-justify-center text-left">
-                                    <div class="image"><img class="rounded-circle blur-up lazyload" data-src="assets/images/users/martaL.jpg" src="assets/images/users/martaL.jpeg" alt="Happy Buyer" width="65" height="65" /></div>
-                                    <div class="auhtext ms-3">
-                                        <h5 class="authour mb-1">Marta L. </h5>
-                                        <p class="text-muted">JavaScript Lover</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Testimonial Slider Items-->
-                </div>
-            </div>
-        </section>
-        <!--End Testimonial section-->
-
-        <!--Blog Post-->
-        <section class="section home-blog-post d-none">
-            <div class="container">
-                <div class="section-header">
-                    <p class="mb-2 mt-0">Latest post</p>
-                    <h2>Most Recent News</h2>
-                </div>
-
-                <div class="blog-slider-3items gp15 arwOut5 hov-arrow">
-                    <ng-container *ngFor="let besProduct of besProducts">
-                        <div class="blog-item">
-                            <div class="blog-article zoomscal-hov">
-                                <div class="blog-img">
-                                    <a class="featured-image zoom-scal" href="blog-details.html" onclick="return false;" (click)="navigateToProduct(besProduct.slug, besProduct.campaing_discount?.id)">
-                                        <img class="blur-up lazyload" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="New shop collection our shop" width="740" height="410" />
-                                    </a>
-                                    <div class="date"><span class="dt">25</span> <span class="mt">Apr<br> <b>2023</b></span></div>
-                                </div>
-                                <div class="blog-content">
-                                    <h2 class="h3 mb-3"><a href="blog-details.html" onclick="return false;">{{ besProduct.title }}</a></h2>
-                                    <p class="content">{{ besProduct.description }}</p>
-                                    <a href="blog-details.html" onclick="return false;" (click)="navigateToProduct(besProduct.slug, besProduct.campaing_discount?.id)" class="btn btn-secondary btn-sm">Read more</a>
-                                </div>
-                            </div>
-                        </div>
-                    </ng-container>
-                </div>
-            </div>
-        </section>
-        <!--End Blog Post-->
-    </div>
-    <!-- End Body Container -->
-
-    <!--Footer-->
-    <app-footer></app-footer>
-    <!--End Footer-->
-
-    <!--Sticky Menubar Mobile-->
-    <div class="menubar-mobile d-flex align-items-center justify-content-between d-lg-none">
-        <div class="menubar-shop menubar-item">
-            <a href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']"  ><i class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">Compra</span></a>
-        </div>
-        <div class="menubar-account menubar-item">
-            <a href="my-account.html" [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/', locale, country, 'account', 'my-account'] : ['/', locale, country, 'auth', 'login']"><i class="menubar-icon icon anm anm-user-al"></i><span class="menubar-label">Cuenta</span></a>
-        </div>
-        <div class="menubar-search menubar-item">
-            <a [href]="['/']"><span class="menubar-icon anm anm-home-l"></span><span class="menubar-label">Inicio</span></a>
-        </div>
-        <div class="menubar-wish menubar-item">
-            <a href="wishlist-style1.html" onclick="return false;"  [routerLink]="['/', this.locale, this.country, 'account', 'favorites']">
-                <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-heart-l"></i><span class="wishlist-count counter menubar-count" *ngIf="listWishlists.length > 0">{{ listWishlists.length }}</span></span>
-                <span class="menubar-label">Favoritos</span>
-            </a>
-        </div>
-        <div class="menubar-cart menubar-item">
-            <a href="#;" onclick="return false;" [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/', locale, country, 'shop', 'cart'] : ['/', locale, country, 'auth', 'login']" class="btn-minicart" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
-                <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-cart-l"></i><span class="cart-count counter menubar-count" *ngIf="listCarts.length > 0">{{ listCarts.length }}</span></span>
-                <span class="menubar-label">Carrito</span>
-            </a>
-        </div>
-    </div>
-    <!--End Sticky Menubar Mobile-->
-
-    <!--Scoll Top-->
-    <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
-    <!--End Scoll Top-->
-
-    <!-- Product Quickshop Modal-->
-    <div class="quickshop-modal modal fade d-none" id="quickshop_modal" tabindex="-1" aria-hidden="true">           
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body" *ngIf="product_selected">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <form method="post" action="#" id="product-form-quickshop" class="product-form align-items-center">
-                        <!-- Product Info -->
-                        <div class="row g-0 item mb-3">
-                            <a class="col-4 product-image" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product_selected.slug]" [queryParams]="{_id: product_selected.campaing_discount?.id}">
-                                <img class="blur-up lazyload" [attr.data-src]="product_selected.imagen" [src]="product_selected.imagen" alt="Product" title="Product" width="625" height="808" />
-                            </a>
-                            <div class="col-8 product-details">
-                                <div class="product-variant ps-3">
-
-                                    <a class="product-title" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product_selected.slug]" [queryParams]="{_id: product_selected.campaing_discount?.id}">{{product_selected.title}}</a>
-                                    <div class="priceRow mt-2 mb-3">
-                                        <div class="product-price m-0">
-                                            <span class="price old-price" *ngIf="product_selected.campaing_discount">{{ euro }}{{ product_selected.price_usd }}</span>
-                                            <span class="price">{{ euro }}{{ product_selected.price_usd - getDiscountProduct(product_selected) }}</span>
-                                        </div>    
-                                    </div>
-                                    <div class="qtyField">
-                                        <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
-                                        <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty" />
-                                        <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Product Info -->
-                        <!-- Swatches Color -->
-                        <div class="variants-clr swatches-image clearfix mb-3 swatch-0 option1" data-option-index="0">
-                            <label class="label d-flex align-items-center">Color:<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label>
-                            <ul class="swatches d-flex-justify-center pt-1 clearfix">
-                                <ng-container *ngFor="let color of coloresDisponibles">
-                                    <li  class="swatch large radius available" [ngClass]="getSwatchClass(color.imagen, color.color)" (click)="selectColor(color)">
-                                        <img [src]="color.imagen" alt="image" width="80" height="80" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="color.color" />
-                                        <!-- <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Yellow" [attr.data-bs-placement]="'top'" [attr.title]="color.color"></span> -->
-                                        <!-- <div class="color-swatch-indicator" [ngStyle]="{'background-color': getColorHex(color.color)}"></div> -->
-                                    </li>
-                                </ng-container>
-                            </ul>
-                        </div>
-                        <!-- End Swatches Color -->
-                        <!-- Swatches Size -->
-                        <div class="variants-size swatches-size clearfix mb-4 swatch-1 option2" data-option-index="1">
-                            <!-- <label class="label d-flex justify-content-center">Size:<span class="slVariant ms-1 fw-bold">S</span></label> -->
-                            <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">{{ variedad_selected?.valor || 'Select Size' }}</span></label>
-                            <ul class="size-swatches d-flex-justify-center pt-1 clearfix">
-                                <ng-container *ngFor="let variedad of variedades; let i = index">
-                                    <li  class="swatch large radius soldout" [ngClass]="{ 'available': variedad.stock > 0, 'soldout': variedad.stock === 0, 'active': variedad.valor === variedad_selected?.valor}" (click)="selectedVariedad(variedad, i)">
-                                        <span class="swatchLbl" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="variedad.valor">{{variedad.valor}}</span>
-                                    </li>
-                                </ng-container>
-                            </ul>
-                        </div>
-                        <!-- End Swatches Size -->
-                        <!-- Product Action -->
-                        <div class="product-form-submit d-flex-justify-center">
-                            <button type="submit" name="add" class="btn product-cart-submit me-2" (click)="storeCart(product_selected)"><span>Add to cart</span></button>
-                            <button type="submit" name="sold" class="btn btn-secondary product-sold-out d-none" disabled="disabled">Sold out</button>
-                            <button type="submit" name="buy" class="btn btn-secondary proceed-to-checkout" onclick="return false;" routerLink="/payment-process">Buy it now</button>
-                        </div>
-                        <!-- End Product Action -->
-                        <div class="text-center mt-3"><a class="text-link" href="product-layout1.html">View More Details</a></div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Product Quickshop Modal -->
-
-    <!-- Product Addtocart Modal-->
-    <app-add-to-cart-modal
-        [product_selected]="product_selected"
-        [variedades]="variedades"
-        [euro]="euro"
-    ></app-add-to-cart-modal>
-    <!-- End Product Addtocart Modal -->
-
-    <!-- Product Quickview Modal-->
-    <div class="quickview-modal modal fade" id="quickview_modal" tabindex="-1" aria-hidden="true" >           
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body" *ngIf="product_selected">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Storytelling / Brand Message -->
+            <div class="page-header bg-black">
+                <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-6 mb-3 mb-md-0">
-                            <!-- Model Thumbnail -->
-                            <div id="quickView" class="carousel slide">
-                                <!-- Image Slide carousel items -->
-                                <div class="carousel-inner d-none" *ngIf="filteredGallery.length">
-                                    <ng-container *ngFor="let item of filteredGallery">
-                                        <div class="item carousel-item active" data-bs-slide-number="0">
-                                            <img class="blur-up lazyload" [attr.data-src]="item.imagen" [src]="item.imagen" alt="product" title="Product" width="625" height="808" />
-                                        </div>
-                                    </ng-container>
-                                </div>
-                                <!-- End Image Slide carousel items -->
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center align-items-center">
+                            <div class="page-title">
+                                <h2 class="fw-bold text-white">En LujanDev creemos que programar es más que código</h2>
+                                <p class="lead text-white">Es cultura, estilo y actitud. Nuestras camisetas están hechas para developers que quieren vestir su pasión con elegancia.</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Storytelling / Brand Message -->
 
-                                <!-- Product Main -->
-                                <div class="zoompro-wrap" *ngIf="firstImage">
-                                    <!-- Product Image -->
-                                    <div class="zoompro-span">
-                                        <img id="zoompro" class="zoompro" [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="product" width="625" height="808" />
+            <!--Service Section-->
+            <section class="section service-section pb-0">
+                <div class="container">
+                    <div class="service-info row col-row row-cols-lg-4 row-cols-md-4 row-cols-sm-2 row-cols-2 text-center">
+                        <div class="service-wrap col-item">
+                            <div class="service-icon mb-3">
+                                <i class="icon anm anm-phone-call-l"></i>
+                            </div>
+                            <div class="service-content">
+                                <h3 class="title mb-2">Contáctanos cuando quieras</h3>
+                                <span class="text-muted">Atención al cliente 24/7 por email.</span>
+                            </div>
+                        </div>
+                        <div class="service-wrap col-item">
+                            <div class="service-icon mb-3">
+                                <i class="icon anm anm-truck-l"></i>
+                            </div>
+                            <div class="service-content">
+                                <h3 class="title mb-2">Envío rápido y seguimiento incluido</h3>
+                                <span class="text-muted">Tu pedido se fabrica y envía directamente a tu puerta.</span>
+                            </div>
+                        </div>
+                        <div class="service-wrap col-item">
+                            <div class="service-icon mb-3">
+                                <i class="icon anm anm-credit-card-l"></i>
+                            </div>
+                            <div class="service-content">
+                                <h3 class="title mb-2">Pago 100% seguro</h3>
+                                <span class="text-muted">Paga con tarjeta de crédito o débito, o con tu cuenta PayPal.</span>
+                            </div>
+                        </div>
+                        <div class="service-wrap col-item">
+                            <div class="service-icon mb-3">
+                                <i class="icon anm anm-redo-l"></i>
+                            </div>
+                            <div class="service-content">
+                                <h3 class="title mb-2">Devoluciones fáciles</h3>
+                                <span class="text-muted">Tienes 30 días para solicitar cambios o devoluciones.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--End Service Section-->
+
+            <!-- Collection banner -->
+            <section class="section collection-banners pb-0 pt-0 d-none">
+                <div class="container-fluid p-0">                      
+                    <div class="collection-banner-grid">
+                        <div class="row sp-row">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item px-0">
+                                <div class="collection-item sp-col">
+                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
+                                        <div class="img">
+                                            <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img1.jpg" src="assets/images/collection/demo1-ct-img1.jpg" alt="Women Wear" title="Women Wear" width="645" height="723" />
+                                        </div>
+                                        <div class="details middle-right">
+                                            <div class="inner">
+                                                <p class="mb-2 text-white d-none">Compila tu look</p>
+                                                <h3 class="title text-white">Camisetas</h3>
+                                                <!-- <h3 class="title">Women Wear</h3> -->
+                                                <!-- <button class="btn btn-outline-white btn-md text-uppercase">Compra ahora</button> -->
+                                                <!-- <button type="button" class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</button> -->
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item">
+                                <div class="row">
+                                    <div class="col-12 col-lg-12">
+                                        <div class="collection-item sp-col">
+                                            <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
+                                                <div class="img">
+                                                    <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img3.jpg" src="assets/images/collection/demo1-ct-img3.jpg" alt="Mens Wear" title="Mens Wear" width="645" height="350" />
+                                                </div>
+                                                <div class="details middle-left">
+                                                    <div class="inner">
+                                                        <p class="mb-2">Jersey en producción</p>
+                                                        <h3 class="title">Jerséis</h3>
+                                                        <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-12">
+                                        <div class="collection-item sp-col">
+                                            <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
+                                                <div class="img">
+                                                    <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img3.jpg" src="assets/images/collection/demo1-ct-img3.jpg" alt="Kids Wear" title="Kids Wear" width="645" height="350" />
+                                                </div>
+                                                <div class="details middle-right">
+                                                    <div class="inner">
+                                                        <p class="mb-2">Gorra master</p>
+                                                        <h3 class="title">Gorras</h3>
+                                                        <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- End Product Main -->
+                            </div>
+                        </div>
+                        <div class="row sp-row">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-12 collection-banner-item px-0">
+                                <div class="collection-item sp-col">
+                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
+                                        <div class="img">
+                                            <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo1-ct-img2.jpg" src="assets/images/collection/demo1-ct-img2.jpg" alt="Women Wear" title="Women Wear" width="645" height="723" />
+                                        </div>
+                                        <div class="details middle-right">
+                                            <div class="inner">
+                                                <p class="mb-2 d-none">Compila tu look</p>
+                                                <h3 class="title text-white">Colección</h3>
+                                                <!-- <h3 class="title">Women Wear</h3> -->
+                                                <!-- <button type="button"  class="btn btn-outline-dark btn-md text-uppercase">Compra ahora</button>  -->
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
 
-                                <!-- Thumbnail image -->
-                                <div class="model-thumbnail-img">
-                                    <!-- Thumbnail slide -->
-                                    <div class="carousel-indicators list-inline">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item px-1 d-none">
+                                <div class="collection-item sp-col">
+                                    <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="zoom-scal">
+                                        <div class="img">
+                                            <img class="blur-up lazyload w-100" data-src="assets/images/collection/demo3-ct-img4.jpg" src="assets/images/collection/demo3-ct-img4.jpg" alt="Women Wear" title="Women Wear" width="645" height="723" />
+                                        </div>
+                                        <div class="details middle-right">
+                                            <div class="inner">
+                                                <p class="mb-2 d-none">Gorra master</p>
+                                                <h3 class="title text-white">Gorras</h3>
+                                                <!-- <h3 class="title">Women Wear</h3> -->
+                                                <!-- <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span> -->
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--End Collection banner-->
+
+            <!--Popular Categories-->
+            <ng-container *ngIf="categories && categories.length > 0">
+                <app-category-list [categories]="categories" [locale]="locale" [country]="country"></app-category-list>
+            </ng-container>
+            
+            <!--End Popular Categories-->
+            
+            <!--Toolbar-->
+            <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5">
+                    <div class="row align-items-center">
+                        <div class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-end">
+                            <div class="filters-item d-flex align-items-center">
+                                <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
+                                <div class="grid-options view-mode d-flex">
+                                    <a class="icon-mode mode-list d-block" data-col="1" #grid1></a>
+                                    <a class="icon-mode mode-grid grid-2 d-block" data-col="2" #grid2></a>
+                                    <a class="icon-mode mode-grid grid-3 d-md-block" data-col="3" #grid3></a>
+                                    <a class="icon-mode mode-grid grid-4 d-lg-block" data-col="4" #grid4></a>
+                                    <a class="icon-mode mode-grid grid-5 d-xl-block" data-col="5" #grid5></a>
+                                </div>
+                            </div>
+                        </div>         
+                    </div>
+            </div>
+            <!--End Toolbar-->
+            
+            <!--Product Grid-->
+            <app-product-grid
+                [ourProducts]="ourProducts"
+                [locale]="locale"
+                [country]="country"
+                [euro]="euro"
+                [currentUrl]="currentUrl"
+                [isMobile]="isMobile"
+                [getRouterDiscount]="getRouterDiscount"
+                [getPriceParts]="getPriceParts"
+                [openModalToCart]="openModalToCart"
+                [addWishlist]="addWishlist"
+                [changeProductImage]="changeProductImage"
+                [navigateToProduct]="navigateToProduct"
+                [FlashSale]="FlashSale"
+            ></app-product-grid>
+            <!--End Product Grid-->
+
+            <!--Parallax Banner-->
+            <div class="section parallax-banner-style1">
+                <div class="hero hero-large hero-overlay bg-size">
+                    <img class="bg-img" src="assets/images/parallax/banner-sale.png" alt="¡Oferta exclusiva! 30% de descuento en camisetas para developers" width="1920" height="645" />
+                    <div class="hero-inner d-flex-justify-center">
+                        <div class="container">
+                            <div class="wrap-text center text-white">
+                                <h2 class="hero-title text-white">¡Oferta exclusiva! 30% de descuento en camisetas para developers</h2>
+                                <p class="hero-subtitle h3 text-white">Aprovecha antes que se agoten</p>
+                                <!--Countdown Timer-->
+                                <div class="hero-saleTime d-flex-center text-center justify-content-center" data-countdown="2025/09/30"></div>
+                                <!--End Countdown Timer-->
+                                <p class="hero-details">Camisetas únicas con diseños de Swift, Python, ChatGPT y más. Calidad premium para que lleves tu pasión por el código siempre contigo.</p>
+                                <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="hero-btn btn btn-light text-uppercase">Compra ahora</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Parallax Banner-->
+
+            <!--Testimonial Section-->
+            <section class="section testimonial-slider style1 ">
+                <div class="container">
+                    <div class="section-header">
+                        <p class="mb-2 mt-0">Satisfacción garantizada</p>
+                        <h2>Ellos ya lo probaron y te lo cuentan</h2>
+                    </div>
+
+                    <div class="testimonial-wraper">
+                        <!--Testimonial Slider Items-->
+                        <div class="testimonial-slider-3items gp15 slick-arrow-dots arwOut5">
+                            <div class="testimonial-slide">
+                                <div class="testimonial-content text-center">     
+                                    <div class="quote-icon mb-3 mb-lg-4"><img class="blur-up lazyload mx-auto" data-src="assets/images/icons/demo1-quote-icon.png" src="assets/images/icons/demo1-quote-icon.png" alt="icon" width="40" height="40" /></div>
+                                    <div class="content">  
+                                        <div class="text mb-2"><p>Usé la de Python para dar clase y terminé regalando el enlace de la tienda a medio grupo. Se nota que está hecha por alguien que sabe lo que es un buen print… y un buen lenguaje 😎</p></div>
+                                        <div class="product-review my-3">
+                                            <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i>
+                                            <span class="caption hidden ms-1">24 Reviews</span>
+                                        </div>
+                                    </div>
+                                    <div class="auhimg d-flex-justify-center text-left">
+                                        <div class="image"><img class="rounded-circle blur-up lazyload" data-src="assets/images/users/luciaM.jpg" src="assets/images/users/luciaM.jpeg" alt="John Doe" width="65" height="65" /></div>
+                                        <div class="auhtext ms-3">
+                                            <h5 class="authour mb-1">Lucia M.</h5>
+                                            <p class="text-muted">Profesora de programación</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="testimonial-slide">
+                                <div class="testimonial-content text-center">                                                     
+                                    <div class="quote-icon mb-3 mb-lg-4"><img class="blur-up lazyload mx-auto" data-src="assets/images/icons/demo1-quote-icon.png" src="assets/images/icons/demo1-quote-icon.png" alt="icon" width="40" height="40" /></div>
+                                    <div class="content">  
+                                        <div class="text mb-2"><p>La camiseta de Swift me acompaña en todas mis sesiones de código. Calidad increíble y diseño que no pasa desapercibido. Perfecta para los que vivimos programando en iOS.</p></div>
+                                        <div class="product-review my-3">
+                                            <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i>
+                                            <span class="caption hidden ms-1">15 Reviews</span>
+                                        </div>
+                                    </div>
+                                    <div class="auhimg d-flex-justify-center text-left">
+                                        <div class="image"><img class="rounded-circle blur-up lazyload" data-src="assets/images/users/diegoF.jpg" src="assets/images/users/diegoF.jpeg" alt="Jessica Doe" width="65" height="65" /></div>
+                                        <div class="auhtext ms-3">
+                                            <h5 class="authour mb-1">Diego F.</h5>
+                                            <p class="text-muted">Full Stack</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="testimonial-slide">
+                                <div class="testimonial-content text-center">                                                     
+                                    <div class="quote-icon mb-3 mb-lg-4"><img class="blur-up lazyload mx-auto" data-src="assets/images/icons/demo1-quote-icon.png" src="assets/images/icons/demo1-quote-icon.png" alt="icon" width="40" height="40" /></div>
+                                    <div class="content">  
+                                        <div class="text mb-2"><p>Me compré la camiseta con el logo de ChatGPT y terminé dando una charla improvisada sobre IA en la oficina. Literalmente, una prenda que inicia conversaciones.</p></div>
+                                        <div class="product-review my-3">
+                                            <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                            <span class="caption hidden ms-1">17 Reviews</span>
+                                        </div>
+                                    </div>
+                                    <div class="auhimg d-flex-justify-center text-left">
+                                        <div class="image"><img class="rounded-circle blur-up lazyload" data-src="assets/images/users/jorjeT.jpg" src="assets/images/users/jorjeT.jpeg" alt="Rick Edward" width="65" height="65" /></div>
+                                        <div class="auhtext ms-3">
+                                            <h5 class="authour mb-1">Jorge T.</h5>
+                                            <p class="text-muted">DevOps</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="testimonial-slide rounded-3">
+                                <div class="testimonial-content text-center">                                                     
+                                    <div class="quote-icon mb-3 mb-lg-4"><img class="blur-up lazyload mx-auto" data-src="assets/images/icons/demo1-quote-icon.png" src="assets/images/icons/demo1-quote-icon.png" alt="icon" width="40" height="40" /></div>
+                                    <div class="content">  
+                                        <div class="text mb-2"><p>La de ‘Code Style’ fue un golpe bajo para los que usan Python, pero bueno, alguien tenía que decirlo 😎</p></div>
+                                        <div class="product-review my-3">
+                                            <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                            <span class="caption hidden ms-1">29 Reviews</span>
+                                        </div>
+                                    </div>
+                                    <div class="auhimg d-flex-justify-center text-left">
+                                        <div class="image"><img class="rounded-circle blur-up lazyload" data-src="assets/images/users/martaL.jpg" src="assets/images/users/martaL.jpeg" alt="Happy Buyer" width="65" height="65" /></div>
+                                        <div class="auhtext ms-3">
+                                            <h5 class="authour mb-1">Marta L. </h5>
+                                            <p class="text-muted">JavaScript Lover</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Testimonial Slider Items-->
+                    </div>
+                </div>
+            </section>
+            <!--End Testimonial section-->
+
+            <!--Blog Post-->
+            <section class="section home-blog-post d-none">
+                <div class="container">
+                    <div class="section-header">
+                        <p class="mb-2 mt-0">Latest post</p>
+                        <h2>Most Recent News</h2>
+                    </div>
+
+                    <div class="blog-slider-3items gp15 arwOut5 hov-arrow">
+                        <ng-container *ngFor="let besProduct of besProducts">
+                            <div class="blog-item">
+                                <div class="blog-article zoomscal-hov">
+                                    <div class="blog-img">
+                                        <a class="featured-image zoom-scal" href="blog-details.html" onclick="return false;" (click)="navigateToProduct(besProduct.slug, besProduct.campaing_discount?.id)">
+                                            <img class="blur-up lazyload" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="New shop collection our shop" width="740" height="410" />
+                                        </a>
+                                        <div class="date"><span class="dt">25</span> <span class="mt">Apr<br> <b>2023</b></span></div>
+                                    </div>
+                                    <div class="blog-content">
+                                        <h2 class="h3 mb-3"><a href="blog-details.html" onclick="return false;">{{ besProduct.title }}</a></h2>
+                                        <p class="content">{{ besProduct.description }}</p>
+                                        <a href="blog-details.html" onclick="return false;" (click)="navigateToProduct(besProduct.slug, besProduct.campaing_discount?.id)" class="btn btn-secondary btn-sm">Read more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </section>
+            <!--End Blog Post-->
+        </div>
+        <!-- End Body Container -->
+    </ng-container>
+
+        <!--Footer-->
+        <app-footer></app-footer>
+        <!--End Footer-->
+
+        <!--Sticky Menubar Mobile-->
+        <div class="menubar-mobile d-flex align-items-center justify-content-between d-lg-none">
+            <div class="menubar-shop menubar-item">
+                <a href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']"  ><i class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">Compra</span></a>
+            </div>
+            <div class="menubar-account menubar-item">
+                <a href="my-account.html" [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/', locale, country, 'account', 'my-account'] : ['/', locale, country, 'auth', 'login']"><i class="menubar-icon icon anm anm-user-al"></i><span class="menubar-label">Cuenta</span></a>
+            </div>
+            <div class="menubar-search menubar-item">
+                <a [href]="['/']"><span class="menubar-icon anm anm-home-l"></span><span class="menubar-label">Inicio</span></a>
+            </div>
+            <div class="menubar-wish menubar-item">
+                <a href="wishlist-style1.html" onclick="return false;"  [routerLink]="['/', this.locale, this.country, 'account', 'favorites']">
+                    <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-heart-l"></i><span class="wishlist-count counter menubar-count" *ngIf="listWishlists.length > 0">{{ listWishlists.length }}</span></span>
+                    <span class="menubar-label">Favoritos</span>
+                </a>
+            </div>
+            <div class="menubar-cart menubar-item">
+                <a href="#;" onclick="return false;" [routerLink]="CURRENT_USER_AUTHENTICATED ? ['/', locale, country, 'shop', 'cart'] : ['/', locale, country, 'auth', 'login']" class="btn-minicart" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
+                    <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-cart-l"></i><span class="cart-count counter menubar-count" *ngIf="listCarts.length > 0">{{ listCarts.length }}</span></span>
+                    <span class="menubar-label">Carrito</span>
+                </a>
+            </div>
+        </div>
+        <!--End Sticky Menubar Mobile-->
+
+        <!--Scoll Top-->
+        <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
+        <!--End Scoll Top-->
+
+        <!-- Product Quickshop Modal-->
+        <div class="quickshop-modal modal fade d-none" id="quickshop_modal" tabindex="-1" aria-hidden="true">           
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body" *ngIf="product_selected">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <form method="post" action="#" id="product-form-quickshop" class="product-form align-items-center">
+                            <!-- Product Info -->
+                            <div class="row g-0 item mb-3">
+                                <a class="col-4 product-image" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product_selected.slug]" [queryParams]="{_id: product_selected.campaing_discount?.id}">
+                                    <img class="blur-up lazyload" [attr.data-src]="product_selected.imagen" [src]="product_selected.imagen" alt="Product" title="Product" width="625" height="808" />
+                                </a>
+                                <div class="col-8 product-details">
+                                    <div class="product-variant ps-3">
+
+                                        <a class="product-title" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product_selected.slug]" [queryParams]="{_id: product_selected.campaing_discount?.id}">{{product_selected.title}}</a>
+                                        <div class="priceRow mt-2 mb-3">
+                                            <div class="product-price m-0">
+                                                <span class="price old-price" *ngIf="product_selected.campaing_discount">{{ euro }}{{ product_selected.price_usd }}</span>
+                                                <span class="price">{{ euro }}{{ product_selected.price_usd - getDiscountProduct(product_selected) }}</span>
+                                            </div>    
+                                        </div>
+                                        <div class="qtyField">
+                                            <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
+                                            <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty" />
+                                            <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Product Info -->
+                            <!-- Swatches Color -->
+                            <div class="variants-clr swatches-image clearfix mb-3 swatch-0 option1" data-option-index="0">
+                                <label class="label d-flex align-items-center">Color:<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label>
+                                <ul class="swatches d-flex-justify-center pt-1 clearfix">
+                                    <ng-container *ngFor="let color of coloresDisponibles">
+                                        <li  class="swatch large radius available" [ngClass]="getSwatchClass(color.imagen, color.color)" (click)="selectColor(color)">
+                                            <img [src]="color.imagen" alt="image" width="80" height="80" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="color.color" />
+                                            <!-- <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Yellow" [attr.data-bs-placement]="'top'" [attr.title]="color.color"></span> -->
+                                            <!-- <div class="color-swatch-indicator" [ngStyle]="{'background-color': getColorHex(color.color)}"></div> -->
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                            <!-- End Swatches Color -->
+                            <!-- Swatches Size -->
+                            <div class="variants-size swatches-size clearfix mb-4 swatch-1 option2" data-option-index="1">
+                                <!-- <label class="label d-flex justify-content-center">Size:<span class="slVariant ms-1 fw-bold">S</span></label> -->
+                                <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">{{ variedad_selected?.valor || 'Select Size' }}</span></label>
+                                <ul class="size-swatches d-flex-justify-center pt-1 clearfix">
+                                    <ng-container *ngFor="let variedad of variedades; let i = index">
+                                        <li  class="swatch large radius soldout" [ngClass]="{ 'available': variedad.stock > 0, 'soldout': variedad.stock === 0, 'active': variedad.valor === variedad_selected?.valor}" (click)="selectedVariedad(variedad, i)">
+                                            <span class="swatchLbl" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="variedad.valor">{{variedad.valor}}</span>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                            <!-- End Swatches Size -->
+                            <!-- Product Action -->
+                            <div class="product-form-submit d-flex-justify-center">
+                                <button type="submit" name="add" class="btn product-cart-submit me-2" (click)="storeCart(product_selected)"><span>Add to cart</span></button>
+                                <button type="submit" name="sold" class="btn btn-secondary product-sold-out d-none" disabled="disabled">Sold out</button>
+                                <button type="submit" name="buy" class="btn btn-secondary proceed-to-checkout" onclick="return false;" routerLink="/payment-process">Buy it now</button>
+                            </div>
+                            <!-- End Product Action -->
+                            <div class="text-center mt-3"><a class="text-link" href="product-layout1.html">View More Details</a></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Product Quickshop Modal -->
+
+        <!-- Product Addtocart Modal-->
+        <app-add-to-cart-modal
+            [product_selected]="product_selected"
+            [variedades]="variedades"
+            [euro]="euro"
+        ></app-add-to-cart-modal>
+        <!-- End Product Addtocart Modal -->
+
+        <!-- Product Quickview Modal-->
+        <div class="quickview-modal modal fade" id="quickview_modal" tabindex="-1" aria-hidden="true" >           
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body" *ngIf="product_selected">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6 mb-3 mb-md-0">
+                                <!-- Model Thumbnail -->
+                                <div id="quickView" class="carousel slide">
+                                    <!-- Image Slide carousel items -->
+                                    <div class="carousel-inner d-none" *ngIf="filteredGallery.length">
                                         <ng-container *ngFor="let item of filteredGallery">
-                                            <div 
-                                                class="list-inline-item active"
-                                                [ngClass]="{ 'active': item.imagen === firstImage }"
-                                                (click)="changeImage(item.imagen)"
-                                                id="carousel-selector-0" 
-                                                data-bs-slide-to="0" 
-                                                data-bs-target="#quickView"
-                                            >
+                                            <div class="item carousel-item active" data-bs-slide-number="0">
                                                 <img class="blur-up lazyload" [attr.data-src]="item.imagen" [src]="item.imagen" alt="product" title="Product" width="625" height="808" />
                                             </div>
                                         </ng-container>
                                     </div>
-                                    <!-- End Thumbnail slide -->
-                                    <!-- Carousel arrow button -->
-                                    <a class="carousel-control-prev carousel-arrow rounded-1" href="#quickView" data-bs-target="#quickView" data-bs-slide="prev"><i class="icon anm anm-angle-left-r"></i></a>
-                                    <a class="carousel-control-next carousel-arrow rounded-1" href="#quickView" data-bs-target="#quickView" data-bs-slide="next"><i class="icon anm anm-angle-right-r"></i></a>
-                                    <!-- End Carousel arrow button -->
-                                </div>
-                                <!-- End Thumbnail image -->
-                            </div>
-                            <!-- End Model Thumbnail -->
-                            <div class="text-center mt-3 d-none"><a href="product-layout1.html"  class="text-link">View More Details</a></div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
-                            <div class="product-arrow d-flex justify-content-between">
-                                <h2 class="product-title">{{product_selected.title}}</h2>
-                            </div>
-                            <div class="product-review d-flex mt-0 mb-2 d-none">
-                                <div class="rating">
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
-                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
-                                </div>
-                                <div class="reviews ms-2"><a href="#">{{ COUNT_REVIEW }} Reviews</a></div>
-                            </div>
-                            <div class="product-info">
-                                <p class="product-vendor d-none">Vendor:<span class="text"><a href="#">Sparx</a></span></p>  
-                                <p class="product-type d-none">Product Type:<span class="text">Caps</span></p> 
-                                <p class="product-sku">REF.:<span class="text">{{ product_selected.sku }}</span></p>
-                            </div>
-                            <div class="pro-stockLbl my-2 d-none">
-                                <span class="d-flex-center stockLbl instock d-none"><i class="icon anm anm-check-cil"></i><span> In stock</span></span>
-                                <span class="d-flex-center stockLbl preorder d-none"><i class="icon anm anm-clock-r"></i><span> Pre-order Now</span></span>
-                                <span class="d-flex-center stockLbl outstock d-none"><i class="icon anm anm-times-cil"></i> <span>Sold out</span></span>
-                                <span class="d-flex-center stockLbl lowstock" data-qty="15"><i class="icon anm anm-exclamation-cir"></i><span> Order now, Only  <span class="items">10</span>  left!</span></span>
-                            </div>
-                            <div class="product-price d-flex-center my-3">
-                                <!-- <span class="price">{{ euro }}{{product_selected.price_usd}}</span> -->
-                                <span class="price">
-                                        <span class="price-main">
-                                            {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
-                                        </span>
-                                        <span class="price-decimals">
-                                            <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
-                                            <span class="currency-symbol">€</span>
-                                        </span>
-                                    </span>
-                            </div>
-                            <div class="sort-description">{{ product_selected.resumen }}</div>
-                            <form id="product_form--option" class="product-form">
-                                <div class="product-options d-flex-wrap">
-                                    <div class="product-item swatches-image w-100 mb-3 swatch-0 option1" data-option-index="0">
-                                        <label class="label d-flex align-items-center">Color:<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label>
-                                        <!-- Swatches Color -->
-                                        <ul class="variants-clr swatches d-flex-center pt-1 clearfix"> 
-                                            <ng-container *ngFor="let color of product_selected.colores">
-                                                <!-- <li class="swatch medium rounded" [ngClass]=" item.color.replace(' ', '-')" (click)="changeProductImage(product_selected, item.imagen)"> -->
-                                                <li class="swatch x-large available" [ngClass]="getSwatchClass(color.imagen, color.color)" (click)="selectColor(color)">
-                                                    <img [src]="color.imagen" alt="image" width="80" height="80" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="color.color" />
-                                                    <div class="color-swatch-indicator" [ngStyle]="{'background-color': getColorHex(color.color)}"></div>
-                                                </li>
-                                            </ng-container>
-                                        </ul>
-                                        <!-- End Swatches Color -->
-                                    </div>
-                                    <div class="product-item swatches-size w-100 mb-3 swatch-1 option2" data-option-index="1">
-                                        <!-- <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">S</span></label> -->
-                                        <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">{{ variedad_selected?.valor || 'Select Size' }}</span></label>
-                                        <ul class="variants-size size-swatches d-flex-center pt-1 clearfix">
-                                            <ng-container *ngFor="let variedad of variedades; let i = index">
-                                                <li  class="swatch x-large" [ngClass]="{ 'available': variedad.stock > 0, 'soldout': variedad.stock === 0, 'active': variedad.valor === variedad_selected?.valor}" (click)="selectedVariedad(variedad, i)">
-                                                    <span class="swatchLbl" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="variedad.valor">{{variedad.valor}}</span>
-                                                </li>
-                                            </ng-container>
-                                        </ul>
-                                    </div>
-                                    <div class="product-action d-flex-wrap w-100 pt-1 mb-3 clearfix">
-                                        <div class="quantity">
-                                            <div class="qtyField">
-                                                <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
-                                                <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty border-0" />
-                                                <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
-                                            </div>
-                                        </div>                                
-                                        <div class="addtocart ms-3 fl-1">
-                                            <button type="submit" name="add" class="btn product-cart-submit w-100 text-uppercase py-4" (click)="storeCart(product_selected)"><span>Añadir al carrito</span></button>
+                                    <!-- End Image Slide carousel items -->
+
+                                    <!-- Product Main -->
+                                    <div class="zoompro-wrap" *ngIf="firstImage">
+                                        <!-- Product Image -->
+                                        <div class="zoompro-span">
+                                            <img id="zoompro" class="zoompro" [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="product" width="625" height="808" />
                                         </div>
                                     </div>
+                                    <!-- End Product Main -->
+
+                                    <!-- Thumbnail image -->
+                                    <div class="model-thumbnail-img">
+                                        <!-- Thumbnail slide -->
+                                        <div class="carousel-indicators list-inline">
+                                            <ng-container *ngFor="let item of filteredGallery">
+                                                <div 
+                                                    class="list-inline-item active"
+                                                    [ngClass]="{ 'active': item.imagen === firstImage }"
+                                                    (click)="changeImage(item.imagen)"
+                                                    id="carousel-selector-0" 
+                                                    data-bs-slide-to="0" 
+                                                    data-bs-target="#quickView"
+                                                >
+                                                    <img class="blur-up lazyload" [attr.data-src]="item.imagen" [src]="item.imagen" alt="product" title="Product" width="625" height="808" />
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                        <!-- End Thumbnail slide -->
+                                        <!-- Carousel arrow button -->
+                                        <a class="carousel-control-prev carousel-arrow rounded-1" href="#quickView" data-bs-target="#quickView" data-bs-slide="prev"><i class="icon anm anm-angle-left-r"></i></a>
+                                        <a class="carousel-control-next carousel-arrow rounded-1" href="#quickView" data-bs-target="#quickView" data-bs-slide="next"><i class="icon anm anm-angle-right-r"></i></a>
+                                        <!-- End Carousel arrow button -->
+                                    </div>
+                                    <!-- End Thumbnail image -->
                                 </div>
-                            </form>
-                            <div class="wishlist-btn d-flex-center">
-                                <a class="add-wishlist d-flex-center me-3" href="wishlist-style1.html" title="Add to Wishlist"><i class="icon anm anm-heart-l me-1"></i> <span>Añadir a favoritos</span></a>
-                                <a class="add-compare d-flex-center" href="compare-style1.html" title="Add to Compare"><i class="icon anm anm-random-r me-2"></i> <span>Envió y devoluciones</span></a>
+                                <!-- End Model Thumbnail -->
+                                <div class="text-center mt-3 d-none"><a href="product-layout1.html"  class="text-link">View More Details</a></div>
                             </div>
-                            <!-- Social Sharing -->
-                            <div class="social-sharing share-icon d-flex-center mx-0 mt-3">
-                                <span class="sharing-lbl">Compartir :</span>
-                                <a href="#" class="d-flex-center btn btn-link btn--share share-facebook" data-bs-toggle="tooltip" data-bs-placement="top" title="Share on Facebook"><i class="icon anm anm-facebook-f"></i><span class="share-title d-none">Facebook</span></a>
-                                <a href="#" class="d-flex-center btn btn-link btn--share share-twitter" data-bs-toggle="tooltip" data-bs-placement="top" title="Tweet on Twitter"><i class="icon anm anm-twitter"></i><span class="share-title d-none">Tweet</span></a>
-                                <a href="#" class="d-flex-center btn btn-link btn--share share-pinterest" data-bs-toggle="tooltip" data-bs-placement="top" title="Pin on Pinterest"><i class="icon anm anm-pinterest-p"></i> <span class="share-title d-none">Pin it</span></a>
-                                <a href="#" class="d-flex-center btn btn-link btn--share share-linkedin" data-bs-toggle="tooltip" data-bs-placement="top" title="Share on Instagram"><i class="icon anm anm-linkedin-in"></i><span class="share-title d-none">Instagram</span></a>
-                                <a href="#" class="d-flex-center btn btn-link btn--share share-whatsapp" data-bs-toggle="tooltip" data-bs-placement="top" title="Share on WhatsApp"><i class="icon anm anm-envelope-l"></i><span class="share-title d-none">WhatsApp</span></a>
-                                <a href="#" class="d-flex-center btn btn-link btn--share share-email" data-bs-toggle="tooltip" data-bs-placement="top" title="Share by Email"><i class="icon anm anm-whatsapp"></i><span class="share-title d-none">Email</span></a>
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="product-arrow d-flex justify-content-between">
+                                    <h2 class="product-title">{{product_selected.title}}</h2>
+                                </div>
+                                <div class="product-review d-flex mt-0 mb-2 d-none">
+                                    <div class="rating">
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
+                                    </div>
+                                    <div class="reviews ms-2"><a href="#">{{ COUNT_REVIEW }} Reviews</a></div>
+                                </div>
+                                <div class="product-info">
+                                    <p class="product-vendor d-none">Vendor:<span class="text"><a href="#">Sparx</a></span></p>  
+                                    <p class="product-type d-none">Product Type:<span class="text">Caps</span></p> 
+                                    <p class="product-sku">REF.:<span class="text">{{ product_selected.sku }}</span></p>
+                                </div>
+                                <div class="pro-stockLbl my-2 d-none">
+                                    <span class="d-flex-center stockLbl instock d-none"><i class="icon anm anm-check-cil"></i><span> In stock</span></span>
+                                    <span class="d-flex-center stockLbl preorder d-none"><i class="icon anm anm-clock-r"></i><span> Pre-order Now</span></span>
+                                    <span class="d-flex-center stockLbl outstock d-none"><i class="icon anm anm-times-cil"></i> <span>Sold out</span></span>
+                                    <span class="d-flex-center stockLbl lowstock" data-qty="15"><i class="icon anm anm-exclamation-cir"></i><span> Order now, Only  <span class="items">10</span>  left!</span></span>
+                                </div>
+                                <div class="product-price d-flex-center my-3">
+                                    <!-- <span class="price">{{ euro }}{{product_selected.price_usd}}</span> -->
+                                    <span class="price">
+                                            <span class="price-main">
+                                                {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
+                                            </span>
+                                            <span class="price-decimals">
+                                                <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
+                                                <span class="currency-symbol">€</span>
+                                            </span>
+                                        </span>
+                                </div>
+                                <div class="sort-description">{{ product_selected.resumen }}</div>
+                                <form id="product_form--option" class="product-form">
+                                    <div class="product-options d-flex-wrap">
+                                        <div class="product-item swatches-image w-100 mb-3 swatch-0 option1" data-option-index="0">
+                                            <label class="label d-flex align-items-center">Color:<span class="slVariant ms-1 fw-bold">{{ selectedColor || 'Select Color' }}</span></label>
+                                            <!-- Swatches Color -->
+                                            <ul class="variants-clr swatches d-flex-center pt-1 clearfix"> 
+                                                <ng-container *ngFor="let color of product_selected.colores">
+                                                    <!-- <li class="swatch medium rounded" [ngClass]=" item.color.replace(' ', '-')" (click)="changeProductImage(product_selected, item.imagen)"> -->
+                                                    <li class="swatch x-large available" [ngClass]="getSwatchClass(color.imagen, color.color)" (click)="selectColor(color)">
+                                                        <img [src]="color.imagen" alt="image" width="80" height="80" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="color.color" />
+                                                        <div class="color-swatch-indicator" [ngStyle]="{'background-color': getColorHex(color.color)}"></div>
+                                                    </li>
+                                                </ng-container>
+                                            </ul>
+                                            <!-- End Swatches Color -->
+                                        </div>
+                                        <div class="product-item swatches-size w-100 mb-3 swatch-1 option2" data-option-index="1">
+                                            <!-- <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">S</span></label> -->
+                                            <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">{{ variedad_selected?.valor || 'Select Size' }}</span></label>
+                                            <ul class="variants-size size-swatches d-flex-center pt-1 clearfix">
+                                                <ng-container *ngFor="let variedad of variedades; let i = index">
+                                                    <li  class="swatch x-large" [ngClass]="{ 'available': variedad.stock > 0, 'soldout': variedad.stock === 0, 'active': variedad.valor === variedad_selected?.valor}" (click)="selectedVariedad(variedad, i)">
+                                                        <span class="swatchLbl" [attr.data-bs-toggle]="'tooltip'" [attr.data-bs-placement]="'top'" [attr.title]="variedad.valor">{{variedad.valor}}</span>
+                                                    </li>
+                                                </ng-container>
+                                            </ul>
+                                        </div>
+                                        <div class="product-action d-flex-wrap w-100 pt-1 mb-3 clearfix">
+                                            <div class="quantity">
+                                                <div class="qtyField">
+                                                    <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
+                                                    <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty border-0" />
+                                                    <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
+                                                </div>
+                                            </div>                                
+                                            <div class="addtocart ms-3 fl-1">
+                                                <button type="submit" name="add" class="btn product-cart-submit w-100 text-uppercase py-4" (click)="storeCart(product_selected)"><span>Añadir al carrito</span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="wishlist-btn d-flex-center">
+                                    <a class="add-wishlist d-flex-center me-3" href="wishlist-style1.html" title="Add to Wishlist"><i class="icon anm anm-heart-l me-1"></i> <span>Añadir a favoritos</span></a>
+                                    <a class="add-compare d-flex-center" href="compare-style1.html" title="Add to Compare"><i class="icon anm anm-random-r me-2"></i> <span>Envió y devoluciones</span></a>
+                                </div>
+                                <!-- Social Sharing -->
+                                <div class="social-sharing share-icon d-flex-center mx-0 mt-3">
+                                    <span class="sharing-lbl">Compartir :</span>
+                                    <a href="#" class="d-flex-center btn btn-link btn--share share-facebook" data-bs-toggle="tooltip" data-bs-placement="top" title="Share on Facebook"><i class="icon anm anm-facebook-f"></i><span class="share-title d-none">Facebook</span></a>
+                                    <a href="#" class="d-flex-center btn btn-link btn--share share-twitter" data-bs-toggle="tooltip" data-bs-placement="top" title="Tweet on Twitter"><i class="icon anm anm-twitter"></i><span class="share-title d-none">Tweet</span></a>
+                                    <a href="#" class="d-flex-center btn btn-link btn--share share-pinterest" data-bs-toggle="tooltip" data-bs-placement="top" title="Pin on Pinterest"><i class="icon anm anm-pinterest-p"></i> <span class="share-title d-none">Pin it</span></a>
+                                    <a href="#" class="d-flex-center btn btn-link btn--share share-linkedin" data-bs-toggle="tooltip" data-bs-placement="top" title="Share on Instagram"><i class="icon anm anm-linkedin-in"></i><span class="share-title d-none">Instagram</span></a>
+                                    <a href="#" class="d-flex-center btn btn-link btn--share share-whatsapp" data-bs-toggle="tooltip" data-bs-placement="top" title="Share on WhatsApp"><i class="icon anm anm-envelope-l"></i><span class="share-title d-none">WhatsApp</span></a>
+                                    <a href="#" class="d-flex-center btn btn-link btn--share share-email" data-bs-toggle="tooltip" data-bs-placement="top" title="Share by Email"><i class="icon anm anm-whatsapp"></i><span class="share-title d-none">Email</span></a>
+                                </div>
+                                <!-- End Social Sharing -->
                             </div>
-                            <!-- End Social Sharing -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!--End Product Quickview Modal-->
+        <!--End Product Quickview Modal-->
 
-    <!--Product Promotion Popup-->
-    <div class="product-notification mobile-hide d-none" id="dismiss">
-        <span class="close" aria-hidden="true"><i class="icon anm anm-times-r"></i></span>
-        <div class="media d-flex align-items-center">
-            <a href="product-layout1.html" class="mediaImg"><img class="w-100 h-100 blur-up lazyload" src="assets/images/products/120x170.jpg" data-src="assets/images/products/120x170.jpg" alt="Cuff Beanie Cap" width="120" height="170" /></a>
-            <div class="media-body ms-3">
-                <p class="smtlt mb-0">Someone purchsed a</p>
-                <h5 class="pname"><a href="product-layout1.html">Cuff Beanie Cap</a></h5>
-                <p class="detail">12 Minutes ago from New York, USA</p>
+        <!--Product Promotion Popup-->
+        <div class="product-notification mobile-hide d-none" id="dismiss">
+            <span class="close" aria-hidden="true"><i class="icon anm anm-times-r"></i></span>
+            <div class="media d-flex align-items-center">
+                <a href="product-layout1.html" class="mediaImg"><img class="w-100 h-100 blur-up lazyload" src="assets/images/products/120x170.jpg" data-src="assets/images/products/120x170.jpg" alt="Cuff Beanie Cap" width="120" height="170" /></a>
+                <div class="media-body ms-3">
+                    <p class="smtlt mb-0">Someone purchsed a</p>
+                    <h5 class="pname"><a href="product-layout1.html">Cuff Beanie Cap</a></h5>
+                    <p class="detail">12 Minutes ago from New York, USA</p>
+                </div>
             </div>
         </div>
-    </div>
-    <!--End Product Promotion Popup-->
+        <!--End Product Promotion Popup-->
 
-    
+    <!-- </ng-container> -->
 </div>
 <!--End Page Wrapper-->
+

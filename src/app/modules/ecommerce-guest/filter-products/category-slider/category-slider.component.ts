@@ -13,14 +13,14 @@ export class CategorySliderComponent /*implements OnChanges , AfterViewInit*/ {
   @Input() locale: string = '';
   @Input() country: string = '';
 
-  ngAfterViewInit(): void {
-    // Inicializar slider al montar el componente
-    if (this.categories && this.categories.length > 0) {
-      setTimeout(() => {
-        collection_slider_8items();
-      }, 50);
-    }
-  }
+  // ngAfterViewInit(): void {
+  //   // Inicializar slider al montar el componente
+  //   if (this.categories && this.categories.length > 0) {
+  //     setTimeout(() => {
+  //       collection_slider_8items();
+  //     }, 50);
+  //   }
+  // }
 
   // ngOnChanges(changes: SimpleChanges): void {
   //   if (changes.categories && !changes.categories.firstChange) {
