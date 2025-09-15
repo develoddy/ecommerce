@@ -167,7 +167,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           productSlider5items($);
           (window as any).sliderRefresh($);
           this.extractTags();
-        }, 150);
+        }, 350);
         
       //}, 350);
     });

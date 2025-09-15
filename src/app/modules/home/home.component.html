@@ -50,7 +50,7 @@
     <!-- End Loading -->
     
     <!-- Body Container -->
-    <div id="page-content" class="mb-0" *ngIf="!isLoading">
+    <div id="page-content" class="mb-0" [class.d-none]="isLoading">
         <!--Home Slideshow-->
         <ng-container *ngIf="sliders && sliders.length > 0">
             <app-slider-home [sliders]="sliders" [locale]="locale" [country]="country"></app-slider-home>
