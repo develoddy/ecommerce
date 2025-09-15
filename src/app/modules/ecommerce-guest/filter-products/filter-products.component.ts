@@ -59,7 +59,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   locale: string = "";
   country: string = "";
   private subscription: Subscription = new Subscription();
-  loading: boolean = false;
+  //loading: boolean = false;
+  isLoading: boolean = false;
   logo_position_selected: string = "";
   isMobile: boolean = false;
   isTablet: boolean = false;
@@ -94,9 +95,11 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   
   /* ------------------ CYCLE INIT ------------------ */
   ngOnInit(): void {
-    this.subscription =  this._ecommerceGuestService.loading$.subscribe(isLoading => {
-      this.loading = isLoading;
-    });
+    // this.subscription =  this._ecommerceGuestService.loading$.subscribe(isLoading => {
+    //   this.loading = isLoading;
+    // });
+
+    this.subscription = this._ecommerceGuestService.loading$.subscribe(isLoading => this.isLoading = isLoading);
 
     this._ecommerceGuestService._authService.user.subscribe(user => {
       if (user) {
@@ -117,20 +120,20 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       }
       this.filterProduct(); // Aplicar filtros (principalmente categoría) sin tratar slug como posición de logo
       // Re-inicializar slider de categorías tras navegar
-      //  setTimeout(() => {
-      //    collection_slider_8items($);
-      //  }, 350);
+      // setTimeout(() => {
+      //   productSlider8items($);
+      // }, 350);
     });
 
     this.configInitial();
     this.checkDeviceType();
 
-    // PRObando a cargar el componente si esto
-    // setTimeout(() => {
-    //   productSlider5items($);
-    //   productSlider8items($);
-    //   (window as any).sliderRefresh($);
-    // }, 550);
+    // PRObando a cargar el componente si
+    setTimeout(() => {
+      productSlider5items($);
+      productSlider8items($);
+      (window as any).sliderRefresh($);
+    }, 550);
   }
 
   openSidebar() {

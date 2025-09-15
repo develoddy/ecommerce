@@ -2,9 +2,9 @@
 
 <!--Page Wrapper-->
 <div class="page-wrapper">
-    <!--Marquee Text-->
-    <div class="topbar-slider clearfix d-none">
-        <div class="container-fluid">
+        <div class="row">
+            <div class="col col-12 col-lg-12  col-sm-2">
+                <div class="sp sp-bars"></div>
             <div class="marquee-text">
                 <div class="top-info-bar d-flex">
                     <div class="flex-item center">
@@ -13,7 +13,8 @@
                             <span> <i class="anm anm-truck-l"></i> FREE WORLDWIDE SHIPPING ON ALL ORDERS ABOVE $100</span>
                             <span> <i class="anm anm-redo-ar"></i> EXTENDED RETURN UNTIL 30 DAYS</span>
                         </a>
-                    </div>
+                        <!--Home Slideshow-->
+                        </div>
                     <div class="flex-item center">
                         <a href="#">
                             <span> <i class="anm anm-worldwide"></i> BUY ONLINE PICK UP IN STORE</span>
@@ -39,7 +40,7 @@
     <!--End Header-->
     
     <!-- Loading -->
-    <div *ngIf="!loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+    <div *ngIf="isLoading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
             <div class="col col-12 col-lg-12  col-sm-2">
                 <div class="sp sp-bars"></div>
@@ -49,9 +50,11 @@
     <!-- End Loading -->
     
     <!-- Body Container -->
-    <div id="page-content" class="mb-0" [class.d-none]="!loading">
+    <div id="page-content" class="mb-0" *ngIf="!isLoading">
         <!--Home Slideshow-->
-        <app-slider-home [sliders]="sliders" [locale]="locale" [country]="country"></app-slider-home>
+        <ng-container *ngIf="sliders && sliders.length > 0">
+            <app-slider-home [sliders]="sliders" [locale]="locale" [country]="country"></app-slider-home>
+        </ng-container>
         <!--End Home Slideshow-->
 
         <!-- PAGE HEADER -->

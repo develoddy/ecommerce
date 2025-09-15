@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   variedades: any[] = [];
   errorResponse:boolean=false;
   errorMessage:any="";
-  loading: boolean = false;
+  isLoading: boolean = false;
   locale: string = "";
   country: string = "";
   CURRENT_USER_AUTHENTICATED:any=null;
@@ -103,10 +103,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   ngOnInit(): void {
-    this.loadSPINER();
+    this.loadSpinner();
     this.setupSEO();
     //this.setupCookieModal();
-    this.loadSPINER();
     //this.checkCookieConsent();
     this.verifyAuthenticatedUser();
     this.checkDeviceType();
@@ -147,8 +146,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setFirstImage();
       this.setColoresDisponibles();
       
-      setTimeout(() => {
-        
+      //setTimeout(() => {
         setTimeout(() => {
           if (this.FlashSale) {
             var eventCounter = $(".sale-countdown");
@@ -165,13 +163,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             }
           }
+          HOMEINITTEMPLATE($);
+          productSlider5items($);
+          (window as any).sliderRefresh($);
           this.extractTags();
-          //(window as any).sliderRefresh($);
         }, 150);
-        HOMEINITTEMPLATE($);
-        productSlider5items($);
-        //(window as any).sliderRefresh($);
-      }, 150);
+        
+      //}, 350);
     });
 
     this.subscription?.add(listHomeSubscription);
@@ -186,10 +184,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  loadSPINER() {
-    this.subscription = this.homeService.loading$.subscribe(isLoading => {
-      this.loading = !isLoading;
-    });
+  /** Suscribe al estado de carga desde el servicio */
+  private loadSpinner(): void {
+    this.subscription = this.homeService.loading$
+      .subscribe(isLoading => this.isLoading = isLoading);
   }
 
   // getPriceParts(price: number) {
