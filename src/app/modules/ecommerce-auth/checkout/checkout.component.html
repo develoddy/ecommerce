@@ -29,50 +29,52 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container">     
+        <div class="container">
             <div class="row">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12">  
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                     <!--Nav step checkout-->
                     <ng-container *ngIf="isCheckoutNavVisible && currentStep !== 'successfull'">
                         <div id="nav-tabs" class="step-checkout main-vertical-component clearfix">
-                        <div class="row-fluid stepsCheckout">
-                            <div class="span12" role="navigation">
-                            <div class="row labelSteps text-center" role="list">
-                                <div class="col-6 col-md-4 mb-2" [ngClass]="{'medium': currentStep === 'resumen'}" role="listitem">
-                                    Envío
+                            <div class="row-fluid stepsCheckout">
+                                <div class="span12" role="navigation">
+                                    <div class="row labelSteps text-center" role="list">
+                                        <div class="col-6 col-md-4 mb-2"
+                                            [ngClass]="{'medium': currentStep === 'resumen'}" role="listitem">
+                                            Envío
+                                        </div>
+                                        <div class="col-6 col-md-4 mb-2"
+                                            [ngClass]="{'medium': currentStep === 'payment'}" role="listitem">
+                                            Pago
+                                        </div>
+                                        <div class="col-6 col-md-4 mb-2"
+                                            [ngClass]="{'medium': currentStep === 'successfull'}" role="listitem">
+                                            Confirmación
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-6 col-md-4 mb-2" [ngClass]="{'medium': currentStep === 'payment'}" role="listitem">
-                                    Pago
-                                </div>
-                                <div class="col-6 col-md-4 mb-2" [ngClass]="{'medium': currentStep === 'successfull'}" role="listitem">
-                                    Confirmación
+
+                                <div class="span12" aria-hidden="true">
+                                    <div class="row bolasSteps justify-content-center">
+                                        <div class="col-4" [ngClass]="{'medium2': currentStep === 'resumen'}">
+                                            <div class="flechaSteps"></div>
+                                        </div>
+                                        <div class="col-4" [ngClass]="{'medium3': currentStep === 'payment'}">
+                                            <div class="flechaSteps"></div>
+                                        </div>
+                                        <div class="col-4" [ngClass]="{'medium4': currentStep === 'successfull'}">
+                                            <div class="flechaSteps"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-                    
-                            <div class="span12" aria-hidden="true">
-                            <div class="row bolasSteps justify-content-center">
-                                <div class="col-4" [ngClass]="{'medium2': currentStep === 'resumen'}">
-                                    <div class="flechaSteps"></div>
-                                </div>
-                                <div class="col-4" [ngClass]="{'medium3': currentStep === 'payment'}">
-                                    <div class="flechaSteps"></div>
-                                </div>
-                                <div class="col-4" [ngClass]="{'medium4': currentStep === 'successfull'}">
-                                    <div class="flechaSteps"></div>
-                                </div>
-                            </div>
-                            </div>
-                    
-                        </div>
                         </div>
                     </ng-container>
                     <!--End Nav step checkout-->
-  
-                    
+
+
                     <!--Tab checkout content-->
                     <div class="tab-content checkout-form">
-                        <router-outlet></router-outlet> 
+                        <router-outlet></router-outlet>
                         <!-- <router-outlet (activate)="onActivate($event)"></router-outlet> -->
                     </div>
                     <!--End Tab checkout content-->

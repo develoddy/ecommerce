@@ -262,25 +262,7 @@ export class ResumenCheckoutComponent implements OnInit {
     });
   }
 
-  /**private verifyAuthenticatedUser(): void {
-    this._authEcommerce._authService.user.subscribe(user => {
-      if ( user ) {
-        this.CURRENT_USER_AUTHENTICATED = user;
-        this.CURRENT_USER_GUEST = null;
-        this.checkIfAddressClientExists();
-      } else {
-        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
-          if (guestUser?.guest) {
-            this.CURRENT_USER_GUEST = guestUser;
-            this.checkIfAddressGuestExists();
-          } else {
-            this.CURRENT_USER_GUEST = null;
-          }
-        });
-      }
-    });
-  }**/
- private verifyAuthenticatedUser(): void {
+  private verifyAuthenticatedUser(): void {
      this._authEcommerce._authService.user.pipe(take(1)).subscribe(user => {
        if (user) {
          this.CURRENT_USER_AUTHENTICATED = user;
@@ -301,7 +283,7 @@ export class ResumenCheckoutComponent implements OnInit {
          });
        }
      });
-   }
+  }
 
   checkIfAddressClientExists() {
     if (this.CURRENT_USER_AUTHENTICATED) {
@@ -485,17 +467,11 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   private registerAddress() {
-    if ( 
-      !this.name      || 
-      !this.surname   || 
-      !this.pais      || 
-      !this.address   || 
-      !this.zipcode   || 
-      !this.poblacion || 
-      !this.ciudad    || 
-      !this.email     || 
-      !this.phone 
-    ) {
+    // Validación de campos obligatorios y usuario
+    if ((!this.CURRENT_USER_AUTHENTICATED && !this.CURRENT_USER_GUEST) ||
+        !this.name || !this.surname || !this.pais ||
+        !this.address || !this.zipcode || !this.poblacion ||
+        !this.ciudad || !this.email || !this.phone) {
       this.status = false;
       this.validMessage = true;
       this.errorOrSuccessMessage = "Rellene los campos obligatorios de la dirección de envío";
@@ -504,35 +480,46 @@ export class ResumenCheckoutComponent implements OnInit {
       return;
     }
 
-    let data = {    
-        user      : this.CURRENT_USER_AUTHENTICATED._id,
-        name      : this.name,
-        surname   : this.surname,
-        pais      : this.pais,
-        address   : this.address,
-        zipcode   : this.zipcode,
-        poblacion : this.poblacion,
-        ciudad    : this.ciudad,
-        email     : this.email,
-        phone     : this.phone,
-        usual_shipping_address: this.usual_shipping_address,
+    // Construir payload común
+    const payload: any = {
+      name: this.name,
+      surname: this.surname,
+      pais: this.pais,
+      address: this.address,
+      zipcode: this.zipcode,
+      poblacion: this.poblacion,
+      ciudad: this.ciudad,
+      email: this.email,
+      phone: this.phone,
+      usual_shipping_address: this.usual_shipping_address
     };
-    
-    this._authEcommerce.registerAddressClient(data).subscribe(
-      (resp:any) => {
-        if (resp.status == 200) {
-          this.status = true;
-          this.validMessage = true;
-          this.errorOrSuccessMessage = resp.message;
-          this.hideMessageAfterDelay();
-          alertSuccess(resp.message);
-          this.resetForm();
-          $('#addNewModal').modal('hide');
-        } else {
-          this.status = false;
-          this.errorOrSuccessMessage = "Error al guardar la dirección";
-          this.hideMessageAfterDelay();
-        }
+    // Seleccionar petición según tipo de usuario
+    let request$;
+    if (this.CURRENT_USER_AUTHENTICATED) {
+      payload.user = this.CURRENT_USER_AUTHENTICATED._id;
+      request$ = this._authEcommerce.registerAddressClient(payload);
+    } else {
+      payload.guest = this.CURRENT_USER_GUEST.id;
+      request$ = this._authEcommerce.registerAddressGuest(payload);
+    }
+
+    // Ejecutar petición y manejar respuesta
+    request$.subscribe((resp: any) => {
+      if (resp.status === 200) {
+        this.status = true;
+        this.validMessage = true;
+        this.errorOrSuccessMessage = resp.message;
+        this.hideMessageAfterDelay();
+        alertSuccess(resp.message);
+        this.resetForm();
+        $('#addNewModal').modal('hide');
+        // Recargar direcciones para mostrar la lista actualizada
+        this.loadAddresses();
+      } else {
+        this.status = false;
+        this.errorOrSuccessMessage = "Error al guardar la dirección";
+        this.hideMessageAfterDelay();
+      }
     }, error => {
       this.status = false;
       this.errorOrSuccessMessage = "Error al guardar la dirección";
@@ -648,7 +635,6 @@ export class ResumenCheckoutComponent implements OnInit {
 
     this.closeMiniAdress();
   }
-
 
   loadAddresses() {
     if (this.CURRENT_USER_AUTHENTICATED) {
