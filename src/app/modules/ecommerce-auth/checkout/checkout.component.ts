@@ -128,7 +128,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     .subscribe(value => {
       if (value) {
         // -- ESCUCHANDO NAVIGATE TO PAYMENT
-        this.currentStep = 'payment'; // -- O 3 SI LO MANEJAS COMO NÚMERO
+        this.currentStep = 'payment';
       }
     });
 
@@ -136,7 +136,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     .pipe(takeUntil(this.destroy$))
     .subscribe(value => {
       if (value) {
-        this.currentStep = 'successfull'; // -- O 4 SI LO MANEJAS COMO NÚMERO
+        this.currentStep = 'successfull'; 
       }
     });
   }

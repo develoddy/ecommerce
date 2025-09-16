@@ -159,28 +159,22 @@ export class LoginCheckoutComponent implements OnInit {
 
   // -- VERIFICA EL ESTADO DEL CURRENT USER
   verifyAuthenticatedUser(): void {
+    // Obtener flag initialized para invitado
+    const initialized = this.routerActived.snapshot.queryParamMap.get('initialized');
     this._authEcommerce._authService.user.pipe(take(1)).subscribe(user => {
       if (user) {
-        // ✅ Usuario autenticado
-        this.CURRENT_USER_AUTHENTICATED = user;
-        this.CURRENT_USER_GUEST = null;
-        this.checkIfAddressClientExists();
-      } else {
-        // 🔎 Verificamos si existe invitado
-        this._authEcommerce._authService.userGuest.pipe(take(1)).subscribe(guestUser => {
-          if (guestUser && guestUser.state === 1) {
-            // ⚠️ Modo invitado detectado → forzar login
-            this.CURRENT_USER_AUTHENTICATED = null;
-            this.CURRENT_USER_GUEST = guestUser;
-            //this.checkIfAddressGuestExists();
-
-          } else {
-            // ❌ Ningún usuario válido → también forzar login
-            this.CURRENT_USER_AUTHENTICATED = null;
-            this.CURRENT_USER_GUEST = null;
-          }
-        });
+        // ✅ Usuario autenticado → ir a resumen
+        this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']);
+        return;
       }
+      // Verificar invitado solo si viene de initialized
+      this._authEcommerce._authService.userGuest.pipe(take(1)).subscribe(guestUser => {
+        if (guestUser && guestUser.state === 1 && initialized === 'true') {
+          // ⚠️ Invitado confirmado → ir a resumen
+          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']);
+        }
+        // Si no, permanecer en login
+      });
     });
   }
 

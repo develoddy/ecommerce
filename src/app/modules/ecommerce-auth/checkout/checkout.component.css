@@ -1,0 +1,9 @@
+/* Estilos para indicadores de pasos */
+.labelSteps [role="listitem"] {
+  color: #6c757d; /* gray */
+  font-weight: normal;
+}
+.labelSteps .medium {
+  color: #343a40; /* dark */
+  font-weight: bold;
+}

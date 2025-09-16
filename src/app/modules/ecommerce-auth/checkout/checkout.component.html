@@ -37,35 +37,29 @@
                         <div id="nav-tabs" class="step-checkout main-vertical-component clearfix">
                         <div class="row-fluid stepsCheckout">
                             <div class="span12" role="navigation">
-                            <div class="row-fluid labelSteps" role="list">
-                                <div class="span3 margin" [ngClass]="{'medium': currentStep === 'login'}" role="listitem">
-                                Identifícate
+                            <div class="row labelSteps text-center" role="list">
+                                <div class="col-6 col-md-4 mb-2" [ngClass]="{'medium': currentStep === 'resumen'}" role="listitem">
+                                    Envío
                                 </div>
-                                <div class="span3 margin" [ngClass]="{'medium': currentStep === 'resumen'}" role="listitem">
-                                Envío
+                                <div class="col-6 col-md-4 mb-2" [ngClass]="{'medium': currentStep === 'payment'}" role="listitem">
+                                    Pago
                                 </div>
-                                <div class="span3 margin" [ngClass]="{'medium': currentStep === 'payment'}" role="listitem">
-                                Pago
-                                </div>
-                                <div class="span3 margin" [ngClass]="{'medium': currentStep === 'successfull'}" role="listitem">
-                                Confirmación
+                                <div class="col-6 col-md-4 mb-2" [ngClass]="{'medium': currentStep === 'successfull'}" role="listitem">
+                                    Confirmación
                                 </div>
                             </div>
                             </div>
                     
                             <div class="span12" aria-hidden="true">
-                            <div class="row-fluid bolasSteps">
-                                <div class="span3" [ngClass]="{'medium1': currentStep === 'login'}">
-                                <div class="flechaSteps"></div>
-                                </div> 
-                                <div class="span3" [ngClass]="{'medium2': currentStep === 'resumen'}">
-                                <div class="flechaSteps"></div>
+                            <div class="row bolasSteps justify-content-center">
+                                <div class="col-4" [ngClass]="{'medium2': currentStep === 'resumen'}">
+                                    <div class="flechaSteps"></div>
                                 </div>
-                                <div class="span3" [ngClass]="{'medium3': currentStep === 'payment'}">
-                                <div class="flechaSteps"></div>
+                                <div class="col-4" [ngClass]="{'medium3': currentStep === 'payment'}">
+                                    <div class="flechaSteps"></div>
                                 </div>
-                                <div class="span3" [ngClass]="{'medium4': currentStep === 'successfull'}">
-                                <div class="flechaSteps"></div>
+                                <div class="col-4" [ngClass]="{'medium4': currentStep === 'successfull'}">
+                                    <div class="flechaSteps"></div>
                                 </div>
                             </div>
                             </div>

@@ -87,7 +87,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
           setTimeout(() => {
             HOMEINITTEMPLATE($);
             collectionSlider4items($);
-          }, 150);
+          }, 350);
         } else {
           cleanupSliders($);
           cleanupHOMEINITTEMPLATE($);
@@ -96,7 +96,6 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     );
   }
-
 
   private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(

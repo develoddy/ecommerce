@@ -1,4 +1,11 @@
-import { Component, OnInit, HostListener, AfterViewInit, OnDestroy, NgZone } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostListener,
+  AfterViewInit,
+  OnDestroy,
+  NgZone,
+} from '@angular/core';
 import { HomeService } from './_services/home.service';
 import { CartService } from '../ecommerce-guest/_service/cart.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -15,15 +22,15 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { URL_FRONTEND } from 'src/app/config/config';
 
 declare var bootstrap: any;
-declare var $:any;
-declare function HOMEINITTEMPLATE([]):any;
+declare var $: any;
+declare function HOMEINITTEMPLATE([]): any;
 declare function productSlider5items($: any): any;
-declare function LandingProductDetail($: any):any;
-declare function pswp([]):any;
-declare function productZoom([]):any;
-declare function ModalProductDetail():any;
-declare function alertDanger([]):any;
-declare function alertSuccess([]):any;
+declare function LandingProductDetail($: any): any;
+declare function pswp([]): any;
+declare function productZoom([]): any;
+declare function ModalProductDetail(): any;
+declare function alertDanger([]): any;
+declare function alertSuccess([]): any;
 
 // ---------- Destruir desde main ----------
 declare function cleanupHOMEINITTEMPLATE($: any): any;
@@ -32,26 +39,24 @@ declare function cleanupProductZoom($: any): any;
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
-
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
-
-  euro = "€";
+  euro = '€';
   currentUrl: string = window.location.href;
-  sliders:any = [];
-  categories:any = [];
-  SALE_FLASH:any = null;
-  besProducts:any = [];
-  ourProducts:any = [];
-  product_selected:any=null;
-  FlashSale:any = null;
-  FlashProductList:any = [];
-  variedad_selected:any=null;
-  translatedText: string = "";
-  AVG_REVIEW:any=null;
-  COUNT_REVIEW:any=null;
-  REVIEWS:any=null;
+  sliders: any = [];
+  categories: any = [];
+  SALE_FLASH: any = null;
+  besProducts: any = [];
+  ourProducts: any = [];
+  product_selected: any = null;
+  FlashSale: any = null;
+  FlashProductList: any = [];
+  variedad_selected: any = null;
+  translatedText: string = '';
+  AVG_REVIEW: any = null;
+  COUNT_REVIEW: any = null;
+  REVIEWS: any = null;
   listCarts: any[] = [];
   totalCarts: number = 0;
   listWishlists: any = [];
@@ -62,23 +67,23 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   filteredGallery: any[] = [];
   allTags: string[] = [];
   firstImage: string = '';
-  coloresDisponibles: { color: string, imagen: string }[] = [];
+  coloresDisponibles: { color: string; imagen: string }[] = [];
   variedades: any[] = [];
-  errorResponse:boolean=false;
-  errorMessage:any="";
+  errorResponse: boolean = false;
+  errorMessage: any = '';
   // isLoading flag removed: using LoaderService.loading$ in template via async pipe
-  locale: string = "";
-  country: string = "";
-  CURRENT_USER_AUTHENTICATED:any=null;
-  CURRENT_USER_GUEST:any=null;
+  locale: string = '';
+  country: string = '';
+  CURRENT_USER_AUTHENTICATED: any = null;
+  CURRENT_USER_GUEST: any = null;
   currentUser: any = null;
   private subscription: Subscription | undefined;
   private subscriptions: Subscription = new Subscription();
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
-  tallaError = false; 
-  cantidadError = false; 
+  tallaError = false;
+  cantidadError = false;
   private modalInstance: any;
 
   constructor(
@@ -92,7 +97,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private minicartService: MinicartService,
     private seoService: SeoService,
     public loader: LoaderService
-  ) { 
+  ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
   }
@@ -101,71 +106,73 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeLargeSlider();
     this.initializeSmallSlider();
   }
-  
+
   ngOnInit(): void {
     this.setupSEO();
     this.verifyAuthenticatedUser();
     this.checkDeviceType();
-    this.subscribeToCartData(); 
+    this.subscribeToCartData();
     this.subscribeToWishlistData();
 
     let TIME_NOW = new Date().getTime();
-    
-    const listHomeSubscription = this.homeService.listHome(TIME_NOW).subscribe((resp:any) => {
-      this.ourProducts = resp.our_products.map((product: any) => {
-        product.finalPrice = this.calculateFinalPrice(product); // Asignamos el precio final con descuento
-        const priceParts = this.getPriceParts(product.finalPrice); // Dividimos el precio
-        product.priceInteger = priceParts.integer;
-        product.priceDecimals = priceParts.decimals;
-        return product;
-      });
 
-      // Filtrar solo sliders activos (state == 1)
-      this.sliders = resp.sliders.filter((slider: any) => slider.state == 1);
-      
-      this.categories = resp.categories;
-      
-      // Generar slug para cada categoría sin modificar el título original
-      this.categories.forEach((category:any) => {
-        category.slug = this.generateSlug(category.title);  // Genera el slug y lo agrega al objeto categoria
-      });
-      
-      this.ourProducts = resp.our_products;
-      
-      this.besProducts = resp.bes_products;
-      this.FlashSale = resp.FlashSale;
-      this.FlashProductList = resp.campaign_products;
+    const listHomeSubscription = this.homeService
+      .listHome(TIME_NOW)
+      .subscribe((resp: any) => {
+        this.ourProducts = resp.our_products.map((product: any) => {
+          product.finalPrice = this.calculateFinalPrice(product); // Asignamos el precio final con descuento
+          const priceParts = this.getPriceParts(product.finalPrice); // Dividimos el precio
+          product.priceInteger = priceParts.integer;
+          product.priceDecimals = priceParts.decimals;
+          return product;
+        });
 
-      if (this.ourProducts || this.besProducts) {
+        // Filtrar solo sliders activos (state == 1)
+        this.sliders = resp.sliders.filter((slider: any) => slider.state == 1);
+
+        this.categories = resp.categories;
+
+        // Generar slug para cada categoría sin modificar el título original
+        this.categories.forEach((category: any) => {
+          category.slug = this.generateSlug(category.title); // Genera el slug y lo agrega al objeto categoria
+        });
+
+        this.ourProducts = resp.our_products;
+
+        this.besProducts = resp.bes_products;
+        this.FlashSale = resp.FlashSale;
+        this.FlashProductList = resp.campaign_products;
+
+        if (this.ourProducts || this.besProducts) {
+          this.setColoresDisponibles();
+        }
+
+        this.setFirstImage();
         this.setColoresDisponibles();
-      }
-
-      this.setFirstImage();
-      this.setColoresDisponibles();
-      
-    
-    });
+      });
 
     this.subscriptions.add(listHomeSubscription);
 
     // Subscribe to loader to initialize sliders after HTTP calls complete
     this.subscriptions.add(
-      this.loader.loading$.subscribe(isLoading => {
+      this.loader.loading$.subscribe((isLoading) => {
         if (!isLoading) {
           setTimeout(() => {
             // Countdown de FlashSale si existe
             if (this.FlashSale) {
-              const eventCounter = $(".sale-countdown");
+              const eventCounter = $('.sale-countdown');
               const parseDate = new Date(this.FlashSale.end_date);
-              const dateStr = `${parseDate.getFullYear()}/${parseDate.getMonth()+1}/${parseDate.getDate()}`;
+              const dateStr = `${parseDate.getFullYear()}/${
+                parseDate.getMonth() + 1
+              }/${parseDate.getDate()}`;
               if (eventCounter.length) {
                 eventCounter.countdown(dateStr, (e: any) => {
                   eventCounter.html(
                     e.strftime(
                       "<div class='countdown-section'><div><div class='countdown-number'>%-D</div><div class='countdown-unit'>Day</div></div></div>" +
-                      "<div class='countdown-section'><div><div class='countdown-number'>%H</div><div class='countdown-unit'>Hrs</div></div></div>" +
-                      "<div class='countdown-section'><div><div class='countdown-number'>%M</div><div class='countdown-unit'>Min</div></div></div>" +
-                      "<div class='countdown-section'><div><div class='countdown-number'>%S</div><div class='countdown-unit'>Sec</div></div></div>"
+                        "<div class='countdown-section'><div><div class='countdown-number'>%H</div><div class='countdown-unit'>Hrs</div></div></div>" +
+                        "<div class='countdown-section'><div><div class='countdown-number'>%M</div><div class='countdown-unit'>Min</div></div></div>" +
+                        "<div class='countdown-section'><div><div class='countdown-number'>%S</div><div class='countdown-unit'>Sec</div></div></div>"
                     )
                   );
                 });
@@ -187,21 +194,22 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   setupSEO() {
     this.seoService.updateSeo({
       title: 'Camisetas para Programadores | Tienda Lujandev',
-      description: 'Camisetas para Programadores | Tienda Lujandev | LujanDev Oficial',
-      image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/images/logo.png`
+      description:
+        'Camisetas para Programadores | Tienda Lujandev | LujanDev Oficial',
+      image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/images/logo.png`,
     });
   }
 
   getPriceParts(price: number) {
-    const priceFixed = price.toFixed(2);           // Precio con 2 decimales
+    const priceFixed = price.toFixed(2);
     const [integer, decimals] = priceFixed.split('.');
-    const total = priceFixed;                      // Total como string para SEO
+    const total = priceFixed;
     return { integer, decimals, total };
   }
-  
+
   calculateFinalPrice(product: any): number {
     let discount = 0;
-  
+
     if (this.FlashSale && this.FlashSale.type_discount) {
       // Aplicar descuento de Flash Sale
       if (this.FlashSale.type_discount === 1) {
@@ -212,21 +220,22 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (product.campaing_discount) {
       // Aplicar descuento de campaña si no hay Flash Sale
       if (product.campaing_discount.type_discount === 1) {
-        discount = product.price_usd * product.campaing_discount.discount * 0.01;
+        discount =
+          product.price_usd * product.campaing_discount.discount * 0.01;
       } else if (product.campaing_discount.type_discount === 2) {
         discount = product.campaing_discount.discount;
       }
     }
-  
+
     return parseFloat((product.price_usd - discount).toFixed(2));
   }
 
   generateSlug(title: string): string {
     return title
-      .toLowerCase()                  // Convertir a minúsculas
-      .replace(/[^a-z0-9 -]/g, '')     // Eliminar caracteres no alfanuméricos
-      .replace(/\s+/g, '-')            // Reemplazar los espacios por guiones
-      .replace(/-+/g, '-');            // Reemplazar múltiples guiones por uno solo
+      .toLowerCase() // Convertir a minúsculas
+      .replace(/[^a-z0-9 -]/g, '') // Eliminar caracteres no alfanuméricos
+      .replace(/\s+/g, '-') // Reemplazar los espacios por guiones
+      .replace(/-+/g, '-'); // Reemplazar múltiples guiones por uno solo
   }
 
   private checkDeviceType() {
@@ -263,8 +272,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     // Suscribirse para futuras actualizaciones desde AuthService
     this.subscriptions.add(
-      combineLatest([this._authService.user, this._authService.userGuest])
-      .subscribe(([user, guestUser]) => {
+      combineLatest([
+        this._authService.user,
+        this._authService.userGuest,
+      ]).subscribe(([user, guestUser]) => {
         if (user) {
           this.CURRENT_USER_AUTHENTICATED = user;
           this.CURRENT_USER_GUEST = null;
@@ -283,32 +294,33 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   navigateToProduct = (slug: string, discountId?: string) => {
-    // Guarda el estado para hacer scroll hacia arriba
     sessionStorage.setItem('scrollToTop', 'true');
-    // Navega a la página del producto
-    this._router.navigate(['/', this.locale, this.country, 'shop', 'product', slug])
+    this._router
+      .navigate(['/', this.locale, this.country, 'shop', 'product', slug])
       .then(() => {
         window.location.reload();
       });
-  }
+  };
 
-  sizesUnicos( product_selected:any ) {
+  sizesUnicos(product_selected: any) {
     const variedadesUnicos = new Set();
-    product_selected.variedades = product_selected.variedades.filter((variedad:any) => {
-      if (variedadesUnicos.has(variedad.valor)) {
-        return false;
-      } else {
-        variedadesUnicos.add(variedad.valor);
-        return true;
+    product_selected.variedades = product_selected.variedades.filter(
+      (variedad: any) => {
+        if (variedadesUnicos.has(variedad.valor)) {
+          return false;
+        } else {
+          variedadesUnicos.add(variedad.valor);
+          return true;
+        }
       }
-    });
+    );
   }
 
   getSwatchClass(imagen: string, color: string): any {
     return {
-      'active': imagen === this.firstImage,
+      active: imagen === this.firstImage,
       [color.toLowerCase()]: true,
-      'color-swatch': true
+      'color-swatch': true,
     };
   }
 
@@ -316,34 +328,34 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.besProducts.forEach((product: any) => {
       if (product.tags && product.tags.length > 0) {
         // Filtrar colores únicos del producto actual
-        const uniqueTags = product.tags.filter((tag: string, index: number, self: string[]) => {
-          return self.indexOf(tag) === index;
-        });
-  
-        this.allTags.push(uniqueTags); // Agregar los colores únicos del producto a allTags
+        const uniqueTags = product.tags.filter(
+          (tag: string, index: number, self: string[]) => {
+            return self.indexOf(tag) === index;
+          }
+        );
+
+        this.allTags.push(uniqueTags);
       }
     });
-  
+
     // Seleccionar el primer color de la primera iteración para el color seleccionado inicialmente
     if (this.allTags.length > 0) {
-      this.selectedColor = this.allTags[0][0]; // Seleccionar el primer color del primer producto
+      this.selectedColor = this.allTags[0][0];
     }
   }
- 
+
   reinitializeSliders(): void {
     this.destroyLargeSlider();
     this.destroySmallSlider();
     setTimeout(() => {
-      //LandingProductDetail();
       this.initializeLargeSlider();
       this.initializeSmallSlider();
-
     }, 50);
   }
 
-  filterUniqueGalerias(product_selected:any) {
+  filterUniqueGalerias(product_selected: any) {
     const uniqueImages = new Set();
-    this.filteredGallery = product_selected.galerias.filter((galeria:any) => {
+    this.filteredGallery = product_selected.galerias.filter((galeria: any) => {
       const isDuplicate = uniqueImages.has(galeria.imagen);
       uniqueImages.add(galeria.imagen);
       return !isDuplicate;
@@ -351,16 +363,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setFirstImage() {
-    if ( this.filteredGallery.length > 0 ) {
-      this.firstImage = this.filteredGallery[ 0 ].imagen;
+    if (this.filteredGallery.length > 0) {
+      this.firstImage = this.filteredGallery[0].imagen;
     }
   }
 
-  selectColor(color: { color: string, imagen: string }) {
-    console.log("Selector color imagen: ", color.imagen);
-    
+  selectColor(color: { color: string; imagen: string }) {
     this.selectedColor = color.color;
-    this.firstImage = color.imagen; 
+    this.firstImage = color.imagen;
   }
 
   changeImage(imagen: string) {
@@ -369,7 +379,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   initializeLargeSlider(): void {
     const largeSlider = $('.single-product-thumbnail');
-    if ( largeSlider.hasClass('slick-initialized') ) {
+    if (largeSlider.hasClass('slick-initialized')) {
       largeSlider.slick('setPosition');
     } else {
       largeSlider.slick({
@@ -378,7 +388,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         slidesToScroll: 1,
         arrows: true,
         dots: false,
-        fade: true
+        fade: true,
       });
     }
   }
@@ -400,7 +410,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         slidesToShow: 3,
         slidesToScroll: 1,
         arrows: true,
-        dots: false
+        dots: false,
       });
     }
   }
@@ -417,18 +427,18 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     const colorMap: { [key: string]: string } = {
       'Faded Black': '#424242',
       'Faded Khaki': '#dbc4a2',
-      'Black': '#080808',
-      'Navy': '#152438',
-      'Maroon': '#6c152b',
-      'Red': '#e41525',
-      'Royal': '#1652ac',
+      Black: '#080808',
+      Navy: '#152438',
+      Maroon: '#6c152b',
+      Red: '#e41525',
+      Royal: '#1652ac',
       'Sport Grey': '#9b969c',
       'Light blue': '#9dbfe2',
       'Faded Eucalyptus': '#d1cbad',
       'Faded Bone': '#f3ede4',
-      'White': '#ffffff',
-      'Leaf': '#5c9346',
-      'Autumn': '#c85313',
+      White: '#ffffff',
+      Leaf: '#5c9346',
+      Autumn: '#c85313',
     };
     return colorMap[color] || ''; // Devuelve el valor hexadecimal correspondiente al color
   }
@@ -442,12 +452,18 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       const uniqueColors = new Map();
       product.galerias.forEach((tag: any) => {
         if (!uniqueColors.has(tag.color)) {
-          uniqueColors.set(tag.color, { imagen: tag.imagen, hex: this.getColorHex(tag.color) });
+          uniqueColors.set(tag.color, {
+            imagen: tag.imagen,
+            hex: this.getColorHex(tag.color),
+          });
         }
       });
-  
+
       // Agrega los colores únicos de cada producto al propio producto
-      product.colores = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
+      product.colores = Array.from(
+        uniqueColors,
+        ([color, { imagen, hex }]) => ({ color, imagen, hex })
+      );
 
       // Agregar propiedad `selectedImage` con la imagen principal del producto
       product.imagen = product.imagen;
@@ -457,28 +473,39 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       const uniqueColors = new Map();
       product.galerias.forEach((tag: any) => {
         if (!uniqueColors.has(tag.color)) {
-          uniqueColors.set(tag.color, { imagen: tag.imagen, hex: this.getColorHex(tag.color) });
+          uniqueColors.set(tag.color, {
+            imagen: tag.imagen,
+            hex: this.getColorHex(tag.color),
+          });
         }
       });
-  
+
       // Agrega los colores únicos de cada producto al propio producto
-      product.colores = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
+      product.colores = Array.from(
+        uniqueColors,
+        ([color, { imagen, hex }]) => ({ color, imagen, hex })
+      );
 
       // Agregar propiedad `selectedImage` con la imagen principal del producto
       product.imagen = product.imagen;
     });
   }
-  
-  getCalNewPrice(product:any) {
-    if (this.FlashSale.type_discount == 1) { // Por porcentaje
+
+  getCalNewPrice(product: any) {
+    if (this.FlashSale.type_discount == 1) {
+      // Por porcentaje
       // Round to 2 decimal places
-      return (product.price_usd - product.price_usd*this.FlashSale.discount*0.01).toFixed(2);
-    } else { // Port moneda
+      return (
+        product.price_usd -
+        product.price_usd * this.FlashSale.discount * 0.01
+      ).toFixed(2);
+    } else {
+      // Port moneda
       return product.price_usd - this.FlashSale.discount;
     }
   }
 
-  selectedVariedad(variedad:any, index: number) {
+  selectedVariedad(variedad: any, index: number) {
     this.variedad_selected = variedad;
     this.activeIndex = index;
   }
@@ -492,33 +519,46 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.discountCache.has(besProduct.id)) {
       return this.discountCache.get(besProduct.id)!;
     }
-  
+
     let discount = 0;
-  
+
     // Aplicar descuento de venta flash si existe
     if (this.FlashSale && this.FlashSale.type_discount) {
-      if (this.FlashSale.type_discount === 1) { // Descuento en porcentaje
-        discount = parseFloat((besProduct.price_usd * this.FlashSale.discount * 0.01).toFixed(2));
-      } else if (this.FlashSale.type_discount === 2) { // Descuento en valor
+      if (this.FlashSale.type_discount === 1) {
+        // Descuento en porcentaje
+        discount = parseFloat(
+          (besProduct.price_usd * this.FlashSale.discount * 0.01).toFixed(2)
+        );
+      } else if (this.FlashSale.type_discount === 2) {
+        // Descuento en valor
         discount = this.FlashSale.discount;
       }
-    } else if (besProduct.campaing_discount) { // Aplicar descuento de campaña si no hay FlashSale
-      if (besProduct.campaing_discount.type_discount === 1) { // Descuento en porcentaje
-        discount = parseFloat((besProduct.price_usd * besProduct.campaing_discount.discount * 0.01).toFixed(2));
-      } else if (besProduct.campaing_discount.type_discount === 2) { // Descuento en valor
+    } else if (besProduct.campaing_discount) {
+      // Aplicar descuento de campaña si no hay FlashSale
+      if (besProduct.campaing_discount.type_discount === 1) {
+        // Descuento en porcentaje
+        discount = parseFloat(
+          (
+            besProduct.price_usd *
+            besProduct.campaing_discount.discount *
+            0.01
+          ).toFixed(2)
+        );
+      } else if (besProduct.campaing_discount.type_discount === 2) {
+        // Descuento en valor
         discount = besProduct.campaing_discount.discount;
       }
     }
-  
+
     // Almacenar el resultado en el caché
     this.discountCache.set(besProduct.id, discount);
-  
+
     return discount;
   }
 
-  getRouterDiscount(besProduct:any) {
+  getRouterDiscount(besProduct: any) {
     if (besProduct.campaing_discount) {
-      return {_id: besProduct.campaing_discount._id};
+      return { _id: besProduct.campaing_discount._id };
     }
     return {};
   }
@@ -545,7 +585,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   //   //    }
   //   //  }
   //   //}
-    
+
   //   if (product.type_inventario == 2) { // Si el producto tiene variedad multiple, entonces redirigir a la landing de product para que de esa manera el cliente pueda seleccionar la variedad (talla)
   //     let LINK_DISCOUNT = "";
   //     if (this.FlashSale && this.FlashSale.type_discount) {
@@ -601,7 +641,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   //   }, error => {
   //     console.log(error);
   //     if (error.error.message == "EL TOKEN NO ES VALIDO") {
-        
+
   //       this._cartService._authService.logout();
   //     }
   //   });
@@ -609,14 +649,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   //   this.subscription?.add(cartSubscription);
   // }
 
-  storeCart(product:any) {
+  storeCart(product: any) {
     this.saveCart(product);
   }
 
-   private saveCart(product:any) {
-    if ($("#qty-cart").val() == 0) {
+  private saveCart(product: any) {
+    if ($('#qty-cart').val() == 0) {
       this.errorResponse = true;
-      this.errorMessage = "Elija una cantidad válida para añadir al carrito";
+      this.errorMessage = 'Elija una cantidad válida para añadir al carrito';
       this.cantidadError = true;
       return;
     }
@@ -625,12 +665,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!this.variedad_selected) {
         this.tallaError = true; // Establecer el error de talla
         this.errorResponse = true;
-        this.errorMessage = "Por favor seleccione una talla";
+        this.errorMessage = 'Por favor seleccione una talla';
         return;
       }
-      if (this.variedad_selected.stock < $("#qty-cart").val()) {
+      if (this.variedad_selected.stock < $('#qty-cart').val()) {
         this.errorResponse = true;
-        this.errorMessage = "La Cantidad excede el stock disponible. Elija menos unidades";
+        this.errorMessage =
+          'La Cantidad excede el stock disponible. Elija menos unidades';
         this.cantidadError = true;
         return;
       }
@@ -638,84 +679,111 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     let data = {
       user: this.currentUser.email ? this.currentUser._id : this.currentUser.id,
-      user_status: this.currentUser.email ? null : "guest",
+      user_status: this.currentUser.email ? null : 'guest',
       product: this.product_selected._id,
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
-      cantidad: parseInt($("#qty-cart").val() as string, 10), //cantidad: $("#qty-cart").val(),
+      cantidad: parseInt($('#qty-cart').val() as string, 10), //cantidad: $("#qty-cart").val(),
       variedad: this.variedad_selected ? this.variedad_selected.id : null,
       code_cupon: null,
       code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
       price_unitario: this.product_selected.price_usd,
       subtotal: this.product_selected.price_usd - this.getDiscount(),
-      total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
+      total:
+        (this.product_selected.price_usd - this.getDiscount()) *
+        $('#qty-cart').val(),
     };
 
-    if(this.currentUser && !this.currentUser.email) { //if (this.currentUser.user_guest == "Guest") {
-      this._cartService.registerCartCache(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
+    if (this.currentUser && !this.currentUser.email) {
+      //if (this.currentUser.user_guest == "Guest") {
+      this._cartService
+        .registerCartCache(data)
+        .subscribe(
+          this.handleCartResponse.bind(this),
+          this.handleCartError.bind(this)
+        );
     } else {
-      this._cartService.registerCart(data).subscribe(this.handleCartResponse.bind(this), this.handleCartError.bind(this));
+      this._cartService
+        .registerCart(data)
+        .subscribe(
+          this.handleCartResponse.bind(this),
+          this.handleCartError.bind(this)
+        );
     }
   }
 
   private handleCartResponse(resp: any) {
-      if (resp.message == 403) {
-          this.errorResponse = true;
-          this.errorMessage = resp.message_text;
-      } else {
-          this._cartService.changeCart(resp.cart);
-          this.minicartService.openMinicart();
-          this.closeModal();
-      }
+    if (resp.message == 403) {
+      this.errorResponse = true;
+      this.errorMessage = resp.message_text;
+    } else {
+      this._cartService.changeCart(resp.cart);
+      this.minicartService.openMinicart();
+      this.closeModal();
+    }
   }
 
   getPriceWithDiscount() {
-    const priceWithDiscount = this.product_selected.price_usd - this.getDiscount();
+    const priceWithDiscount =
+      this.product_selected.price_usd - this.getDiscount();
     const integerPart = Math.floor(priceWithDiscount); // Parte entera
     const decimalPart = ((priceWithDiscount - integerPart) * 100).toFixed(0); // Parte decimal
     return { integerPart, decimalPart };
   }
 
   private handleCartError(error: any) {
-      if (error.error.message === "EL TOKEN NO ES VALIDO") {
-        this._cartService._authService.logout();
-      }
+    if (error.error.message === 'EL TOKEN NO ES VALIDO') {
+      this._cartService._authService.logout();
+    }
   }
 
-  esProductoUnitario(variedades:any, valoresUnitarios:any)  {
-      for (const variedad of variedades) {
-          if (valoresUnitarios.includes(variedad.valor)) {
-              return false; // Si encuentra alguna de las variedades en valoresUnitarios, no es un producto unitario
-          }
+  esProductoUnitario(variedades: any, valoresUnitarios: any) {
+    for (const variedad of variedades) {
+      if (valoresUnitarios.includes(variedad.valor)) {
+        return false; // Si encuentra alguna de las variedades en valoresUnitarios, no es un producto unitario
       }
-      return true; // Si no encuentra ninguna de las variedades en valoresUnitarios, es un producto unitario
+    }
+    return true; // Si no encuentra ninguna de las variedades en valoresUnitarios, es un producto unitario
   }
 
   openModalToCart = (besProduct: any) => {
     this.product_selected = besProduct;
-    this.filterUniqueGalerias(this.product_selected); // <-- primero
-    this.setFirstImage(); // <-- después
+    this.filterUniqueGalerias(this.product_selected);
+    this.setFirstImage();
+
     setTimeout(() => {
       // Filtrar tallas duplicadas y eliminar tallas no disponibles
-      this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
-      // Seleccionar automáticamente la primera talla si hay alguna disponible
+      this.variedades = this.product_selected.variedades
+        .filter(
+          (item: any, index: number, self: any[]) =>
+            index ===
+            self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)
+        )
+        .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1));
+
       this.variedad_selected = this.variedades[0] || null;
       this.activeIndex = 0;
       this.setColoresDisponibles();
       this.selectedColor = this.coloresDisponibles[0]?.color || '';
       this.filterUniqueGalerias(this.product_selected);
     }, 350);
+
     setTimeout(() => {
       // Usar querySelector para máxima compatibilidad
       const modalElement = document.querySelector('#addtocart_modal');
+
       // No inicializar sliders que no existen en este modal
       if (modalElement && (window as any).bootstrap) {
         const modalInstance = new (window as any).bootstrap.Modal(modalElement);
-        modalElement.addEventListener('shown.bs.modal', () => {
-          // Solo inicializar plugins realmente presentes en el modal
-          (window as any).productZoom && (window as any).productZoom($);
-          (window as any).pswp && (window as any).pswp($);
-        }, { once: true });
+        modalElement.addEventListener(
+          'shown.bs.modal',
+          () => {
+            // Solo inicializar plugins realmente presentes en el modal
+            (window as any).productZoom && (window as any).productZoom($);
+            (window as any).pswp && (window as any).pswp($);
+          },
+          { once: true }
+        );
         modalInstance.show();
       }
       // Fallback jQuery (Bootstrap 4/5)
@@ -728,14 +796,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         (window as any).$('#addtocart_modal').modal('show');
       }
     }, 400);
-  }
+  };
 
-  openModal(besProduct:any, FlashSale:any=null) {
+  openModal(besProduct: any, FlashSale: any = null) {
     this.product_selected = besProduct;
     setTimeout(() => {
       this.filterUniqueGalerias(this.product_selected);
       // Filtrar tallas duplicadas y eliminar tallas no disponibles
-      this.variedades = this.product_selected.variedades.filter((item: any, index: number, self: any[]) => index === self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)).sort((a: any, b: any) => (a.valor > b.valor) ? 1 : -1);
+      this.variedades = this.product_selected.variedades
+        .filter(
+          (item: any, index: number, self: any[]) =>
+            index ===
+            self.findIndex((t: any) => t.valor === item.valor && t.stock > 0)
+        )
+        .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1));
       // Seleccionar automáticamente la primera talla si hay alguna disponible
       this.variedad_selected = this.variedades[0] || null;
       this.activeIndex = 0;
@@ -754,11 +828,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     $('#quickview_modal').modal('hide');
   }
 
-  getDiscount(FlashSale:any=null) {
+  getDiscount(FlashSale: any = null) {
     let discount = 0;
-    if ( FlashSale ) {
+    if (FlashSale) {
       if (FlashSale.type_discount == 1) {
-        return (FlashSale.discount*this.product_selected.price_usd*0.01).toFixed(2);
+        return (
+          FlashSale.discount *
+          this.product_selected.price_usd *
+          0.01
+        ).toFixed(2);
       } else {
         return FlashSale.discount;
       }
@@ -767,52 +845,60 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Wishlist
-  addWishlist = (product:any,  FlashSale:any=null) => {
+  addWishlist = (product: any, FlashSale: any = null) => {
     // Leer usuario autenticado directamente desde this.currentUser o localStorage
-    const user = this.currentUser || (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null);
+    const user =
+      this.currentUser ||
+      (localStorage.getItem('user')
+        ? JSON.parse(localStorage.getItem('user')!)
+        : null);
     console.log('DEBUG addWishlist user:', user);
     // Requiere usuario autenticado con email
     if (!user || !user.email) {
       this.errorResponse = true;
-      this.errorMessage = 'Por favor, autentifíquese para poder añadir el producto a favoritos';
+      this.errorMessage =
+        'Por favor, autentifíquese para poder añadir el producto a favoritos';
       alertSuccess('Autentifíquese para poder añadir el producto a favoritos');
       this._router.navigate(['/', this.locale, this.country, 'auth', 'login']);
       return;
     }
 
-    let variedad_selected = product.variedades.find((v:any) => v.stock > 0) || null;
+    let variedad_selected =
+      product.variedades.find((v: any) => v.stock > 0) || null;
 
     let data = {
-      user          : user._id                                                       ,
-      product       : product._id                                                       ,
-      type_discount : FlashSale ? FlashSale.type_discount : null                        ,
-      discount      : FlashSale ? FlashSale.discount : 0                                ,
-      cantidad      : 1                                                                 ,
-      variedad      : variedad_selected ? variedad_selected.id : null                   ,
-      code_cupon    : null                                                              ,
-      code_discount : FlashSale ? FlashSale._id : null                                  ,
-      price_unitario: product.price_usd                                                 ,
-      subtotal      : product.price_usd - this.getDiscount(FlashSale)                   ,  
-      total         : (product.price_usd - this.getDiscount(FlashSale))*1               , 
-    }
+      user: user._id,
+      product: product._id,
+      type_discount: FlashSale ? FlashSale.type_discount : null,
+      discount: FlashSale ? FlashSale.discount : 0,
+      cantidad: 1,
+      variedad: variedad_selected ? variedad_selected.id : null,
+      code_cupon: null,
+      code_discount: FlashSale ? FlashSale._id : null,
+      price_unitario: product.price_usd,
+      subtotal: product.price_usd - this.getDiscount(FlashSale),
+      total: (product.price_usd - this.getDiscount(FlashSale)) * 1,
+    };
 
-    this.subscription = this._wishlistService.registerWishlist(data).subscribe((resp:any) => {
-      
-      if ( resp.message == 403 ) {
-        this.errorResponse = true;
-        alertDanger( resp.message_text );
-        this.errorMessage = resp.message_text;
-        return;
-      } else {
-        this._wishlistService.changeWishlist(resp.wishlist);
-        alertSuccess( resp.message_text );
+    this.subscription = this._wishlistService.registerWishlist(data).subscribe(
+      (resp: any) => {
+        if (resp.message == 403) {
+          this.errorResponse = true;
+          alertDanger(resp.message_text);
+          this.errorMessage = resp.message_text;
+          return;
+        } else {
+          this._wishlistService.changeWishlist(resp.wishlist);
+          alertSuccess(resp.message_text);
+        }
+      },
+      (error) => {
+        if (error.error.message == 'EL TOKEN NO ES VALIDO') {
+          this._wishlistService._authService.logout();
+        }
       }
-    }, error => {
-      if (error.error.message == "EL TOKEN NO ES VALIDO") {
-        this._wishlistService._authService.logout();
-      }
-    });
-  }
+    );
+  };
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -832,7 +918,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (pswpElement && typeof PhotoSwipe !== 'undefined') {
       let lightBox = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, [], {});
-      
+
       // Si el lightBox está abierto, ciérralo
       if (lightBox) {
         lightBox.close();
@@ -844,7 +930,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this._cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
-        this.totalCarts = this.listCarts.reduce((sum, item) => sum + parseFloat(item.total), 0);
+        this.totalCarts = this.listCarts.reduce(
+          (sum, item) => sum + parseFloat(item.total),
+          0
+        );
       })
     );
   }
@@ -853,7 +942,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this._wishlistService.currenteDataWishlist$.subscribe((resp: any) => {
         this.listWishlists = resp;
-        this.totalWishlist = this.listWishlists.reduce((sum:any, item:any) => sum + parseFloat(item.total), 0);
+        this.totalWishlist = this.listWishlists.reduce(
+          (sum: any, item: any) => sum + parseFloat(item.total),
+          0
+        );
       })
     );
   }
@@ -870,7 +962,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     cleanupProductZoom($);
     this.cleanupPSWP();
     cleanupHOMEINITTEMPLATE($);
-   
   }
 
   /*getDiscountProduct(besProduct:any, is_sale_flash:any=null) {

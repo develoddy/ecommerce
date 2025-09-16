@@ -1,4 +1,14 @@
-import { AfterViewInit, NgZone, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, Inject, Injectable } from '@angular/core';
+import {
+  AfterViewInit,
+  NgZone,
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  Inject,
+  Injectable,
+} from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,74 +25,74 @@ import { LocalizationService } from 'src/app/services/localization.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { SeoService } from 'src/app/services/seo.service';
 
-declare var $:any;
+declare var $: any;
 
 declare function HOMEINITTEMPLATE($: any): any;
 declare function sliderRefresh(): any;
-declare function pswp($: any):any;
-declare function productZoom([]):any;
-declare function ModalProductDetail():any;
-declare function alertDanger([]):any;
-declare function alertSuccess([]):any;
+declare function pswp($: any): any;
+declare function productZoom([]): any;
+declare function ModalProductDetail(): any;
+declare function alertDanger([]): any;
+declare function alertSuccess([]): any;
 
 declare function productSlider5items($: any): any;
 
-// ---- Destruir 
+// ---- Destruir
 declare function cleanupHOMEINITTEMPLATE($: any): any;
-declare function cleanupProductZoom($: any):any;
-declare function menuProductSlider($: any):any;
-
+declare function cleanupProductZoom($: any): any;
+declare function menuProductSlider($: any): any;
 
 @Component({
   selector: 'app-landing-product',
   templateUrl: './landing-product.component.html',
-  styleUrls: ['./landing-product.component.css']
+  styleUrls: ['./landing-product.component.css'],
 })
-export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy {
-
+export class LandingProductComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   currentUrl: string = '';
-  euro = "€";
-  listAddressClients:any = [];
-  listAddressGuest:any = [];
-  slug:any=null;
-  product_selected:any = null;
-  product_selected_modal:any=null;
-  related_products:any = [];
-  variedad_selected:any=null;
-  discount_id:any;
-  order_selected:any=null;
-  sale_orders:any = [];
-  sale_details:any = [];
-  cantidad:any=1;
-  title:any=null;
-  description:any=null;
-  sale_detail_selected:any=null;
-  REVIEWS:any=null;
-  SALE_FLASH:any = null;
-  AVG_REVIEW:any=null;
-  COUNT_REVIEW:any=null;
-  exist_review:any=null;
+  euro = '€';
+  listAddressClients: any = [];
+  listAddressGuest: any = [];
+  slug: any = null;
+  product_selected: any = null;
+  product_selected_modal: any = null;
+  related_products: any = [];
+  variedad_selected: any = null;
+  discount_id: any;
+  order_selected: any = null;
+  sale_orders: any = [];
+  sale_details: any = [];
+  cantidad: any = 1;
+  title: any = null;
+  description: any = null;
+  sale_detail_selected: any = null;
+  REVIEWS: any = null;
+  SALE_FLASH: any = null;
+  AVG_REVIEW: any = null;
+  COUNT_REVIEW: any = null;
+  exist_review: any = null;
   activeIndex: number = 0;
   selectedColor: string = '';
   uniqueGalerias: any[] = [];
   firstImage: string = '';
-  coloresDisponibles: { color: string, imagen: string }[] = [];
+  coloresDisponibles: { color: string; imagen: string }[] = [];
   variedades: any[] = [];
-  availableSizesCamisetas = ['L', 'M', 'S', 'XL', 'XXL'];  
-  availableSizesHoodies = ["L", "M", "S", "XL", "XXL"];
-  availableSizesGorra = ["One size"];
-  availableSizesPerfume = ["50ML", "100ML"];
-  availableSizesMugs = ["11 oz", "15 oz"];
-  tallaError = false; 
-  cantidadError = false; 
+  availableSizesCamisetas = ['L', 'M', 'S', 'XL', 'XXL'];
+  availableSizesHoodies = ['L', 'M', 'S', 'XL', 'XXL'];
+  availableSizesGorra = ['One size'];
+  availableSizesPerfume = ['50ML', '100ML'];
+  availableSizesMugs = ['11 oz', '15 oz'];
+  tallaError = false;
+  cantidadError = false;
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
   currentUser: any = null;
-  errorResponse:boolean=false;
-  errorMessage:any="";
-  locale: string = "";
-  country: string = "";
+  errorResponse: boolean = false;
+  errorMessage: any = '';
+  locale: string = '';
+  country: string = '';
   shippingRate: number = 0;
   fechaEntregaMin: string = '';
   fechaEntregaMax: string = '';
@@ -93,18 +103,15 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     address: 'Gran Vía, 1',
     ciudad: 'Madrid',
     pais: 'España',
-    zipcode: '28013'
+    zipcode: '28013',
   };
-  
+
   usandoFallback: boolean = false;
-
   private subscriptions: Subscription = new Subscription();
-
   showOptions: boolean = false;
   showStickyCart = false;
-  //variedad_selected: any = null;
   featuredImage: string = '';
-  //cantidad = 1;
+
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -136,28 +143,26 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         (window as any).productSlider5items($);
         (window as any).menuProductSlider($);
         (window as any).sliderRefresh($);
-  
+
         // Si necesitas actualizar algo en Angular (por ejemplo, una bandera, vista, etc.)
         this.ngZone.run(() => {
           this.cdRef.detectChanges();
         });
-  
       }, 150);
     });
   }
 
   ngOnInit(): void {
-    this.currentUrl = window.location.href; // Captura la URL completa de la página
+    this.currentUrl = window.location.href; 
     this.showStickyCart = window.scrollY > 600;
-  // Spinner now handled globally via LoaderInterceptor + LoaderService
-    this.checkUserAuthenticationStatus(); 
+    this.checkUserAuthenticationStatus();
     this.subscribeToRouteParams();
     this.subscribeToQueryParams();
     this.checkDeviceType();
 
     // Subscribe to loader to initialize and cleanup sliders when HTTP calls complete
     this.subscriptions.add(
-      this.loader.loading$.subscribe(isLoading => {
+      this.loader.loading$.subscribe((isLoading) => {
         if (!isLoading) {
           this.ngZone.runOutsideAngular(() => {
             setTimeout(() => {
@@ -181,12 +186,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     );
   }
 
-
   private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(
       combineLatest([
         this.authService.user,
-        this.authService.userGuest
+        this.authService.userGuest,
       ]).subscribe(([user, userGuest]) => {
         this.currentUser = user || userGuest;
       })
@@ -196,48 +200,50 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   storeIfAddressExists() {
     //this.currentUser?.user_guest == 'Guest' ? this.checkIfAddressGuestExists() : this.checkIfAddressClientExists();
     // Si es un invitado
-    if ( this.currentUser && !this.currentUser.email ) {
-      this.checkIfAddressGuestExists()
-    } else { // Si está autenticado
-      this.checkIfAddressClientExists()
+    if (this.currentUser && !this.currentUser.email) {
+      this.checkIfAddressGuestExists();
+    } else {
+      // Si está autenticado
+      this.checkIfAddressClientExists();
     }
   }
 
   checkIfAddressClientExists() {
-    this.ecommerceAuthService.listAddressClient(
-      this.currentUser._id
-    ).subscribe(
-      (resp: any) => {
+    this.ecommerceAuthService
+      .listAddressClient(this.currentUser._id)
+      .subscribe((resp: any) => {
         this.listAddressClients = resp.address_client;
         if (this.listAddressClients && this.listAddressClients.length > 0) {
           const firstAddress = this.listAddressClients[0];
-          this.loadShippingRateWithAddress(firstAddress); 
+          this.loadShippingRateWithAddress(firstAddress);
         } else {
-          console.warn("No hay direcciones disponibles.");
+          console.warn('No hay direcciones disponibles.');
           this.loadShippingRateWithAddress(this.fallbackAddress, true);
         }
-        
-    });
+      });
   }
 
   checkIfAddressGuestExists() {
-    this.ecommerceAuthService.listAddressGuest().subscribe(
-      (resp: any) => {
-        this.listAddressGuest = resp.addresses;
-        if (this.listAddressGuest && this.listAddressGuest.length > 0) {
-          const firstAddress = this.listAddressGuest[0];
-          this.loadShippingRateWithAddress(firstAddress); 
-        } else {
-          console.warn("No hay direcciones disponibles.");
-          this.loadShippingRateWithAddress(this.fallbackAddress, true);
-        }
+    this.ecommerceAuthService.listAddressGuest().subscribe((resp: any) => {
+      this.listAddressGuest = resp.addresses;
+      if (this.listAddressGuest && this.listAddressGuest.length > 0) {
+        const firstAddress = this.listAddressGuest[0];
+        this.loadShippingRateWithAddress(firstAddress);
+      } else {
+        console.warn('No hay direcciones disponibles.');
+        this.loadShippingRateWithAddress(this.fallbackAddress, true);
+      }
     });
   }
 
   loadShippingRateWithAddress(address: any, isFallback: boolean = false) {
-
     // Si la dirección está incompleta, no seguimos
-    if (!address?.address || !address?.ciudad || !address?.zipcode || !address?.pais) {
+    if (
+      !address?.address ||
+      !address?.ciudad ||
+      !address?.zipcode ||
+      !address?.pais
+    ) {
       this.shippingRate = 0;
       this.shippingMethod = '';
       this.fechaEntregaMin = '';
@@ -249,35 +255,51 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.usandoFallback = isFallback;
 
     const countryMap: Record<string, string> = {
-      'España': 'ES',
-      'Spain': 'ES',
-      'France': 'FR',
-      'Francia': 'FR',
-      'Germany': 'DE',
-      'Alemania': 'DE',
-      'Italy': 'IT',
-      'Italia': 'IT',
-      'Portugal': 'PT',
+      España: 'ES',
+      Spain: 'ES',
+      France: 'FR',
+      Francia: 'FR',
+      Germany: 'DE',
+      Alemania: 'DE',
+      Italy: 'IT',
+      Italia: 'IT',
+      Portugal: 'PT',
       'Países Bajos': 'NL',
-      'Netherlands': 'NL',
-      'Bélgica': 'BE',
-      'Austria': 'AT',
-      'Suecia': 'SE',
-      'Dinamarca': 'DK',
-      'Finlandia': 'FI',
-      'Noruega': 'NO',
-      'Irlanda': 'IE',
-      'Polonia': 'PL',
-      'Grecia': 'GR'
+      Netherlands: 'NL',
+      Bélgica: 'BE',
+      Austria: 'AT',
+      Suecia: 'SE',
+      Dinamarca: 'DK',
+      Finlandia: 'FI',
+      Noruega: 'NO',
+      Irlanda: 'IE',
+      Polonia: 'PL',
+      Grecia: 'GR',
       // Puedes agregar más si los necesitas
     };
 
     // Lista de países permitidos
-    const allowedCountries = ['ES', 'FR', 'DE', 'IT', 'PT', 'NL', 'BE', 'AT', 'SE', 'DK', 'FI', 'NO', 'IE', 'PL', 'GR'];
+    const allowedCountries = [
+      'ES',
+      'FR',
+      'DE',
+      'IT',
+      'PT',
+      'NL',
+      'BE',
+      'AT',
+      'SE',
+      'DK',
+      'FI',
+      'NO',
+      'IE',
+      'PL',
+      'GR',
+    ];
     const countryCode = countryMap[address.pais as string] || 'ES';
 
     if (!allowedCountries.includes(countryCode)) {
-      console.warn("País no permitido:", countryCode);
+      console.warn('País no permitido:', countryCode);
       this.shippingRate = 0;
       this.shippingMethod = '';
       this.fechaEntregaMin = '';
@@ -299,16 +321,20 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         },
       ],
       currency: 'EUR',
-      locale: 'es_ES'
+      locale: 'es_ES',
     };
 
     this.ecommerceAuthService.getShippingRates(payload).subscribe({
-      next: (res:any) => {
+      next: (res: any) => {
         const rate = res.result?.[0];
         if (rate) {
           this.shippingRate = parseFloat(rate.rate); // 4.29
-          this.fechaEntregaMin = this.formatearFechaEntrega(rate.minDeliveryDate); // "2025-05-13"
-          this.fechaEntregaMax = this.formatearFechaEntrega(rate.maxDeliveryDate); // "2025-05-13"
+          this.fechaEntregaMin = this.formatearFechaEntrega(
+            rate.minDeliveryDate
+          ); // "2025-05-13"
+          this.fechaEntregaMax = this.formatearFechaEntrega(
+            rate.maxDeliveryDate
+          ); // "2025-05-13"
           this.shippingMethod = rate.name; // "Envío estándar..."
         } else {
           this.shippingRate = 0;
@@ -318,80 +344,86 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
         }
       },
       error: (err) => {
-        console.error("Error al calcular tarifas de envío", err);
+        console.error('Error al calcular tarifas de envío', err);
         this.shippingRate = 0;
         this.shippingMethod = '';
         this.fechaEntregaMin = '';
         this.fechaEntregaMax = '';
-      }
+      },
     });
-
   }
-  
+
   formatearFechaEntrega(fecha: string): string {
     const date = new Date(fecha);
     return date.toLocaleDateString('es-ES', {
       weekday: 'long',
       day: '2-digit',
-      month: 'long'
+      month: 'long',
     });
   }
-  
+
   private subscribeToRouteParams(): void {
-    const routeParamsSubscription = this.routerActived.params.subscribe((resp: any) => {
-      this.slug = resp["slug"];
-      this.initLandingProduct();
-    });
+    const routeParamsSubscription = this.routerActived.params.subscribe(
+      (resp: any) => {
+        this.slug = resp['slug'];
+        this.initLandingProduct();
+      }
+    );
     // Añadir todas las suscripciones al objeto compuesto
     this.subscriptions.add(routeParamsSubscription);
   }
-  
+
   private subscribeToQueryParams(): void {
-    const queryParamsSubscription = this.routerActived.queryParams.subscribe((resp: any) => {
-      this.discount_id = resp["_id"];
-    });
+    const queryParamsSubscription = this.routerActived.queryParams.subscribe(
+      (resp: any) => {
+        this.discount_id = resp['_id'];
+      }
+    );
     // Añadir todas las suscripciones al objeto compuesto
     this.subscriptions.add(queryParamsSubscription);
   }
 
   private initLandingProduct() {
-    const productSubscription = this.ecommerceGuestService.showLandingProduct(this.slug, this.discount_id).subscribe(
-      (resp:any) => {
-        this.handleProductResponse(resp);
-      },
-      (error) => {
-        console.error("Error fetching product: ", error); // Captura errores
-      }); 
+    const productSubscription = this.ecommerceGuestService
+      .showLandingProduct(this.slug, this.discount_id)
+      .subscribe(
+        (resp: any) => {
+          this.handleProductResponse(resp);
+        },
+        (error) => {
+          console.error('Error fetching product: ', error); // Captura errores
+        }
+      );
 
-      // Añadir todas las suscripciones al objeto compuesto
-      this.subscriptions.add(productSubscription);
+    // Añadir todas las suscripciones al objeto compuesto
+    this.subscriptions.add(productSubscription);
   }
 
   getPriceWithDiscount() {
-    const priceWithDiscount = this.product_selected.price_usd - this.getDiscount();
+    const priceWithDiscount =
+      this.product_selected.price_usd - this.getDiscount();
     const integerPart = Math.floor(priceWithDiscount); // Parte entera
     const decimalPart = ((priceWithDiscount - integerPart) * 100).toFixed(0); // Parte decimal
-    return { 
-      integerPart, 
+    return {
+      integerPart,
       decimalPart,
-      total: priceWithDiscount.toFixed(2) // 21.99 por ejemplo 
+      total: priceWithDiscount.toFixed(2), // 21.99 por ejemplo
     };
   }
-  
+
   private handleProductResponse(resp: any): void {
     if (!resp || !resp.product) {
-      console.error("No product data available");
+      console.error('No product data available');
       return; // Salir si no hay datos de producto
     }
-    
+
     this.product_selected = resp.product;
     this.related_products = resp.related_products;
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
     this.AVG_REVIEW = resp.AVG_REVIEW;
     this.COUNT_REVIEW = resp.COUNT_REVIEW;
-    
-    
+
     if (this.product_selected) {
       // 🚀 Aquí llamamos a SEO
       this.setupSEO();
@@ -401,12 +433,13 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       this.product_selected.categorie.slug = this.generateSlug(titleCategory);
 
       // Si el usuario no es un invitado (Guest), entonces muestra el perfil
-      if (this.currentUser && this.currentUser.email ) { //if (this.currentUser && this.currentUser.user_guest !== "Guest") {
+      if (this.currentUser && this.currentUser.email) {
+        //if (this.currentUser && this.currentUser.user_guest !== "Guest") {
         this.showProfileClient(this.currentUser);
       }
 
       console.log(this.product_selected);
-      
+
       this.filterUniqueGalerias();
       this.setFirstImage();
       this.setColoresDisponibles();
@@ -428,33 +461,37 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
   generateSlug(title: string): string {
     return title
-      .toLowerCase()                  // Convertir a minúsculas
-      .replace(/[^a-z0-9 -]/g, '')     // Eliminar caracteres no alfanuméricos
-      .replace(/\s+/g, '-')            // Reemplazar los espacios por guiones
-      .replace(/-+/g, '-');            // Reemplazar múltiples guiones por uno solo
+      .toLowerCase() // Convertir a minúsculas
+      .replace(/[^a-z0-9 -]/g, '') // Eliminar caracteres no alfanuméricos
+      .replace(/\s+/g, '-') // Reemplazar los espacios por guiones
+      .replace(/-+/g, '-'); // Reemplazar múltiples guiones por uno solo
   }
-  
+
   navigateToProduct(slug: string, discountId?: string) {
     // Guarda el estado para hacer scroll hacia arriba
     sessionStorage.setItem('scrollToTop', 'true');
     // Navega a la página del producto
-    this._router.navigate(['/', this.locale, this.country, 'shop', 'product', slug])
-    .then(() => {
+    this._router
+      .navigate(['/', this.locale, this.country, 'shop', 'product', slug])
+      .then(() => {
         // Recarga la página
         window.location.reload();
-    });
+      });
   }
-  
+
   private sortVariedades() {
     this.selectedColor = this.product_selected.variedades[0]?.color || '';
 
     // Filtra las variedades por color y stock
-    this.variedades = this.product_selected.variedades.filter((variedad: any) => variedad.color === this.selectedColor);
+    this.variedades = this.product_selected.variedades.filter(
+      (variedad: any) => variedad.color === this.selectedColor
+    );
 
     // Selecciona el array de tallas de acuerdo a la categoría del producto
-    const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
+    const categoryTitle =
+      this.product_selected.categorie?.title?.toLowerCase() || '';
 
-    let availableSizes:any = [];
+    let availableSizes: any = [];
     if (categoryTitle.toLowerCase().includes('t-shirts')) {
       availableSizes = this.availableSizesCamisetas;
     } else if (categoryTitle.toLowerCase().includes('mugs')) {
@@ -468,10 +505,14 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     // Mapea las tallas disponibles, mostrando stock positivo o tachado si no hay stock
-    this.variedades = availableSizes.map((size:any) => {
-      const foundVariedad = this.variedades.find(variedad => variedad.valor === size && variedad.stock > 0);
-      return foundVariedad ? { ...foundVariedad } : { valor: size, stock: 0 };
-    }).sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1));
+    this.variedades = availableSizes
+      .map((size: any) => {
+        const foundVariedad = this.variedades.find(
+          (variedad) => variedad.valor === size && variedad.stock > 0
+        );
+        return foundVariedad ? { ...foundVariedad } : { valor: size, stock: 0 };
+      })
+      .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1));
 
     // Selecciona la primera variedad con stock positivo
     this.variedad_selected = null;
@@ -484,7 +525,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     orders.forEach((order: any) => {
       if (order && order.sale_details && Array.isArray(order.sale_details)) {
         order.sale_details.forEach((sale_detail: any) => {
-           sale_details.push(sale_detail);
+          sale_details.push(sale_detail);
         });
       }
     });
@@ -492,13 +533,13 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private viewReview(sale_detail: any): void {
-    if ( sale_detail ) {
+    if (sale_detail) {
       this.sale_detail_selected = sale_detail;
       if (this.sale_detail_selected.review) {
         this.title = this.sale_detail_selected.review.title;
         this.cantidad = this.sale_detail_selected.review.cantidad;
         this.description = this.sale_detail_selected.review.description;
-      } else {
+      } else {
         this.title = null;
         this.cantidad = null;
         this.description = null;
@@ -506,38 +547,49 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  private showProfileClient(currentUser:any) {
-    let data = {user_id: currentUser._id};
-    const saleSubscription =  this.ecommerceAuthService.showProfileClient(data).subscribe( ( resp: any ) => {
-    this.sale_orders = resp.sale_orders;
-    this.sale_details = this.extractSaleDetails(resp.sale_orders); 
-    this.handleSaleDetailAndReview();
-  });
+  private showProfileClient(currentUser: any) {
+    let data = { user_id: currentUser._id };
+    const saleSubscription = this.ecommerceAuthService
+      .showProfileClient(data)
+      .subscribe((resp: any) => {
+        this.sale_orders = resp.sale_orders;
+        this.sale_details = this.extractSaleDetails(resp.sale_orders);
+        this.handleSaleDetailAndReview();
+      });
 
     this.subscriptions.add(saleSubscription);
   }
 
   private handleSaleDetailAndReview() {
-    const matchingSaleDetail = this.sale_details.find((sale_detail:any) => sale_detail.product._id === this.product_selected._id);
-    const matchingReview = this.REVIEWS.find((review:any) => review.productId === this.product_selected._id);
-    this.configReview(matchingSaleDetail, matchingReview)
+    const matchingSaleDetail = this.sale_details.find(
+      (sale_detail: any) =>
+        sale_detail.product._id === this.product_selected._id
+    );
+    const matchingReview = this.REVIEWS.find(
+      (review: any) => review.productId === this.product_selected._id
+    );
+    this.configReview(matchingSaleDetail, matchingReview);
   }
 
-  private configReview(matchingSaleDetail:any, matchingReview:any) {
-    if ( matchingSaleDetail && matchingReview ) {
+  private configReview(matchingSaleDetail: any, matchingReview: any) {
+    if (matchingSaleDetail && matchingReview) {
       this.viewReview(matchingSaleDetail);
-    } else if ( matchingSaleDetail && !matchingReview ) { // Si existe sale_detail pero no hay review, mostrar form para agregar una nueva review
-      this.viewReview(matchingSaleDetail); // Pasar un objeto vacio para iniciar un form en blanco
+    } else if (matchingSaleDetail && !matchingReview) {
+      // Si existe sale_detail pero no hay review, mostrar form para agregar una nueva review
+      this.viewReview(matchingSaleDetail);
+      
     } else {
       // Ni no existe sale_detail y review, entonces no mostrar el form
       // Mostrar reseñas de otros usuarios para el producto seleccionado
       const otherReviews = this.REVIEWS.filter(
         (review: any) => review.productId === this.product_selected._id
       );
+
       if (otherReviews.length > 0) {
         // AQUI PODRÍAS MOSTRAR ESTAS RESEÑAS EN EL UI
         // POR EJEMPLO, PODRÍAS ASIGNAR A UNA VARIABLE EN EL COMPONENTE PARA RENDERIZAR EN EL TEMPLATE
         // this.displayOtherReviews(otherReviews);
+
       } else {
         this.viewReview(null); // O cualquier otro comportamiento que desees
       }
@@ -546,35 +598,35 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
   filterUniqueGalerias() {
     const uniqueImages = new Set();
-    this.uniqueGalerias = this.product_selected.galerias.filter( 
-      ( galeria:any ) => {
+    this.uniqueGalerias = this.product_selected.galerias.filter(
+      (galeria: any) => {
         const isDuplicate = uniqueImages.has(galeria.imagen);
         uniqueImages.add(galeria.imagen);
         return !isDuplicate;
-      });      
+      }
+    );
   }
 
   setFirstImage() {
-    if ( this.uniqueGalerias.length > 0 ) {
-      this.firstImage = this.uniqueGalerias[ 0 ].imagen;
+    if (this.uniqueGalerias.length > 0) {
+      this.firstImage = this.uniqueGalerias[0].imagen;
     }
   }
 
   setColoresDisponibles() {
     const uniqueColors = new Map();
-    this.product_selected.galerias.forEach(
-      ( galeria: any ) => {
-        if ( !uniqueColors.has( galeria.color ) ) {
-          uniqueColors.set(
-            galeria.color, 
-            { 
-              imagen: galeria.imagen, 
-              hex: this.getColorHex(galeria.color) 
-            }
-          );
-        }
-      });
-    this.coloresDisponibles = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
+    this.product_selected.galerias.forEach((galeria: any) => {
+      if (!uniqueColors.has(galeria.color)) {
+        uniqueColors.set(galeria.color, {
+          imagen: galeria.imagen,
+          hex: this.getColorHex(galeria.color),
+        });
+      }
+    });
+    this.coloresDisponibles = Array.from(
+      uniqueColors,
+      ([color, { imagen, hex }]) => ({ color, imagen, hex })
+    );
   }
 
   updateZoomImage(newImage: string) {
@@ -582,34 +634,38 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   getColorHex(color: string): string {
-    const colorMap: { [ key: string ]: string } = {
+    const colorMap: { [key: string]: string } = {
       'Faded Black': '#424242',
       'Faded Khaki': '#dbc4a2',
-      'Black': '#080808',
-      'Navy': '#152438',
-      'Maroon': '#6c152b',
-      'Red': '#e41525',
-      'Royal': '#1652ac',
+      Black: '#080808',
+      Navy: '#152438',
+      Maroon: '#6c152b',
+      Red: '#e41525',
+      Royal: '#1652ac',
       'Sport Grey': '#9b969c',
       'Light blue': '#9dbfe2',
       'Faded Eucalyptus': '#d1cbad',
       'Faded Bone': '#f3ede4',
-      'White': '#ffffff',
-      'Leaf': '#5c9346',
-      'Autumn': '#c85313',
+      White: '#ffffff',
+      Leaf: '#5c9346',
+      Autumn: '#c85313',
     };
-    return colorMap[color] || ''; 
+    return colorMap[color] || '';
   }
 
   getSwatchClass(imagen: string, color: string): any {
-    return { 'active': imagen === this.firstImage, [color.toLowerCase()]: true, 'color-swatch': true };
+    return {
+      active: imagen === this.firstImage,
+      [color.toLowerCase()]: true,
+      'color-swatch': true,
+    };
   }
 
   setActiveIndex(index: number) {
     this.activeIndex = index;
-  }  
+  }
 
-  openModal(besProduct:any, FlashSale:any=null) {
+  openModal(besProduct: any, FlashSale: any = null) {
     this.product_selected_modal = null;
     setTimeout(() => {
       this.product_selected_modal = besProduct;
@@ -637,7 +693,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.SALE_FLASH) {
       if (this.SALE_FLASH.type_discount == 1) {
         // Cálculo del descuento en porcentaje
-        discount = this.SALE_FLASH.discount * this.product_selected.price_usd * 0.01;
+        discount =
+          this.SALE_FLASH.discount * this.product_selected.price_usd * 0.01;
       } else {
         // Descuento directo
         discount = this.SALE_FLASH.discount;
@@ -645,8 +702,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }
     return discount;
   }
-  
-  getCalNewPrice(product:any) {
+
+  getCalNewPrice(product: any) {
     // if (this.FlashSale.type_discount == 1) {
     //   return product.price_soles - product.price_soles*this.FlashSale.discount*0.01;
     // } else {
@@ -655,15 +712,16 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     return 0;
   }
 
-  selectColor(color: { color: string, imagen: string }) {
+  selectColor(color: { color: string; imagen: string }) {
     this.selectedColor = color.color;
     this.firstImage = color.imagen;
     // -- FILTRAR VARIEDADES PARA EL COLOR SELECCIONADO
     const filteredVariedades = this.product_selected.variedades
-        .filter((variedad: any) => variedad.color === this.selectedColor)
-        .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1)); // Ordenar las tallas de menor a mayor
+      .filter((variedad: any) => variedad.color === this.selectedColor)
+      .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1)); // Ordenar las tallas de menor a mayor
 
-    const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
+    const categoryTitle =
+      this.product_selected.categorie?.title?.toLowerCase() || '';
     const isCamisa = categoryTitle.toLowerCase().includes('t-shirts');
     const allShirts = categoryTitle.toLowerCase().includes('all shirts');
     const isGorra = categoryTitle.toLowerCase().includes('snapbacks');
@@ -673,33 +731,37 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     // Determina las tallas disponibles según la categoría
     let filteredSizes: string[] = [];
     if (isHoodies) {
-        filteredSizes = this.availableSizesHoodies;
-     } else if (isMugs) {
-        filteredSizes = this.availableSizesMugs;
+      filteredSizes = this.availableSizesHoodies;
+    } else if (isMugs) {
+      filteredSizes = this.availableSizesMugs;
     } else if (isCamisa) {
-        filteredSizes = this.availableSizesCamisetas;
+      filteredSizes = this.availableSizesCamisetas;
     } else if (isGorra) {
-        filteredSizes = this.availableSizesGorra;
+      filteredSizes = this.availableSizesGorra;
     } else if (allShirts) {
-        filteredSizes = this.availableSizesCamisetas;
+      filteredSizes = this.availableSizesCamisetas;
     }
 
     // Mapea las tallas de la categoría y marca las no disponibles
-    this.variedades = filteredSizes.map(size => {
-        const foundVariedad = filteredVariedades.find((variedad: any) => variedad.valor === size);
-        return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
+    this.variedades = filteredSizes.map((size) => {
+      const foundVariedad = filteredVariedades.find(
+        (variedad: any) => variedad.valor === size
+      );
+      return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
     });
 
     // Selecciona automáticamente la primera talla disponible
-    this.variedad_selected = this.variedades.find(v => v.stock > 0) || null;
-    this.activeIndex = this.variedad_selected ? this.variedades.indexOf(this.variedad_selected) : 0;
+    this.variedad_selected = this.variedades.find((v) => v.stock > 0) || null;
+    this.activeIndex = this.variedad_selected
+      ? this.variedades.indexOf(this.variedad_selected)
+      : 0;
   }
 
   toggleOptions() {
     this.showOptions = !this.showOptions;
   }
 
-  selectedVariedad(variedad:any, index: number) {
+  selectedVariedad(variedad: any, index: number) {
     this.variedad_selected = variedad;
     this.activeIndex = index;
     this.tallaError = false;
@@ -716,48 +778,53 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.cantidadError = false;
   }
 
-
-  addWishlist(product:any) {
-    if(!this.currentUser) {
+  addWishlist(product: any) {
+    if (!this.currentUser) {
       this.errorResponse = true;
-      this.errorMessage = "Por favor, autentifíquese para poder añadir el producto a favoritos";
+      this.errorMessage =
+        'Por favor, autentifíquese para poder añadir el producto a favoritos';
       return;
     }
 
     let data = {
-      user          : this.currentUser._id,
-      product       : this.product_selected._id,
-      type_discount : this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
-      discount      : this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
-      cantidad      : $("#qty-cart").val(),
-      variedad      : this.variedad_selected ? this.variedad_selected.id : null,
-      code_cupon    : null,
-      code_discount : this.SALE_FLASH ? this.SALE_FLASH._id : null,
+      user: this.currentUser._id,
+      product: this.product_selected._id,
+      type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
+      discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
+      cantidad: $('#qty-cart').val(),
+      variedad: this.variedad_selected ? this.variedad_selected.id : null,
+      code_cupon: null,
+      code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
       price_unitario: this.product_selected.price_usd,
-      subtotal      : this.product_selected.price_usd - this.getDiscount(),  
-      total         : (this.product_selected.price_usd - this.getDiscount())*$("#qty-cart").val()
-    }
+      subtotal: this.product_selected.price_usd - this.getDiscount(),
+      total:
+        (this.product_selected.price_usd - this.getDiscount()) *
+        $('#qty-cart').val(),
+    };
 
-    this.wishlistService.registerWishlist( data ).subscribe((resp:any) => {
-      if (resp.message == 403) {
-        this.errorResponse = true;
-        this.errorMessage = resp.message_text;
-        return;
-      } else {
-        this.wishlistService.changeWishlist(resp.wishlist);
-        alertSuccess( resp.message_text );
+    this.wishlistService.registerWishlist(data).subscribe(
+      (resp: any) => {
+        if (resp.message == 403) {
+          this.errorResponse = true;
+          this.errorMessage = resp.message_text;
+          return;
+        } else {
+          this.wishlistService.changeWishlist(resp.wishlist);
+          alertSuccess(resp.message_text);
+        }
+      },
+      (error) => {
+        if (error.error.message == 'EL TOKEN NO ES VALIDO') {
+          this.wishlistService._authService.logout();
+        }
       }
-    }, error => {
-      if (error.error.message == "EL TOKEN NO ES VALIDO") {
-        this.wishlistService._authService.logout();
-      }
-    });
+    );
   }
 
   increaseQuantity() {
     this.cantidad++;
     this.cantidadError = false; // resetea error si lo había
-    }
+  }
 
   decreaseQuantity() {
     if (this.cantidad > 1) {
@@ -777,10 +844,10 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private saveCart() {
-   if (this.cantidad <= 0) {
+    if (this.cantidad <= 0) {
       this.errorResponse = true;
-      this.errorMessage = "Debe seleccionar al menos 1 unidad";
-      alertDanger("Debe seleccionar al menos 1 unidad");
+      this.errorMessage = 'Debe seleccionar al menos 1 unidad';
+      alertDanger('Debe seleccionar al menos 1 unidad');
       this.cantidadError = true;
       return;
     }
@@ -789,12 +856,14 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       if (!this.variedad_selected) {
         this.tallaError = true;
         this.errorResponse = true;
-        this.errorMessage = "Por favor seleccione una talla";
+        this.errorMessage = 'Por favor seleccione una talla';
         return;
       }
-      if (this.variedad_selected.stock < this.cantidad) { //if (this.variedad_selected.stock < $("#qty-cart").val()) {
+      if (this.variedad_selected.stock < this.cantidad) {
+        //if (this.variedad_selected.stock < $("#qty-cart").val()) {
         this.errorResponse = true;
-        this.errorMessage = "La Cantidad excede el stock disponible. Elija menos unidades";
+        this.errorMessage =
+          'La Cantidad excede el stock disponible. Elija menos unidades';
         this.cantidadError = true;
         return;
       }
@@ -806,45 +875,52 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       product: this.product_selected._id,
       type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
       discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
-      cantidad: this.cantidad, //parseInt($("#qty-cart").val() as string, 10), 
+      cantidad: this.cantidad, //parseInt($("#qty-cart").val() as string, 10),
       variedad: this.variedad_selected ? this.variedad_selected.id : null,
       code_cupon: null,
       code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
       price_unitario: this.product_selected.price_usd,
       subtotal: this.product_selected.price_usd - this.getDiscount(),
-      total: (this.product_selected.price_usd - this.getDiscount()) * this.cantidad //total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
+      total:
+        (this.product_selected.price_usd - this.getDiscount()) * this.cantidad, //total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
     };
 
-    
-    if (this.currentUser && !this.currentUser.email ) {
-      this.cartService.registerCartCache(data).subscribe(
-        this.handleCartResponse.bind(this), this.handleCartError.bind(this)
-      );
+    if (this.currentUser && !this.currentUser.email) {
+      this.cartService
+        .registerCartCache(data)
+        .subscribe(
+          this.handleCartResponse.bind(this),
+          this.handleCartError.bind(this)
+        );
     } else {
-      this.cartService.registerCart(data).subscribe(
-        this.handleCartResponse.bind(this), this.handleCartError.bind(this)
-      );
+      this.cartService
+        .registerCart(data)
+        .subscribe(
+          this.handleCartResponse.bind(this),
+          this.handleCartError.bind(this)
+        );
     }
   }
 
   private handleCartResponse(resp: any) {
-      if (resp.message == 403) {
-          this.errorResponse = true;
-          this.errorMessage = resp.message_text;
-      } else {
-          this.cartService.changeCart(resp.cart);
-          this.minicartService.openMinicart();
-      }
+    if (resp.message == 403) {
+      this.errorResponse = true;
+      this.errorMessage = resp.message_text;
+    } else {
+      this.cartService.changeCart(resp.cart);
+      this.minicartService.openMinicart();
+    }
   }
 
   private handleCartError(error: any) {
-    if (error?.error?.message === "EL TOKEN NO ES VALIDO") {
+    if (error?.error?.message === 'EL TOKEN NO ES VALIDO') {
       this.cartService._authService.logout();
       return;
     }
     // Manejo de error: guest no existe
     if (
-      error?.error?.message_text === "El invitado (guest) no existe o la sesión ha expirado. Por favor, recarga la página o inicia una nueva sesión."
+      error?.error?.message_text ===
+      'El invitado (guest) no existe o la sesión ha expirado. Por favor, recarga la página o inicia una nueva sesión.'
     ) {
       this.errorResponse = true;
       this.errorMessage = error.error.message_text;
@@ -853,12 +929,14 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     // Otros errores
 
     this.errorResponse = true;
-    this.errorMessage = error?.error?.message_text || 'Ocurrió un error inesperado al añadir al carrito.';
+    this.errorMessage =
+      error?.error?.message_text ||
+      'Ocurrió un error inesperado al añadir al carrito.';
     alertDanger(this.errorMessage);
   }
 
-  addCantidad(cantidad:number) {
-    this.cantidad = cantidad; 
+  addCantidad(cantidad: number) {
+    this.cantidad = cantidad;
   }
 
   storeReview() {
@@ -867,10 +945,10 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
   saveReview() {
     if (!this.title || !this.cantidad || !this.description) {
-      alertDanger("Todos los campos del formularios son importantes!");
+      alertDanger('Todos los campos del formularios son importantes!');
       return;
     }
-    
+
     let data = {
       product: this.sale_detail_selected.product._id,
       sale_detail: this.sale_detail_selected._id,
@@ -880,18 +958,20 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       description: this.description,
     };
 
-    const reviewSubscription =  this.ecommerceAuthService.registerProfileClientReview(data).subscribe((resp:any) => {
-      this.sale_detail_selected.review = resp.review;
-      this.REVIEWS = [resp.review];
-      alertSuccess(resp.message);
-    });
+    const reviewSubscription = this.ecommerceAuthService
+      .registerProfileClientReview(data)
+      .subscribe((resp: any) => {
+        this.sale_detail_selected.review = resp.review;
+        this.REVIEWS = [resp.review];
+        alertSuccess(resp.message);
+      });
 
     this.subscriptions.add(reviewSubscription);
   }
 
   updateReview() {
     if (!this.cantidad || !this.description) {
-      alertDanger("Todos los campos del formularios son importantes!");
+      alertDanger('Todos los campos del formularios son importantes!');
       return;
     }
 
@@ -905,11 +985,13 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       description: this.description,
     };
 
-    const reviewUpdateSubscription = this.ecommerceAuthService.updateProfileClientReview(data).subscribe((resp:any) => {
-      this.sale_detail_selected.review = resp.review;
-      this.REVIEWS = [resp.review];
-      alertSuccess(resp.message);
-    });
+    const reviewUpdateSubscription = this.ecommerceAuthService
+      .updateProfileClientReview(data)
+      .subscribe((resp: any) => {
+        this.sale_detail_selected.review = resp.review;
+        this.REVIEWS = [resp.review];
+        alertSuccess(resp.message);
+      });
 
     this.subscriptions.add(reviewUpdateSubscription);
   }
@@ -932,10 +1014,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
     // Description más atractiva y útil para buscadores
     // Así usas la descripción real si está disponible, y el fallback solo si hace falta.
-    const description = product.description_es && product.description_es !== 'Descripción no disponible'
-    ? product.description_es
-    : `Compra la camiseta ${product.title} en LujanDev. Moda exclusiva para programadores, envío internacional rápido.`;
-
+    const description =
+      product.description_es &&
+      product.description_es !== 'Descripción no disponible'
+        ? product.description_es
+        : `Compra la camiseta ${product.title} en LujanDev. Moda exclusiva para programadores, envío internacional rápido.`;
 
     // Imagen principal
     const image = product.imagen || '';
@@ -978,7 +1061,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
     if (pswpElement && typeof PhotoSwipe !== 'undefined') {
       let lightBox = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, [], {});
-      
+
       // Si el lightBox está abierto, ciérralo
       if (lightBox) {
         lightBox.close();
@@ -989,7 +1072,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
-    } 
+    }
     cleanupProductZoom($);
     this.cleanupPSWP();
     cleanupHOMEINITTEMPLATE($);
