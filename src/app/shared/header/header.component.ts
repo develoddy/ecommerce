@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, EventEmitter, Output } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, debounceTime, forkJoin, fromEvent, Observable, of, Subscription, tap } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { EcommerceGuestService } from 'src/app/modules/ecommerce-guest/_service/ecommerce-guest.service';
@@ -83,9 +84,16 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.locale = this.localizationService.locale;
 
     this.checkUserAuthenticationStatus();
-    if (this.router.url === '/checkout') {
-      this.showSubscriptionSection = false;
-    }
+      // Initial header visibility based on current route
+      this.showSubscriptionSection = !this.router.url.includes('/checkout');
+      // Update header visibility on route changes
+      this.subscriptions.add(
+        this.router.events.pipe(
+          filter(event => event instanceof NavigationEnd)
+        ).subscribe((event: any) => {
+          this.showSubscriptionSection = !event.urlAfterRedirects.includes('/checkout');
+        })
+      );
 
     this.subscribeToCartData(); 
     this.subscribeToWishlistData();

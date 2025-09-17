@@ -2642,20 +2642,30 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .row-fluid .span3 {width: 24.6261%;}
 .margin {padding-left: 1.3em;}
 .span3 {width: 247px;} 
+/* Step icon: no-check state for future steps */
+.flechaStepsNoCheck2 {background-image: url(../images/icons/02_nocheck.png);background-size: 100%;height: 33px;margin: 0 auto;position: relative;top: -17px;width: 33px;}
+.flechaStepsNoCheck3 {background-image: url(../images/icons/03_nocheck.png);background-size: 100%;height: 33px;margin: 0 auto;position: relative;top: -17px;width: 33px;}
+/* Step icon: default check state */
 .flechaSteps {background-image: url(../images/icons/00_check.png);background-size: 100%;height: 33px;margin: 0 auto;position: relative;top: -17px;width: 33px;}
-.medium1 .flechaSteps {background-image: url(../images/icons/01_b.png);height: 37px;top: -19px;width: 37px;}
-.medium2 .flechaSteps {background-image: url(../images/icons/02_b.png);height: 37px;top: -19px;width: 37px;}
-.medium3 .flechaSteps {background-image: url(../images/icons/03_b.png);height: 37px;top: -19px;width: 37px;}
-.medium4 .flechaSteps {background-image: url(../images/icons/04_b.png);height: 37px;top: -19px;width: 37px;}
+
+/* Step icon: active step number */
+.flechaSteps.medium1 {background-image: url(../images/icons/01_b.png);height: 37px;top: -19px;width: 37px;}
+.flechaSteps.medium2 {background-image: url(../images/icons/02_b.png);height: 37px;top: -19px;width: 37px;}
+.flechaSteps.medium3 {background-image: url(../images/icons/03_b.png);height: 37px;top: -19px;width: 37px;}
+.flechaSteps.medium4 {background-image: url(../images/icons/04_b.png);height: 37px;top: -19px;width: 37px;}
+
+/* Remove old ancestor selectors for nocheck icons */
+/* Updated above using .flechaStepsNoCheck on the element */
 
 /* header */
-a.logo {
-  /* background: url(../images/logo/brandlogo1.png) 50% 50% no-repeat; */
-  background: url(../images/logo.png) 50% 50% no-repeat;
-  width: 200px;  /* Tamaño del logo en desktop */
+ /* a.logo { */
+  /* background: url(../images/logo.png) 50% 50% no-repeat; */
+  /* width: 200px;
   height: 50px;
   background-size: contain;
-}
+  display:flex !important;
+  justify-content: center;
+  }  */
 
 /* Estilo para pantallas pequeñas (móvil) */
 @media (max-width: 768px) {
@@ -2676,8 +2686,9 @@ a.logo {
 }
 
 a.logo {
-  display: block;
-  height: 75px;
+  display: flex !important;
+  justify-content: center ;
+  /* height: 75px; */
   margin: 0 auto;
   width: 100%;
 }

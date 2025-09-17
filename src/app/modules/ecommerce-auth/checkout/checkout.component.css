@@ -7,3 +7,10 @@
   color: #343a40; /* dark */
   font-weight: bold;
 }
+
+/* Pasos de pago y confirmación con fondo blanco cuando están activos */
+.row.bolasSteps .col-4.medium2.active .flechaSteps,
+.row.bolasSteps .col-4.medium3.active .flechaSteps {
+  background-color: #fff !important;
+  border-radius: 50%;
+}

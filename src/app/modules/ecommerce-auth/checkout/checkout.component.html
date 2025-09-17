@@ -11,21 +11,21 @@
     </div>
     <!-- End Loading -->
 
+
     <!-- Body Container -->
     <div id="page-content" [class.d-none]="!loading">
         <!--Page Header-->
-        <div *ngIf="currentStep !== 'successfull'" class="page-header mb-0 py-4 bg-transparent">
+        <!-- <div *ngIf="currentStep !== 'successfull'" class="page-header mb-0 py-4 bg-transparent">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center align-items-center">
-                        <!-- <a class="logoImg" href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'cart']"> -->
                         <a class="logoImg" (click)="navigateToCart()">
                             <img src="assets/images/logo.png" alt="Lujan Ecommerce" title="Lujan Ecommerce" />
                         </a>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!--End Page Header-->
 
         <!--Main Content-->
@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                     <!--Nav step checkout-->
-                    <ng-container *ngIf="isCheckoutNavVisible && currentStep !== 'successfull'">
+                    <ng-container *ngIf="isCheckoutNavVisible">
                         <div id="nav-tabs" class="step-checkout main-vertical-component clearfix">
                             <div class="row-fluid stepsCheckout">
                                 <div class="span12" role="navigation">
@@ -42,7 +42,7 @@
                                             [ngClass]="{'medium': currentStep === 'resumen'}" role="listitem">
                                             Envío
                                         </div>
-                                        <div class="col-6 col-md-4 mb-2"
+                                        <div class="col-6 col-md-4 mb-2 nocheck2"
                                             [ngClass]="{'medium': currentStep === 'payment'}" role="listitem">
                                             Pago
                                         </div>
@@ -55,14 +55,28 @@
 
                                 <div class="span12" aria-hidden="true">
                                     <div class="row bolasSteps justify-content-center">
-                                        <div class="col-4" [ngClass]="{'medium2': currentStep === 'resumen'}">
-                                            <div class="flechaSteps"></div>
+                                        <!-- Step 1 -->
+                                        <div class="col-4">
+                                            <div [ngClass]="{
+                                                'flechaSteps': true,
+                                                'medium1': currentStep === 'resumen'
+                                            }"></div>
                                         </div>
-                                        <div class="col-4" [ngClass]="{'medium3': currentStep === 'payment'}">
-                                            <div class="flechaSteps"></div>
+                                        <!-- Step 2 -->
+                                        <div class="col-4">
+                                            <div [ngClass]="{
+                                                'flechaStepsNoCheck2': currentStep === 'resumen',
+                                                'flechaSteps': currentStep === 'payment' || currentStep === 'successfull',
+                                                'medium2': currentStep === 'payment'
+                                            }"></div>
                                         </div>
-                                        <div class="col-4" [ngClass]="{'medium4': currentStep === 'successfull'}">
-                                            <div class="flechaSteps"></div>
+                                        <!-- Step 3 -->
+                                        <div class="col-4">
+                                            <div [ngClass]="{
+                                                'flechaSteps': true,
+                                                'flechaStepsNoCheck3': currentStep !== 'successfull',
+                                                'medium3': currentStep === 'successfull'
+                                            }"></div>
                                         </div>
                                     </div>
                                 </div>
