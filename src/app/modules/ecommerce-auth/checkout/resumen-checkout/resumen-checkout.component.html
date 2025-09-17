@@ -95,7 +95,7 @@
             <!-- End Shipping rates -->
             <!--Address-->
             <div class="d-flex flex-row mb-lg-5 mb-3">
-               <div class="dashboard-content h-100 w-100 mb-3" id="top-tabContent">
+               <div class="dashboard-content h-100 w-60 mb-3" id="top-tabContent">
                   <!-- Address Book -->
                   <div class="tab-pane h-100" id="address">
                      <div class="address-card mt-0 h-100">
@@ -130,7 +130,8 @@
                                        <!-- Mostrar la lista de direcciones -->
                                        <div class="address-book-section">
                                           <h3 class="mb-4 fw-bold lh-1 text-uppercase">Datos de envío</h3>
-                                          <fieldset>
+                                          <form #addressForm="ngForm" novalidate (ngSubmit)="storeAddress()">
+                                             <fieldset>
                                              <!-- Nombre -->
                                              <div class="row justify-content-center">
                                                 <div
@@ -140,15 +141,19 @@
                                                       >Nombre <span class="required">*</span></label
                                                       >
                                                    <input
-                                                   name="firstname"
-                                                   value=""
-                                                   id="firstname"
-                                                   type="text"
-                                                   [(ngModel)]="name"
-                                                   required=""
-                                                   placeholder="Nombre"
-                                                   class="form-control py-4"
+                                                      name="firstname"
+                                                      [(ngModel)]="name"
+                                                      #firstname="ngModel"
+                                                      id="firstname"
+                                                      type="text"
+                                                      required
+                                                      placeholder="Nombre"
+                                                      class="form-control py-4"
+                                                      [ngClass]="{'is-invalid': firstname.invalid && (firstname.touched || addressForm.submitted)}"
                                                    />
+                                                   <div *ngIf="firstname.invalid && (firstname.touched || addressForm.submitted)" class="invalid-feedback">
+                                                      Completa este campo para continuar
+                                                   </div>
                                                 </div>
                                              </div>
                                              <!-- Apellidos -->
@@ -160,15 +165,19 @@
                                                       >Apellidos <span class="required">*</span></label
                                                       >
                                                    <input
-                                                   name="lastname"
-                                                   value=""
-                                                   id="lastname"
-                                                   type="text"
-                                                   [(ngModel)]="surname"
-                                                   required=""
-                                                   placeholder="Apellidos"
-                                                   class="form-control py-4"
+                                                      name="lastname"
+                                                      [(ngModel)]="surname"
+                                                      #lastname="ngModel"
+                                                      id="lastname"
+                                                      type="text"
+                                                      required
+                                                      placeholder="Apellidos"
+                                                      class="form-control py-4"
+                                                      [ngClass]="{'is-invalid': lastname.invalid && (lastname.touched || addressForm.submitted)}"
                                                    />
+                                                   <div *ngIf="lastname.invalid && (lastname.touched || addressForm.submitted)" class="invalid-feedback">
+                                                      Completa este campo para continuar
+                                                   </div>
                                                 </div>
                                              </div>
                                              <!-- Email -->
@@ -180,15 +189,19 @@
                                                       >E-Mail <span class="required">*</span></label
                                                       >
                                                    <input
-                                                   name="email"
-                                                   value=""
-                                                   id="email"
-                                                   type="email"
-                                                   required=""
-                                                   [(ngModel)]="email"
-                                                   placeholder="E-mail"
-                                                   class="form-control py-4"
+                                                      name="email"
+                                                      [(ngModel)]="email"
+                                                      #emailRef="ngModel"
+                                                      id="email"
+                                                      type="email"
+                                                      required
+                                                      placeholder="E-mail"
+                                                      class="form-control py-4"
+                                                      [ngClass]="{'is-invalid': emailRef.invalid && (emailRef.touched || addressForm.submitted)}"
                                                    />
+                                                   <div *ngIf="emailRef.invalid && (emailRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                      Completa este campo para continuar
+                                                   </div>
                                                 </div>
                                              </div>
                                              <!-- Pais -->
@@ -200,17 +213,15 @@
                                                       >País <span class="required">*</span></label
                                                       >
                                                    <select
-                                                   id="address_country1"
-                                                   name="address[country]"
-                                                   [(ngModel)]="pais"
-                                                   data-default="United States"
-                                                   class="form-control py-4"
+                                                      id="address_country1"
+                                                      name="address[country]"
+                                                      [(ngModel)]="pais"
+                                                      #paisSelect="ngModel"
+                                                      required
+                                                      class="form-control py-4 fw-light"
+                                                      [ngClass]="{'is-invalid': paisSelect.invalid && (paisSelect.touched || addressForm.submitted)}"
                                                    >
-                                                   <option
-                                                      value="0"
-                                                      label="Seleccione un país"
-                                                      selected="selected"
-                                                      >
+                                                      <option value="" disabled>
                                                       Seleccionar un país
                                                    </option>
                                                    <optgroup id="country-optgroup-Eu" label="Europe">
@@ -222,6 +233,9 @@
                                                       <option value="SPAIN" label="Spain">Spain</option>
                                                    </optgroup>
                                                    </select>
+                                                   <div *ngIf="paisSelect.invalid && (paisSelect.touched || addressForm.submitted)" class="invalid-feedback">
+                                                      Completa este campo para continuar
+                                                   </div>
                                                 </div>
                                              </div>
                                              <!-- Direccion -->
@@ -229,19 +243,24 @@
                                                 <div
                                                    class="form-group col-12"
                                                    >
-                                                   <label for="address-1" class="form-label d-none"
+                                                   <label for="address" class="form-label d-none"
                                                       >Dirección <span class="required">*</span></label
                                                       >
                                                    <input
-                                                   name="address_1"
+                                                   name="address"
                                                    value=""
-                                                   id="address-1"
+                                                   id="address"
                                                    type="text"
                                                    required=""
                                                    [(ngModel)]="address"
+                                                   #addressRef="ngModel"
                                                    placeholder="Dirección"
-                                                   class="form-control py-4"
+                                                   class="form-control py-4 fw-light"
+                                                   [ngClass]="{'is-invalid': addressRef.invalid && (addressRef.touched || addressForm.submitted)}"
                                                    />
+                                                   <div *ngIf="addressRef.invalid && (addressRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                      Completa este campo para continuar
+                                                   </div>
                                                 </div>
                                              </div>
                                              <!-- Codigo postal -->
@@ -253,14 +272,19 @@
                                                       >Código postal <span class="required">*</span></label
                                                       >
                                                    <input
-                                                   name="postcode"
-                                                   value=""
-                                                   id="postcode"
-                                                   type="text"
-                                                   class="form-control py-4"
-                                                   [(ngModel)]="zipcode"
-                                                   placeholder="Código postal"
+                                                      name="postcode"
+                                                      id="postcode"
+                                                      type="text"
+                                                      required
+                                                      [(ngModel)]="zipcode"
+                                                      #zipcodeRef="ngModel"
+                                                      placeholder="Código postal"
+                                                      class="form-control py-4 fw-light"
+                                                      [ngClass]="{'is-invalid': zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted)}"
                                                    />
+                                                   <div *ngIf="zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                      Completa este campo para continuar
+                                                   </div>
                                                 </div>
                                              </div>
                                              <!-- Población -->
@@ -272,15 +296,19 @@
                                                       >Población <span class="required">*</span></label
                                                       >
                                                    <input
-                                                   name="city"
-                                                   placeholder="Población"
-                                                   class="form-control py-4"
-                                                   value=""
-                                                   required=""
-                                                   [(ngModel)]="poblacion"
-                                                   id="new-city"
-                                                   type="text"
+                                                      name="city"
+                                                      placeholder="Población"
+                                                      class="form-control py-4 fw-light"
+                                                      required
+                                                      [(ngModel)]="poblacion"
+                                                      #poblacionRef="ngModel"
+                                                      [ngClass]="{'is-invalid': poblacionRef.invalid && (poblacionRef.touched || addressForm.submitted)}"
+                                                      id="new-city"
+                                                      type="text"
                                                    />
+                                                   <div *ngIf="poblacionRef.invalid && (poblacionRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                      Completa este campo para continuar
+                                                   </div>
                                                 </div>
                                              </div>
                                              <!-- Ciudad -->
@@ -292,22 +320,23 @@
                                                       >Ciudad <span class="required">*</span></label
                                                       >
                                                    <select
-                                                   id="address_State"
-                                                   name="address[State]"
-                                                   data-default=""
-                                                   [(ngModel)]="ciudad"
-                                                   class="form-control py-4"
+                                                      id="address_State"
+                                                      name="address[State]"
+                                                      [(ngModel)]="ciudad"
+                                                      #ciudadRef="ngModel"
+                                                      required
+                                                      class="form-control py-4 fw-light"
+                                                      [ngClass]="{'is-invalid': ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)}"
                                                    >
-                                                   <option
-                                                      value="0"
-                                                      label="Select a state"
-                                                      selected="selected"
-                                                      >
+                                                   <option value="" disabled>
                                                       Provincia/Estado
                                                    </option>
                                                    <option value="Madrid">Madrid</option>
                                                    <option value="New York">New York</option>
                                                    </select>
+                                                   <div *ngIf="ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                      Completa este campo para continuar
+                                                   </div>
                                                 </div>
                                              </div>
                                              <!-- Telefono -->
@@ -319,15 +348,19 @@
                                                       >Móvil <span class="required">*</span></label
                                                       >
                                                    <input
-                                                   name="phone"
-                                                   value=""
-                                                   id="phone"
-                                                   type="tel"
-                                                   required=""
-                                                   [(ngModel)]="phone"
-                                                   placeholder="Móvil"
-                                                   class="form-control py-4"
+                                                      name="phone"
+                                                      id="phone"
+                                                      type="tel"
+                                                      required
+                                                      [(ngModel)]="phone"
+                                                      #phoneRef="ngModel"
+                                                      placeholder="Móvil"
+                                                      class="form-control py-4 fw-light"
+                                                      [ngClass]="{'is-invalid': phoneRef.invalid && (phoneRef.touched || addressForm.submitted)}"
                                                    />
+                                                   <div *ngIf="phoneRef.invalid && (phoneRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                      Completa este campo para continuar
+                                                   </div>
                                                 </div>
                                              </div>
                                              <!-- CheckBook-->
@@ -373,7 +406,8 @@
                                                    </p>
                                                 </div>
                                              </div>
-                                          </fieldset>
+                                             </fieldset>
+                                             </form>
                                        </div>
                                     </div>
                                  </div>
@@ -535,7 +569,8 @@
                                        ></button>
                                  </div>
                                  <div class="modal-body border-0">
-                                    <fieldset>
+                                    <form #addressForm="ngForm" novalidate (ngSubmit)="storeAddress()">
+                                       <fieldset>
                                        <!-- Nombre -->
                                        <div class="row justify-content-center">
                                           <div
@@ -773,7 +808,8 @@
                                              </p>
                                           </div>
                                        </div>
-                                    </fieldset>
+                                       </fieldset>
+                                    </form>
                                  </div>
                                  <div
                                     class="modal-footer border-0 justify-content-center d-none"
@@ -1259,7 +1295,6 @@
                      </div>
                   </div>
                </div>
-            </div>
             <!-- End Cart List -->
          </div>
       </div>
