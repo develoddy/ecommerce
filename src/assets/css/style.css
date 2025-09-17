@@ -373,7 +373,6 @@ p:last-child { margin-bottom:0; }
   cursor: not-allowed;
 }
 
-
 .btn-link { background-color:transparent; border:0; padding:0; margin:0; color:#424242; text-align:left; text-decoration:none; outline:none !important; box-shadow:none !important; }
 .btn-link:hover, .btn-link:focus { color:#171717; text-decoration:none; background-color:transparent; }
 .text-link { color:#171717; text-decoration:underline; text-underline-offset:3px; background-color:transparent; border:0; padding:0; margin:0; outline:none !important; box-shadow:none !important; }
@@ -3479,6 +3478,16 @@ a.logo {
   display: inline-block;
   max-width: 100%; /* default para móviles */
 }
+
+ /* Global truncate ellipsis for product titles */
+  /* .truncate-ellipsis {
+      display: block !important;
+      width: 100% !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+  } */
+
 
 .logo-loader {
   width: 120px;

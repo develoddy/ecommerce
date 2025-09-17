@@ -823,6 +823,7 @@
                                 </div>
                                 <!--End Note with Shipping estimates-->
                             </div>
+
                             <!-- Resumen de precio -->
                             <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-5 mt-lg-0">
                                 <div class="cart-info sidebar-sticky bg-transparent border-0">
@@ -897,14 +898,13 @@
                                             class="">
                                             <button _ngcontent-serverapp-c57="" type="submit" name="add"
                                                 class="btn-dark-ld product-form-cart-submit fw-light mt-3 mb-2">
-                                                <span>Continuar con el pago</span>
+                                                <span>Comenzar pedido</span>
                                             </button>
                                         </a>
                                         <div class="paymnet-img text-center mb-3 d-none">
                                             <img src="assets/images/icons/safepayment.png" alt="Payment" width="299"
                                                 height="28" />
                                         </div>
-
                                         <div class="d-flex mb-3">
                                             <ul class="d-flex flex-row">
                                                 <li class="ms-0">
@@ -979,7 +979,9 @@
                                                 <small>¿Necesitas ayuda? Ponte en contacto con el
                                                     <a href="#" onclick="return false;"
                                                         class="text-decoration-underline fw-normal">servicio de Atención al
-                                                        cliente</a>.</small>
+                                                        cliente
+                                                    </a>.
+                                                </small>
                                             </p>
                                         </div>
                                     </div>
@@ -987,7 +989,8 @@
                             </div>
                             <!-- End Resumen de precio -->
                             <!--End Cart Content-->
-                            <!--Cart Sidebar-->
+                            
+                            <!--Cart Sidebar | UI OLD-->
                             <div class="col-12 col-sm-12 col-md-12 col-lg-12 cart-footer py-5 d-none">
                                 <div class="row justify-content-center">
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-4 mb-12 py-3 px-3">
@@ -1064,9 +1067,7 @@
                                                     <label for="cart-tearm">Estoy de acuerdo con los términos y
                                                         condiciones</label>
                                                 </div>
-                                                <!-- <a [href]="'/' + locale + '/' + country + '/account/checkout'" id="cartCheckout" class="btn btn-dark-ld fw-light btn-lg my-4 checkout w-100">Continuar con el pago
-                                                    <button _ngcontent-serverapp-c57="" type="submit" name="add" class="btn btn-dark-ld product-form-cart-submit py-4 text-uppercase fw-normal"><span _ngcontent-serverapp-c57="">Añadir al carrito</span></button>
-                                                </a> -->
+                                                
                                                 <a [href]="
                                 '/' + locale + '/' + country + '/account/checkout'
                             " id="cartCheckout" class="">

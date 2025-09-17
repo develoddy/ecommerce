@@ -5,7 +5,7 @@
          <div
             class="col-12 col-sm-12 col-md-7 col-lg-8 order-1 order-md-1"
             id="main-left"
-            [ngClass]="{ 'px-5': isDesktop }"
+            [ngClass]="{ 'px-0': isDesktop }"
             >
             <!-- Tipo de envío -->
             <div class="mb-5">
@@ -122,19 +122,19 @@
 
                         <!-- Register address (Probando) -->
                         <ng-container *ngIf="listAddresses.length == 0; else allShowListAddress">
-                           <div class="d-flex flex-row mb-4">
-                              <div class="dashboard-content h-100" id="top-tabContent">
+                           <div class="mb-4">
+                              <div class="dashboard-content h-100" id="top-tabContent" [ngClass]="{ 'w-100': isMobile, 'w-60': isDesktop}">
                                  <!-- Address Book -->
                                  <div class="tab-pane h-100" id="address">
                                     <div class="address-card mt-0 h-100">
                                        <!-- Mostrar la lista de direcciones -->
                                        <div class="address-book-section">
-                                          <p class="mb-4 fw-bold lh-1 text-uppercase">Datos de envío</p>
+                                          <h3 class="mb-4 fw-bold lh-1 text-uppercase">Datos de envío</h3>
                                           <fieldset>
                                              <!-- Nombre -->
                                              <div class="row justify-content-center">
                                                 <div
-                                                   class="form-group col-12 col-sm-6 col-md-6 col-lg-12"
+                                                   class="form-group col-12"
                                                    >
                                                    <label for="firstname" class="form-label d-none"
                                                       >Nombre <span class="required">*</span></label
@@ -154,7 +154,7 @@
                                              <!-- Apellidos -->
                                              <div class="row justify-content-center">
                                                 <div
-                                                   class="form-group col-12 col-sm-6 col-md-6 col-lg-12"
+                                                   class="form-group col-12"
                                                    >
                                                    <label for="lastname" class="form-label d-none"
                                                       >Apellidos <span class="required">*</span></label
@@ -174,7 +174,7 @@
                                              <!-- Email -->
                                              <div class="row justify-content-center">
                                                 <div
-                                                   class="form-group col-12 col-sm-6 col-md-6 col-lg-12"
+                                                   class="form-group col-12"
                                                    >
                                                    <label for="email" class="form-label d-none"
                                                       >E-Mail <span class="required">*</span></label
@@ -194,7 +194,7 @@
                                              <!-- Pais -->
                                              <div class="row justify-content-center">
                                                 <div
-                                                   class="form-group col-12 col-sm-6 col-md-6 col-lg-12"
+                                                   class="form-group col-12"
                                                    >
                                                    <label for="address_country1" class="form-label d-none"
                                                       >País <span class="required">*</span></label
@@ -227,7 +227,7 @@
                                              <!-- Direccion -->
                                              <div class="row justify-content-center">
                                                 <div
-                                                   class="form-group col-12 col-sm-6 col-md-6 col-lg-12"
+                                                   class="form-group col-12"
                                                    >
                                                    <label for="address-1" class="form-label d-none"
                                                       >Dirección <span class="required">*</span></label
@@ -247,7 +247,7 @@
                                              <!-- Codigo postal -->
                                              <div class="row justify-content-center">
                                                 <div
-                                                   class="form-group col-12 col-sm-6 col-md-6 col-lg-12"
+                                                   class="form-group col-12"
                                                    >
                                                    <label for="postcode" class="form-label d-none"
                                                       >Código postal <span class="required">*</span></label
@@ -266,7 +266,7 @@
                                              <!-- Población -->
                                              <div class="row justify-content-center">
                                                 <div
-                                                   class="form-group col-12 col-sm-6 col-md-6 col-lg-12"
+                                                   class="form-group col-12"
                                                    >
                                                    <label for="new-city" class="form-label d-none"
                                                       >Población <span class="required">*</span></label
@@ -286,7 +286,7 @@
                                              <!-- Ciudad -->
                                              <div class="row justify-content-center">
                                                 <div
-                                                   class="form-group col-12 col-sm-6 col-md-6 col-lg-12"
+                                                   class="form-group col-12"
                                                    >
                                                    <label for="address_State" class="form-label d-none"
                                                       >Ciudad <span class="required">*</span></label
@@ -313,7 +313,7 @@
                                              <!-- Telefono -->
                                              <div class="row justify-content-center">
                                                 <div
-                                                   class="form-group col-12 col-sm-6 col-md-6 col-lg-12"
+                                                   class="form-group col-12"
                                                    >
                                                    <label for="phone" class="form-label d-none"
                                                       >Móvil <span class="required">*</span></label
@@ -357,7 +357,7 @@
                                                    >
                                                    <button
                                                       type="submit"
-                                                      class="btn btn-black me-1 w-100 py-3 text-uppercase fw-normal"
+                                                      class="btn-dark-ld"
                                                       (click)="storeAddress()"
                                                       >
                                                       <ng-container *ngIf="!loading"
@@ -393,6 +393,7 @@
                                  <h4 class="text-muted">Cargando</h4>
                               </div>
                            </div>
+
                            <!-- Mostrar la lista de direcciones -->
                            <div class="address-book-section" [class.d-none]="loading">
                               <div class="top-sec d-flex mb-2 d-flex justify-content-between" [class.d-none]="loading">
@@ -887,7 +888,7 @@
                   Continuar a pago
                   </button>
                   <p id="" class="fs-12">
-                     <small class="fw-light">Al finalizar la compra, confirmas que has leído, entendido y que aceptas la
+                     <small class="fw-light">Al continuar, confirmas que has leído la
                      <a
                         class="text-black fw-normal text-decoration-underline"
                         href="#"
@@ -921,10 +922,9 @@
 
 
       <!-- ======== Columna de la derecha ======== -->
-      <div
-         class="col-12 col-sm-12 col-md-5 col-lg-4 order-0 order-md-2"
+      <div class="col-12 col-sm-12 col-md-5 col-lg-4 order-0 order-md-2"
          id="main-right"
-         [ngClass]="{ 'px-5': isDesktop }"
+         [ngClass]="{ 'px-0': isDesktop }"
          >
          <div class="row">
             <div class="col-12 order-1 order-md-1">
@@ -1136,9 +1136,8 @@
                            <h3 class="mb-0">Artículos ({{ listCarts.length }})</h3>
                            <div class="order-list">
                               <ng-container *ngFor="let cart of listCarts">
-                                 <div
-                                    class="d-flex py-3 align-items-start gap-3 flex-wrap"
-                                    >
+                                 <!-- <div class="d-flex py-3 align-items-start gap-3 flex-wrap"> -->
+                                 <div class="d-flex py-3 align-items-start">
                                     <!-- Imagen -->
                                     <div style="flex: 0 0 auto">
                                        <a
@@ -1166,20 +1165,23 @@
                                        >
                                        <!-- Datos adicionales -->
                                        <div class="d-flex flex-column">
-                                          <div class="fw-normal" style="height: 20px;">
-                                             <a href="#" class="fw-normal text-black text-truncate d-inline-block product-title" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                          <div class="d-flex">
+                                             <div class="fw-normal me-2" style="height: 20px;">
+                                                <a href="#" class="fw-normal text-black text-truncate d-inline-block product-title" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                             </div>
+                                             <div class="">
+                                                <span class="money">
+                                                <span class="price-small fw-bold">
+                                                <span class="price-main-small">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}</span>
+                                                <span class="price-decimals-small">
+                                                <sup>{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</sup>
+                                                <span class="currency-symbol-small">{{ euro }}</span>
+                                                </span>
+                                                </span>
+                                                </span>
+                                             </div>
                                           </div>
-                                          <div class="">
-                                             <span class="money">
-                                             <span class="price-small fw-bold">
-                                             <span class="price-main-small">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}</span>
-                                             <span class="price-decimals-small">
-                                             <sup>{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</sup>
-                                             <span class="currency-symbol-small">{{ euro }}</span>
-                                             </span>
-                                             </span>
-                                             </span>
-                                          </div>
+                                          
                                           <div class="d-flex fw-normal">
                                              <span class="w-25">Color</span>
                                              <span class="ms-lg-3 ms-5">{{ cart.variedad.color }}</span>
