@@ -242,7 +242,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
-        console.log("--- Header - listCarts:", this.listCarts);
         
         // Recalcular total usando retail_price de variedad o price_usd
         this.totalCarts = this.listCarts.reduce((sum, item) => {

@@ -38,15 +38,15 @@
                             <div class="row-fluid stepsCheckout">
                                 <div class="span12" role="navigation">
                                     <div class="row labelSteps text-center" role="list">
-                                        <div class="col-6 col-md-4 mb-2"
+                                        <div class="col-4 col-md-4 mb-2"
                                             [ngClass]="{'medium': currentStep === 'resumen'}" role="listitem">
                                             Envío
                                         </div>
-                                        <div class="col-6 col-md-4 mb-2 nocheck2"
+                                        <div class="col-4 col-md-4 mb-2 nocheck2"
                                             [ngClass]="{'medium': currentStep === 'payment'}" role="listitem">
                                             Pago
                                         </div>
-                                        <div class="col-6 col-md-4 mb-2"
+                                        <div class="col-4 col-md-4 mb-2"
                                             [ngClass]="{'medium': currentStep === 'successfull'}" role="listitem">
                                             Confirmación
                                         </div>
@@ -73,8 +73,8 @@
                                         <!-- Step 3 -->
                                         <div class="col-4">
                                             <div [ngClass]="{
-                                                'flechaSteps': true,
                                                 'flechaStepsNoCheck3': currentStep !== 'successfull',
+                                                'flechaSteps': currentStep === 'successfull',
                                                 'medium3': currentStep === 'successfull'
                                             }"></div>
                                         </div>

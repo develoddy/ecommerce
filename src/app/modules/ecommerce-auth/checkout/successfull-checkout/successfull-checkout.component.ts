@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, HostListener, EventEmitter } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  Output,
+  HostListener,
+  EventEmitter,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
@@ -10,23 +19,22 @@ import { CheckoutService } from '../../_services/checkoutService';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { Location } from '@angular/common';
 
-declare var $:any;
-declare function HOMEINITTEMPLATE([]):any;
-declare function actionNetxCheckout([]):any;
-declare function alertDanger([]):any;
-declare function alertSuccess([]):any;
+declare var $: any;
+declare function HOMEINITTEMPLATE([]): any;
+declare function actionNetxCheckout([]): any;
+declare function alertDanger([]): any;
+declare function alertSuccess([]): any;
 
 @Component({
   selector: 'app-successfull-checkout',
   templateUrl: './successfull-checkout.component.html',
-  styleUrls: ['./successfull-checkout.component.css']
+  styleUrls: ['./successfull-checkout.component.css'],
 })
 export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
-
-  @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
-  euro = "€";
-  listAddressClients:any = [];
-  listAddressGuest:any = [];
+  @ViewChild('paypal', { static: true }) paypalElement?: ElementRef;
+  euro = '€';
+  listAddressClients: any = [];
+  listAddressGuest: any = [];
   // Address
   name: string = '';
   surname: string = '';
@@ -37,37 +45,37 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   ciudad: string = '';
   email: string = '';
   phone: string = '';
-  address_client_selected:any = null;
-  shippingAddress:any=null;
-  listCarts:any = [];
-  totalCarts:any=null;
+  address_client_selected: any = null;
+  shippingAddress: any = null;
+  listCarts: any = [];
+  totalCarts: any = null;
   show = false;
-  user:any;
-  code_cupon:any=null;
+  user: any;
+  code_cupon: any = null;
   sale: any;
-  saleDetails: any =[];
+  saleDetails: any = [];
   isSaleSuccess = false;
-  CURRENT_USER_AUTHENTICATED:any=null;
-  CURRENT_USER_GUEST:any=null;
+  CURRENT_USER_AUTHENTICATED: any = null;
+  CURRENT_USER_GUEST: any = null;
   isAddressSameAsShipping: boolean = false;
-  isSuccessRegisteredAddredd : boolean = false;
+  isSuccessRegisteredAddredd: boolean = false;
   public loading: boolean = false;
   isLastStepActive_1: boolean = false;
   isLastStepActive_2: boolean = false;
   isLastStepActive_3: boolean = false;
   isLastStepActive_4: boolean = false;
-  errorAutenticate:boolean=false;
-  errorMessageAutenticate:string="";
-  password_identify:string = "";
-  email_identify:string = "";
-  errorOrSuccessMessage:any="";
-  validMessage:boolean=false;
-  status:boolean=false;
+  errorAutenticate: boolean = false;
+  errorMessageAutenticate: string = '';
+  password_identify: string = '';
+  email_identify: string = '';
+  errorOrSuccessMessage: any = '';
+  validMessage: boolean = false;
+  status: boolean = false;
   private subscriptions: Subscription = new Subscription();
   @Output() activate = new EventEmitter<boolean>();
   isPasswordVisible: boolean = false;
-  locale: string = "";
-  country: string = "";
+  locale: string = '';
+  country: string = '';
   saleData: any = null;
 
   isMobile: boolean = false;
@@ -80,41 +88,49 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   maxDeliveryDate: string | null = null;
 
   constructor(
-    public _authEcommerce       : EcommerceAuthService  ,
-    public _authService         : AuthService           ,
-    public _cartService         : CartService           ,
-    public _router              : Router                ,
-    private location            : Location              ,
-    private subscriptionService : SubscriptionService   ,
-    public routerActived        : ActivatedRoute        ,
-    private checkoutService     : CheckoutService       ,
-    private localizationService : LocalizationService   ,
+    public _authEcommerce: EcommerceAuthService,
+    public _authService: AuthService,
+    public _cartService: CartService,
+    public _router: Router,
+    private location: Location,
+    private subscriptionService: SubscriptionService,
+    public routerActived: ActivatedRoute,
+    private checkoutService: CheckoutService,
+    private localizationService: LocalizationService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
   }
 
   ngOnInit(): void {
-    const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
-    const fromStripe = this.routerActived.snapshot.queryParamMap.get('fromStripe');
-    
+    const sessionId =
+      this.routerActived.snapshot.queryParamMap.get('session_id');
+    const fromStripe =
+      this.routerActived.snapshot.queryParamMap.get('fromStripe');
+
     if (sessionId) {
       // Intentar recuperar orden existente por stripeSessionId
-      this._authEcommerce.getSaleBySession(sessionId).subscribe(resp => {
-        this.saleData = resp.sale;
-        this.saleDetails = resp.saleDetails;
-        this.totalCarts = this.saleDetails
-          .reduce((sum: number, it: any) => sum + (Number(it.unitPrice ?? it.price_unitario) * it.cantidad), 0);
-        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-        this.successPayStripe();
-      }, err => {
-        if (err.status === 404) {
-          console.debug('Sale no encontrada, ejecutando registro fallback');
-          this.registerStripeSale();
-        } else {
-          console.error('Error fetching sale by session:', err);
+      this._authEcommerce.getSaleBySession(sessionId).subscribe(
+        (resp) => {
+          this.saleData = resp.sale;
+          this.saleDetails = resp.saleDetails;
+          this.totalCarts = this.saleDetails.reduce(
+            (sum: number, it: any) =>
+              sum + Number(it.unitPrice ?? it.price_unitario) * it.cantidad,
+            0
+          );
+          this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+          this.successPayStripe();
+        },
+        (err) => {
+          if (err.status === 404) {
+            console.debug('Sale no encontrada, ejecutando registro fallback');
+            this.registerStripeSale();
+          } else {
+            console.error('Error fetching sale by session:', err);
+          }
         }
-      });
+      );
     } else if (fromStripe === '1') {
       // Flujo legacy: registrar la venta directamente desde frontend
       this.registerStripeSale();
@@ -123,7 +139,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       this.saleData = this.checkoutService.getSaleData();
       this.successPayStripe();
     }
-    
+
     // Limpiar parámetros de URL para evitar re-procesar en recarga
     if (sessionId || fromStripe) {
       const cleanPath = this._router.url.split('?')[0];
@@ -132,14 +148,14 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
     this.activate.emit(true);
     this.subscriptionService.setShowSubscriptionSection(false);
-      this._authEcommerce.loading$.subscribe(isLoading => {
-        this.loading = isLoading;
-      });
+    this._authEcommerce.loading$.subscribe((isLoading) => {
+      this.loading = isLoading;
+    });
 
     this.verifyAuthenticatedUser();
     this.checkIfAddressClientExists();
     this.checkDeviceType();
-  
+
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
@@ -154,11 +170,11 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
     // Ajusta el tamaño de la imagen según el tipo de dispositivo
     if (this.isMobile) {
-        this.width = 80;  // tamaño para móviles
-        this.height = 80; // tamaño para móviles
+      this.width = 80; // tamaño para móviles
+      this.height = 80; // tamaño para móviles
     } else {
-        this.width = 100; // tamaño por defecto
-        this.height = 100; // tamaño por defecto
+      this.width = 100; // tamaño por defecto
+      this.height = 100; // tamaño por defecto
     }
   }
 
@@ -170,25 +186,27 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       const saleDetails = initialData.saleDetails || [];
       this.sale = saleInfo;
       // Calculate total immediately
-      this.totalCarts = saleDetails
-        .reduce((sum: number, item: any) => {
-          const unitPrice = Number(item.variedade?.retail_price ?? item.price_unitario ?? 0);
-          return sum + (unitPrice * item.cantidad);
-        }, 0);
+      this.totalCarts = saleDetails.reduce((sum: number, item: any) => {
+        const unitPrice = Number(
+          item.variedade?.retail_price ?? item.price_unitario ?? 0
+        );
+        return sum + unitPrice * item.cantidad;
+      }, 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       this.saleDetails = saleDetails;
     }
     // Subscribe to updates (e.g., after Stripe)
-    this.checkoutService.saleData$.subscribe(saleDataPayload => {
+    this.checkoutService.saleData$.subscribe((saleDataPayload) => {
       const saleInfo = saleDataPayload?.sale;
       const saleDetails = saleDataPayload?.saleDetails || [];
       if (saleInfo) {
         this.sale = saleInfo;
-        this.totalCarts = saleDetails
-          .reduce((sum: number, item: any) => {
-            const unitPrice = Number(item.variedade?.retail_price ?? item.price_unitario ?? 0);
-            return sum + (unitPrice * item.cantidad);
-          }, 0);
+        this.totalCarts = saleDetails.reduce((sum: number, item: any) => {
+          const unitPrice = Number(
+            item.variedade?.retail_price ?? item.price_unitario ?? 0
+          );
+          return sum + unitPrice * item.cantidad;
+        }, 0);
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
         this.saleDetails = saleDetails;
       }
@@ -197,28 +215,35 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
   registerStripeSale() {
     const payload = this.checkoutService.getSalePayload();
-    if ( !payload ) {
-      alertDanger("No se encontraron los datos necesarios de la venta.");
+    if (!payload) {
+      alertDanger('No se encontraron los datos necesarios de la venta.');
       return;
     }
-  
+
     // Incluir stripeSessionId para evitar duplicados en recargas
-    const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
+    const sessionId =
+      this.routerActived.snapshot.queryParamMap.get('session_id');
     const sale = {
-      user            : payload.userId,
-      guestId         : payload.guestId,
-      currency_payment: "EUR",
-      method_payment  : "STRIPE",
-      n_transaction   : "STRIPE_CHECKOUT",
-      stripeSessionId : sessionId || undefined,
+      user: payload.userId,
+      guestId: payload.guestId,
+      currency_payment: 'EUR',
+      method_payment: 'STRIPE',
+      n_transaction: 'STRIPE_CHECKOUT',
+      stripeSessionId: sessionId || undefined,
       // Usar precio de variante o unitario para calcular total real
-      total           : parseFloat(
-                          payload.cart.reduce((sum: number, item: any) => {
-                            const price = Number(item.variedade?.retail_price ?? item.price_unitario ?? item.product?.price_usd ?? 0);
-                            return sum + (price * item.cantidad);
-                          }, 0)
-                        .toFixed(2)
-                        ),
+      total: parseFloat(
+        payload.cart
+          .reduce((sum: number, item: any) => {
+            const price = Number(
+              item.variedade?.retail_price ??
+                item.price_unitario ??
+                item.product?.price_usd ??
+                0
+            );
+            return sum + price * item.cantidad;
+          }, 0)
+          .toFixed(2)
+      ),
     };
 
     const sale_address = payload.address;
@@ -226,9 +251,9 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     const isGuest = !payload.userId;
 
     this._authEcommerce.registerSale({ sale, sale_address }, isGuest).subscribe(
-      ( resp: any ) => {
-        if ( resp.code === 403 ) {
-          alertDanger( resp.message );
+      (resp: any) => {
+        if (resp.code === 403) {
+          alertDanger(resp.message);
           return;
         }
 
@@ -245,50 +270,56 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
         this.saleData = resp;
         this.successPayStripe();
       },
-      ( err ) => {
-        alertDanger("Ocurrió un error al registrar la venta con Stripe.");
+      (err) => {
+        alertDanger('Ocurrió un error al registrar la venta con Stripe.');
         console.error(err);
       }
     );
   }
 
-  formatearFechaEntrega(fecha: string): { label: string, datetime: string } {
+  formatearFechaEntrega(fecha: string): { label: string; datetime: string } {
     const date = new Date(fecha);
-      return {
-      label: date.toLocaleDateString('es-ES', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'short'
-      }).toLowerCase(),
-      datetime: date.toISOString().split('T')[0]
+    return {
+      label: date
+        .toLocaleDateString('es-ES', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'short',
+        })
+        .toLowerCase(),
+      datetime: date.toISOString().split('T')[0],
     };
   }
 
-
-  calculateTotal( cart: any[] ): number {
-    return cart.reduce(( sum, item ) => {
-      const price = Number(item.variedade?.retail_price ?? item.price_unitario ?? item.product?.price_usd ?? 0);
-      return sum + ( price * item.cantidad );
+  calculateTotal(cart: any[]): number {
+    return cart.reduce((sum, item) => {
+      const price = Number(
+        item.variedade?.retail_price ??
+          item.price_unitario ??
+          item.product?.price_usd ??
+          0
+      );
+      return sum + price * item.cantidad;
     }, 0);
   }
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', { 
-        day: 'numeric', 
-        month: 'long', 
-        year: 'numeric' 
+    return date.toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
     });
   }
 
   private verifyAuthenticatedUser(): void {
-    this._authEcommerce._authService.user.subscribe(user => {
-      if ( user ) {
+    this._authEcommerce._authService.user.subscribe((user) => {
+      if (user) {
         this.CURRENT_USER_AUTHENTICATED = user;
         this.CURRENT_USER_GUEST = null;
         this.checkIfAddressClientExists();
       } else {
-        this._authEcommerce._authService.userGuest.subscribe(guestUser => {
+        this._authEcommerce._authService.userGuest.subscribe((guestUser) => {
           if (guestUser?.guest) {
             this.CURRENT_USER_GUEST = guestUser;
             this.checkIfAddressGuestExists();
@@ -302,20 +333,20 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
   checkIfAddressClientExists() {
     if (this.CURRENT_USER_AUTHENTICATED) {
-      this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-        (resp: any) => {
+      this._authEcommerce
+        .listAddressClient(this.CURRENT_USER_AUTHENTICATED._id)
+        .subscribe((resp: any) => {
           this.listAddressClients = resp.address_client;
           this.shippingAddress = this.listAddressClients[0];
-      });
+        });
     }
   }
 
   checkIfAddressGuestExists() {
     if (this.CURRENT_USER_GUEST) {
-      this._authEcommerce.listAddressGuest().subscribe(
-        (resp: any) => {
-          this.listAddressGuest = resp.addresses;
-          this.shippingAddress = this.listAddressGuest[0];
+      this._authEcommerce.listAddressGuest().subscribe((resp: any) => {
+        this.listAddressGuest = resp.addresses;
+        this.shippingAddress = this.listAddressGuest[0];
       });
     }
   }
@@ -352,31 +383,30 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   getFormattedPrice(price: any) {
     const parsed = parseFloat(price);
     if (isNaN(parsed)) {
-      return { integerPart: "0", decimalPart: "00" };
+      return { integerPart: '0', decimalPart: '00' };
     }
     const [integerPart, decimalPart] = parsed.toFixed(2).split('.');
     return { integerPart, decimalPart };
   }
 
   getFormattedPriceOLD(price: any) {
-
     // 🔒 Protección contra null, undefined o cualquier valor "falsy"
     if (price === null || price === undefined) {
-      return { integerPart: "0", decimalPart: "00" };
+      return { integerPart: '0', decimalPart: '00' };
     }
 
     if (typeof price === 'string') {
       price = parseFloat(price); // Convertir a número
     }
-  
+
     if (isNaN(price)) {
-      return { integerPart: "0", decimalPart: "00" }; // Manejo de error si el valor no es válido
+      return { integerPart: '0', decimalPart: '00' }; // Manejo de error si el valor no es válido
     }
-    
+
     const formatted = price.toFixed(2).split('.'); // Asegura siempre dos decimales
     return {
       integerPart: formatted[0], // Parte entera
-      decimalPart: formatted[1]  // Parte decimal
+      decimalPart: formatted[1], // Parte decimal
     };
   }
 
@@ -384,82 +414,89 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     this._cartService.deleteAllCart(user_id).subscribe(
       (resp: any) => {
         this._cartService.resetCart();
-    }, (error) => {
-        console.error("Error al eliminar el carrito:", error);
-    });
+      },
+      (error) => {
+        console.error('Error al eliminar el carrito:', error);
+      }
+    );
   }
 
-  removeCart(cart:any) {
-    this._cartService.deleteCart(cart._id).subscribe(
-      (resp:any) => {
-        this._cartService.removeItemCart(cart);
+  removeCart(cart: any) {
+    this._cartService.deleteCart(cart._id).subscribe((resp: any) => {
+      this._cartService.removeItemCart(cart);
     });
   }
 
   apllyCupon() {
-    let data = {code: this.code_cupon, user_id: this.CURRENT_USER_AUTHENTICATED._id}
-    this._cartService.apllyCupon(data).subscribe(
-      (resp:any) => {
-        if (resp.message == 403) {
-          alertDanger(resp.message_text);
-        } else {
-          alertSuccess(resp.message_text);
-          this.listAllCarts();
-        }
+    let data = {
+      code: this.code_cupon,
+      user_id: this.CURRENT_USER_AUTHENTICATED._id,
+    };
+    this._cartService.apllyCupon(data).subscribe((resp: any) => {
+      if (resp.message == 403) {
+        alertDanger(resp.message_text);
+      } else {
+        alertSuccess(resp.message_text);
+        this.listAllCarts();
+      }
     });
   }
 
   listAllCarts() {
     this._cartService.resetCart();
-    if ( this._cartService._authService.user ) {
-      this._cartService.listCarts(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-        (resp:any) => {
-          resp.carts.forEach((cart:any) => {
+    if (this._cartService._authService.user) {
+      this._cartService
+        .listCarts(this.CURRENT_USER_AUTHENTICATED._id)
+        .subscribe((resp: any) => {
+          resp.carts.forEach((cart: any) => {
             this._cartService.changeCart(cart);
           });
-      });
+        });
     }
   }
 
   store() {
-    this.address_client_selected ? this.updateAddress(): this.registerAddress();
+    this.address_client_selected
+      ? this.updateAddress()
+      : this.registerAddress();
   }
 
   private registerAddress() {
-    if ( 
-      !this.name      || 
-      !this.surname   || 
-      !this.pais      || 
-      !this.address   || 
-      !this.zipcode   || 
-      !this.poblacion || 
-      !this.ciudad    || 
-      !this.email     || 
-      !this.phone 
+    if (
+      !this.name ||
+      !this.surname ||
+      !this.pais ||
+      !this.address ||
+      !this.zipcode ||
+      !this.poblacion ||
+      !this.ciudad ||
+      !this.email ||
+      !this.phone
     ) {
       this.status = false;
       this.validMessage = true;
-      this.errorOrSuccessMessage = "Rellene los campos obligatorios de la dirección de envío";
+      this.errorOrSuccessMessage =
+        'Rellene los campos obligatorios de la dirección de envío';
       this.hideMessageAfterDelay();
-      alertDanger("Rellene los campos obligatorios de la dirección de envío");
+      alertDanger('Rellene los campos obligatorios de la dirección de envío');
       return;
     }
 
-    let data = {    
-        user      : this.CURRENT_USER_AUTHENTICATED._id,
-        name      : this.name,
-        surname   : this.surname,
-        pais      : this.pais,
-        address   : this.address,
-        zipcode   : this.zipcode,
-        poblacion : this.poblacion,
-        ciudad    : this.ciudad,
-        email     : this.email,
-        phone     : this.phone,
+    let data = {
+      user: this.CURRENT_USER_AUTHENTICATED._id,
+      name: this.name,
+      surname: this.surname,
+      pais: this.pais,
+      address: this.address,
+      zipcode: this.zipcode,
+      poblacion: this.poblacion,
+      ciudad: this.ciudad,
+      email: this.email,
+      phone: this.phone,
     };
-    
+
     this._authEcommerce.registerAddressClient(data).subscribe(
-      (resp:any) => {
+      (resp: any) => {
         if (resp.status == 200) {
           this.status = true;
           this.validMessage = true;
@@ -470,62 +507,80 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
           $('#addNewModal').modal('hide');
         } else {
           this.status = false;
-          this.errorOrSuccessMessage = "Error al guardar la dirección";
+          this.errorOrSuccessMessage = 'Error al guardar la dirección';
           this.hideMessageAfterDelay();
         }
-    }, error => {
-      this.status = false;
-      this.errorOrSuccessMessage = "Error al guardar la dirección";
-      this.hideMessageAfterDelay();
-    });
+      },
+      (error) => {
+        this.status = false;
+        this.errorOrSuccessMessage = 'Error al guardar la dirección';
+        this.hideMessageAfterDelay();
+      }
+    );
   }
 
   private updateAddress() {
-    if (!this.name || !this.surname || !this.pais || !this.address || !this.zipcode || !this.poblacion || !this.email || !this.phone) {
+    if (
+      !this.name ||
+      !this.surname ||
+      !this.pais ||
+      !this.address ||
+      !this.zipcode ||
+      !this.poblacion ||
+      !this.email ||
+      !this.phone
+    ) {
       this.status = false;
       this.validMessage = true;
-      this.errorOrSuccessMessage = "Por favor, rellene los campos obligatorios de la dirección de envío";
+      this.errorOrSuccessMessage =
+        'Por favor, rellene los campos obligatorios de la dirección de envío';
       this.hideMessageAfterDelay();
       return;
     }
 
     // Preparar datos de dirección a actualizar
     let data = {
-      _id       : this.address_client_selected.id,
-      user      : this.CURRENT_USER_AUTHENTICATED._id,
-      name      : this.name,
-      surname   : this.surname,
-      pais      : this.pais,
-      address   : this.address,
-      zipcode   : this.zipcode,
-      poblacion : this.poblacion,
-      ciudad    : this.ciudad,
-      email     : this.email,
-      phone     : this.phone,
-      usual_shipping_address: this.address_client_selected.usual_shipping_address
+      _id: this.address_client_selected.id,
+      user: this.CURRENT_USER_AUTHENTICATED._id,
+      name: this.name,
+      surname: this.surname,
+      pais: this.pais,
+      address: this.address,
+      zipcode: this.zipcode,
+      poblacion: this.poblacion,
+      ciudad: this.ciudad,
+      email: this.email,
+      phone: this.phone,
+      usual_shipping_address:
+        this.address_client_selected.usual_shipping_address,
     };
 
-    this._authEcommerce.updateAddressClient(data).subscribe((resp:any) => {
-      if (resp.status == 200) {
-        let INDEX = this.listAddressClients.findIndex((item:any) => item.id == this.address_client_selected.id);
-        this.listAddressClients[INDEX] = resp.address_client;
-        this.status = true;
-        this.validMessage = true;
-        this.errorOrSuccessMessage = resp.message;
-        this.hideMessageAfterDelay();
-        alertSuccess(resp.message);
-        this.resetForm();
-        $('#addEditModal').modal('hide');
-      } else {
+    this._authEcommerce.updateAddressClient(data).subscribe(
+      (resp: any) => {
+        if (resp.status == 200) {
+          let INDEX = this.listAddressClients.findIndex(
+            (item: any) => item.id == this.address_client_selected.id
+          );
+          this.listAddressClients[INDEX] = resp.address_client;
+          this.status = true;
+          this.validMessage = true;
+          this.errorOrSuccessMessage = resp.message;
+          this.hideMessageAfterDelay();
+          alertSuccess(resp.message);
+          this.resetForm();
+          $('#addEditModal').modal('hide');
+        } else {
+          this.status = false;
+          this.errorOrSuccessMessage = 'Error al actualizar la dirección.';
+          this.hideMessageAfterDelay();
+        }
+      },
+      (error) => {
         this.status = false;
-        this.errorOrSuccessMessage = "Error al actualizar la dirección.";
+        this.errorOrSuccessMessage = 'Error al actualizar la dirección.';
         this.hideMessageAfterDelay();
       }
-    }, error => {
-      this.status = false;
-      this.errorOrSuccessMessage = "Error al actualizar la dirección.";
-      this.hideMessageAfterDelay();
-    });
+    );
   }
 
   private hideMessageAfterDelay() {
@@ -551,7 +606,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     this.address_client_selected = null;
   }
 
-  addressClienteSelected(list_address:any) {
+  addressClienteSelected(list_address: any) {
     this.show = true;
     this.address_client_selected = list_address;
     this.name = this.address_client_selected.name;
@@ -566,47 +621,56 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     this.phone = this.address_client_selected.phone;
   }
 
-  onAddressChange(event:any) {
+  onAddressChange(event: any) {
     const selectedIndex = event.target.value;
-    if (selectedIndex !== "") {
+    if (selectedIndex !== '') {
       const selectedAddress = this.listAddressClients[selectedIndex];
       this.addressClienteSelected(selectedAddress);
     }
   }
 
-  removeAddressSelected(list_address:any) {
-    this._authEcommerce.deleteAddressClient(list_address.id).subscribe((resp:any) => {      
-      let INDEX = this.listAddressClients.findIndex((item:any) => item.id == list_address.id);
-      // Verifica si se encontró el elemento
-      if (INDEX !== -1) { 
-        this.listAddressClients.splice(INDEX, 1); // Elimina 1 elemento a partir del índice INDEX
-      }
-      alertSuccess(resp.message);
-      this.resetForm();
-    });
+  removeAddressSelected(list_address: any) {
+    this._authEcommerce
+      .deleteAddressClient(list_address.id)
+      .subscribe((resp: any) => {
+        let INDEX = this.listAddressClients.findIndex(
+          (item: any) => item.id == list_address.id
+        );
+        // Verifica si se encontró el elemento
+        if (INDEX !== -1) {
+          this.listAddressClients.splice(INDEX, 1); // Elimina 1 elemento a partir del índice INDEX
+        }
+        alertSuccess(resp.message);
+        this.resetForm();
+      });
   }
 
   verifyExistEmail(email: string) {
     sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-    this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add'],{ queryParams: { email } });
+    this._router.navigate(
+      ['/', this.locale, this.country, 'account', 'myaddresses', 'add'],
+      { queryParams: { email } }
+    );
   }
 
   public login() {
     if (!this.email_identify) {
-      alertDanger("Es necesario ingresar el email");
+      alertDanger('Es necesario ingresar el email');
     }
 
     if (!this.password_identify) {
-      alertDanger("Es necesario ingresar el password");
+      alertDanger('Es necesario ingresar el password');
     }
 
-    const subscriptionLogin =  this._authService.login(this.email_identify, this.password_identify).subscribe(
-      (resp:any) => {
+    const subscriptionLogin = this._authService
+      .login(this.email_identify, this.password_identify)
+      .subscribe((resp: any) => {
         if (!resp.error && resp) {
-          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout'])
-          .then(() => {
-            window.location.reload();
-          });
+          this._router
+            .navigate(['/', this.locale, this.country, 'account', 'checkout'])
+            .then(() => {
+              window.location.reload();
+            });
           this._cartService.resetCart();
         } else {
           this.errorAutenticate = true;
@@ -616,12 +680,11 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     this.subscriptions.add(subscriptionLogin);
   }
 
-
   @HostListener('window:resize', ['$event'])
-    onResize(event: Event): void {
-      this.checkDeviceType(); // Verifica el tamaño de la pantalla
-  } 
-  
+  onResize(event: Event): void {
+    this.checkDeviceType(); // Verifica el tamaño de la pantalla
+  }
+
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
