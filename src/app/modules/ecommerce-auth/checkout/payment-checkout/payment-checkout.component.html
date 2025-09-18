@@ -12,7 +12,7 @@
 <div id="steps3">
     <div class="checkout-grid p-lg-5">
       <!-- ======== Columna de la izquierda ======== -->
-         <div id="main-left" [ngClass]="{ 'px-0': isDesktop }">
+         <div id="main-left">
             <!--Delivery Methods-->
             <div class="block mb-3 delivery-methods mb-4 d-none">
                   <div class="block-content">
@@ -662,7 +662,7 @@
       <!--  -->
 
       <!-- ======== Columna de la derecha ======== -->
-         <div id="main-right" [ngClass]="{ 'px-0': isDesktop }">
+         <div id="main-right">
             <!-- Bloque: Pedido -->
             <div class="order-1">
                   <h3 class="title mb-0 text-uppercase mb-3">Pedido</h3>
@@ -677,7 +677,7 @@
                                           <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                              <span class="customRadio clearfix mb-0">
                                                 <input id="paymentRadio2" value="" name="payment" type="radio" class="radio" />
-                                                <label for="paymentRadio2" class="mb-0 fw-bold text-uppercase">Código promocional</label>
+                                                <label for="paymentRadio2" class="mb-0 fw-light">Código promocional</label>
                                              </span>
                                           </button>
                                     </div>
@@ -688,8 +688,8 @@
                                                 ahorros en tu compra.
                                              </p>
                                              <div class="input-group mb-0 d-flex">
-                                                <input type="text" class="form-control border border-muted mb-3" placeholder="Código de promoción" required="" />
-                                                <button class="btn-dark-ld border border-muted text-uppercase" type="submit">
+                                                <input type="text" class="form-control border border-muted fs-14 mb-3" placeholder="Código de promoción" required="" />
+                                                <button class="btn-dark-ld border border-muted" type="submit">
                                                       Aplicar
                                                 </button>
                                              </div>
@@ -751,7 +751,7 @@
                         <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4" #paypal [class.disabled]="disablePayments">
                         </div>
                         <!-- Color button #2C2E2F -->
-                        <button *ngIf="selectedPaymentMethod === 'card'" (click)="payWithStripe()" class="btn-dark-ld mt-3 mb-2 text-uppercase">
+                        <button *ngIf="selectedPaymentMethod === 'card'" (click)="payWithStripe()" class="btn-dark-ld mt-3 mb-2">
                               <ng-container *ngIf="!isLoadingStripe; else loadingStripe">
                                  Pagar con tarjeta
                               </ng-container>
@@ -848,7 +848,8 @@
                                     <div class="flex-grow-1 d-flex flex-column justify-content-between">
                                           <!-- Datos adicionales -->
                                           <div class="d-flex flex-column">
-                                             <div class="fw-normal" style="height: 20px">
+
+                                             <div class="fw-normal me-2" style="height: 20px">
                                                 <a href="#" class="fw-normal text-black text-truncate d-inline-block product-title" onclick="return false;" [routerLink]="[
                                           '/',
                                           this.locale,
@@ -858,6 +859,7 @@
                                           cart.product.slug
                                           ]">{{ cart.product.title }}</a>
                                              </div>
+
                                              <div class="">
                                                 <span class="money">
                                                       <span class="price-small fw-bold">
