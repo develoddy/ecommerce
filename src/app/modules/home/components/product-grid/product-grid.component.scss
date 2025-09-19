@@ -1,1 +1,11 @@
 /* Styles for product-grid component */
+.pr-label-discount {
+  background-color: #28a745; /* verde brillante para atraer atención */
+  color: #fff;
+  font-weight: bold;
+  padding: 3px 6px;
+  border-radius: 0px;
+  font-size: 0.8rem;
+  margin-left: 0px; /* separación del label "Tendencias" */
+  text-transform: uppercase;
+}

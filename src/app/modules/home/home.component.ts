@@ -184,7 +184,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
             productSlider5items($);
             (window as any).sliderRefresh($);
             this.extractTags();
-          }, 50);
+          }, 150);
         } else {
           cleanupHOMEINITTEMPLATE($);
           cleanupProductZoom($);
@@ -237,7 +237,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     return product.price_usd;
-    //return parseFloat((product.price_usd - discount).toFixed(2));
   }
 
   generateSlug(title: string): string {
@@ -464,6 +463,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ourProducts.forEach((product: any) => {
       const uniqueColors = new Map();
       product.galerias.forEach((tag: any) => {
+        
         if (!uniqueColors.has(tag.color)) {
           uniqueColors.set(tag.color, {
             imagen: tag.imagen,

@@ -34,6 +34,12 @@
               <!-- End Product Image -->
               <!-- Product label -->
               <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div>
+              <div class="product-labels">
+                <!-- <span class="lbl pr-label3">Descuento</span> -->
+                <span *ngIf="getDiscountLabel(ourProduct)" class="lbl pr-label3">
+                  {{ getDiscountLabel(ourProduct) }}
+                </span>
+              </div>
               <!-- End Product label -->
               <!--Product Button-->
               <div class="button-set style1" [ngClass]="{'d-none': isMobile}">
@@ -107,9 +113,19 @@
               <!--End Sort Description-->
               <!-- Swatches Color -->
               <ul class="variants-clr swatches">
-                <ng-container *ngFor="let item of ourProduct.colores">
+                <!-- <ng-container *ngFor="let item of ourProduct.colores">
                   <li class="swatch medium rounded" [ngClass]=" item.color.replace(' ', '-')" (click)="changeProductImage(ourProduct, item.imagen)">
                     <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}"></span>
+                  </li>
+                </ng-container> -->
+                <ng-container *ngFor="let item of ourProduct.colores">
+                  <li class="swatch medium rounded" (click)="changeProductImage(ourProduct, item.imagen)">
+                    <span class="swatchLbl" 
+                          [style.background-color]="item.hex"
+                          data-bs-toggle="tooltip" 
+                          data-bs-placement="top" 
+                          title="{{ item.color }}">
+                    </span>
                   </li>
                 </ng-container>
               </ul>
