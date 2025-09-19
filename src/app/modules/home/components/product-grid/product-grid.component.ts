@@ -37,26 +37,65 @@ export class ProductGridComponent {
     if (this.currentUrl) {
       this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.currentUrl);
     }
+
+    console.log(this.ourProducts );
+    
+    if (this.ourProducts && this.ourProducts.length > 0) {
+      this.ourProducts = this.ourProducts.map(p => {
+        const isBestSeller = p.count_review && p.count_review >= 3;
+        const hasDiscount = this.getDiscountLabel(p) !== null;
+
+        console.log(
+          `Producto: ${p.title}, Reseñas: ${p.count_review}, isBestSeller: ${isBestSeller}, hasDiscount: ${hasDiscount}`
+        );
+
+        return {
+          ...p,
+          isBestSeller,
+          hasDiscount
+        };
+      });
+    }
   }
 
-   getDiscountLabel(product: any): string | null {
-     let discountPercent: number | null = null;
+  // Vamos a montar la etiqueta “Mejor Vendido” en rojo 🔴 que se muestre solo si el producto tiene más de 20 ventas.
+  // isBestSeller(product: any): boolean {
+  //   console.log('Producto:', product);
+  //   console.log();
+    
+    
+  //   return product.sales && product.sales > 20;
+  // }
 
-     // Flash Sale
-     if (this.FlashSale && this.FlashSale.type_discount === 1) {
-       discountPercent = this.FlashSale.discount;
-     } 
-     // Campaña individual del producto
-     else if (product.campaing_discount && product.campaing_discount.type_discount === 1) {
-       discountPercent = product.campaing_discount.discount;
-     }
 
-     if (discountPercent) {
-       return `Oferta –${discountPercent}%`; // puedes cambiar "Oferta" por "Rebaja" si quieres
-     }
+  // Ejemplo: productos añadidos hace menos de 30 días
+  isTrending(product: any): boolean {
+    
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-     return null;
-   }
+    return new Date(product.createdAt) >= thirtyDaysAgo;
+  }
+
+
+  getDiscountLabel(product: any): string | null {
+    let discountPercent: number | null = null;
+
+    // Flash Sale
+    if (this.FlashSale && this.FlashSale.type_discount === 1) {
+      discountPercent = this.FlashSale.discount;
+    } 
+    // Campaña individual del producto
+    else if (product.campaing_discount && product.campaing_discount.type_discount === 1) {
+      discountPercent = product.campaing_discount.discount;
+    }
+
+    if (discountPercent) {
+      return `Oferta –${discountPercent}%`; // puedes cambiar "Oferta" por "Rebaja" si quieres
+    }
+
+    return null;
+  }
 
   // Metodo igual que arriba pero en este caso muestra la fecha de inicio y fin de la oferta
   // getDiscountLabel(product: any): string | null {

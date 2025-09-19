@@ -120,7 +120,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       .listHome(TIME_NOW)
       .subscribe((resp: any) => {
         this.ourProducts = resp.our_products.map((product: any) => {
-          console.log('---> Debbug: Obtener todos los productos %:', product);
+          //console.log('---> Debbug: Obtener todos los productos %:', product);
           
           product.finalPrice = this.calculateFinalPrice(product); // Asignamos el precio final con descuento
           const priceParts = this.getPriceParts(product.finalPrice); // Dividimos el precio

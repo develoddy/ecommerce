@@ -31,11 +31,11 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   country: string = "";
 
   constructor(
-    private authService: AuthService,
+    //private authService: AuthService,
     public _ecommerceAuthService: EcommerceAuthService,
     private router: Router,
-     private cartService: CartService,
-    private activatedRoute: ActivatedRoute,
+    //private cartService: CartService,
+    //private activatedRoute: ActivatedRoute,
     private localizationService: LocalizationService
   ) {
     this.country = this.localizationService.country;
@@ -68,6 +68,8 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     };
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
+      console.log("Mis compras: ", resp);
+      
       this.sale_orders = resp.sale_orders;
       this.sale_details = [];
 

@@ -33,11 +33,14 @@
               </a>
               <!-- End Product Image -->
               <!-- Product label -->
-              <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div>
+              <!-- <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div> -->
               <div class="product-labels">
-                <!-- <span class="lbl pr-label3">Descuento</span> -->
                 <span *ngIf="getDiscountLabel(ourProduct)" class="lbl pr-label3">
                   {{ getDiscountLabel(ourProduct) }}
+                </span>
+                <!-- Label de mejor vendido -->
+                <span *ngIf="!ourProduct.hasDiscount && ourProduct.isBestSeller" class="lbl pr-label4">
+                  Mejor Vendido
                 </span>
               </div>
               <!-- End Product label -->
