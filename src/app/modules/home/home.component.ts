@@ -120,6 +120,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       .listHome(TIME_NOW)
       .subscribe((resp: any) => {
         this.ourProducts = resp.our_products.map((product: any) => {
+          console.log('---> Debbug: Obtener todos los productos %:', product);
+          
           product.finalPrice = this.calculateFinalPrice(product); // Asignamos el precio final con descuento
           const priceParts = this.getPriceParts(product.finalPrice); // Dividimos el precio
           product.priceInteger = priceParts.integer;
@@ -219,15 +221,23 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     } else if (product.campaing_discount) {
       // Aplicar descuento de campaña si no hay Flash Sale
-      if (product.campaing_discount.type_discount === 1) {
-        discount =
-          product.price_usd * product.campaing_discount.discount * 0.01;
-      } else if (product.campaing_discount.type_discount === 2) {
+      if (product.campaing_discount.type_discount === 1) { // Descuento por %
+        discount = product.price_usd * product.campaing_discount.discount * 0.01;
+      } else if (product.campaing_discount.type_discount === 2) { // Descuento por moneda
         discount = product.campaing_discount.discount;
       }
+      
+      let priceAfterDiscount = product.price_usd - discount;
+
+      // Redondear al siguiente .95
+      let finalPrice = Math.floor(priceAfterDiscount) + 0.95;
+
+      // Devuelve finalPrice con dos decimales
+      return parseFloat(finalPrice.toFixed(2));
     }
 
-    return parseFloat((product.price_usd - discount).toFixed(2));
+    return product.price_usd;
+    //return parseFloat((product.price_usd - discount).toFixed(2));
   }
 
   generateSlug(title: string): string {
@@ -427,18 +437,21 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     const colorMap: { [key: string]: string } = {
       'Faded Black': '#424242',
       'Faded Khaki': '#dbc4a2',
-      Black: '#080808',
-      Navy: '#152438',
-      Maroon: '#6c152b',
-      Red: '#e41525',
-      Royal: '#1652ac',
+      'Black': '#080808',
+      'Navy': '#152438',
+      'Maroon': '#6c152b',
+      'Red': '#e41525',
+      'Royal': '#1652ac',
       'Sport Grey': '#9b969c',
       'Light blue': '#9dbfe2',
       'Faded Eucalyptus': '#d1cbad',
       'Faded Bone': '#f3ede4',
-      White: '#ffffff',
-      Leaf: '#5c9346',
-      Autumn: '#c85313',
+      'White': '#ffffff',
+      'Leaf': '#5c9346',
+      'Autumn': '#c85313',
+      // Sudaderas premiun con capucha unisex | Cotton Heritage M2580
+      'Carbon Grey': '#c7c3be',
+      'Bone': '#f5e8ce',
     };
     return colorMap[color] || ''; // Devuelve el valor hexadecimal correspondiente al color
   }
