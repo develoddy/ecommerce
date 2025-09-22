@@ -1,0 +1,34 @@
+.hero-saleTime {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.countdown-section {
+  background: rgba(255, 255, 255, 0.1); /* semi-transparente elegante */
+  padding: 15px 20px;
+  border-radius: 12px;
+  min-width: 70px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
+}
+
+.countdown-section:hover {
+  transform: translateY(-3px);
+}
+
+.countdown-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff; /* blanco sobre fondo oscuro */
+  line-height: 1.2;
+}
+
+.countdown-unit {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #ffd700; /* dorado elegante */
+  letter-spacing: 1px;
+}

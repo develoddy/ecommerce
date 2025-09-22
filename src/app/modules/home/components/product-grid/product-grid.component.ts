@@ -34,20 +34,18 @@ export class ProductGridComponent {
    * "unsafe value used in a resource URL context".
    */
   ngOnChanges() {
+    console.log(this.ourProducts);
+    
     if (this.currentUrl) {
       this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.currentUrl);
     }
 
-    console.log(this.ourProducts );
+    
     
     if (this.ourProducts && this.ourProducts.length > 0) {
       this.ourProducts = this.ourProducts.map(p => {
         const isBestSeller = p.count_review && p.count_review >= 3;
         const hasDiscount = this.getDiscountLabel(p) !== null;
-
-        console.log(
-          `Producto: ${p.title}, Reseñas: ${p.count_review}, isBestSeller: ${isBestSeller}, hasDiscount: ${hasDiscount}`
-        );
 
         return {
           ...p,
@@ -60,10 +58,6 @@ export class ProductGridComponent {
 
   // Vamos a montar la etiqueta “Mejor Vendido” en rojo 🔴 que se muestre solo si el producto tiene más de 20 ventas.
   // isBestSeller(product: any): boolean {
-  //   console.log('Producto:', product);
-  //   console.log();
-    
-    
   //   return product.sales && product.sales > 20;
   // }
 
@@ -81,8 +75,11 @@ export class ProductGridComponent {
   getDiscountLabel(product: any): string | null {
     let discountPercent: number | null = null;
 
+    // Solo aplicar Flash Sale si el producto está incluido
+    const flashProduct = this.FlashSale?.DiscountProducts?.find((dp:any) => dp.productId === product.id);
+
     // Flash Sale
-    if (this.FlashSale && this.FlashSale.type_discount === 1) {
+    if (flashProduct) { //if (this.FlashSale && this.FlashSale.type_discount === 1) {
       discountPercent = this.FlashSale.discount;
     } 
     // Campaña individual del producto

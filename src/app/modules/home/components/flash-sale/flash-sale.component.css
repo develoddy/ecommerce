@@ -1,0 +1,37 @@
+/* Estilos específicos para el componente Flash Sale */
+.flash-sale-container {
+  margin-bottom: 2rem;
+}
+
+.section-header h2 {
+  color: #ff4444;
+  font-weight: bold;
+}
+
+/* Estilos para precios con descuento */
+.product-price .old-price {
+  text-decoration: line-through !important;
+  color: #999 !important;
+  margin-right: 8px !important;
+  font-size: 0.9em !important;
+  opacity: 0.8 !important;
+}
+
+.product-price .price {
+  color: #e74c3c !important;
+  font-weight: bold !important;
+}
+
+/* Etiquetas de descuento */
+.lbl.pr-label4 {
+  background: linear-gradient(45deg, #ff4444, #ff6666) !important;
+  color: white !important;
+  font-weight: bold !important;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}

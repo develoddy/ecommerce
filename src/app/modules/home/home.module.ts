@@ -13,6 +13,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory } from 'src/app/app.module';
+import { FlashSaleComponent } from './components/flash-sale/flash-sale.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { HttpLoaderFactory } from 'src/app/app.module';
     HomeComponent,
     SliderHomeComponent,
     CategoryListComponent,
-    ProductGridComponent
+    ProductGridComponent,
+    FlashSaleComponent
   ],
   imports: [
     CommonModule,

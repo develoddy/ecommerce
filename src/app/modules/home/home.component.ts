@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   besProducts: any = [];
   ourProducts: any = [];
   product_selected: any = null;
-  FlashSale: any = null;
+  FlashSales: any = null;
   FlashProductList: any = [];
   variedad_selected: any = null;
   translatedText: string = '';
@@ -85,7 +85,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   tallaError = false;
   cantidadError = false;
   private modalInstance: any;
-
+  timeLeft: { [flashId: string]: { days: number; hours: number; minutes: number; seconds: number } } = {};
+  private timerInterval: any;
+  flashTimers: { [key: string]: any } = {}; // Inicializado vacío
+  private timersInitialized = false; // Flag para evitar inicialización múltiple
+  
   constructor(
     public homeService: HomeService,
     public _cartService: CartService,
@@ -116,34 +120,40 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     let TIME_NOW = new Date().getTime();
 
-    const listHomeSubscription = this.homeService
-      .listHome(TIME_NOW)
-      .subscribe((resp: any) => {
+    const listHomeSubscription = this.homeService.listHome(TIME_NOW).subscribe((resp: any) => {
+
+        // Asignar datos básicos primero
+        this.sliders = resp.sliders.filter((slider: any) => slider.state == 1);
+        this.categories = resp.categories;
+        this.FlashSales = resp.FlashSales;
+        this.FlashProductList = resp.campaign_products;
+        
+        // Generar slug para cada categoría sin modificar el título original
+        this.categories.forEach((category: any) => {
+          category.slug = this.generateSlug(category.title); 
+        });
+
+        // Calcular precios finales para productos normales
         this.ourProducts = resp.our_products.map((product: any) => {
-          //console.log('---> Debbug: Obtener todos los productos %:', product);
-          
-          product.finalPrice = this.calculateFinalPrice(product); // Asignamos el precio final con descuento
-          const priceParts = this.getPriceParts(product.finalPrice); // Dividimos el precio
+          product.finalPrice = this.calculateFinalPrice(product);
+          const priceParts = this.getPriceParts(product.finalPrice);
           product.priceInteger = priceParts.integer;
           product.priceDecimals = priceParts.decimals;
           return product;
         });
 
-        // Filtrar solo sliders activos (state == 1)
-        this.sliders = resp.sliders.filter((slider: any) => slider.state == 1);
-
-        this.categories = resp.categories;
-
-        // Generar slug para cada categoría sin modificar el título original
-        this.categories.forEach((category: any) => {
-          category.slug = this.generateSlug(category.title); // Genera el slug y lo agrega al objeto categoria
+        // Calcular precios finales para productos de Flash Sale
+        this.FlashProductList = this.FlashProductList.map((flashProduct: any) => {
+          flashProduct.finalPrice = this.calculateFinalPrice(flashProduct);
+          const priceParts = this.getPriceParts(flashProduct.finalPrice);
+          flashProduct.priceInteger = priceParts.integer;
+          flashProduct.priceDecimals = priceParts.decimals;
+          
+          return flashProduct;
         });
 
-        this.ourProducts = resp.our_products;
-
         this.besProducts = resp.bes_products;
-        this.FlashSale = resp.FlashSale;
-        this.FlashProductList = resp.campaign_products;
+
 
         if (this.ourProducts || this.besProducts) {
           this.setColoresDisponibles();
@@ -161,7 +171,33 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!isLoading) {
           setTimeout(() => {
             // Countdown de FlashSale si existe
-            if (this.FlashSale) {
+            // if (this.FlashSale?.end_date) {
+            //   const endDate = new Date(this.FlashSale.end_date).getTime();
+
+            //   this.timerInterval = setInterval(() => {
+            //     const now = new Date().getTime();
+            //     const distance = endDate - now;
+
+            //     if (distance <= 0) {
+            //       clearInterval(this.timerInterval);
+            //       this.timeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+            //     } else {
+            //       this.timeLeft = {
+            //         days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+            //         hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+            //         minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+            //         seconds: Math.floor((distance % (1000 * 60)) / 1000),
+            //       };
+            //     }
+            //   }, 1000);
+            // }
+
+
+            // Inicializar timers de Flash Sales
+            this.initializeFlashSaleTimers();
+
+
+            /**if (this.FlashSale) {
               const eventCounter = $('.sale-countdown');
               const parseDate = new Date(this.FlashSale.end_date);
               const dateStr = `${parseDate.getFullYear()}/${
@@ -179,7 +215,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
                   );
                 });
               }
-            }
+            }*/
+
             HOMEINITTEMPLATE($);
             productSlider5items($);
             (window as any).sliderRefresh($);
@@ -191,6 +228,70 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       })
     );
+  }
+
+  private initializeFlashSaleTimers(): void {
+    // Evitar inicialización múltiple
+    if (this.timersInitialized) {
+      console.log('⚠️ Timers ya están inicializados, cancelando inicialización duplicada');
+      return;
+    }
+
+    // Limpiar timers existentes por seguridad
+    this.clearAllFlashTimers();
+
+    if (this.FlashSales && this.FlashSales.length) {
+      console.log('🕐 Iniciando timers para Flash Sales:', this.FlashSales);
+      this.timersInitialized = true;
+
+      this.FlashSales.forEach((flash: any) => {
+        console.log(`🕐 Configurando timer para Flash Sale ${flash.id}, end_date: ${flash.end_date}`);
+        
+        // Inicializar el objeto timeLeft para esta flash sale
+        this.timeLeft[flash.id] = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        
+        if (flash.end_date) {
+          const endDate = new Date(flash.end_date).getTime();
+          const now = new Date().getTime();
+          console.log(`🕐 Flash Sale ${flash.id}: endDate=${endDate}, now=${now}, distance=${endDate - now}`);
+
+          // Crear nuevo timer para esta Flash Sale
+          this.flashTimers[flash.id] = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = endDate - now;
+
+            if (distance <= 0) {
+              clearInterval(this.flashTimers[flash.id]);
+              delete this.flashTimers[flash.id];
+              this.timeLeft[flash.id] = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+              console.log(`⏰ Timer expired for Flash Sale ${flash.id}`);
+            } else {
+              this.timeLeft[flash.id] = {
+                days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+                hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+                seconds: Math.floor((distance % (1000 * 60)) / 1000),
+              };
+              // Log comentado para evitar spam en consola - se ejecuta cada segundo
+              // console.log(`⏰ Flash Sale ${flash.id} time left:`, this.timeLeft[flash.id]);
+            }
+          }, 1000);
+        } else {
+          console.log(`❌ Flash Sale ${flash.id} no tiene end_date`);
+        }
+      });
+    }
+  }
+
+  private clearAllFlashTimers(): void {
+    console.log('🧹 Limpiando todos los timers de Flash Sales');
+    Object.keys(this.flashTimers).forEach(flashId => {
+      if (this.flashTimers[flashId]) {
+        clearInterval(this.flashTimers[flashId]);
+        delete this.flashTimers[flashId];
+      }
+    });
+    this.timersInitialized = false;
   }
 
   setupSEO() {
@@ -211,33 +312,119 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   calculateFinalPrice(product: any): number {
     let discount = 0;
+    let priceAfterDiscount = product.price_usd;
+  
+    
+    // Verificar si el producto está en Flash Sale
+    if (this.FlashSales && this.FlashSales.length) {
+      for (const flash of this.FlashSales) {
 
-    if (this.FlashSale && this.FlashSale.type_discount) {
-      // Aplicar descuento de Flash Sale
-      if (this.FlashSale.type_discount === 1) {
-        discount = product.price_usd * this.FlashSale.discount * 0.01;
-      } else if (this.FlashSale.type_discount === 2) {
-        discount = this.FlashSale.discount;
+        const isInFlash = flash.discounts_products.some((fp:any) => {
+          const flashProductId = fp.product?.id || fp.product?._id || fp.productId;
+          const currentProductId = product.id || product._id;
+          return flashProductId === currentProductId;
+        });
+
+        if (isInFlash) {
+          // Aplicar descuento de Flash Sale
+          if (flash.type_discount === 1) {
+            discount = product.price_usd * flash.discount * 0.01;
+          } else if (flash.type_discount === 2) {
+            discount = flash.discount;
+          }
+          
+          priceAfterDiscount = product.price_usd - discount;
+          
+          // Redondear al siguiente .95
+          // let finalPrice = Math.floor(priceAfterDiscount) + 0.95;
+          // if (finalPrice > priceAfterDiscount) {
+          //   finalPrice -= 1; // aseguramos que nunca suba el precio
+          // }
+          // Si el precio con descuento es menor que X.95, usar el entero anterior + 0.95
+          
+          // Redondear HACIA ABAJO al .95 más cercano
+          let finalPrice;
+          
+          // Si el precio con descuento es mayor a 0.95, redondeamos hacia abajo
+          if (priceAfterDiscount >= 0.95) {
+            // Obtener la parte entera del precio con descuento
+            const integerPart = Math.floor(priceAfterDiscount);
+            
+            // Si el precio con descuento es menor que [entero].95, usar [entero-1].95
+            if (priceAfterDiscount < (integerPart + 0.95)) {
+              finalPrice = (integerPart > 0 ? integerPart - 1 : 0) + 0.95;
+            } else {
+              finalPrice = integerPart + 0.95;
+            }
+          } else {
+            finalPrice = 0.95; // Precio mínimo
+          }
+          
+          return parseFloat(finalPrice.toFixed(2));
+        }
       }
-    } else if (product.campaing_discount) {
-      // Aplicar descuento de campaña si no hay Flash Sale
+    }
+    
+    // Si no hay Flash Sale o el producto no está en Flash Sale, verificar campaña individual
+    if (product.campaing_discount && product.campaing_discount.type_discount) {
       if (product.campaing_discount.type_discount === 1) { // Descuento por %
         discount = product.price_usd * product.campaing_discount.discount * 0.01;
       } else if (product.campaing_discount.type_discount === 2) { // Descuento por moneda
         discount = product.campaing_discount.discount;
       }
       
-      let priceAfterDiscount = product.price_usd - discount;
-
-      // Redondear al siguiente .95
-      let finalPrice = Math.floor(priceAfterDiscount) + 0.95;
-
-      // Devuelve finalPrice con dos decimales
+      priceAfterDiscount = product.price_usd - discount;
+      
+      // Redondear HACIA ABAJO al .95 más cercano
+      let finalPrice;
+      
+      if (priceAfterDiscount >= 0.95) {
+        const integerPart = Math.floor(priceAfterDiscount);
+        if (priceAfterDiscount < (integerPart + 0.95)) {
+          finalPrice = (integerPart > 0 ? integerPart - 1 : 0) + 0.95;
+        } else {
+          finalPrice = integerPart + 0.95;
+        }
+      } else {
+        finalPrice = 0.95;
+      }
+      
       return parseFloat(finalPrice.toFixed(2));
     }
 
+    // Si no hay ningún descuento, devolver precio original
     return product.price_usd;
   }
+
+  /*calculateFinalPrice(product: any): number {
+     let discount = 0;
+
+     if (this.FlashSale && this.FlashSale.type_discount) {
+       // Aplicar descuento de Flash Sale
+       if (this.FlashSale.type_discount === 1) {
+         discount = product.price_usd * this.FlashSale.discount * 0.01;
+       } else if (this.FlashSale.type_discount === 2) {
+         discount = this.FlashSale.discount;
+       }
+     } else if (product.campaing_discount) {
+       // Aplicar descuento de campaña si no hay Flash Sale
+       if (product.campaing_discount.type_discount === 1) { // Descuento por %
+         discount = product.price_usd * product.campaing_discount.discount * 0.01;
+       } else if (product.campaing_discount.type_discount === 2) { // Descuento por moneda
+         discount = product.campaing_discount.discount;
+       }
+      
+       let priceAfterDiscount = product.price_usd - discount;
+
+       // Redondear al siguiente .95
+       let finalPrice = Math.floor(priceAfterDiscount) + 0.95;
+
+       // Devuelve finalPrice con dos decimales
+       return parseFloat(finalPrice.toFixed(2));
+      }
+
+    return product.price_usd;
+  }*/
 
   generateSlug(title: string): string {
     return title
@@ -502,21 +689,108 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       // Agregar propiedad `selectedImage` con la imagen principal del producto
       product.imagen = product.imagen;
     });
+
+    this.FlashProductList.forEach((product: any) => {
+       const uniqueColors = new Map();
+       product.galerias.forEach((tag: any) => {
+         if (!uniqueColors.has(tag.color)) {
+           uniqueColors.set(tag.color, {
+             imagen: tag.imagen,
+             hex: this.getColorHex(tag.color),
+           });
+         }
+       });
+
+       // Agrega los colores únicos de cada producto al propio producto
+       product.colores = Array.from(
+         uniqueColors,
+         ([color, { imagen, hex }]) => ({ color, imagen, hex })
+       );
+
+       // Agregar propiedad `selectedImage` con la imagen principal del producto
+       product.imagen = product.imagen;
+     });
   }
 
-  getCalNewPrice(product: any) {
-    if (this.FlashSale.type_discount == 1) {
-      // Por porcentaje
-      // Round to 2 decimal places
-      return (
-        product.price_usd -
-        product.price_usd * this.FlashSale.discount * 0.01
-      ).toFixed(2);
-    } else {
-      // Port moneda
-      return product.price_usd - this.FlashSale.discount;
+  getCalNewPrice(product: any): number {
+    let priceAfterDiscount = product.price_usd;
+
+    // Revisar todas las Flash Sales activas
+    if (this.FlashSales && this.FlashSales.length) {
+      for (const flash of this.FlashSales) {
+        const isInFlash = flash.discounts_products.some(
+          (dp:any) => dp.product.id === product.id || dp.product._id === product._id
+        );
+        if (isInFlash) {
+          // Aplicar descuento
+          if (flash.type_discount === 1) { // porcentaje
+            priceAfterDiscount = product.price_usd - product.price_usd * flash.discount * 0.01;
+          } else if (flash.type_discount === 2) { // valor fijo
+            priceAfterDiscount = product.price_usd - flash.discount;
+          }
+
+          // Redondeo HACIA ABAJO al .95 más cercano
+          let finalPrice;
+          
+          if (priceAfterDiscount >= 0.95) {
+            const integerPart = Math.floor(priceAfterDiscount);
+            if (priceAfterDiscount < (integerPart + 0.95)) {
+              finalPrice = (integerPart > 0 ? integerPart - 1 : 0) + 0.95;
+            } else {
+              finalPrice = integerPart + 0.95;
+            }
+          } else {
+            finalPrice = 0.95;
+          }
+
+          return parseFloat(finalPrice.toFixed(2));
+        }
+      }
     }
+
+    // Si no pertenece a ninguna Flash Sale, revisar campaña individual
+    if (product.campaing_discount) {
+      if (product.campaing_discount.type_discount === 1) { // porcentaje
+        priceAfterDiscount = product.price_usd - product.price_usd * product.campaing_discount.discount * 0.01;
+      } else if (product.campaing_discount.type_discount === 2) { // valor fijo
+        priceAfterDiscount = product.price_usd - product.campaing_discount.discount;
+      }
+
+      // Redondeo HACIA ABAJO al .95 más cercano
+      let finalPrice;
+      
+      if (priceAfterDiscount >= 0.95) {
+        const integerPart = Math.floor(priceAfterDiscount);
+        if (priceAfterDiscount < (integerPart + 0.95)) {
+          finalPrice = (integerPart > 0 ? integerPart - 1 : 0) + 0.95;
+        } else {
+          finalPrice = integerPart + 0.95;
+        }
+      } else {
+        finalPrice = 0.95;
+      }
+
+      return parseFloat(finalPrice.toFixed(2));
+    }
+
+    // Si no hay descuento, precio original
+    return product.price_usd;
   }
+
+
+  // getCalNewPrice(product: any) {
+  //   if (this.FlashSale.type_discount == 1) {
+  //     // Por porcentaje
+  //     // Round to 2 decimal places
+  //     return (
+  //       product.price_usd -
+  //       product.price_usd * this.FlashSale.discount * 0.01
+  //     ).toFixed(2);
+  //   } else {
+  //     // Port moneda
+  //     return product.price_usd - this.FlashSale.discount;
+  //   }
+  // }
 
   selectedVariedad(variedad: any, index: number) {
     this.variedad_selected = variedad;
@@ -527,47 +801,93 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.activeIndex = index;
   }
 
+
   getDiscountProduct(besProduct: any): number {
-    // Verificar si ya tenemos el descuento calculado en el caché
-    if (this.discountCache.has(besProduct.id)) {
-      return this.discountCache.get(besProduct.id)!;
-    }
-
-    let discount = 0;
-
-    // Aplicar descuento de venta flash si existe
-    if (this.FlashSale && this.FlashSale.type_discount) {
-      if (this.FlashSale.type_discount === 1) {
-        // Descuento en porcentaje
-        discount = parseFloat(
-          (besProduct.price_usd * this.FlashSale.discount * 0.01).toFixed(2)
-        );
-      } else if (this.FlashSale.type_discount === 2) {
-        // Descuento en valor
-        discount = this.FlashSale.discount;
-      }
-    } else if (besProduct.campaing_discount) {
-      // Aplicar descuento de campaña si no hay FlashSale
-      if (besProduct.campaing_discount.type_discount === 1) {
-        // Descuento en porcentaje
-        discount = parseFloat(
-          (
-            besProduct.price_usd *
-            besProduct.campaing_discount.discount *
-            0.01
-          ).toFixed(2)
-        );
-      } else if (besProduct.campaing_discount.type_discount === 2) {
-        // Descuento en valor
-        discount = besProduct.campaing_discount.discount;
-      }
-    }
-
-    // Almacenar el resultado en el caché
-    this.discountCache.set(besProduct.id, discount);
-
-    return discount;
+  // Verificar caché
+  if (this.discountCache.has(besProduct.id)) {
+    return this.discountCache.get(besProduct.id)!;
   }
+
+  let discount = 0;
+
+  // Revisar todas las Flash Sales activas
+  if (this.FlashSales && this.FlashSales.length) {
+    for (const flash of this.FlashSales) {
+      const isInFlash = flash.discounts_products.some(
+        (dp:any) => dp.product.id === besProduct.id || dp.product._id === besProduct._id
+      );
+      if (isInFlash) {
+        // Aplicar descuento de Flash Sale
+        if (flash.type_discount === 1) { // porcentaje
+          discount = parseFloat((besProduct.price_usd * flash.discount * 0.01).toFixed(2));
+        } else if (flash.type_discount === 2) { // valor fijo
+          discount = flash.discount;
+        }
+        break; // Encontró el flash correspondiente, no sigue buscando
+      }
+    }
+  }
+
+  // Si no pertenece a ninguna Flash Sale, aplicar campaña individual
+  if (discount === 0 && besProduct.campaing_discount) {
+    if (besProduct.campaing_discount.type_discount === 1) { // %
+      discount = parseFloat(
+        (besProduct.price_usd * besProduct.campaing_discount.discount * 0.01).toFixed(2)
+      );
+    } else if (besProduct.campaing_discount.type_discount === 2) { // valor fijo
+      discount = besProduct.campaing_discount.discount;
+    }
+  }
+
+  // Guardar en caché
+  this.discountCache.set(besProduct.id, discount);
+
+  return discount;
+}
+
+
+
+  // getDiscountProduct(besProduct: any): number {
+  //   // Verificar si ya tenemos el descuento calculado en el caché
+  //   if (this.discountCache.has(besProduct.id)) {
+  //     return this.discountCache.get(besProduct.id)!;
+  //   }
+
+  //   let discount = 0;
+
+  //   // Aplicar descuento de venta flash si existe
+  //   if (this.FlashSale && this.FlashSale.type_discount) {
+  //     if (this.FlashSale.type_discount === 1) {
+  //       // Descuento en porcentaje
+  //       discount = parseFloat(
+  //         (besProduct.price_usd * this.FlashSale.discount * 0.01).toFixed(2)
+  //       );
+  //     } else if (this.FlashSale.type_discount === 2) {
+  //       // Descuento en valor
+  //       discount = this.FlashSale.discount;
+  //     }
+  //   } else if (besProduct.campaing_discount) {
+  //     // Aplicar descuento de campaña si no hay FlashSale
+  //     if (besProduct.campaing_discount.type_discount === 1) {
+  //       // Descuento en porcentaje
+  //       discount = parseFloat(
+  //         (
+  //           besProduct.price_usd *
+  //           besProduct.campaing_discount.discount *
+  //           0.01
+  //         ).toFixed(2)
+  //       );
+  //     } else if (besProduct.campaing_discount.type_discount === 2) {
+  //       // Descuento en valor
+  //       discount = besProduct.campaing_discount.discount;
+  //     }
+  //   }
+
+  //   // Almacenar el resultado en el caché
+  //   this.discountCache.set(besProduct.id, discount);
+
+  //   return discount;
+  // }
 
   getRouterDiscount(besProduct: any) {
     if (besProduct.campaing_discount) {
@@ -971,6 +1291,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     }
+
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+
+    // Limpiar todos los timers de Flash Sales
+    this.clearAllFlashTimers();
 
     cleanupProductZoom($);
     this.cleanupPSWP();

@@ -22,13 +22,11 @@
   <ng-container [class.d-none]="loader.loading$ | async">
     <div id="page-content" class="mb-0">
       <!--Home Slideshow-->
-      <!-- <ng-container *ngIf="sliders && sliders.length > 0"> -->
       <app-slider-home
         [sliders]="sliders"
         [locale]="locale"
         [country]="country"
       ></app-slider-home>
-      <!-- </ng-container> -->
       <!--End Home Slideshow-->
 
       <!-- Storytelling / Brand Message -->
@@ -109,7 +107,7 @@
       </section>
       <!--End Service Section-->
 
-      <!-- Collection banner -->
+      <!-- Collection banner Mujer | Hombre | Niños etc -->
       <section class="section collection-banners pb-0 pt-0 d-none">
         <div class="container-fluid p-0">
           <div class="collection-banner-grid">
@@ -329,7 +327,6 @@
           [country]="country"
         ></app-category-list>
       </ng-container>
-
       <!--End Popular Categories-->
 
       <!--Toolbar-->
@@ -383,12 +380,11 @@
         [addWishlist]="addWishlist"
         [changeProductImage]="changeProductImage"
         [navigateToProduct]="navigateToProduct"
-        [FlashSale]="FlashSale"
       ></app-product-grid>
       <!--End Product Grid-->
 
       <!--Parallax Banner-->
-      <div class="section parallax-banner-style1">
+      <div class="section parallax-banner-style1" *ngFor="let flash of FlashSales">
         <div class="hero hero-large hero-overlay bg-size">
           <img
             class="bg-img"
@@ -401,17 +397,35 @@
             <div class="container">
               <div class="wrap-text center text-white">
                 <h2 class="hero-title text-white">
-                  ¡Oferta exclusiva! 30% de descuento en camisetas para
+                  ¡Oferta exclusiva! {{ flash.discount }}% de descuento en camisetas para
                   developers
                 </h2>
                 <p class="hero-subtitle h3 text-white">
                   Aprovecha antes que se agoten
                 </p>
                 <!--Countdown Timer-->
-                <div
-                  class="hero-saleTime d-flex-center text-center justify-content-center"
-                  data-countdown="2025/09/30"
-                ></div>
+                <div class="hero-saleTime d-flex-center text-center justify-content-center" *ngIf="timeLeft">
+                  <!-- Debug info -->
+                  <div class="text-white small mb-2 d-block w-100" style="font-size: 10px;">
+                    Debug: Flash ID={{ flash.id }}, timeLeft={{ timeLeft[flash.id] | json }}
+                  </div>
+                  <div class="countdown-section">
+                    <div class="countdown-number">{{ timeLeft[flash.id]?.days || 0 }}</div>
+                    <div class="countdown-unit">Días</div>
+                  </div>
+                  <div class="countdown-section">
+                    <div class="countdown-number">{{ timeLeft[flash.id]?.hours || 0 }}</div>
+                    <div class="countdown-unit">Hrs</div>
+                  </div>
+                  <div class="countdown-section">
+                    <div class="countdown-number">{{ timeLeft[flash.id]?.minutes || 0 }}</div>
+                    <div class="countdown-unit">Min</div>
+                  </div>
+                  <div class="countdown-section">
+                    <div class="countdown-number">{{ timeLeft[flash.id]?.seconds || 0 }}</div>
+                    <div class="countdown-unit">Seg</div>
+                  </div>
+                </div>
                 <!--End Countdown Timer-->
                 <p class="hero-details">
                   Camisetas únicas con diseños de Swift, Python, ChatGPT y más.
@@ -437,6 +451,20 @@
         </div>
       </div>
       <!--End Parallax Banner-->
+
+      <app-flash-sale
+        [FlashProductList]="FlashProductList"
+        [FlashSales]="FlashSales"
+        [locale]="locale"
+        [country]="country"
+        [euro]="euro"
+        [isMobile]="isMobile"
+        [getRouterDiscount]="getRouterDiscount"
+        [openModalToCart]="openModalToCart"
+        [addWishlist]="addWishlist"
+        [changeProductImage]="changeProductImage"
+        [navigateToProduct]="navigateToProduct">
+      </app-flash-sale>
 
       <!--Testimonial Section-->
       <section class="section testimonial-slider style1">
