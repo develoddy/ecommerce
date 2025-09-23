@@ -1,143 +1,120 @@
 <!-- Products Flash Sale -->
 <div class="grid-products grid-view-items">
-  <div class="section-header ms-3">
-    <p class="mb-2 mt-0">Código en Oferta</p>
-    <h2>Descuentos Flash</h2>
-  </div>
-  <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 g-1">  
-    <ng-container *ngIf="FlashProductList.length > 0">
-      <ng-container *ngFor="let ourProduct of FlashProductList">
-        <div class="item col-item" itemscope itemtype="https://schema.org/Product">
-          <div class="product-box">
-            <!-- Start Product Image -->
-            <div class="product-image">
-              <!-- Start Product Image -->
-              <a href="#" (click)="navigateToProduct(ourProduct.slug, ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
-                <!-- Image alt="Camiseta {{ product_selected.title }} para programadores LujanDev"-->
-                <img class="primary blur-up lazyload rounded-0 w-100 h-100" 
-                    data-src="{{ ourProduct.imagen }}" 
-                    src="{{ ourProduct.imagen }}" 
-                    alt="Camiseta {{ ourProduct.title }} para programadores LujanDev" 
-                    title="Camiseta {{ ourProduct.title }} para programadores LujanDev"
-                    width="625" 
-                    height="608" 
-                    style="object-fit: cover;" />
-                <!-- End Image -->
-                <!-- Hover Image -->
-                <ng-container *ngIf="ourProduct.imagen_two">
-                  <img class="hover blur-up lazyload rounded-0 w-100 h-100" 
-                      data-src="{{ ourProduct.imagen_two }}" 
-                      src="{{ ourProduct.imagen_two }}" 
-                      alt="Camiseta {{ ourProduct.title }} para programadores LujanDev" 
-                      title="Camiseta {{ ourProduct.title }} para programadores LujanDev"
-                      width="625" 
-                      height="808" 
-                      style="object-fit: cover;"/>
-                </ng-container>
-                <!-- End Hover Image -->
-              </a>
-              <!-- End Product Image -->
+    <div class="section-header ms-3">
+        <p class="mb-2 mt-0">Código en Oferta</p>
+        <h2>Descuentos Flash</h2>
+    </div>
+    <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 g-1">
+        <ng-container *ngIf="FlashProductList.length > 0">
+            <ng-container *ngFor="let ourProduct of FlashProductList">
+                <div class="item col-item" itemscope itemtype="https://schema.org/Product">
+                    <div class="product-box">
+                        <!-- Start Product Image -->
+                        <div class="product-image">
+                            <!-- Start Product Image -->
+                            <a href="#" (click)="navigateToProduct(ourProduct.slug, ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
+                                <!-- Image alt="Camiseta {{ product_selected.title }} para programadores LujanDev"-->
+                                <img class="primary blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen }}" src="{{ ourProduct.imagen }}" alt="Camiseta {{ ourProduct.title }} para programadores LujanDev" title="Camiseta {{ ourProduct.title }} para programadores LujanDev" width="625" height="608" style="object-fit: cover;" />
+                                <!-- End Image -->
+                                <!-- Hover Image -->
+                                <ng-container *ngIf="ourProduct.imagen_two">
+                                    <img class="hover blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen_two }}" src="{{ ourProduct.imagen_two }}" alt="Camiseta {{ ourProduct.title }} para programadores LujanDev" title="Camiseta {{ ourProduct.title }} para programadores LujanDev" width="625" height="808" style="object-fit: cover;" />
+                                </ng-container>
+                                <!-- End Hover Image -->
+                            </a>
+                            <!-- End Product Image -->
 
-              <!-- Product label -->
-              <div class="product-labels">
-                <span *ngIf="ourProduct.discountLabel" class="lbl pr-label4">
-                  {{ ourProduct.discountLabel }}
-                </span>
-                <!-- Label de mejor vendido -->
-                <span *ngIf="!ourProduct.hasDiscount && ourProduct.isBestSeller" class="lbl pr-label4">
-                  Mejor Vendido
-                </span>
-              </div>
-              <!-- End Product label -->
+                            <!-- Product label -->
+                            <div class="product-labels">
+                                <span *ngIf="ourProduct.discountLabel" class="lbl pr-label3">
+                                    {{ ourProduct.discountLabel }}
+                                </span>
+                                <!-- Label de mejor vendido -->
+                                <span *ngIf="!ourProduct.hasDiscount && ourProduct.isBestSeller" class="lbl pr-label4">
+                                    Mejor Vendido
+                                </span>
+                            </div>
+                            <!-- End Product label -->
 
-              <!--Product Button-->
-              <div class="button-set style1" [ngClass]="{'d-none': isMobile}">
-                <!--Cart Button-->
-                <a href="#" onclick="return false;" class="btn-icon addtocart add-to-cart-modal" (click)="openModalToCart(ourProduct)">
-                  <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
-                </a>
-                <!--End Cart Button-->
-                <!--Quick View Button-->
-                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModalToCart(ourProduct)">
-                  <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Vista rápida</span></span>
-                </a>
-                <!--End Quick View Button-->
-                <!--Wishlist Button-->
-                <!-- <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a favoritos" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a> -->
-                <!--End Wishlist Button-->
-                <!--Compare Button-->
-                <a href="#" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare" ><i class="icon anm anm-random-r"></i><span class="text">Añadir para comparar</span></a>
-                <!--End Compare Button-->
-              </div>
-              <!--End Product Button-->
-            </div>
-            <!-- End Product Image -->
-            <!-- Start Product Details -->
-            <div class="product-details px-3">
-              <!--Product Vendor-->
-              <div class="product-vendor">Camisetas Dev</div>
-              <!--End Product Vendor-->
-              <!-- Product Name -->
-              <div class="product-name">
-                <a [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" 
-                  [queryParams]="getRouterDiscount(ourProduct)" 
-                  class="text-truncate d-inline-block product-title"
-                  itemprop="name">
-                  {{ ourProduct.title }}
-                </a>
-                <!-- Subtítulo para SEO y visual -->
-                <p class="product-subtitle text-muted lh-1 fw-light mb-2" itemprop="description">
-                  {{ ourProduct.resumen }}
-                </p> 
-              </div>
-              <!-- End Product Name -->
-              <!-- Product Price -->
-              <div class="product-price">
-                <!-- Precio original tachado si hay descuento -->
-                <span class="price old-price" 
-                      *ngIf="ourProduct.hasDiscount"
-                      [title]="'Precio original: ' + ourProduct.price_usd + ' ' + euro">
-                  {{ ourProduct.price_usd }} {{ euro }}
-                </span>
-                <!-- Precio con descuento -->
-                <span class="price" [class.text-danger]="ourProduct.hasDiscount">
-                  <span class="price-main">{{ ourProduct.priceInteger }}</span>
-                  <span class="price-decimals">
-                    <sup>{{ ourProduct.priceDecimals }}</sup>
-                    <span class="currency-symbol">{{ euro }}</span>
-                  </span>
-                </span>
-                <!-- Debug info (solo visible en desarrollo) -->
-                <!-- <small class="text-muted d-block" style="font-size: 10px;">
+                            <!--Product Button-->
+                            <div class="button-set style1" [ngClass]="{'d-none': isMobile}">
+                                <!--Cart Button-->
+                                <a href="#" onclick="return false;" class="btn-icon addtocart add-to-cart-modal" (click)="openModalToCart(ourProduct)">
+                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
+                                </a>
+                                <!--End Cart Button-->
+                                <!--Quick View Button-->
+                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModalToCart(ourProduct)">
+                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Vista rápida</span></span>
+                                </a>
+                                <!--End Quick View Button-->
+                                <!--Wishlist Button-->
+                                <!-- <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a favoritos" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a> -->
+                                <!--End Wishlist Button-->
+                                <!--Compare Button-->
+                                <a href="#" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Añadir para comparar</span></a>
+                                <!--End Compare Button-->
+                            </div>
+                            <!--End Product Button-->
+                        </div>
+                        <!-- End Product Image -->
+                        <!-- Start Product Details -->
+                        <div class="product-details px-2">
+                            <!--Product Vendor-->
+                            <!-- <div class="product-vendor d-none">Camisetas Dev</div> -->
+                            <!--End Product Vendor-->
+                            <!-- Product Name -->
+                            <div class="product-name">
+                                <a [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" [queryParams]="getRouterDiscount(ourProduct)" class="text-truncate d-inline-block product-title fw-light" itemprop="name">
+                                    {{ ourProduct.title }}
+                                </a>
+                                <!-- Subtítulo para SEO y visual -->
+                                <p class="product-subtitle text-muted lh-1 fw-light mb-2 d-none" itemprop="description">
+                                    {{ ourProduct.resumen }}
+                                </p>
+                            </div>
+                            <!-- End Product Name -->
+                            <!-- Product Price -->
+                            <div class="product-price">
+                                <!-- Precio original tachado si hay descuento -->
+                                <span class="price old-price" *ngIf="ourProduct.hasDiscount" [title]="'Precio original: ' + ourProduct.price_usd + ' ' + euro">
+                                    {{ ourProduct.price_usd }} {{ euro }}
+                                </span>
+                                <!-- Precio con descuento -->
+                                <span class="price" [class.text-danger]="ourProduct.hasDiscount">
+                                    <span class="">{{ ourProduct.priceInteger }}.</span>
+                                    <span class="">
+                                        {{ ourProduct.priceDecimals }}
+                                        <span class="">{{ euro }}</span>
+                                    </span>
+                                </span>
+                                <!-- Debug info (solo visible en desarrollo) -->
+                                <!-- <small class="text-muted d-block" style="font-size: 10px;">
                   Debug: hasDiscount={{ ourProduct.hasDiscount }}, 
                   discountLabel={{ ourProduct.discountLabel }},
                   finalPrice={{ ourProduct.finalPrice }},
                   originalPrice={{ ourProduct.price_usd }}
                 </small> -->
-              </div>
-              <!-- End Product Price -->
-              <!--Sort Description-->
-              <p class="sort-desc hidden">{{ ourProduct.description_en }}</p>
-              <!--End Sort Description-->
-              <!-- Swatches Color -->
-              <ul class="variants-clr swatches">
-                <ng-container *ngFor="let item of ourProduct.colores">
-                  <li class="swatch medium rounded" (click)="changeProductImage(ourProduct, item.imagen)">
-                    <span class="swatchLbl" 
-                          [style.background-color]="item.hex"
-                          data-bs-toggle="tooltip" 
-                          data-bs-placement="top" 
-                          title="{{ item.color }}">
-                    </span>
-                  </li>
-                </ng-container>
-              </ul>
-              <!-- End Swatches Color -->
-            </div>
-            <!-- End product details -->
-          </div>
-        </div>
-      </ng-container>
-    </ng-container>
-  </div>
+                            </div>
+                            <!-- End Product Price -->
+                            <!--Sort Description-->
+                            <p class="sort-desc hidden">{{ ourProduct.description_en }}</p>
+                            <!--End Sort Description-->
+                            <!-- Swatches Color -->
+                            <ul class="variants-clr swatches">
+                                <ng-container *ngFor="let item of ourProduct.colores">
+                                    <li class="swatch medium rounded" (click)="changeProductImage(ourProduct, item.imagen)">
+                                        <span class="swatchLbl" [style.background-color]="item.hex" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}">
+                                        </span>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                            <!-- End Swatches Color -->
+                        </div>
+                        <!-- End product details -->
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
 </div>
