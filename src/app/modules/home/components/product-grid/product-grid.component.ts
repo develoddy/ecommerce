@@ -27,6 +27,8 @@ export class ProductGridComponent implements OnChanges {
   sanitizedUrl: SafeUrl = '';
   selectedColors: { [productId: string]: number } = {}; // Track selected color index for each product
   productImages: { [productId: string]: string } = {}; // Track current image for each product
+  selectedSizes: { [productId: string]: string } = {}; // Track selected size for each product
+  hoveredProduct: string | null = null; // Track which product is being hovered
   
   constructor(private sanitizer: DomSanitizer) {}
 
@@ -54,35 +56,140 @@ export class ProductGridComponent implements OnChanges {
     
     if (changes['ourProducts']) {
       console.log('🔍 ProductGrid - Total products received:', this.ourProducts?.length || 0);
-      
-      // Debug específico para productos con campaing_discount
-      const productsWithCampaignDiscount = this.ourProducts?.filter((product: any) => {
-        const hasDiscount = product.campaing_discount && product.campaing_discount.type_discount;
-        if (hasDiscount) {
-          console.log('🎯 Product with campaing_discount found:', {
-            title: product.title,
-            campaing_discount: product.campaing_discount,
-            discount_percent: product.campaing_discount.discount,
-            type_discount: product.campaing_discount.type_discount
-          });
-        }
-        return hasDiscount;
-      }) || [];
-      
-      console.log('🛍️ Products with campaing_discount only:', productsWithCampaignDiscount.length);
-      
-      // Debug de productos sin descuento para comparar
-      const productsWithoutDiscount = this.ourProducts?.filter((product: any) => 
-        !product.campaing_discount || !product.campaing_discount.type_discount
-      ) || [];
-      console.log('� Products WITHOUT campaing_discount:', productsWithoutDiscount.length);
     }
   }  /**
-   * Handle color selection for a specific product
-   * @param product - The product object
-   * @param colorIndex - Index of the selected color
-   * @param newImage - New image URL to display
+   * Get available sizes for a product based on currently selected color
+   * @param product - Product object
+   * @returns Array of unique sizes
    */
+  getAvailableSizes(product: any): string[] {
+    if (!product.variedades || !Array.isArray(product.variedades)) {
+      return [];
+    }
+
+    // Get currently selected color for this product
+    const productId = product.uniqueId || product.id || product._id;
+    const currentColorIndex = this.selectedColors[productId] || 0;
+    const currentColor = product.colores?.[currentColorIndex]?.color;
+
+    // If no color selected, get all unique sizes
+    if (!currentColor) {
+      const allSizes = product.variedades
+        .map((v: any) => v.valor)
+        .filter((size: any) => size && typeof size === 'string') as string[];
+      return [...new Set(allSizes)].sort(this.sortSizes);
+    }
+
+    // Get sizes for the selected color
+    const sizesForColor = product.variedades
+      .filter((v: any) => v.color === currentColor)
+      .map((v: any) => v.valor)
+      .filter((size: any) => size && typeof size === 'string') as string[];
+
+    return [...new Set(sizesForColor)].sort(this.sortSizes);
+  }
+
+  /**
+   * Sort sizes in logical order (S, M, L, XL, 2XL, etc.)
+   * @param a - First size
+   * @param b - Second size
+   * @returns Sort order
+   */
+  private sortSizes(a: string, b: string): number {
+    const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'];
+    const indexA = sizeOrder.indexOf(a);
+    const indexB = sizeOrder.indexOf(b);
+    
+    if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    
+    return indexA - indexB;
+  }
+
+  /**
+   * Handle size selection for a product
+   * @param product - Product object
+   * @param size - Selected size
+   */
+  onSizeSelect(product: any, size: string): void {
+    const productId = product.uniqueId || product.id || product._id;
+    
+    if (!productId) {
+      console.error('Product ID not found for size selection');
+      return;
+    }
+
+    // Update selected size for this product
+    this.selectedSizes[productId] = size;
+    
+    console.log(`✅ Size ${size} selected for product ${productId}`);
+    
+    // You can add additional logic here, like:
+    // - Update stock information
+    // - Change price if size affects price
+    // - Call parent component method
+  }
+
+  /**
+   * Check if a size is currently selected for a product
+   * @param product - Product object
+   * @param size - Size to check
+   * @returns boolean
+   */
+  isSizeSelected(product: any, size: string): boolean {
+    const productId = product.uniqueId || product.id || product._id;
+    return this.selectedSizes[productId] === size;
+  }
+
+  /**
+   * Check if a size is available (has stock) for the current color
+   * @param product - Product object
+   * @param size - Size to check
+   * @returns boolean
+   */
+  isSizeAvailable(product: any, size: string): boolean {
+    if (!product.variedades || !Array.isArray(product.variedades)) {
+      return false;
+    }
+
+    const productId = product.uniqueId || product.id || product._id;
+    const currentColorIndex = this.selectedColors[productId] || 0;
+    const currentColor = product.colores?.[currentColorIndex]?.color;
+
+    // Find the specific variant for this color and size
+    const variant = product.variedades.find((v: any) => 
+      (!currentColor || v.color === currentColor) && v.valor === size
+    );
+
+    return variant && variant.stock > 0;
+  }
+
+  /**
+   * Handle mouse enter on product image
+   * @param product - Product object
+   */
+  onProductHover(product: any): void {
+    const productId = product.uniqueId || product.id || product._id;
+    this.hoveredProduct = productId;
+  }
+
+  /**
+   * Handle mouse leave on product image
+   */
+  onProductLeave(): void {
+    this.hoveredProduct = null;
+  }
+
+  /**
+   * Check if product is currently hovered
+   * @param product - Product object
+   * @returns boolean
+   */
+  isProductHovered(product: any): boolean {
+    const productId = product.uniqueId || product.id || product._id;
+    return this.hoveredProduct === productId;
+  }
   onColorSelect(product: any, colorIndex: number, newImage: string): void {
     const productId = product.uniqueId || product.id || product._id;
     
@@ -233,41 +340,4 @@ export class ProductGridComponent implements OnChanges {
     //console.log('🚫 getDiscountLabel returning NULL for product:', product.title, 'campaing_discount:', product.campaing_discount);
     return null;
   }
-
-  // Metodo igual que arriba pero en este caso muestra la fecha de inicio y fin de la oferta
-  // getDiscountLabel(product: any): string | null {
-  //   let discountPercent: number | null = null;
-  //   let startDate: string | null = null;
-  //   let endDate: string | null = null;
-
-  //   if (product.campaing_discount && product.campaing_discount.type_discount === 1) {
-  //     discountPercent = product.campaing_discount.discount;
-  //     startDate = product.campaing_discount.start_date;
-  //     endDate = product.campaing_discount.end_date;
-  //   } else if (this.FlashSale && this.FlashSale.type_discount === 1) {
-  //     discountPercent = this.FlashSale.discount;
-  //     startDate = this.FlashSale.start_date;
-  //     endDate = this.FlashSale.end_date;
-  //   }
-
-  //   if (discountPercent) {
-  //     let label = `¡Rebaja –${discountPercent}%!`;
-
-  //     if (startDate && endDate) {
-  //       const formatDate = (dateStr: string) => {
-  //         const d = new Date(dateStr);
-  //         const day = String(d.getDate()).padStart(2, '0');
-  //         const month = String(d.getMonth() + 1).padStart(2, '0'); // +1 porque enero = 0
-  //         const year = String(d.getFullYear()).slice(-2); // últimos 2 dígitos
-  //         return `${day}.${month}.${year}`;
-  //       };
-
-  //       label += ` Del ${formatDate(startDate)} al ${formatDate(endDate)}`;
-  //     }
-
-  //     return label;
-  //   }
-
-  //   return null;
-  // }
 }

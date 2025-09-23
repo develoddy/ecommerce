@@ -78,8 +78,8 @@ export class LandingProductComponent
   firstImage: string = '';
   coloresDisponibles: { color: string; imagen: string }[] = [];
   variedades: any[] = [];
-  availableSizesCamisetas = ['L', 'M', 'S', 'XL', 'XXL'];
-  availableSizesHoodies = ['L', 'M', 'S', 'XL', 'XXL'];
+  availableSizesCamisetas = ['L', 'M', 'S', 'XL', '2XL', '3XL'];
+  availableSizesHoodies = ['L', 'M', 'S', 'XL', '2XL', '3XL'];
   availableSizesGorra = ['One size'];
   availableSizesPerfume = ['50ML', '100ML'];
   availableSizesMugs = ['11 oz', '15 oz'];

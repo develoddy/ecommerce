@@ -5,7 +5,9 @@
                 <div class="item col-item" itemscope itemtype="https://schema.org/Product">
                     <div class="product-box">
                         <!-- Start Product Image -->
-                        <div class="product-image">
+                        <div class="product-image" 
+                             (mouseenter)="onProductHover(ourProduct)" 
+                             (mouseleave)="onProductLeave()">
                             <!-- Start Product Image -->
                             <a href="#" (click)="navigateToProduct(ourProduct.slug,ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
                                 <!-- Image alt="Camiseta {{ product_selected.title }} para programadores LujanDev"-->
@@ -30,6 +32,23 @@
                                 <!-- End Hover Image -->
                             </a>
                             <!-- End Product Image -->
+
+                            <!-- Size Selector - Appears on Hover -->
+                            <div class="size-selector" *ngIf="isProductHovered(ourProduct) && getAvailableSizes(ourProduct).length > 0">
+                                <div class="size-label">Tallas disponibles:</div>
+                                <div class="size-options">
+                                    <button *ngFor="let size of getAvailableSizes(ourProduct)" 
+                                            class="size-btn"
+                                            [class.selected]="isSizeSelected(ourProduct, size)"
+                                            [class.unavailable]="!isSizeAvailable(ourProduct, size)"
+                                            [disabled]="!isSizeAvailable(ourProduct, size)"
+                                            (click)="onSizeSelect(ourProduct, size)"
+                                            [title]="!isSizeAvailable(ourProduct, size) ? 'Sin stock' : 'Seleccionar talla ' + size">
+                                        {{ size }}
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- End Size Selector -->
                             <!-- Product label -->
                             <!-- <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div> -->
                             <div class="product-labels">
@@ -120,9 +139,15 @@
                             <!--End Sort Description-->
                             <!-- Swatches Color -->
                             <ul class="variants-clr swatches">
-                                <ng-container *ngFor="let item of ourProduct.colores">
-                                    <li class="swatch medium rounded" (click)="changeProductImage(ourProduct, item.imagen)">
-                                        <span class="swatchLbl" [style.background-color]="item.hex" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}">
+                                <ng-container *ngFor="let item of ourProduct.colores; let colorIndex = index">
+                                    <li class="swatch medium" 
+                                        [class.active]="isColorSelected(ourProduct, colorIndex)"
+                                        (click)="onColorSelect(ourProduct, colorIndex, item.imagen)">
+                                        <span class="swatchLbl" 
+                                              [style.background-color]="item.hex" 
+                                              data-bs-toggle="tooltip" 
+                                              data-bs-placement="top" 
+                                              title="{{ item.color }}">
                                         </span>
                                     </li>
                                 </ng-container>
