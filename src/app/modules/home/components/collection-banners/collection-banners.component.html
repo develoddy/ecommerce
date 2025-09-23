@@ -1,0 +1,144 @@
+<!-- Collection banner Mujer | Hombre | Niños etc -->
+<section class="section collection-banners pb-0 pt-0" [class.d-none]="!isVisible">
+  <div class="container-fluid p-0">
+    <div class="collection-banner-grid">
+      <!-- First Row -->
+      <div class="row sp-row">
+        <!-- Main Camisetas Banner -->
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item px-0">
+          <div class="collection-item sp-col">
+            <a
+              href="shop-left-sidebar.html"
+              onclick="return false;"
+              [routerLink]="banners[0].link"
+              class="zoom-scal"
+            >
+              <div class="img">
+                <img
+                  class="blur-up lazyload w-100"
+                  [attr.data-src]="banners[0].image"
+                  [src]="banners[0].image"
+                  alt="Camisetas"
+                  title="Camisetas"
+                  width="645"
+                  height="723"
+                />
+              </div>
+              <div class="details" [ngClass]="banners[0].position">
+                <div class="inner">
+                  <h3 class="title text-white">{{ banners[0].title }}</h3>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Side Banners -->
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item">
+          <div class="row">
+            <!-- Jerséis Banner -->
+            <div class="col-12 col-lg-12">
+              <div class="collection-item sp-col">
+                <a
+                  href="shop-left-sidebar.html"
+                  onclick="return false;"
+                  [routerLink]="banners[1].link"
+                  class="zoom-scal"
+                >
+                  <div class="img">
+                    <img
+                      class="blur-up lazyload w-100"
+                      [attr.data-src]="banners[1].image"
+                      [src]="banners[1].image"
+                      alt="Jerséis"
+                      title="Jerséis"
+                      width="645"
+                      height="350"
+                    />
+                  </div>
+                  <div class="details" [ngClass]="banners[1].position">
+                    <div class="inner">
+                      <p class="mb-2" *ngIf="banners[1].subtitle">{{ banners[1].subtitle }}</p>
+                      <h3 class="title">{{ banners[1].title }}</h3>
+                      <span
+                        class="btn btn-outline-secondary btn-md text-uppercase"
+                        *ngIf="banners[1].buttonText"
+                      >{{ banners[1].buttonText }}</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            
+            <!-- Gorras Banner -->
+            <div class="col-12 col-lg-12">
+              <div class="collection-item sp-col">
+                <a
+                  href="shop-left-sidebar.html"
+                  onclick="return false;"
+                  [routerLink]="banners[2].link"
+                  class="zoom-scal"
+                >
+                  <div class="img">
+                    <img
+                      class="blur-up lazyload w-100"
+                      [attr.data-src]="banners[2].image"
+                      [src]="banners[2].image"
+                      alt="Gorras"
+                      title="Gorras"
+                      width="645"
+                      height="350"
+                    />
+                  </div>
+                  <div class="details" [ngClass]="banners[2].position">
+                    <div class="inner">
+                      <p class="mb-2" *ngIf="banners[2].subtitle">{{ banners[2].subtitle }}</p>
+                      <h3 class="title">{{ banners[2].title }}</h3>
+                      <span
+                        class="btn btn-outline-secondary btn-md text-uppercase"
+                        *ngIf="banners[2].buttonText"
+                      >{{ banners[2].buttonText }}</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Second Row -->
+      <div class="row sp-row">
+        <!-- Full Width Colección Banner -->
+        <div class="col-12 col-sm-6 col-md-6 col-lg-12 collection-banner-item px-0">
+          <div class="collection-item sp-col">
+            <a
+              href="shop-left-sidebar.html"
+              onclick="return false;"
+              [routerLink]="banners[3].link"
+              class="zoom-scal"
+            >
+              <div class="img">
+                <img
+                  class="blur-up lazyload w-100"
+                  [attr.data-src]="banners[3].image"
+                  [src]="banners[3].image"
+                  alt="Colección"
+                  title="Colección"
+                  width="645"
+                  height="723"
+                />
+              </div>
+              <div class="details" [ngClass]="banners[3].position">
+                <div class="inner">
+                  <h3 class="title text-white">{{ banners[3].title }}</h3>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--End Collection banner-->

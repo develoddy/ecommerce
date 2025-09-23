@@ -1,0 +1,68 @@
+<!--Parallax Banner-->
+<div class="section parallax-banner-style1" *ngFor="let flash of FlashSales">
+  <div class="hero hero-large hero-overlay bg-size">
+    <img
+      class="bg-img"
+      src="assets/images/parallax/banner-sale.png"
+      alt="¡Oferta exclusiva! 30% de descuento en camisetas para developers"
+      width="1920"
+      height="645"
+    />
+    <div class="hero-inner d-flex-justify-center">
+      <div class="container">
+        <div class="wrap-text center text-white">
+          <h2 class="hero-title text-white">
+            ¡Oferta exclusiva! {{ flash.discount }}% de descuento en camisetas para
+            developers
+          </h2>
+          <p class="hero-subtitle h3 text-white">
+            Aprovecha antes que se agoten
+          </p>
+          <!--Countdown Timer-->
+          <div class="hero-saleTime d-flex-center text-center justify-content-center" *ngIf="timeLeft">
+            <!-- Debug info -->
+            <div class="text-white small mb-2 d-block w-100" style="font-size: 10px;">
+              Debug: Flash ID={{ flash.id }}, timeLeft={{ timeLeft[flash.id] | json }}
+            </div>
+            <div class="countdown-section">
+              <div class="countdown-number">{{ timeLeft[flash.id]?.days || 0 }}</div>
+              <div class="countdown-unit">Días</div>
+            </div>
+            <div class="countdown-section">
+              <div class="countdown-number">{{ timeLeft[flash.id]?.hours || 0 }}</div>
+              <div class="countdown-unit">Hrs</div>
+            </div>
+            <div class="countdown-section">
+              <div class="countdown-number">{{ timeLeft[flash.id]?.minutes || 0 }}</div>
+              <div class="countdown-unit">Min</div>
+            </div>
+            <div class="countdown-section">
+              <div class="countdown-number">{{ timeLeft[flash.id]?.seconds || 0 }}</div>
+              <div class="countdown-unit">Seg</div>
+            </div>
+          </div>
+          <!--End Countdown Timer-->
+          <p class="hero-details">
+            Camisetas únicas con diseños de Swift, Python, ChatGPT y más.
+            Calidad premium para que lleves tu pasión por el código
+            siempre contigo.
+          </p>
+          <a
+            href="#"
+            onclick="return false;"
+            [routerLink]="[
+              '/',
+              locale,
+              country,
+              'shop',
+              'filter-products'
+            ]"
+            class="hero-btn btn btn-light text-uppercase"
+            >Compra ahora</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Parallax Banner-->

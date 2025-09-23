@@ -1,8 +1,8 @@
 <!-- Products Flash Sale -->
 <div class="grid-products grid-view-items">
   <div class="section-header ms-3">
-    <p class="mb-2 mt-0">Comprar</p>
-    <h2>Flash Sale</h2>
+    <p class="mb-2 mt-0">Código en Oferta</p>
+    <h2>Descuentos Flash</h2>
   </div>
   <div class="row col-row product-options row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 g-1">  
     <ng-container *ngIf="FlashProductList.length > 0">
@@ -108,12 +108,12 @@
                   </span>
                 </span>
                 <!-- Debug info (solo visible en desarrollo) -->
-                <small class="text-muted d-block" style="font-size: 10px;">
+                <!-- <small class="text-muted d-block" style="font-size: 10px;">
                   Debug: hasDiscount={{ ourProduct.hasDiscount }}, 
                   discountLabel={{ ourProduct.discountLabel }},
                   finalPrice={{ ourProduct.finalPrice }},
                   originalPrice={{ ourProduct.price_usd }}
-                </small>
+                </small> -->
               </div>
               <!-- End Product Price -->
               <!--Sort Description-->

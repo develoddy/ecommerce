@@ -1,0 +1,19 @@
+<!--Service Section-->
+<section class="section service-section pb-0">
+  <div class="container">
+    <div
+      class="service-info row col-row row-cols-lg-4 row-cols-md-4 row-cols-sm-2 row-cols-2 text-center"
+    >
+      <div class="service-wrap col-item" *ngFor="let service of services">
+        <div class="service-icon mb-3">
+          <i [class]="service.icon"></i>
+        </div>
+        <div class="service-content">
+          <h3 class="title mb-2">{{ service.title }}</h3>
+          <span class="text-muted">{{ service.description }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--End Service Section-->

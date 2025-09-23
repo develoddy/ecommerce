@@ -30,293 +30,19 @@
       <!--End Home Slideshow-->
 
       <!-- Storytelling / Brand Message -->
-      <div class="page-header bg-black">
-        <div class="container-fluid">
-          <div class="row">
-            <div
-              class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center align-items-center"
-            >
-              <div class="page-title">
-                <h2 class="fw-bold text-white">
-                  En LujanDev creemos que programar es más que código
-                </h2>
-                <p class="lead text-white">
-                  Es cultura, estilo y actitud. Nuestras camisetas están hechas
-                  para developers que quieren vestir su pasión con elegancia.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-brand-message></app-brand-message>
       <!-- End Storytelling / Brand Message -->
 
       <!--Service Section-->
-      <section class="section service-section pb-0">
-        <div class="container">
-          <div
-            class="service-info row col-row row-cols-lg-4 row-cols-md-4 row-cols-sm-2 row-cols-2 text-center"
-          >
-            <div class="service-wrap col-item">
-              <div class="service-icon mb-3">
-                <i class="icon anm anm-phone-call-l"></i>
-              </div>
-              <div class="service-content">
-                <h3 class="title mb-2">Contáctanos cuando quieras</h3>
-                <span class="text-muted"
-                  >Atención al cliente 24/7 por email.</span
-                >
-              </div>
-            </div>
-            <div class="service-wrap col-item">
-              <div class="service-icon mb-3">
-                <i class="icon anm anm-truck-l"></i>
-              </div>
-              <div class="service-content">
-                <h3 class="title mb-2">Envío rápido y seguimiento incluido</h3>
-                <span class="text-muted"
-                  >Tu pedido se fabrica y envía directamente a tu puerta.</span
-                >
-              </div>
-            </div>
-            <div class="service-wrap col-item">
-              <div class="service-icon mb-3">
-                <i class="icon anm anm-credit-card-l"></i>
-              </div>
-              <div class="service-content">
-                <h3 class="title mb-2">Pago 100% seguro</h3>
-                <span class="text-muted"
-                  >Paga con tarjeta de crédito o débito, o con tu cuenta
-                  PayPal.</span
-                >
-              </div>
-            </div>
-            <div class="service-wrap col-item">
-              <div class="service-icon mb-3">
-                <i class="icon anm anm-redo-l"></i>
-              </div>
-              <div class="service-content">
-                <h3 class="title mb-2">Devoluciones fáciles</h3>
-                <span class="text-muted"
-                  >Tienes 30 días para solicitar cambios o devoluciones.</span
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <app-service-section></app-service-section>
       <!--End Service Section-->
 
       <!-- Collection banner Mujer | Hombre | Niños etc -->
-      <section class="section collection-banners pb-0 pt-0 d-none">
-        <div class="container-fluid p-0">
-          <div class="collection-banner-grid">
-            <div class="row sp-row">
-              <div
-                class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item px-0"
-              >
-                <div class="collection-item sp-col">
-                  <a
-                    href="shop-left-sidebar.html"
-                    onclick="return false;"
-                    [routerLink]="[
-                      '/',
-                      locale,
-                      country,
-                      'shop',
-                      'filter-products'
-                    ]"
-                    class="zoom-scal"
-                  >
-                    <div class="img">
-                      <img
-                        class="blur-up lazyload w-100"
-                        data-src="assets/images/collection/demo1-ct-img1.jpg"
-                        src="assets/images/collection/demo1-ct-img1.jpg"
-                        alt="Women Wear"
-                        title="Women Wear"
-                        width="645"
-                        height="723"
-                      />
-                    </div>
-                    <div class="details middle-right">
-                      <div class="inner">
-                        <p class="mb-2 text-white d-none">Compila tu look</p>
-                        <h3 class="title text-white">Camisetas</h3>
-                        <!-- <h3 class="title">Women Wear</h3> -->
-                        <!-- <button class="btn btn-outline-white btn-md text-uppercase">Compra ahora</button> -->
-                        <!-- <button type="button" class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</button> -->
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div
-                class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item"
-              >
-                <div class="row">
-                  <div class="col-12 col-lg-12">
-                    <div class="collection-item sp-col">
-                      <a
-                        href="shop-left-sidebar.html"
-                        onclick="return false;"
-                        [routerLink]="[
-                          '/',
-                          locale,
-                          country,
-                          'shop',
-                          'filter-products'
-                        ]"
-                        class="zoom-scal"
-                      >
-                        <div class="img">
-                          <img
-                            class="blur-up lazyload w-100"
-                            data-src="assets/images/collection/demo1-ct-img3.jpg"
-                            src="assets/images/collection/demo1-ct-img3.jpg"
-                            alt="Mens Wear"
-                            title="Mens Wear"
-                            width="645"
-                            height="350"
-                          />
-                        </div>
-                        <div class="details middle-left">
-                          <div class="inner">
-                            <p class="mb-2">Jersey en producción</p>
-                            <h3 class="title">Jerséis</h3>
-                            <span
-                              class="btn btn-outline-secondary btn-md text-uppercase"
-                              >Compra ahora</span
-                            >
-                          </div>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-12">
-                    <div class="collection-item sp-col">
-                      <a
-                        href="shop-left-sidebar.html"
-                        onclick="return false;"
-                        [routerLink]="[
-                          '/',
-                          locale,
-                          country,
-                          'shop',
-                          'filter-products'
-                        ]"
-                        class="zoom-scal"
-                      >
-                        <div class="img">
-                          <img
-                            class="blur-up lazyload w-100"
-                            data-src="assets/images/collection/demo1-ct-img3.jpg"
-                            src="assets/images/collection/demo1-ct-img3.jpg"
-                            alt="Kids Wear"
-                            title="Kids Wear"
-                            width="645"
-                            height="350"
-                          />
-                        </div>
-                        <div class="details middle-right">
-                          <div class="inner">
-                            <p class="mb-2">Gorra master</p>
-                            <h3 class="title">Gorras</h3>
-                            <span
-                              class="btn btn-outline-secondary btn-md text-uppercase"
-                              >Compra ahora</span
-                            >
-                          </div>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row sp-row">
-              <div
-                class="col-12 col-sm-6 col-md-6 col-lg-12 collection-banner-item px-0"
-              >
-                <div class="collection-item sp-col">
-                  <a
-                    href="shop-left-sidebar.html"
-                    onclick="return false;"
-                    [routerLink]="[
-                      '/',
-                      locale,
-                      country,
-                      'shop',
-                      'filter-products'
-                    ]"
-                    class="zoom-scal"
-                  >
-                    <div class="img">
-                      <img
-                        class="blur-up lazyload w-100"
-                        data-src="assets/images/collection/demo1-ct-img2.jpg"
-                        src="assets/images/collection/demo1-ct-img2.jpg"
-                        alt="Women Wear"
-                        title="Women Wear"
-                        width="645"
-                        height="723"
-                      />
-                    </div>
-                    <div class="details middle-right">
-                      <div class="inner">
-                        <p class="mb-2 d-none">Compila tu look</p>
-                        <h3 class="title text-white">Colección</h3>
-                        <!-- <h3 class="title">Women Wear</h3> -->
-                        <!-- <button type="button"  class="btn btn-outline-dark btn-md text-uppercase">Compra ahora</button>  -->
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div
-                class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item px-1 d-none"
-              >
-                <div class="collection-item sp-col">
-                  <a
-                    href="shop-left-sidebar.html"
-                    onclick="return false;"
-                    [routerLink]="[
-                      '/',
-                      locale,
-                      country,
-                      'shop',
-                      'filter-products'
-                    ]"
-                    class="zoom-scal"
-                  >
-                    <div class="img">
-                      <img
-                        class="blur-up lazyload w-100"
-                        data-src="assets/images/collection/demo3-ct-img4.jpg"
-                        src="assets/images/collection/demo3-ct-img4.jpg"
-                        alt="Women Wear"
-                        title="Women Wear"
-                        width="645"
-                        height="723"
-                      />
-                    </div>
-                    <div class="details middle-right">
-                      <div class="inner">
-                        <p class="mb-2 d-none">Gorra master</p>
-                        <h3 class="title text-white">Gorras</h3>
-                        <!-- <h3 class="title">Women Wear</h3> -->
-                        <!-- <span class="btn btn-outline-secondary btn-md text-uppercase">Compra ahora</span> -->
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <app-collection-banners 
+        [locale]="locale"
+        [country]="country"
+        [isVisible]="false">
+      </app-collection-banners>
       <!--End Collection banner-->
 
       <!--Popular Categories-->
@@ -338,27 +64,31 @@
             <div class="filters-item d-flex align-items-center">
               <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
               <div class="grid-options view-mode d-flex">
-                <a class="icon-mode mode-list d-block" data-col="1" #grid1></a>
-                <a
-                  class="icon-mode mode-grid grid-2 d-block"
-                  data-col="2"
-                  #grid2
-                ></a>
-                <a
-                  class="icon-mode mode-grid grid-3 d-md-block"
-                  data-col="3"
-                  #grid3
-                ></a>
-                <a
-                  class="icon-mode mode-grid grid-4 d-lg-block"
-                  data-col="4"
-                  #grid4
-                ></a>
-                <a
-                  class="icon-mode mode-grid grid-5 d-xl-block"
-                  data-col="5"
-                  #grid5
-                ></a>
+                <a class="icon-mode mode-list d-block" 
+                   data-col="1" 
+                   #grid1
+                   (click)="setGridView(1)"
+                   [class.active]="currentGridView.columns === 1"></a>
+                <a class="icon-mode mode-grid grid-2 d-block"
+                   data-col="2"
+                   #grid2
+                   (click)="setGridView(2)"
+                   [class.active]="currentGridView.columns === 2"></a>
+                <a class="icon-mode mode-grid grid-3 d-md-block"
+                   data-col="3"
+                   #grid3
+                   (click)="setGridView(3)"
+                   [class.active]="currentGridView.columns === 3"></a>
+                <a class="icon-mode mode-grid grid-4 d-lg-block"
+                   data-col="4"
+                   #grid4
+                   (click)="setGridView(4)"
+                   [class.active]="currentGridView.columns === 4"></a>
+                <a class="icon-mode mode-grid grid-5 d-xl-block"
+                   data-col="5"
+                   #grid5
+                   (click)="setGridView(5)"
+                   [class.active]="currentGridView.columns === 5"></a>
               </div>
             </div>
           </div>
@@ -380,78 +110,21 @@
         [addWishlist]="addWishlist"
         [changeProductImage]="changeProductImage"
         [navigateToProduct]="navigateToProduct"
+        [FlashSale]="FlashSales"
+        [gridViewMode]="currentGridView"
       ></app-product-grid>
       <!--End Product Grid-->
 
       <!--Parallax Banner-->
-      <div class="section parallax-banner-style1" *ngFor="let flash of FlashSales">
-        <div class="hero hero-large hero-overlay bg-size">
-          <img
-            class="bg-img"
-            src="assets/images/parallax/banner-sale.png"
-            alt="¡Oferta exclusiva! 30% de descuento en camisetas para developers"
-            width="1920"
-            height="645"
-          />
-          <div class="hero-inner d-flex-justify-center">
-            <div class="container">
-              <div class="wrap-text center text-white">
-                <h2 class="hero-title text-white">
-                  ¡Oferta exclusiva! {{ flash.discount }}% de descuento en camisetas para
-                  developers
-                </h2>
-                <p class="hero-subtitle h3 text-white">
-                  Aprovecha antes que se agoten
-                </p>
-                <!--Countdown Timer-->
-                <div class="hero-saleTime d-flex-center text-center justify-content-center" *ngIf="timeLeft">
-                  <!-- Debug info -->
-                  <div class="text-white small mb-2 d-block w-100" style="font-size: 10px;">
-                    Debug: Flash ID={{ flash.id }}, timeLeft={{ timeLeft[flash.id] | json }}
-                  </div>
-                  <div class="countdown-section">
-                    <div class="countdown-number">{{ timeLeft[flash.id]?.days || 0 }}</div>
-                    <div class="countdown-unit">Días</div>
-                  </div>
-                  <div class="countdown-section">
-                    <div class="countdown-number">{{ timeLeft[flash.id]?.hours || 0 }}</div>
-                    <div class="countdown-unit">Hrs</div>
-                  </div>
-                  <div class="countdown-section">
-                    <div class="countdown-number">{{ timeLeft[flash.id]?.minutes || 0 }}</div>
-                    <div class="countdown-unit">Min</div>
-                  </div>
-                  <div class="countdown-section">
-                    <div class="countdown-number">{{ timeLeft[flash.id]?.seconds || 0 }}</div>
-                    <div class="countdown-unit">Seg</div>
-                  </div>
-                </div>
-                <!--End Countdown Timer-->
-                <p class="hero-details">
-                  Camisetas únicas con diseños de Swift, Python, ChatGPT y más.
-                  Calidad premium para que lleves tu pasión por el código
-                  siempre contigo.
-                </p>
-                <a
-                  href="#"
-                  onclick="return false;"
-                  [routerLink]="[
-                    '/',
-                    locale,
-                    country,
-                    'shop',
-                    'filter-products'
-                  ]"
-                  class="hero-btn btn btn-light text-uppercase"
-                  >Compra ahora</a
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-flash-sale-banner
+        [FlashSales]="FlashSales"
+        [timeLeft]="timeLeft"
+        [locale]="locale"
+        [country]="country">
+      </app-flash-sale-banner>
       <!--End Parallax Banner-->
 
+      <!-- Flash Sale-->
       <app-flash-sale
         [FlashProductList]="FlashProductList"
         [FlashSales]="FlashSales"
@@ -465,214 +138,10 @@
         [changeProductImage]="changeProductImage"
         [navigateToProduct]="navigateToProduct">
       </app-flash-sale>
+      <!-- /End Flash Sale-->
 
       <!--Testimonial Section-->
-      <section class="section testimonial-slider style1">
-        <div class="container">
-          <div class="section-header">
-            <p class="mb-2 mt-0">Satisfacción garantizada</p>
-            <h2>Ellos ya lo probaron y te lo cuentan</h2>
-          </div>
-
-          <div class="testimonial-wraper">
-            <!--Testimonial Slider Items-->
-            <div
-              class="testimonial-slider-3items gp15 slick-arrow-dots arwOut5"
-            >
-              <div class="testimonial-slide">
-                <div class="testimonial-content text-center">
-                  <div class="quote-icon mb-3 mb-lg-4">
-                    <img
-                      class="blur-up lazyload mx-auto"
-                      data-src="assets/images/icons/demo1-quote-icon.png"
-                      src="assets/images/icons/demo1-quote-icon.png"
-                      alt="icon"
-                      width="40"
-                      height="40"
-                    />
-                  </div>
-                  <div class="content">
-                    <div class="text mb-2">
-                      <p>
-                        Usé la de Python para dar clase y terminé regalando el
-                        enlace de la tienda a medio grupo. Se nota que está
-                        hecha por alguien que sabe lo que es un buen print… y un
-                        buen lenguaje 😎
-                      </p>
-                    </div>
-                    <div class="product-review my-3">
-                      <i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star"></i>
-                      <span class="caption hidden ms-1">24 Reviews</span>
-                    </div>
-                  </div>
-                  <div class="auhimg d-flex-justify-center text-left">
-                    <div class="image">
-                      <img
-                        class="rounded-circle blur-up lazyload"
-                        data-src="assets/images/users/luciaM.jpg"
-                        src="assets/images/users/luciaM.jpeg"
-                        alt="John Doe"
-                        width="65"
-                        height="65"
-                      />
-                    </div>
-                    <div class="auhtext ms-3">
-                      <h5 class="authour mb-1">Lucia M.</h5>
-                      <p class="text-muted">Profesora de programación</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="testimonial-slide">
-                <div class="testimonial-content text-center">
-                  <div class="quote-icon mb-3 mb-lg-4">
-                    <img
-                      class="blur-up lazyload mx-auto"
-                      data-src="assets/images/icons/demo1-quote-icon.png"
-                      src="assets/images/icons/demo1-quote-icon.png"
-                      alt="icon"
-                      width="40"
-                      height="40"
-                    />
-                  </div>
-                  <div class="content">
-                    <div class="text mb-2">
-                      <p>
-                        La camiseta de Swift me acompaña en todas mis sesiones
-                        de código. Calidad increíble y diseño que no pasa
-                        desapercibido. Perfecta para los que vivimos programando
-                        en iOS.
-                      </p>
-                    </div>
-                    <div class="product-review my-3">
-                      <i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star-o"></i>
-                      <span class="caption hidden ms-1">15 Reviews</span>
-                    </div>
-                  </div>
-                  <div class="auhimg d-flex-justify-center text-left">
-                    <div class="image">
-                      <img
-                        class="rounded-circle blur-up lazyload"
-                        data-src="assets/images/users/diegoF.jpg"
-                        src="assets/images/users/diegoF.jpeg"
-                        alt="Jessica Doe"
-                        width="65"
-                        height="65"
-                      />
-                    </div>
-                    <div class="auhtext ms-3">
-                      <h5 class="authour mb-1">Diego F.</h5>
-                      <p class="text-muted">Full Stack</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="testimonial-slide">
-                <div class="testimonial-content text-center">
-                  <div class="quote-icon mb-3 mb-lg-4">
-                    <img
-                      class="blur-up lazyload mx-auto"
-                      data-src="assets/images/icons/demo1-quote-icon.png"
-                      src="assets/images/icons/demo1-quote-icon.png"
-                      alt="icon"
-                      width="40"
-                      height="40"
-                    />
-                  </div>
-                  <div class="content">
-                    <div class="text mb-2">
-                      <p>
-                        Me compré la camiseta con el logo de ChatGPT y terminé
-                        dando una charla improvisada sobre IA en la oficina.
-                        Literalmente, una prenda que inicia conversaciones.
-                      </p>
-                    </div>
-                    <div class="product-review my-3">
-                      <i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star-o"></i
-                      ><i class="icon anm anm-star-o"></i>
-                      <span class="caption hidden ms-1">17 Reviews</span>
-                    </div>
-                  </div>
-                  <div class="auhimg d-flex-justify-center text-left">
-                    <div class="image">
-                      <img
-                        class="rounded-circle blur-up lazyload"
-                        data-src="assets/images/users/jorjeT.jpg"
-                        src="assets/images/users/jorjeT.jpeg"
-                        alt="Rick Edward"
-                        width="65"
-                        height="65"
-                      />
-                    </div>
-                    <div class="auhtext ms-3">
-                      <h5 class="authour mb-1">Jorge T.</h5>
-                      <p class="text-muted">DevOps</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="testimonial-slide rounded-3">
-                <div class="testimonial-content text-center">
-                  <div class="quote-icon mb-3 mb-lg-4">
-                    <img
-                      class="blur-up lazyload mx-auto"
-                      data-src="assets/images/icons/demo1-quote-icon.png"
-                      src="assets/images/icons/demo1-quote-icon.png"
-                      alt="icon"
-                      width="40"
-                      height="40"
-                    />
-                  </div>
-                  <div class="content">
-                    <div class="text mb-2">
-                      <p>
-                        La de ‘Code Style’ fue un golpe bajo para los que usan
-                        Python, pero bueno, alguien tenía que decirlo 😎
-                      </p>
-                    </div>
-                    <div class="product-review my-3">
-                      <i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star"></i
-                      ><i class="icon anm anm-star-o"></i
-                      ><i class="icon anm anm-star-o"></i
-                      ><i class="icon anm anm-star-o"></i>
-                      <span class="caption hidden ms-1">29 Reviews</span>
-                    </div>
-                  </div>
-                  <div class="auhimg d-flex-justify-center text-left">
-                    <div class="image">
-                      <img
-                        class="rounded-circle blur-up lazyload"
-                        data-src="assets/images/users/martaL.jpg"
-                        src="assets/images/users/martaL.jpeg"
-                        alt="Happy Buyer"
-                        width="65"
-                        height="65"
-                      />
-                    </div>
-                    <div class="auhtext ms-3">
-                      <h5 class="authour mb-1">Marta L.</h5>
-                      <p class="text-muted">JavaScript Lover</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!--Testimonial Slider Items-->
-          </div>
-        </div>
-      </section>
+      <app-testimonials></app-testimonials>
       <!--End Testimonial section-->
 
       <!--Blog Post-->

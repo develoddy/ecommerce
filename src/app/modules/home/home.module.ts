@@ -14,6 +14,11 @@ import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory } from 'src/app/app.module';
 import { FlashSaleComponent } from './components/flash-sale/flash-sale.component';
+import { BrandMessageComponent } from './components/brand-message/brand-message.component';
+import { ServiceSectionComponent } from './components/service-section/service-section.component';
+import { CollectionBannersComponent } from './components/collection-banners/collection-banners.component';
+import { FlashSaleBannerComponent } from './components/flash-sale-banner/flash-sale-banner.component';
+import { TestimonialsComponent } from './components/testimonials/testimonials.component';
 
 
 @NgModule({
@@ -22,7 +27,12 @@ import { FlashSaleComponent } from './components/flash-sale/flash-sale.component
     SliderHomeComponent,
     CategoryListComponent,
     ProductGridComponent,
-    FlashSaleComponent
+    FlashSaleComponent,
+    BrandMessageComponent,
+    ServiceSectionComponent,
+    CollectionBannersComponent,
+    FlashSaleBannerComponent,
+    TestimonialsComponent
   ],
   imports: [
     CommonModule,

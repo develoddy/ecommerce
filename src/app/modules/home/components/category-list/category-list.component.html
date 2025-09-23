@@ -1,27 +1,33 @@
 <section class="section collection-slider pb-0" *ngIf="categories.length != 0">
   <div class="container">
     <div class="section-header">
-      <p class="mb-2 mt-0">Comprar por categoría</p>
-      <h2>Colecciones populares</h2>
+      <p class="mb-2 mt-0">Descubre nuestras</p>
+      <h2>Colecciones exclusivas</h2>
     </div>
     <div class="collection-slider-5items gp15 arwOut5 hov-arrow">
-      <ng-container *ngFor="let categorie of categories">
-        <div class="category-item zoomscal-hov">
-          <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" class="category-link clr-none">
+      <ng-container *ngFor="let categorie of categories; let i = index">
+        <article class="category-item" 
+                 [style.animation-delay]="(i * 0.1) + 's'"
+                 [attr.aria-label]="'Categoría ' + categorie.title">
+          <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" 
+             class="category-link clr-none"
+             [attr.title]="'Explorar ' + categorie.title">
             <div class="zoom-scal zoom-scal-nopb rounded-3">
               <img class="blur-up lazyload" 
                    [attr.data-src]="categorie.imagen_home" 
                    [src]="categorie.imagen_home" 
-                   alt="{{ categorie.title }}" 
-                   title="{{ categorie.title }}" 
-                   width="365" height="365" />
+                   [alt]="'Imagen de la categoría ' + categorie.title" 
+                   [title]="categorie.title" 
+                   width="365" 
+                   height="365" 
+                   loading="lazy" />
             </div>
             <div class="details mt-3 text-center">
-              <h4 class="category-title mb-0 text-uppercase">{{ categorie.title }}</h4>
-              <p class="counts d-none">20 Productos</p>
+              <h4 class="category-title mb-0 fw-light">{{ categorie.title }}</h4>
+              <p class="counts d-none">Explorar colección</p>
             </div>
           </a>
-        </div>
+        </article>
       </ng-container>
     </div>
   </div>

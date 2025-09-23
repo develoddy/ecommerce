@@ -1117,7 +1117,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .grid-products.pro-hover4 .product-details .addtocart-btn .btn { height: 37px; width: 37px; padding: 0; font-size: 16px; border-radius: 4px; }
 .grid-products.pro-hover4 .product-vendor { font-size: 13px; color: #8a8a8a; text-transform: uppercase; }
 .grid-products.pro-hover4 .product-name a { font-size: 14px; font-weight: 400;  text-transform: uppercase; }
-.grid-products.pro-hover4 .product-price .price { font-size: 14px; font-weight: 600; }
+.grid-products.pro-hover4 .product-price .price { font-size: 14px; font-weight: 300; }
 .grid-products.pro-hover4 .product-review .icon { color: #171717; }
 
 /* 8.09 One Image Banner */
@@ -1326,7 +1326,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .index-demo4 .addtocart-modal .variant-cart,
 .index-demo4 .grid-products .product-vendor { color: #a5a5a5; font-size: 13px; text-transform: uppercase; }
 .index-demo4 .grid-products .product-name a { font-size: 15px; font-weight: 600 !important; }
-.index-demo4 .grid-products .product-price .price { font-size: 15px; font-weight: 600; }
+.index-demo4 .grid-products .product-price .price { font-size: 15px; font-weight: 300; }
 .index-demo4 .grid-products .addtocart-btn .btn { font-size: 13px; font-weight: 600; }
 .index-demo4 .grid-products .addtocart-btn .btn i { display: none; }
 .index-demo4 .grid-products .button-action { margin: 15px 0 0; }
@@ -2212,7 +2212,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .product-labels .pr-label3 { left:0px; background-color: #28a745;}
 .product-labels .pr-label4 { left:0px; background:#fb6c3e; }
 
-.button-set { position:absolute; top:5px; right:5px; z-index:5; box-shadow:0 0 5px rgba(0,0,0,0.1); -webkit-transition:all ease-out .3s; transition:all ease-out .3s; }
+.button-set { position:absolute; top:5px; right:5px; z-index:5; -webkit-transition:all ease-out .3s; transition:all ease-out .3s; }
 .button-set .btn-icon { color: #fff; background-color: #131313; font-size: 14px; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; text-transform: uppercase; text-align: center; border-radius: 50%; border: 0; padding: 0; margin: 0; }
 .button-set .btn-icon:hover { color: #ffffff; background-color: #131313; border-radius: 50%; }
 .button-set .btn-icon:not(:last-child) { border-bottom:1px solid transparent;/*border-bottom:1px solid #ececec;*/ }
@@ -3474,7 +3474,7 @@ a.logo {
 .currency-symbol-small {font-size: .6rem; margin-left: 2px;position: relative;top: -0.55em;}
 
 /* --------- Precios Large --------- */
-.price {display: inline-flex;align-items: flex-start;font-family: sans-serif;font-weight: bold;}
+.price {display: inline-flex;align-items: flex-start;font-family: sans-serif;font-weight: 300;}
 /* Tamaño grande para la parte entera */
 .price-main {font-size: 1.5rem; }
 /* Tamaño más pequeño para los decimales */

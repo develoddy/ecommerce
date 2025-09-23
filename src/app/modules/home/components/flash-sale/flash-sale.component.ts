@@ -38,11 +38,11 @@ export class FlashSaleComponent implements OnInit, OnChanges {
 
   private markDiscountedProducts() {
     if (!this.FlashProductList || !this.FlashSales) {
-      console.log('❌ No FlashProductList or FlashSales data');
+      //console.log('❌ No FlashProductList or FlashSales data');
       return;
     }
     
-    console.log(`Processing ${this.FlashProductList.length} products for discount labels`);
+    //console.log(`Processing ${this.FlashProductList.length} products for discount labels`);
     
     this.FlashProductList.forEach(product => {
       // Solo verificar si tiene descuento basado en finalPrice vs price_usd
@@ -57,12 +57,12 @@ export class FlashSaleComponent implements OnInit, OnChanges {
       }
       
       // Debug: mostrar los precios que YA fueron calculados por el padre
-      console.log(`📦 Product: ${product.title}`);
-      console.log(`  - Original: ${product.price_usd}€`);
-      console.log(`  - Final: ${product.finalPrice}€`);
-      console.log(`  - Has discount: ${product.hasDiscount}`);
-      console.log(`  - Discount label: ${product.discountLabel}`);
-      console.log(`  - Price parts: ${product.priceInteger}.${product.priceDecimals}`);
+      // console.log(`📦 Product: ${product.title}`);
+      // console.log(`  - Original: ${product.price_usd}€`);
+      // console.log(`  - Final: ${product.finalPrice}€`);
+      // console.log(`  - Has discount: ${product.hasDiscount}`);
+      // console.log(`  - Discount label: ${product.discountLabel}`);
+      // console.log(`  - Price parts: ${product.priceInteger}.${product.priceDecimals}`);
     });
   }
 

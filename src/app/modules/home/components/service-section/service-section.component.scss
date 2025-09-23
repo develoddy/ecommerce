@@ -1,0 +1,68 @@
+/* Service Section Component Styles */
+.service-section {
+  padding: 3rem 0;
+}
+
+.service-wrap {
+  padding: 2rem 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+}
+
+.service-wrap:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.service-icon {
+  font-size: 3rem;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.service-wrap:hover .service-icon {
+  color: #0056b3;
+}
+
+.service-content .title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.service-content .text-muted {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #6c757d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .service-section {
+    padding: 2rem 0;
+  }
+  
+  .service-wrap {
+    padding: 1.5rem 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .service-icon {
+    font-size: 2.5rem;
+  }
+  
+  .service-content .title {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .service-content .title {
+    font-size: 1rem;
+  }
+  
+  .service-content .text-muted {
+    font-size: 0.9rem;
+  }
+}

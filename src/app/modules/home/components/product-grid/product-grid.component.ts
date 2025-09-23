@@ -1,13 +1,14 @@
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { GridViewMode } from 'src/app/services/grid-view.service';
 
 @Component({
   selector: 'app-product-grid',
   templateUrl: './product-grid.component.html',
   styleUrls: ['./product-grid.component.scss']
 })
-export class ProductGridComponent {
+export class ProductGridComponent implements OnChanges {
   @Input() currentUrl: string = '';
   @Input() ourProducts: any[] = [];
   @Input() locale: string = '';
@@ -21,7 +22,11 @@ export class ProductGridComponent {
   @Input() changeProductImage: any;
   @Input() navigateToProduct: any;
   @Input() FlashSale: any;
+  @Input() gridViewMode: GridViewMode = { columns: 4, type: 'grid', className: 'grid-4-col' };
+  
   sanitizedUrl: SafeUrl = '';
+  selectedColors: { [productId: string]: number } = {}; // Track selected color index for each product
+  productImages: { [productId: string]: string } = {}; // Track current image for each product
   
   constructor(private sanitizer: DomSanitizer) {}
 
@@ -33,27 +38,132 @@ export class ProductGridComponent {
    * usando DomSanitizer.bypassSecurityTrustResourceUrl. Esto evita el error:
    * "unsafe value used in a resource URL context".
    */
-  ngOnChanges() {
-    console.log(this.ourProducts);
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('🔄 ProductGrid - ngOnChanges triggered');
     
-    if (this.currentUrl) {
-      this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.currentUrl);
+    if (changes['gridViewMode']) {
+      console.log('📊 GridViewMode received:', this.gridViewMode);
+      console.log('🏗️ Grid className:', this.gridViewMode?.className);
+      console.log('📐 Grid columns:', this.gridViewMode?.columns);
+      console.log('📋 Grid type:', this.gridViewMode?.type);
     }
-
     
-    
-    if (this.ourProducts && this.ourProducts.length > 0) {
-      this.ourProducts = this.ourProducts.map(p => {
-        const isBestSeller = p.count_review && p.count_review >= 3;
-        const hasDiscount = this.getDiscountLabel(p) !== null;
-
-        return {
-          ...p,
-          isBestSeller,
-          hasDiscount
-        };
-      });
+    if (changes['FlashSale']) {
+      console.log('💰 FlashSale data (IGNORADO en product-grid):', this.FlashSale);
     }
+    
+    if (changes['ourProducts']) {
+      console.log('🔍 ProductGrid - Total products received:', this.ourProducts?.length || 0);
+      
+      // Debug específico para productos con campaing_discount
+      const productsWithCampaignDiscount = this.ourProducts?.filter((product: any) => {
+        const hasDiscount = product.campaing_discount && product.campaing_discount.type_discount;
+        if (hasDiscount) {
+          console.log('🎯 Product with campaing_discount found:', {
+            title: product.title,
+            campaing_discount: product.campaing_discount,
+            discount_percent: product.campaing_discount.discount,
+            type_discount: product.campaing_discount.type_discount
+          });
+        }
+        return hasDiscount;
+      }) || [];
+      
+      console.log('🛍️ Products with campaing_discount only:', productsWithCampaignDiscount.length);
+      
+      // Debug de productos sin descuento para comparar
+      const productsWithoutDiscount = this.ourProducts?.filter((product: any) => 
+        !product.campaing_discount || !product.campaing_discount.type_discount
+      ) || [];
+      console.log('� Products WITHOUT campaing_discount:', productsWithoutDiscount.length);
+    }
+  }  /**
+   * Handle color selection for a specific product
+   * @param product - The product object
+   * @param colorIndex - Index of the selected color
+   * @param newImage - New image URL to display
+   */
+  onColorSelect(product: any, colorIndex: number, newImage: string): void {
+    const productId = product.uniqueId || product.id || product._id;
+    
+    if (!productId) {
+      console.error('Product ID not found for color selection');
+      return;
+    }
+    
+    if (!newImage) {
+      console.error('No image provided for color selection');
+      return;
+    }
+    
+    // Update selected color index for this specific product
+    this.selectedColors[productId] = colorIndex;
+    
+    // Update the image tracking
+    this.productImages[productId] = newImage;
+    
+    // Update the product's images immediately for instant feedback
+    product.currentImage = newImage;
+    product.imagen = newImage;
+    
+    // Also update the main product array for consistency
+    const productIndex = this.ourProducts.findIndex(p => 
+      (p.uniqueId || p.id || p._id) === productId
+    );
+    
+    if (productIndex !== -1) {
+      this.ourProducts[productIndex].imagen = newImage;
+      this.ourProducts[productIndex].currentImage = newImage;
+      
+      // Force change detection by creating a new reference
+      this.ourProducts = [...this.ourProducts];
+    }
+    
+    // Add changing animation class for visual feedback
+    product.isChanging = true;
+    
+    // Remove animation class after short animation
+    setTimeout(() => {
+      product.isChanging = false;
+    }, 300);
+    
+    // Call the parent's changeProductImage function if provided
+    if (this.changeProductImage) {
+      this.changeProductImage(product, newImage);
+    }
+    
+   //✅ Color changed successfully for product ${productId} to: ${newImage}`);
+  }
+
+  /**
+   * Check if a color is currently selected for a product
+   * @param product - Product object or product ID
+   * @param colorIndex - Color index to check
+   * @returns boolean
+   */
+  isColorSelected(product: any, colorIndex: number): boolean {
+    const productId = typeof product === 'string' ? product : (product.uniqueId || product.id || product._id);
+    return this.selectedColors[productId] === colorIndex;
+  }
+
+  /**
+   * Check if any color is selected for a product
+   * @param product - Product object
+   * @returns boolean
+   */
+  hasColorSelected(product: any): boolean {
+    const productId = product.uniqueId || product.id || product._id;
+    return this.selectedColors[productId] !== undefined;
+  }
+
+  /**
+   * Handle image load errors
+   * @param event - Error event
+   */
+  onImageError(event: any): void {
+    console.error('Error loading image:', event.target.src);
+    // You could set a fallback image here
+    // event.target.src = 'assets/images/placeholder.jpg';
   }
 
   // Vamos a montar la etiqueta “Mejor Vendido” en rojo 🔴 que se muestre solo si el producto tiene más de 20 ventas.
@@ -72,25 +182,55 @@ export class ProductGridComponent {
   }
 
 
+  hasDiscount(product: any): boolean {
+    // Solo verificar si tiene descuento individual (campaing_discount)
+    // Los Flash Sales se manejan en su propio componente
+    if (product.campaing_discount && product.campaing_discount.type_discount) {
+      //console.log('✅ hasDiscount TRUE for product:', product.title, 'discount:', product.campaing_discount.discount + '%');
+      return true;
+    }
+    
+    // Fallback: verificar si finalPrice es menor que price_usd
+    const hasDiscountedPrice = product.finalPrice && product.finalPrice < product.price_usd;
+    if (hasDiscountedPrice) {
+      //console.log('💰 hasDiscount TRUE for product (by price):', product.title, 'finalPrice:', product.finalPrice, 'price_usd:', product.price_usd);
+    }
+    
+    return hasDiscountedPrice;
+  }
+
+  /**
+   * Genera las clases CSS para el grid basado en el número de columnas
+   * @returns string con las clases CSS para Bootstrap
+   */
+  getGridClasses(): string {
+    const columns = this.gridViewMode?.columns || 4; // Default a 4 columnas para desktop
+    
+    // Sistema RESPONSIVE: 2 columnas en móvil, número solicitado en desktop
+    const classMap: { [key: number]: string } = {
+      1: 'row-cols-1 row-cols-md-1', // Vista lista - 1 columna siempre
+      2: 'row-cols-2 row-cols-md-2', // 2 columnas siempre
+      3: 'row-cols-2 row-cols-md-3', // 2 en móvil, 3 en desktop
+      4: 'row-cols-2 row-cols-md-4', // 2 en móvil, 4 en desktop  
+      5: 'row-cols-2 row-cols-md-5'  // 2 en móvil, 5 en desktop
+    };
+    
+    //console.log(`🔧 Grid classes for ${columns} columns:`, classMap[columns]);
+    return classMap[columns] || classMap[4]; // Fallback a 4 columnas
+  }
+
   getDiscountLabel(product: any): string | null {
-    let discountPercent: number | null = null;
-
-    // Solo aplicar Flash Sale si el producto está incluido
-    const flashProduct = this.FlashSale?.DiscountProducts?.find((dp:any) => dp.productId === product.id);
-
-    // Flash Sale
-    if (flashProduct) { //if (this.FlashSale && this.FlashSale.type_discount === 1) {
-      discountPercent = this.FlashSale.discount;
-    } 
-    // Campaña individual del producto
-    else if (product.campaing_discount && product.campaing_discount.type_discount === 1) {
-      discountPercent = product.campaing_discount.discount;
+    // Solo manejar campaing_discount, NO Flash Sales
+    // Los Flash Sales tienen su propio componente separado
+    if (product.campaing_discount && product.campaing_discount.type_discount === 1) {
+      const discountPercent = product.campaing_discount.discount;
+      if (discountPercent && discountPercent > 0) {
+        //console.log('🏷️ getDiscountLabel returning:', `¡Oferta –${discountPercent}%!`, 'for product:', product.title);
+        return `¡Oferta –${discountPercent}%!`;
+      }
     }
 
-    if (discountPercent) {
-      return `Oferta –${discountPercent}%`; // puedes cambiar "Oferta" por "Rebaja" si quieres
-    }
-
+    //console.log('🚫 getDiscountLabel returning NULL for product:', product.title, 'campaing_discount:', product.campaing_discount);
     return null;
   }
 
