@@ -1,12 +1,13 @@
 
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { GridViewMode } from 'src/app/services/grid-view.service';
 
 @Component({
   selector: 'app-product-grid',
   templateUrl: './product-grid.component.html',
-  styleUrls: ['./product-grid.component.scss']
+  styleUrls: ['./product-grid.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ProductGridComponent implements OnChanges {
   @Input() currentUrl: string = '';

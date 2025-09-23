@@ -1,9 +1,10 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-flash-sale',
   templateUrl: './flash-sale.component.html',
-  styleUrls: ['./flash-sale.component.scss']
+  styleUrls: ['./flash-sale.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FlashSaleComponent implements OnInit, OnChanges {
 
