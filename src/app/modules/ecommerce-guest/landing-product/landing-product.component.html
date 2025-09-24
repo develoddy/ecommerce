@@ -155,7 +155,7 @@
                                 <div class="product-price d-flex-center">
                                     <!-- Precio original tachado si hay descuento -->
                                     <ng-container *ngIf="hasDiscount()">
-                                        <span class="price old-price">{{ product_selected.price_usd }} €</span>
+                                        <span class="price old-price">{{ getOriginalPrice().toFixed(2) }} €</span>
                                     </ng-container>
                                     
                                     <!-- Precio final (con descuento si aplica) -->

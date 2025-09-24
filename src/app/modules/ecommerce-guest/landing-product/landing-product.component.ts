@@ -419,9 +419,20 @@ export class LandingProductComponent
       return { integerPart: 0, decimalPart: '00', total: '0.00' };
     }
 
+    // Si hay una variedad seleccionada con precio, usar ese precio
+    let productForCalculation = this.product_selected;
+    
+    if (this.variedad_selected && this.variedad_selected.retail_price) {
+      // Crear un objeto temporal con el precio de la variedad
+      productForCalculation = {
+        ...this.product_selected,
+        price_usd: parseFloat(this.variedad_selected.retail_price)
+      };
+    }
+
     // Usar el servicio de cálculo de precios que ya aplica el redondeo a .95
     const finalPrice = this.priceCalculationService.calculateFinalPrice(
-      this.product_selected, 
+      productForCalculation, 
       this.SALE_FLASH ? [this.SALE_FLASH] : []
     );
     
@@ -449,11 +460,39 @@ export class LandingProductComponent
       return 0;
     }
 
+    // Si hay una variedad seleccionada con precio, usar ese precio
+    let productForCalculation = this.product_selected;
+    
+    if (this.variedad_selected && this.variedad_selected.retail_price) {
+      // Crear un objeto temporal con el precio de la variedad
+      productForCalculation = {
+        ...this.product_selected,
+        price_usd: parseFloat(this.variedad_selected.retail_price)
+      };
+    }
+
     // Usar el servicio de cálculo de precios que ya aplica el redondeo a .95
     return this.priceCalculationService.calculateFinalPrice(
-      this.product_selected, 
+      productForCalculation, 
       this.SALE_FLASH ? [this.SALE_FLASH] : []
     );
+  }
+
+  /**
+   * Obtiene el precio original (sin descuento) considerando la variedad seleccionada
+   */
+  getOriginalPrice(): number {
+    if (!this.product_selected) {
+      return 0;
+    }
+
+    // Si hay una variedad seleccionada con precio, usar ese precio
+    if (this.variedad_selected && this.variedad_selected.retail_price) {
+      return parseFloat(this.variedad_selected.retail_price);
+    }
+
+    // Si no, usar el precio base del producto
+    return this.product_selected.price_usd;
   }
 
   /**
@@ -870,6 +909,9 @@ export class LandingProductComponent
   }
 
   selectedVariedad(variedad: any, index: number) {
+    console.log('👕 Variedad seleccionada:', variedad.valor);
+    console.log('💰 Precio retail_price:', variedad.retail_price);
+    
     this.variedad_selected = variedad;
     this.activeIndex = index;
     this.tallaError = false;
