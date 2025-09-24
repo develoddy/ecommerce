@@ -8,7 +8,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { WishlistService } from '../_service/wishlist.service';
 import { SeoService } from 'src/app/services/seo.service';
-import { LoaderService } from 'src/app/services/loader.service';
+import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { WishlistService } from '../modules/ecommerce-guest/_service/wishlist.service';
-import { AuthService } from '../modules/auth-profile/_services/auth.service';
+import { WishlistService } from '../../../ecommerce-guest/_service/wishlist.service';
+import { AuthService } from '../../../auth-profile/_services/auth.service';
 import { Router } from '@angular/router';
 
 declare function alertSuccess(message: string): void;

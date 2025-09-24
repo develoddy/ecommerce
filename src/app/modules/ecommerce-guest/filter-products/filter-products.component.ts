@@ -3,7 +3,7 @@ import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { LoaderService } from 'src/app/services/loader.service';
+import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;

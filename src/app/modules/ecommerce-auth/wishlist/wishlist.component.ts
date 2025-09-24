@@ -6,7 +6,7 @@ import { WishlistService } from '../../ecommerce-guest/_service/wishlist.service
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
 import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
 import { LocalizationService } from 'src/app/services/localization.service';
-import { LoaderService } from 'src/app/services/loader.service';
+import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 
 declare var $:any;
 declare function pswp([]):any;

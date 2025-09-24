@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ProductUIService } from './product/product-ui.service';
+import { ProductUIService } from './product-ui.service'; 
 
 export interface ProductSelection {
   product: any;

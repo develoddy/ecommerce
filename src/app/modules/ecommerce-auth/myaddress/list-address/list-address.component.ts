@@ -65,6 +65,8 @@ export class ListAddressComponent implements OnInit  {
   }
   
   showProfileClient() {
+    console.log("USER AUTHENTICATED: ", this.CURRENT_USER_AUTHENTICATED);
+    
     this._ecommerceAuthService.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp:any) => {
       this.listAddressClients = resp.address_client;
     });

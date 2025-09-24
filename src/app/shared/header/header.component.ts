@@ -222,6 +222,34 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+   * Obtiene el precio final del item del carrito considerando descuentos
+   */
+  getFinalPrice(cart: any): number {
+    // Si hay descuento aplicado, usar el precio con descuento
+    if (cart.type_discount && cart.discount) {
+      // type_discount: 1 = Campaign Discount, 2 = Flash Sale
+      return parseFloat(cart.discount);
+    }
+    
+    // Si no hay descuento, usar precio original
+    return parseFloat(cart.variedad?.retail_price || cart.product.price_usd || 0);
+  }
+
+  /**
+   * Verifica si el item tiene descuento aplicado
+   */
+  hasDiscount(cart: any): boolean {
+    return cart.type_discount && cart.discount && parseFloat(cart.discount) < parseFloat(cart.variedad?.retail_price || cart.product.price_usd || 0);
+  }
+
+  /**
+   * Obtiene el precio original antes del descuento
+   */
+  getOriginalPrice(cart: any): number {
+    return parseFloat(cart.variedad?.retail_price || cart.product.price_usd || 0);
+  }
+
   getFormattedPrice(price: any) {
     if (typeof price === 'string') {
       price = parseFloat(price); // Convertir a número
@@ -242,11 +270,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
+        console.log("🛒 Carrito actualizado:", this.listCarts);
         
-        // Recalcular total usando retail_price de variedad o price_usd
+        
+        // Recalcular total usando precio final (con descuento si aplica)
         this.totalCarts = this.listCarts.reduce((sum, item) => {
-          const unitPrice = parseFloat(item.variedad?.retail_price ?? item.product.price_usd ?? 0);
-          return sum + (unitPrice * item.cantidad);
+          const finalPrice = this.getFinalPrice(item);
+          return sum + (finalPrice * item.cantidad);
         }, 0);
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       })

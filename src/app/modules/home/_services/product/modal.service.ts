@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ProductUIService } from './product/product-ui.service';
+import { ProductUIService } from './product-ui.service';
 
 declare var $: any;
 declare function pswp(jquery: any): any;

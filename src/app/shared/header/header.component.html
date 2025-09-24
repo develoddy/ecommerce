@@ -916,17 +916,33 @@
                                                     href="#" onclick="return false;"
                                                     [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">{{
                                                     cart.product.title }}</a>
-                                                <span class="price-small fw-bold">
-                                                    <span class="price-main-small">{{
-                                                        getFormattedPrice((cart.variedad?.retail_price ||
-                                                        cart.product.price_usd) * cart.cantidad).integerPart }}</span>
-                                                    <span class="price-decimals-small" style="top: 0.2em !important;">
-                                                        <sup>{{ getFormattedPrice((cart.variedad?.retail_price ||
-                                                            cart.product.price_usd) * cart.cantidad).decimalPart
-                                                            }}</sup>
-                                                        <span class="currency-symbol-small">{{ euro }}</span>
+                                                
+                                                <div class="price-container d-flex flex-column align-items-end">
+                                                    <!-- Precio original tachado si hay descuento -->
+                                                    <span *ngIf="hasDiscount(cart)" class="price-small text-muted text-decoration-line-through mb-1" style="font-size: 0.75rem;">
+                                                        <span class="price-main-small">{{
+                                                            getFormattedPrice(getOriginalPrice(cart) * cart.cantidad).integerPart }}</span>
+                                                        <span class="price-decimals-small">
+                                                            <sup>{{ getFormattedPrice(getOriginalPrice(cart) * cart.cantidad).decimalPart }}</sup>
+                                                            <span class="currency-symbol-small">{{ euro }}</span>
+                                                        </span>
                                                     </span>
-                                                </span>
+                                                    
+                                                    <!-- Precio final (con descuento si aplica) -->
+                                                    <span class="price-small fw-bold" [class.text-danger]="hasDiscount(cart)">
+                                                        <span class="price-main-small">{{
+                                                            getFormattedPrice(getFinalPrice(cart) * cart.cantidad).integerPart }}</span>
+                                                        <span class="price-decimals-small" style="top: 0.2em !important;">
+                                                            <sup>{{ getFormattedPrice(getFinalPrice(cart) * cart.cantidad).decimalPart }}</sup>
+                                                            <span class="currency-symbol-small">{{ euro }}</span>
+                                                        </span>
+                                                    </span>
+                                                    
+                                                    <!-- Indicador del tipo de descuento -->
+                                                    <span *ngIf="hasDiscount(cart)" class="discount-type-indicator" style="font-size: 0.65rem; color: #28a745;">
+                                                        {{ cart.type_discount === 1 ? 'Campaign Discount' : 'Flash Sale' }}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="d-flex flex-column">

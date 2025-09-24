@@ -150,11 +150,17 @@
                             <div class="d-flex mb-0">
                                 <h1 class="flex-grow-1 product-main-title mb-0">{{ product_selected.title }}</h1>
                                 <div class="product-price d-flex-center">
-                                    <ng-container *ngIf="getDiscount() > 0">
-                                        <span class="price old-price">{{ variedad_selected?.retail_price || product_selected.price_usd }} €</span>
+                                    <!-- Precio original tachado si hay descuento -->
+                                    <ng-container *ngIf="hasDiscount()">
+                                        <span class="price old-price">{{ product_selected.price_usd }} €</span>
                                     </ng-container>
-                                    <span class="price">{{ ((variedad_selected?.retail_price || product_selected.price_usd) - getDiscount()).toFixed(2) }} €</span>
-                                    <!-- Mostrar precio con descuento -->
+                                    
+                                    <!-- Precio final (con descuento si aplica) -->
+                                    <span class="price" [class.text-danger]="hasDiscount()">
+                                        {{ getFinalPrice().toFixed(2) }} €
+                                    </span>
+                                    
+                                    <!-- Versión alternativa con separación de decimales (oculta por defecto) -->
                                     <span class="price d-none" itemprop="priceCurrency" content="EUR">
                                         <span class="price-main" itemprop="price">
                                             {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
@@ -169,7 +175,7 @@
                                 <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                     <link itemprop="url" [href]="currentUrl" />
                                     <meta itemprop="priceCurrency" content="EUR" />
-                                    <meta itemprop="price" content="{{ (variedad_selected?.retail_price || getPriceWithDiscount().total) }}" />
+                                    <meta itemprop="price" content="{{ getFinalPrice().toFixed(2) }}" />
                                     <link itemprop="availability" href="https://schema.org/InStock" />
                                 </div>
                             </div>
@@ -229,18 +235,22 @@
                                     <label class="label d-flex align-items-center fw-normal">Color <span class="slVariant ms-1 fw-light">{{ selectedColor || '' }}</span></label>
                                     <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
                                         <ng-container *ngFor="let color of coloresDisponibles">
-                                            <li class="swatch x-large available rounded" [ngClass]="getSwatchClass(color.imagen, color.color)" (click)="selectColor(color)">
-                                                <!-- <img [src]="color.imagen" 
-                                                     alt="{{ product_selected.title }} - color {{ color.color }}" 
-                                                     width="80" 
-                                                     height="80" 
-                                                     [attr.data-bs-toggle]="'tooltip'" 
-                                                     [attr.data-bs-placement]="'top'" 
-                                                     [attr.title]="color.color" />
-                                                <div class="color-swatch-indicator" [ngStyle]="{'background-color': getColorHex(color.color)}"></div> -->
+                                            <li class="swatch x-large available rounded" 
+                                                [ngClass]="getSwatchClass(color.imagen, color.color)" 
+                                                (click)="selectColor(color)"
+                                                [attr.title]="color.color">
                                                 <!-- círculo/cuadro del color -->
                                                 <div class="color-swatch"
-                                                    [ngStyle]="{ 'background-color': getColorHex(color.color) }">
+                                                    [ngStyle]="{ 
+                                                        'background-color': getColorHex(color.color),
+                                                        'width': '30px',
+                                                        'height': '30px',
+                                                        'border-radius': '50%',
+                                                        'border': selectedColor === color.color ? '3px solid #007bff' : '2px solid #ddd',
+                                                        'cursor': 'pointer',
+                                                        'display': 'block',
+                                                        'box-shadow': selectedColor === color.color ? '0 0 0 2px rgba(0,123,255,0.3)' : 'none'
+                                                    }">
                                                 </div>
                                             </li>
                                         </ng-container>
@@ -341,15 +351,16 @@
                         <!-- End Product Form -->
                         <!-- Product Info -->
                         <div class="userViewMsg featureText d-none" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div>
+                        
                         <div class="shippingMsg featureText" *ngIf="shippingRate > 0 && fechaEntregaMin">
                             <p class="fw-light"><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline">{{ address }}</a> </p>
                         </div>
                         <!-- Mostrar mensaje alternativo cuando no hay tarifa -->
                         <div class="shippingMsg featureText" *ngIf="shippingRate === 0">
-                        <p class="fw-normal">
-                            <i class="icon anm anm-alert-circle"></i>
-                            Envío no disponible para la dirección seleccionada.
-                        </p>
+                            <p class="fw-normal">
+                                <i class="icon anm anm-alert-circle"></i>
+                                Envío no disponible para la dirección seleccionada.
+                            </p>
                         </div>
                         <div class="freeShipMsg featureText d-none" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}30.00</span></b> Más para envío gratis</div>
                         <!-- End Product Info -->

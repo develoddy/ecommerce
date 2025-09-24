@@ -22,8 +22,18 @@ import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { LocalizationService } from 'src/app/services/localization.service';
-import { LoaderService } from 'src/app/services/loader.service';
+import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { SeoService } from 'src/app/services/seo.service';
+import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
+
+// Importar los nuevos servicios especializados
+import { 
+  ProductDisplayService,
+  CartManagerService,
+  AddressManagerService,
+  ShippingService,
+  ImageManagerService
+} from '../_service/service_landing_product';
 
 declare var $: any;
 
@@ -127,7 +137,14 @@ export class LandingProductComponent
     @Inject(DOCUMENT) private doc: Document,
     private ngZone: NgZone,
     private localizationService: LocalizationService,
-    public loader: LoaderService
+    public loader: LoaderService,
+    private priceCalculationService: PriceCalculationService,
+    // Nuevos servicios especializados
+    public productDisplayService: ProductDisplayService,
+    public cartManagerService: CartManagerService,
+    public addressManagerService: AddressManagerService,
+    public shippingService: ShippingService,
+    public imageManagerService: ImageManagerService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -159,6 +176,7 @@ export class LandingProductComponent
     this.subscribeToRouteParams();
     this.subscribeToQueryParams();
     this.checkDeviceType();
+    this.subscribeToServiceStates();
 
     // Subscribe to loader to initialize and cleanup sliders when HTTP calls complete
     this.subscriptions.add(
@@ -186,6 +204,51 @@ export class LandingProductComponent
     );
   }
 
+  private subscribeToServiceStates(): void {
+    // Suscribirse a cambios en los servicios especializados
+    this.subscriptions.add(
+      this.productDisplayService.product$.subscribe(product => {
+        if (product && product !== this.product_selected) {
+          this.product_selected = product;
+        }
+      })
+    );
+
+    this.subscriptions.add(
+      this.imageManagerService.currentImage$.subscribe(image => {
+        if (image && image !== this.firstImage) {
+          this.firstImage = image;
+        }
+      })
+    );
+
+    this.subscriptions.add(
+      this.shippingService.shippingCost$.subscribe(cost => {
+        if (cost !== this.shippingRate) {
+          this.shippingRate = cost;
+        }
+      })
+    );
+
+    this.subscriptions.add(
+      this.addressManagerService.selectedAddress$.subscribe(address => {
+        if (address && address.address !== this.address) {
+          this.address = address.address;
+        }
+      })
+    );
+
+    // Suscribirse a los colores disponibles
+    this.subscriptions.add(
+      this.productDisplayService.coloresDisponibles$.subscribe(colors => {
+        this.coloresDisponibles = colors.map(color => ({
+          ...color,
+          hex: this.getColorHex(color.color)
+        }));
+      })
+    );
+  }
+
   private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(
       combineLatest([
@@ -198,159 +261,113 @@ export class LandingProductComponent
   }
 
   storeIfAddressExists() {
-    //this.currentUser?.user_guest == 'Guest' ? this.checkIfAddressGuestExists() : this.checkIfAddressClientExists();
-    // Si es un invitado
+    // Delegar al servicio de direcciones
     if (this.currentUser && !this.currentUser.email) {
       this.checkIfAddressGuestExists();
     } else {
-      // Si está autenticado
       this.checkIfAddressClientExists();
     }
   }
 
+  // checkIfAddressClientExists() {
+  //   // Usar el servicio de direcciones
+  //   this.subscriptions.add(
+  //     this.addressManagerService.loadClientAddresses(this.currentUser._id).subscribe((resp: any) => {
+  //       const addresses = resp.address_client || [];
+  //       this.addressManagerService.updateClientAddresses(addresses);
+  //       this.listAddressClients = addresses;
+        
+  //       if (this.addressManagerService.checkIfClientAddressExists(addresses)) {
+  //         const defaultAddress = this.addressManagerService.getDefaultAddress(addresses);
+  //         this.addressManagerService.selectAddress(defaultAddress);
+  //         this.loadShippingRateWithAddress(defaultAddress);
+  //       } else {
+  //         console.warn('No hay direcciones disponibles.');
+  //         this.loadShippingRateWithAddress(this.fallbackAddress, true);
+  //       }
+  //     })
+  //   );
+  // }
+
   checkIfAddressClientExists() {
-    this.ecommerceAuthService
-      .listAddressClient(this.currentUser._id)
-      .subscribe((resp: any) => {
-        this.listAddressClients = resp.address_client;
-        if (this.listAddressClients && this.listAddressClients.length > 0) {
-          const firstAddress = this.listAddressClients[0];
-          this.loadShippingRateWithAddress(firstAddress);
+    // Usar el servicio de direcciones
+    this.subscriptions.add(
+      this.ecommerceAuthService.listAddressClient(this.currentUser._id).subscribe((resp: any) => {
+      // --- DEBUG ---
+        const addresses = resp.address_client || [];
+        this.addressManagerService.updateClientAddresses(addresses);
+        this.listAddressClients = addresses;
+        
+        if (this.addressManagerService.checkIfClientAddressExists(addresses)) {
+          const defaultAddress = this.addressManagerService.getDefaultAddress(addresses);
+          this.addressManagerService.selectAddress(defaultAddress);
+          this.loadShippingRateWithAddress(defaultAddress);
         } else {
           console.warn('No hay direcciones disponibles.');
           this.loadShippingRateWithAddress(this.fallbackAddress, true);
         }
-      });
+      })
+    );
   }
 
   checkIfAddressGuestExists() {
-    this.ecommerceAuthService.listAddressGuest().subscribe((resp: any) => {
-      this.listAddressGuest = resp.addresses;
-      if (this.listAddressGuest && this.listAddressGuest.length > 0) {
-        const firstAddress = this.listAddressGuest[0];
-        this.loadShippingRateWithAddress(firstAddress);
-      } else {
-        console.warn('No hay direcciones disponibles.');
-        this.loadShippingRateWithAddress(this.fallbackAddress, true);
-      }
-    });
+    // Usar el servicio de direcciones  
+    this.subscriptions.add(
+      this.ecommerceAuthService.listAddressGuest().subscribe((resp: any) => {
+        const addresses = resp.addresses || [];
+        this.addressManagerService.updateGuestAddresses(addresses);
+        this.listAddressGuest = addresses;
+        
+        if (this.addressManagerService.checkIfGuestAddressExists(addresses)) {
+          const defaultAddress = this.addressManagerService.getDefaultAddress(addresses);
+          this.addressManagerService.selectAddress(defaultAddress);
+          this.loadShippingRateWithAddress(defaultAddress);
+        } else {
+          console.warn('No hay direcciones disponibles.');
+          this.loadShippingRateWithAddress(this.fallbackAddress, true);
+        }
+      })
+    );
   }
 
   loadShippingRateWithAddress(address: any, isFallback: boolean = false) {
-    // Si la dirección está incompleta, no seguimos
-    if (
-      !address?.address ||
-      !address?.ciudad ||
-      !address?.zipcode ||
-      !address?.pais
-    ) {
-      this.shippingRate = 0;
-      this.shippingMethod = '';
-      this.fechaEntregaMin = '';
-      this.fechaEntregaMax = '';
-      return;
-    }
-
-    this.address = address.address;
-    this.usandoFallback = isFallback;
-
-    const countryMap: Record<string, string> = {
-      España: 'ES',
-      Spain: 'ES',
-      France: 'FR',
-      Francia: 'FR',
-      Germany: 'DE',
-      Alemania: 'DE',
-      Italy: 'IT',
-      Italia: 'IT',
-      Portugal: 'PT',
-      'Países Bajos': 'NL',
-      Netherlands: 'NL',
-      Bélgica: 'BE',
-      Austria: 'AT',
-      Suecia: 'SE',
-      Dinamarca: 'DK',
-      Finlandia: 'FI',
-      Noruega: 'NO',
-      Irlanda: 'IE',
-      Polonia: 'PL',
-      Grecia: 'GR',
-      // Puedes agregar más si los necesitas
-    };
-
-    // Lista de países permitidos
-    const allowedCountries = [
-      'ES',
-      'FR',
-      'DE',
-      'IT',
-      'PT',
-      'NL',
-      'BE',
-      'AT',
-      'SE',
-      'DK',
-      'FI',
-      'NO',
-      'IE',
-      'PL',
-      'GR',
-    ];
-    const countryCode = countryMap[address.pais as string] || 'ES';
-
-    if (!allowedCountries.includes(countryCode)) {
-      console.warn('País no permitido:', countryCode);
-      this.shippingRate = 0;
-      this.shippingMethod = '';
-      this.fechaEntregaMin = '';
-      this.fechaEntregaMax = '';
-      return;
-    }
-
-    const payload = {
-      recipient: {
-        address1: address.address,
-        city: address.ciudad,
-        country_code: countryMap[address.pais as string] || 'ES',
-        zip: address.zipcode,
-      },
-      items: [
-        {
-          variant_id: this.product_selected.variedades[0].variant_id,
-          quantity: 1,
+    console.log('🚚 loadShippingRateWithAddress llamado con:', address, 'isFallback:', isFallback);
+    
+    // Usar el servicio de envío
+    this.subscriptions.add(
+      this.shippingService.loadShippingRateWithAddress(address, isFallback).subscribe({
+        next: (res: any) => {
+          console.log('🚚 Respuesta del servicio de envío:', res);
+          const rate = res.result?.[0];
+          if (rate) {
+            console.log('✅ Tarifa encontrada:', rate);
+            this.shippingService.updateShippingRate(rate);
+            
+            // Actualizar propiedades locales para el template
+            this.shippingRate = parseFloat(rate.rate);
+            this.fechaEntregaMin = this.formatearFechaEntrega(rate.minDeliveryDate);
+            this.fechaEntregaMax = this.formatearFechaEntrega(rate.maxDeliveryDate);
+            this.shippingMethod = rate.name;
+            this.address = address.address;
+            this.usandoFallback = isFallback;
+          } else {
+            console.log('❌ No se encontró tarifa en la respuesta');
+            this.resetShippingData();
+          }
         },
-      ],
-      currency: 'EUR',
-      locale: 'es_ES',
-    };
-
-    this.ecommerceAuthService.getShippingRates(payload).subscribe({
-      next: (res: any) => {
-        const rate = res.result?.[0];
-        if (rate) {
-          this.shippingRate = parseFloat(rate.rate); // 4.29
-          this.fechaEntregaMin = this.formatearFechaEntrega(
-            rate.minDeliveryDate
-          ); // "2025-05-13"
-          this.fechaEntregaMax = this.formatearFechaEntrega(
-            rate.maxDeliveryDate
-          ); // "2025-05-13"
-          this.shippingMethod = rate.name; // "Envío estándar..."
-        } else {
-          this.shippingRate = 0;
-          this.shippingMethod = '';
-          this.fechaEntregaMin = '';
-          this.fechaEntregaMax = '';
+        error: (err) => {
+          console.error('💥 Error al calcular tarifas de envío', err);
+          this.resetShippingData();
         }
-      },
-      error: (err) => {
-        console.error('Error al calcular tarifas de envío', err);
-        this.shippingRate = 0;
-        this.shippingMethod = '';
-        this.fechaEntregaMin = '';
-        this.fechaEntregaMax = '';
-      },
-    });
+      })
+    );
+  }
+
+  private resetShippingData() {
+    this.shippingRate = 0;
+    this.shippingMethod = '';
+    this.fechaEntregaMin = '';
+    this.fechaEntregaMax = '';
   }
 
   formatearFechaEntrega(fecha: string): string {
@@ -400,15 +417,56 @@ export class LandingProductComponent
   }
 
   getPriceWithDiscount() {
-    const priceWithDiscount =
-      this.product_selected.price_usd - this.getDiscount();
-    const integerPart = Math.floor(priceWithDiscount); // Parte entera
-    const decimalPart = ((priceWithDiscount - integerPart) * 100).toFixed(0); // Parte decimal
+    if (!this.product_selected) {
+      return { integerPart: 0, decimalPart: '00', total: '0.00' };
+    }
+
+    // Usar el servicio de cálculo de precios que ya aplica el redondeo a .95
+    const finalPrice = this.priceCalculationService.calculateFinalPrice(
+      this.product_selected, 
+      this.SALE_FLASH ? [this.SALE_FLASH] : []
+    );
+    
+    const priceParts = this.priceCalculationService.getPriceParts(finalPrice);
+    
     return {
-      integerPart,
-      decimalPart,
-      total: priceWithDiscount.toFixed(2), // 21.99 por ejemplo
+      integerPart: parseInt(priceParts.integer),
+      decimalPart: priceParts.decimals,
+      total: priceParts.total
     };
+  }
+
+  /**
+   * Verifica si el producto tiene algún tipo de descuento aplicado
+   */
+  hasDiscount(): boolean {
+    return this.getDiscount() > 0;
+  }
+
+  /**
+   * Obtiene el precio final del producto (con descuento si aplica)
+   */
+  getFinalPrice(): number {
+    if (!this.product_selected) {
+      return 0;
+    }
+
+    // Usar el servicio de cálculo de precios que ya aplica el redondeo a .95
+    return this.priceCalculationService.calculateFinalPrice(
+      this.product_selected, 
+      this.SALE_FLASH ? [this.SALE_FLASH] : []
+    );
+  }
+
+  /**
+   * Obtiene las partes del precio (entero y decimal) para mostrar en el template
+   */
+  getPriceParts(price: number) {
+    if (!this.priceCalculationService) {
+      console.warn('PriceCalculationService not available');
+      return { integer: '0', decimals: '00', total: '0.00' };
+    }
+    return this.priceCalculationService.getPriceParts(price);
   }
 
   private handleProductResponse(resp: any): void {
@@ -438,11 +496,8 @@ export class LandingProductComponent
         this.showProfileClient(this.currentUser);
       }
 
-      console.log(this.product_selected);
-
-      this.filterUniqueGalerias();
-      this.setFirstImage();
-      this.setColoresDisponibles();
+      // Configurar servicios con el producto seleccionado
+      this.initializeProductServices();
       this.sortVariedades();
 
       this.ngZone.runOutsideAngular(() => {
@@ -597,39 +652,38 @@ export class LandingProductComponent
   }
 
   filterUniqueGalerias() {
-    const uniqueImages = new Set();
-    this.uniqueGalerias = this.product_selected.galerias.filter(
-      (galeria: any) => {
-        const isDuplicate = uniqueImages.has(galeria.imagen);
-        uniqueImages.add(galeria.imagen);
-        return !isDuplicate;
-      }
+    // Delegar al servicio de imágenes
+    const uniqueImages = this.imageManagerService.filterUniqueImagesFromVarieties(
+      this.product_selected.galerias, 
+      this.product_selected.imagen
     );
+    this.uniqueGalerias = uniqueImages;
+    this.imageManagerService.setGalleriaImages(uniqueImages);
   }
 
   setFirstImage() {
-    if (this.uniqueGalerias.length > 0) {
-      this.firstImage = this.uniqueGalerias[0].imagen;
-    }
-  }
-
-  setColoresDisponibles() {
-    const uniqueColors = new Map();
-    this.product_selected.galerias.forEach((galeria: any) => {
-      if (!uniqueColors.has(galeria.color)) {
-        uniqueColors.set(galeria.color, {
-          imagen: galeria.imagen,
-          hex: this.getColorHex(galeria.color),
-        });
-      }
-    });
-    this.coloresDisponibles = Array.from(
-      uniqueColors,
-      ([color, { imagen, hex }]) => ({ color, imagen, hex })
+    // Delegar al servicio de imágenes
+    this.imageManagerService.setFirstImage();
+    
+    // Suscribirse a cambios en la imagen actual
+    this.subscriptions.add(
+      this.imageManagerService.currentImage$.subscribe(image => {
+        if (image) {
+          this.firstImage = image;
+        }
+      })
     );
   }
 
+  setColoresDisponibles() {
+    // Delegar al servicio especializado
+    this.productDisplayService.setColoresDisponibles(this.product_selected);
+  }
+
   updateZoomImage(newImage: string) {
+    // Delegar al servicio de imágenes
+    this.imageManagerService.updateZoomImage(newImage);
+    this.imageManagerService.setCurrentImage(newImage);
     this.firstImage = newImage;
   }
 
@@ -649,8 +703,11 @@ export class LandingProductComponent
       White: '#ffffff',
       Leaf: '#5c9346',
       Autumn: '#c85313',
+      // Nuevos colores encontrados en los logs
+      'Carbon Grey': '#36454f',
+      'Bone': '#e3dac3',
     };
-    return colorMap[color] || '';
+    return colorMap[color] || '#cccccc';
   }
 
   getSwatchClass(imagen: string, color: string): any {
@@ -662,6 +719,8 @@ export class LandingProductComponent
   }
 
   setActiveIndex(index: number) {
+    // Delegar al servicio de imágenes
+    this.imageManagerService.setActiveIndex(index);
     this.activeIndex = index;
   }
 
@@ -689,17 +748,34 @@ export class LandingProductComponent
   // }
 
   getDiscount() {
+    if (!this.product_selected) {
+      return 0;
+    }
+
     let discount = 0;
+    const basePrice = this.product_selected.price_usd || this.product_selected.price_soles || 0;
+
+    // Prioridad 1: Flash Sale (si existe)
     if (this.SALE_FLASH) {
-      if (this.SALE_FLASH.type_discount == 1) {
-        // Cálculo del descuento en porcentaje
-        discount =
-          this.SALE_FLASH.discount * this.product_selected.price_usd * 0.01;
-      } else {
-        // Descuento directo
+      if (this.SALE_FLASH.type_discount === 1) {
+        // Descuento porcentual
+        discount = (this.SALE_FLASH.discount * basePrice) / 100;
+      } else if (this.SALE_FLASH.type_discount === 2) {
+        // Descuento fijo
         discount = this.SALE_FLASH.discount;
       }
     }
+    // Prioridad 2: Campaign Discount (si no hay Flash Sale)
+    else if (this.product_selected.campaing_discount) {
+      if (this.product_selected.campaing_discount.type_discount === 1) {
+        // Descuento porcentual
+        discount = (this.product_selected.campaing_discount.discount * basePrice) / 100;
+      } else if (this.product_selected.campaing_discount.type_discount === 2) {
+        // Descuento fijo
+        discount = this.product_selected.campaing_discount.discount;
+      }
+    }
+
     return discount;
   }
 
@@ -713,11 +789,45 @@ export class LandingProductComponent
   }
 
   selectColor(color: { color: string; imagen: string }) {
+    console.log('🎨 Seleccionando color:', color.color);
+    
+    // Buscar imagen específica en las galerías para este color
+    const galeriaConImagen = this.product_selected.galerias?.find(
+      (g: any) => g.color === color.color && g.imagen
+    );
+    
+    const imagenFinal = galeriaConImagen?.imagen || color.imagen;
+    console.log('🎨 Imagen encontrada en galería:', galeriaConImagen?.imagen);
+    console.log('🎨 Imagen final a mostrar:', imagenFinal);
+    
+    // Delegar al servicio especializado
+    this.productDisplayService.selectColor({ ...color, imagen: imagenFinal });
+    this.imageManagerService.setCurrentImage(imagenFinal);
+    
+    // Actualizar propiedades locales necesarias para el template
     this.selectedColor = color.color;
-    this.firstImage = color.imagen;
+    this.firstImage = imagenFinal;
+    
+    // Actualizar variedades basadas en el color seleccionado
+    this.updateVariedadesByColor(color.color);
+  }
+
+  private initializeProductServices() {
+    // Configurar el producto en el servicio de display
+    this.productDisplayService.setProduct(this.product_selected);
+    
+    // Configurar imágenes
+    this.filterUniqueGalerias();
+    this.setFirstImage();
+    
+    // Configurar colores disponibles
+    this.setColoresDisponibles();
+  }
+
+  private updateVariedadesByColor(selectedColor: string) {
     // -- FILTRAR VARIEDADES PARA EL COLOR SELECCIONADO
     const filteredVariedades = this.product_selected.variedades
-      .filter((variedad: any) => variedad.color === this.selectedColor)
+      .filter((variedad: any) => variedad.color === selectedColor)
       .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1)); // Ordenar las tallas de menor a mayor
 
     const categoryTitle =
@@ -795,11 +905,9 @@ export class LandingProductComponent
       variedad: this.variedad_selected ? this.variedad_selected.id : null,
       code_cupon: null,
       code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
-      price_unitario: this.product_selected.price_usd,
-      subtotal: this.product_selected.price_usd - this.getDiscount(),
-      total:
-        (this.product_selected.price_usd - this.getDiscount()) *
-        $('#qty-cart').val(),
+      price_unitario: this.cartManagerService.calculateUnitPrice(this.product_selected, this.SALE_FLASH),
+      subtotal: this.cartManagerService.calculateSubtotal(this.product_selected, $('#qty-cart').val(), this.SALE_FLASH),
+      total: this.cartManagerService.calculateTotal(this.product_selected, $('#qty-cart').val(), this.SALE_FLASH),
     };
 
     this.wishlistService.registerWishlist(data).subscribe(
@@ -844,10 +952,9 @@ export class LandingProductComponent
   }
 
   private saveCart() {
+    // Validaciones básicas
     if (this.cantidad <= 0) {
-      this.errorResponse = true;
-      this.errorMessage = 'Debe seleccionar al menos 1 unidad';
-      alertDanger('Debe seleccionar al menos 1 unidad');
+      this.showError('Debe seleccionar al menos 1 unidad');
       this.cantidadError = true;
       return;
     }
@@ -855,51 +962,53 @@ export class LandingProductComponent
     if (this.product_selected.type_inventario == 2) {
       if (!this.variedad_selected) {
         this.tallaError = true;
-        this.errorResponse = true;
-        this.errorMessage = 'Por favor seleccione una talla';
+        this.showError('Por favor seleccione una talla');
         return;
       }
-      if (this.variedad_selected.stock < this.cantidad) {
-        //if (this.variedad_selected.stock < $("#qty-cart").val()) {
-        this.errorResponse = true;
-        this.errorMessage =
-          'La Cantidad excede el stock disponible. Elija menos unidades';
+      
+      // Validar stock usando el servicio
+      if (!this.cartManagerService.validateStockAvailability(
+        this.product_selected, 
+        this.variedad_selected, 
+        this.cantidad
+      )) {
+        this.showError('La Cantidad excede el stock disponible. Elija menos unidades');
         this.cantidadError = true;
         return;
       }
     }
 
-    let data = {
-      user: this.currentUser.email ? this.currentUser._id : this.currentUser.id,
-      user_status: this.currentUser.email ? 'authenticated' : 'guest',
-      product: this.product_selected._id,
-      type_discount: this.SALE_FLASH ? this.SALE_FLASH.type_discount : null,
-      discount: this.SALE_FLASH ? this.SALE_FLASH.discount : 0,
-      cantidad: this.cantidad, //parseInt($("#qty-cart").val() as string, 10),
-      variedad: this.variedad_selected ? this.variedad_selected.id : null,
-      code_cupon: null,
-      code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
-      price_unitario: this.product_selected.price_usd,
-      subtotal: this.product_selected.price_usd - this.getDiscount(),
-      total:
-        (this.product_selected.price_usd - this.getDiscount()) * this.cantidad, //total: (this.product_selected.price_usd - this.getDiscount()) * $("#qty-cart").val(),
+    // Preparar datos del producto para el carrito usando el servicio
+    const productData = {
+      product: this.product_selected,
+      selectedColor: this.productDisplayService.getSelectedColor(),
+      selectedSize: this.variedad_selected,
+      quantity: this.cantidad,
+      code_discount: this.getDiscount(),
+      discount: this.getPriceWithDiscount(),
+      user: this.currentUser,
+      saleFlash: this.SALE_FLASH, // Flash Sale si existe
+      campaignDiscount: this.product_selected.campaing_discount // Campaign Discount si existe
     };
 
-    if (this.currentUser && !this.currentUser.email) {
-      this.cartService
-        .registerCartCache(data)
-        .subscribe(
-          this.handleCartResponse.bind(this),
-          this.handleCartError.bind(this)
-        );
-    } else {
-      this.cartService
-        .registerCart(data)
-        .subscribe(
-          this.handleCartResponse.bind(this),
-          this.handleCartError.bind(this)
-        );
-    }
+    console.log('🛒 Añadiendo al carrito con datos:', productData);
+    console.log('🔥 SALE_FLASH:', this.SALE_FLASH);
+    console.log('📢 Campaign Discount:', this.product_selected.campaing_discount);
+    
+
+    // Añadir al carrito usando el servicio especializado
+    this.subscriptions.add(
+      this.cartManagerService.addToCart(productData).subscribe(
+        (resp: any) => this.handleCartResponse(resp),
+        (error: any) => this.handleCartError(error)
+      )
+    );
+  }
+
+  private showError(message: string) {
+    this.errorResponse = true;
+    this.errorMessage = message;
+    alertDanger(message);
   }
 
   private handleCartResponse(resp: any) {

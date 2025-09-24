@@ -1,7 +1,7 @@
 
 import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { GridViewMode } from 'src/app/services/grid-view.service';
+import { GridViewMode } from 'src/app/modules/home/_services/product/grid-view.service';
 
 @Component({
   selector: 'app-product-grid',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CartService } from '../modules/ecommerce-guest/_service/cart.service';
-import { MinicartService } from './minicartService.service';
-import { PriceCalculationService, PriceParts } from './product/price-calculation.service';
+import { CartService } from '../../../ecommerce-guest/_service/cart.service';
+import { MinicartService } from '../../../../services/minicartService.service';
+import { PriceCalculationService, PriceParts } from './price-calculation.service';
 
 declare var $: any;
 
