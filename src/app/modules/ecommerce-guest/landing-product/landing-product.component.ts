@@ -9,7 +9,6 @@ import {
   Inject,
   Injectable,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
@@ -134,7 +133,6 @@ export class LandingProductComponent
     public wishlistService: WishlistService,
     private minicartService: MinicartService,
     private seoService: SeoService,
-    @Inject(DOCUMENT) private doc: Document,
     private ngZone: NgZone,
     private localizationService: LocalizationService,
     public loader: LoaderService,
@@ -712,7 +710,7 @@ export class LandingProductComponent
 
   getSwatchClass(imagen: string, color: string): any {
     return {
-      active: imagen === this.firstImage,
+      active: this.selectedColor === color,
       [color.toLowerCase()]: true,
       'color-swatch': true,
     };
@@ -1176,6 +1174,10 @@ export class LandingProductComponent
         lightBox.close();
       }
     }
+  }
+
+  selectThumbnail(imagePath: string) {
+    this.firstImage = imagePath;
   }
 
   ngOnDestroy(): void {

@@ -121,7 +121,10 @@
                             <div class="product-thumb product-horizontal-thumb mt-3">
                                 <div id="gallery" class="product-thumb-horizontal">
                                     <ng-container *ngFor="let item of uniqueGalerias">
-                                        <a [attr.data-image]="item.imagen" [attr.data-zoom-image]="item.imagen" class="slick-slide slick-cloned active">
+                                        <a [attr.data-image]="item.imagen" 
+                                           [attr.data-zoom-image]="item.imagen" 
+                                           class="slick-slide slick-cloned active"
+                                           (click)="selectThumbnail(item.imagen)">
                                             <img class="blur-up lazyload" 
                                                  [attr.data-src]="item.imagen" 
                                                  [src]="item.imagen" 
