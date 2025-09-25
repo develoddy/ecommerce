@@ -329,16 +329,13 @@ export class LandingProductComponent
   }
 
   loadShippingRateWithAddress(address: any, isFallback: boolean = false) {
-    console.log('🚚 loadShippingRateWithAddress llamado con:', address, 'isFallback:', isFallback);
     
     // Usar el servicio de envío
     this.subscriptions.add(
       this.shippingService.loadShippingRateWithAddress(address, isFallback).subscribe({
         next: (res: any) => {
-          console.log('🚚 Respuesta del servicio de envío:', res);
           const rate = res.result?.[0];
           if (rate) {
-            console.log('✅ Tarifa encontrada:', rate);
             this.shippingService.updateShippingRate(rate);
             
             // Actualizar propiedades locales para el template
@@ -513,7 +510,10 @@ export class LandingProductComponent
     }
 
     this.product_selected = resp.product;
+    console.log("🚀 Padre: handleProductResponse() -> product_selected:", this.product_selected);
     this.related_products = resp.related_products;
+    console.log("🚀 Padre: handleProductResponse() -> related_products:", this.related_products);
+    
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
     this.AVG_REVIEW = resp.AVG_REVIEW;

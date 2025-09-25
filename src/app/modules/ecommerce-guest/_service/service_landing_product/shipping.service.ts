@@ -31,8 +31,6 @@ export class ShippingService {
       throw new Error('Dirección requerida para calcular tarifa de envío');
     }
 
-    console.log('🔧 ShippingService - Dirección recibida:', address);
-
     this.loadingSubject.next(true);
 
     // Construir el payload como lo hacen los otros componentes
@@ -54,9 +52,6 @@ export class ShippingService {
     };
 
     let URL = `${URL_SERVICE}shipping/rates`;
-    
-    console.log('🔧 ShippingService - Payload enviado:', payload);
-    console.log('🔧 ShippingService - URL:', URL);
     
     return this.http.post(URL, payload).pipe(
       finalize(() => this.loadingSubject.next(false))

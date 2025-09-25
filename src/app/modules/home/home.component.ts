@@ -156,8 +156,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     const TIME_NOW = new Date().getTime();
 
     const listHomeSubscription = this.homeService.listHome(TIME_NOW).subscribe((resp: any) => {
-      console.log('=====> Home data fetched:', resp);
-      
       this.processBasicData(resp);
       this.processProductPrices(resp);
       this.finalizeDataProcessing();

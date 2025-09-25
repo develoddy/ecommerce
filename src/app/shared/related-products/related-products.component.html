@@ -31,12 +31,42 @@
                     {{product.title}}
                   </a>
                 </div>
-                <div class="product-price">
+                <!-- <div class="product-price">
                   <ng-container *ngIf="getDiscount() > 0">
                     <span class="price old-price">{{ product_selected.price_usd }} {{ euro }}</span>
                   </ng-container>
                   <span class="price"></span>
+                </div> -->
+
+                <!-- <div class="product-price">
+                  <ng-container *ngIf="product.campaing_discount || (SALE_FLASH && SALE_FLASH[product._id])">
+                   
+                    <span class="price old-price">
+                      {{ product.price_usd }} {{ euro }}
+                    </span>
+                    
+                    <span class="price discounted-price">
+                      {{ calculateDiscountPrice(product) | number:'1.2-2' }} {{ euro }}
+                    </span>
+                  </ng-container>
+                  <ng-container *ngIf="!product.campaing_discount && !(SALE_FLASH && SALE_FLASH[product._id])">
+                    
+                    <span class="price">{{ product.price_usd }} {{ euro }}</span>
+                  </ng-container>
+                </div> -->
+
+                <div class="product-price">
+                  <ng-container *ngIf="hasDiscount(product)">
+                    <span class="price old-price">{{ product.price_usd }} {{ euro }}</span>
+                    <span class="price discounted-price text-danger">{{ calculateFinalPrice(product) | number:'1.2-2' }} {{ euro }}</span>
+                  </ng-container>
+                  <ng-container *ngIf="!hasDiscount(product)">
+                    <span class="price">{{ product.price_usd }} {{ euro }}</span>
+                  </ng-container>
                 </div>
+
+
+
                 <div class="product-review d-none">
                   <div class="reviewStar d-flex-center"></div>
                   <span class="caption hidden ms-1">3 Reviews</span>

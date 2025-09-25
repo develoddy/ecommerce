@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, AfterViewInit, NgZone, OnChanges, SimpleChanges } from '@angular/core';
+import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 
 declare var $: any;
 declare function productSlider5items($: any): any;
@@ -14,14 +15,25 @@ export class RelatedProductsComponent implements AfterViewInit, OnChanges {
   @Input() euro: string = '';
   @Output() navigateToProduct = new EventEmitter<{slug: string, discountId?: string}>();
   @Input() getDiscount: any;
+  @Input() SALE_FLASH: any;
 
-  constructor(private ngZone: NgZone) {}
+  constructor(private ngZone: NgZone, public priceService: PriceCalculationService) {}
 
   ngAfterViewInit() {
-    this.initSlick();
-  }
+  // console.log('🚀 ngAfterViewInit - related_products:', this.related_products);
+  // console.log('🚀 ngAfterViewInit - product_selected:', this.product_selected);
+  this.initSlick();
+  
+}
 
   ngOnChanges(changes: SimpleChanges) {
+    // if (changes['related_products']) {
+    //   console.log('🚀 ngOnChanges - related_products:', changes['related_products'].currentValue);
+    // }
+    // if (changes['product_selected']) {
+    //   console.log('🚀 ngOnChanges - product_selected:', changes['product_selected'].currentValue);
+    // }
+
     if (changes['related_products'] && !changes['related_products'].firstChange) {
       this.initSlick();
     }
@@ -36,4 +48,17 @@ export class RelatedProductsComponent implements AfterViewInit, OnChanges {
       }, 550);
     });
   }
+
+  calculateFinalPrice(product: any): number {
+    return this.priceService.calculateFinalPrice(product, this.SALE_FLASH);
+  }
+
+  public hasDiscount(product: any): boolean {
+    return this.priceService.hasDiscount(product.price_usd, this.calculateFinalPrice(product));
+  }
+
+  public getDiscountAmount(product: any): number {
+    return this.priceService.getDiscountAmount(product, this.SALE_FLASH);
+  }
+
 }
