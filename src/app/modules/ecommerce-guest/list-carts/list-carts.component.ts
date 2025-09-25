@@ -35,7 +35,6 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   loading: boolean = false;
   currentUser: any = null;
   slug: string | null = null;
-
   product_selected: any = null;
   related_products: any = [];
   REVIEWS:any=null;

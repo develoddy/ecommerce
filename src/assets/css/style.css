@@ -122,7 +122,10 @@ Table of Content:
 @import url('//fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&display=swap');
 
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Michroma&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
 
 
 
@@ -130,7 +133,8 @@ Table of Content:
   2. Basic Styles
 ========================================================================*/
 /* body { font-family:'Poppins', sans-serif; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; } */
-body { font-family: "Zen Kaku Gothic Antique", sans-serif; font-style: normal; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; }
+/* body { font-family: "Zen Kaku Gothic Antique", sans-serif; font-style: normal; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; } */
+body { font-family: "Michroma", sans-serif; font-style: normal; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; }
 
 
 /* body { font-family:"sans-serif", sans-serif; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; }  */
@@ -262,11 +266,12 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 { color:#000000; margin:0 0
 h1, .h1 { font-size:24px; }
 /* h2, .h2 { font-size:20px; } */
 h2, .h2  {
-  font-family: 'Zen Kaku Gothic New', 'Zen Kaku Gothic Antique', sans-serif;
+  /* font-family: 'Zen Kaku Gothic New', 'Zen Kaku Gothic Antique', sans-serif; */
+  font-family: "Michroma", sans-serif;
   /*font-weight: 700;*/ /* Bold para resaltar el título */
   font-size: 3.5rem; /* Ajusta según el tamaño que prefieras 2.75rem */
   line-height: 1.4;
-  letter-spacing: -3px;
+  letter-spacing: -1px;
   color: #171717; /* Color oscuro para buen contraste */
 
   /* font-family: "Bebas Neue", sans-serif; */
@@ -314,8 +319,8 @@ p:last-child { margin-bottom:0; }
   4. Buttons 
 ========================================================================*/
 /* Button principal color dark & hover*/
-.btn, .btn-dark-ld {background: linear-gradient(135deg, #000, #000) !important; border: 1px solid #000; color: #ffffff !important;font-family: "Zen Kaku Gothic Antique", sans-serif !important;padding: 12px 28px !important;font-size: 12px !important;font-weight: 300 !important;border-radius: 0px !important;box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;transition: all 0.3s ease-in-out !important;letter-spacing: 0.3px !important;cursor: pointer !important;text-align: center;width: 100%;}
-.btn-dark-ld:hover {background: linear-gradient(135deg, #9941bf, #9941bf) !important; border: 1px solid #9941bf; transform: translateY(-2px) scale(1.02) !important;box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;}
+.btn, .btn-dark-ld {background: linear-gradient(135deg, #000, #000) !important; text-transform: uppercase; border: 1px solid #000; color: #ffffff !important;font-family: "Zen Kaku Gothic Antique", sans-serif !important;min-height: 56px;min-width: 56px;font-size: 12px !important;font-weight: 300 !important;border-radius: 0px !important;box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;transition: all 0.3s ease-in-out !important;letter-spacing: 0.3px !important;cursor: pointer !important;text-align: center;width: 100%;}
+.btn-dark-ld:hover {background: linear-gradient(135deg, #5a5a5a, #5a5a5a) !important; border: 1px solid #5a5a5a; transition: color 500ms cubic-bezier(0.3, 0.85, 0.5, 1),background-color 500ms cubic-bezier(0.3,0.85, 0.5, 1),border-color 500ms cubic-bezier(0.3, 0.85, 0.5, 1); /*transform: translateY(-2px) scale(1.02) !important;*/}
 .btn-dark-ld:active {transform: scale(0.98) !important;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;}
 
 /* Button principal color white & hover*/
@@ -553,7 +558,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 ========================================================================*/
 .breadcrumbs-wrapper { background:#f9f9f9; margin:0 0 30px; }
 .breadcrumbs-wrapper .container { padding-top:10px; padding-bottom:10px; }
-.breadcrumbs a, .breadcrumbs span, .breadcrumbs .icon { color:#171717; display:inline-block; padding:0; margin:0; font-size:13px; }
+.breadcrumbs a, .breadcrumbs span, .breadcrumbs .icon { color:#171717; display:inline-block; padding:0; margin:0; font-size:14px; }
 .breadcrumbs span.main-title { padding-right: 0; margin-right: 0; }
 .breadcrumbs .icon { font-size:15px; position:relative; top:0; padding: 0 5px; margin: 0 5px; }
 .breadcrumbs .main-title { font-weight: 700; }
@@ -718,7 +723,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .product-price .old-price { opacity:0.6; text-decoration:line-through; }
 .product-price .old-price + .price { padding-left:6px; color:#131313; }
 
-.qtyField { position:relative; display:flex; align-items:center; margin:0; border:1px solid #000; padding: 5px 10px;}
+.qtyField { position:relative; display:flex; align-items:center; margin:0; border:1px solid #000; padding: 5px 10px;min-height: 56px;min-width: 56px;}
 .qtyField input { margin:0; padding:0 25px; width:86px; height:41px; text-align:center; }
 .qtyField .qtyBtn { margin:10px; padding:8px; color:#171717; width:30px; height:40px; display:flex; align-items:center; justify-content:center; text-align:center; background:none; border:none; position:absolute; left:0; }
 .qtyField .qtyBtn:hover { color:#424242; }
@@ -2291,7 +2296,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .size-swatches li { position: relative; color:#222; font-size:13px; font-weight:500; text-transform:uppercase; margin:5px 5px; min-width:30px; height:30px; overflow:hidden; text-align:center; background-color:#ffffff; box-shadow:0 0 1px 1px #dddddd; border:1px solid #ffffff; padding:0; display:flex;align-items:center;justify-content:center; -ms-transition:all 0.5s ease-in-out; -webkit-transition:all 0.5s ease-in-out; transition:all 0.5s ease-in-out; cursor:pointer; }
 .size-swatches li.active, .size-swatches li:hover { border-color:#ffffff; box-shadow:0 0 0 1px #000,0 0 0 0px #fff inset; }
 .size-swatches li .swatchLbl { padding: 0 5px; line-height: normal; }
-.size-swatches li.x-large { min-width: 46px; height: 46px; }
+.size-swatches li.x-large { min-width: 56px; height: 56px; }
 
 .swatch-rectangle-style .swatches li, .swatch-rectangle-style .size-swatches li { width: auto; min-width: auto; height: 30px; padding: 0 10px; background-color: #f7f7f7; box-shadow: 0 0 1px 1px #dddddd; }
 .swatch-rectangle-style .swatches li.active, .swatch-rectangle-style .size-swatches li.active { background-color: #333; color: #ffffff; border: 1px solid #333; }
@@ -2756,13 +2761,13 @@ a.logo {
 .product-thumb-left-style .product-thumb .slick-next:before { content:"\ea8a"; }
 .product-thumb-right-style .product-zoom-right { margin: 0 15px 0 0; }
 
-.product-main-title { color:#333333; font-size:28px; font-weight:700; margin-bottom:12px; }
+.product-main-title { color:#333333; font-size:22px; font-weight:700; margin-bottom:12px; }
 .product-main-subtitle { color:#9b9b9b; font-size:14px; margin:0 0 6px; }
 .product-main-title + .product-main-subtitle { margin: -5px 0 10px; }
 
 .product-single-meta .product-review .icon { font-size: 15px; }
 .product-single-meta .reviewLink:before { content: "|"; margin: 0 10px; color: #6c757d; }
-.product-single-meta .product-price .price { font-size: 22px; font-weight: 600; /*line-height: 1;*/ color: #131313; }
+.product-single-meta .product-price .price { font-size: 18px; font-weight: 600; /*line-height: 1;*/ color: #131313; }
 .product-single-meta .product-price .old-price { font-size: 18px; color: #4c4c4c; font-weight: 500; }
 .product-single-meta .product-availability .progress { margin:12px 0 20px; }
 .product-single-meta .orderMsg .icon { color:#131313; font-size:18px; margin-right:10px; -webkit-animation-name:blinker; -webkit-animation-iteration-count:infinite; -webkit-animation-timing-function:cubic-bezier(.6, 0, 1, 1); -webkit-animation-duration:0.8s; }
@@ -2772,7 +2777,7 @@ a.logo {
 .product-form-submit .btn { height: 45px; width: 100%; }
 .product-form-quantity .qtyField { width: 112px; }
 .product-form-quantity .qtyField input { font-size: 15px; width: 100px; height: 33px; }
-.product-form .swatches-size .sizelink { font-size: 11px; margin-left: 90px; text-transform: uppercase; font-weight: 600; }
+.product-form .swatches-size .sizelink { font-size: 14px; margin-left: 90px; text-transform: uppercase; font-weight: 400; }
 .infolinks .text-link { text-decoration:none; text-transform:none; font-weight:400; width:auto; height:auto; padding:0; margin:0 15px 0 0; display:flex; align-items:center; }
 .featureText { margin-bottom:10px; }
 .featureText .icon { min-width:25px; font-size:16px; vertical-align:sub; text-align:left; }
