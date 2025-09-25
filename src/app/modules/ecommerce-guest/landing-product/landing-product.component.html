@@ -353,8 +353,8 @@
                         <!-- Product Info -->
                         <div class="userViewMsg featureText d-none" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div>
                         
-                        <div class="shippingMsg featureText" *ngIf="shippingRate > 0 && fechaEntregaMin">
-                            <p class="fw-light"><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline">{{ address }}</a> </p>
+                        <div class="shippingMsg featureText border p-2 bg-darkseagreen" *ngIf="shippingRate > 0 && fechaEntregaMin">
+                            <p class="fw-light"><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline text-green">{{ address }}</a> </p>
                         </div>
                         <!-- Mostrar mensaje alternativo cuando no hay tarifa -->
                         <div class="shippingMsg featureText" *ngIf="shippingRate === 0">
@@ -389,7 +389,7 @@
                 </span>
                 <span class="img"><img src="assets/images/products/120x170.jpg" alt="product" width="120" height="170" /></span>
             </a>
-            
+
             <a href="product-layout2.html" class="product-nav next-pro clr-none d-flex-center justify-content-between d-none" title="Next Product">
                 <span class="img"><img src="assets/images/products/120x170.jpg" alt="product" width="120" height="170" /></span>
                 <span class="details">

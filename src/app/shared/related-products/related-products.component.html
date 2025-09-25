@@ -9,7 +9,7 @@
         <ng-container *ngFor="let product of related_products">
           <div class="item col-item">
             <div class="product-box">
-              <div class="product-image">
+              <div class="product-image mb-2">
                 <a  (click)="navigateToProduct.emit({slug: product.slug, discountId: product.campaing_discount?.id})" class="product-img">
                   <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="{{product.title}}" title="{{product.title}}" width="625" height="808" />
                 </a>
@@ -25,35 +25,12 @@
                   <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
                 </div>
               </div>
-              <div class="product-details">
+              <div class="product-details px-2">
                 <div class="product-name">
-                  <a href="#" onclick="return false;" (click)="navigateToProduct.emit({slug: product.slug, discountId: product.campaing_discount?.id})" class="product-img text-uppercase">
+                  <a href="#" onclick="return false;" (click)="navigateToProduct.emit({slug: product.slug, discountId: product.campaing_discount?.id})" class="product-img text-truncate d-inline-block product-title fw-light lh-1">
                     {{product.title}}
                   </a>
                 </div>
-                <!-- <div class="product-price">
-                  <ng-container *ngIf="getDiscount() > 0">
-                    <span class="price old-price">{{ product_selected.price_usd }} {{ euro }}</span>
-                  </ng-container>
-                  <span class="price"></span>
-                </div> -->
-
-                <!-- <div class="product-price">
-                  <ng-container *ngIf="product.campaing_discount || (SALE_FLASH && SALE_FLASH[product._id])">
-                   
-                    <span class="price old-price">
-                      {{ product.price_usd }} {{ euro }}
-                    </span>
-                    
-                    <span class="price discounted-price">
-                      {{ calculateDiscountPrice(product) | number:'1.2-2' }} {{ euro }}
-                    </span>
-                  </ng-container>
-                  <ng-container *ngIf="!product.campaing_discount && !(SALE_FLASH && SALE_FLASH[product._id])">
-                    
-                    <span class="price">{{ product.price_usd }} {{ euro }}</span>
-                  </ng-container>
-                </div> -->
 
                 <div class="product-price">
                   <ng-container *ngIf="hasDiscount(product)">
