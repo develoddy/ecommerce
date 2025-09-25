@@ -23,7 +23,7 @@
                             <div
                                 class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-start">
                                 <div class="page-title">
-                                    <h2 class="fw-bold">Carrito de la compra</h2>
+                                    <h2 class="fw-bold text-uppercase">Carrito de la compra</h2>
                                 </div>
                                 <!--Breadcrumbs-->
                                 <div class="breadcrumbs d-none">
@@ -89,28 +89,13 @@
                                                     title="Remove to Cart"><i class="icon anm anm-times-r"></i></a>
                                             </div>
                                             <div class="p-2">
-                                                <a href="#" onclick="return false;" [routerLink]="[
-                                '/',
-                                this.locale,
-                                this.country,
-                                'shop',
-                                'product',
-                                cart.product.slug
-                            ]">
-                                                    <img class="blur-up lazyload" [src]="cart.variedad.files[1].preview_url"
-                                                        alt="product" title="Product" width="250" height="250" />
+                                                <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">
+                                                    <img class="blur-up lazyload" [src]="cart.variedad.files[1].preview_url" alt="product" title="Product" width="250" height="250" />
                                                 </a>
                                             </div>
                                             <div class="p-2 d-flex flex-column">
-                                                <div class="fw-normal">
-                                                    <a href="#" class="fw-normal" onclick="return false;" [routerLink]="[
-                                '/',
-                                this.locale,
-                                this.country,
-                                'shop',
-                                'product',
-                                cart.product.slug
-                                ]">{{ cart.product.title }}</a>
+                                                <div class="fw-light text-uppercase lh-1">
+                                                    <a href="#" class="" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
                                                 </div>
                                                 <div class="mb-2 d-flex">
                                                     <!-- Precio original tachado si hay descuento -->
@@ -131,23 +116,23 @@
                                                         </span>
                                                     </span>
                                                 </div>
-                                                <div class="d-flex fw-normal">
+                                                <div class="d-flex fw-light lh-1">
+                                                    <span class="w-25">Art. nº</span>
+                                                    <span class="ms-lg-3 ms-5">{{ cart.product.sku }}</span>
+                                                </div>
+                                                <div class="d-flex fw-light lh-1">
                                                     <span class="w-25">Color</span>
-                                                    <span class="ms-lg-3 ms-5">{{
-                                                        cart.variedad.color
-                                                        }}</span>
+                                                    <span class="ms-lg-3 ms-5">{{cart.variedad.color}}</span>
                                                 </div>
-                                                <div class="d-flex fw-normal" *ngIf="cart.variedad">
+                                                <div class="d-flex fw-light lh-1" *ngIf="cart.variedad">
                                                     <span class="w-25">Talla</span>
-                                                    <span class="ms-lg-3 ms-5">{{
-                                                        cart.variedad.valor
-                                                        }}</span>
+                                                    <span class="ms-lg-3 ms-5">{{cart.variedad.valor}}</span>
                                                 </div>
-                                                <div class="d-flex fw-normal">
+                                                <div class="d-flex fw-light lh-1">
                                                     <span class="w-25">Cantidad</span>
                                                     <span class="ms-lg-3 ms-5">{{ cart.cantidad }}</span>
                                                 </div>
-                                                <div class="d-flex fw-normal mb-2">
+                                                <div class="d-flex fw-light lh-1 mb-2">
                                                     <span class="w-25">Total</span>
                                                     <span class="money ms-lg-3 ms-5">
                                                         <span class="price-small fw-bold" [class.text-danger]="hasCartItemDiscount(cart)">
@@ -461,7 +446,11 @@
 
             </div>
             <!-- END BODY CONTAINER -->
+
+            
         </ng-container>
+
+        
 
         <!-- STICKY MENUBAR MOBILE -->
         <div class="menubar-mobile d-flex align-items-center justify-content-between d-lg-none">

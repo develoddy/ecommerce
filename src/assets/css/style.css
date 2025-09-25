@@ -130,10 +130,10 @@ Table of Content:
   2. Basic Styles
 ========================================================================*/
 /* body { font-family:'Poppins', sans-serif; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; } */
-/* body { font-family: "Zen Kaku Gothic Antique", sans-serif; font-style: normal; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; } */
+body { font-family: "Zen Kaku Gothic Antique", sans-serif; font-style: normal; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; }
 
 
-body { font-family:"sans-serif", sans-serif; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; } 
+/* body { font-family:"sans-serif", sans-serif; color:#171717; font-size:14px; line-height:1.7; font-weight:400; letter-spacing:0; margin:0; padding:0; }  */
 
 article, aside, details, figcaption, figure, footer, header, nav, section, summary { display: block; }
 audio, canvas, video { display: inline-block; }
@@ -269,7 +269,7 @@ h2, .h2  {
   letter-spacing: -3px;
   color: #171717; /* Color oscuro para buen contraste */
 
-  font-family: "Bebas Neue", sans-serif;
+  /* font-family: "Bebas Neue", sans-serif; */
   font-weight: 400;
   font-style: normal;
 }
