@@ -30,7 +30,7 @@ a.product-img {
   cursor: pointer;
 }
 
-.page-header {
+/* .page-header {
   background-color: #f8f9fa; 
   color: #212529; 
   padding: 3rem 1rem; 
@@ -40,7 +40,6 @@ a.product-img {
 .page-header h2 {
   font-size: 2rem; 
   margin-bottom: 1rem;
-  /* letter-spacing: -2px !important; */
 }
 
 .page-header p {
@@ -48,7 +47,7 @@ a.product-img {
   line-height: 1.6;
   max-width: 700px; 
   margin: 0 auto; 
-}
+} */
 
 
 
@@ -263,11 +262,11 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 { color:#000000; margin:0 0
 h1, .h1 { font-size:24px; }
 /* h2, .h2 { font-size:20px; } */
 h2, .h2  {
-  /* font-family: 'Zen Kaku Gothic New', 'Zen Kaku Gothic Antique', sans-serif; */
+  font-family: 'Zen Kaku Gothic New', 'Zen Kaku Gothic Antique', sans-serif;
   /*font-weight: 700;*/ /* Bold para resaltar el título */
   font-size: 3.5rem; /* Ajusta según el tamaño que prefieras 2.75rem */
   line-height: 1.4;
-  letter-spacing: 0.5px;
+  letter-spacing: -3px;
   color: #171717; /* Color oscuro para buen contraste */
 
   font-family: "Bebas Neue", sans-serif;

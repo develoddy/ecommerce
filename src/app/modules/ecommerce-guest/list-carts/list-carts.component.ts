@@ -99,6 +99,18 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
+  navigateToProduct(slug: string, discountId?: string) {
+    // Guarda el estado para hacer scroll hacia arriba
+    sessionStorage.setItem('scrollToTop', 'true');
+    // Navega a la página del producto
+    this.router
+      .navigate(['/', this.locale, this.country, 'shop', 'product', slug])
+      .then(() => {
+        // Recarga la página
+        window.location.reload();
+      });
+  }
+
   private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(
       combineLatest([
