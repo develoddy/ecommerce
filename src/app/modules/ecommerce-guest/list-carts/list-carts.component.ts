@@ -9,6 +9,7 @@ import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { WishlistService } from '../_service/wishlist.service';
 import { SeoService } from 'src/app/services/seo.service';
 import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
+import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -62,7 +63,8 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     //private metaService: Meta,
     private seoService: SeoService,
     public _wishlistService: WishlistService,
-    public loader: LoaderService
+    public loader: LoaderService,
+    private priceCalculationService: PriceCalculationService
   ) {
     // Obtenemos `locale` y `country` de la ruta actual
     this.activatedRoute.paramMap.subscribe(params => {
@@ -112,10 +114,92 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentUser) {
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
+        console.log("listCarts:", this.listCarts);
+        
+        // Procesar precios con descuento para cada item del carrito
+        this.processCartPrices();
         this.updateTotalCarts();
       });
     } 
     this.sotoreCarts();
+  }
+
+  /**
+   * Procesa los precios de los items del carrito para calcular precios finales con descuento
+   */
+  private processCartPrices(): void {
+    this.listCarts.forEach(cart => {
+      // Calcular el precio final unitario
+      cart.finalUnitPrice = this.getFinalUnitPrice(cart);
+      
+      // Calcular subtotal y total con precio final
+      cart.finalSubtotal = cart.finalUnitPrice * cart.cantidad;
+      cart.finalTotal = cart.finalSubtotal;
+      
+      console.log(`💰 Procesando ${cart.product.title}:`, {
+        precioOriginal: cart.price_unitario,
+        precioFinal: cart.finalUnitPrice,
+        tieneDescuento: this.hasCartItemDiscount(cart),
+        cantidad: cart.cantidad,
+        subtotalFinal: cart.finalSubtotal
+      });
+    });
+  }
+
+  /**
+   * Obtiene el precio unitario final (con descuento si aplica)
+   */
+  getFinalUnitPrice(cart: any): number {
+    // Si hay descuento aplicado (type_discount y discount), usar el precio con descuento
+    if (cart.type_discount && cart.discount) {
+      return parseFloat(cart.discount);
+    }
+    
+    // Si no hay descuento, usar precio de variedad o precio unitario
+    return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+  }
+
+  /**
+   * Verifica si un item del carrito tiene descuento
+   */
+  hasCartItemDiscount(cart: any): boolean {
+    if (!cart.type_discount || !cart.discount) return false;
+    
+    const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+    const discountedPrice = parseFloat(cart.discount);
+    
+    return discountedPrice < originalPrice;
+  }
+
+  /**
+   * Obtiene el precio original antes del descuento
+   */
+  getOriginalUnitPrice(cart: any): number {
+    return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+  }
+
+  /**
+   * Obtiene las partes del precio (entero y decimal) usando el servicio
+   */
+  getPriceParts(price: number) {
+    if (!this.priceCalculationService) {
+      return { integer: '0', decimals: '00', total: '0.00' };
+    }
+    return this.priceCalculationService.getPriceParts(price);
+  }
+
+  /**
+   * Verifica si hay algún producto en el carrito con descuento (para usar en template)
+   */
+  hasAnyCartDiscount(): boolean {
+    return this.listCarts.some(cart => this.hasCartItemDiscount(cart));
+  }
+
+  /**
+   * Cuenta cuántos productos tienen descuento aplicado (para usar en template)
+   */
+  getDiscountedItemsCount(): number {
+    return this.listCarts.filter(cart => this.hasCartItemDiscount(cart)).length;
   }
 
   getFormattedPrice(price: any) {
@@ -172,12 +256,17 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private showRelatedProducts() {
+    if (this.listCarts.length === 0) return;
+    
     const firstProductSlug = this.listCarts[0]?.product?.slug;
     this.slug = firstProductSlug;
     
     const LandingSubscriptions = this.ecommerceGuestService.showLandingProduct(this.slug).subscribe(
       (resp:any) => {
         this.handleProductResponse(resp);
+        // Reprocesar precios después de obtener productos relacionados
+        this.processCartPrices();
+        this.updateTotalCarts();
         //  setTimeout(() => {
         //    HOMEINITTEMPLATE($);
         //  }, 150);
@@ -206,10 +295,17 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   updateTotalCarts(): void {
     this.totalCarts = this.listCarts.reduce((sum: number, item: any) => {
-      const unitPrice = item.variedad?.retail_price || item.price_unitario;
-      return sum + (unitPrice * item.cantidad);
+      // Usar el precio final unitario (con descuento si aplica)
+      const finalUnitPrice = item.finalUnitPrice || this.getFinalUnitPrice(item);
+      return sum + (finalUnitPrice * item.cantidad);
     }, 0);
     this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+    
+    console.log('🛒 Total del carrito actualizado:', {
+      totalItems: this.listCarts.length,
+      totalPrice: this.totalCarts,
+      itemsWithDiscount: this.listCarts.filter(item => this.hasCartItemDiscount(item)).length
+    });
   }
 
   inc(cart: any): void {
@@ -282,8 +378,15 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   // }
 
   private updateCartItem(cart: any): void {
-    cart.subtotal = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
-    cart.total = parseFloat((cart.price_unitario * cart.cantidad).toFixed(2));
+    // Actualizar con precio final (con descuento si aplica)
+    const finalUnitPrice = this.getFinalUnitPrice(cart);
+    cart.subtotal = parseFloat((finalUnitPrice * cart.cantidad).toFixed(2));
+    cart.total = parseFloat((finalUnitPrice * cart.cantidad).toFixed(2));
+    
+    // Actualizar también los campos de precio final
+    cart.finalUnitPrice = finalUnitPrice;
+    cart.finalSubtotal = cart.subtotal;
+    cart.finalTotal = cart.total;
 
     const cartData = {
       _id: cart._id,
