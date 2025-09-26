@@ -430,13 +430,43 @@ export class PaymentCheckoutComponent implements OnInit {
             return;
           }
 
+          // Procesar productos con precios finales (incluyendo descuentos)
+          const items = this.listCarts.map((item: any) => {
+            const finalPrice = this.getFinalUnitPrice(item);
+            const originalPrice = parseFloat(item.variedad?.retail_price || item.price_unitario || 0);
+            const hasDiscount = finalPrice < originalPrice;
+            
+            return {
+              name: hasDiscount 
+                ? `${item.product.title} (Rebajado de €${originalPrice.toFixed(2)} a €${finalPrice.toFixed(2)})`
+                : item.product.title,
+              unit_amount: {
+                currency_code: 'EUR',
+                value: finalPrice.toFixed(2)
+              },
+              quantity: item.cantidad.toString()
+            };
+          });
+
+          // Calcular subtotal de items
+          const itemsSubtotal = items.reduce((sum: number, item: any) => {
+            return sum + (parseFloat(item.unit_amount.value) * parseInt(item.quantity));
+          }, 0);
+
           const createOrderPayload = {
             purchase_units: [
               {
                 amount: {
-                  description: 'COMPRAR POR EL ECOMMERCE',
-                  value: this.totalCarts,
+                  currency_code: 'EUR',
+                  value: this.totalCarts.toFixed(2),
+                  breakdown: {
+                    item_total: {
+                      currency_code: 'EUR',
+                      value: itemsSubtotal.toFixed(2)
+                    }
+                  }
                 },
+                items: items
               },
             ],
           };
