@@ -666,10 +666,10 @@
                     <div class="cart-order-detail cart-col">
                         <!-- Subtotal-->
                         <div class="row g-0">
-                            <span class="col-6 col-sm-6 cart-subtotal-title">Subtotal</span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                 <span class="money">
-                                    <span class="price-small" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through' : ''">
+                                    <span class="price-small fw-light" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through' : ''">
                                         <span class="">{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.</span>
                                         <span class="">
                                             <span>{{getFormattedPrice(getOriginalSubtotal()).decimalPart}}</span>
@@ -682,10 +682,10 @@
 
                         <!-- Descuento aplicado (solo si hay descuentos) -->
                         <div class="row g-0" *ngIf="hasAnyCartDiscount()">
-                            <span class="col-6 col-sm-6 cart-subtotal-title text-danger">Descuento</span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title text-danger fw-light">Descuento</span>
                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
                                 <span class="money">
-                                    <span class="price-small">
+                                    <span class="price-small fw-light">
                                         -<span class="">{{getFormattedPrice(getTotalDiscount()).integerPart}}.</span>
                                         <span class="">
                                             <span>{{getFormattedPrice(getTotalDiscount()).decimalPart}}</span>
@@ -698,14 +698,14 @@
 
                         <!-- Envío Gratis -->
                         <div class="row g-0 mb-2">
-                            <span class="col-6 col-sm-6 cart-subtotal-title">Envío</span>
-                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Gratis</span></span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Envío</span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">Gratis</span></span>
                         </div>
 
                         <!-- Total Precio actual -->
                         <div class="row g-0">
-                            <span class="col-6 col-sm-6 cart-subtotal-title text-uppercase fw-bold">Total</span>
-                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase fw-bold">Total</span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6 cart-subtotal text-end">
                                 <span class="money price fw-bold">
                                     <span class="">{{getFormattedPrice(totalCarts).integerPart}}.</span>
                                     <span class="">
