@@ -116,7 +116,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
           this.saleDetails = resp.saleDetails;
           this.totalCarts = this.saleDetails.reduce(
             (sum: number, it: any) =>
-              sum + Number(it.unitPrice ?? it.price_unitario) * it.cantidad,
+              sum + Number(it.discount ?? it.code_discount ?? it.unitPrice ?? it.price_unitario) * it.cantidad,
             0
           );
           this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
@@ -185,12 +185,12 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       const saleInfo = initialData.sale;
       const saleDetails = initialData.saleDetails || [];
       this.sale = saleInfo;
-      // Calculate total immediately
+      // Calculate total immediately using final prices (with discounts)
       this.totalCarts = saleDetails.reduce((sum: number, item: any) => {
-        const unitPrice = Number(
-          item.variedade?.retail_price ?? item.price_unitario ?? 0
+        const finalPrice = Number(
+          item.discount ?? item.code_discount ?? item.variedade?.retail_price ?? item.price_unitario ?? 0
         );
-        return sum + unitPrice * item.cantidad;
+        return sum + finalPrice * item.cantidad;
       }, 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       this.saleDetails = saleDetails;
@@ -202,10 +202,10 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       if (saleInfo) {
         this.sale = saleInfo;
         this.totalCarts = saleDetails.reduce((sum: number, item: any) => {
-          const unitPrice = Number(
-            item.variedade?.retail_price ?? item.price_unitario ?? 0
+          const finalPrice = Number(
+            item.discount ?? item.code_discount ?? item.variedade?.retail_price ?? item.price_unitario ?? 0
           );
-          return sum + unitPrice * item.cantidad;
+          return sum + finalPrice * item.cantidad;
         }, 0);
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
         this.saleDetails = saleDetails;
@@ -683,6 +683,44 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     this.checkDeviceType(); // Verifica el tamaño de la pantalla
+  }
+
+  /**
+   * Calcula el subtotal original (sin descuentos) de todos los productos
+   */
+  getOriginalSubtotal(): number {
+    if (!this.saleDetails || this.saleDetails.length === 0) {
+      return 0;
+    }
+    return this.saleDetails.reduce((total: number, sale: any) => {
+      const originalPrice = parseFloat(sale.variedade?.retail_price || sale.price_unitario || 0);
+      return total + (originalPrice * (sale.cantidad || 1));
+    }, 0);
+  }
+
+  /**
+   * Calcula el total de descuento aplicado
+   */
+  getTotalDiscount(): number {
+    if (!this.saleDetails || this.saleDetails.length === 0) {
+      return 0;
+    }
+    return this.saleDetails.reduce((total: number, sale: any) => {
+      const originalPrice = parseFloat(sale.variedade?.retail_price || sale.price_unitario || 0);
+      const finalPrice = parseFloat(sale.discount || sale.code_discount || originalPrice);
+      const discountPerItem = Math.max(0, originalPrice - finalPrice);
+      return total + (discountPerItem * (sale.cantidad || 1));
+    }, 0);
+  }
+
+  /**
+   * Verifica si hay algún producto con descuento (para usar en template)
+   */
+  hasAnyProductWithDiscount(): boolean {
+    if (!this.saleDetails || this.saleDetails.length === 0) {
+      return false;
+    }
+    return this.saleDetails.some((sale: any) => sale.discount || sale.code_discount);
   }
 
   ngOnDestroy(): void {
