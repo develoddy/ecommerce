@@ -19,12 +19,10 @@
                         <!-- ORDER -->
                         <div class="block order-summary p-2 mb-5">
                             <div class="block-content">
-                                <h3 class="title mb-3">Pedido</h3>
+                                <h3 class="title mb-3 text-uppercase">Pedido</h3>
                                 <div class="row">
                                     <!--Cart Content-->
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-8 main-col">
-
-
                                         <!-- List carts -->
                                         <div class="d-flex flex-column">
                                             <ng-container *ngFor="let sale of saleDetails">
@@ -57,21 +55,21 @@
                                                             <ng-container *ngIf="sale.discount || sale.code_discount; else normalPrice">
                                                                 <!-- Precio original tachado -->
                                                                 <span class="money me-2">
-                                                                    <span class="price-small fw-normal old-price text-decoration-line-through text-muted">
-                                                                        <span class="price-main-small">{{ getFormattedPrice(sale.variedade?.retail_price || sale.price_unitario).integerPart }}</span>
-                                                                        <span class="price-decimals-small">
-                                                                            <sup>{{ getFormattedPrice(sale.variedade?.retail_price || sale.price_unitario).decimalPart }}</sup>
-                                                                            <span class="currency-symbol-small">{{ euro }}</span>
+                                                                    <span class="price-small old-price text-decoration-line-through fw-light">
+                                                                        <span class="">{{ getFormattedPrice(sale.variedade?.retail_price || sale.price_unitario).integerPart }}.</span>
+                                                                        <span class="">
+                                                                            <span>{{ getFormattedPrice(sale.variedade?.retail_price || sale.price_unitario).decimalPart }}</span>
+                                                                            <span class="">{{ euro }}</span>
                                                                         </span>
                                                                     </span>
                                                                 </span>
                                                                 <!-- Precio con descuento -->
                                                                 <span class="money">
-                                                                    <span class="price-small fw-bold text-danger">
-                                                                        <span class="price-main-small">{{ getFormattedPrice(sale.discount || sale.code_discount).integerPart }}</span>
-                                                                        <span class="price-decimals-small">
-                                                                            <sup>{{ getFormattedPrice(sale.discount || sale.code_discount).decimalPart }}</sup>
-                                                                            <span class="currency-symbol-small">{{ euro }}</span>
+                                                                    <span class="price-small fw-light text-danger">
+                                                                        <span class="">{{ getFormattedPrice(sale.discount || sale.code_discount).integerPart }}.</span>
+                                                                        <span class="">
+                                                                            <span>{{ getFormattedPrice(sale.discount || sale.code_discount).decimalPart }}</span>
+                                                                            <span class="">{{ euro }}</span>
                                                                         </span>
                                                                     </span>
                                                                 </span>
@@ -79,11 +77,11 @@
                                                             <!-- Si no tiene descuento, mostrar precio normal -->
                                                             <ng-template #normalPrice>
                                                                 <span class="money">
-                                                                    <span class="price-small fw-bold">
-                                                                        <span class="price-main-small">{{ getFormattedPrice(sale.variedade?.retail_price || sale.price_unitario).integerPart }}</span>
-                                                                        <span class="price-decimals-small">
-                                                                            <sup>{{ getFormattedPrice(sale.variedade?.retail_price || sale.price_unitario).decimalPart }}</sup>
-                                                                            <span class="currency-symbol-small">{{ euro }}</span>
+                                                                    <span class="price-small fw-light">
+                                                                        <span class="">{{ getFormattedPrice(sale.variedade?.retail_price || sale.price_unitario).integerPart }}.</span>
+                                                                        <span class="">
+                                                                            <span>{{ getFormattedPrice(sale.variedade?.retail_price || sale.price_unitario).decimalPart }}</span>
+                                                                            <span class="">{{ euro }}</span>
                                                                         </span>
                                                                     </span>
                                                                 </span>
@@ -91,32 +89,32 @@
                                                         </div>
                                                         <!-- End Product precio -->
                                                         <!-- Product color -->
-                                                        <div class="d-flex fw-normal">
+                                                        <div class="d-flex fw-light">
                                                             <span class="w-25">Color</span>
                                                             <span class="ms-lg-3 ms-5">{{ sale.variedade.color }}</span>
                                                         </div>
                                                         <!-- End Product color -->
                                                         <!-- Product valor -->
-                                                        <div class="d-flex fw-normal" *ngIf="sale.variedade">
+                                                        <div class="d-flex fw-light" *ngIf="sale.variedade">
                                                             <span class="w-25">Talla</span>
                                                             <span class="ms-lg-3 ms-5">{{ sale.variedade.valor }}</span>
                                                         </div>
                                                         <!-- End Product valor -->
                                                         <!-- Product cantidad -->
-                                                        <div class="d-flex fw-normal">
+                                                        <div class="d-flex fw-light">
                                                             <span class="w-25">Cantidad</span>
                                                             <span class="ms-lg-3 ms-5">{{ sale.cantidad}}</span>
                                                         </div>
                                                         <!-- End Product cantidad  -->
                                                         <!-- Product total -->
-                                                        <div class="d-flex fw-normal mb-2">
+                                                        <div class="d-flex fw-bold mb-2">
                                                             <span class="w-25">Total</span>
                                                             <span class="money ms-lg-3 ms-5">
                                                                 <span class="price-small fw-bold">
-                                                                    <span class="price-main-small">{{ getFormattedPrice((sale.discount || sale.code_discount || sale.variedade?.retail_price || sale.price_unitario) * sale.cantidad).integerPart }}</span>
-                                                                    <span class="price-decimals-small">
-                                                                        <sup>{{ getFormattedPrice((sale.discount || sale.code_discount || sale.variedade?.retail_price || sale.price_unitario) * sale.cantidad).decimalPart }}</sup>
-                                                                        <span class="currency-symbol-small">{{ euro }}</span>
+                                                                    <span class="">{{ getFormattedPrice((sale.discount || sale.code_discount || sale.variedade?.retail_price || sale.price_unitario) * sale.cantidad).integerPart }}.</span>
+                                                                    <span class="">
+                                                                        <span>{{ getFormattedPrice((sale.discount || sale.code_discount || sale.variedade?.retail_price || sale.price_unitario) * sale.cantidad).decimalPart }}</span>
+                                                                        <span class="">{{ euro }}</span>
                                                                     </span>
                                                                 </span>
                                                             </span>
