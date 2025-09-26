@@ -723,6 +723,20 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     return this.saleDetails.some((sale: any) => sale.discount || sale.code_discount);
   }
 
+  /**
+   * Verifica si un producto individual tiene descuento real aplicado
+   */
+  hasProductDiscount(sale: any): boolean {
+    if (!sale.discount && !sale.code_discount) {
+      return false;
+    }
+    
+    const originalPrice = parseFloat(sale.variedade?.retail_price || sale.price_unitario || 0);
+    const finalPrice = parseFloat(sale.discount || sale.code_discount || originalPrice);
+    
+    return finalPrice < originalPrice;
+  }
+
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
