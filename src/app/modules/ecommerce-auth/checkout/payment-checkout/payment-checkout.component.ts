@@ -330,8 +330,16 @@ export class PaymentCheckoutComponent implements OnInit {
       return;
     }
 
+    // Procesar el carrito con precios finales (incluyendo descuentos)
+    const cartWithFinalPrices = this.listCarts.map((item: any) => ({
+      ...item,
+      finalPrice: this.getFinalUnitPrice(item), // Precio final con descuento si aplica
+      originalPrice: parseFloat(item.variedad?.retail_price || item.price_unitario || 0), // Precio original
+      hasDiscount: this.getFinalUnitPrice(item) < parseFloat(item.variedad?.retail_price || item.price_unitario || 0)
+    }));
+
     const payload = {
-      cart: this.listCarts,
+      cart: cartWithFinalPrices,
       userId: this.CURRENT_USER_AUTHENTICATED?._id || null,
       guestId: this.CURRENT_USER_GUEST?.id || null,
       address: {
