@@ -7,6 +7,7 @@ import { AuthService } from '../../auth-profile/_services/auth.service';
 import { filter, Subject, Subscription, take, takeUntil } from 'rxjs';
 import { CheckoutService } from '../_services/checkoutService';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { PriceCalculationService } from '../../home/_services/product/price-calculation.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -77,7 +78,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     public routerActived: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
     private checkoutService: CheckoutService,
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+    private priceCalculationService: PriceCalculationService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -153,9 +155,84 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   loadCurrentDataCart() {
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
-      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => sum + parseFloat(item.total), 0);
+      console.log("DEBBUG: Componente Padre checkout loadCurrentDataCart() > listCarts: ", this.listCarts);
+      
+      // Procesar precios con descuentos antes de calcular totales
+      this.processCartPrices();
+      
+      // Calcular total usando los precios finales procesados
+      this.totalCarts = this.listCarts.reduce((sum: number, item: any) => {
+        const finalPrice = item.finalUnitPrice || this.getFinalUnitPrice(item);
+        return sum + (finalPrice * item.cantidad);
+      }, 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+      
+      console.log("DEBBUG: Total carrito con descuentos aplicados:", this.totalCarts);
     });
+  }
+
+  /**
+   * Procesa los precios del carrito aplicando descuentos
+   */
+  private processCartPrices(): void {
+    this.listCarts.forEach((cart: any) => {
+      // Calcular el precio final unitario
+      cart.finalUnitPrice = this.getFinalUnitPrice(cart);
+      
+      // Calcular subtotal y total con precio final
+      cart.finalSubtotal = cart.finalUnitPrice * cart.cantidad;
+      cart.finalTotal = cart.finalSubtotal;
+      
+      console.log(`💰 Procesando ${cart.product.title}:`, {
+        precioOriginal: cart.price_unitario,
+        precioFinal: cart.finalUnitPrice,
+        tieneDescuento: this.hasCartItemDiscount(cart),
+        cantidad: cart.cantidad,
+        subtotalFinal: cart.finalSubtotal
+      });
+    });
+  }
+
+  /**
+   * Obtiene el precio unitario final (con descuento si aplica)
+   */
+  getFinalUnitPrice(cart: any): number {
+    // Si hay descuento aplicado (type_discount y discount), usar el precio con descuento
+    if (cart.type_discount && cart.discount) {
+      return parseFloat(cart.discount);
+    }
+    
+    // Si no hay descuento, usar precio de variedad o precio unitario
+    return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+  }
+
+  /**
+   * Verifica si un item del carrito tiene descuento
+   */
+  hasCartItemDiscount(cart: any): boolean {
+    if (!cart.type_discount || !cart.discount) return false;
+    
+    const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+    const discountedPrice = parseFloat(cart.discount);
+    
+    return discountedPrice < originalPrice;
+  }
+
+  /**
+   * Obtiene el precio original antes del descuento
+   */
+  getOriginalUnitPrice(cart: any): number {
+    return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+  }
+
+  /**
+   * Obtiene las partes del precio (entero y decimal) usando el servicio
+   */
+  getPriceParts(price: number) {
+    if (!this.priceCalculationService) {
+      return { integer: '0', decimals: '00', total: '0.00' };
+    }
+    return this.priceCalculationService.getPriceParts(price);
   }
 
   // DETECTA EN QUE COMPONENTE HIJO ESTÁ EL USUARIO AL ANALIZAR LA RUTA ACTIVA Y ACTUALIZAR LA PROPIEDAD CURRENTSTEP

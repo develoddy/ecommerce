@@ -361,8 +361,9 @@ export class ResumenCheckoutComponent implements OnInit {
       this._cartService.currenteDataCart$.subscribe((resp:any) => {
         this.listCarts = resp;
         this.totalCarts = this.listCarts.reduce((sum: number, item: any) => {
-          const unitPrice = item.variedad?.retail_price || item.price_unitario;
-          return sum + (unitPrice * item.cantidad);
+          // Usar el precio final procesado con descuentos si existe, si no calcular 
+          const finalPrice = item.finalUnitPrice || this.getFinalUnitPrice(item);
+          return sum + (finalPrice * item.cantidad);
         }, 0);
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       })
@@ -838,6 +839,19 @@ export class ResumenCheckoutComponent implements OnInit {
         this.width = 100; // tamaño por defecto
         this.height = 100; // tamaño por defecto
     }
+  }
+
+  /**
+   * Obtiene el precio unitario final (con descuento si aplica)
+   */
+  getFinalUnitPrice(cart: any): number {
+    // Si hay descuento aplicado (type_discount y discount), usar el precio con descuento
+    if (cart.type_discount && cart.discount) {
+      return parseFloat(cart.discount);
+    }
+    
+    // Si no hay descuento, usar precio de variedad o precio unitario
+    return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
   }
 
   ngOnDestroy(): void {

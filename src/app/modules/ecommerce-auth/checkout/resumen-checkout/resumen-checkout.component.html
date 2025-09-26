@@ -716,15 +716,42 @@
                                                       <a href="#" class="fw-normal text-black text-truncate d-inline-block product-title" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
                                                 </div>
                                                 <div class="">
-                                                      <span class="money">
-                                                         <span class="price-small fw-bold">
-                                                            <span class="price-main-small">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}</span>
-                                                            <span class="price-decimals-small">
+                                                      <!-- Mostrar precio con descuento si aplica -->
+                                                      <ng-container *ngIf="cart.finalUnitPrice && getFinalUnitPrice(cart) < (cart.variedad?.retail_price || cart.price_unitario); else normalPrice">
+                                                         <!-- Precio original tachado -->
+                                                         <span class="money text-decoration-line-through text-muted me-2">
+                                                            <span class="price-small">
+                                                               <span class="price-main-small">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}</span>
+                                                               <span class="price-decimals-small">
                                                                   <sup>{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</sup>
                                                                   <span class="currency-symbol-small">{{ euro }}</span>
+                                                               </span>
                                                             </span>
                                                          </span>
-                                                      </span>
+                                                         <!-- Precio final con descuento -->
+                                                         <span class="money text-danger">
+                                                            <span class="price-small fw-bold">
+                                                               <span class="price-main-small">{{ getFormattedPrice(getFinalUnitPrice(cart)).integerPart }}</span>
+                                                               <span class="price-decimals-small">
+                                                                  <sup>{{ getFormattedPrice(getFinalUnitPrice(cart)).decimalPart }}</sup>
+                                                                  <span class="currency-symbol-small">{{ euro }}</span>
+                                                               </span>
+                                                            </span>
+                                                         </span>
+                                                      </ng-container>
+                                                      
+                                                      <!-- Precio normal sin descuento -->
+                                                      <ng-template #normalPrice>
+                                                         <span class="money">
+                                                            <span class="price-small fw-bold">
+                                                               <span class="price-main-small">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}</span>
+                                                               <span class="price-decimals-small">
+                                                                  <sup>{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</sup>
+                                                                  <span class="currency-symbol-small">{{ euro }}</span>
+                                                               </span>
+                                                            </span>
+                                                         </span>
+                                                      </ng-template>
                                                 </div>
                                              </div>
                                              <div class="d-flex fw-normal lh-1 mb-1">
@@ -743,9 +770,9 @@
                                                 <span class="w-25">Total</span>
                                                 <span class="money ms-lg-3 ms-5">
                                                       <span class="price-small fw-bold">
-                                                         <span class="price-main-small">{{ getFormattedPrice((cart.variedad?.retail_price || cart.price_unitario) * cart.cantidad).integerPart }}</span>
+                                                         <span class="price-main-small">{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).integerPart }}</span>
                                                          <span class="price-decimals-small">
-                                                            <sup>{{ getFormattedPrice((cart.variedad?.retail_price || cart.price_unitario) * cart.cantidad).decimalPart }}</sup>
+                                                            <sup>{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).decimalPart }}</sup>
                                                             <span class="currency-symbol-small">{{ euro }}</span>
                                                          </span>
                                                       </span>
