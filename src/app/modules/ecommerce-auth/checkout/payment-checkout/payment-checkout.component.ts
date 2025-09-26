@@ -1000,6 +1000,15 @@ export class PaymentCheckoutComponent implements OnInit {
     return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
   }
 
+  /**
+   * Verifica si hay algún producto en el carrito con descuento (para usar en template)
+   */
+  hasAnyCartDiscount(): boolean {
+    return this.listCarts.some((cart: any) => {
+      return cart.finalUnitPrice && this.getFinalUnitPrice(cart) < (cart.variedad?.retail_price || cart.price_unitario);
+    });
+  }
+
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();

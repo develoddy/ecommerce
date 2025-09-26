@@ -729,6 +729,17 @@
                               <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Envío</span>
                               <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">Gratis</span></span>
                         </div>
+                        
+                        <!-- Mensaje de descuento aplicado -->
+                        <div class="row g-0" *ngIf="hasAnyCartDiscount()">
+                           <div class="col-12 mt-2 mb-1">
+                              <p class="text-success fw-light fs-14 mb-0">
+                                 <i class="fas fa-check-circle me-1"></i>
+                                 Descuento aplicado en tu carrito
+                              </p>
+                           </div>
+                        </div>
+                        
                         <div class="row g-0">
                               <span class="col-6 col-sm-6 cart-subtotal-title fs-5 ls-1 text-uppercase">Total</span>
                               <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end">
