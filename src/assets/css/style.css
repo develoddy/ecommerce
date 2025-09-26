@@ -3469,7 +3469,7 @@ a.logo {
 
 /* --------- Precios Small --------- */
 
-.price-small {display: inline-flex;align-items: flex-start;font-family: sans-serif;font-weight: bold;}
+.price-small {display: inline-flex;align-items: flex-start;font-family: sans-serif;font-weight: normal;}
 /* Tamaño grande para la parte entera */
 .price-main-small {font-size: 1rem; }
 /* Tamaño más pequeño para los decimales */
@@ -3492,6 +3492,7 @@ a.logo {
   text-overflow: ellipsis;
   display: inline-block;
   max-width: 100%; /* default para móviles */
+  text-transform: uppercase;
 }
 
  /* Global truncate ellipsis for product titles */

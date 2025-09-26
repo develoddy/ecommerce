@@ -120,7 +120,7 @@
 
 @media only screen and (min-width: 992px) {
     .product-title {
-        max-width: 260px;
+        max-width: 134px;
     }
     .rounded-start-lg-0 { border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important; }
     .rounded-end-lg-0 { border-top-right-radius: 0px !important; border-bottom-right-radius: 0px !important; }

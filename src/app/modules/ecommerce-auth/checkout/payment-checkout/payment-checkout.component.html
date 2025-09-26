@@ -546,11 +546,11 @@
             <div class="cart-info mb-4 d-block d-md-none bg-transparent border-0 p-0 border border-success" *ngIf="isMobile">
                   <div class="cart-info mb-3 bg-transparent border-0 p-0">
                      <div class="cart-order-detail cart-col">
-                        <!-- Subtotal sin rebajas -->
+                        <!-- Subtotal-->
                         <div class="row g-0">
-                              <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal sin rebajas</span>
+                              <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
                               <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal fw-light text-end">
-                                 <span class="price-small fw-normal">
+                                 <span class="price-small fw-normal" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through text-muted' : ''">
                                     <span class="price-main-small">{{ getFormattedPrice(getOriginalSubtotal()).integerPart}}</span>
                                     <span class="price-decimals-small">
                                           <sup>{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</sup>
@@ -721,11 +721,11 @@
                   <!--Cart Summary | solo visible en escritorio/tablet -->
                   <div class="cart-info cart-summary mb-3 d-none d-md-block bg-white border-0 p-0" *ngIf="!isMobile">
                      <div class="cart-order-detail cart-col">
-                        <!-- Subtotal sin rebajas -->
+                        <!-- Subtotal-->
                         <div class="row g-0">
-                              <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal sin rebajas</span>
+                              <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
                               <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal fw-light text-end">
-                                 <span class="price-small fw-light">
+                                 <span class="price-small fw-light" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through text-muted' : ''">
                                     <span class="price-main-small">{{
                   getFormattedPrice(getOriginalSubtotal()).integerPart
                   }}</span>
