@@ -1,9 +1,9 @@
 <div id="steps2">
     <div class="checkout-grid p-lg-5">
-        <!-- ======== Columna de la izquierda ======== -->
+        <!-- ======== COL IZQUIRDA ======== -->
         <ng-container *ngIf="listCarts.length > 0; else showAddress">
             <div id="main-left">
-                <!-- Tipo de envío -->
+                <!-- DELIVERY METHODS -->
                 <div class="mb-5">
                     <h3 class="mb-0 text-uppercase mb-3">Tipo de envío</h3>
                     <div class="d-flex flex-row mb-3">
@@ -45,7 +45,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- Shipping rates -->
+                <!-- END DELIVERY METHODS -->
+
+                <!-- SHIPPING RATES -->
                 <div class="align-items-center mb-lg-5 mb-3 d-none">
                     <h3 class="fw-bold text-uppercase mb-0">
                         Entrega:
@@ -59,8 +61,9 @@
                         </span>
                     </h3>
                 </div>
-                <!-- End Shipping rates -->
-                <!--Address-->
+                <!-- END SHIPPING RATES -->
+
+                <!-- SHIPPING ADDRESS -->
                 <div class="mb-lg-5 mb-3" [ngClass]="{'w-100': isDesktop}">
                     <div class="dashboard-content h-100 mb-3" id="top-tabContent">
                         <!-- Address Book -->
@@ -477,7 +480,9 @@
                         <!-- End Address Book -->
                     </div>
                 </div>
-                <!--Cart Summary | Cart Summary solo visible en móvil-->
+                <!-- END SHIPPING ADDRESS -->
+
+                <!-- CART SUMMARY VERSION MÓVIL -->
                 <div class="cart-info mb-4 d-block d-md-none bg-white border-0 p-0">
                     <div class="cart-info mb-4 bg-white border-0 p-0">
                         <h3 class="title mb-3 text-uppercase d-none">Resumen de Precio</h3>
@@ -543,7 +548,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- Boton continuar a pago -->
+                <!-- END CART SUMMARY VERSION MÓVIL -->
+
+                <!-- BOTON CONTINUAR A PAGO -->
                 <ng-container *ngIf="listAddresses.length != 0">
                     <!-- <div class="d-flex flex-column mb-4" style="max-width: 21.875rem"> -->
                     <div class="d-flex flex-column mb-4">
@@ -556,6 +563,7 @@
                         </p>
                     </div>
                 </ng-container>
+                <!-- END BOTON CONTINUAR A PAGO -->
             </div>
         </ng-container>
         <ng-template #showAddress>
@@ -571,14 +579,18 @@
                 </div>
             </div>
         </ng-template>
+        <!-- ======== END COL IZQUIRDA ======== -->
 
+        <!--  -->
+        <!--  -->
 
-        <!-- ======== Columna de la derecha ======== -->
+        <!-- ======== COL DERECHA ======== -->
         <div id="main-right">
-            <!-- Bloque: Pedido -->
+            <!-- BLOQUE: TU CARRITO -->
             <div class="order-1">
                 <h3 class="title mb-0 text-uppercase mb-3">Tu carrito</h3>
-                <!-- Código promocional -->
+
+                <!-- CODIGO PROMOCIONAL -->
                 <div class="mb-3 codigo_promocional mb-3">
                     <div class="block-content">
                         <div class="payment-accordion-radio">
@@ -618,7 +630,9 @@
                         </div>
                     </div>
                 </div>
-                <!--Apply Promocode-->
+                <!-- END CODIGO PROMOCIONAL -->
+
+                <!-- CODIGO PROMOCIONAL -->
                 <div class="block mb-3 apply-code mb-4 p-0 d-none">
                     <div class="block-content">
                         <h3 class="title mb-3 text-uppercase">
@@ -645,7 +659,9 @@
                         </div>
                     </div>
                 </div>
-                <!--Cart Summary-->
+                <!-- END CODIGO PROMOCIONAL -->
+
+                <!-- CART SUMMARY -->
                 <div class="cart-info mb-5 mb-5 d-none d-md-block bg-white border-0 p-0">
                     <div class="cart-order-detail cart-col">
                         <!-- Subtotal-->
@@ -708,7 +724,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- Cart List -->
+                <!-- CART SUMMARY -->
+
+                <!-- CARTS LIST -->
                 <div class="col-12 order-0 lists-carts  order-md-2">
                     <div class="block order-summary p-0">
                         <div class="block-content">
@@ -830,8 +848,11 @@
                         </div>
                     </div>
                 </div>
+                <!-- END CARTS LIST -->
             </div>
+            <!-- END BLOQUE: TU CARRITO -->
         </div>
+        <!-- ======== END COL DERECHA ======== -->
     </div>
 
 

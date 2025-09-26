@@ -1,19 +1,9 @@
-<!-- LOADING -->
-<!-- 
-    <div *ngIf="!loading || isLoadingStripe" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
-      <div class="row">
-        <div class="col col-12 col-lg-12 col-sm-2">
-          <div class="sp sp-bars"></div>
-        </div>
-      </div>
-    </div> 
-    -->
-<!-- END LOADING -->
+
 <div id="steps3">
     <div class="checkout-grid p-lg-5">
-      <!-- ======== Columna de la izquierda ======== -->
+      <!-- ======== COL IZQUIRDA ======== -->
          <div id="main-left">
-            <!--Delivery Methods-->
+            <!-- DELIVERY METHODS -->
             <div class="block mb-3 delivery-methods mb-4 d-none">
                   <div class="block-content">
                      <h3 class="title mb-3">Delivery Methods</h3>
@@ -33,8 +23,9 @@
                      </div>
                   </div>
             </div>
-            <!-- / End Delivery Methods-->
-            <!-- Shipping addres -->
+            <!-- END DELIVERY METHODS -->
+
+            <!-- SHIPPING ADDRESS -->
             <div class="block payment-methods pb-0 mb-4 p-0">
                   <div class="block-content">
                      <!-- Mostrar la lista de direcciones -->
@@ -239,8 +230,9 @@
                      <!-- End Edit Address Modal -->
                   </div>
             </div>
-            <!-- / End Shipping addres -->
-            <!-- Payment Methods -->
+            <!-- END SHIPPING ADDRESS -->
+
+            <!-- PAYMENT METHODS -->
             <div class="mb-3 payment-methods mb-4">
                   <div class="block-content">
                      <h3 class="title mb-3 text-uppercase fw-normal">Método de pago</h3>
@@ -541,8 +533,9 @@
                      </div>
                   </div>
             </div>
-            <!-- / End Payment Methods -->
-            <!--Cart Summary | Version móvil -->
+            <!-- END PAYMENT METHODS -->
+
+            <!-- CART SUMMARY VERSION MÓVIL -->
             <div class="cart-info mb-4 d-block d-md-none bg-transparent border-0 p-0 border border-success" *ngIf="isMobile">
                   <div class="cart-info mb-3 bg-transparent border-0 p-0">
                      <div class="cart-order-detail cart-col">
@@ -674,345 +667,316 @@
                      </div>
                   </div>
             </div>
+            <!-- END CART SUMMARY VERSION MÓVIL -->
          </div>
-      <!-- ======== / End Columna de la izquierda ======== -->
+      <!-- ======== END COL IZQUIRDA ======== -->
 
       <!--  -->
       <!--  -->
 
-      <!-- ======== Columna de la derecha ======== -->
+      <!-- ======== COL DERECHA ======== -->
          <div id="main-right">
-            <!-- Bloque: Pedido -->
+            <!-- BLOQUE: TU CARRITO -->
             <div class="order-1">
-                  <h3 class="title mb-0 text-uppercase fw-normal mb-3">Pedido</h3>
-                  <!-- Codigo promocional -->
-                  <div class="mb-3 codigo_promocional mb-4">
-                     <div class="block-content">
-                        <!-- <h3 class="title mb-3">Payment Methods</h3> -->
-                        <div class="payment-accordion-radio">
-                              <div class="accordion" id="accordionExample">
-                                 <div class="accordion-item card mb-2 px-3 border border-muted">
-                                    <div class="card-header p-3" id="headingTwo">
-                                          <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                             <span class="customRadio clearfix mb-0">
-                                                <input id="paymentRadio2" value="" name="payment" type="radio" class="radio" />
-                                                <label for="paymentRadio2" class="mb-0 fw-light fs-14">Código promocional</label>
-                                             </span>
-                                          </button>
-                                    </div>
-                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                          <div class="card-body px-0">
-                                             <p class="fw-light lh-1">
-                                                Introduce tu código promocional y disfruta de grandes
-                                                ahorros en tu compra.
-                                             </p>
-                                             <div class="input-group mb-0 d-flex">
-                                                <input type="text" class="form-control border border-muted fs-14 mb-3" placeholder="Código de promoción" required="" />
-                                                <button class="btn-dark-ld border border-muted" type="submit">
-                                                      Aplicar
-                                                </button>
-                                             </div>
+               <h3 class="title mb-0 text-uppercase fw-normal mb-3">TU CARRITO</h3>
+
+               <!-- CODIGO PROMOCIONAL -->
+               <div class="mb-3 codigo_promocional mb-4">
+                  <div class="block-content">
+                     <!-- <h3 class="title mb-3">Payment Methods</h3> -->
+                     <div class="payment-accordion-radio">
+                           <div class="accordion" id="accordionExample">
+                              <div class="accordion-item card mb-2 px-3 border border-muted">
+                                 <div class="card-header p-3" id="headingTwo">
+                                       <button class="card-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                          <span class="customRadio clearfix mb-0">
+                                             <input id="paymentRadio2" value="" name="payment" type="radio" class="radio" />
+                                             <label for="paymentRadio2" class="mb-0 fw-light fs-14">Código promocional</label>
+                                          </span>
+                                       </button>
+                                 </div>
+                                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                       <div class="card-body px-0">
+                                          <p class="fw-light lh-1">
+                                             Introduce tu código promocional y disfruta de grandes
+                                             ahorros en tu compra.
+                                          </p>
+                                          <div class="input-group mb-0 d-flex">
+                                             <input type="text" class="form-control border border-muted fs-14 mb-3" placeholder="Código de promoción" required="" />
+                                             <button class="btn-dark-ld border border-muted" type="submit">
+                                                   Aplicar
+                                             </button>
                                           </div>
-                                    </div>
+                                       </div>
                                  </div>
                               </div>
-                        </div>
-                     </div>
-                  </div>
-                  <!--Cart Summary | solo visible en escritorio/tablet -->
-                  <div class="cart-info cart-summary mb-3 d-none d-md-block bg-white border-0 p-0" *ngIf="!isMobile">
-                     <div class="cart-order-detail cart-col">
-                        <!-- Subtotal-->
-                        <div class="row g-0">
-                              <span class="col-6 col-sm-6 cart-subtotal-title">Subtotal</span>
-                              <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                 <span class="price-small" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through' : ''">
-                                    <span class="">{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.</span>
-                                    <span class="">
-                                          <span>{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
-                                          <span class="">{{ euro }}</span>
-                                    </span>
-                                 </span>
-                              </span>
-                        </div>
-                        
-                        <!-- Descuento aplicado (solo si hay descuentos) -->
-                        <div class="row g-0" *ngIf="hasAnyCartDiscount()">
-                              <span class="col-6 col-sm-6 cart-subtotal-title text-danger">Descuento</span>
-                              <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
-                                 <span class="price-small">
-                                    -<span class="">{{getFormattedPrice(getTotalDiscount()).integerPart}}.</span>
-                                    <span class="">
-                                          <span>{{ getFormattedPrice(getTotalDiscount()).decimalPart }}</span>
-                                          <span class="">{{ euro }}</span>
-                                    </span>
-                                 </span>
-                              </span>
-                        </div>
-                        
-                        <!-- Envío Gratis -->
-                        <div class="row g-0 mb-2">
-                              <span class="col-6 col-sm-6 cart-subtotal-title">Envío</span>
-                              <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Gratis</span></span>
-                        </div>
-                        
-                        <!-- Total Precio actual -->
-                        <div class="row g-0">
-                              <span class="col-6 col-sm-6 cart-subtotal-title ls-1 text-uppercase fw-bold">Total</span>
-                              <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                 <strong>
-                                    <span class="price fw-bold">
-                                          <span class="">{{getFormattedPrice(totalCarts).integerPart}}.</span>
-                                          <span class="">
-                                             <span>{{getFormattedPrice(totalCarts).decimalPart}}</span>
-                                             <span class="">{{ euro }}</span>
-                                          </span>
-                                    </span>
-                                 </strong>
-                              </span>
-                        </div>
-                        
-                        <!-- Impuestos incluidos -->
-                        <div class="row g-0 d-none">
-                           <div class="col-6 col-sm-6 text-center">
-                              <small class="text-muted fw-light">Impuestos incluidos</small>
                            </div>
-                        </div>
-
-                        <!-- Este div solo se muestra si eligió PayPal -->
-                        <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4" #paypal [class.disabled]="disablePayments">
-                        </div>
-                        <!-- Color button #2C2E2F -->
-                        <button *ngIf="selectedPaymentMethod === 'card'" (click)="payWithStripe()" class="btn-dark-ld mt-3 mb-2">
-                              <ng-container *ngIf="!isLoadingStripe; else loadingStripe">
-                                 Pagar con tarjeta
-                              </ng-container>
-                              <ng-template #loadingStripe>
-                                 <!-- <span class="spinner-border spinner-border-sm" role="status"></span>
-                  Procesando... -->
-                                 <span class="loading-spinner">
-                                    <div class="sp sp-bars"></div>
-                                 </span>
-                              </ng-template>
-                        </button>
-                        <div class="d-flex mb-3">
-                              <ul class="d-flex flex-row">
-                                 <li class="ms-0">
-                                    <svg _ngcontent-serverApp-c70="" width="44" height="28" xmlns="http://www.w3.org/2000/svg" class="Icon_icon-content-1__kPDLF">
-                                          <title _ngcontent-serverApp-c70="" lang="en">Visa</title>
-                                          <path _ngcontent-serverApp-c70="" fill="#1434CB" d="M27.787 8.02c-2.809 0-5.32 1.456-5.32 4.146 0 3.085 4.453 3.298 4.453 4.847 0 .653-.748 1.237-2.025 1.237-1.813 0-3.168-.816-3.168-.816l-.58 2.714s1.561.69 3.633.69c3.071 0 5.488-1.528 5.488-4.264 0-3.26-4.47-3.466-4.47-4.904 0-.511.613-1.072 1.887-1.072 1.437 0 2.61.594 2.61.594l.566-2.622s-1.275-.55-3.074-.55m-25.699.198-.068.396s1.182.216 2.246.647c1.37.495 1.468.783 1.699 1.678l2.515 9.695h3.371l5.194-12.416h-3.364l-3.337 8.441-1.362-7.155c-.125-.819-.757-1.286-1.532-1.286zm16.31 0-2.639 12.416h3.208l2.629-12.416zm17.89 0c-.774 0-1.184.414-1.485 1.138l-4.699 11.278h3.364l.65-1.88h4.098l.396 1.88h2.968L38.99 8.218zm.437 3.354.997 4.66H35.05l1.674-4.66Z"></path>
-                                    </svg>
-                                 </li>
-                                 <li class="ms-2">
-                                    <svg _ngcontent-serverApp-c70="" width="44" height="28" xmlns="http://www.w3.org/2000/svg" viewBox="7 -2 31 31" class="Icon_icon-content-1__kPDLF">
-                                          <title _ngcontent-serverApp-c70="" lang="en">
-                                             Mastercard
-                                          </title>
-                                          <path _ngcontent-serverApp-c70="" d="M12.601 25.947v-1.592c0-.61-.371-1.009-1.008-1.009-.319 0-.665.105-.903.452-.186-.29-.452-.452-.85-.452a.86.86 0 0 0-.743.372v-.319H8.54v2.548h.557V24.54c0-.451.238-.665.61-.665.37 0 .556.238.556.665v1.407h.557V24.54c0-.451.266-.665.609-.665.371 0 .557.238.557.665v1.407zm8.258-2.548h-.903v-.77h-.557v.77h-.504v.504h.504v1.17c0 .584.238.927.875.927.238 0 .504-.08.69-.186l-.16-.479a.9.9 0 0 1-.48.133c-.266 0-.371-.16-.371-.424v-1.14h.903v-.505zm4.726-.056a.76.76 0 0 0-.665.371v-.318h-.557v2.548h.557V24.51c0-.423.185-.665.532-.665.105 0 .238.028.346.053l.16-.532c-.11-.022-.268-.022-.373-.022Zm-7.142.266c-.266-.185-.637-.266-1.036-.266-.637 0-1.06.319-1.06.823 0 .424.318.665.875.742l.266.028c.29.053.451.133.451.266 0 .186-.213.319-.584.319-.372 0-.665-.133-.85-.266l-.267.423c.29.214.69.319 1.089.319.742 0 1.169-.346 1.169-.823 0-.451-.346-.69-.875-.77l-.266-.028c-.239-.028-.424-.08-.424-.238 0-.185.185-.29.48-.29.318 0 .636.132.797.213zm14.812-.266a.76.76 0 0 0-.665.371v-.318h-.557v2.548h.557V24.51c0-.423.185-.665.532-.665.105 0 .238.028.346.053l.16-.526c-.107-.028-.265-.028-.373-.028Zm-7.114 1.33c0 .77.532 1.327 1.355 1.327.371 0 .637-.08.903-.29l-.266-.452c-.213.16-.424.238-.665.238-.451 0-.77-.319-.77-.823 0-.48.319-.798.77-.822.238 0 .452.08.665.238l.266-.452c-.266-.213-.532-.29-.903-.29-.823-.004-1.355.556-1.355 1.326m5.15 0V23.4h-.557v.319c-.186-.239-.452-.372-.798-.372-.717 0-1.274.557-1.274 1.327s.557 1.327 1.274 1.327c.371 0 .637-.133.798-.371v.318h.557v-1.274Zm-2.045 0c0-.451.291-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.476-.028-.77-.374-.77-.823m-6.661-1.33c-.743 0-1.275.532-1.275 1.327 0 .798.532 1.327 1.302 1.327a1.62 1.62 0 0 0 1.037-.346l-.267-.4a1.26 1.26 0 0 1-.742.266c-.346 0-.69-.16-.77-.609h1.884v-.213c.024-.82-.455-1.352-1.17-1.352Zm0 .48c.346 0 .584.213.637.609h-1.327c.052-.343.29-.61.69-.61Zm13.83.85v-2.282h-.556v1.327c-.186-.239-.452-.372-.798-.372-.718 0-1.274.557-1.274 1.327S34.343 26 35.061 26c.371 0 .637-.133.798-.371v.318h.556zm-2.044 0c0-.451.29-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.48-.028-.77-.374-.77-.823m-18.637 0V23.4h-.557v.319c-.185-.239-.451-.372-.798-.372-.717 0-1.274.557-1.274 1.327s.557 1.327 1.274 1.327c.372 0 .638-.133.798-.371v.318h.557v-1.274Zm-2.069 0c0-.451.29-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.48-.028-.77-.374-.77-.823"></path>
-                                          <path _ngcontent-serverApp-c70="" fill="#FF5A00" d="M26.62 4.044h-8.362V19.07h8.363V4.044Z"></path>
-                                          <path _ngcontent-serverApp-c70="" fill="#EB001B" d="M18.814 11.557a9.58 9.58 0 0 1 3.637-7.513A9.5 9.5 0 0 0 16.557 2 9.55 9.55 0 0 0 7 11.557a9.55 9.55 0 0 0 9.557 9.556c2.23 0 4.274-.77 5.895-2.044a9.54 9.54 0 0 1-3.638-7.512"></path>
-                                          <path _ngcontent-serverApp-c70="" fill="#F79E1B" d="M37.903 11.557a9.55 9.55 0 0 1-9.557 9.556c-2.23 0-4.274-.77-5.895-2.044a9.5 9.5 0 0 0 3.638-7.512 9.58 9.58 0 0 0-3.637-7.513A9.5 9.5 0 0 1 28.343 2c5.286 0 9.56 4.302 9.56 9.557"></path>
-                                    </svg>
-                                 </li>
-                                 <li class="ms-2">
-                                    <svg _ngcontent-serverApp-c70="" width="64" height="32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="Icon_icon-content-1__kPDLF">
-                                          <g _ngcontent-serverApp-c70="" fill-rule="evenodd" clip-rule="evenodd">
-                                             <path _ngcontent-serverApp-c70="" fill="#009EE3" d="M7.236 12.422h4.1c2.2 0 3.03 1.114 2.902 2.751-.212 2.703-1.846 4.199-4.014 4.199H9.13c-.297 0-.497.197-.578.73l-.464 3.1c-.031.202-.137.318-.296.334H5.216c-.242 0-.328-.185-.264-.586l1.57-9.941c.062-.398.28-.587.714-.587"></path>
-                                             <path _ngcontent-serverApp-c70="" fill="#113984" d="M25.036 12.237c1.383 0 2.66.75 2.485 2.62-.212 2.223-1.403 3.453-3.281 3.458h-1.642c-.236 0-.35.193-.411.588l-.318 2.018c-.047.305-.204.455-.435.455h-1.527c-.243 0-.328-.155-.274-.504l1.26-8.088c.063-.398.212-.547.484-.547zm-2.487 4.331h1.243c.778-.03 1.294-.568 1.346-1.54.032-.6-.373-1.03-1.018-1.026l-1.17.005zm9.123 4.189c.14-.127.282-.193.262-.036l-.05.375c-.025.195.052.3.234.3h1.357c.228 0 .34-.093.396-.446l.836-5.248c.042-.263-.023-.392-.223-.392h-1.492c-.134 0-.2.075-.235.28l-.055.323c-.028.168-.106.198-.178.029-.252-.6-.898-.868-1.799-.847-2.092.043-3.503 1.632-3.654 3.668-.117 1.575 1.012 2.812 2.5 2.812 1.08 0 1.562-.317 2.106-.815zm-1.136-.808c-.9 0-1.528-.718-1.398-1.599.13-.88.972-1.599 1.873-1.599.9 0 1.528.719 1.398 1.6-.13.88-.971 1.599-1.873 1.599Zm6.826-4.656h-1.376c-.283 0-.399.212-.309.472l1.708 5.002-1.675 2.38c-.14.199-.032.38.166.38h1.546a.47.47 0 0 0 .46-.226l5.253-7.535c.162-.232.086-.475-.18-.475h-1.463c-.251 0-.352.1-.496.308l-2.19 3.175-.98-3.183c-.056-.192-.2-.298-.463-.298z"></path>
-                                             <path _ngcontent-serverApp-c70="" fill="#009EE3" d="M48.6 12.237c1.384 0 2.66.75 2.485 2.62-.211 2.223-1.402 3.453-3.28 3.458h-1.64c-.237 0-.351.193-.413.588l-.317 2.018c-.048.305-.204.455-.435.455h-1.527c-.244 0-.328-.155-.274-.504l1.262-8.09c.063-.399.212-.547.484-.547H48.6zm-2.487 4.331h1.244c.778-.03 1.294-.568 1.346-1.54.032-.6-.373-1.03-1.018-1.026l-1.17.005zm9.124 4.189c.14-.127.282-.193.262-.036l-.05.375c-.026.195.052.3.234.3h1.357c.228 0 .34-.093.395-.446l.837-5.248c.042-.263-.023-.392-.223-.392h-1.49c-.134 0-.2.075-.235.28l-.055.323c-.029.168-.106.198-.178.029-.253-.6-.898-.868-1.799-.847-2.092.043-3.503 1.632-3.654 3.668-.117 1.575 1.012 2.812 2.5 2.812 1.079 0 1.562-.317 2.106-.815zm-1.135-.808c-.901 0-1.529-.718-1.398-1.599.13-.88.972-1.599 1.873-1.599.9 0 1.528.719 1.398 1.6-.13.88-.973 1.599-1.873 1.599Zm6.258 1.455h-1.567a.184.184 0 0 1-.191-.212l1.376-8.716a.27.27 0 0 1 .26-.212h1.566a.186.186 0 0 1 .192.212l-1.376 8.716a.27.27 0 0 1-.26.214z"></path>
-                                             <path _ngcontent-serverApp-c70="" fill="#113984" d="M4.671 9h4.105c1.155 0 2.527.037 3.443.847.613.54.935 1.4.86 2.328-.251 3.134-2.125 4.89-4.64 4.89H6.415c-.345 0-.572.228-.67.846L5.18 21.51c-.037.233-.137.37-.317.388H2.33c-.28 0-.38-.212-.307-.68l1.82-11.533c.075-.465.33-.685.829-.685Z"></path>
-                                             <path _ngcontent-serverApp-c70="" fill="#172C70" d="m5.805 17.546.716-4.537c.063-.398.28-.588.715-.588h4.1c.678 0 1.227.105 1.657.301-.412 2.79-2.216 4.34-4.578 4.34h-2.02c-.272 0-.47.136-.59.484"></path>
-                                          </g>
-                                    </svg>
-                                 </li>
-                                 <li class="ms-2">
-                                    <svg width="63" height="25" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="Icon_icon-content-1__kPDLF">
-                                          <g _ngcontent-serverApp-c70="" clip-path="url('#bizum-large-a')">
-                                             <path _ngcontent-serverApp-c70="" fill="#51555B" fill-rule="evenodd" d="M31.643 13.35c-.5 0-.927.428-.927.891v6.85c0 .499.428.927.927.927s.928-.428.928-.928v-6.813a.92.92 0 0 0-.928-.927m0-3.39c-.57 0-1.034.464-1.034 1.035s.464 1.07 1.034 1.07 1.035-.463 1.035-1.07c.036-.57-.464-1.034-1.035-1.034m9.06 4.317c0-.57-.463-.785-.855-.785H35.21c-.464 0-.821.357-.821.785 0 .464.357.82.82.82h3.033l-3.889 5.423a1.06 1.06 0 0 0-.178.535c0 .57.464.892.856.892h4.887c.464 0 .82-.357.82-.821a.807.807 0 0 0-.82-.82h-3.317l3.817-5.315c.214-.25.285-.5.285-.714m-13.554 4.28c0 1.142-.5 1.82-1.606 1.82-1.141 0-1.605-.678-1.605-1.82v-3.495h1.677c1.355 0 1.534.749 1.534 1.57zm1.855-1.961c0-1.927-1-3.14-3.354-3.14h-1.712v-2.568c0-.5-.428-.927-.892-.927a.944.944 0 0 0-.927.927v7.705c0 1.927 1.034 3.46 3.46 3.46 2.39 0 3.46-1.57 3.46-3.46v-1.962zM47.91 13.35c-.5 0-.928.428-.928.927v4.28c0 1.142-.5 1.82-1.605 1.82-1.142 0-1.605-.678-1.605-1.82v-4.28c0-.5-.428-.927-.892-.927-.5 0-.928.428-.928.927v4.28c0 1.927 1.035 3.46 3.46 3.46 2.39 0 3.46-1.569 3.46-3.46v-4.28c-.035-.5-.463-.927-.962-.927M62 16.845c0-1.926-.892-3.46-3.282-3.46-1.07 0-1.855.321-2.39.856-.535-.499-1.284-.856-2.39-.856-2.39 0-3.282 1.57-3.282 3.46v4.281c0 .5.428.927.892.927.5 0 .928-.428.928-.927v-4.28c0-1.142.356-1.82 1.462-1.82s1.463.678 1.463 1.82v4.28c0 .5.428.927.891.927.5 0 .928-.428.928-.927v-4.28c0-1.142.357-1.82 1.462-1.82 1.106 0 1.463.678 1.463 1.82v4.28c0 .5.428.927.892.927.5 0 .927-.428.927-.927zm-56.718-3.46a1.47 1.47 0 0 0 2.033-.32l1.712-2.355a1.47 1.47 0 0 0-.32-2.033 1.47 1.47 0 0 0-2.034.32l-1.712 2.355c-.464.642-.321 1.534.32 2.033m7.776-3.317a1.47 1.47 0 0 0-2.033.32L4.176 19.77a1.47 1.47 0 0 0 .321 2.034c.642.463 1.57.32 2.033-.321l6.814-9.382c.5-.642.356-1.57-.286-2.033m-8.418-.75a1.47 1.47 0 0 0-.321-2.033c-.642-.463-1.57-.356-2.034.321a1.444 1.444 0 0 0 .321 2.034c.643.463 1.534.32 2.034-.321m10.345 12.878a1.47 1.47 0 0 0-2.034.321 1.47 1.47 0 0 0 .321 2.034 1.47 1.47 0 0 0 2.034-.321c.463-.643.32-1.534-.321-2.034m-2.676-3.71a1.47 1.47 0 0 0-2.033.321l-1.712 2.355a1.47 1.47 0 0 0 .32 2.033c.643.464 1.57.321 2.034-.321l1.712-2.354a1.47 1.47 0 0 0-.32-2.034" clip-rule="evenodd"></path>
-                                          </g>
-                                          <defs _ngcontent-serverApp-c70="">
-                                             <clipPath _ngcontent-serverApp-c70="" id="bizum-large-a">
-                                                <path _ngcontent-serverApp-c70="" fill="#fff" d="M2 7h60v17.836H2z"></path>
-                                             </clipPath>
-                                          </defs>
-                                    </svg>
-                                 </li>
-                              </ul>
-                        </div>
-                        <!-- Text legal -->
-                        <div class="mb-5">
-                              <div class="" id="checkout.step2.termsofsale">
-                                 <p class="lh-1 fw-lighter">
-                                    <small>Al finalizar la compra, confirmas que has leído,
-                                          entendido y que aceptas las
-                                          <a class="text-decoration-underline fw-normal" href="#" data-testid="" target="">Condiciones de venta</a>
-                                    </small>
-                                 </p>
-                              </div>
-                        </div>
                      </div>
                   </div>
-                  <!-- Carts Lists -->
-                  <div class="block lists-carts p-0">
-                     <div class="block-content">
-                        <h3 class="mb-0 fw-normal">Artículos ({{ listCarts.length }})</h3>
-                        <div class="order-list">
-                              <ng-container *ngFor="let cart of listCarts">
-                                 <div class="d-flex py-3 align-items-start gap-3 flex-wrap">
-                                    <!-- Imagen -->
-                                    <div style="flex: 0 0 auto">
-                                          <a [routerLink]="['/landing-product',cart.product.slug]">
-                                             <!-- <img 
-                                                [src]="cart.variedad.files[1].preview_url" 
-                                                alt="product" 
-                                                title="Product" 
-                                                style="width: auto;height: 140px;object-fit: cover;" class="img-fluid" /> -->
-                                              <img class="blur-up lazyload" 
-                                                   [attr.data-src]="cart.product.imagen" 
-                                                   [src]="cart.product.imagen" 
-                                                   alt="product" 
-                                                   title="Product" 
-                                                   width="120" 
-                                                   height="170" />
-                                          </a>
-                                    </div>
-                                    <!-- Info del producto -->
-                                    <div class="flex-grow-1 d-flex flex-column justify-content-between">
-                                          <!-- Datos adicionales -->
-                                          <div class="d-flex flex-column">
-                                             <div class="d-flex flex-row">
-                                                <div class="fw-normal me-2" style="height: 20px">
-                                                   <a class="fw-normal text-black text-truncate d-inline-block product-title" href="#"  onclick="return false;" [routerLink]="[
-                                                   '/',
-                                                   this.locale,
-                                                   this.country,
-                                                   'shop',
-                                                   'product',
-                                                   cart.product.slug
-                                                   ]">{{ cart.product.title }}</a>
-                                                </div>
-                                                <div class="">
-                                                   <!-- Mostrar precio con descuento si aplica -->
-                                                   <ng-container *ngIf="cart.finalUnitPrice && getFinalUnitPrice(cart) < (cart.variedad?.retail_price || cart.price_unitario); else normalPrice">
-                                                      <!-- Precio original tachado -->
-                                                      <span class="money text-decoration-line-through text-muted me-2">
-                                                         <span class="price-small">
-                                                            <span class="price-main-small">{{getFormattedPrice(cart.variedad?.retail_price ||cart.price_unitario).integerPart}}</span>
-                                                            <span class="price-decimals-small">
-                                                               <sup>{{getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart}}</sup>
-                                                               <span class="currency-symbol-small">{{euro}}</span>
-                                                            </span>
-                                                         </span>
-                                                      </span>
-                                                      <!-- Precio final con descuento -->
-                                                      <span class="money text-danger">
-                                                         <span class="price-small fw-bold">
-                                                            <span class="price-main-small">{{getFormattedPrice(getFinalUnitPrice(cart)).integerPart}}</span>
-                                                            <span class="price-decimals-small">
-                                                               <sup>{{getFormattedPrice(getFinalUnitPrice(cart)).decimalPart}}</sup>
-                                                               <span class="currency-symbol-small">{{euro}}</span>
-                                                            </span>
-                                                         </span>
-                                                      </span>
-                                                   </ng-container>
-                                                   
-                                                   <!-- Precio normal sin descuento -->
-                                                   <ng-template #normalPrice>
-                                                      <span class="money">
-                                                         <span class="price-small fw-bold">
-                                                            <span class="price-main-small">{{getFormattedPrice(cart.variedad?.retail_price ||cart.price_unitario).integerPart}}</span>
-                                                            <span class="price-decimals-small">
-                                                               <sup>{{getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart}}</sup>
-                                                               <span class="currency-symbol-small">{{euro}}</span>
-                                                            </span>
-                                                         </span>
-                                                      </span>
-                                                   </ng-template>
-                                                </div>
-                                             </div>
-                                             
+               </div>
+               <!-- END CODIGO PROMOCIONAL -->
+                
+               <!-- CART SUMMARY VERSION DESKTOP -->
+               <div class="cart-info cart-summary mb-3 d-none d-md-block bg-white border-0 p-0" *ngIf="!isMobile">
+                  <div class="cart-order-detail cart-col">
+                     <!-- Subtotal-->
+                     <div class="row g-0">
+                           <span class="col-6 col-sm-6 cart-subtotal-title">Subtotal</span>
+                           <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                              <span class="price-small" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through' : ''">
+                                 <span class="">{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.</span>
+                                 <span class="">
+                                       <span>{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
+                                       <span class="">{{ euro }}</span>
+                                 </span>
+                              </span>
+                           </span>
+                     </div>
+                     
+                     <!-- Descuento aplicado (solo si hay descuentos) -->
+                     <div class="row g-0" *ngIf="hasAnyCartDiscount()">
+                           <span class="col-6 col-sm-6 cart-subtotal-title text-danger">Descuento</span>
+                           <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
+                              <span class="price-small">
+                                 -<span class="">{{getFormattedPrice(getTotalDiscount()).integerPart}}.</span>
+                                 <span class="">
+                                       <span>{{ getFormattedPrice(getTotalDiscount()).decimalPart }}</span>
+                                       <span class="">{{ euro }}</span>
+                                 </span>
+                              </span>
+                           </span>
+                     </div>
+                     
+                     <!-- Envío Gratis -->
+                     <div class="row g-0 mb-2">
+                           <span class="col-6 col-sm-6 cart-subtotal-title">Envío</span>
+                           <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Gratis</span></span>
+                     </div>
+                     
+                     <!-- Total Precio actual -->
+                     <div class="row g-0">
+                           <span class="col-6 col-sm-6 cart-subtotal-title ls-1 text-uppercase fw-bold">Total</span>
+                           <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                              <strong>
+                                 <span class="price fw-bold">
+                                       <span class="">{{getFormattedPrice(totalCarts).integerPart}}.</span>
+                                       <span class="">
+                                          <span>{{getFormattedPrice(totalCarts).decimalPart}}</span>
+                                          <span class="">{{ euro }}</span>
+                                       </span>
+                                 </span>
+                              </strong>
+                           </span>
+                     </div>
+                     
+                     <!-- Impuestos incluidos -->
+                     <div class="row g-0 d-none">
+                        <div class="col-6 col-sm-6 text-center">
+                           <small class="text-muted fw-light">Impuestos incluidos</small>
+                        </div>
+                     </div>
 
-                                             <div class="d-flex fw-normal lh-1 mb-1">
-                                                <span class="w-25">Color</span>
-                                                <span class="ms-lg-3 ms-5">{{cart.variedad.color}}</span>
-                                             </div>
-                                             <div class="d-flex fw-normal lh-1 mb-1" *ngIf="cart.variedad">
-                                                <span class="w-25">Talla</span>
-                                                <span class="ms-lg-3 ms-5">{{
-                                    cart.variedad.valor
-                                    }}</span>
-                                             </div>
-                                             <div class="d-flex fw-normal lh-1 mb-1">
-                                                <span class="w-25">Cantidad</span>
-                                                <span class="ms-lg-3 ms-5">{{
-                                    cart.cantidad
-                                    }}</span>
-                                             </div>
-                                             <div class="d-flex fw-normal lh-1 mb-1">
-                                                <span class="w-25">Total</span>
-                                                <span class="money ms-lg-3 ms-5">
-                                                      <span class="price-small fw-bold">
-                                                         <span class="price-main-small">{{
-                                    getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).integerPart
-                                    }}</span>
-                                                         <span class="price-decimals-small">
-                                                            <sup>{{
-                                    getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).decimalPart
-                                    }}</sup>
-                                                            <span class="currency-symbol-small">{{
-                                    euro
-                                    }}</span>
-                                                         </span>
-                                                      </span>
-                                                </span>
-                                             </div>
-                                          </div>
+                     <!-- Este div solo se muestra si eligió PayPal -->
+                     <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4" #paypal [class.disabled]="disablePayments">
+                     </div>
+                     <!-- Color button #2C2E2F -->
+                     <button *ngIf="selectedPaymentMethod === 'card'" (click)="payWithStripe()" class="btn-dark-ld mt-3 mb-2">
+                           <ng-container *ngIf="!isLoadingStripe; else loadingStripe">
+                              Pagar con tarjeta
+                           </ng-container>
+                           <ng-template #loadingStripe>
+                              <!-- <span class="spinner-border spinner-border-sm" role="status"></span>
+               Procesando... -->
+                              <span class="loading-spinner">
+                                 <div class="sp sp-bars"></div>
+                              </span>
+                           </ng-template>
+                     </button>
+                     <div class="d-flex mb-3">
+                           <ul class="d-flex flex-row">
+                              <li class="ms-0">
+                                 <svg _ngcontent-serverApp-c70="" width="44" height="28" xmlns="http://www.w3.org/2000/svg" class="Icon_icon-content-1__kPDLF">
+                                       <title _ngcontent-serverApp-c70="" lang="en">Visa</title>
+                                       <path _ngcontent-serverApp-c70="" fill="#1434CB" d="M27.787 8.02c-2.809 0-5.32 1.456-5.32 4.146 0 3.085 4.453 3.298 4.453 4.847 0 .653-.748 1.237-2.025 1.237-1.813 0-3.168-.816-3.168-.816l-.58 2.714s1.561.69 3.633.69c3.071 0 5.488-1.528 5.488-4.264 0-3.26-4.47-3.466-4.47-4.904 0-.511.613-1.072 1.887-1.072 1.437 0 2.61.594 2.61.594l.566-2.622s-1.275-.55-3.074-.55m-25.699.198-.068.396s1.182.216 2.246.647c1.37.495 1.468.783 1.699 1.678l2.515 9.695h3.371l5.194-12.416h-3.364l-3.337 8.441-1.362-7.155c-.125-.819-.757-1.286-1.532-1.286zm16.31 0-2.639 12.416h3.208l2.629-12.416zm17.89 0c-.774 0-1.184.414-1.485 1.138l-4.699 11.278h3.364l.65-1.88h4.098l.396 1.88h2.968L38.99 8.218zm.437 3.354.997 4.66H35.05l1.674-4.66Z"></path>
+                                 </svg>
+                              </li>
+                              <li class="ms-2">
+                                 <svg _ngcontent-serverApp-c70="" width="44" height="28" xmlns="http://www.w3.org/2000/svg" viewBox="7 -2 31 31" class="Icon_icon-content-1__kPDLF">
+                                       <title _ngcontent-serverApp-c70="" lang="en">
+                                          Mastercard
+                                       </title>
+                                       <path _ngcontent-serverApp-c70="" d="M12.601 25.947v-1.592c0-.61-.371-1.009-1.008-1.009-.319 0-.665.105-.903.452-.186-.29-.452-.452-.85-.452a.86.86 0 0 0-.743.372v-.319H8.54v2.548h.557V24.54c0-.451.238-.665.61-.665.37 0 .556.238.556.665v1.407h.557V24.54c0-.451.266-.665.609-.665.371 0 .557.238.557.665v1.407zm8.258-2.548h-.903v-.77h-.557v.77h-.504v.504h.504v1.17c0 .584.238.927.875.927.238 0 .504-.08.69-.186l-.16-.479a.9.9 0 0 1-.48.133c-.266 0-.371-.16-.371-.424v-1.14h.903v-.505zm4.726-.056a.76.76 0 0 0-.665.371v-.318h-.557v2.548h.557V24.51c0-.423.185-.665.532-.665.105 0 .238.028.346.053l.16-.532c-.11-.022-.268-.022-.373-.022Zm-7.142.266c-.266-.185-.637-.266-1.036-.266-.637 0-1.06.319-1.06.823 0 .424.318.665.875.742l.266.028c.29.053.451.133.451.266 0 .186-.213.319-.584.319-.372 0-.665-.133-.85-.266l-.267.423c.29.214.69.319 1.089.319.742 0 1.169-.346 1.169-.823 0-.451-.346-.69-.875-.77l-.266-.028c-.239-.028-.424-.08-.424-.238 0-.185.185-.29.48-.29.318 0 .636.132.797.213zm14.812-.266a.76.76 0 0 0-.665.371v-.318h-.557v2.548h.557V24.51c0-.423.185-.665.532-.665.105 0 .238.028.346.053l.16-.526c-.107-.028-.265-.028-.373-.028Zm-7.114 1.33c0 .77.532 1.327 1.355 1.327.371 0 .637-.08.903-.29l-.266-.452c-.213.16-.424.238-.665.238-.451 0-.77-.319-.77-.823 0-.48.319-.798.77-.822.238 0 .452.08.665.238l.266-.452c-.266-.213-.532-.29-.903-.29-.823-.004-1.355.556-1.355 1.326m5.15 0V23.4h-.557v.319c-.186-.239-.452-.372-.798-.372-.717 0-1.274.557-1.274 1.327s.557 1.327 1.274 1.327c.371 0 .637-.133.798-.371v.318h.557v-1.274Zm-2.045 0c0-.451.291-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.476-.028-.77-.374-.77-.823m-6.661-1.33c-.743 0-1.275.532-1.275 1.327 0 .798.532 1.327 1.302 1.327a1.62 1.62 0 0 0 1.037-.346l-.267-.4a1.26 1.26 0 0 1-.742.266c-.346 0-.69-.16-.77-.609h1.884v-.213c.024-.82-.455-1.352-1.17-1.352Zm0 .48c.346 0 .584.213.637.609h-1.327c.052-.343.29-.61.69-.61Zm13.83.85v-2.282h-.556v1.327c-.186-.239-.452-.372-.798-.372-.718 0-1.274.557-1.274 1.327S34.343 26 35.061 26c.371 0 .637-.133.798-.371v.318h.556zm-2.044 0c0-.451.29-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.48-.028-.77-.374-.77-.823m-18.637 0V23.4h-.557v.319c-.185-.239-.451-.372-.798-.372-.717 0-1.274.557-1.274 1.327s.557 1.327 1.274 1.327c.372 0 .638-.133.798-.371v.318h.557v-1.274Zm-2.069 0c0-.451.29-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.48-.028-.77-.374-.77-.823"></path>
+                                       <path _ngcontent-serverApp-c70="" fill="#FF5A00" d="M26.62 4.044h-8.362V19.07h8.363V4.044Z"></path>
+                                       <path _ngcontent-serverApp-c70="" fill="#EB001B" d="M18.814 11.557a9.58 9.58 0 0 1 3.637-7.513A9.5 9.5 0 0 0 16.557 2 9.55 9.55 0 0 0 7 11.557a9.55 9.55 0 0 0 9.557 9.556c2.23 0 4.274-.77 5.895-2.044a9.54 9.54 0 0 1-3.638-7.512"></path>
+                                       <path _ngcontent-serverApp-c70="" fill="#F79E1B" d="M37.903 11.557a9.55 9.55 0 0 1-9.557 9.556c-2.23 0-4.274-.77-5.895-2.044a9.5 9.5 0 0 0 3.638-7.512 9.58 9.58 0 0 0-3.637-7.513A9.5 9.5 0 0 1 28.343 2c5.286 0 9.56 4.302 9.56 9.557"></path>
+                                 </svg>
+                              </li>
+                              <li class="ms-2">
+                                 <svg _ngcontent-serverApp-c70="" width="64" height="32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="Icon_icon-content-1__kPDLF">
+                                       <g _ngcontent-serverApp-c70="" fill-rule="evenodd" clip-rule="evenodd">
+                                          <path _ngcontent-serverApp-c70="" fill="#009EE3" d="M7.236 12.422h4.1c2.2 0 3.03 1.114 2.902 2.751-.212 2.703-1.846 4.199-4.014 4.199H9.13c-.297 0-.497.197-.578.73l-.464 3.1c-.031.202-.137.318-.296.334H5.216c-.242 0-.328-.185-.264-.586l1.57-9.941c.062-.398.28-.587.714-.587"></path>
+                                          <path _ngcontent-serverApp-c70="" fill="#113984" d="M25.036 12.237c1.383 0 2.66.75 2.485 2.62-.212 2.223-1.403 3.453-3.281 3.458h-1.642c-.236 0-.35.193-.411.588l-.318 2.018c-.047.305-.204.455-.435.455h-1.527c-.243 0-.328-.155-.274-.504l1.26-8.088c.063-.398.212-.547.484-.547zm-2.487 4.331h1.243c.778-.03 1.294-.568 1.346-1.54.032-.6-.373-1.03-1.018-1.026l-1.17.005zm9.123 4.189c.14-.127.282-.193.262-.036l-.05.375c-.025.195.052.3.234.3h1.357c.228 0 .34-.093.396-.446l.836-5.248c.042-.263-.023-.392-.223-.392h-1.492c-.134 0-.2.075-.235.28l-.055.323c-.028.168-.106.198-.178.029-.252-.6-.898-.868-1.799-.847-2.092.043-3.503 1.632-3.654 3.668-.117 1.575 1.012 2.812 2.5 2.812 1.08 0 1.562-.317 2.106-.815zm-1.136-.808c-.9 0-1.528-.718-1.398-1.599.13-.88.972-1.599 1.873-1.599.9 0 1.528.719 1.398 1.6-.13.88-.971 1.599-1.873 1.599Zm6.826-4.656h-1.376c-.283 0-.399.212-.309.472l1.708 5.002-1.675 2.38c-.14.199-.032.38.166.38h1.546a.47.47 0 0 0 .46-.226l5.253-7.535c.162-.232.086-.475-.18-.475h-1.463c-.251 0-.352.1-.496.308l-2.19 3.175-.98-3.183c-.056-.192-.2-.298-.463-.298z"></path>
+                                          <path _ngcontent-serverApp-c70="" fill="#009EE3" d="M48.6 12.237c1.384 0 2.66.75 2.485 2.62-.211 2.223-1.402 3.453-3.28 3.458h-1.64c-.237 0-.351.193-.413.588l-.317 2.018c-.048.305-.204.455-.435.455h-1.527c-.244 0-.328-.155-.274-.504l1.262-8.09c.063-.399.212-.547.484-.547H48.6zm-2.487 4.331h1.244c.778-.03 1.294-.568 1.346-1.54.032-.6-.373-1.03-1.018-1.026l-1.17.005zm9.124 4.189c.14-.127.282-.193.262-.036l-.05.375c-.026.195.052.3.234.3h1.357c.228 0 .34-.093.395-.446l.837-5.248c.042-.263-.023-.392-.223-.392h-1.49c-.134 0-.2.075-.235.28l-.055.323c-.029.168-.106.198-.178.029-.253-.6-.898-.868-1.799-.847-2.092.043-3.503 1.632-3.654 3.668-.117 1.575 1.012 2.812 2.5 2.812 1.079 0 1.562-.317 2.106-.815zm-1.135-.808c-.901 0-1.529-.718-1.398-1.599.13-.88.972-1.599 1.873-1.599.9 0 1.528.719 1.398 1.6-.13.88-.973 1.599-1.873 1.599Zm6.258 1.455h-1.567a.184.184 0 0 1-.191-.212l1.376-8.716a.27.27 0 0 1 .26-.212h1.566a.186.186 0 0 1 .192.212l-1.376 8.716a.27.27 0 0 1-.26.214z"></path>
+                                          <path _ngcontent-serverApp-c70="" fill="#113984" d="M4.671 9h4.105c1.155 0 2.527.037 3.443.847.613.54.935 1.4.86 2.328-.251 3.134-2.125 4.89-4.64 4.89H6.415c-.345 0-.572.228-.67.846L5.18 21.51c-.037.233-.137.37-.317.388H2.33c-.28 0-.38-.212-.307-.68l1.82-11.533c.075-.465.33-.685.829-.685Z"></path>
+                                          <path _ngcontent-serverApp-c70="" fill="#172C70" d="m5.805 17.546.716-4.537c.063-.398.28-.588.715-.588h4.1c.678 0 1.227.105 1.657.301-.412 2.79-2.216 4.34-4.578 4.34h-2.02c-.272 0-.47.136-.59.484"></path>
+                                       </g>
+                                 </svg>
+                              </li>
+                              <li class="ms-2">
+                                 <svg width="63" height="25" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="Icon_icon-content-1__kPDLF">
+                                       <g _ngcontent-serverApp-c70="" clip-path="url('#bizum-large-a')">
+                                          <path _ngcontent-serverApp-c70="" fill="#51555B" fill-rule="evenodd" d="M31.643 13.35c-.5 0-.927.428-.927.891v6.85c0 .499.428.927.927.927s.928-.428.928-.928v-6.813a.92.92 0 0 0-.928-.927m0-3.39c-.57 0-1.034.464-1.034 1.035s.464 1.07 1.034 1.07 1.035-.463 1.035-1.07c.036-.57-.464-1.034-1.035-1.034m9.06 4.317c0-.57-.463-.785-.855-.785H35.21c-.464 0-.821.357-.821.785 0 .464.357.82.82.82h3.033l-3.889 5.423a1.06 1.06 0 0 0-.178.535c0 .57.464.892.856.892h4.887c.464 0 .82-.357.82-.821a.807.807 0 0 0-.82-.82h-3.317l3.817-5.315c.214-.25.285-.5.285-.714m-13.554 4.28c0 1.142-.5 1.82-1.606 1.82-1.141 0-1.605-.678-1.605-1.82v-3.495h1.677c1.355 0 1.534.749 1.534 1.57zm1.855-1.961c0-1.927-1-3.14-3.354-3.14h-1.712v-2.568c0-.5-.428-.927-.892-.927a.944.944 0 0 0-.927.927v7.705c0 1.927 1.034 3.46 3.46 3.46 2.39 0 3.46-1.57 3.46-3.46v-1.962zM47.91 13.35c-.5 0-.928.428-.928.927v4.28c0 1.142-.5 1.82-1.605 1.82-1.142 0-1.605-.678-1.605-1.82v-4.28c0-.5-.428-.927-.892-.927-.5 0-.928.428-.928.927v4.28c0 1.927 1.035 3.46 3.46 3.46 2.39 0 3.46-1.569 3.46-3.46v-4.28c-.035-.5-.463-.927-.962-.927M62 16.845c0-1.926-.892-3.46-3.282-3.46-1.07 0-1.855.321-2.39.856-.535-.499-1.284-.856-2.39-.856-2.39 0-3.282 1.57-3.282 3.46v4.281c0 .5.428.927.892.927.5 0 .928-.428.928-.927v-4.28c0-1.142.356-1.82 1.462-1.82s1.463.678 1.463 1.82v4.28c0 .5.428.927.891.927.5 0 .928-.428.928-.927v-4.28c0-1.142.357-1.82 1.462-1.82 1.106 0 1.463.678 1.463 1.82v4.28c0 .5.428.927.892.927.5 0 .927-.428.927-.927zm-56.718-3.46a1.47 1.47 0 0 0 2.033-.32l1.712-2.355a1.47 1.47 0 0 0-.32-2.033 1.47 1.47 0 0 0-2.034.32l-1.712 2.355c-.464.642-.321 1.534.32 2.033m7.776-3.317a1.47 1.47 0 0 0-2.033.32L4.176 19.77a1.47 1.47 0 0 0 .321 2.034c.642.463 1.57.32 2.033-.321l6.814-9.382c.5-.642.356-1.57-.286-2.033m-8.418-.75a1.47 1.47 0 0 0-.321-2.033c-.642-.463-1.57-.356-2.034.321a1.444 1.444 0 0 0 .321 2.034c.643.463 1.534.32 2.034-.321m10.345 12.878a1.47 1.47 0 0 0-2.034.321 1.47 1.47 0 0 0 .321 2.034 1.47 1.47 0 0 0 2.034-.321c.463-.643.32-1.534-.321-2.034m-2.676-3.71a1.47 1.47 0 0 0-2.033.321l-1.712 2.355a1.47 1.47 0 0 0 .32 2.033c.643.464 1.57.321 2.034-.321l1.712-2.354a1.47 1.47 0 0 0-.32-2.034" clip-rule="evenodd"></path>
+                                       </g>
+                                       <defs _ngcontent-serverApp-c70="">
+                                          <clipPath _ngcontent-serverApp-c70="" id="bizum-large-a">
+                                             <path _ngcontent-serverApp-c70="" fill="#fff" d="M2 7h60v17.836H2z"></path>
+                                          </clipPath>
+                                       </defs>
+                                 </svg>
+                              </li>
+                           </ul>
+                     </div>
+                     <!-- Text legal -->
+                     <div class="mb-5">
+                           <div class="" id="checkout.step2.termsofsale">
+                              <p class="lh-1 fw-lighter">
+                                 <small>Al finalizar la compra, confirmas que has leído,
+                                       entendido y que aceptas las
+                                       <a class="text-decoration-underline fw-normal" href="#" data-testid="" target="">Condiciones de venta</a>
+                                 </small>
+                              </p>
+                           </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- ENC CART SUMARY VERSION DESKTOP -->
+
+               <!-- CARTS LIST -->
+               <div class="col-12 order-0 lists-carts  order-md-2">
+                  <div class="block order-summary p-0">
+                        <div class="block-content">
+                           <h3 class="mb-0 text-uppercase">Artículos ({{ listCarts.length }})</h3>
+                           <div class="order-list">
+                              <ng-container *ngFor="let cart of listCarts">
+                                    <div class="d-flex py-3 gap-3 align-items-start">
+                                       <!-- Imagen -->
+                                       <div style="flex: 0 0 auto">
+                                          <a [routerLink]="['/landing-product',cart.product.slug]">
+                                                <img class="blur-up lazyload" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="Product" width="120" height="170" />
+                                          </a>
+                                       </div>
+                                       <!-- Info del producto -->
+                                       <div class="flex-grow-1 d-flex flex-column justify-content-between">
                                           <!-- Datos adicionales -->
-                                          <div class="mt-2 d-none">
-                                             <p class="mb-1 small">
-                                                Color: {{ cart.variedad.color }}
-                                             </p>
-                                             <p class="mb-1 small">
-                                                Talla: {{ cart.variedad.valor }}
-                                             </p>
-                                             <p class="mb-1 small">
-                                                Cantidad: {{ cart.cantidad }}
-                                             </p>
+                                          <div class="d-flex flex-column ">
+                                                <div class="d-flex lh-1 mb-2">
+                                                   <div class="fw-normal me-2" style="height: 20px;">
+                                                      <a href="#" class="fw-normal text-black text-truncate d-inline-block product-title" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                                   </div>
+                                                   <div class="">
+                                                      <!-- Mostrar precio con descuento si aplica -->
+                                                      <ng-container *ngIf="cart.finalUnitPrice && getFinalUnitPrice(cart) < (cart.variedad?.retail_price || cart.price_unitario); else normalPrice">
+                                                            <!-- Precio original tachado -->
+                                                            <span class="price-small fw-normal old-price text-decoration-line-through fw-normal">
+                                                               <span class="">
+                                                                  <span class="">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}.</span>
+                                                                  <span class="">
+                                                                        <span>{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</span>
+                                                                        <span class="">{{ euro }}</span>
+                                                                  </span>
+                                                               </span>
+                                                            </span>
+                                                            <!-- Precio final con descuento -->
+                                                            <span class="money text-danger">
+                                                               <span class="price-small fw-normal">
+                                                                  <span class="">{{ getFormattedPrice(getFinalUnitPrice(cart)).integerPart }}.</span>
+                                                                  <span class="">
+                                                                        <span>{{ getFormattedPrice(getFinalUnitPrice(cart)).decimalPart }}</span>
+                                                                        <span class="">{{ euro }}</span>
+                                                                  </span>
+                                                               </span>
+                                                            </span>
+                                                      </ng-container>
+
+                                                      <!-- Precio normal sin descuento -->
+                                                      <ng-template #normalPrice>
+                                                            <span class="money">
+                                                               <span class="price-small fw-normal">
+                                                                  <span class="">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}.</span>
+                                                                  <span class="">
+                                                                        <span>{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</span>
+                                                                        <span class="">{{ euro }}</span>
+                                                                  </span>
+                                                               </span>
+                                                            </span>
+                                                      </ng-template>
+                                                   </div>
+                                                </div>
+                                                <div class="d-flex fw-light lh-1 mb-1">
+                                                   <span class="w-25">Art. nº</span>
+                                                   <span class="ms-lg-3 ms-5">{{ cart.product.sku }}</span>
+                                                </div>
+                                                <div class="d-flex fw-light lh-1 mb-1">
+                                                   <span class="w-25">Color</span>
+                                                   <span class="ms-lg-3 ms-5 fw-light">{{ cart.variedad.color }}</span>
+                                                </div>
+                                                <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.variedad">
+                                                   <span class="w-25">Talla</span>
+                                                   <span class="ms-lg-3 ms-5 fw-light">{{ cart.variedad.valor }}</span>
+                                                </div>
+                                                <div class="d-flex fw-light lh-1 mb-1">
+                                                   <span class="w-25">Cantidad</span>
+                                                   <span class="ms-lg-3 ms-5 fw-light">{{ cart.cantidad}}</span>
+                                                </div>
+                                                <div class="d-flex fw-light lh-1 mb-1 d-none">
+                                                   <span class="w-25">Total</span>
+                                                   <span class="money ms-lg-3 ms-5">
+                                                      <span class="">
+                                                            <span class="">{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).integerPart }}.</span>
+                                                            <span class="">
+                                                               <span>{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).decimalPart }}</span>
+                                                               <span class="">{{ euro }}</span>
+                                                            </span>
+                                                      </span>
+                                                   </span>
+                                                </div>
                                           </div>
                                           <!-- Subtotal -->
                                           <div class="mt-2 d-none">
-                                             <div class="fw-bold">
-                                                Subtotal:
-                                                <span class="price-small">
+                                                <div class="fw-bold">
+                                                   Subtotal:
+                                                   <span class="price-small">
                                                       <span class="price-main-small">{{
-                                    getFormattedPrice(cart.total).integerPart
-                                    }}</span>
+                                 getFormattedPrice(cart.total).integerPart
+                                 }}</span>
                                                       <span class="price-decimals-small">
-                                                         <sup>{{
-                                    getFormattedPrice(cart.total).decimalPart
-                                    }}</sup>
-                                                         <span class="currency-symbol-small">{{
-                                    euro
-                                    }}</span>
+                                                            <sup>{{
+                                 getFormattedPrice(cart.total).decimalPart
+                                 }}</sup>
+                                                            <span class="currency-symbol-small">{{
+                                 euro
+                                 }}</span>
                                                       </span>
-                                                </span>
-                                             </div>
+                                                   </span>
+                                                </div>
                                           </div>
-                                    </div>
-                                    <!-- Botón eliminar -->
-                                    <div style="flex: 0 0 auto" class="d-none">
+                                       </div>
+                                       <!-- Botón eliminar -->
+                                       <div style="flex: 0 0 auto" class="d-none">
                                           <a href="#" onclick="return false;" (click)="removeCart(cart)" class="btn btn-secondary cart-remove remove-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar del carrito">
-                                             <i class="icon anm anm-times-r"></i>
+                                                <i class="icon anm anm-times-r"></i>
                                           </a>
+                                       </div>
                                     </div>
-                                 </div>
                               </ng-container>
+                           </div>
                         </div>
-                     </div>
                   </div>
-                  <!-- End Order Summary -->
+               </div>
+               <!-- END CARTS LIST -->
             </div>
+            <!-- END BLOQUE: TU CARRITO -->
          </div>
-      <!-- ======== / End Columna de la derecha ======== -->
+      <!-- ======== END COL DERECHA ======== -->
     </div>
 </div>
