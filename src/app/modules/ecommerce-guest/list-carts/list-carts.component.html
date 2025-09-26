@@ -180,7 +180,36 @@
                                         Resumen de Precio
                                     </h3>
                                     <div class="cart-order-detail cart-col">
-                                        <div class="row g-0">
+                                        <!-- Subtotal sin rebajas (si hay descuentos) -->
+                                        <div class="row g-0" *ngIf="hasAnyCartDiscount()">
+                                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal sin rebajas</span>
+                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                                                <span class="price-small fw-light old-price text-decoration-line-through text-muted">
+                                                    <span class="">{{ getPriceParts(getOriginalSubtotal()).integer }}.</span>
+                                                    <span class="">
+                                                        <span>{{ getPriceParts(getOriginalSubtotal()).decimals }}</span>
+                                                        <span class="">{{ euro }}</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        
+                                        <!-- Descuento aplicado (solo si hay descuentos) -->
+                                        <div class="row g-0" *ngIf="hasAnyCartDiscount()">
+                                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light text-danger">Descuento aplicado</span>
+                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
+                                                <span class="price-small fw-light">
+                                                    -<span class="">{{ getPriceParts(getTotalDiscount()).integer }}.</span>
+                                                    <span class="">
+                                                        <span>{{ getPriceParts(getTotalDiscount()).decimals }}</span>
+                                                        <span class="">{{ euro }}</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        
+                                        <!-- Subtotal (si no hay descuentos) -->
+                                        <div class="row g-0" *ngIf="!hasAnyCartDiscount()">
                                             <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
                                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                                 <span class="price-small fw-light">
@@ -193,28 +222,16 @@
                                             </span>
                                         </div>
                                         
-                                        <!-- Mostrar descuentos aplicados si existen -->
-                                        <div class="row g-0 text-success" *ngIf="hasAnyCartDiscount()">
-                                            <span class="col-6 col-sm-6 cart-subtotal-title"><small>🏷️ Descuentos aplicados</small></span>
-                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                                <small class="text-success">{{ getDiscountedItemsCount() }} productos</small>
-                                            </span>
-                                        </div>
-                                        <div class="row g-0 d-none">
-                                            <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Cupón de descuento</strong></span>
-                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">-$25.00</span></span>
-                                        </div>
-                                        <div class="row g-0 d-none">
-                                            <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Tax</strong></span>
-                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">$10.00</span></span>
-                                        </div>
+                                        <!-- Envío -->
                                         <div class="row g-0">
                                             <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Envío</span>
                                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">Gratis</span></span>
                                         </div>
-                                        <div class="row g-0">
-                                            <span class="col-6 col-sm-6 cart-subtotal-title text-uppercase fw-bold"><strong>Total</strong></span>
-                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                                        
+                                        <!-- Total -->
+                                        <div class="row g-0 pt-2">
+                                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase fw-bold"><strong>Total</strong></span>
+                                            <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end">
                                                 <span class="money price fw-bold">
                                                     <span class="">{{ getPriceParts(totalCarts).integer }}.</span>
                                                     <span class="">

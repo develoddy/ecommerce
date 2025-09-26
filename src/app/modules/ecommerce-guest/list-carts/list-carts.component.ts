@@ -213,6 +213,34 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.listCarts.filter(cart => this.hasCartItemDiscount(cart)).length;
   }
 
+  /**
+   * Calcula el subtotal original (sin descuentos) de todos los productos
+   */
+  getOriginalSubtotal(): number {
+    if (!this.listCarts || this.listCarts.length === 0) {
+      return 0;
+    }
+    return this.listCarts.reduce((total: number, cart: any) => {
+      const originalPrice = this.getOriginalUnitPrice(cart);
+      return total + (originalPrice * cart.cantidad);
+    }, 0);
+  }
+
+  /**
+   * Calcula el total de descuento aplicado
+   */
+  getTotalDiscount(): number {
+    if (!this.listCarts || this.listCarts.length === 0) {
+      return 0;
+    }
+    return this.listCarts.reduce((total: number, cart: any) => {
+      const originalPrice = this.getOriginalUnitPrice(cart);
+      const finalPrice = this.getFinalUnitPrice(cart);
+      const discountPerItem = Math.max(0, originalPrice - finalPrice);
+      return total + (discountPerItem * cart.cantidad);
+    }, 0);
+  }
+
   getFormattedPrice(price: any) {
     if (typeof price === 'string') {
       price = parseFloat(price); // Convertir a número
