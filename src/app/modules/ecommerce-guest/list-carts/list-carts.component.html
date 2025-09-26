@@ -100,7 +100,7 @@
                                                 <div class="mb-2 d-flex">
                                                     <!-- Precio original tachado si hay descuento -->
                                                     <span class="money me-2" *ngIf="hasCartItemDiscount(cart)">
-                                                        <span class="price old-price text-decoration-line-through text-muted ">
+                                                        <span class="price old-price text-decoration-line-through text-muted">
                                                             {{ getPriceParts(getOriginalUnitPrice(cart)).integer }}.{{ getPriceParts(getOriginalUnitPrice(cart)).decimals }} {{ euro }}
                                                         </span>
                                                     </span>

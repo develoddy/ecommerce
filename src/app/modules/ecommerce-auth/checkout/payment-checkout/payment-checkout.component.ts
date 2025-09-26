@@ -1009,6 +1009,25 @@ export class PaymentCheckoutComponent implements OnInit {
     });
   }
 
+  /**
+   * Calcula el subtotal original (sin descuentos) - suma de todos los precios originales * cantidad
+   */
+  getOriginalSubtotal(): number {
+    return this.listCarts.reduce((total: number, cart: any) => {
+      const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+      return total + (originalPrice * (cart.cantidad || 1));
+    }, 0);
+  }
+
+  /**
+   * Calcula el total de descuento aplicado - diferencia entre subtotal original y subtotal final
+   */
+  getTotalDiscount(): number {
+    const originalSubtotal = this.getOriginalSubtotal();
+    const finalSubtotal = this.totalCarts || 0;
+    return Math.max(0, originalSubtotal - finalSubtotal);
+  }
+
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
