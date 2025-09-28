@@ -1,7 +1,11 @@
 
-import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { GridViewMode } from 'src/app/modules/home/_services/product/grid-view.service';
+import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
+import { MinicartService } from 'src/app/services/minicartService.service';
+import { CartManagerService } from 'src/app/modules/ecommerce-guest/_service/service_landing_product';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-grid',
@@ -9,7 +13,7 @@ import { GridViewMode } from 'src/app/modules/home/_services/product/grid-view.s
   styleUrls: ['./product-grid.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ProductGridComponent implements OnChanges {
+export class ProductGridComponent implements OnChanges, OnDestroy {
   @Input() currentUrl: string = '';
   @Input() ourProducts: any[] = [];
   @Input() locale: string = '';
@@ -24,6 +28,7 @@ export class ProductGridComponent implements OnChanges {
   @Input() navigateToProduct: any;
   @Input() FlashSale: any;
   @Input() gridViewMode: GridViewMode = { columns: 4, type: 'grid', className: 'grid-4-col' };
+  @Input() currentUser: any; // Usuario actual para el carrito
   
   sanitizedUrl: SafeUrl = '';
   selectedColors: { [productId: string]: number } = {}; // Track selected color index for each product
@@ -31,7 +36,19 @@ export class ProductGridComponent implements OnChanges {
   selectedSizes: { [productId: string]: string } = {}; // Track selected size for each product
   hoveredProduct: string | null = null; // Track which product is being hovered
   
-  constructor(private sanitizer: DomSanitizer) {}
+  // Para manejo de errores al añadir al carrito
+  errorResponse: boolean = false;
+  errorMessage: string = '';
+  
+  // Subscripciones para cleanup
+  private subscriptions: Subscription = new Subscription();
+  
+  constructor(
+    private sanitizer: DomSanitizer,
+    private cartService: CartService,
+    private minicartService: MinicartService,
+    private cartManagerService: CartManagerService
+  ) {}
 
   /**
    * Angular requiere que ciertas URLs sean consideradas "seguras" para evitar errores de seguridad (XSS).
@@ -109,7 +126,7 @@ export class ProductGridComponent implements OnChanges {
   }
 
   /**
-   * Handle size selection for a product
+   * Handle size selection for a product - Adds product to cart automatically
    * @param product - Product object
    * @param size - Selected size
    */
@@ -126,10 +143,53 @@ export class ProductGridComponent implements OnChanges {
     
     console.log(`✅ Size ${size} selected for product ${productId}`);
     
-    // You can add additional logic here, like:
-    // - Update stock information
-    // - Change price if size affects price
-    // - Call parent component method
+    // Find the selected variety based on current color and size
+    const currentColorIndex = this.selectedColors[productId] || 0;
+    const currentColor = product.colores?.[currentColorIndex]?.color;
+    
+    let selectedVariety = null;
+    
+    if (product.variedades && Array.isArray(product.variedades)) {
+      selectedVariety = product.variedades.find((v: any) => 
+        v.valor === size && (!currentColor || v.color === currentColor)
+      );
+    }
+    
+    if (!selectedVariety) {
+      this.showError('No se encontró la variedad seleccionada');
+      return;
+    }
+    
+    // Validate stock availability
+    if (!this.cartManagerService.validateStockAvailability(product, selectedVariety, 1)) {
+      this.showError('No hay stock disponible para esta variedad');
+      return;
+    }
+    
+    // Prepare product data exactly like landing-product uses cartManagerService
+    const productData = {
+      product: product,
+      selectedColor: null, // No color selection in grid yet
+      selectedSize: selectedVariety,
+      quantity: 1, // Always add 1 when selecting size from grid
+      code_discount: null,
+      discount: { total: this.calculateTotal(product, 1) }, // Expected format by service
+      user: this.currentUser || null, // Ensure it's never undefined
+      saleFlash: null, // No flash sales in grid yet
+      campaignDiscount: product.campaing_discount || null
+    };
+
+    console.log('🛒 Añadiendo al carrito desde grid con productData:', productData);
+    console.log('👤 Current user:', this.currentUser);
+    console.log('📊 Selected variety:', selectedVariety);
+    
+    // Use cartManagerService like landing-product does
+    this.subscriptions.add(
+      this.cartManagerService.addToCart(productData).subscribe(
+        (resp: any) => this.handleCartResponse(resp),
+        (error: any) => this.handleCartError(error)
+      )
+    );
   }
 
   /**
@@ -340,5 +400,102 @@ export class ProductGridComponent implements OnChanges {
 
     //console.log('🚫 getDiscountLabel returning NULL for product:', product.title, 'campaing_discount:', product.campaing_discount);
     return null;
+  }
+
+  /**
+   * Show error message
+   * @param message - Error message to display
+   */
+  private showError(message: string): void {
+    this.errorResponse = true;
+    this.errorMessage = message;
+    console.error('❌ ProductGrid Error:', message);
+    
+    // You can add more error handling here, like showing a toast notification
+    // For now, just log the error
+  }
+
+  /**
+   * Handle cart response after adding product
+   * @param resp - Response from cart service
+   */
+  private handleCartResponse(resp: any): void {
+    if (resp.message == 403) {
+      this.errorResponse = true;
+      this.errorMessage = resp.message_text;
+      console.error('❌ Cart Error 403:', resp.message_text);
+    } else {
+      // Success: update cart and open minicart
+      this.cartService.changeCart(resp.cart);
+      this.minicartService.openMinicart();
+      console.log('✅ Product added to cart successfully');
+      
+      // Clear any previous errors
+      this.errorResponse = false;
+      this.errorMessage = '';
+    }
+  }
+
+  /**
+   * Handle cart error
+   * @param error - Error object
+   */
+  private handleCartError(error: any): void {
+    console.error('❌ Cart Error:', error);
+    
+    if (error?.error?.message === 'EL TOKEN NO ES VALIDO') {
+      this.cartService._authService.logout();
+      return;
+    }
+    
+    // Handle other errors
+    const errorMessage = error?.error?.message_text || error?.message || 'Error al añadir el producto al carrito';
+    this.showError(errorMessage);
+  }
+
+  /**
+   * Calculate unit price for cart (same logic as landing-product)
+   */
+  private calculateUnitPrice(product: any): number {
+    if (!product) return 0;
+    
+    let basePrice = product.price_usd || product.price_soles || 0;
+    
+    // Apply campaign discount if exists
+    if (product.campaing_discount) {
+      if (product.campaing_discount.type_discount === 1) {
+        // Percentage discount
+        basePrice = basePrice - (basePrice * product.campaing_discount.discount / 100);
+      } else if (product.campaing_discount.type_discount === 2) {
+        // Fixed discount
+        basePrice = Math.max(0, basePrice - product.campaing_discount.discount);
+      }
+    }
+    
+    return basePrice;
+  }
+
+  /**
+   * Calculate subtotal for cart (same logic as landing-product)
+   */
+  private calculateSubtotal(product: any, quantity: number): number {
+    const unitPrice = this.calculateUnitPrice(product);
+    return unitPrice * quantity;
+  }
+
+  /**
+   * Calculate total for cart (same logic as landing-product)
+   */
+  private calculateTotal(product: any, quantity: number): number {
+    return this.calculateSubtotal(product, quantity);
+  }
+
+  /**
+   * Cleanup subscriptions when component is destroyed
+   */
+  ngOnDestroy(): void {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
   }
 }
