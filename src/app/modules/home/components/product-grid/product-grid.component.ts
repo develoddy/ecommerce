@@ -5,6 +5,7 @@ import { GridViewMode } from 'src/app/modules/home/_services/product/grid-view.s
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { CartManagerService } from 'src/app/modules/ecommerce-guest/_service/service_landing_product';
+import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -47,7 +48,8 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     private sanitizer: DomSanitizer,
     private cartService: CartService,
     private minicartService: MinicartService,
-    private cartManagerService: CartManagerService
+    private cartManagerService: CartManagerService,
+    private priceCalculationService: PriceCalculationService
   ) {}
 
   /**
@@ -166,6 +168,9 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
       return;
     }
     
+    // Calculate final price using PriceCalculationService (same logic as landing-product)
+    const finalPrice = this.priceCalculationService.calculateFinalPrice(product, []);
+    
     // Prepare product data exactly like landing-product uses cartManagerService
     const productData = {
       product: product,
@@ -173,7 +178,7 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
       selectedSize: selectedVariety,
       quantity: 1, // Always add 1 when selecting size from grid
       code_discount: null,
-      discount: { total: this.calculateTotal(product, 1) }, // Expected format by service
+      discount: { total: finalPrice }, // Use PriceCalculationService result
       user: this.currentUser || null, // Ensure it's never undefined
       saleFlash: null, // No flash sales in grid yet
       campaignDiscount: product.campaing_discount || null
@@ -454,40 +459,32 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
   }
 
   /**
-   * Calculate unit price for cart (same logic as landing-product)
+   * Calculate final price using PriceCalculationService (ensures .95 ending)
    */
-  private calculateUnitPrice(product: any): number {
-    if (!product) return 0;
+  private calculateFinalPrice(product: any): number {
+    return this.priceCalculationService.calculateFinalPrice(product, []);
+  }
+
+  /**
+   * Get price parts using PriceCalculationService (local method)
+   */
+  getProductPriceParts(product: any) {
+    const finalPrice = this.calculateFinalPrice(product);
+    return this.priceCalculationService.getPriceParts(finalPrice);
+  }
+
+  /**
+   * Check if product has discount
+   */
+  hasProductDiscount(product: any): boolean {
+    if (!product) return false;
     
-    let basePrice = product.price_usd || product.price_soles || 0;
-    
-    // Apply campaign discount if exists
-    if (product.campaing_discount) {
-      if (product.campaing_discount.type_discount === 1) {
-        // Percentage discount
-        basePrice = basePrice - (basePrice * product.campaing_discount.discount / 100);
-      } else if (product.campaing_discount.type_discount === 2) {
-        // Fixed discount
-        basePrice = Math.max(0, basePrice - product.campaing_discount.discount);
-      }
+    // Check campaign discount
+    if (product.campaing_discount && product.campaing_discount.discount > 0) {
+      return true;
     }
     
-    return basePrice;
-  }
-
-  /**
-   * Calculate subtotal for cart (same logic as landing-product)
-   */
-  private calculateSubtotal(product: any, quantity: number): number {
-    const unitPrice = this.calculateUnitPrice(product);
-    return unitPrice * quantity;
-  }
-
-  /**
-   * Calculate total for cart (same logic as landing-product)
-   */
-  private calculateTotal(product: any, quantity: number): number {
-    return this.calculateSubtotal(product, quantity);
+    return false;
   }
 
   /**
