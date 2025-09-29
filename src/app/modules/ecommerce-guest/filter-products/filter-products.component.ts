@@ -269,6 +269,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       
       this._ecommerceGuestService.filterProduct(data).subscribe((resp: any) => {
         this.products = resp.products;
+        console.log("🛑 [DEBUG][FilterProductsComponent] filterProduct - products received:", this.products);
+        
         if (this.products) {
           this.setColoresDisponibles();
         }

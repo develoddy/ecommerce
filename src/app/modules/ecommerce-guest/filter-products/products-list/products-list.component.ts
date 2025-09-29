@@ -135,7 +135,25 @@ export class ProductsListComponent implements OnInit, OnChanges {
   }
 
 
+   getDiscountLabel(product: any): string | null {
+     // Solo manejar campaing_discount, NO Flash Sales
+     if (product.campaing_discount && product.campaing_discount.type_discount === 1 && product.campaing_discount.type_campaign == 1) {
+       const discountPercent = product.campaing_discount.discount;
+       if (discountPercent && discountPercent > 0) {
+         //console.log('🏷️ getDiscountLabel returning:', `¡Oferta –${discountPercent}%!`, 'for product:', product.title);
+         return `¡Oferta –${discountPercent}%!`;
+       }
+     } // Los Flash Sales 
+     else if (product.campaing_discount && product.campaing_discount.type_discount === 1 && product.campaing_discount.type_campaign == 2) {
+       const discountAmount = product.campaing_discount.discount;
+       if (discountAmount && discountAmount > 0) {
+         return `Flash Sale –${discountAmount}%!`;
+       }
+     }
+     return null;
+   }
 
+  
 
 
 

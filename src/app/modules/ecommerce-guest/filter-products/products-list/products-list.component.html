@@ -12,6 +12,25 @@
                                         <img class="hover blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen_two" [src]="product.imagen_two" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>
                                     </ng-container>
                                 </a>
+
+                                <!-- Product label -->
+                                <div class="product-labels">
+                                    <!-- <span *ngIf="getDiscountLabel(product)" class="lbl pr-label4"> -->
+                                    <span *ngIf="getDiscountLabel(product)" 
+                                          class="lbl"
+                                          [ngClass]="{
+                                            'pr-label3': product.campaing_discount?.type_campaign === 1, 
+                                            'pr-label4': product.campaing_discount?.type_campaign === 2
+                                         }">
+                                        {{ getDiscountLabel(product) }}
+                                    </span>
+                                    <!-- Label de mejor vendido -->
+                                    <span *ngIf="!product.hasDiscount && product.isBestSeller" class="lbl pr-label5">
+                                        Mejor Vendido
+                                    </span>
+                                </div>
+                                <!-- End Product label -->
+
                             </div>
                             <div class="product-details px-2">
                                 <div class="product-vendor">{{ product.categorie.title || '' }}</div>

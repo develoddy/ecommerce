@@ -49,8 +49,8 @@
                                 </div>
                             </div>
                             <!-- End Size Selector -->
+                             
                             <!-- Product label -->
-                            <!-- <div class="product-labels d-none"><span class="lbl pr-label3">Tendencias</span></div> -->
                             <div class="product-labels">
                                 <span *ngIf="getDiscountLabel(ourProduct)" class="lbl pr-label3">
                                     {{ getDiscountLabel(ourProduct) }}
@@ -61,6 +61,7 @@
                                 </span>
                             </div>
                             <!-- End Product label -->
+
                             <!--Product Button-->
                             <div class="button-set style1" [ngClass]="{ 'd-none': isMobile }">
                                 <!--Cart Button-->
@@ -83,6 +84,7 @@
                             <!--End Product Button-->
                         </div>
                         <!-- End Product Image -->
+
                         <!-- Start Product Details -->
                         <div class="product-details px-2">
                             <!--Product Vendor-->
