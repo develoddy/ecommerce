@@ -13,27 +13,55 @@
                                     </ng-container>
                                 </a>
                             </div>
-                            <div class="product-details px-3">
-                                <div class="product-name">
-                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" [queryParams]="getRouterDiscount(product)" class="text-truncate d-inline-block product-title">{{ product.title }}</a>
+                            <div class="product-details px-2">
+                                <div class="product-vendor">{{ product.categorie.title || '' }}</div>
+                                <!-- Product Name -->
+                                <div class="product-name lh-1">
+                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" [queryParams]="getRouterDiscount(product)" class="text-truncate d-inline-block product-title fw-light">{{ product.title }}</a>
                                 </div>
+                                <!-- End Product Name -->
+                                 <!-- Product Price -->
                                 <div class="product-price">
-                                    <span class="price old-price" *ngIf="product.campaing_discount">{{ product.price_usd }} {{ euro }}</span>
-                                    <span class="price">
-                                        <span class="price-main">{{ getPriceParts(product.price_usd).integer }}</span>
-                                        <span class="price-decimals">
-                                            <sup>{{ getPriceParts(product.price_usd).decimals }}</sup>
-                                            <span class="currency-symbol">{{ euro }}</span>
+                                    <!-- Original price (crossed out if discount exists) -->
+                                    <span class="price old-price" *ngIf="hasDiscount(product)">
+                                        <span class="">{{ getOriginalPriceParts(product).integer }}.</span>
+                                        <span class="">
+                                            <span>{{ getOriginalPriceParts(product).decimals }}</span>
+                                            <span class="">{{ euro }}</span>
+                                        </span>
+                                    </span>
+                                    
+                                    <!-- Final price (with discount applied if exists) -->
+                                    <span class="price" [ngStyle]="hasDiscount(product) ? {'color': '#dc3545', 'font-weight': 'bold'} : {}">
+                                        <span class="">{{ getFinalPriceParts(product).integer }}.</span>
+                                        <span class="">
+                                            <span>{{ getFinalPriceParts(product).decimals }}</span>
+                                            <span class="">{{ euro }}</span>
                                         </span>
                                     </span>
                                 </div>
+                                <!-- End Product Price -->
+
+                                <!--Sort Description-->
+                                <p class="sort-desc hidden">{{ product.description_en }}</p>
+                                <!--End Sort Description-->
+
+                                <!-- Swatches Color -->
                                 <ul class="variants-clr swatches">
-                                    <ng-container *ngFor="let item of product.colores">
-                                        <li class="swatch medium rounded" [ngClass]="item.color.replace(' ', '-')" (click)="changeProductImage(product, item.imagen)">
-                                            <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}"></span>
+                                    <ng-container *ngFor="let item of product.colores; let colorIndex = index">
+                                        <li class="swatch medium" 
+                                            [class.active]="isColorSelected(product, colorIndex)"
+                                            (click)="onColorSelect(product, colorIndex, item.imagen)">
+                                            <span class="swatchLbl" 
+                                                [style.background-color]="item.hex" 
+                                                data-bs-toggle="tooltip" 
+                                                data-bs-placement="top" 
+                                                title="{{ item.color }}">
+                                            </span>
                                         </li>
                                     </ng-container>
                                 </ul>
+                                <!-- End Swatches Color -->
                             </div>
                         </div>
                     </div>

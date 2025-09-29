@@ -715,7 +715,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .minicart-modal-style .minicart-content .item .product-title { font-size: 14px; }
 .minicart-modal-style .minicart-content .item .variant-cart { font-size: 13px; }
 
-.product-vendor { color: #9b9b9b; font-size: 12px; margin: 0 0 2px; text-transform: uppercase; }
+.product-vendor { color: #9b9b9b; font-size: 10px; margin: 0 0 2px; text-transform: uppercase; }
 .product-review { margin: 2px -2px 0; line-height: 1; }
 .product-review .icon { color:#ffb503; font-size:13px; margin:0 2px; }
 

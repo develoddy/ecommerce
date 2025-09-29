@@ -267,26 +267,6 @@ export class LandingProductComponent
     }
   }
 
-  // checkIfAddressClientExists() {
-  //   // Usar el servicio de direcciones
-  //   this.subscriptions.add(
-  //     this.addressManagerService.loadClientAddresses(this.currentUser._id).subscribe((resp: any) => {
-  //       const addresses = resp.address_client || [];
-  //       this.addressManagerService.updateClientAddresses(addresses);
-  //       this.listAddressClients = addresses;
-        
-  //       if (this.addressManagerService.checkIfClientAddressExists(addresses)) {
-  //         const defaultAddress = this.addressManagerService.getDefaultAddress(addresses);
-  //         this.addressManagerService.selectAddress(defaultAddress);
-  //         this.loadShippingRateWithAddress(defaultAddress);
-  //       } else {
-  //         console.warn('No hay direcciones disponibles.');
-  //         this.loadShippingRateWithAddress(this.fallbackAddress, true);
-  //       }
-  //     })
-  //   );
-  // }
-
   checkIfAddressClientExists() {
     // Usar el servicio de direcciones
     this.subscriptions.add(

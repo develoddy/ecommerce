@@ -4,6 +4,7 @@ import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
+import { ProductDisplayService } from '../_service/service_landing_product';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -59,7 +60,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   filtersApplied = false; // DESHABILITAR POR DEFECTO
   locale: string = "";
   country: string = "";
-  private subscription: Subscription = new Subscription();
+  //  private subscription: Subscription = new Subscription();
+  private subscriptions: Subscription = new Subscription();
   logo_position_selected: string = "";
   isMobile: boolean = false;
   isTablet: boolean = false;
@@ -74,7 +76,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     public _cartService: CartService,
     public _router: Router,
     public _routerActived: ActivatedRoute,
-    public loader: LoaderService
+    public loader: LoaderService,
+    public productDisplayService: ProductDisplayService,
   ) {
     
     this._routerActived.paramMap.subscribe(params => {
@@ -95,6 +98,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   
   /* ------------------ CYCLE INIT ------------------ */
   ngOnInit(): void {
+
+    this.subscribeToServiceStates();
 
     this._ecommerceGuestService._authService.user.subscribe(user => {
       if (user) {
@@ -122,11 +127,12 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
     this.configInitial();
     this.checkDeviceType();
+    
 
     // Slider initialization handled by loader subscription
 
     // Subscribe to loader to initialize and cleanup sliders
-    this.subscription.add(
+    this.subscriptions.add(
       this.loader.loading$.subscribe(isLoading => {
         if (!isLoading) {
           setTimeout(() => {
@@ -141,6 +147,18 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       })
     );
   }
+
+  private subscribeToServiceStates(): void {
+  // Suscribirse a los colores disponibles
+      this.subscriptions.add(
+        this.productDisplayService.coloresDisponibles$.subscribe(colors => {
+          this.coloresDisponibles = colors.map(color => ({
+            ...color,
+            hex: this.getColorHex(color.color)
+          }));
+        })
+      );
+    }
 
   openSidebar() {
     this.noneSidebar = false;
@@ -167,7 +185,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
    /* ------------------ INIT FUCTIONS ------------------ */
   configInitial() {
-    this.subscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
+    this.subscriptions = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
       
       // GENERAR SLUG PARA CASA CATEGORIA SIN MODIFICAR EL TITULO ORIGINAL
@@ -266,22 +284,27 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     product.imagen = imageUrl; 
   }
 
-  setColoresDisponibles() {
-    this.products.forEach((product: any) => {
-      const uniqueColors = new Map();
-      product.galerias.forEach((tag: any) => {
-        if (!uniqueColors.has(tag.color)) {
-          uniqueColors.set(tag.color, { imagen: tag.imagen, hex: this.getColorHex(tag.color) });
-        }
-      });
+   setColoresDisponibles() {
+     this.products.forEach((product: any) => {
+       const uniqueColors = new Map();
+       product.galerias.forEach((tag: any) => {
+         if (!uniqueColors.has(tag.color)) {
+           uniqueColors.set(tag.color, { imagen: tag.imagen, hex: this.getColorHex(tag.color) });
+         }
+       });
   
-      // Agrega los colores únicos de cada producto al propio producto
-      product.colores = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
+       // Agrega los colores únicos de cada producto al propio producto
+       product.colores = Array.from(uniqueColors, ([color, { imagen, hex }]) => ({ color, imagen, hex }));
 
-      // Agregar propiedad `selectedImage` con la imagen principal del producto
-      product.imagen = product.imagen;
-    });
-  }
+       // Agregar propiedad `selectedImage` con la imagen principal del producto
+       product.imagen = product.imagen;
+     });
+   }
+
+  // setColoresDisponibles() {
+  //   // Delegar al servicio especializado
+  //   this.productDisplayService.setColoresDisponibles(this.product_selected);
+  // }
 
   getPriceParts(price: number) {
     const [integer, decimals] = price.toFixed(2).split('.');
@@ -305,6 +328,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       'White'       : '#ffffff',
       'Leaf'        : '#5c9346',
       'Autumn'      : '#c85313',
+      // Nuevos colores encontrados en los logs
+      'Carbon Grey': '#36454f',
+      'Bone': '#e3dac3',
     };
 
     // DEVUELVE EL VALOR HEX CORRESPONDIENTE AL COLOR
@@ -490,8 +516,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
   /* ------------------ DESTROY ------------------ */
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
     }
     cleanupSliders($);
     cleanupHOMEINITTEMPLATE($);
