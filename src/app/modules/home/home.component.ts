@@ -60,6 +60,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   SALE_FLASH: any = null;
   besProducts: any = [];
   ourProducts: any = [];
+  hoodiesProducts: any = [];
+  mugsProducts: any = [];
   product_selected: any = null;
   FlashSales: any = null;
   FlashProductList: any = [];
@@ -171,11 +173,24 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.FlashSales = resp.FlashSales;
     this.FlashProductList = resp.campaign_products;
     this.besProducts = resp.bes_products;
+    this.hoodiesProducts = resp.hoodies_products;
+    this.mugsProducts = resp.mugs_products;
     
     // Generar slug para cada categoría sin modificar el título original
     this.categories.forEach((category: any) => {
       category.slug = this.productUIService.generateSlug(category.title); 
     });
+
+    // Generar slug para cada Hoodies sin modificar el título original
+    this.hoodiesProducts.forEach((hoodie: any) => {
+      hoodie.slug = this.productUIService.generateSlug(hoodie.title); 
+    });
+
+    // Generar slug para cada Mugs sin modificar el título original
+    this.mugsProducts.forEach((mug: any) => {
+      mug.slug = this.productUIService.generateSlug(mug.title); 
+    });
+
   }
 
   private processProductPrices(resp: any): void {
@@ -186,6 +201,24 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       product.priceInteger = priceParts.integer;
       product.priceDecimals = priceParts.decimals;
       return product;
+    });
+
+    // Calcular precios finales para productos hodies usando el servicio
+    this.hoodiesProducts = resp.hoodies_products.map((hodieProduct: any) => {
+      hodieProduct.finalPrice = this.priceCalculationService.calculateFinalPrice(hodieProduct, this.FlashSales);
+      const priceParts = this.priceCalculationService.getPriceParts(hodieProduct.finalPrice);
+      hodieProduct.priceInteger = priceParts.integer;
+      hodieProduct.priceDecimals = priceParts.decimals;
+      return hodieProduct;
+    });
+
+    // Calcular precios finales para productos mugs usando el servicio
+    this.mugsProducts = resp.mugs_products.map((mugProduct: any) => {
+      mugProduct.finalPrice = this.priceCalculationService.calculateFinalPrice(mugProduct, this.FlashSales);
+      const priceParts = this.priceCalculationService.getPriceParts(mugProduct.finalPrice);
+      mugProduct.priceInteger = priceParts.integer;
+      mugProduct.priceDecimals = priceParts.decimals;
+      return mugProduct;
     });
 
     // Calcular precios finales para productos de Flash Sale usando el servicio
@@ -203,12 +236,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.ourProducts || this.besProducts) {
       const processedProducts = this.productUIService.setColoresDisponibles(
         this.ourProducts, 
-        this.besProducts, 
+        this.besProducts,
+        this.hoodiesProducts,
+        this.mugsProducts,
         this.FlashProductList
       );
       
       this.ourProducts = processedProducts.ourProducts;
       this.besProducts = processedProducts.besProducts;
+      this.hoodiesProducts = processedProducts.hoodiesProducts;
+      this.mugsProducts = processedProducts.mugsProducts;
       this.FlashProductList = processedProducts.flashProductList;
     }
 

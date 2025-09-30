@@ -1,22 +1,21 @@
-
 import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { GridViewMode } from 'src/app/modules/home/_services/product/grid-view.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { CartManagerService } from 'src/app/modules/ecommerce-guest/_service/service_landing_product';
-import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
+import { PriceCalculationService } from '../../_services/product/price-calculation.service';
 import { Subscription } from 'rxjs';
+import { GridViewMode } from 'src/app/modules/home/_services/product/grid-view.service';
 
 @Component({
-  selector: 'app-product-grid',
-  templateUrl: './product-grid.component.html',
-  styleUrls: ['./product-grid.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  selector: 'app-hodie-grid',
+  templateUrl: './hodie-grid.component.html',
+  styleUrls: ['./hodie-grid.component.css']
 })
-export class ProductGridComponent implements OnChanges, OnDestroy {
+export class HodieGridComponent implements OnChanges, OnDestroy{
+
   @Input() currentUrl: string = '';
-  @Input() ourProducts: any[] = [];
+  @Input() hoodiesProducts: any[] = [];//@Input() ourProducts: any[] = [];
   @Input() locale: string = '';
   @Input() country: string = '';
   @Input() euro: string = '';
@@ -30,6 +29,8 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
   @Input() FlashSale: any;
   @Input() gridViewMode: GridViewMode = { columns: 4, type: 'grid', className: 'grid-4-col' };
   @Input() currentUser: any; // Usuario actual para el carrito
+
+  categorie: any;
   
   sanitizedUrl: SafeUrl = '';
   selectedColors: { [productId: string]: number } = {}; // Track selected color index for each product
@@ -40,12 +41,10 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
   // Para manejo de errores al añadir al carrito
   errorResponse: boolean = false;
   errorMessage: string = '';
-  
+
   // Subscripciones para cleanup
   private subscriptions: Subscription = new Subscription();
 
-  categorie: any;
-  
   constructor(
     private sanitizer: DomSanitizer,
     private cartService: CartService,
@@ -63,7 +62,6 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
    * "unsafe value used in a resource URL context".
    */
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('🔄 ProductGrid - ngOnChanges triggered');
     
     if (changes['gridViewMode']) {
       console.log('📊 GridViewMode received:', this.gridViewMode);
@@ -72,15 +70,14 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
       console.log('📋 Grid type:', this.gridViewMode?.type);
     }
     
-    if (changes['FlashSale']) {
-      console.log('💰 FlashSale data (IGNORADO en product-grid):', this.FlashSale);
-    }
-    
-    if (changes['ourProducts']) {
-      console.log('🔍 ProductGrid - Total products received:', this.ourProducts?.length || 0);
-       // Tomamos la categoría del primer producto
-      this.categorie = this.ourProducts[0].categorie;
+    if (changes['hoodiesProducts'] && this.hoodiesProducts?.length > 0) {
+      console.log('🔍 ProductGrid - Total products received:', this.hoodiesProducts?.length || 0);
+      console.log('🔍 ProductGrid - Data products received:', this.hoodiesProducts);
+
+      // Tomamos la categoría del primer producto
+      this.categorie = this.hoodiesProducts[0].categorie;
       console.log('📂 ProductGrid - Categorie:', this.categorie);
+      
     }
   }  
 
@@ -91,7 +88,9 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
       .replace(/\s+/g, '-') // Reemplazar los espacios por guiones
       .replace(/-+/g, '-'); // Reemplazar múltiples guiones por uno solo
   }
+
   
+
   /**
    * Get available sizes for a product based on currently selected color
    * @param product - Product object
@@ -212,7 +211,7 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     );
   }
 
-  /**
+   /**
    * Check if a size is currently selected for a product
    * @param product - Product object
    * @param size - Size to check
@@ -271,7 +270,7 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     const productId = product.uniqueId || product.id || product._id;
     return this.hoveredProduct === productId;
   }
-
+  
   onColorSelect(product: any, colorIndex: number, newImage: string): void {
     const productId = product.uniqueId || product.id || product._id;
     
@@ -296,16 +295,16 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     product.imagen = newImage;
     
     // Also update the main product array for consistency
-    const productIndex = this.ourProducts.findIndex(p => 
+    const productIndex = this.hoodiesProducts.findIndex(p => 
       (p.uniqueId || p.id || p._id) === productId
     );
     
     if (productIndex !== -1) {
-      this.ourProducts[productIndex].imagen = newImage;
-      this.ourProducts[productIndex].currentImage = newImage;
+      this.hoodiesProducts[productIndex].imagen = newImage;
+      this.hoodiesProducts[productIndex].currentImage = newImage;
       
       // Force change detection by creating a new reference
-      this.ourProducts = [...this.ourProducts];
+      this.hoodiesProducts = [...this.hoodiesProducts];
     }
     
     // Add changing animation class for visual feedback
@@ -511,4 +510,5 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
       this.subscriptions.unsubscribe();
     }
   }
+
 }

@@ -19,6 +19,8 @@ import { ServiceSectionComponent } from './components/service-section/service-se
 import { CollectionBannersComponent } from './components/collection-banners/collection-banners.component';
 import { FlashSaleBannerComponent } from './components/flash-sale-banner/flash-sale-banner.component';
 import { TestimonialsComponent } from './components/testimonials/testimonials.component';
+import { HodieGridComponent } from './components/hodie-grid/hodie-grid.component';
+import { MugGridComponent } from './components/mug-grid/mug-grid.component';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { TestimonialsComponent } from './components/testimonials/testimonials.co
     ServiceSectionComponent,
     CollectionBannersComponent,
     FlashSaleBannerComponent,
-    TestimonialsComponent
+    TestimonialsComponent,
+    HodieGridComponent,
+    MugGridComponent
   ],
   imports: [
     CommonModule,

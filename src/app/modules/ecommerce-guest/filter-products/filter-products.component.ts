@@ -110,19 +110,17 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
       this.idCategorie = resp["idCategorie"];
-
-      if (this.idCategorie) {
+      
+      if (this.idCategorie && this.slug && this.slug != '') {
         // LIMPIAR FILTROS ANTES
         this.categories_selecteds = [];
         this.variedad_selected = {_id: null};
         this.is_discount = 1;
         this.filterForCategorie(this.idCategorie);
-      }
+      } 
+
       this.filterProduct(); // Aplicar filtros (principalmente categoría) sin tratar slug como posición de logo
-      // Re-inicializar slider de categorías tras navegar
-      // setTimeout(() => {
-      //   productSlider8items($);
-      // }, 350);
+      
     });
 
     this.configInitial();
@@ -194,13 +192,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         category.slug = this.generateSlug(category.title);
       });
 
-      console.log("🛑 [DEBUG][FilterProductsComponent] configInitial - this.idCategorie:", this.idCategorie);
-      
-
       // BUSCAR EL TITULO DE LA CATEGORIA BASADA EN EL IDCATEGORIE
       const category = this.categories.find((cat:any) => cat._id === Number(this.idCategorie));
-      console.log("🛑 [DEBUG][FilterProductsComponent] configInitial - category found:", category);
-      
+    
       if (category) {
         // ASIGNCAR EL TITULO DE LA CATEGORIA
         this.categoryTitle = category.title;
@@ -265,11 +259,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         selectedColors: this.selectedColors,
         logo_position_selected: this.logo_position_selected
       };
-      console.log("🛑 [DEBUG][FilterProductsComponent] filterProduct - data payload:", data);
       
       this._ecommerceGuestService.filterProduct(data).subscribe((resp: any) => {
         this.products = resp.products;
-        console.log("🛑 [DEBUG][FilterProductsComponent] filterProduct - products received:", this.products);
         
         if (this.products) {
           this.setColoresDisponibles();
@@ -344,13 +336,16 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     if (index != -1) {
       this.categories_selecteds.splice(index, 1);
     } else {
-      this.categories_selecteds.push(idCategorie);
+      this.categories_selecteds.push(Number(idCategorie));
+      
     }
     this.nameCategorie = this.slug;
     this.idCategorie = idCategorie;
-    console.log("🛑 [DEBUG][FilterProductsComponent] filterForCategorie - idCategorie:", idCategorie);
+    
     
     this.updateCategoryTitle();
+
+    this.filterProduct();
   }
 
   addCategorie(categorie:any) {

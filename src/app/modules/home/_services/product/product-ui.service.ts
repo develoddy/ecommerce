@@ -119,17 +119,23 @@ export class ProductUIService {
    */
   setColoresDisponibles(
     ourProducts: any[], 
-    besProducts: any[], 
+    besProducts: any[],
+    hoodiesProducts: any[],
+    mugsProducts: any[],
     flashProductList: any[]
-  ): { ourProducts: any[], besProducts: any[], flashProductList: any[] } {
-    
+  ): { ourProducts: any[], besProducts: any[], hoodiesProducts: any[], mugsProducts: any[], flashProductList: any[] } {
+
     const processedOurProducts = ourProducts.map(product => this.processProductColors(product));
     const processedBesProducts = besProducts.map(product => this.processProductColors(product));
+    const processedHoodiesProducts = hoodiesProducts.map(product => this.processProductColors(product));
+    const processedMugsProducts = mugsProducts.map(product => this.processProductColors(product));
     const processedFlashProducts = flashProductList.map(product => this.processProductColors(product));
 
     return {
       ourProducts: processedOurProducts,
       besProducts: processedBesProducts,
+      hoodiesProducts: processedHoodiesProducts,
+      mugsProducts: processedMugsProducts,
       flashProductList: processedFlashProducts
     };
   }

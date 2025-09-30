@@ -1,35 +1,35 @@
-<div class="grid-products grid-view-items">
-     <div class="section-header ms-3">
-        <p class="mb-2 mt-0">All shirts</p>
-        <h2>Camisetas</h2>
+<div class="grid-products grid-view-items py-5">
+    <div class="section-header ms-3">
+        <p class="mb-2 mt-0">Hoodies</p>
+        <h2>Sudaderas</h2>
     </div>
     <div class="row col-row product-options g-1" [ngClass]="getGridClasses()">
-        <ng-container *ngIf="ourProducts.length > 0">
-            <ng-container *ngFor="let ourProduct of ourProducts">
+        <ng-container *ngIf="hoodiesProducts.length > 0">
+            <ng-container *ngFor="let hodieProduct of hoodiesProducts">
                 <div class="item col-item" itemscope itemtype="https://schema.org/Product">
                     <div class="product-box">
                         <!-- Start Product Image -->
                         <div class="product-image" 
-                             (mouseenter)="onProductHover(ourProduct)" 
+                             (mouseenter)="onProductHover(hodieProduct)" 
                              (mouseleave)="onProductLeave()">
                             <!-- Start Product Image -->
-                            <a href="#" (click)="navigateToProduct(ourProduct.slug,ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
+                            <a href="#" (click)="navigateToProduct(hodieProduct.slug,hodieProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
                                 <!-- Image alt="Camiseta {{ product_selected.title }} para programadores LujanDev"-->
                                 <img class="primary blur-up lazyload rounded-0 w-100 h-100" 
-                                     data-src="{{ ourProduct.imagen }}" 
-                                     src="{{ ourProduct.imagen }}" 
-                                     alt="Camiseta {{ourProduct.title}} para programadores LujanDev" 
-                                     title="Camiseta {{ourProduct.title}} para programadores LujanDev" 
+                                     data-src="{{ hodieProduct.imagen }}" 
+                                     src="{{ hodieProduct.imagen }}" 
+                                     alt="Camiseta {{hodieProduct.title}} para programadores LujanDev" 
+                                     title="Camiseta {{hodieProduct.title}} para programadores LujanDev" 
                                      width="625" height="608" 
                                      style="object-fit: cover" />
                                 <!-- End Image -->
                                 <!-- Hover Image -->
-                                <ng-container *ngIf="ourProduct.imagen_two">
+                                <ng-container *ngIf="hodieProduct.imagen_two">
                                     <img class="hover blur-up lazyload rounded-0 w-100 h-100" 
-                                         data-src="{{ ourProduct.imagen_two }}" 
-                                         src="{{ ourProduct.imagen_two }}" 
-                                         alt="Camiseta {{ourProduct.title}} para programadores LujanDev" 
-                                         title="Camiseta {{ourProduct.title}} para programadores LujanDev" 
+                                         data-src="{{ hodieProduct.imagen_two }}" 
+                                         src="{{ hodieProduct.imagen_two }}" 
+                                         alt="Camiseta {{hodieProduct.title}} para programadores LujanDev" 
+                                         title="Camiseta {{hodieProduct.title}} para programadores LujanDev" 
                                          width="625" height="808" 
                                          style="object-fit: cover" />
                                 </ng-container>
@@ -38,16 +38,16 @@
                             <!-- End Product Image -->
 
                             <!-- Size Selector - Appears on Hover -->
-                            <div class="size-selector" *ngIf="isProductHovered(ourProduct) && getAvailableSizes(ourProduct).length > 0">
+                            <div class="size-selector" *ngIf="isProductHovered(hodieProduct) && getAvailableSizes(hodieProduct).length > 0">
                                 <div class="size-label">Tallas disponibles:</div>
                                 <div class="size-options">
-                                    <button *ngFor="let size of getAvailableSizes(ourProduct)" 
+                                    <button *ngFor="let size of getAvailableSizes(hodieProduct)" 
                                             class="size-btn"
-                                            [class.selected]="isSizeSelected(ourProduct, size)"
-                                            [class.unavailable]="!isSizeAvailable(ourProduct, size)"
-                                            [disabled]="!isSizeAvailable(ourProduct, size)"
-                                            (click)="onSizeSelect(ourProduct, size)"
-                                            [title]="!isSizeAvailable(ourProduct, size) ? 'Sin stock' : 'Seleccionar talla ' + size">
+                                            [class.selected]="isSizeSelected(hodieProduct, size)"
+                                            [class.unavailable]="!isSizeAvailable(hodieProduct, size)"
+                                            [disabled]="!isSizeAvailable(hodieProduct, size)"
+                                            (click)="onSizeSelect(hodieProduct, size)"
+                                            [title]="!isSizeAvailable(hodieProduct, size) ? 'Sin stock' : 'Seleccionar talla ' + size">
                                         {{ size }}
                                     </button>
                                 </div>
@@ -56,11 +56,11 @@
                              
                             <!-- Product label -->
                             <div class="product-labels">
-                                <span *ngIf="getDiscountLabel(ourProduct)" class="lbl pr-label3">
-                                    {{ getDiscountLabel(ourProduct) }}
+                                <span *ngIf="getDiscountLabel(hodieProduct)" class="lbl pr-label3">
+                                    {{ getDiscountLabel(hodieProduct) }}
                                 </span>
                                 <!-- Label de mejor vendido -->
-                                <span *ngIf="!ourProduct.hasDiscount && ourProduct.isBestSeller" class="lbl pr-label4">
+                                <span *ngIf="!hodieProduct.hasDiscount && hodieProduct.isBestSeller" class="lbl pr-label4">
                                     Mejor Vendido
                                 </span>
                             </div>
@@ -69,17 +69,17 @@
                             <!--Product Button-->
                             <div class="button-set style1" [ngClass]="{ 'd-none': isMobile }">
                                 <!--Cart Button-->
-                                <a href="#" onclick="return false;" class="btn-icon addtocart add-to-cart-modal d-none" (click)="openModalToCart(ourProduct)">
+                                <a href="#" onclick="return false;" class="btn-icon addtocart add-to-cart-modal d-none" (click)="openModalToCart(hodieProduct)">
                                     <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
                                 </a>
                                 <!--End Cart Button-->
                                 <!--Quick View Button-->
-                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModalToCart(ourProduct)">
+                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModalToCart(hodieProduct)">
                                     <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Vista rápida</span></span>
                                 </a>
                                 <!--End Quick View Button-->
                                 <!--Wishlist Button-->
-                                <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a favoritos" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a>
+                                <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a favoritos" onclick="return false;" (click)="addWishlist(hodieProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a>
                                 <!--End Wishlist Button-->
                                 <!--Compare Button-->
                                 <a href="#" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Añadir para comparar</span></a>
@@ -92,19 +92,19 @@
                         <!-- Start Product Details -->
                         <div class="product-details px-2">
                             <!--Product Vendor-->
-                            <div class="product-vendor">{{ ourProduct.categorie.title || '' }}</div>
+                            <div class="product-vendor">{{ hodieProduct.categorie.title || '' }}</div>
                             <!--End Product Vendor-->
                             <!-- Product Name -->
                             <div class="product-name lh-1">
-                                <a [routerLink]="['/',locale,country,'shop','product',ourProduct.slug]" 
-                                    [queryParams]="getRouterDiscount(ourProduct)" 
+                                <a [routerLink]="['/',locale,country,'shop','product',hodieProduct.slug]" 
+                                    [queryParams]="getRouterDiscount(hodieProduct)" 
                                     class="text-truncate d-inline-block product-title fw-light" 
                                     itemprop="name">
-                                      {{ ourProduct.title }}
+                                      {{ hodieProduct.title }}
                                 </a>
                                 <!-- Subtítulo para SEO y visual -->
                                 <p class="product-subtitle text-muted lh-1 fw-light mb-2 d-none" itemprop="description">
-                                    {{ ourProduct.resumen }}
+                                    {{ hodieProduct.resumen }}
                                 </p>
                             </div>
                             <!-- End Product Name -->
@@ -112,23 +112,23 @@
                             <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                 <link itemprop="url" [href]="sanitizedUrl" />
                                 <meta itemprop="priceCurrency" content="EUR" />
-                                <meta itemprop="price" content="{{ getPriceParts(ourProduct.finalPrice).total }}" />
+                                <meta itemprop="price" content="{{ getPriceParts(hodieProduct.finalPrice).total }}" />
                                 <link itemprop="availability" href="https://schema.org/InStock" />
                             </div>
                             <!-- End Schema.org Offer -->
 
                             <!-- Product Price -->
                             <div class="product-price">
-                                <span class="price old-price" *ngIf="ourProduct.campaing_discount">
-                                    {{ourProduct.price_usd}}{{euro}}
+                                <span class="price old-price" *ngIf="hodieProduct.campaing_discount">
+                                    {{ hodieProduct.price_usd }} {{ euro }}
                                 </span>
 
                                 <!-- Precio final -->
-                                <span class="price" [ngClass]="{ 'text-danger': ourProduct.campaing_discount }">
-                                    <span class="">{{getPriceParts(ourProduct.finalPrice).integer}}.</span>
+                                <span class="price" [ngClass]="{ 'text-danger': hodieProduct.campaing_discount }">
+                                    <span class="">{{ getPriceParts(hodieProduct.finalPrice).integer }}.</span>
                                     <span class="">
-                                        {{getPriceParts(ourProduct.finalPrice).decimals}}
-                                        <span class="">{{euro}}</span>
+                                        {{ getPriceParts(hodieProduct.finalPrice).decimals }}
+                                        <span class="">{{ euro }}</span>
                                     </span>
                                 </span>
                             </div>
@@ -141,14 +141,14 @@
                             </div>
                             <!-- End Product Review -->
                             <!--Sort Description-->
-                            <p class="sort-desc hidden">{{ ourProduct.description_en }}</p>
+                            <p class="sort-desc hidden">{{ hodieProduct.description_en }}</p>
                             <!--End Sort Description-->
                             <!-- Swatches Color -->
                             <ul class="variants-clr swatches">
-                                <ng-container *ngFor="let item of ourProduct.colores; let colorIndex = index">
+                                <ng-container *ngFor="let item of hodieProduct.colores; let colorIndex = index">
                                     <li class="swatch medium" 
-                                        [class.active]="isColorSelected(ourProduct, colorIndex)"
-                                        (click)="onColorSelect(ourProduct, colorIndex, item.imagen)">
+                                        [class.active]="isColorSelected(hodieProduct, colorIndex)"
+                                        (click)="onColorSelect(hodieProduct, colorIndex, item.imagen)">
                                         <span class="swatchLbl" 
                                               [style.background-color]="item.hex" 
                                               data-bs-toggle="tooltip" 
@@ -177,10 +177,7 @@
             </ng-container>
         </ng-container>
     </div>
-    <div class="view-collection text-center mt-3 mb-5 mt-md-5 justify-content-center align-item-center d-flex">
-        <!-- <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" [ngClass]="{ 'w-100': isMobile, 'px-2': isMobile }">
-            <button class="btn-dark-ld fw-light">Ver colección</button>
-        </a> -->
+    <div class="view-collection text-center mt-5 mb-5 mt-md-5 justify-content-center align-item-center d-flex">
         <a *ngIf="categorie"
             [routerLink]="['/', locale, country, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]" 
             class="category-link clr-none"

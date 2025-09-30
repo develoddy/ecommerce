@@ -2,12 +2,12 @@
 @import '../product-grid/product-grid.component.scss';
 
 /* Flash Sale specific styles */
-.section-header {
+/* .section-header {
   text-align: center;
   margin-bottom: 40px;
-}
+} */
 
-.section-header p {
+/* .section-header p {
   color: #d63031;
   font-size: 12px;
   font-weight: 600;
@@ -21,7 +21,7 @@
   font-size: 28px;
   font-weight: 700;
   margin: 0;
-}
+} */
 
 @media (max-width: 768px) {
   .section-header h2 {

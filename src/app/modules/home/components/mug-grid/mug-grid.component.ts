@@ -9,14 +9,14 @@ import { PriceCalculationService } from 'src/app/modules/home/_services/product/
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-product-grid',
-  templateUrl: './product-grid.component.html',
-  styleUrls: ['./product-grid.component.scss'],
+  selector: 'app-mug-grid',
+  templateUrl: './mug-grid.component.html',
+  styleUrls: ['./mug-grid.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ProductGridComponent implements OnChanges, OnDestroy {
+export class MugGridComponent implements OnChanges, OnDestroy {
   @Input() currentUrl: string = '';
-  @Input() ourProducts: any[] = [];
+  @Input() mugsProducts: any[] = [];
   @Input() locale: string = '';
   @Input() country: string = '';
   @Input() euro: string = '';
@@ -40,11 +40,11 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
   // Para manejo de errores al añadir al carrito
   errorResponse: boolean = false;
   errorMessage: string = '';
+
+  categorie: any;
   
   // Subscripciones para cleanup
   private subscriptions: Subscription = new Subscription();
-
-  categorie: any;
   
   constructor(
     private sanitizer: DomSanitizer,
@@ -76,11 +76,11 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
       console.log('💰 FlashSale data (IGNORADO en product-grid):', this.FlashSale);
     }
     
-    if (changes['ourProducts']) {
-      console.log('🔍 ProductGrid - Total products received:', this.ourProducts?.length || 0);
-       // Tomamos la categoría del primer producto
-      this.categorie = this.ourProducts[0].categorie;
-      console.log('📂 ProductGrid - Categorie:', this.categorie);
+    if (changes['mugsProducts']) {
+      console.log('🔍 ProductGrid - Total products received:', this.mugsProducts);
+
+      // Tomamos la categoría del primer producto
+      this.categorie = this.mugsProducts[0].categorie;
     }
   }  
 
@@ -271,7 +271,7 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     const productId = product.uniqueId || product.id || product._id;
     return this.hoveredProduct === productId;
   }
-
+  
   onColorSelect(product: any, colorIndex: number, newImage: string): void {
     const productId = product.uniqueId || product.id || product._id;
     
@@ -296,16 +296,16 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     product.imagen = newImage;
     
     // Also update the main product array for consistency
-    const productIndex = this.ourProducts.findIndex(p => 
+    const productIndex = this.mugsProducts.findIndex(p => 
       (p.uniqueId || p.id || p._id) === productId
     );
     
     if (productIndex !== -1) {
-      this.ourProducts[productIndex].imagen = newImage;
-      this.ourProducts[productIndex].currentImage = newImage;
+      this.mugsProducts[productIndex].imagen = newImage;
+      this.mugsProducts[productIndex].currentImage = newImage;
       
       // Force change detection by creating a new reference
-      this.ourProducts = [...this.ourProducts];
+      this.mugsProducts = [...this.mugsProducts];
     }
     
     // Add changing animation class for visual feedback
