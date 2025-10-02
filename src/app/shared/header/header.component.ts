@@ -75,6 +75,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedSizes: { [productId: string]: string } = {}; // Track selected size for each product
   hoveredProduct: string | null = null; // Track which product is being hovered
 
+  categorieMugs: any;
+
   constructor(
     private router: Router,
     private cartService: CartService,
@@ -138,6 +140,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.processProductPrices(resp);
       this.finalizeDataProcessing();
 
+
        // Espera a que Angular renderice el DOM
       setTimeout(() => {
         cleanupHOMEINITTEMPLATE($);
@@ -174,8 +177,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Generar slug para cada Mugs sin modificar el título original
     this.mugsProducts.forEach((mug: any) => {
-      mug.slug = this.productUIService.generateSlug(mug.title); 
+      mug.slug = this.productUIService.generateSlug(mug.title);
+      mug.categorie.slug = this.productUIService.generateSlug(mug.categorie?.title || ''); 
     });
+
+    
   }
 
   private processProductPrices(resp: any): void {
@@ -206,6 +212,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       return mugProduct;
     });
 
+
     // Calcular precios finales para productos de Flash Sale usando el servicio
     this.FlashProductList = this.FlashProductList.map((flashProduct: any) => {
       flashProduct.finalPrice = this.priceCalculationService.calculateFinalPrice(flashProduct, this.FlashSales);
@@ -219,6 +226,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log("----> [Components Header] ourProducts with prices:", this.ourProducts);
     console.log("----> [Components Header] hoodiesProducts with prices:", this.hoodiesProducts);
     console.log("----> [Components Header] mugsProducts with prices:", this.mugsProducts);
+
+    //this.categorieMugs = this.productUIService.generateSlug(this.mugsProducts[0].categorie);  //this.mugsProducts[0].categorie;
+    //console.log('-----> [Header] [this.categorieMugs]: ', this.categorieMugs);
   }
 
   getPriceParts = (price: number) => {
@@ -255,6 +265,14 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     return null;
+  }
+
+  generateSlug(title: string): string {
+    return title
+      .toLowerCase() // Convertir a minúsculas
+      .replace(/[^a-z0-9 -]/g, '') // Eliminar caracteres no alfanuméricos
+      .replace(/\s+/g, '-') // Reemplazar los espacios por guiones
+      .replace(/-+/g, '-'); // Reemplazar múltiples guiones por uno solo
   }
 
     
