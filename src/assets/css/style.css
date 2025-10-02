@@ -153,7 +153,7 @@ input, textarea, .form-control { padding:10px 15px; }
 input, button, select, textarea, .form-control { font-size:16px; font-family: "Zen Kaku Gothic Antique", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #171717; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
 input:focus, input:active, button:focus, button:active, select:focus, select:active, textarea:focus, textarea:active, .form-control:focus { outline:none; border-color:#131313; }
 input, select, textarea { width: 100%; }
-input, select { height:40px; }
+input, select { height:50px; }
 input[type="checkbox"], input[type="radio"] { width:auto; height:auto; }
 input[type="checkbox"]:focus, input[type="radio"]:focus { outline:0; box-shadow:none; }
 select { -webkit-appearance:none; -moz-appearance:none; appearance:none; background-image:url(../images/icons/arrow-select.png); background-repeat:no-repeat; background-position:right 10px center; background-size:10px; background-color:#ffffff; line-height:1.2; text-indent:inherit; text-overflow: ''; cursor:pointer; padding:8px 25px 8px 10px; }
@@ -1166,7 +1166,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .mini-product .mini-list-item .item-title { font-weight: 500; }
 .mini-product .product-review { margin-top: 7px; }
 .mini-list-item:not(:last-child) { border-bottom: 1px dotted rgba(0,0,0,0.15); padding-bottom: 15px; margin-bottom: 15px; }
-.mini-list-item .item-link, .mini-list-item .mini-image img { width:70px; display:block; }
+.mini-list-item .item-link, .mini-list-item .mini-image img { /*width:200px;*/ width:100%; display:block; }
 
 .top-info-bar { background-color: #131313; }
 .topbar-slider .top-info-bar { padding:0 5px; }

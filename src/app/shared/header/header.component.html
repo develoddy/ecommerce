@@ -627,19 +627,17 @@
                                         </div>
                                         <!-- END SEARCH POPULAR -->
 
-                                        <!-- SEARCH PRODUCTS -->
-                                        <div class="search-products">
+                                        <!-- RESULT SEARCH PRODUCTS -->
+                                        <div class="search-products" *ngIf="products_search && products_search.length > 0">
                                             <ul class="items g-2 g-md-3 row row-cols-lg-4 row-cols-md-3 row-cols-sm-2">
-                                                <li class="item empty w-100 text-center text-muted d-none">No tienes
-                                                    ningún artículo en tu búsqueda.</li>
+                                                <li class="item empty w-100 text-center text-muted d-none">No tienes ningún artículo en tu búsqueda.</li>
                                                 <ng-container *ngFor="let product of products_search">
                                                     <li class="item">
-                                                        <div
-                                                            class="mini-list-item d-flex align-items-center w-100 clearfix">
-                                                            <div class="mini-image text-center">
+                                                        <div class="mini-list-item d-flex w-100 clearfix" [ngClass]="{'flex-column': isDesktop, 'flex-row': isMobile}">
+                                                            <div class="mini-image text-center mb-2">
                                                                 <!-- <a href="#" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="{_id: product.campaing_discount?.id}" class="product-img"> product.campaing_discount._id-->
                                                                 <!-- <a class="item-link" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="getRouterDiscount(product)"> -->
-                                                                <a class="item-link" href="product-layout1.html"
+                                                                <a class="item-link" href="#"
                                                                     onclick="return false;"
                                                                     (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
                                                                     <img class="blur-up lazyload"
@@ -649,20 +647,21 @@
                                                                         height="170" />
                                                                 </a>
                                                             </div>
-                                                            <div class="ms-3 details text-left">
-                                                                <!-- <div class="product-name"><a class="item-title" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="getRouterDiscount(product)">{{ product.title }}</a></div> -->
-                                                                <div class="product-name"><a class="item-title"
-                                                                        href="product-layout1.html"
+                                                            <div class="details px-2 text-start">
+                                                                <div class="product-name">
+                                                                    <a class="item-title"
+                                                                        href="#"
                                                                         onclick="return false;"
-                                                                        (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">{{
-                                                                        product.title }}</a></div>
-                                                                <div class="product-price"><span class="old-price"
-                                                                        *ngIf="product.campaing_discount">{{ euro }}{{
-                                                                        product.price_usd }}</span><span
-                                                                        class="price">{{ euro }}{{ product.price_usd -
-                                                                        getDiscountProduct(product) }}</span></div>
-                                                                <div
-                                                                    class="product-review d-flex align-items-center justify-content-start d-none">
+                                                                        (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
+                                                                        {{product.title }}
+                                                                    </a>
+                                                                </div>
+                                                                <div class="product-price">
+                                                                    <span class="old-price" *ngIf="product.campaing_discount">{{product.price_usd}}{{ euro }}</span>
+                                                                    <span class="price">{{product.price_usd - getDiscountProduct(product)}}{{ euro }}</span>
+                                                                </div>
+
+                                                                <div class="product-review d-flex align-items-center justify-content-start d-none">
                                                                     <i class="icon anm anm-star-o"
                                                                         [ngClass]="{'icon anm anm-star': product.avg_review < 1}"></i>
                                                                     <i class="icon anm anm-star-o"
@@ -682,7 +681,7 @@
                                                 </ng-container>
                                             </ul>
                                         </div>
-                                        <!-- END SEARCH PRODUCTS -->
+                                        <!-- END RESULT SEARCH PRODUCTS -->
                                     </form>
                                 </div>
                             </div>
