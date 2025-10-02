@@ -233,7 +233,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private finalizeDataProcessing(): void {
-    if (this.ourProducts || this.besProducts) {
+    if (this.ourProducts || this.besProducts || this.hoodiesProducts || this.mugsProducts || this.FlashProductList) {
       const processedProducts = this.productUIService.setColoresDisponibles(
         this.ourProducts, 
         this.besProducts,

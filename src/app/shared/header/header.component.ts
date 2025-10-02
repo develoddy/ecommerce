@@ -13,15 +13,22 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { combineLatest } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { HeaderEventsService } from 'src/app/services/headerEvents.service';
+import { HomeService } from 'src/app/modules/home/_services/home.service';
+import { ProductUIService } from 'src/app/modules/home/_services/product/product-ui.service';
+import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 declare var $: any;
 declare var $:any;
-declare function HOMEINITTEMPLATE($: any): any;//declare function HOMEINITTEMPLATE([]):any;
-declare function sliderRefresh(): any;
+declare function HOMEINITTEMPLATE([]): any;
+declare function productSlider5items($: any): any;
+
 declare function pswp([]):any;
 declare function productZoom([]):any;
 declare function alertDanger([]): any;
 declare function alertSuccess([]): any;
+
 declare function cleanupHOMEINITTEMPLATE($: any): any;
+declare function sliderRefresh(): any;
+declare function menuProductSlider($: any): any;
 
 @Component({
   selector: 'app-header',
@@ -30,14 +37,9 @@ declare function cleanupHOMEINITTEMPLATE($: any): any;
 })
 export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  // Abrir el menú de cuenta (mouseover)
-
-  // Ya no es necesario cerrar por click fuera, el mouseleave lo gestiona
-
   @Output() forceLogin = new EventEmitter<void>();
 
   euro = "€";
-  //cartsCacheItems: any[] = [];
   selectedLanguage: string = 'ES';
   listCarts: any[] = [];
   listWishlists: any = [];
@@ -56,6 +58,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   width: number = 100; // valor por defecto
   height: number = 100; // valor por defecto
 
+  ourProducts: any = [];
+  hoodiesProducts: any = [];
+  mugsProducts: any = [];
+  FlashProductList: any = [];
+  FlashSales: any = null;
+
   @ViewChild("filter") filter?: ElementRef;
   private subscriptions: Subscription = new Subscription();
   showSubscriptionSection: boolean = true;
@@ -70,7 +78,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private minicartService: MinicartService,
     private subscriptionService: SubscriptionService,
     private localizationService: LocalizationService,
-    private headerEventsService: HeaderEventsService
+    private headerEventsService: HeaderEventsService,
+
+    //SERVICE NEW
+    public homeService: HomeService,
+    private productUIService: ProductUIService,
+    private priceCalculationService: PriceCalculationService,
   ) {
     this.subscriptions.add(
       this.subscriptionService.showSubscriptionSection$.subscribe(value => {
@@ -82,6 +95,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
+
+    this.initializeHomeData();
 
     this.checkUserAuthenticationStatus();
       // Initial header visibility based on current route
@@ -108,6 +123,142 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
+  private initializeHomeData(): void {
+    const TIME_NOW = new Date().getTime();
+
+    const listHomeSubscription = this.homeService.listHome(TIME_NOW).subscribe((resp: any) => {
+      this.processBasicData(resp);
+      this.processProductPrices(resp);
+      this.finalizeDataProcessing();
+
+       // Espera a que Angular renderice el DOM
+      setTimeout(() => {
+        cleanupHOMEINITTEMPLATE($);
+        menuProductSlider($);
+        sliderRefresh(); // inicializa tu carrusel
+      }, 50);
+    });
+
+    this.subscriptions.add(listHomeSubscription);
+  }
+
+  private processBasicData(resp: any): void {
+    // Asignar datos básicos primero
+    this.ourProducts = resp.our_products
+    this.hoodiesProducts = resp.hoodies_products;
+    this.mugsProducts = resp.mugs_products;
+    this.FlashProductList = resp.campaign_products;
+    this.FlashSales = resp.FlashSales;
+    
+    // Generar slug para cada categoría sin modificar el título original
+    this.categories.forEach((category: any) => {
+      category.slug = this.productUIService.generateSlug(category.title); 
+    });
+
+    // Generar slug para cada Hoodies sin modificar el título original
+    this.ourProducts.forEach((product: any) => {
+      product.slug = this.productUIService.generateSlug(product.title); 
+    });
+
+    // Generar slug para cada Hoodies sin modificar el título original
+    this.hoodiesProducts.forEach((hoodie: any) => {
+      hoodie.slug = this.productUIService.generateSlug(hoodie.title); 
+    });
+
+    // Generar slug para cada Mugs sin modificar el título original
+    this.mugsProducts.forEach((mug: any) => {
+      mug.slug = this.productUIService.generateSlug(mug.title); 
+    });
+  }
+
+  private processProductPrices(resp: any): void {
+    // Calcular precios finales para productos normales usando el servicio
+    this.ourProducts = resp.our_products.map((product: any) => {
+      product.finalPrice = this.priceCalculationService.calculateFinalPrice(product, this.FlashSales);
+      const priceParts = this.priceCalculationService.getPriceParts(product.finalPrice);
+      product.priceInteger = priceParts.integer;
+      product.priceDecimals = priceParts.decimals;
+      return product;
+    });
+
+    // Calcular precios finales para productos hodies usando el servicio
+    this.hoodiesProducts = resp.hoodies_products.map((hodieProduct: any) => {
+      hodieProduct.finalPrice = this.priceCalculationService.calculateFinalPrice(hodieProduct, this.FlashSales);
+      const priceParts = this.priceCalculationService.getPriceParts(hodieProduct.finalPrice);
+      hodieProduct.priceInteger = priceParts.integer;
+      hodieProduct.priceDecimals = priceParts.decimals;
+      return hodieProduct;
+    });
+
+    // Calcular precios finales para productos mugs usando el servicio
+    this.mugsProducts = resp.mugs_products.map((mugProduct: any) => {
+      mugProduct.finalPrice = this.priceCalculationService.calculateFinalPrice(mugProduct, this.FlashSales);
+      const priceParts = this.priceCalculationService.getPriceParts(mugProduct.finalPrice);
+      mugProduct.priceInteger = priceParts.integer;
+      mugProduct.priceDecimals = priceParts.decimals;
+      return mugProduct;
+    });
+
+    // Calcular precios finales para productos de Flash Sale usando el servicio
+    this.FlashProductList = this.FlashProductList.map((flashProduct: any) => {
+      flashProduct.finalPrice = this.priceCalculationService.calculateFinalPrice(flashProduct, this.FlashSales);
+      const priceParts = this.priceCalculationService.getPriceParts(flashProduct.finalPrice);
+      flashProduct.priceInteger = priceParts.integer;
+      flashProduct.priceDecimals = priceParts.decimals;
+      
+      return flashProduct;
+    });
+
+    console.log("----> [Components Header] ourProducts with prices:", this.ourProducts);
+    console.log("----> [Components Header] hoodiesProducts with prices:", this.hoodiesProducts);
+    console.log("----> [Components Header] mugsProducts with prices:", this.mugsProducts);
+    
+    
+    
+  }
+
+
+  private finalizeDataProcessing(): void {
+    if (this.ourProducts || this.hoodiesProducts || this.mugsProducts || this.FlashProductList) {
+      const processedProducts = this.productUIService.setColoresDisponibles(
+        this.ourProducts, 
+        [],
+        this.hoodiesProducts,
+        this.mugsProducts,
+        this.FlashProductList
+      );
+      
+      this.ourProducts = processedProducts.ourProducts;
+      this.hoodiesProducts = processedProducts.hoodiesProducts;
+      this.mugsProducts = processedProducts.mugsProducts;
+      this.FlashProductList = processedProducts.flashProductList;
+    }
+  }
+
+  getDiscountLabel(product: any): string | null {
+      // Solo manejar campaing_discount, NO Flash Sales
+      // Los Flash Sales tienen su propio componente separado
+      if (product.campaing_discount && product.campaing_discount.type_discount === 1) {
+        const discountPercent = product.campaing_discount.discount;
+        if (discountPercent && discountPercent > 0) {
+          //console.log('🏷️ getDiscountLabel returning:', `¡Oferta –${discountPercent}%!`, 'for product:', product.title);
+          return `¡Oferta –${discountPercent}%!`;
+        }
+      }
+
+      //console.log('🚫 getDiscountLabel returning NULL for product:', product.title, 'campaing_discount:', product.campaing_discount);
+      return null;
+    }
+
+    
+
+
+
+
+
+
+
+
   private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(
       combineLatest([
@@ -127,7 +278,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private processUserStatus(): void {
     this.storeListCarts();
     this.storeListWishlists();
-    if (this.currentUser && !this.currentUser.email) { //if (this.currentUser && this.currentUser.user_guest !== "Guest") { // Si el usuario no es un invitado
+    if (this.currentUser && !this.currentUser.email) {
       let user_guest = "Guest";
       this.cartService.listCartsCache(user_guest).subscribe((resp: any) => {
         if (resp.carts.length > 0) {
@@ -138,7 +289,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private storeListCarts(): void {
-  
     if (this.currentUser && !this.currentUser.email) { // Es un invitado
       this.listCartsLocalStorage();
     } else if (this.currentUser && this.currentUser.email) { // Está autenticado
@@ -525,5 +675,4 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.minicartService.closeMinicart();
   }
 
-  // onResize eliminado, ya no se usa HostListener para el menú de cuenta
 }
