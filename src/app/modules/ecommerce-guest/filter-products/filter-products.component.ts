@@ -2,9 +2,10 @@ import { Component, OnInit, HostListener, ViewEncapsulation, ChangeDetectorRef, 
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { ProductDisplayService } from '../_service/service_landing_product';
+import { AuthService } from '../../auth-profile/_services/auth.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -68,6 +69,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   isDesktop: boolean = false;
   width: number = 100; // valor por defecto
   height: number = 100; // valor por defecto
+  CURRENT_USER_AUTHENTICATED: any = null;
+  CURRENT_USER_GUEST: any = null;
+  currentUser: any = null;
   
   /* ------------------ CONSTRUCTOR ------------------ */
   constructor(
@@ -78,6 +82,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     public _routerActived: ActivatedRoute,
     public loader: LoaderService,
     public productDisplayService: ProductDisplayService,
+     public _authService: AuthService,
   ) {
     
     this._routerActived.paramMap.subscribe(params => {
@@ -100,6 +105,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   ngOnInit(): void {
 
     this.subscribeToServiceStates();
+    this.verifyAuthenticatedUser()
 
     this._ecommerceGuestService._authService.user.subscribe(user => {
       if (user) {
@@ -145,6 +151,46 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       })
     );
   }
+
+
+  private verifyAuthenticatedUser(): void {
+    // Asignación inicial síncrona desde localStorage para disponibilidad inmediata
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      this.CURRENT_USER_AUTHENTICATED = user;
+      this.currentUser = user;
+    } else {
+      const storedGuest = localStorage.getItem('user_guest');
+      if (storedGuest) {
+        const guest = JSON.parse(storedGuest);
+        this.CURRENT_USER_GUEST = guest;
+        this.currentUser = guest;
+      }
+    }
+    // Suscribirse para futuras actualizaciones desde AuthService
+    this.subscriptions.add(
+      combineLatest([
+        this._authService.user,
+        this._authService.userGuest,
+      ]).subscribe(([user, guestUser]) => {
+        if (user) {
+          this.CURRENT_USER_AUTHENTICATED = user;
+          this.CURRENT_USER_GUEST = null;
+          this.currentUser = user;
+        } else if (guestUser && guestUser.state === 1) {
+          this.CURRENT_USER_AUTHENTICATED = null;
+          this.CURRENT_USER_GUEST = guestUser;
+          this.currentUser = guestUser;
+        } else {
+          this.CURRENT_USER_AUTHENTICATED = null;
+          this.CURRENT_USER_GUEST = null;
+          this.currentUser = null;
+        }
+      })
+    );
+  }
+
 
   private subscribeToServiceStates(): void {
   // Suscribirse a los colores disponibles

@@ -52,6 +52,7 @@
                     (filterByPrice)="onFilterByPrice($event)"
                 ></app-sidebar-filter>
                 <app-products-list
+                    [currentUser]="currentUser"
                     [products]="products"
                     [euro]="euro"
                     [locale]="locale"

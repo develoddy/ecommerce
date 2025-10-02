@@ -37,6 +37,18 @@
                             </a>
                             <!-- End Product Image -->
 
+                            <!-- Product label -->
+                            <div class="product-labels">
+                                <span *ngIf="getDiscountLabel(ourProduct)" class="lbl pr-label3">
+                                    {{ getDiscountLabel(ourProduct) }}
+                                </span>
+                                <!-- Label de mejor vendido -->
+                                <span *ngIf="!ourProduct.hasDiscount && ourProduct.isBestSeller" class="lbl pr-label4">
+                                    Mejor Vendido
+                                </span>
+                            </div>
+                            <!-- End Product label -->
+
                             <!-- Size Selector - Appears on Hover -->
                             <div class="size-selector" *ngIf="isProductHovered(ourProduct) && getAvailableSizes(ourProduct).length > 0">
                                 <div class="size-label">Tallas disponibles:</div>
@@ -53,18 +65,6 @@
                                 </div>
                             </div>
                             <!-- End Size Selector -->
-                             
-                            <!-- Product label -->
-                            <div class="product-labels">
-                                <span *ngIf="getDiscountLabel(ourProduct)" class="lbl pr-label3">
-                                    {{ getDiscountLabel(ourProduct) }}
-                                </span>
-                                <!-- Label de mejor vendido -->
-                                <span *ngIf="!ourProduct.hasDiscount && ourProduct.isBestSeller" class="lbl pr-label4">
-                                    Mejor Vendido
-                                </span>
-                            </div>
-                            <!-- End Product label -->
 
                             <!--Product Button-->
                             <div class="button-set style1" [ngClass]="{ 'd-none': isMobile }">

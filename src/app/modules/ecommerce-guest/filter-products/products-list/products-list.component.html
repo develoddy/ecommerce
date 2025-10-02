@@ -5,13 +5,17 @@
                 <ng-container *ngFor="let product of pagedProducts">
                     <div class="item col-item">
                         <div class="product-box">
-                            <div class="product-image">
-                                <a href="#" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" onclick="return false;" class="product-img rounded-0">
-                                    <img class="primary blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
-                                    <ng-container *ngIf="product.imagen_two">
-                                        <img class="hover blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen_two" [src]="product.imagen_two" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>
-                                    </ng-container>
-                                </a>
+                            <!-- Start Product Image -->
+                            <div class="product-image"
+                                 (mouseenter)="onProductHover(product)" 
+                                 (mouseleave)="onProductLeave()">
+                                
+                                    <a href="#" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" onclick="return false;" class="product-img rounded-0">
+                                        <img class="primary blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
+                                        <ng-container *ngIf="product.imagen_two">
+                                            <img class="hover blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen_two" [src]="product.imagen_two" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>
+                                        </ng-container>
+                                    </a>
 
                                 <!-- Product label -->
                                 <div class="product-labels">
@@ -31,7 +35,27 @@
                                 </div>
                                 <!-- End Product label -->
 
+                                <!-- Size Selector - Appears on Hover -->
+                                <div class="size-selector" 
+                                    *ngIf="isProductHovered(product) && getAvailableSizes(product).length > 0">
+                                    <div class="size-label">Tallas disponibles:</div>
+                                    <div class="size-options">
+                                        <button *ngFor="let size of getAvailableSizes(product)" 
+                                                class="size-btn"
+                                                [class.selected]="isSizeSelected(product, size)"
+                                                [class.unavailable]="!isSizeAvailable(product, size)"
+                                                [disabled]="!isSizeAvailable(product, size)"
+                                                (click)="onSizeSelect(product, size)"
+                                                [title]="!isSizeAvailable(product, size) ? 'Sin stock' : 'Seleccionar talla ' + size">
+                                            {{ size }}
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- End Size Selector -->
                             </div>
+                            <!-- End Product Image -->
+
+                            <!-- Start Product Details -->
                             <div class="product-details px-2">
                                 <div class="product-vendor">{{ product.categorie.title || '' }}</div>
                                 <!-- Product Name -->
@@ -82,6 +106,7 @@
                                 </ul>
                                 <!-- End Swatches Color -->
                             </div>
+                            <!-- End Product Details -->
                         </div>
                     </div>
                 </ng-container>

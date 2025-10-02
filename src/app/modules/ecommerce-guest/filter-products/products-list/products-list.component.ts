@@ -1,10 +1,16 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
+import { CartManagerService } from '../../_service/service_landing_product';
+import { Subscription } from 'rxjs';
+import { CartService } from '../../_service/cart.service';
+import { MinicartService } from 'src/app/services/minicartService.service';
+import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
-  styleUrls: ['./products-list.component.css']
+  styleUrls: ['./products-list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ProductsListComponent implements OnInit, OnChanges {
   @Input() products: any[] = [];
@@ -14,17 +20,32 @@ export class ProductsListComponent implements OnInit, OnChanges {
   @Input() getPriceParts: any;
   @Input() getRouterDiscount: any;
   @Input() changeProductImage: any;
+  @Input() currentUser: any; // Usuario actual para el carrito
+  
 
   pageSize = 12;
   currentPage = 1;
   pagedProducts: any[] = [];
   totalPages = 1;
 
+  // Para manejo de errores al añadir al carrito
+  errorResponse: boolean = false;
+  errorMessage: string = '';
+
+  // Subscripciones para cleanup
+  private subscriptions: Subscription = new Subscription();
+
+  sanitizedUrl: SafeUrl = '';
   selectedColors: { [productId: string]: number } = {}; // Track selected color index for each product
   productImages: { [productId: string]: string } = {}; // Track current image for each product
+  hoveredProduct: string | null = null; // Track which product is being hovered
+  selectedSizes: { [productId: string]: string } = {}; // Track selected size for each product
 
   constructor(
-    private priceCalculationService: PriceCalculationService
+    private priceCalculationService: PriceCalculationService,
+    private cartManagerService: CartManagerService,
+    private cartService: CartService,
+    private minicartService: MinicartService,
   ) {}
 
   onPageSizeChange(event: Event) {
@@ -69,6 +90,238 @@ export class ProductsListComponent implements OnInit, OnChanges {
     this.pageSize = +size;
     this.currentPage = 1;
     this.updatePagedProducts();
+  }
+
+  /**
+   * Handle mouse enter on product image
+   * @param product - Product object
+   */
+  onProductHover(product: any): void {
+    const productId = product.uniqueId || product.id || product._id;
+    this.hoveredProduct = productId;
+  }
+
+  /**
+   * Handle mouse leave on product image
+   */
+  onProductLeave(): void {
+    this.hoveredProduct = null;
+  }
+
+  /**
+   * Check if product is currently hovered
+   * @param product - Product object
+   * @returns boolean
+   */
+  isProductHovered(product: any): boolean {
+    const productId = product.uniqueId || product.id || product._id;
+    return this.hoveredProduct === productId;
+  }
+
+  /**
+   * Get available sizes for a product based on currently selected color
+   * @param product - Product object
+   * @returns Array of unique sizes
+   */
+  getAvailableSizes(product: any): string[] {
+    if (!product.variedades || !Array.isArray(product.variedades)) {
+      return [];
+    }
+
+    // Get currently selected color for this product
+    const productId = product.uniqueId || product.id || product._id;
+    const currentColorIndex = this.selectedColors[productId] || 0;
+    const currentColor = product.colores?.[currentColorIndex]?.color;
+
+    // If no color selected, get all unique sizes
+    if (!currentColor) {
+      const allSizes = product.variedades
+        .map((v: any) => v.valor)
+        .filter((size: any) => size && typeof size === 'string') as string[];
+      return [...new Set(allSizes)].sort(this.sortSizes);
+    }
+
+    // Get sizes for the selected color
+    const sizesForColor = product.variedades
+      .filter((v: any) => v.color === currentColor)
+      .map((v: any) => v.valor)
+      .filter((size: any) => size && typeof size === 'string') as string[];
+
+    return [...new Set(sizesForColor)].sort(this.sortSizes);
+  }
+
+  /**
+   * Handle size selection for a product - Adds product to cart automatically
+   * @param product - Product object
+   * @param size - Selected size
+   */
+  onSizeSelect(product: any, size: string): void {
+    const productId = product.uniqueId || product.id || product._id;
+    
+    if (!productId) {
+      console.error('Product ID not found for size selection');
+      return;
+    }
+
+    // Update selected size for this product
+    this.selectedSizes[productId] = size;
+    
+    console.log(`✅ Size ${size} selected for product ${productId}`);
+    
+    // Find the selected variety based on current color and size
+    const currentColorIndex = this.selectedColors[productId] || 0;
+    const currentColor = product.colores?.[currentColorIndex]?.color;
+    
+    let selectedVariety = null;
+    
+    if (product.variedades && Array.isArray(product.variedades)) {
+      selectedVariety = product.variedades.find((v: any) => 
+        v.valor === size && (!currentColor || v.color === currentColor)
+      );
+    }
+    
+    if (!selectedVariety) {
+      this.showError('No se encontró la variedad seleccionada');
+      return;
+    }
+    
+    // Validate stock availability
+    if (!this.cartManagerService.validateStockAvailability(product, selectedVariety, 1)) {
+      this.showError('No hay stock disponible para esta variedad');
+      return;
+    }
+    
+    // Calculate final price using PriceCalculationService (same logic as landing-product)
+    const finalPrice = this.priceCalculationService.calculateFinalPrice(product, []);
+    
+    // Prepare product data exactly like landing-product uses cartManagerService
+    const productData = {
+      product: product,
+      selectedColor: null, // No color selection in grid yet
+      selectedSize: selectedVariety,
+      quantity: 1, // Always add 1 when selecting size from grid
+      code_discount: null,
+      discount: { total: finalPrice }, // Use PriceCalculationService result
+      user: this.currentUser || null, // Ensure it's never undefined
+      saleFlash: null, // No flash sales in grid yet
+      campaignDiscount: product.campaing_discount || null
+    };
+
+    console.log('🛒 Añadiendo al carrito desde grid con productData:', productData);
+    console.log('👤 Current user:', this.currentUser);
+    console.log('📊 Selected variety:', selectedVariety);
+    
+    // Use cartManagerService like landing-product does
+    this.subscriptions.add(
+      this.cartManagerService.addToCart(productData).subscribe(
+        (resp: any) => this.handleCartResponse(resp),
+        (error: any) => this.handleCartError(error)
+      )
+    );
+  }
+
+  /**
+   * Check if a size is currently selected for a product
+   * @param product - Product object
+   * @param size - Size to check
+   * @returns boolean
+   */
+  isSizeSelected(product: any, size: string): boolean {
+    const productId = product.uniqueId || product.id || product._id;
+    return this.selectedSizes[productId] === size;
+  }
+
+  /**
+   * Check if a size is available (has stock) for the current color
+   * @param product - Product object
+   * @param size - Size to check
+   * @returns boolean
+   */
+  isSizeAvailable(product: any, size: string): boolean {
+    if (!product.variedades || !Array.isArray(product.variedades)) {
+      return false;
+    }
+
+    const productId = product.uniqueId || product.id || product._id;
+    const currentColorIndex = this.selectedColors[productId] || 0;
+    const currentColor = product.colores?.[currentColorIndex]?.color;
+
+    // Find the specific variant for this color and size
+    const variant = product.variedades.find((v: any) => 
+      (!currentColor || v.color === currentColor) && v.valor === size
+    );
+
+    return variant && variant.stock > 0;
+  }
+
+
+  /**
+   * Handle cart error
+   * @param error - Error object
+   */
+  private handleCartError(error: any): void {
+    console.error('❌ Cart Error:', error);
+    
+    if (error?.error?.message === 'EL TOKEN NO ES VALIDO') {
+      this.cartService._authService.logout();
+      return;
+    }
+    
+    // Handle other errors
+    const errorMessage = error?.error?.message_text || error?.message || 'Error al añadir el producto al carrito';
+    this.showError(errorMessage);
+  }
+
+  /**
+   * Handle cart response after adding product
+   * @param resp - Response from cart service
+   */
+  private handleCartResponse(resp: any): void {
+    if (resp.message == 403) {
+      this.errorResponse = true;
+      this.errorMessage = resp.message_text;
+      console.error('❌ Cart Error 403:', resp.message_text);
+    } else {
+      // Success: update cart and open minicart
+      this.cartService.changeCart(resp.cart);
+      this.minicartService.openMinicart();
+      console.log('✅ Product added to cart successfully');
+      
+      // Clear any previous errors
+      this.errorResponse = false;
+      this.errorMessage = '';
+    }
+  }
+
+  /**
+   * Sort sizes in logical order (S, M, L, XL, 2XL, etc.)
+   * @param a - First size
+   * @param b - Second size
+   * @returns Sort order
+   */
+  private sortSizes(a: string, b: string): number {
+    const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'];
+    const indexA = sizeOrder.indexOf(a);
+    const indexB = sizeOrder.indexOf(b);
+    
+    if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    
+    return indexA - indexB;
+  }
+
+  /**
+   * Show error message
+   * @param message - Error message to display
+   */
+  private showError(message: string): void {
+    this.errorResponse = true;
+    this.errorMessage = message;
+    console.error('❌ ProductGrid Error:', message);
+    
+    // You can add more error handling here, like showing a toast notification
+    // For now, just log the error
   }
 
   /**

@@ -47,7 +47,7 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
   categorie: any;
   
   constructor(
-    private sanitizer: DomSanitizer,
+    //private sanitizer: DomSanitizer,
     private cartService: CartService,
     private minicartService: MinicartService,
     private cartManagerService: CartManagerService,
