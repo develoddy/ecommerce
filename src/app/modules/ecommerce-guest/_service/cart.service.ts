@@ -113,9 +113,14 @@ export class CartService {
 
   searchProduct(data:any) {
     this.loadingSubject.next(true);
-    let headers = new HttpHeaders({'token': this._authService.token});
+    //let headers = new HttpHeaders({'token': this._authService.token});
+    let headers = this._authService.token 
+      ? new HttpHeaders({ 'token': this._authService.token }) 
+      : undefined;
+
     let TIME_NOW = new Date().getTime();
     let URL = URL_SERVICE+"home/search_product?TIME_NOW="+TIME_NOW;
+
     return this._http.post(URL, data, {headers: headers}).pipe(
       finalize(() => this.loadingSubject.next(false)) 
     );
@@ -125,7 +130,7 @@ export class CartService {
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({ 'token': this._authService.token });
     let URL = URL_SERVICE + "cart/merge?user_id=" + userId;
-    return this._http.post(URL, { data }, { headers: headers }).pipe(
+    return this._http.post(URL, { data }, { headers }).pipe(
         finalize(() => this.loadingSubject.next(false)),
         tap((response: any) => {
             if (response && response.carts) {

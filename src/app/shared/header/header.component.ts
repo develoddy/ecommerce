@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   listWishlists: any = [];
   totalCarts: number = 0;
   totalWishlist: number = 0;
-  search_product: string | null = null;
+  search_product: string = "";
   products_search: any[] = [];
   categories: any[] = [];
   isMobile: boolean = false;
@@ -226,9 +226,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log("----> [Components Header] ourProducts with prices:", this.ourProducts);
     console.log("----> [Components Header] hoodiesProducts with prices:", this.hoodiesProducts);
     console.log("----> [Components Header] mugsProducts with prices:", this.mugsProducts);
-
-    //this.categorieMugs = this.productUIService.generateSlug(this.mugsProducts[0].categorie);  //this.mugsProducts[0].categorie;
-    //console.log('-----> [Header] [this.categorieMugs]: ', this.categorieMugs);
   }
 
   getPriceParts = (price: number) => {
@@ -589,7 +586,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.source = fromEvent(this.filter.nativeElement, "keyup");
       this.subscriptions.add(
         this.source.pipe(debounceTime(500)).subscribe(() => {
-          if (this.search_product && this.search_product.length > 1) {
+          if (this.search_product && this.search_product.trim().length > 1) {
             const data = { search_product: this.search_product };
             this.cartService.searchProduct(data).subscribe((resp: any) => {
               this.products_search = resp.products;

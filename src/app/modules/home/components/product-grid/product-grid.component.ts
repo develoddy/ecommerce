@@ -47,7 +47,7 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
   categorie: any;
   
   constructor(
-    //private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer,
     private cartService: CartService,
     private minicartService: MinicartService,
     private cartManagerService: CartManagerService,
@@ -76,11 +76,13 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
       console.log('💰 FlashSale data (IGNORADO en product-grid):', this.FlashSale);
     }
     
-    if (changes['ourProducts']) {
+    if (changes['ourProducts'] && this.ourProducts && this.ourProducts.length > 0) {
       console.log('🔍 ProductGrid - Total products received:', this.ourProducts?.length || 0);
+
+      console.log('📂 ProductGrid - ourProducts:', this.ourProducts);
        // Tomamos la categoría del primer producto
       this.categorie = this.ourProducts[0].categorie;
-      console.log('📂 ProductGrid - Categorie:', this.categorie);
+      
     }
   }  
 
