@@ -304,7 +304,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   getPriceParts = (price: number) => {
     if (!this.priceCalculationService) {
       console.warn('PriceCalculationService not available');
-      return { integer: '0', decimal: '00', total: '0.00' };
+      return { integer: '0', decimals: '00', total: '0.00' };
     }
     return this.priceCalculationService.getPriceParts(price);
   }

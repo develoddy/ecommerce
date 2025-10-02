@@ -187,10 +187,19 @@
                                         <li class="lvl-1 col-md-3 col-lg-3">
                                             <a href="#;" class="site-nav lvl-1 menu-title">Hombre</a>
                                             <ul class="subLinks">
-                                                <li class="lvl-2"><a href="product-layout1.html"
-                                                        class="site-nav lvl-2">Todas las sudaderas</a></li>
-                                                <li class="lvl-2"><a href="product-layout2.html"
-                                                        class="site-nav lvl-2">Sudaderas con capucha</a></li>
+                                                <li class="lvl-2">
+                                                    <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central']" class="site-nav lvl-2">Logo Central</a>
+                                                    
+                                                    <!-- <a *ngIf="categorie"
+                                                        [routerLink]="['/', locale, country, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]" 
+                                                        class="category-link clr-none"
+                                                        [attr.title]="'Explorar ' + categorie.title">
+                                                        <button class="btn-dark-ld fw-light">Explorar {{ categorie.title }}</button>
+                                                    </a> -->
+                                                </li>
+                                                <li class="lvl-2">
+                                                    <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
+                                                </li>
                                             </ul>
                                         </li>
                                         <li class="lvl-1 col-md-3 col-lg-3"><a href="#;"
@@ -203,13 +212,14 @@
                                             </ul>
                                         </li>
                                         <li class="lvl-1 col-md-3 col-lg-6 product-col" *ngIf="ourProducts && ourProducts.length > 0">
-                                            <a href="#;" class="site-nav lvl-1 menu-title">Los más vendidos de la semana</a>
+                                            <a href="#;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
                                             <div class="grid-products weekly-product gp10 mt-1">
                                                 <ng-container *ngFor="let ourProduct of ourProducts">
                                                     <div class="item">
                                                         <div class="product-wrap position-relative">
                                                             <!-- Start Product Image -->
                                                             <div class="product-image mb-0">
+                                                                <!-- Imagen -->
                                                                 <a href="#" class="product-img">
                                                                     <!-- Image principal -->
                                                                     <img
@@ -233,9 +243,7 @@
                                                                     </ng-container>
                                                                     <!-- End Hover Image -->
                                                                 </a>
-                                                                <!-- <div class="product-labels">
-                                                                    <span class="lbl on-sale">Sale</span>
-                                                                </div> -->
+                                                                <!-- End Imagen -->
                                                                 <!-- Product label -->
                                                                 <div class="product-labels">
                                                                     <span *ngIf="getDiscountLabel(ourProduct)" class="lbl pr-label3">
@@ -250,10 +258,9 @@
                                                             </div>
                                                             <!-- End Product Image -->
                                                             
-
                                                             <!-- Start Product Details -->
                                                             <div class="product-details">
-                                                                <div class="product-name">
+                                                                <div class="product-name lh-1">
                                                                     <!-- <a class="fw-normal" href="#">Bodysuit Black</a> -->
                                                                     <a [routerLink]="['/',locale,country,'shop','product',ourProduct.slug]" 
                                                                        [queryParams]="getRouterDiscount(ourProduct)" 
@@ -261,12 +268,43 @@
                                                                        itemprop="name">
                                                                         {{ ourProduct.title }}
                                                                     </a>
-                                                                    </div>
-                                                                <div class="product-price">
-                                                                    <span class="price old-price">$114.00</span><span
-                                                                        class="price">$99.00</span>
                                                                 </div>
-                                                                <div class="product-review">
+
+                                                                <!-- Product Price -->
+                                                                <div class="product-price">
+                                                                    <span class="price old-price" *ngIf="ourProduct.campaing_discount">
+                                                                        {{ourProduct.price_usd}}{{euro}}
+                                                                    </span>
+
+                                                                    <!-- Precio final -->
+                                                                    <span class="price" [ngClass]="{ 'text-danger': ourProduct.campaing_discount }">
+                                                                        <span class="">{{getPriceParts(ourProduct.finalPrice).integer}}.</span>
+                                                                        <span class="">
+                                                                            {{getPriceParts(ourProduct.finalPrice).decimals}}
+                                                                            <span class="">{{euro}}</span>
+                                                                        </span>
+                                                                    </span>
+                                                                </div>
+                                                                <!-- End Product Price -->
+
+                                                                <!-- Swatches Color -->
+                                                                <ul class="variants-clr swatches">
+                                                                    <ng-container *ngFor="let item of ourProduct.colores; let colorIndex = index">
+                                                                        <li class="swatch medium" 
+                                                                            [class.active]="isColorSelected(ourProduct, colorIndex)"
+                                                                            (click)="onColorSelect(ourProduct, colorIndex, item.imagen)">
+                                                                            <span class="swatchLbl" 
+                                                                                [style.background-color]="item.hex" 
+                                                                                data-bs-toggle="tooltip" 
+                                                                                data-bs-placement="top" 
+                                                                                title="{{ item.color }}">
+                                                                            </span>
+                                                                        </li>
+                                                                    </ng-container>
+                                                                </ul>
+                                                                <!-- End Swatches Color -->
+
+                                                                <div class="product-review d-none">
                                                                     <i class="icon anm anm-star"></i><i
                                                                         class="icon anm anm-star"></i><i
                                                                         class="icon anm anm-star"></i><i

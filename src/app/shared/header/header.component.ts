@@ -16,6 +16,7 @@ import { HeaderEventsService } from 'src/app/services/headerEvents.service';
 import { HomeService } from 'src/app/modules/home/_services/home.service';
 import { ProductUIService } from 'src/app/modules/home/_services/product/product-ui.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
+import { SafeUrl } from '@angular/platform-browser';
 declare var $: any;
 declare var $:any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -67,6 +68,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("filter") filter?: ElementRef;
   private subscriptions: Subscription = new Subscription();
   showSubscriptionSection: boolean = true;
+
+  sanitizedUrl: SafeUrl = '';
+  selectedColors: { [productId: string]: number } = {}; // Track selected color index for each product
+  productImages: { [productId: string]: string } = {}; // Track current image for each product
+  selectedSizes: { [productId: string]: string } = {}; // Track selected size for each product
+  hoveredProduct: string | null = null; // Track which product is being hovered
 
   constructor(
     private router: Router,
@@ -212,11 +219,14 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log("----> [Components Header] ourProducts with prices:", this.ourProducts);
     console.log("----> [Components Header] hoodiesProducts with prices:", this.hoodiesProducts);
     console.log("----> [Components Header] mugsProducts with prices:", this.mugsProducts);
-    
-    
-    
   }
 
+  getPriceParts = (price: number) => {
+    if (!this.priceCalculationService) {
+      return { integer: '0', decimals: '00', total: '0.00' };
+    }
+    return this.priceCalculationService.getPriceParts(price);
+  }
 
   private finalizeDataProcessing(): void {
     if (this.ourProducts || this.hoodiesProducts || this.mugsProducts || this.FlashProductList) {
@@ -236,25 +246,85 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getDiscountLabel(product: any): string | null {
-      // Solo manejar campaing_discount, NO Flash Sales
-      // Los Flash Sales tienen su propio componente separado
-      if (product.campaing_discount && product.campaing_discount.type_discount === 1) {
-        const discountPercent = product.campaing_discount.discount;
-        if (discountPercent && discountPercent > 0) {
-          //console.log('🏷️ getDiscountLabel returning:', `¡Oferta –${discountPercent}%!`, 'for product:', product.title);
-          return `¡Oferta –${discountPercent}%!`;
-        }
+    // Solo manejar campaing_discount, NO Flash Sales
+    // Los Flash Sales tienen su propio componente separado
+    if (product.campaing_discount && product.campaing_discount.type_discount === 1) {
+      const discountPercent = product.campaing_discount.discount;
+      if (discountPercent && discountPercent > 0) {
+        return `¡Oferta –${discountPercent}%!`;
       }
-
-      //console.log('🚫 getDiscountLabel returning NULL for product:', product.title, 'campaing_discount:', product.campaing_discount);
-      return null;
     }
+    return null;
+  }
 
     
+ /**
+   * Check if a color is currently selected for a product
+   * @param product - Product object or product ID
+   * @param colorIndex - Color index to check
+   * @returns boolean
+   */
+  isColorSelected(product: any, colorIndex: number): boolean {
+    const productId = typeof product === 'string' ? product : (product.uniqueId || product.id || product._id);
+    return this.selectedColors[productId] === colorIndex;
+  }
 
 
+  onColorSelect(product: any, colorIndex: number, newImage: string): void {
+    const productId = product.uniqueId || product.id || product._id;
+    
+    if (!productId) {
+      console.error('Product ID not found for color selection');
+      return;
+    }
+    
+    if (!newImage) {
+      console.error('No image provided for color selection');
+      return;
+    }
+    
+    // Update selected color index for this specific product
+    this.selectedColors[productId] = colorIndex;
+    
+    // Update the image tracking
+    this.productImages[productId] = newImage;
+    
+    // Update the product's images immediately for instant feedback
+    product.currentImage = newImage;
+    product.imagen = newImage;
+    
+    // Also update the main product array for consistency
+    const productIndex = this.ourProducts.findIndex((p:any) => 
+      (p.uniqueId || p.id || p._id) === productId
+    );
+    
+    if (productIndex !== -1) {
+      this.ourProducts[productIndex].imagen = newImage;
+      this.ourProducts[productIndex].currentImage = newImage;
+      
+      // Force change detection by creating a new reference
+      this.ourProducts = [...this.ourProducts];
+    }
+    
+    // Add changing animation class for visual feedback
+    product.isChanging = true;
+    
+    // Remove animation class after short animation
+    setTimeout(() => {
+      product.isChanging = false;
+    }, 300);
+    
+    // Call the parent's changeProductImage function if provided
+    if (this.changeProductImage) {
+      this.changeProductImage(product, newImage);
+    }
+    
+   //✅ Color changed successfully for product ${productId} to: ${newImage}`);
+  }
 
-
+  changeProductImage = (product: any, imageUrl: string) => {
+    this.productUIService.changeProductImage(product, imageUrl);
+  }
 
 
 
