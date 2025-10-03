@@ -644,7 +644,7 @@
                                                                         [attr.data-src]="product.imagen"
                                                                         [src]="product.imagen" alt="{{ product.title }}"
                                                                         title="{{ product.title }}" 
-                                                                        width="50" height="50" />
+                                                                        width="70" height="70" />
                                                                 </a>
                                                             </div>
                                                             <div class="details px-3 align-self-center">
@@ -653,7 +653,7 @@
                                                                         href="#"
                                                                         onclick="return false;"
                                                                         (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
-                                                                        <small class="fs-10">{{product.title }}</small>
+                                                                        <small class="text-uppercase">{{product.title }}</small>
                                                                     </a>
                                                                 </div>
                                                                 <div class="product-review d-flex align-items-center justify-content-start d-none">
