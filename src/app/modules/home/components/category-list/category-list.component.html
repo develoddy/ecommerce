@@ -2,7 +2,7 @@
   <div class="container">
     <div class="section-header">
       <p class="mb-2 mt-0">Descubre nuestras</p>
-      <h2>Colecciones exclusivas</h2>
+      <h2>Colecciones</h2>
     </div>
     <div class="collection-slider-5items gp15 arwOut5 hov-arrow">
       <ng-container *ngFor="let categorie of categories; let i = index">
@@ -23,7 +23,7 @@
                    loading="lazy" />
             </div>
             <div class="details mt-3 text-center">
-              <h4 class="category-title mb-0 fw-light">{{ categorie.title }}</h4>
+              <h4 class="category-title mb-0 text-uppercase">{{ categorie.title }}</h4>
               <p class="counts d-none">Explorar colección</p>
             </div>
           </a>

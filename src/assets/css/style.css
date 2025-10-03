@@ -542,7 +542,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 ========================================================================*/
 .breadcrumbs-wrapper { background:#f9f9f9; margin:0 0 30px; }
 .breadcrumbs-wrapper .container { padding-top:10px; padding-bottom:10px; }
-.breadcrumbs a, .breadcrumbs span, .breadcrumbs .icon { color:#171717; display:inline-block; padding:0; margin:0; font-size:14px; }
+.breadcrumbs a, .breadcrumbs span, .breadcrumbs .icon { color:#131921; display:inline-block; padding:0; margin:0; font-size:14px; }
 .breadcrumbs span.main-title { padding-right: 0; margin-right: 0; }
 .breadcrumbs .icon { font-size:15px; position:relative; top:0; padding: 0 5px; margin: 0 5px; }
 .breadcrumbs .main-title { font-weight: 700; }
