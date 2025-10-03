@@ -1,0 +1,188 @@
+<div class="grid-products grid-view-items py-5">
+    <div class="section-header ms-3">
+        <p class="mb-2 mt-0">Caps</p>
+        <h2>Gorras</h2>
+    </div>
+    <div class="row col-row product-options g-1" [ngClass]="getGridClasses()">
+        <ng-container *ngIf="capsProducts.length > 0">
+            <ng-container *ngFor="let capProduct of capsProducts | slice:0:4">
+                <div class="item col-item" itemscope itemtype="https://schema.org/Product">
+                    <div class="product-box">
+                        <!-- Start Product Image -->
+                        <div class="product-image" 
+                             (mouseenter)="onProductHover(capProduct)" 
+                             (mouseleave)="onProductLeave()">
+                            <!-- Start Product Image -->
+                            <a href="#" (click)="navigateToProduct(capProduct.slug,capProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
+                                <!-- Image alt="Camiseta {{ product_selected.title }} para programadores LujanDev"-->
+                                <img class="primary blur-up lazyload rounded-0 w-100 h-100" 
+                                     data-src="{{ capProduct.imagen }}" 
+                                     src="{{ capProduct.imagen }}" 
+                                     alt="Camiseta {{capProduct.title}} para programadores LujanDev" 
+                                     title="Camiseta {{capProduct.title}} para programadores LujanDev" 
+                                     width="625" height="608" 
+                                     style="object-fit: cover" />
+                                <!-- End Image -->
+                                <!-- Hover Image -->
+                                <ng-container *ngIf="capProduct.imagen_two">
+                                    <img class="hover blur-up lazyload rounded-0 w-100 h-100" 
+                                         data-src="{{ capProduct.imagen_two }}" 
+                                         src="{{ capProduct.imagen_two }}" 
+                                         alt="Camiseta {{capProduct.title}} para programadores LujanDev" 
+                                         title="Camiseta {{capProduct.title}} para programadores LujanDev" 
+                                         width="625" height="808" 
+                                         style="object-fit: cover" />
+                                </ng-container>
+                                <!-- End Hover Image -->
+                            </a>
+                            <!-- End Product Image -->
+
+                            <!-- Size Selector - Appears on Hover -->
+                            <div class="size-selector" *ngIf="isProductHovered(capProduct) && getAvailableSizes(capProduct).length > 0">
+                                <div class="size-label">Tallas disponibles:</div>
+                                <div class="size-options">
+                                    <button *ngFor="let size of getAvailableSizes(capProduct)" 
+                                            class="size-btn"
+                                            [class.selected]="isSizeSelected(capProduct, size)"
+                                            [class.unavailable]="!isSizeAvailable(capProduct, size)"
+                                            [disabled]="!isSizeAvailable(capProduct, size)"
+                                            (click)="onSizeSelect(capProduct, size)"
+                                            [title]="!isSizeAvailable(capProduct, size) ? 'Sin stock' : 'Seleccionar talla ' + size">
+                                        {{ size }}
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- End Size Selector -->
+                             
+                            <!-- Product label -->
+                            <div class="product-labels">
+                                <span *ngIf="getDiscountLabel(capProduct)" class="lbl pr-label3">
+                                    {{ getDiscountLabel(capProduct) }}
+                                </span>
+                                <!-- Label de mejor vendido -->
+                                <span *ngIf="!capProduct.hasDiscount && capProduct.isBestSeller" class="lbl pr-label4">
+                                    Mejor Vendido
+                                </span>
+                            </div>
+                            <!-- End Product label -->
+
+                            <!--Product Button-->
+                            <div class="button-set style1" [ngClass]="{ 'd-none': isMobile }">
+                                <!--Cart Button-->
+                                <a href="#" onclick="return false;" class="btn-icon addtocart add-to-cart-modal d-none" (click)="openModalToCart(capProduct)">
+                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
+                                </a>
+                                <!--End Cart Button-->
+                                <!--Quick View Button-->
+                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModalToCart(capProduct)">
+                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Vista rápida</span></span>
+                                </a>
+                                <!--End Quick View Button-->
+                                <!--Wishlist Button-->
+                                <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a favoritos" onclick="return false;" (click)="addWishlist(capProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a>
+                                <!--End Wishlist Button-->
+                                <!--Compare Button-->
+                                <a href="#" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Añadir para comparar</span></a>
+                                <!--End Compare Button-->
+                            </div>
+                            <!--End Product Button-->
+                        </div>
+                        <!-- End Product Image -->
+
+                        <!-- Start Product Details -->
+                        <div class="product-details px-2">
+                            <!--Product Vendor-->
+                            <div class="product-vendor">{{ capProduct.categorie.title || '' }}</div>
+                            <!--End Product Vendor-->
+                            <!-- Product Name -->
+                            <div class="product-name lh-1">
+                                <a [routerLink]="['/',locale,country,'shop','product',capProduct.slug]" 
+                                    [queryParams]="getRouterDiscount(capProduct)" 
+                                    class="text-truncate d-inline-block product-title fw-light" 
+                                    itemprop="name">
+                                      {{ capProduct.title }}
+                                </a>
+                                <!-- Subtítulo para SEO y visual -->
+                                <p class="product-subtitle text-muted lh-1 fw-light mb-2 d-none" itemprop="description">
+                                    {{ capProduct.resumen }}
+                                </p>
+                            </div>
+                            <!-- End Product Name -->
+                            <!-- Schema.org Offer -->
+                            <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                                <link itemprop="url" [href]="sanitizedUrl" />
+                                <meta itemprop="priceCurrency" content="EUR" />
+                                <meta itemprop="price" content="{{ getPriceParts(capProduct.finalPrice).total }}" />
+                                <link itemprop="availability" href="https://schema.org/InStock" />
+                            </div>
+                            <!-- End Schema.org Offer -->
+
+                            <!-- Product Price -->
+                            <div class="product-price">
+                                <span class="price old-price" *ngIf="capProduct.campaing_discount">
+                                    {{ capProduct.price_usd }} {{ euro }}
+                                </span>
+
+                                <!-- Precio final -->
+                                <span class="price" [ngClass]="{ 'text-danger': capProduct.campaing_discount }">
+                                    <span class="">{{ getPriceParts(capProduct.finalPrice).integer }}.</span>
+                                    <span class="">
+                                        {{ getPriceParts(capProduct.finalPrice).decimals }}
+                                        <span class="">{{ euro }}</span>
+                                    </span>
+                                </span>
+                            </div>
+                            <!-- End Product Price -->
+
+                            <!-- Product Review -->
+                            <div class="product-review d-none">
+                                <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                <span class="caption hidden ms-1">10 Reviews</span>
+                            </div>
+                            <!-- End Product Review -->
+                            <!--Sort Description-->
+                            <p class="sort-desc hidden">{{ capProduct.description_en }}</p>
+                            <!--End Sort Description-->
+                            <!-- Swatches Color -->
+                            <ul class="variants-clr swatches">
+                                <ng-container *ngFor="let item of capProduct.colores; let colorIndex = index">
+                                    <li class="swatch medium" 
+                                        [class.active]="isColorSelected(capProduct, colorIndex)"
+                                        (click)="onColorSelect(capProduct, colorIndex, item.imagen)">
+                                        <span class="swatchLbl" 
+                                              [style.background-color]="item.hex" 
+                                              data-bs-toggle="tooltip" 
+                                              data-bs-placement="top" 
+                                              title="{{ item.color }}">
+                                        </span>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                            <!-- End Swatches Color -->
+                            <!-- Product Button -->
+                            <div class="button-action hidden d-none">
+                                <div class="addtocart-btn">
+                                    <form class="addtocart" action="#" method="post">
+                                        <a href="#addtocart-modal" class="btn btn-md add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                            <i class="icon anm anm-cart-l me-2"></i><span class="text">Añadir al carrito</span>
+                                        </a>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- End Product Button -->
+                        </div>
+                        <!-- End product details -->
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+    <div class="view-collection text-center mt-5 mb-5 mt-md-5 justify-content-center align-item-center d-flex">
+        <a *ngIf="categorie"
+            [routerLink]="['/', locale, country, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]" 
+            class="category-link clr-none"
+            [attr.title]="'Explorar ' + categorie.title">
+            <button class="btn-dark-ld fw-light">Explorar {{ categorie.title }}</button>
+        </a>
+    </div>
+</div>

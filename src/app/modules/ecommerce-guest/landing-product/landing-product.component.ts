@@ -89,9 +89,9 @@ export class LandingProductComponent
   variedades: any[] = [];
   availableSizesCamisetas = ['L', 'M', 'S', 'XL', '2XL', '3XL'];
   availableSizesHoodies = ['L', 'M', 'S', 'XL', '2XL', '3XL'];
-  availableSizesGorra = ['One size'];
   availableSizesPerfume = ['50ML', '100ML'];
   availableSizesMugs = ['11 oz', '15 oz'];
+  availableSizesCaps = ['One size'];
   tallaError = false;
   cantidadError = false;
   isMobile: boolean = false;
@@ -560,20 +560,19 @@ export class LandingProductComponent
     );
 
     // Selecciona el array de tallas de acuerdo a la categoría del producto
-    const categoryTitle =
-      this.product_selected.categorie?.title?.toLowerCase() || '';
-
+    const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
+  
     let availableSizes: any = [];
     if (categoryTitle.toLowerCase().includes('t-shirts')) {
       availableSizes = this.availableSizesCamisetas;
     } else if (categoryTitle.toLowerCase().includes('mugs')) {
       availableSizes = this.availableSizesMugs;
-    } else if (categoryTitle.toLowerCase().includes('snapbacks')) {
-      availableSizes = this.availableSizesGorra;
+    } else if (categoryTitle.toLowerCase().includes('dad hats / baseball caps')) {
+      availableSizes = this.availableSizesCaps;
     } else if (categoryTitle.toLowerCase().includes('all shirts')) {
       availableSizes = this.availableSizesCamisetas;
     } else if (categoryTitle.toLowerCase().includes('hoodies')) {
-      availableSizes = this.availableSizesCamisetas;
+      availableSizes = this.availableSizesHoodies;
     }
 
     // Mapea las tallas disponibles, mostrando stock positivo o tachado si no hay stock
@@ -851,7 +850,7 @@ export class LandingProductComponent
       this.product_selected.categorie?.title?.toLowerCase() || '';
     const isCamisa = categoryTitle.toLowerCase().includes('t-shirts');
     const allShirts = categoryTitle.toLowerCase().includes('all shirts');
-    const isGorra = categoryTitle.toLowerCase().includes('snapbacks');
+    const isGorra = categoryTitle.toLowerCase().includes('dad hats / baseball caps');
     const isHoodies = categoryTitle.toLowerCase().includes('hoodies');
     const isMugs = categoryTitle.toLowerCase().includes('mugs');
 
@@ -864,7 +863,7 @@ export class LandingProductComponent
     } else if (isCamisa) {
       filteredSizes = this.availableSizesCamisetas;
     } else if (isGorra) {
-      filteredSizes = this.availableSizesGorra;
+      filteredSizes = this.availableSizesCaps;
     } else if (allShirts) {
       filteredSizes = this.availableSizesCamisetas;
     }

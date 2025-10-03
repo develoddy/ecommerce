@@ -122,13 +122,15 @@ export class ProductUIService {
     besProducts: any[],
     hoodiesProducts: any[],
     mugsProducts: any[],
+    capsProducts: any[],
     flashProductList: any[]
-  ): { ourProducts: any[], besProducts: any[], hoodiesProducts: any[], mugsProducts: any[], flashProductList: any[] } {
+  ): { ourProducts: any[], besProducts: any[], hoodiesProducts: any[], mugsProducts: any[], capsProducts: any[], flashProductList: any[]} {
 
     const processedOurProducts = ourProducts.map(product => this.processProductColors(product));
     const processedBesProducts = besProducts.map(product => this.processProductColors(product));
     const processedHoodiesProducts = hoodiesProducts.map(product => this.processProductColors(product));
     const processedMugsProducts = mugsProducts.map(product => this.processProductColors(product));
+    const processedCapsProducts = capsProducts.map(product => this.processProductColors(product));
     const processedFlashProducts = flashProductList.map(product => this.processProductColors(product));
 
     return {
@@ -136,6 +138,7 @@ export class ProductUIService {
       besProducts: processedBesProducts,
       hoodiesProducts: processedHoodiesProducts,
       mugsProducts: processedMugsProducts,
+      capsProducts: processedCapsProducts,
       flashProductList: processedFlashProducts
     };
   }

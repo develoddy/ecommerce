@@ -207,7 +207,7 @@ export class ModalService {
   private processProductColors(product: any): any {
     if (product) {
       const processedProducts = this.productUIService.setColoresDisponibles(
-        [product], [], [], [], []
+        [product], [], [], [], [], []
       );
       return processedProducts.ourProducts[0];
     }

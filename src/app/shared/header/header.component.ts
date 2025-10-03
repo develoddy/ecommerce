@@ -62,6 +62,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   ourProducts: any = [];
   hoodiesProducts: any = [];
   mugsProducts: any = [];
+  capsProducts: any = [];
   FlashProductList: any = [];
   FlashSales: any = null;
 
@@ -226,6 +227,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log("----> [Components Header] ourProducts with prices:", this.ourProducts);
     console.log("----> [Components Header] hoodiesProducts with prices:", this.hoodiesProducts);
     console.log("----> [Components Header] mugsProducts with prices:", this.mugsProducts);
+    console.log("----> [Components Header] capsProducts with prices:", this.capsProducts);
   }
 
   getPriceParts = (price: number) => {
@@ -242,6 +244,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         [],
         this.hoodiesProducts,
         this.mugsProducts,
+        this.capsProducts,
         this.FlashProductList
       );
       
@@ -249,6 +252,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.hoodiesProducts = processedProducts.hoodiesProducts;
       this.mugsProducts = processedProducts.mugsProducts;
       this.FlashProductList = processedProducts.flashProductList;
+      this.capsProducts = processedProducts.capsProducts;
     }
   }
 

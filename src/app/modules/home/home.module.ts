@@ -21,6 +21,7 @@ import { FlashSaleBannerComponent } from './components/flash-sale-banner/flash-s
 import { TestimonialsComponent } from './components/testimonials/testimonials.component';
 import { HodieGridComponent } from './components/hodie-grid/hodie-grid.component';
 import { MugGridComponent } from './components/mug-grid/mug-grid.component';
+import { CapGridComponent } from './components/cap-grid/cap-grid.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { MugGridComponent } from './components/mug-grid/mug-grid.component';
     FlashSaleBannerComponent,
     TestimonialsComponent,
     HodieGridComponent,
-    MugGridComponent
+    MugGridComponent,
+    CapGridComponent
   ],
   imports: [
     CommonModule,
