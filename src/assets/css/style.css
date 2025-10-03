@@ -1166,7 +1166,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .mini-product .mini-list-item .item-title { font-weight: 500; }
 .mini-product .product-review { margin-top: 7px; }
 .mini-list-item:not(:last-child) { border-bottom: 1px dotted rgba(0,0,0,0.15); padding-bottom: 15px; margin-bottom: 15px; }
-.mini-list-item .item-link, .mini-list-item .mini-image img { /*width:200px;*/ width:100%; display:block; }
+.mini-list-item .item-link, .mini-list-item .mini-image img { /*width:200px; width:100%;*/ display:block; }
 
 .top-info-bar { background-color: #131313; }
 .topbar-slider .top-info-bar { padding:0 5px; }

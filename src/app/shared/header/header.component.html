@@ -582,7 +582,7 @@
                         <div class="search-drawer offcanvas offcanvas-top" tabindex="-1" id="search-drawer">
                             <div class="container">
                                 <div class="search-header d-flex-center justify-content-between mb-3">
-                                    <h3 class="title m-0">¿Qué estás buscando?</h3>
+                                    <h3 class="title m-0 text-uppercase">Busca tu producto dev favorito</h3>
                                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                                         aria-label="Close"></button>
                                 </div>
@@ -590,7 +590,7 @@
                                     <form class="form minisearch" id="header-search">
                                         <!-- SEARCH FIELD -->
                                         <div class="d-flex searchField">
-                                            <div class="search-category">
+                                            <div class="search-category d-none">
                                                 <select class="rgsearch-category rounded-end-0">
                                                     <option value="0">Todas las categorías</option>
                                                     <option *ngFor="let categorie of categories" [value]="categorie.id">
@@ -599,16 +599,17 @@
                                             </div>
                                             <div class="input-box d-flex fl-1">
                                                 <input  type="search" 
-                                                        class="input-text border-start-0 border-end-0" 
+                                                        class="input-text border-end-0" 
                                                         [(ngModel)]="search_product" 
                                                         (keyup.enter)="searchProduct()" 
                                                         #filter 
                                                         name="prod-search" 
                                                         id="prod-search" 
-                                                        placeholder="Buscar"
+                                                        placeholder="Búsqueda"
+                                                        value=""
                                                 />
 
-                                                <button type="submit" class="action search d-flex-justify-center btn rounded-start-0">
+                                                <button type="submit" class="action search">
                                                     <i class="icon anm anm-search-l"></i>
                                                 </button>
                                             </div>
@@ -629,38 +630,32 @@
 
                                         <!-- RESULT SEARCH PRODUCTS -->
                                         <div class="search-products" *ngIf="products_search && products_search.length > 0">
-                                            <ul class="items g-2 g-md-3 row row-cols-lg-4 row-cols-md-3 row-cols-sm-2">
+                                            <!-- <ul class="items g-2 g-md-3 row row-cols-lg-4 row-cols-md-3 row-cols-sm-2"> -->
+                                            <ul class="items g-2 g-md-3 row row-cols-lg-12 row-cols-md-12 row-cols-sm-12">
                                                 <li class="item empty w-100 text-center text-muted d-none">No tienes ningún artículo en tu búsqueda.</li>
                                                 <ng-container *ngFor="let product of products_search">
                                                     <li class="item">
-                                                        <div class="mini-list-item d-flex w-100 clearfix" [ngClass]="{'flex-column': isDesktop, 'flex-row': isMobile}">
-                                                            <div class="mini-image text-center mb-2">
-                                                                <!-- <a href="#" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="{_id: product.campaing_discount?.id}" class="product-img"> product.campaing_discount._id-->
-                                                                <!-- <a class="item-link" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="getRouterDiscount(product)"> -->
+                                                        <div class="mini-list-item d-flex flex-row w-100 clearfix">
+                                                            <div class="mini-image text-center">
                                                                 <a class="item-link" href="#"
                                                                     onclick="return false;"
                                                                     (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
                                                                     <img class="blur-up lazyload"
                                                                         [attr.data-src]="product.imagen"
                                                                         [src]="product.imagen" alt="{{ product.title }}"
-                                                                        title="{{ product.title }}" width="120"
-                                                                        height="170" />
+                                                                        title="{{ product.title }}" 
+                                                                        width="50" height="50" />
                                                                 </a>
                                                             </div>
-                                                            <div class="details px-2 text-start">
+                                                            <div class="details px-3 align-self-center">
                                                                 <div class="product-name">
                                                                     <a class="item-title"
                                                                         href="#"
                                                                         onclick="return false;"
                                                                         (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
-                                                                        {{product.title }}
+                                                                        <small class="fs-10">{{product.title }}</small>
                                                                     </a>
                                                                 </div>
-                                                                <div class="product-price">
-                                                                    <span class="old-price" *ngIf="product.campaing_discount">{{product.price_usd}}{{ euro }}</span>
-                                                                    <span class="price">{{product.price_usd - getDiscountProduct(product)}}{{ euro }}</span>
-                                                                </div>
-
                                                                 <div class="product-review d-flex align-items-center justify-content-start d-none">
                                                                     <i class="icon anm anm-star-o"
                                                                         [ngClass]="{'icon anm anm-star': product.avg_review < 1}"></i>
