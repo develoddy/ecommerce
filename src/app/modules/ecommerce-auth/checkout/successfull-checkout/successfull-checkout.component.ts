@@ -715,12 +715,16 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
   /**
    * Verifica si hay algún producto con descuento (para usar en template)
+   * Solo retorna true si hay un descuento real mayor que cero
    */
   hasAnyProductWithDiscount(): boolean {
     if (!this.saleDetails || this.saleDetails.length === 0) {
       return false;
     }
-    return this.saleDetails.some((sale: any) => sale.discount || sale.code_discount);
+    
+    // Verificar si el descuento total es mayor que cero
+    const totalDiscount = this.getTotalDiscount();
+    return totalDiscount > 0;
   }
 
   /**
