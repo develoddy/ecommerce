@@ -105,7 +105,15 @@
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
                                                                         <label for="firstname" class="form-label d-none">Nombre <span class="required">*</span></label>
-                                                                        <input name="firstname" [(ngModel)]="name" #firstname="ngModel" id="firstname" type="text" required placeholder="Nombre" class="form-control py-4" [ngClass]="{'is-invalid': firstname.invalid && (firstname.touched || addressForm.submitted)}" />
+                                                                        <input name="firstname" 
+                                                                               [(ngModel)]="name" 
+                                                                               #firstname="ngModel" 
+                                                                               id="firstname" 
+                                                                               type="text" 
+                                                                               required 
+                                                                               placeholder="Nombre" 
+                                                                               class="form-control py-4" 
+                                                                               [ngClass]="{'is-invalid': firstname.invalid && (firstname.touched || addressForm.submitted)}" />
                                                                         <div *ngIf="firstname.invalid && (firstname.touched || addressForm.submitted)" class="invalid-feedback">
                                                                             Completa este campo para continuar
                                                                         </div>
@@ -221,7 +229,7 @@
                                                                         <button type="submit" class="btn-dark-ld" (click)="storeAddress()">
                                                                             <ng-container *ngIf="!loading">Guardar dirección</ng-container>
                                                                         </button>
-                                                                        <p class="mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">
+                                                                        <p class="mt-3 fw-normal" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">
                                                                             {{ this.errorOrSuccessMessage }}
                                                                         </p>
                                                                     </div>

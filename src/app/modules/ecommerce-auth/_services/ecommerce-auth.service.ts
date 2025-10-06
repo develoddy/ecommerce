@@ -168,6 +168,8 @@ export class EcommerceAuthService {
   }
 
   showProfileClient(data:any) {
+    console.log("---- DATA PARA PROFILE CLIENT: ", data);
+    
     this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"home/profile_client";

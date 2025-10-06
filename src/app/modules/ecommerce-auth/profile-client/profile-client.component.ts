@@ -142,12 +142,16 @@ export class ProfileClientComponent implements OnInit {
   }
 
   showProfileClient() {
+    console.log("---- MOSTRANDO PROFILE CLIENT: this.CURRENT_USER_AUTHENTICATED", this.CURRENT_USER_AUTHENTICATED);
     
     let data = {
-      user_id: this.CURRENT_USER_AUTHENTICATED._id, //this.user._id, //this._ecommerceAuthService._authService.user._id,
+      user_id: this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : 0, //this.user._id, //this._ecommerceAuthService._authService.user._id,
     };
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
+
+      console.log("---- PROFILE CLIENT: ", resp);
+      
 
       this.sale_orders = resp.sale_orders;
 

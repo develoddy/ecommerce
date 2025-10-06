@@ -69,15 +69,14 @@
 
     <!-- HEADER -->
     <header class="header d-flex align-items-center header-1 header-fixed bg-darkblue-ld">
-        <div [ngClass]="{'container-fluid px-5': isDesktop || isTablet, 'container': isMobile }"
-            class="container-header">
+        <div class="container-header" [ngClass]="{'container-fluid': isDesktop || isTablet, 'container': isMobile }">
             <div class="row">
                 <!-- MENU IZQUIERDA -->
                 <div *ngIf="!isMobile && !isTablet"
                     class="col-1 col-sm-1 col-md-1 align-self-center d-menu-col d-flex justify-content-start"
                     [ngClass]="{'col-lg-4': isDesktop, 'col-lg-6': isMobile}">
                     <nav class="navigation" id="AccessibleNav">
-                        <ul id="siteNav" class="site-nav medium center">
+                        <ul id="siteNav" class="site-nav medium left">
                             <li class="lvl1 parent dropdown text-uppercase fw-bold d-none">
                                 <a href="#"
                                     onclick="return false;">Mujer <i class="icon anm anm-angle-down-l d-none"></i></a>
@@ -180,7 +179,9 @@
 
                             <!-- CAMISETAS  -->
                             <li class="lvl1 parent megamenu">
-                                <a href="#" class="text-uppercase text-white">Camisetas <i class="icon anm anm-angle-down-l"></i></a>
+                                <a href="#" class="text-uppercase text-white">
+                                    <span class="menubar-label fw-bold">Camisetas <i class="icon anm anm-angle-down-l"></i></span>
+                                </a>
                                 <div class="megamenu style2">
                                     <ul class="row mmWrapper">
                                         <li class="lvl-1 col-md-3 col-lg-3">
@@ -200,7 +201,7 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li class="lvl-1 col-md-3 col-lg-3"><a href="#;"
+                                        <li class="lvl-1 col-md-3 col-lg-3 d-none"><a href="#;"
                                                 class="site-nav lvl-1 menu-title">Mujer</a>
                                             <ul class="subLinks">
                                                 <li class="lvl-2"><a href="product-standard.html"
@@ -324,7 +325,9 @@
 
                              <!-- SUDADERAS  -->
                             <li class="lvl1 parent megamenu">
-                                <a href="#" class="text-uppercase text-white">Sudaderas <i class="icon anm anm-angle-down-l"></i></a>
+                                <a href="#" class="text-uppercase text-white">
+                                    <span class="menubar-label fw-bold">Sudaderas <i class="icon anm anm-angle-down-l"></i></span>
+                                </a>
                                 <div class="megamenu style2">
                                     <ul class="row mmWrapper">
                                         <li class="lvl-1 col-md-3 col-lg-3">
@@ -522,10 +525,21 @@
                                     [routerLink]="['/', locale, country, 'shop', 'filter-products', mugsProducts[0].categorie.slug, mugsProducts[0].categorie.id]"
                                     class="text-uppercase text-white"
                                     [attr.title]="'Explorar ' + mugsProducts[0].categorie.title">
-                                    Mugs
+                                    <span class="menubar-label fw-bold">Mugs</span>
                                 </a>
                             </li>
                             <!-- END MUGS -->
+
+                            <!-- GORRAS -->
+                            <li class="lvl1 parent dropdown" *ngIf="mugsProducts && mugsProducts.length > 0">
+                                <a *ngIf="mugsProducts"
+                                    [routerLink]="['/', locale, country, 'shop', 'filter-products', mugsProducts[0].categorie.slug, mugsProducts[0].categorie.id]"
+                                    class="text-uppercase text-white"
+                                    [attr.title]="'Explorar ' + mugsProducts[0].categorie.title">
+                                    <span class="menubar-label fw-bold">Gorras</span>
+                                </a>
+                            </li>
+                            <!-- END GORRAS -->
 
                             <li class="lvl1 parent dropdown d-none"><a href="#">Blog <i class="icon anm anm-angle-down-l"></i></a>
                                 <ul class="dropdown">
