@@ -1,4 +1,4 @@
-<ng-container *ngIf="showSubscriptionSection; else onlyLogo">
+<div *ngIf="showSubscriptionSection; else onlyLogo">
     <!-- TOP HEADER -->
     <div class="top-header d-none">
         <div class="container">
@@ -67,19 +67,16 @@
     </div>
     <!-- END TOP HEADER -->
 
-    <!-- HEADER -->
-    <header class="header d-flex align-items-center header-1 header-fixed bg-darkblue-ld">
+    <!-- MAIN HEADER -->
+    <div class="header main-header d-flex align-items-center header-1 header-fixed bg-darkblue-ld">
         <div class="container-header" [ngClass]="{'container-fluid': isDesktop || isTablet, 'container': isMobile }">
             <div class="row">
-                <!-- MENU IZQUIERDA -->
-                <div *ngIf="!isMobile && !isTablet"
-                    class="col-1 col-sm-1 col-md-1 align-self-center d-menu-col d-flex justify-content-start"
-                    [ngClass]="{'col-lg-4': isDesktop, 'col-lg-6': isMobile}">
+                <!-- MENU IZQUIERDA - Minimizado para dejar espacio al buscador central -->
+                <div *ngIf="!isMobile && !isTablet" class="col-1 col-sm-1 col-md-1 col-lg-3 align-self-center d-menu-col d-flex justify-content-start d-none">
                     <nav class="navigation" id="AccessibleNav">
                         <ul id="siteNav" class="site-nav medium left">
                             <li class="lvl1 parent dropdown text-uppercase fw-bold d-none">
-                                <a href="#"
-                                    onclick="return false;">Mujer <i class="icon anm anm-angle-down-l d-none"></i></a>
+                                <a href="#" onclick="return false;">Mujer <i class="icon anm anm-angle-down-l d-none"></i></a>
                                 <ul class="dropdown d-none">
                                     <li><a href="index.html" class="site-nav lvl-2">Home 01 - Fashion</a></li>
                                     <li><a href="index2-footwear.html" class="site-nav lvl-2">Home 02 - Footwear</a>
@@ -201,7 +198,7 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li class="lvl-1 col-md-3 col-lg-3 d-none"><a href="#;"
+                                        <li class="lvl-1 col-md-3 col-lg-3"><a href="#;"
                                                 class="site-nav lvl-1 menu-title">Mujer</a>
                                             <ul class="subLinks">
                                                 <li class="lvl-2"><a href="product-standard.html"
@@ -323,7 +320,7 @@
                             </li>
                             <!-- END CAMISETAS -->
 
-                             <!-- SUDADERAS  -->
+                            <!-- SUDADERAS  -->
                             <li class="lvl1 parent megamenu">
                                 <a href="#" class="text-uppercase text-white">
                                     <span class="menubar-label fw-bold">Sudaderas <i class="icon anm anm-angle-down-l"></i></span>
@@ -556,11 +553,8 @@
                 </div>
                 <!-- END MENU IZQUIERDA -->
 
-                <!-- BACKGROUND #febd69 -->
-
-                <!-- LOGO CENTRAL -->
-                <div class="logo col-4 col-sm-3 col-md-3 d-flex  align-self-center"
-                    [ngClass]="{'col-lg-4 justify-content-center': isDesktop, 'col-lg-3 justify-content-start': isMobile}">
+                <!-- LOGO IZQUIERDA -->
+                <div class="logo col-4 col-sm-3 col-md-3 d-flex justify-content-start align-self-center" [ngClass]="{'col-lg-3': isDesktop, 'col-lg-3 justify-content-start': isMobile}">
                     <!--Mobile Toggle-->
                     <button type="button" class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none px-0"
                         title="Menu">
@@ -576,13 +570,73 @@
                         <img src="assets/images/logo.png" alt="LujanDev" title="LujanDev" />
                     </a>
                 </div>
-                <!-- END LOGO CENTRAL -->
+                <!-- END LOGO IZQUIERDA -->
+                
+                <!-- BUSCADOR CENTRAL - Al estilo Amazon -->
+                <div class="col-md-6 align-self-center d-none d-lg-block" [ngClass]="{'col-lg-6': isDesktop}">
+                    <div class="search-amazon-style w-100">
+                        <div class="input-box d-flex border rounded overflow-hidden" style="background-color: white;">
+                            <input  type="search" 
+                                    class="input-text border-0 border-end-0" 
+                                    [(ngModel)]="search_product" 
+                                    #filter
+                                    name="prod-search" 
+                                    id="prod-search" 
+                                    placeholder="Buscar en Lujandev.com"
+                                    value=""
+                                    style="height: 45px;"
+                            />
+                            <button type="button" (click)="searchProduct()" class="" style="background-color: #FEBD69; border-color: #FEBD69;width: 50px;">
+                                <i class="icon anm anm-search-l fw-bold"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- RESULTADO DE BÚSQUEDA -->
+                        <!-- <div class="search-products position-absolute bg-white shadow-lg mt-1 rounded border w-100"  style="z-index: 9999; max-height: 400px; overflow-y: auto; left: 0; right: 0; width: 48.7%;" *ngIf="products_search && products_search.length > 0"> -->
+                        <div class="search-products position-absolute bg-white shadow-lg mt-1 rounded border" style="z-index: 9999; max-height: 400px; overflow-y: auto; width: 48.7%;" *ngIf="products_search && products_search.length > 0">
+                            <ul class="items list-group list-group-flush">
+                                <ng-container *ngFor="let product of products_search">
+                                    <li class="list-group-item p-2">
+                                        <div class="mini-list-item d-flex flex-row w-100 clearfix">
+                                            <div class="mini-image text-center me-2">
+                                                <a class="item-link" href="#"
+                                                    onclick="return false;"
+                                                    (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
+                                                    <img class="blur-up lazyload"
+                                                        [attr.data-src]="product.imagen"
+                                                        [src]="product.imagen" alt="{{ product.title }}"
+                                                        title="{{ product.title }}" 
+                                                        width="65" height="65" />
+                                                </a>
+                                            </div>
+                                            <div class="details px-2 align-self-center">
+                                                <div class="product-name">
+                                                    <a class="item-title text-dark"
+                                                        href="#"
+                                                        onclick="return false;"
+                                                        (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
+                                                        <small class="text-uppercase">{{product.title }}</small>
+                                                    </a>
+                                                </div>
+                                                <div class="product-price">
+                                                    <span class="price" [ngClass]="{ 'text-danger': product.campaing_discount }">
+                                                        {{product.finalPrice}}{{euro}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- END BUSCADOR CENTRAL -->
 
                 <!-- MENU DERECHA -->
-                <div class="col-8 col-sm-9 col-md-6 align-self-center icons-col d-flex justify-content-end"
-                    [ngClass]="{'col-lg-4': isDesktop}">
-                    <!-- CAMPO DE BUSQUEDA -->
-                    <div class="search-parent iconset" [ngClass]="{'px-2': isMobile}">
+                <div class="col-8 col-sm-9 col-md-3 align-self-center icons-col d-flex justify-content-end" [ngClass]="{'col-lg-3': isDesktop}">
+                    <!-- CAMPO DE BUSQUEDA - Visible solo en móvil -->
+                    <div class="search-parent iconset d-lg-none" [ngClass]="{'px-2': isMobile}">
                         <div class="site-search" title="Search">
                             <a href="#;" class="search-icon clr-none" data-bs-toggle="offcanvas" data-bs-target="#search-drawer">
                                 <svg width="24" height="24" role="img" aria-hidden="true"
@@ -617,16 +671,15 @@
                                                 <input  type="search" 
                                                         class="input-text border-end-0" 
                                                         [(ngModel)]="search_product" 
-                                                        (keyup.enter)="searchProduct()" 
-                                                        #filter 
-                                                        name="prod-search" 
-                                                        id="prod-search" 
+                                                        (keyup)="searchProduct()"
+                                                        name="prod-search-mobile" 
+                                                        id="prod-search-mobile" 
                                                         placeholder="Buscar en Lujandev.com"
                                                         value=""
                                                 />
 
-                                                <button type="submit" class="action search">
-                                                    <i class="icon anm anm-search-l"></i>
+                                                <button type="button" class="action search" style="background-color: #FEBD69; width: 50px;" (click)="searchProduct()">
+                                                    <i class="icon anm anm-search-l fw-bold"></i>
                                                 </button>
                                             </div>
                                         </div>
@@ -841,9 +894,384 @@
                 <!-- END MENU DERECHA -->
             </div>
         </div>
-    </header>
-    <!-- END HEADER -->
-</ng-container>
+    </div>
+    <!-- END MAIN HEADER -->
+
+    <!-- SUB-HEADER -->
+    <div class="sub-header bg-darklight-ld py-2 position-fixed w-100" [ngClass]="{'d-none': isMobile}" style="top: 80px; z-index: 99;">
+        <div class="container-fluid d-menu-col">
+            <nav class="menu navigation" id="AccessibleNav">
+                <!-- <ul class="menu-list d-flex justify-content-center m-0 p-0"> -->
+                <ul id="siteNav" class="site-nav medium left">
+                    <!-- CAMISETAS  -->
+                    <li class="lvl1 parent megamenu">
+                        <a href="#" class="text-uppercase">
+                            <span class="menubar-label fw-bold text-white">Camisetas <i class="icon anm anm-angle-down-l"></i></span>
+                        </a>
+                        <div class="megamenu style2">
+                            <ul class="row mmWrapper">
+                                <li class="lvl-1 col-md-3 col-lg-3">
+                                    <a href="#;" class="site-nav lvl-1 menu-title">Hombre</a>
+                                    <ul class="subLinks">
+                                        <li class="lvl-2">
+                                            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central']" class="site-nav lvl-2">Logo Central</a>
+                                            <!-- <a *ngIf="categorie"
+                                                [routerLink]="['/', locale, country, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]"
+                                                class="category-link clr-none"
+                                                [attr.title]="'Explorar ' + categorie.title">
+                                                <button class="btn-dark-ld fw-light">Explorar {{ categorie.title }}</button>
+                                            </a> -->
+                                        </li>
+                                        <li class="lvl-2">
+                                            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="lvl-1 col-md-3 col-lg-3"><a href="#;"
+                                        class="site-nav lvl-1 menu-title">Mujer</a>
+                                    <ul class="subLinks">
+                                        <li class="lvl-2"><a href="product-standard.html"
+                                                class="site-nav lvl-2">Todas las sudaderas</a></li>
+                                        <li class="lvl-2"><a href="product-variable.html"
+                                                class="site-nav lvl-2">Sudaderas con capucha</a></li>
+                                    </ul>
+                                </li>
+                                <li class="lvl-1 col-md-3 col-lg-6 product-col" *ngIf="ourProducts && ourProducts.length > 0">
+                                    <a href="#;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
+                                    <div class="grid-products weekly-product gp10 mt-1">
+                                        <ng-container *ngFor="let ourProduct of ourProducts">
+                                            <div class="item">
+                                                <div class="product-wrap position-relative">
+                                                    <!-- Start Product Image -->
+                                                    <div class="product-image mb-0">
+                                                        <!-- Imagen -->
+                                                        <a href="#" class="product-img">
+                                                            <!-- Image principal -->
+                                                            <img
+                                                                class="blur-up lazyload"
+                                                                data-src="{{ ourProduct.imagen }}"
+                                                                src="{{ ourProduct.imagen }}"
+                                                                alt="Camiseta {{ourProduct.title}} para programadores LujanDev"
+                                                                title="Camiseta {{ourProduct.title}} para programadores LujanDev"
+                                                                width="625" height="808"
+                                                            />
+                                                            <!-- End Image principal -->
+                                                            <!-- Hover Image -->
+                                                            <ng-container *ngIf="ourProduct.imagen_two">
+                                                                <img class="hover blur-up lazyload"
+                                                                    data-src="{{ ourProduct.imagen_two }}"
+                                                                    src="{{ ourProduct.imagen_two }}"
+                                                                    alt="Camiseta {{ourProduct.title}} para programadores LujanDev"
+                                                                    title="Camiseta {{ourProduct.title}} para programadores LujanDev"
+                                                                    width="625" height="808"
+                                                                    style="object-fit: cover" />
+                                                            </ng-container>
+                                                            <!-- End Hover Image -->
+                                                        </a>
+                                                        <!-- End Imagen -->
+                                                        <!-- Product label -->
+                                                        <div class="product-labels">
+                                                            <span *ngIf="getDiscountLabel(ourProduct)" class="lbl pr-label3">
+                                                                {{ getDiscountLabel(ourProduct) }}
+                                                            </span>
+                                                            <!-- Label de mejor vendido -->
+                                                            <span *ngIf="!ourProduct.hasDiscount && ourProduct.isBestSeller" class="lbl pr-label4">
+                                                                Mejor Vendido
+                                                            </span>
+                                                        </div>
+                                                        <!-- End Product label -->
+                                                    </div>
+                                                    <!-- End Product Image -->
+
+                                                    <!-- Start Product Details -->
+                                                    <div class="product-details">
+                                                        <div class="product-name lh-1">
+                                                            <!-- <a class="fw-normal" href="#">Bodysuit Black</a> -->
+                                                            <a [routerLink]="['/',locale,country,'shop','product',ourProduct.slug]"
+                                                                [queryParams]="getRouterDiscount(ourProduct)"
+                                                                class="text-truncate d-inline-block product-title fw-light"
+                                                                itemprop="name">
+                                                                {{ ourProduct.title }}
+                                                            </a>
+                                                        </div>
+
+                                                        <!-- Product Price -->
+                                                        <div class="product-price">
+                                                            <span class="price old-price" *ngIf="ourProduct.campaing_discount">
+                                                                {{ourProduct.price_usd}}{{euro}}
+                                                            </span>
+
+                                                            <!-- Precio final -->
+                                                            <span class="price" [ngClass]="{ 'text-danger': ourProduct.campaing_discount }">
+                                                                <span class="">{{getPriceParts(ourProduct.finalPrice).integer}}.</span>
+                                                                <span class="">
+                                                                    {{getPriceParts(ourProduct.finalPrice).decimals}}
+                                                                    <span class="">{{euro}}</span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                        <!-- End Product Price -->
+
+                                                        <!-- Swatches Color -->
+                                                        <ul class="variants-clr swatches">
+                                                            <ng-container *ngFor="let item of ourProduct.colores; let colorIndex = index">
+                                                                <li class="swatch medium"
+                                                                    [class.active]="isColorSelected(ourProduct, colorIndex)"
+                                                                    (click)="onColorSelect(ourProduct, colorIndex, item.imagen)">
+                                                                    <span class="swatchLbl"
+                                                                        [style.background-color]="item.hex"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-bs-placement="top"
+                                                                        title="{{ item.color }}">
+                                                                    </span>
+                                                                </li>
+                                                            </ng-container>
+                                                        </ul>
+                                                        <!-- End Swatches Color -->
+
+                                                        <div class="product-review d-none">
+                                                            <i class="icon anm anm-star"></i><i
+                                                                class="icon anm anm-star"></i><i
+                                                                class="icon anm anm-star"></i><i
+                                                                class="icon anm anm-star"></i><i
+                                                                class="icon anm anm-star-o"></i>
+                                                            <span class="caption hidden ms-1">3 Reviews</span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End product details -->
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- END CAMISETAS -->
+
+                    <!-- SUDADERAS  -->
+                    <li class="lvl1 parent megamenu">
+                        <a href="#" class="text-uppercase">
+                            <span class="menubar-label fw-bol text-white">Sudaderas <i class="icon anm anm-angle-down-l"></i></span>
+                        </a>
+                        <div class="megamenu style2">
+                            <ul class="row mmWrapper">
+                                <li class="lvl-1 col-md-3 col-lg-3">
+                                    <a href="#;" class="site-nav lvl-1 menu-title">Hombre</a>
+                                    <ul class="subLinks">
+                                        <li class="lvl-2"><a href="product-layout1.html"
+                                                class="site-nav lvl-2">Todas las sudaderas</a></li>
+                                        <li class="lvl-2"><a href="product-layout2.html"
+                                                class="site-nav lvl-2">Sudaderas con capucha</a></li>
+                                    </ul>
+                                </li>
+                                <li class="lvl-1 col-md-3 col-lg-3"><a href="#;"
+                                        class="site-nav lvl-1 menu-title">Mujer</a>
+                                    <ul class="subLinks">
+                                        <li class="lvl-2"><a href="product-standard.html"
+                                                class="site-nav lvl-2">Todas las sudaderas</a></li>
+                                        <li class="lvl-2"><a href="product-variable.html"
+                                                class="site-nav lvl-2">Sudaderas con capucha</a></li>
+                                    </ul>
+                                </li>
+                                <li class="lvl-1 col-md-3 col-lg-6 product-col" *ngIf="hoodiesProducts && hoodiesProducts.length > 0">
+                                    <a href="#;"class="site-nav lvl-1 menu-title">Los más vendidos</a>
+                                    <div class="grid-products weekly-product gp10 mt-1">
+                                        <ng-container *ngFor="let hoodieProduct of hoodiesProducts">
+                                            <div class="item">
+                                                <div class="product-wrap position-relative">
+                                                    <!-- Start Product Image -->
+                                                    <div class="product-image mb-0">
+                                                        <!-- Imagen -->
+                                                        <a href="#" class="product-img">
+                                                            <!-- Image principal -->
+                                                            <img
+                                                                class="blur-up lazyload"
+                                                                data-src="{{ hoodieProduct.imagen }}"
+                                                                src="{{ hoodieProduct.imagen }}"
+                                                                alt="Camiseta {{hoodieProduct.title}} para programadores LujanDev"
+                                                                title="Camiseta {{hoodieProduct.title}} para programadores LujanDev"
+                                                                width="625" height="808"
+                                                            />
+                                                            <!-- End Image principal -->
+                                                            <!-- Hover Image -->
+                                                            <ng-container *ngIf="hoodieProduct.imagen_two">
+                                                                <img class="hover blur-up lazyload"
+                                                                    data-src="{{ hoodieProduct.imagen_two }}"
+                                                                    src="{{ hoodieProduct.imagen_two }}"
+                                                                    alt="Camiseta {{hoodieProduct.title}} para programadores LujanDev"
+                                                                    title="Camiseta {{hoodieProduct.title}} para programadores LujanDev"
+                                                                    width="625" height="808"
+                                                                    style="object-fit: cover" />
+                                                            </ng-container>
+                                                            <!-- End Hover Image -->
+                                                        </a>
+                                                        <!-- End Imagen -->
+                                                        <!-- Product label -->
+                                                        <div class="product-labels">
+                                                            <span *ngIf="getDiscountLabel(hoodieProduct)" class="lbl pr-label3">
+                                                                {{ getDiscountLabel(hoodieProduct) }}
+                                                            </span>
+                                                            <!-- Label de mejor vendido -->
+                                                            <span *ngIf="!hoodieProduct.hasDiscount && hoodieProduct.isBestSeller" class="lbl pr-label4">
+                                                                Mejor Vendido
+                                                            </span>
+                                                        </div>
+                                                        <!-- End Product label -->
+                                                    </div>
+                                                    <!-- End Product Image -->
+
+                                                    <!-- Start Product Details -->
+                                                    <div class="product-details">
+                                                        <div class="product-name lh-1">
+                                                            <!-- <a class="fw-normal" href="#">Bodysuit Black</a> -->
+                                                            <a [routerLink]="['/',locale,country,'shop','product',hoodieProduct.slug]"
+                                                                [queryParams]="getRouterDiscount(hoodieProduct)"
+                                                                class="text-truncate d-inline-block product-title fw-light"
+                                                                itemprop="name">
+                                                                {{ hoodieProduct.title }}
+                                                            </a>
+                                                        </div>
+
+                                                        <!-- Product Price -->
+                                                        <div class="product-price">
+                                                            <span class="price old-price" *ngIf="hoodieProduct.campaing_discount">
+                                                                {{hoodieProduct.price_usd}}{{euro}}
+                                                            </span>
+
+                                                            <!-- Precio final -->
+                                                            <span class="price" [ngClass]="{ 'text-danger': hoodieProduct.campaing_discount }">
+                                                                <span class="">{{getPriceParts(hoodieProduct.finalPrice).integer}}.</span>
+                                                                <span class="">
+                                                                    {{getPriceParts(hoodieProduct.finalPrice).decimals}}
+                                                                    <span class="">{{euro}}</span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                        <!-- End Product Price -->
+
+                                                        <!-- Swatches Color -->
+                                                        <ul class="variants-clr swatches">
+                                                            <ng-container *ngFor="let item of hoodieProduct.colores; let colorIndex = index">
+                                                                <li class="swatch medium"
+                                                                    [class.active]="isColorSelected(hoodieProduct, colorIndex)"
+                                                                    (click)="onColorSelect(hoodieProduct, colorIndex, item.imagen)">
+                                                                    <span class="swatchLbl"
+                                                                        [style.background-color]="item.hex"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-bs-placement="top"
+                                                                        title="{{ item.color }}">
+                                                                    </span>
+                                                                </li>
+                                                            </ng-container>
+                                                        </ul>
+                                                        <!-- End Swatches Color -->
+                                                    </div>
+                                                    <!-- End product details -->
+                                                </div>
+                                            </div>
+                                        </ng-container>
+
+
+
+                                        <div class="item d-none">
+                                            <div class="product-wrap position-relative">
+                                                <!-- Start Product Image -->
+                                                <div class="product-image mb-0">
+                                                    <a href="product-layout1.html" class="product-img"><img
+                                                            class="blur-up lazyload"
+                                                            data-src="assets/images/megamenu/product1.jpg"
+                                                            src="assets/images/megamenu/product1.jpg"
+                                                            alt="product" title="Product" width="625"
+                                                            height="808" /></a>
+                                                </div>
+                                                <!-- End Product Image -->
+                                                <!-- Start Product Details -->
+                                                <div class="product-details text-center">
+                                                    <div class="product-name"><a class="fw-normal"
+                                                            href="product-layout1.html">Drawstring Dress</a>
+                                                    </div>
+                                                    <div class="product-price">
+                                                        <span class="price">$165.00</span>
+                                                    </div>
+                                                    <div class="product-review">
+                                                        <i class="icon anm anm-star"></i><i
+                                                            class="icon anm anm-star"></i><i
+                                                            class="icon anm anm-star"></i><i
+                                                            class="icon anm anm-star"></i><i
+                                                            class="icon anm anm-star"></i>
+                                                        <span class="caption hidden ms-1">13 Reviews</span>
+                                                    </div>
+                                                </div>
+                                                <!-- End product details -->
+                                            </div>
+                                        </div>
+                                        <div class="item d-none">
+                                            <div class="product-wrap position-relative">
+                                                <!-- Start Product Image -->
+                                                <div class="product-image mb-0">
+                                                    <a href="product-layout1.html" class="product-img"><img
+                                                            class="blur-up lazyload"
+                                                            data-src="assets/images/megamenu/product1.jpg"
+                                                            src="assets/images/megamenu/product1.jpg"
+                                                            alt="product" title="Product" width="625"
+                                                            height="808" /></a>
+                                                </div>
+                                                <!-- End Product Image -->
+                                                <!-- Start Product Details -->
+                                                <div class="product-details text-center">
+                                                    <div class="product-name"><a class="fw-normal"
+                                                            href="product-layout1.html">Realm Solid Backpack</a>
+                                                    </div>
+                                                    <div class="product-price">
+                                                        <span class="price">$153.00</span>
+                                                    </div>
+                                                    <div class="product-review">
+                                                        <i class="icon anm anm-star"></i><i
+                                                            class="icon anm anm-star"></i><i
+                                                            class="icon anm anm-star"></i><i
+                                                            class="icon anm anm-star-o"></i><i
+                                                            class="icon anm anm-star-o"></i>
+                                                        <span class="caption hidden ms-1">17 Reviews</span>
+                                                    </div>
+                                                </div>
+                                                <!-- End product details -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- END SUDADERAS -->
+
+                    <!-- MUGS -->
+                    <li class="lvl1 parent dropdown" *ngIf="mugsProducts && mugsProducts.length > 0">
+                        <a *ngIf="mugsProducts"
+                            [routerLink]="['/', locale, country, 'shop', 'filter-products', mugsProducts[0].categorie.slug, mugsProducts[0].categorie.id]"
+                            class="text-uppercase"
+                            [attr.title]="'Explorar ' + mugsProducts[0].categorie.title">
+                            <span class="menubar-label fw-bold text-white">Mugs</span>
+                        </a>
+                    </li>
+                    <!-- END MUGS -->
+
+                    <!-- GORRAS -->
+                    <li class="lvl1 parent dropdown" *ngIf="mugsProducts && mugsProducts.length > 0">
+                        <a *ngIf="mugsProducts"
+                            [routerLink]="['/', locale, country, 'shop', 'filter-products', mugsProducts[0].categorie.slug, mugsProducts[0].categorie.id]"
+                            class="text-uppercase"
+                            [attr.title]="'Explorar ' + mugsProducts[0].categorie.title">
+                            <span class="menubar-label fw-bold text-white">Gorras</span>
+                        </a>
+                    </li>
+                    <!-- END GORRAS -->
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- END SUB-HEADER -->
+</div>
 
 <ng-template #onlyLogo>
     <div class="checkout-logo-header text-center py-3">
@@ -1199,14 +1627,12 @@
                             euro }}</span>
                     </div>
                 </div>
-                <div class="totalInfo clearfix"><span class="text-capitalize fw-light">Envío</span><span
-                        class="item product-price text-capitalize fw-light">Gratis</span></div>
+                <div class="totalInfo clearfix"><span class="text-capitalize fw-light">Envío</span><span class="item product-price text-capitalize fw-light">Gratis</span></div>
                 <div class="totalInfo clearfix">
                     <span>Total</span>
                     <div class="item product-price d-flex">
-                        <span class="me-1">{{ totalCarts | number: '1.2-2' }}</span><span
-                            style="font-family: sans-serif;font-size: .85rem;" class="align-self-center">{{ euro
-                            }}</span>
+                        <span class="me-1">{{ totalCarts | number: '1.2-2' }}</span>
+                        <span style="font-family: sans-serif;font-size: .85rem;" class="align-self-center">{{ euro }}</span>
                     </div>
                 </div>
             </div>

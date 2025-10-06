@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, debounceTime, forkJoin, fromEvent, Observable, of, Subscription, tap } from 'rxjs';
@@ -89,6 +89,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private subscriptionService: SubscriptionService,
     private localizationService: LocalizationService,
     private headerEventsService: HeaderEventsService,
+    private cd: ChangeDetectorRef,
 
     //SERVICE NEW
     public homeService: HomeService,
@@ -601,7 +602,16 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  searchProduct() {}
+  searchProduct() {
+    // Verificar si hay un término de búsqueda válido
+    if (this.search_product && this.search_product.trim().length > 1) {
+      const data = { search_product: this.search_product };
+      this.cartService.searchProduct(data).subscribe((resp: any) => {
+        this.products_search = resp.products;
+        this.cd.detectChanges();
+      });
+    }
+  }
   
   getRouterDiscount(product:any) {
     if (product.campaing_discount) {
