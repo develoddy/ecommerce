@@ -11,7 +11,7 @@
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
                         <div class="page-title text-uppercase"><h2>Añadir dirección</h2></div>
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs d-none"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Mi cuenta</span></div>
+                        <div class="breadcrumbs"><a href="index.html" onclick="return false;" class="text-decoration-underline" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Añadir dirección</span></div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                                 <!-- Mostrar la lista de direcciones -->
                                 <div class="address-book-section">
                                     <!-- <h3 class="title mb-5 text-center">Añadir dirección</h3> -->
-                                    <p class="text-center mb-4 fw-bold lh-1">Para garantizar la correcta entrega de tu pedido, <br> por favor añade una dirección de envío antes <br>  de completar tu compra.</p>
+                                    <p class="text-center mb-4 lh-1">Para garantizar la correcta entrega de tu pedido, <br> por favor añade una dirección de envío antes <br>  de completar tu compra.</p>
                                     <fieldset>
                                         <!-- Nombre -->
                                         <div class="row justify-content-center">
@@ -57,13 +57,11 @@
                                         <div class="row justify-content-center">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
                                                 <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
-                                                <select id="address_country1" name="address[country]" [(ngModel)]="pais" data-default="United States" class="form-control py-4">
-                                                    <option value="0" label="Seleccione un país" selected="selected">Seleccionar un país</option>
-                                                    <optgroup id="country-optgroup-Eu" label="Europe">
-                                                        <option value="IT" label="Italy">Italy</option>
-                                                        <option value="PT" label="Portugal">Portugal</option>
-                                                        <option value="RO" label="Romania">Romania</option>
-                                                        <option value="SPAIN" label="Spain">Spain</option>
+                                                <select id="address_country1" name="address[country]" required [(ngModel)]="pais" data-default="United States" class="form-control py-4">
+                                                    <option value="" disabled>País</option>
+                                                    <optgroup id="country-optgroup-Eu" label="Europa">
+                                                        <option value="ES" label="España">España</option>
+                                                        <option value="FR" label="Francia">Francia</option>
                                                     </optgroup>
                                                 </select>
                                             </div>
@@ -89,14 +87,14 @@
                                                 <input name="city" placeholder="Población" class="form-control py-4" value="" required="" [(ngModel)]="poblacion" id="new-city" type="text" />
                                             </div>
                                         </div>
-                                        <!-- Ciudad -->
+                                        <!-- Provincia -->
                                         <div class="row justify-content-center">
                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="address_State" class="form-label d-none">Ciudad <span class="required">*</span></label>
-                                                <select id="address_State" name="address[State]" data-default="" [(ngModel)]="ciudad" class="form-control py-4">
-                                                    <option value="0" label="Select a state" selected="selected">Provincia/Estado</option>
+                                                <label for="address_State" class="form-label d-none">Provincia <span class="required">*</span></label>
+                                                <select id="address_State" name="address[State]" [(ngModel)]="ciudad" required class="form-control py-4 fw-light">
+                                                    <option value="" disabled>Provincia</option>
                                                     <option value="Madrid">Madrid</option>
-                                                    <option value="New York">New York</option>
+                                                    <option value="Paris">París</option>
                                                 </select>
                                             </div>
                                         </div>

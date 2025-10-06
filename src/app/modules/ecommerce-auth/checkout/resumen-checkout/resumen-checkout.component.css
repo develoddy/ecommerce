@@ -33,9 +33,7 @@
 }
 
 
-.w-60 {
-    width: 60% !important;
-}
+
 /* Thinner placeholder text for address inputs */
 input.form-control::placeholder,
 textarea.form-control::placeholder {

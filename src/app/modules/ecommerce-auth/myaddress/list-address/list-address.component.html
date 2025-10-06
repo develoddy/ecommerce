@@ -64,7 +64,7 @@
                                                     <div class="address-box bg-block d-flex flex-column">
                                                         <div class="top d-flex-justify-center justify-content-between mb-3">
                                                             <h5 class="m-0 fw-bold">{{ list_address.name +' '+ list_address.surname }}</h5>
-                                                            <span class="product-labels start-auto end-0"><span class="lbl pr-label1">Casa</span></span>
+                                                            <span class="product-labels start-auto end-0"><span class="lbl pr-label1 fw-normal">Casa</span></span>
                                                         </div>
                                                         <div class="middle flex-grow-1">
                                                             <div class="address">
@@ -79,11 +79,11 @@
                                                             <div class="form-text px-2 mt-3 text-dark" style="width: fit-content !important; background-color: #f3f3f3;" *ngIf="list_address.usual_shipping_address">Dirección de envío habitual</div>
                                                         </div>
                                                         <div class="bottom d-flex-justify-center justify-content-between">
-                                                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'myaddresses', list_address.id, 'edit']">
-                                                                <button type="button" class="btn-dark-ld text-uppercase">Editar</button>
+                                                            <a href="#" onclick="return false;" class="text-decoration-underline" [routerLink]="['/', this.locale, this.country, 'account', 'myaddresses', list_address.id, 'edit']">
+                                                                Editar
                                                             </a>
-                                                            <a href="#" onclick="return false;" (click)="removeAddressSelected(list_address)">
-                                                                <button type="button" class="btn-dark-ld text-uppercase" >Eliminar</button>
+                                                            <a href="#" onclick="return false;" class="text-decoration-underline" (click)="removeAddressSelected(list_address)">
+                                                                Eliminar
                                                             </a>                                                            
                                                         </div>
                                                     </div>

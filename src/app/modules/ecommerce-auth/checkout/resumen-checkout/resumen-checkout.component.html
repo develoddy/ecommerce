@@ -137,15 +137,11 @@
                                                                         <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
                                                                         <select id="address_country1" name="address[country]" [(ngModel)]="pais" #paisSelect="ngModel" required class="form-control py-4 fw-light" [ngClass]="{'is-invalid': paisSelect.invalid && (paisSelect.touched || addressForm.submitted)}">
                                                                             <option value="" disabled>
-                                                                                Seleccionar un país
+                                                                                País
                                                                             </option>
-                                                                            <optgroup id="country-optgroup-Eu" label="Europe">
-                                                                                <option value="IT" label="Italy">Italy</option>
-                                                                                <option value="PT" label="Portugal">
-                                                                                    Portugal
-                                                                                </option>
-                                                                                <option value="RO" label="Romania">Romania</option>
-                                                                                <option value="SPAIN" label="Spain">Spain</option>
+                                                                            <optgroup id="country-optgroup-Eu" label="Europa">
+                                                                                <option value="ES" label="España">España</option>
+                                                                                <option value="FR" label="Francia">Francia</option>
                                                                             </optgroup>
                                                                         </select>
                                                                         <div *ngIf="paisSelect.invalid && (paisSelect.touched || addressForm.submitted)" class="invalid-feedback">
@@ -183,16 +179,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Ciudad -->
+                                                                <!-- Provincia -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="address_State" class="form-label d-none">Ciudad <span class="required">*</span></label>
+                                                                        <label for="address_State" class="form-label d-none">Provincia <span class="required">*</span></label>
                                                                         <select id="address_State" name="address[State]" [(ngModel)]="ciudad" #ciudadRef="ngModel" required class="form-control py-4 fw-light" [ngClass]="{'is-invalid': ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)}">
                                                                             <option value="" disabled>
-                                                                                Provincia/Estado
+                                                                                Provincia
                                                                             </option>
                                                                             <option value="Madrid">Madrid</option>
-                                                                            <option value="New York">New York</option>
+                                                                            <option value="Paris">París</option>
                                                                         </select>
                                                                         <div *ngIf="ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)" class="invalid-feedback">
                                                                             Completa este campo para continuar

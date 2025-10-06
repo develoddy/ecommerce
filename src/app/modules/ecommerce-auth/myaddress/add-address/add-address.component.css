@@ -1,0 +1,35 @@
+/* Thinner placeholder text for address inputs */
+input.form-control::placeholder,
+textarea.form-control::placeholder {
+    font-weight: 300;
+    opacity: 1;
+}
+/* Style disabled select placeholder option */
+select.form-control option[disabled] {
+    color: #6c757d; /* gray tone */
+    font-weight: 300; /* light placeholder font */
+    opacity: 1; /* ensure visibility */
+}
+/* Fix select padding for py-4 on this component: restore default padding and height */
+/* Override select padding and line-height to show placeholder */
+select.form-control.py-4 {
+    padding: .75rem 1.25rem !important;
+    line-height: 1.5 !important;
+    height: auto !important;
+}
+/* Vendor prefixes */
+input.form-control::-webkit-input-placeholder,
+textarea.form-control::-webkit-input-placeholder {
+    font-weight: 300;
+    opacity: 1;
+}
+input.form-control:-ms-input-placeholder,
+textarea.form-control:-ms-input-placeholder {
+    font-weight: 300;
+    opacity: 1;
+}
+input.form-control::-ms-input-placeholder,
+textarea.form-control::-ms-input-placeholder {
+    font-weight: 300;
+    opacity: 1;
+}
