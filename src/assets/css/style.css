@@ -1,3 +1,9 @@
+/* Visibilidad del placeholder en selects requeridos */
+input::placeholder {
+  color: #6c757d !important;
+  font-weight: 300 !important;
+}
+
 
 /* Visibilidad del placeholder en selects requeridos */
 select:required:invalid {
@@ -647,7 +653,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 #settingsBox.active, #accountBox.active { visibility:visible; opacity:1; top:100%; }
 
 .setting-parent:hover #settingsBox,
-.account-parent:hover #accountBox { visibility: visible; opacity: 1; top: 100%; }
+.account-parent:hover #accountBox { visibility: visible; opacity: 1; top: 100%; z-index: 9999; }
 
 #settingsBox { width: 253px; }
 #settingsBox .ttl { margin: 0 0 10px; display: block; text-transform: uppercase; font-weight: 600; }
