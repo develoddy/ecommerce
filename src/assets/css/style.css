@@ -2068,7 +2068,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .search-form .search-btn { border: none; padding: 0; margin: -1px 0 0; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 16px; line-height: 1; }
 .search-form .search-btn:hover { color: #131313; }
 
-.toolbar-wrapper { margin: 0 0 30px; }
+.toolbar-wrapper { margin: 0 0 0px; }
 .toolbar-wrapper .search-form { max-width: 300px; width: 100%; }
 .toolbar-wrapper select { height: 36px; min-width: 65px; }
 

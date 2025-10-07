@@ -1,4 +1,4 @@
-<div *ngIf="showSubscriptionSection; else onlyLogo">
+<div class="mb-5" *ngIf="showSubscriptionSection; else onlyLogo">
     <!-- TOP HEADER -->
     <div class="top-header d-none">
         <div class="container">
@@ -572,7 +572,7 @@
                 </div>
                 <!-- END LOGO IZQUIERDA -->
                 
-                <!-- BUSCADOR CENTRAL - Al estilo Amazon -->
+                <!-- BUSCADOR CENTRAL -->
                 <div class="col-md-6 align-self-center d-none d-lg-block" [ngClass]="{'col-lg-6': isDesktop}">
                     <div class="search-amazon-style w-100 position-relative">
                         <!-- <div class="d-flex searchField"> -->
@@ -599,7 +599,6 @@
                             </div>
                             
                             <!-- RESULTADO DE BÚSQUEDA -->
-                            <!-- <div class="search-products position-absolute bg-white shadow-lg mt-1 rounded border w-100"  style="z-index: 9999; max-height: 400px; overflow-y: auto; left: 0; right: 0; width: 48.7%;" *ngIf="products_search && products_search.length > 0"> -->
                             <div class="search-products position-absolute bg-white shadow-lg mt-1 rounded border w-100" style="z-index: 9999; max-height: 400px; overflow-y: auto; width: 48.7%;" *ngIf="products_search && products_search.length > 0">
                                 <ul class="items list-group list-group-flush">
                                     <ng-container *ngFor="let product of products_search">
