@@ -574,7 +574,7 @@
                 
                 <!-- BUSCADOR CENTRAL - Al estilo Amazon -->
                 <div class="col-md-6 align-self-center d-none d-lg-block" [ngClass]="{'col-lg-6': isDesktop}">
-                    <div class="search-amazon-style w-100">
+                    <div class="search-amazon-style w-100 position-relative">
                         <div class="input-box d-flex border rounded overflow-hidden" style="background-color: white;">
                             <input  type="search" 
                                     class="input-text border-0 border-end-0" 
@@ -593,7 +593,7 @@
                         
                         <!-- RESULTADO DE BÚSQUEDA -->
                         <!-- <div class="search-products position-absolute bg-white shadow-lg mt-1 rounded border w-100"  style="z-index: 9999; max-height: 400px; overflow-y: auto; left: 0; right: 0; width: 48.7%;" *ngIf="products_search && products_search.length > 0"> -->
-                        <div class="search-products position-absolute bg-white shadow-lg mt-1 rounded border" style="z-index: 9999; max-height: 400px; overflow-y: auto; width: 48.7%;" *ngIf="products_search && products_search.length > 0">
+                        <div class="search-products position-absolute bg-white shadow-lg mt-1 rounded border w-100" style="z-index: 9999; max-height: 400px; overflow-y: auto; width: 48.7%;" *ngIf="products_search && products_search.length > 0">
                             <ul class="items list-group list-group-flush">
                                 <ng-container *ngFor="let product of products_search">
                                     <li class="list-group-item p-2">
@@ -606,7 +606,7 @@
                                                         [attr.data-src]="product.imagen"
                                                         [src]="product.imagen" alt="{{ product.title }}"
                                                         title="{{ product.title }}" 
-                                                        width="65" height="65" />
+                                                        width="50" height="50" />
                                                 </a>
                                             </div>
                                             <div class="details px-2 align-self-center">
@@ -617,11 +617,6 @@
                                                         (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
                                                         <small class="text-uppercase">{{product.title }}</small>
                                                     </a>
-                                                </div>
-                                                <div class="product-price">
-                                                    <span class="price" [ngClass]="{ 'text-danger': product.campaing_discount }">
-                                                        {{product.finalPrice}}{{euro}}
-                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

@@ -591,11 +591,16 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.source = fromEvent(this.filter.nativeElement, "keyup");
       this.subscriptions.add(
         this.source.pipe(debounceTime(500)).subscribe(() => {
-          if (this.search_product && this.search_product.trim().length > 1) {
+          const value = this.search_product?.trim() || '';
+
+          if (value.length > 1) { //if (this.search_product && this.search_product.trim().length > 1) {
             const data = { search_product: this.search_product };
             this.cartService.searchProduct(data).subscribe((resp: any) => {
               this.products_search = resp.products;
             });
+          } else {
+            // Si el campo está vacío o tiene un solo carácter, limpiamos los resultados
+            this.products_search = [];
           }
         })
       );
