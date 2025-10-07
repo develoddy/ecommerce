@@ -18,10 +18,15 @@
             <div class="page-header text-center bg-transparent mb-0 p-3">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-start align-items-center">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex flex-column justify-content-start align-items-start">
                             <div class="page-title"><h2 class="text-uppercase">{{ categoryTitle || 'Novedades' }}</h2></div>
                             <!--Breadcrumbs-->
-                            <div class="breadcrumbs d-none"><a href="index.html" title="Back to the home page">LUJANDEV.COM</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Todos los productos</span></div>
+                            <div class="breadcrumbs">
+                                <a href="/" class="text-decoration-underline" title="LUJANDEV.COM" alt="LUJANDEV.COM">LUJANDEV.COM</a>
+                                <span class="main-title fw-normal"><i class="icon anm anm-angle-right-l"></i>Todos los productos</span>
+                                <span class="main-title fw-normal" *ngIf="categoryTitle"><i class="icon anm anm-angle-right-l"></i>Categoria</span>
+                                <span class="fw-bold" *ngIf="categoryTitle"><i  class="icon anm anm-angle-right-l"></i>{{ categoryTitle }}</span>
+                            </div>
                             <!--End Breadcrumbs-->
                         </div>
                     </div>
