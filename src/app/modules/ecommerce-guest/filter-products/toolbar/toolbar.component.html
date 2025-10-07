@@ -58,15 +58,19 @@
 <div class="toolbar toolbar-wrapper shop-toolbar" [ngClass]="{ 'px-4': isDesktop, 'px-2': isMobile  }">
 	<!-- <div class="row align-items-center"> -->
 		<div class="d-flex justify-content-between align-items-center text-left filters-toolbar-item">
-			<!-- <button
-				type="button"
-				class="btn-dark-ld text-uppercase"
-				[ngClass]="{ 'w-100': isMobile, 'w-25': isDesktop, 'mb-3': isMobile }"
-				(click)="openSidebar.emit()">Filtrar
-			</button> -->
-			<a href="#" class="text-decoration-underline text-uppercase fw-light" onclick="return false;"(click)="openSidebar.emit()">Filtrar</a>
+			<div class="d-flex">
+				<div class="me-1">
+					<svg class="icon icon-filter" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" style="width: 1.2rem;">
+						<path fill-rule="evenodd" d="M4.833 6.5a1.667 1.667 0 1 1 3.334 0 1.667 1.667 0 0 1-3.334 0ZM4.05 7H2.5a.5.5 0 0 1 0-1h1.55a2.5 2.5 0 0 1 4.9 0h8.55a.5.5 0 0 1 0 1H8.95a2.5 2.5 0 0 1-4.9 0Zm11.117 6.5a1.667 1.667 0 1 0-3.334 0 1.667 1.667 0 0 0 3.334 0ZM13.5 11a2.5 2.5 0 0 1 2.45 2h1.55a.5.5 0 0 1 0 1h-1.55a2.5 2.5 0 0 1-4.9 0H2.5a.5.5 0 0 1 0-1h8.55a2.5 2.5 0 0 1 2.45-2Z" fill="currentColor"></path>
+					</svg>
+				</div>
+				<div>
+					<a href="#" class="ext-uppercase fw-light" onclick="return false;"(click)="openSidebar.emit()">Filtrar</a>
+				</div>
+			</div>
+
 			<div>
-				<span class="toolbar-product-count text-uppercase fw-light">{{ products.length }} productos</span>
+				<span class="toolbar-product-count text-uppercase fw-light">{{ products.length > 1 ? products.length + ' productos' : products.length + ' producto' }} </span>
 			</div>
 
 			<div class="filters-item d-flex align-items-center ms-2 ms-lg-3" [ngClass]="{'d-none': isMobile}">

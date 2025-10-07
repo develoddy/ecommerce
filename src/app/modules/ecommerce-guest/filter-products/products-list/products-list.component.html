@@ -131,7 +131,7 @@
             </nav>
             <!-- End Pagination -->
             <!-- Selector de cantidad por página -->
-            <div class="d-flex justify-content-end align-items-center mt-2">
+            <div class="d-flex justify-content-end align-items-center mt-2" *ngIf="products.length > 10">
                 <label class="me-2">Mostrar:</label>
                 <select (change)="onPageSizeChange($event)" [value]="pageSize" class="form-select w-auto">
                     <option *ngFor="let size of [10, 15, 20, 25, 30]" [value]="size">{{ size }}</option>
