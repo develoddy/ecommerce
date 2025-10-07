@@ -114,7 +114,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   currentGridView: GridViewMode;
   
   constructor(
-     public _authEcommerce: EcommerceAuthService,
+    public _authEcommerce: EcommerceAuthService,
     public homeService: HomeService,
     public _cartService: CartService,
     public _router: Router,

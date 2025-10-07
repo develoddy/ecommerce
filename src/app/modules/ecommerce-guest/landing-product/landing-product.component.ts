@@ -21,7 +21,6 @@ import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { LocalizationService } from 'src/app/services/localization.service';
-import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { SeoService } from 'src/app/services/seo.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 
@@ -33,6 +32,7 @@ import {
   ShippingService,
   ImageManagerService
 } from '../_service/service_landing_product';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 
 declare var $: any;
 
@@ -107,6 +107,7 @@ export class LandingProductComponent
   fechaEntregaMax: string = '';
   shippingMethod: string = '';
   address: string = '';
+  public loading: boolean = false;
 
   fallbackAddress = {
     address: 'Gran Vía, 1',
@@ -135,14 +136,14 @@ export class LandingProductComponent
     private seoService: SeoService,
     private ngZone: NgZone,
     private localizationService: LocalizationService,
-    public loader: LoaderService,
     private priceCalculationService: PriceCalculationService,
     // Nuevos servicios especializados
     public productDisplayService: ProductDisplayService,
     public cartManagerService: CartManagerService,
     public addressManagerService: AddressManagerService,
     public shippingService: ShippingService,
-    public imageManagerService: ImageManagerService
+    public imageManagerService: ImageManagerService,
+    private subscriptionService: SubscriptionService,
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -175,15 +176,66 @@ export class LandingProductComponent
     this.subscribeToQueryParams();
     this.checkDeviceType();
     this.subscribeToServiceStates();
+    this.initializeLoading();
 
     // Subscribe to loader to initialize and cleanup sliders when HTTP calls complete
-    this.subscriptions.add(
-      this.loader.loading$.subscribe((isLoading) => {
+    // this.subscriptions.add(
+    //   this.loader.loading$.subscribe((isLoading) => {
+    //     if (!isLoading) {
+    //       this.ngZone.runOutsideAngular(() => {
+    //         setTimeout(() => {
+    //           // Initialize sliders and templates
+    //           cleanupHOMEINITTEMPLATE($);
+    //           cleanupProductZoom($);
+    //           HOMEINITTEMPLATE($);
+    //           productZoom($);
+    //           pswp($);
+    //           productSlider5items($);
+    //           menuProductSlider($);
+    //           sliderRefresh();
+    //         }, 150);
+    //       });
+    //     } else {
+    //       // Cleanup on loading start
+    //       cleanupHOMEINITTEMPLATE($);
+    //       cleanupProductZoom($);
+    //     }
+    //   })
+    // );
+  }
+
+  initializeLoading() {
+
+    // this.subscriptions.add(
+    //   this.loader.loading$.subscribe((isLoading) => {
+    //     if (!isLoading) {
+    //       this.ngZone.runOutsideAngular(() => {
+    //         setTimeout(() => {
+    //           // Initialize sliders and templates
+    //           cleanupHOMEINITTEMPLATE($);
+    //           cleanupProductZoom($);
+    //           HOMEINITTEMPLATE($);
+    //           productZoom($);
+    //           pswp($);
+    //           productSlider5items($);
+    //           menuProductSlider($);
+    //           sliderRefresh();
+    //         }, 150);
+    //       });
+    //     } else {
+    //       // Cleanup on loading start
+    //       cleanupHOMEINITTEMPLATE($);
+    //       cleanupProductZoom($);
+    //     }
+    //   })
+    // );
+
+    this.subscriptionService.setShowSubscriptionSection(false);
+    setTimeout(() => {
+      this.ecommerceAuthService.loading$.subscribe(isLoading => {
         if (!isLoading) {
-          this.ngZone.runOutsideAngular(() => {
-            setTimeout(() => {
-              // Initialize sliders and templates
-              cleanupHOMEINITTEMPLATE($);
+          this.loading = !isLoading;
+          cleanupHOMEINITTEMPLATE($);
               cleanupProductZoom($);
               HOMEINITTEMPLATE($);
               productZoom($);
@@ -191,15 +243,12 @@ export class LandingProductComponent
               productSlider5items($);
               menuProductSlider($);
               sliderRefresh();
-            }, 150);
-          });
         } else {
-          // Cleanup on loading start
           cleanupHOMEINITTEMPLATE($);
           cleanupProductZoom($);
-        }
-      })
-    );
+         }
+      });
+    }, 150);
   }
 
   private subscribeToServiceStates(): void {

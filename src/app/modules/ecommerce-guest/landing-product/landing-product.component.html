@@ -1,10 +1,21 @@
 <!--Page Wrapper-->
 
 <!-- Loading -->
-<div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+<!-- <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
     <div class="row">
         <div class="col col-12 col-lg-12 col-sm-2">
             <div class="sp sp-bars"></div>
+        </div>
+    </div>
+</div> -->
+<!-- End Loading -->
+
+<!-- Loading -->
+<div *ngIf="!loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+    <div class="row">
+        <div class="col col-12 col-lg-12 col-sm-2">
+            <div class="sp sp-bars"></div>
+            <!-- <img src="assets/images/logo/lujandev_loader.gif" alt="Cargando Luján" class="logo-loader" /> -->
         </div>
     </div>
 </div>
@@ -12,7 +23,8 @@
 
 
 <div class="page-wrapper py-3" *ngIf="product_selected && related_products">
-    <ng-container [class.d-none]="loader.loading$ | async">
+    <!-- <ng-container [class.d-none]="loader.loading$ | async"> -->
+    <ng-container [class.d-none]="!loading">
     <!-- Body Container -->
     <div id="page-content py-5">
         <!--Page Header-->
