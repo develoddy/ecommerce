@@ -79,7 +79,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     private cdRef: ChangeDetectorRef,
     private checkoutService: CheckoutService,
     private localizationService: LocalizationService,
-    private priceCalculationService: PriceCalculationService
+    private priceCalculationService: PriceCalculationService,
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -146,9 +146,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   loadLoading() {
     this.subscriptionService.setShowSubscriptionSection(false);
     setTimeout(() => {
-    this._authEcommerce.loading$.subscribe(isLoading => {
-      this.loading = !isLoading;
-    });
+      this._authEcommerce.loading$.subscribe(isLoading => {
+        this.loading = !isLoading;
+      });
     }, 1500);
   }
 

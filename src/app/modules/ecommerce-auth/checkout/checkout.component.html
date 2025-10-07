@@ -4,8 +4,8 @@
     <div *ngIf="!loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
             <div class="col col-12 col-lg-12 col-sm-2">
-                <!-- <div class="sp sp-bars"></div> -->
-                <img src="assets/images/logo/lujandev_loader.gif" alt="Cargando Luján" class="logo-loader" />
+                <div class="sp sp-bars"></div>
+                <!-- <img src="assets/images/logo/lujandev_loader.gif" alt="Cargando Luján" class="logo-loader" /> -->
             </div>
         </div>
     </div>
@@ -14,6 +14,7 @@
 
     <!-- Body Container -->
     <div id="page-content" [class.d-none]="!loading">
+    <!-- <div id="page-content" [class.d-none]="loader.loading$ | async"> -->
         <!--Page Header-->
         <!-- <div *ngIf="currentStep !== 'successfull'" class="page-header mb-0 py-4 bg-transparent">
             <div class="container">

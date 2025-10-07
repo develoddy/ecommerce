@@ -1,16 +1,24 @@
 <!-- <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a> -->
 <!-- Loading -->
-<div
-  *ngIf="loader.loading$ | async"
-  class="loading-spinner border d-flex vh-100 justify-content-center align-items-center"
->
+<!-- <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
   <div class="row">
     <div class="col col-12 col-lg-12 col-sm-2">
       <div class="sp sp-bars"></div>
     </div>
   </div>
-</div>
+</div> -->
 <!-- End Loading -->
+
+<!-- Loading -->
+  <div *ngIf="!loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+      <div class="row">
+          <div class="col col-12 col-lg-12 col-sm-2">
+              <div class="sp sp-bars"></div>
+              <!-- <img src="assets/images/logo/lujandev_loader.gif" alt="Cargando Luján" class="logo-loader" /> -->
+          </div>
+      </div>
+  </div>
+  <!-- End Loading -->
 
 <!--Page Wrapper-->
 <div class="page-wrapper">
@@ -19,7 +27,9 @@
   <!--End Header-->
 
   <!-- Body Container -->
-  <ng-container [class.d-none]="loader.loading$ | async">
+  <!-- <ng-container [class.d-none]="loader.loading$ | async"> -->
+    
+  <ng-container [class.d-none]="!loading">
     <div id="page-content" class="mb-0">
       <!--Home Slideshow-->
       <app-slider-home

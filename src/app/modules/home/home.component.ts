@@ -31,6 +31,8 @@ import { SliderManagerService } from 'src/app/modules/home/_services/product/sli
 import { WishlistManagerService } from 'src/app/modules/home/_services/product/wishlist-manager.service';
 import { GridViewService, GridViewMode } from 'src/app/modules/home/_services/product/grid-view.service';
 import { URL_FRONTEND } from 'src/app/config/config';
+import { SubscriptionService } from 'src/app/services/subscription.service';
+import { EcommerceAuthService } from '../ecommerce-auth/_services/ecommerce-auth.service';
 
 declare var bootstrap: any;
 declare var $: any;
@@ -100,6 +102,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   cantidadError = false;
   timeLeft: { [flashId: string]: TimeLeft } = {};
   private timerInterval: any;
+  public loading: boolean = false;
   
   // Grid view references
   @ViewChild('grid1') grid1!: ElementRef;
@@ -111,6 +114,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   currentGridView: GridViewMode;
   
   constructor(
+     public _authEcommerce: EcommerceAuthService,
     public homeService: HomeService,
     public _cartService: CartService,
     public _router: Router,
@@ -120,7 +124,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private localizationService: LocalizationService,
     private minicartService: MinicartService,
     private seoService: SeoService,
-    public loader: LoaderService,
+    //public loader: LoaderService,
+    private subscriptionService: SubscriptionService,
     private priceCalculationService: PriceCalculationService,
     private flashSaleTimerService: FlashSaleTimerService,
     private productUIService: ProductUIService,
@@ -273,21 +278,36 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setFirstImage();
   }
 
-  private initializePostLoadTasks(): void {
-    // Subscribe to loader to initialize sliders after HTTP calls complete
-    this.subscriptions.add(
-      this.loader.loading$.subscribe((isLoading) => {
+  initializePostLoadTasks() {
+    this.subscriptionService.setShowSubscriptionSection(false);
+    setTimeout(() => {
+      this._authEcommerce.loading$.subscribe(isLoading => {
         if (!isLoading) {
-          setTimeout(() => {
-            this.setupFlashSaleTimers();
-            this.initializeUIComponents();
-          }, 150);
+          this.loading = !isLoading;
+          this.setupFlashSaleTimers();
+          this.initializeUIComponents();
         } else {
-          this.cleanupUIComponents();
-        }
-      })
-    );
+           this.cleanupUIComponents();
+         }
+      });
+    }, 150);
   }
+
+  // Subscribe to loader to initialize sliders after HTTP calls complete
+  // private initializePostLoadTasks(): void {
+  //   this.subscriptions.add(
+  //     this.loader.loading$.subscribe((isLoading) => {
+  //       if (!isLoading) {
+  //         setTimeout(() => {
+  //           this.setupFlashSaleTimers();
+  //           this.initializeUIComponents();
+  //         }, 150);
+  //       } else {
+  //         this.cleanupUIComponents();
+  //       }
+  //     })
+  //   );
+  // }
 
   private setupFlashSaleTimers(): void {
     // Inicializar timers de Flash Sales usando el servicio
