@@ -67,6 +67,7 @@ export class LandingProductComponent
   product_selected: any = null;
   product_selected_modal: any = null;
   related_products: any = [];
+  interest_products: any = [];
   variedad_selected: any = null;
   discount_id: any;
   order_selected: any = null;
@@ -97,6 +98,7 @@ export class LandingProductComponent
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
+  isFallbackAddress: boolean = false;
   currentUser: any = null;
   errorResponse: boolean = false;
   errorMessage: any = '';
@@ -284,8 +286,9 @@ export class LandingProductComponent
           this.addressManagerService.selectAddress(defaultAddress);
           this.loadShippingRateWithAddress(defaultAddress);
         } else {
-          console.warn('No hay direcciones disponibles.');
+          console.warn('No hay direcciones disponibles para user auth.', this.fallbackAddress);
           this.loadShippingRateWithAddress(this.fallbackAddress, true);
+          this.isFallbackAddress = true;
         }
       })
     );
@@ -304,8 +307,9 @@ export class LandingProductComponent
           this.addressManagerService.selectAddress(defaultAddress);
           this.loadShippingRateWithAddress(defaultAddress);
         } else {
-          console.warn('No hay direcciones disponibles.');
+          console.warn('No hay direcciones disponibles para user guest.', this.fallbackAddress);
           this.loadShippingRateWithAddress(this.fallbackAddress, true);
+          this.isFallbackAddress = true;
         }
       })
     );
@@ -487,15 +491,18 @@ export class LandingProductComponent
   }
 
   private handleProductResponse(resp: any): void {
+    console.log("🚀 handleProductResponse: resp:", resp);
+
     if (!resp || !resp.product) {
       console.error('No product data available');
       return; // Salir si no hay datos de producto
     }
 
     this.product_selected = resp.product;
-    console.log("🚀 Padre: handleProductResponse() -> product_selected:", this.product_selected);
+    
     this.related_products = resp.related_products;
-    console.log("🚀 Padre: handleProductResponse() -> related_products:", this.related_products);
+    this.interest_products = resp.interest_products
+    //console.log("🚀 Padre: handleProductResponse() -> interest_products:", this.interest_products);
     
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;

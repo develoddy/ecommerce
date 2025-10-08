@@ -11,7 +11,7 @@
 <!-- End Loading -->
 
 
-<div class="page-wrapper py-3" *ngIf="product_selected && related_products">
+<div class="page-wrapper py-3" *ngIf="product_selected && related_products && interest_products">
     <ng-container [class.d-none]="loader.loading$ | async">
     <!-- Body Container -->
     <div id="page-content py-5">
@@ -330,9 +330,18 @@
                         <!-- End Product Form -->
                         <!-- Product Info -->
                         <div class="userViewMsg featureText d-none" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div>
-                        
+                        <!-- 135deg -->
                         <div class="shippingMsg featureText border p-2 bg-darkseagreen" *ngIf="shippingRate > 0 && fechaEntregaMin">
-                            <p class="fw-light"><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline text-green">{{ address }}</a> </p>
+                            <!-- <p class="fw-light"><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline text-green">{{ address }}</a> </p> -->
+                            <p class="fw-light">
+                                <i class="icon anm anm-clock-r"></i>
+                                <span>Entrega GRATIS el </span>
+                                <strong>{{ fechaEntregaMin }}</strong>
+                                <ng-container *ngIf="!isFallbackAddress; else generic">
+                                    para <a href="" class="text-decoration-underline text-green">{{ address }}</a>
+                                </ng-container>
+                                <ng-template #generic> en toda España</ng-template>
+                            </p>
                         </div>
                         <!-- Mostrar mensaje alternativo cuando no hay tarifa -->
                         <div class="shippingMsg featureText" *ngIf="shippingRate === 0">
@@ -664,6 +673,19 @@
             [SALE_FLASH]="SALE_FLASH"
         ></app-related-products>
         <!--End Related Products-->
+
+        <ng-container *ngIf="interest_products && interest_products.length > 0">
+            <!-- Interest Products-->
+            <app-interest-products
+                [interest_products]="interest_products"
+                [product_selected]="product_selected"
+                [euro]="euro"
+                (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
+                [getDiscount]="getDiscount"
+                [SALE_FLASH]="SALE_FLASH"
+            ></app-interest-products>
+            <!--End Interest Products-->
+        </ng-container> 
 
         <!--Recently Viewed Products-->
         <section class="section product-slider pb-0 d-none">
