@@ -10,9 +10,7 @@
 <!-- End Loading -->
 
 <!--  PAGE WRAPPER  -->
-
     <div class="page-wrapper">
-
         <ng-container [class.d-none]="loader.loading$ | async">
             <!-- BODY CONTAINER -->
             <div id="page-content">
@@ -21,16 +19,14 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div
-                                class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-start">
+                                class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex flex-column justify-content-between align-items-start">
                                 <div class="page-title">
                                     <h2 class="fw-bold text-uppercase">Carrito de la compra</h2>
                                 </div>
                                 <!--Breadcrumbs-->
                                 <div class="breadcrumbs d-none">
-                                    <a href="index.html" onclick="return false;" routerLink="/"
-                                        title="Back to the home page">Lujandev.com</a><span class="main-title"><i
-                                            class="icon anm anm-angle-right-l"></i>Carrito de la
-                                        compra</span>
+                                    <a href="#" class="text-decoration-underline" onclick="return false;" routerLink="/" title="Lujandev.com">Lujandev.com</a>
+                                    <span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Carrito de la compra</span>
                                 </div>
                                 <!--End Breadcrumbs-->
                             </div>
@@ -57,10 +53,7 @@
                                     nuevo para renovar tu armario
                                 </p>
                                 <div class="view-collection text-center mt-4 mb-4 mt-md-5">
-                                    <a onclick="return false;"
-                                        [routerLink]="['/', locale, country, 'shop', 'filter-products']"
-                                        class="btn btn-secondary btn-lg px-5 text-uppercase">Descubrir novedades</a>
-                                    <!-- <a [href]="['/filter-products']" class="btn btn-secondary btn-lg px-5">Descubrir novedades</a> -->
+                                    <a onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="btn btn-secondary btn-lg px-5 text-uppercase">Descubrir novedades</a>
                                 </div>
                             </div>
                         </div>
@@ -100,7 +93,7 @@
                                                 <div class="mb-2 d-flex">
                                                     <!-- Precio original tachado si hay descuento -->
                                                     <span class="money me-2" *ngIf="hasCartItemDiscount(cart)">
-                                                        <span class="price old-price text-decoration-line-through text-muted">
+                                                        <span class="price old-price text-decoration-line-through">
                                                             {{ getPriceParts(getOriginalUnitPrice(cart)).integer }}.{{ getPriceParts(getOriginalUnitPrice(cart)).decimals }} {{ euro }}
                                                         </span>
                                                     </span>
@@ -108,8 +101,8 @@
                                                     <!-- Precio final (con descuento si aplica) -->
                                                     <span class="money">
                                                         <span class="price-small" [class.text-danger]="hasCartItemDiscount(cart)">
-                                                            <span class="">{{ getPriceParts(cart.finalUnitPrice || getFinalUnitPrice(cart)).integer }}.</span>
-                                                            <span class="">
+                                                            <span class="fw-bold">{{ getPriceParts(cart.finalUnitPrice || getFinalUnitPrice(cart)).integer }}.</span>
+                                                            <span class="fw-bold">
                                                                 <span>{{ getPriceParts(cart.finalUnitPrice || getFinalUnitPrice(cart)).decimals }}</span>
                                                                 <span class="">{{ euro }}</span>
                                                             </span>
@@ -132,7 +125,7 @@
                                                     <span class="w-25 fw-light">Cantidad</span>
                                                     <span class="ms-lg-3 ms-5">{{ cart.cantidad }}</span>
                                                 </div>
-                                                <div class="d-flex lh-1 mb-2">
+                                                <div class="d-flex lh-1 mb-3">
                                                     <span class="w-25 fw-light">Total</span>
                                                     <span class="money ms-lg-3 ms-5">
                                                         <span class="price-small" [class.text-danger]="hasCartItemDiscount(cart)">
@@ -182,9 +175,9 @@
                                     <div class="cart-order-detail cart-col">
                                         <!-- Subtotal sin rebajas (si hay descuentos) -->
                                         <div class="row g-0" *ngIf="hasAnyCartDiscount()">
-                                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light lh-1">Subtotal</span>
+                                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
                                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                                <span class="price-small fw-light old-price text-decoration-line-through text-muted">
+                                                <span class="price-small fw-light old-price text-decoration-line-through">
                                                     <span class="">{{ getPriceParts(getOriginalSubtotal()).integer }}.</span>
                                                     <span class="">
                                                         <span>{{ getPriceParts(getOriginalSubtotal()).decimals }}</span>
@@ -196,7 +189,7 @@
                                         
                                         <!-- Descuento aplicado (solo si hay descuentos) -->
                                         <div class="row g-0" *ngIf="hasAnyCartDiscount()">
-                                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light text-danger lh-1">Descuento</span>
+                                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light text-danger">Descuento</span>
                                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
                                                 <span class="price-small fw-light">
                                                     -<span class="">{{ getPriceParts(getTotalDiscount()).integer }}.</span>
@@ -223,7 +216,7 @@
                                         </div>
                                         
                                         <!-- Envío -->
-                                        <div class="row g-0">
+                                        <div class="row g-0 ">
                                             <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Envío</span>
                                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">Gratis</span></span>
                                         </div>
@@ -450,16 +443,31 @@
                 </div>
                 <!-- END MAIN CONTENT -->
 
-                <!--Related Products-->
-                <app-related-products
-                    [related_products]="related_products"
-                    [product_selected]="product_selected"
-                    [euro]="euro"
-                    (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
-                    [getDiscount]="getDiscount"
-                    [SALE_FLASH]="SALE_FLASH"
-                ></app-related-products>
-                <!--End Related Products-->
+                <ng-container *ngIf="related_products && related_products.length > 0">
+                    <!--Related Products-->
+                    <app-related-products
+                        [related_products]="related_products"
+                        [product_selected]="product_selected"
+                        [euro]="euro"
+                        (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
+                        [getDiscount]="getDiscount"
+                        [SALE_FLASH]="SALE_FLASH"
+                    ></app-related-products>
+                    <!--End Related Products-->
+                </ng-container> 
+
+                <ng-container *ngIf="interest_products && interest_products.length > 0">
+                    <!-- Interest Products-->
+                    <app-interest-products
+                        [interest_products]="interest_products"
+                        [product_selected]="product_selected"
+                        [euro]="euro"
+                        (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
+                        [getDiscount]="getDiscount"
+                        [SALE_FLASH]="SALE_FLASH"
+                    ></app-interest-products>
+                    <!--End Interest Products-->
+                </ng-container> 
 
             </div>
             <!-- END BODY CONTAINER -->

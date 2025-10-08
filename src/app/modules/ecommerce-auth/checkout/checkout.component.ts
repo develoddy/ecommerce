@@ -8,9 +8,11 @@ import { filter, Subject, Subscription, take, takeUntil } from 'rxjs';
 import { CheckoutService } from '../_services/checkoutService';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { PriceCalculationService } from '../../home/_services/product/price-calculation.service';
+import { LoaderService } from '../../home/_services/product/loader.service';
 
 declare var $:any;
-declare function HOMEINITTEMPLATE([]):any;
+declare function HOMEINITTEMPLATE($: any): any;
+declare function cleanupHOMEINITTEMPLATE($: any): any;
 declare function actionNetxCheckout([]):any;
 declare function alertDanger([]):any;
 declare function alertSuccess([]):any;
@@ -48,7 +50,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   PAYMENT:boolean=false;
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd : boolean = false;
-  public loading: boolean = false;
   url: string = "";
   errorAutenticate:boolean=false;
   errorMessageAutenticate:string="";
@@ -77,6 +78,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     private subscriptionService: SubscriptionService,
     public routerActived: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
+    public loader: LoaderService,
     private checkoutService: CheckoutService,
     private localizationService: LocalizationService,
     private priceCalculationService: PriceCalculationService,
@@ -144,12 +146,17 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   loadLoading() {
-    this.subscriptionService.setShowSubscriptionSection(false);
-    setTimeout(() => {
-      this._authEcommerce.loading$.subscribe(isLoading => {
-        this.loading = !isLoading;
-      });
-    }, 1500);
+    this.subscriptions.add(
+      this.loader.loading$.subscribe((isLoading) => {
+        if (!isLoading) {
+          setTimeout(() => {
+            HOMEINITTEMPLATE($);
+          }, 150);
+        } else {
+          cleanupHOMEINITTEMPLATE($);
+        }
+      })
+    );
   }
 
   loadCurrentDataCart() {

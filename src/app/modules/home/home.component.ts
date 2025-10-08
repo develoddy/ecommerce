@@ -23,7 +23,7 @@ import { CookieConsentService } from 'src/app/services/cookie-consent.service';
 import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { PriceCalculationService } from './_services/product/price-calculation.service';
 import { FlashSaleTimerService, TimeLeft } from './_services/product/flash-sale-timer.service';
-import { ProductUIService } from './_services/product/product-ui.service'; 
+import { ProductUIService } from './_services/product/product-ui.service';
 import { CartManagerService } from 'src/app/modules/home/_services/product/cart-manager.service';
 import { ModalService } from 'src/app/modules/home/_services/product/modal.service';
 import { ProductSelectionService } from 'src/app/modules/home/_services/product/product-selection.service';
@@ -124,8 +124,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private localizationService: LocalizationService,
     private minicartService: MinicartService,
     private seoService: SeoService,
-    //public loader: LoaderService,
-    private subscriptionService: SubscriptionService,
+    public loader: LoaderService,
+    //private subscriptionService: SubscriptionService,
     private priceCalculationService: PriceCalculationService,
     private flashSaleTimerService: FlashSaleTimerService,
     private productUIService: ProductUIService,
@@ -278,36 +278,36 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setFirstImage();
   }
 
-  initializePostLoadTasks() {
-    this.subscriptionService.setShowSubscriptionSection(false);
-    setTimeout(() => {
-      this._authEcommerce.loading$.subscribe(isLoading => {
-        if (!isLoading) {
-          this.loading = !isLoading;
-          this.setupFlashSaleTimers();
-          this.initializeUIComponents();
-        } else {
-           this.cleanupUIComponents();
-         }
-      });
-    }, 150);
-  }
+  // initializePostLoadTasks() {
+  //   this.subscriptionService.setShowSubscriptionSection(false);
+  //   setTimeout(() => {
+  //     this._authEcommerce.loading$.subscribe(isLoading => {
+  //       if (!isLoading) {
+  //         this.loading = !isLoading;
+  //         this.setupFlashSaleTimers();
+  //         this.initializeUIComponents();
+  //       } else {
+  //          this.cleanupUIComponents();
+  //        }
+  //     });
+  //   }, 950);
+  // }
 
   // Subscribe to loader to initialize sliders after HTTP calls complete
-  // private initializePostLoadTasks(): void {
-  //   this.subscriptions.add(
-  //     this.loader.loading$.subscribe((isLoading) => {
-  //       if (!isLoading) {
-  //         setTimeout(() => {
-  //           this.setupFlashSaleTimers();
-  //           this.initializeUIComponents();
-  //         }, 150);
-  //       } else {
-  //         this.cleanupUIComponents();
-  //       }
-  //     })
-  //   );
-  // }
+  private initializePostLoadTasks(): void {
+    this.subscriptions.add(
+      this.loader.loading$.subscribe((isLoading) => {
+        if (!isLoading) {
+          setTimeout(() => {
+            this.setupFlashSaleTimers();
+            this.initializeUIComponents();
+          }, 150);
+        } else {
+          this.cleanupUIComponents();
+        }
+      })
+    );
+  }
 
   private setupFlashSaleTimers(): void {
     // Inicializar timers de Flash Sales usando el servicio

@@ -37,6 +37,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   slug: string | null = null;
   product_selected: any = null;
   related_products: any = [];
+  interest_products :any= [];
   REVIEWS:any=null;
   SALE_FLASH:any = null;
   AVG_REVIEW:any=null;
@@ -75,20 +76,27 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {}
 
   ngOnInit() {
+   
     this.setupSEO();
     this.checkUserAuthenticationStatus();
     this.getCarts();
-    this.showRelatedProducts();
+    this.inizializeLoader();
     this.subscribeToWishlistData();
+   
 
+    
+  }
+
+  inizializeLoader() {
     // Subscribe to loader to initialize carousel after content loads
     this.subscriptions.add(
       this.loader.loading$.subscribe(isLoading => {
         if (!isLoading) {
           setTimeout(() => {
             HOMEINITTEMPLATE($);
+            
             collectionSlider4items($);
-          }, 350);
+          }, 150);
         } else {
           cleanupSliders($);
           cleanupHOMEINITTEMPLATE($);
@@ -125,8 +133,9 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentUser) {
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
-        console.log("listCarts:", this.listCarts);
+        console.log("----> resp > listCarts:", this.listCarts);
         
+         this.showRelatedProducts();
         // Procesar precios con descuento para cada item del carrito
         this.processCartPrices();
         this.updateTotalCarts();
@@ -147,13 +156,13 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       cart.finalSubtotal = cart.finalUnitPrice * cart.cantidad;
       cart.finalTotal = cart.finalSubtotal;
       
-      console.log(`💰 Procesando ${cart.product.title}:`, {
-        precioOriginal: cart.price_unitario,
-        precioFinal: cart.finalUnitPrice,
-        tieneDescuento: this.hasCartItemDiscount(cart),
-        cantidad: cart.cantidad,
-        subtotalFinal: cart.finalSubtotal
-      });
+      // console.log(`💰 Procesando ${cart.product.title}:`, {
+      //   precioOriginal: cart.price_unitario,
+      //   precioFinal: cart.finalUnitPrice,
+      //   tieneDescuento: this.hasCartItemDiscount(cart),
+      //   cantidad: cart.cantidad,
+      //   subtotalFinal: cart.finalSubtotal
+      // });
     });
   }
 
@@ -296,7 +305,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private showRelatedProducts() {
     if (this.listCarts.length === 0) return;
-    
+  
     const firstProductSlug = this.listCarts[0]?.product?.slug;
     this.slug = firstProductSlug;
     
@@ -314,8 +323,10 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private handleProductResponse(resp: any): void {
+    console.log("🚀 -------> [handleProductResponse] this.resp:", resp);
     this.product_selected = resp.product;
     this.related_products = resp.related_products;
+    this.interest_products = resp.interest_products;
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
     this.AVG_REVIEW = resp.AVG_REVIEW;
@@ -340,11 +351,11 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 0);
     this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
     
-    console.log('🛒 Total del carrito actualizado:', {
-      totalItems: this.listCarts.length,
-      totalPrice: this.totalCarts,
-      itemsWithDiscount: this.listCarts.filter(item => this.hasCartItemDiscount(item)).length
-    });
+    // console.log('🛒 Total del carrito actualizado:', {
+    //   totalItems: this.listCarts.length,
+    //   totalPrice: this.totalCarts,
+    //   itemsWithDiscount: this.listCarts.filter(item => this.hasCartItemDiscount(item)).length
+    // });
   }
 
   inc(cart: any): void {
@@ -445,10 +456,9 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Actualizar carrito del usuario autenticado
   private updateUserCart(cartData: any): void {
-    console.log("-------> updateUserCart");
     
     this.cartService.updateCart(cartData).subscribe((resp: any) => {
-      console.log(resp);
+      //console.log(resp);
       
       if (resp.message === 403) {
         alertDanger(resp.message_text);
@@ -461,7 +471,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Actualizar carrito del usuario invitado
   private updateGuestCart(cartData: any): void {
-    console.log("-------> updateGuestCart");
+    
     this.cartService.updateCartCache(cartData).subscribe((resp: any) => {
       if (resp.message === 403) {
         alertDanger(resp.message_text);

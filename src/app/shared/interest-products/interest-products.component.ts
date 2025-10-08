@@ -5,12 +5,13 @@ declare var $: any;
 declare function productSlider5items($: any): any;
 
 @Component({
-  selector: 'app-related-products',
-  templateUrl: './related-products.component.html',
-  styleUrls: ['./related-products.component.scss']
+  selector: 'app-interest-products',
+  templateUrl: './interest-products.component.html',
+  styleUrls: ['./interest-products.component.css']
 })
-export class RelatedProductsComponent implements AfterViewInit, OnChanges {
-  @Input() related_products: any[] = [];
+export class InterestProductsComponent {
+
+  @Input() interest_products: any[] = [];
   @Input() product_selected: any;
   @Input() euro: string = '';
   @Output() navigateToProduct = new EventEmitter<{slug: string, discountId?: string}>();
@@ -20,26 +21,26 @@ export class RelatedProductsComponent implements AfterViewInit, OnChanges {
   constructor(private ngZone: NgZone, public priceService: PriceCalculationService) {}
 
   ngAfterViewInit() {
-  // console.log('🚀 ngAfterViewInit - related_products:', this.related_products);
-  // console.log('🚀 ngAfterViewInit - product_selected:', this.product_selected);
-  this.initSlick();
+    // console.log('🚀 ngAfterViewInit - interest_products:', this.interest_products);
+    // console.log('🚀 ngAfterViewInit - product_selected:', this.product_selected);
+    this.initSlick();
+    
+  }
   
-}
-
   ngOnChanges(changes: SimpleChanges) {
-    // if (changes['related_products']) {
-    //   console.log('🚀 ngOnChanges - related_products:', changes['related_products'].currentValue);
+    // if (changes['interest_products']) {
+    //   console.log('🚀 ngOnChanges - interest_products:', changes['interest_products'].currentValue);
     // }
     // if (changes['product_selected']) {
     //   console.log('🚀 ngOnChanges - product_selected:', changes['product_selected'].currentValue);
     // }
 
-    if (changes['related_products'] && !changes['related_products'].firstChange) {
-      //console.log('🚀 ngOnChanges - related_products changed:', this.related_products);
+    if (changes['interest_products'] && !changes['interest_products'].firstChange) {
+      //console.log('🚀 ngOnChanges - interest_products changed:', this.interest_products);
       this.initSlick();
     }
   }
-
+  
   private initSlick() {
     this.ngZone.runOutsideAngular(() => {
       setTimeout(() => {
@@ -61,5 +62,4 @@ export class RelatedProductsComponent implements AfterViewInit, OnChanges {
   public getDiscountAmount(product: any): number {
     return this.priceService.getDiscountAmount(product, this.SALE_FLASH);
   }
-
 }

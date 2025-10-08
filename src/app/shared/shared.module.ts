@@ -10,13 +10,15 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory } from '../app.module';
 import { AddToCartModalComponent } from './modals/add-to-cart-modal/add-to-cart-modal.component';
 import { RelatedProductsComponent } from './related-products/related-products.component';
+import { InterestProductsComponent } from './interest-products/interest-products.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
     AddToCartModalComponent,
-    RelatedProductsComponent
+    RelatedProductsComponent,
+    InterestProductsComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +39,8 @@ import { RelatedProductsComponent } from './related-products/related-products.co
     HeaderComponent,
     FooterComponent,
     AddToCartModalComponent,
-    RelatedProductsComponent
+    RelatedProductsComponent,
+    InterestProductsComponent
   ]
 })
 export class SharedModule { }

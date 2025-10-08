@@ -225,10 +225,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       return flashProduct;
     });
 
-    console.log("----> [Components Header] ourProducts with prices:", this.ourProducts);
-    console.log("----> [Components Header] hoodiesProducts with prices:", this.hoodiesProducts);
-    console.log("----> [Components Header] mugsProducts with prices:", this.mugsProducts);
-    console.log("----> [Components Header] capsProducts with prices:", this.capsProducts);
+    // console.log("----> [Components Header] ourProducts with prices:", this.ourProducts);
+    // console.log("----> [Components Header] hoodiesProducts with prices:", this.hoodiesProducts);
+    // console.log("----> [Components Header] mugsProducts with prices:", this.mugsProducts);
+    // console.log("----> [Components Header] capsProducts with prices:", this.capsProducts);
   }
 
   getPriceParts = (price: number) => {
