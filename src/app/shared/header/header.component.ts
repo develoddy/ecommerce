@@ -28,7 +28,7 @@ declare function alertDanger([]): any;
 declare function alertSuccess([]): any;
 
 declare function cleanupHOMEINITTEMPLATE($: any): any;
-declare function sliderRefresh(): any;
+declare function sliderRefresh($$: any): any;
 declare function menuProductSlider($: any): any;
 
 @Component({
@@ -146,8 +146,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       setTimeout(() => {
         cleanupHOMEINITTEMPLATE($);
         menuProductSlider($);
-        sliderRefresh(); // inicializa tu carrusel
-      }, 50);
+        sliderRefresh($); // inicializa tu carrusel
+      }, 100);
     });
 
     this.subscriptions.add(listHomeSubscription);
@@ -168,8 +168,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.categories.forEach((category: any) => {
       category.slug = this.productUIService.generateSlug(category.title); 
     });
-    console.log("----> [Components Header] Categories with slugs:", this.categories);
-    
 
     // Generar slug para cada Camisetas sin modificar el título original
     this.ourProducts.forEach((product: any) => {
@@ -195,9 +193,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       cap.slug = this.productUIService.generateSlug(cap.title);
       cap.categorie.slug = this.productUIService.generateSlug(cap.categorie?.title || '');
     });
-    this.categorieCaps = this.categories.find(cat => cat.slug.toLowerCase() === "dad-hats-baseball-caps");
-    console.log("----> [Components Header] categorieCaps:", this.categorieCaps);
-    
+    this.categorieCaps = this.categories.find(cat => cat.slug.toLowerCase() === "dad-hats-baseball-caps")
   }
 
   private processProductPrices(resp: any): void {

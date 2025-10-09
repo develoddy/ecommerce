@@ -1,11 +1,13 @@
 import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { CartManagerService } from 'src/app/modules/ecommerce-guest/_service/service_landing_product';
 import { PriceCalculationService } from '../../_services/product/price-calculation.service';
 import { Subscription } from 'rxjs';
 import { GridViewMode } from 'src/app/modules/home/_services/product/grid-view.service';
+import { URL_FRONTEND } from 'src/app/config/config';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-hodie-grid',
@@ -50,8 +52,14 @@ export class HodieGridComponent implements OnChanges, OnDestroy{
     private cartService: CartService,
     private minicartService: MinicartService,
     private cartManagerService: CartManagerService,
-    private priceCalculationService: PriceCalculationService
-  ) {}
+    private priceCalculationService: PriceCalculationService,
+    public routerActived: ActivatedRoute,
+  ) {
+    this.routerActived.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  
+      this.country = params.get('country') || 'es'; 
+    });
+  }
 
   /**
    * Angular requiere que ciertas URLs sean consideradas "seguras" para evitar errores de seguridad (XSS).
@@ -63,20 +71,24 @@ export class HodieGridComponent implements OnChanges, OnDestroy{
    */
   ngOnChanges(changes: SimpleChanges): void {
     
-    if (changes['gridViewMode']) {
-      console.log('📊 GridViewMode received:', this.gridViewMode);
-      console.log('🏗️ Grid className:', this.gridViewMode?.className);
-      console.log('📐 Grid columns:', this.gridViewMode?.columns);
-      console.log('📋 Grid type:', this.gridViewMode?.type);
-    }
+    //if (changes['gridViewMode']) {
+      // console.log('📊 GridViewMode received:', this.gridViewMode);
+      // console.log('🏗️ Grid className:', this.gridViewMode?.className);
+      // console.log('📐 Grid columns:', this.gridViewMode?.columns);
+      // console.log('📋 Grid type:', this.gridViewMode?.type);
+    //}
     
     if (changes['hoodiesProducts'] && this.hoodiesProducts?.length > 0) {
-      console.log('🔍 ProductGrid - Total products received:', this.hoodiesProducts?.length || 0);
-      console.log('🔍 ProductGrid - Data products received:', this.hoodiesProducts);
+      // console.log('🔍 ProductGrid - Total products received:', this.hoodiesProducts?.length || 0);
+      // console.log('🔍 ProductGrid - Data products received:', this.hoodiesProducts);
 
       // Tomamos la categoría del primer producto
       this.categorie = this.hoodiesProducts[0].categorie;
-      console.log('📂 ProductGrid - Categorie:', this.categorie);
+
+      // 🔽 Filtrar solo los productos con logo_position = 'center'
+      this.hoodiesProducts = this.hoodiesProducts.filter(
+        (p) => p.logo_position === 'center'
+      );
       
     }
   }  
@@ -89,6 +101,10 @@ export class HodieGridComponent implements OnChanges, OnDestroy{
       .replace(/-+/g, '-'); // Reemplazar múltiples guiones por uno solo
   }
 
+  getSanitizedUrl(product: any): SafeResourceUrl {
+      const url = URL_FRONTEND+`${this.locale}/${this.country}/shop/product/${product.slug}`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
   
 
   /**

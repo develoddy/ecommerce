@@ -110,7 +110,7 @@
                             <!-- End Product Name -->
                             <!-- Schema.org Offer -->
                             <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                                <link itemprop="url" [href]="sanitizedUrl" />
+                                <link itemprop="url" [href]="getSanitizedUrl(mugProduct)" />
                                 <meta itemprop="priceCurrency" content="EUR" />
                                 <meta itemprop="price" content="{{ getPriceParts(mugProduct.finalPrice).total }}" />
                                 <link itemprop="availability" href="https://schema.org/InStock" />

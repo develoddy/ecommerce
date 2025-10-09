@@ -21,12 +21,6 @@ export class FlashSaleComponent implements OnInit, OnChanges {
   @Input() navigateToProduct!: (slug: string, discountId?: string) => void;
 
   ngOnInit() {
-    console.log('=== FLASH SALE COMPONENT DEBUG ===');
-    console.log('FlashSales data:', this.FlashSales);
-    //console.log('FlashProductList:', this.FlashProductList);
-    
-    // YA NO calcular descuentos - el padre ya lo hizo
-    // Solo marcar los productos que tienen descuento
     this.markDiscountedProducts();
   }
 
@@ -38,16 +32,11 @@ export class FlashSaleComponent implements OnInit, OnChanges {
   }
 
   private markDiscountedProducts() {
-
-    
-
     if (!this.FlashProductList || !this.FlashSales) {
       //console.log('❌ No FlashProductList or FlashSales data');
       return;
     }
     
-    //console.log(`Processing ${this.FlashProductList.length} products for discount labels`);
-     console.log('FlashProductList:', this.FlashProductList);
     this.FlashProductList.forEach(product => {
       // Solo verificar si tiene descuento basado en finalPrice vs price_usd
       const hasDiscount = product.finalPrice && product.finalPrice < product.price_usd;

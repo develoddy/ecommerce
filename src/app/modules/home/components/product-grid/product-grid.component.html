@@ -1,11 +1,13 @@
 <div class="grid-products grid-view-items">
+    
      <div class="section-header ms-3">
         <p class="mb-2 mt-0">All shirts</p>
         <h2>Camisetas</h2>
     </div>
     <div class="row col-row product-options g-1" [ngClass]="getGridClasses()">
+    <!-- <div class="product-slider-5items gp10 arwOut5 grid-product" > -->
         <ng-container *ngIf="ourProducts.length > 0">
-            <ng-container *ngFor="let ourProduct of ourProducts | slice:0:4">
+            <ng-container *ngFor="let ourProduct of ourProducts | slice:0:8">
                 <div class="item col-item" itemscope itemtype="https://schema.org/Product">
                     <div class="product-box">
                         <!-- Start Product Image -->
@@ -111,7 +113,7 @@
                              
                             <!-- Schema.org Offer -->
                             <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                                <link itemprop="url" [href]="sanitizedUrl" />
+                                <link itemprop="url" [href]="getSanitizedUrl(ourProduct)" />
                                 <meta itemprop="priceCurrency" content="EUR" />
                                 <meta itemprop="price" content="{{ getPriceParts(ourProduct.finalPrice).total }}" />
                                 <link itemprop="availability" href="https://schema.org/InStock" />
@@ -178,6 +180,7 @@
             </ng-container>
         </ng-container>
     </div>
+
     <div class="view-collection text-center mt-3 mb-5 mt-md-5 justify-content-center align-item-center d-flex">
         <!-- <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" [ngClass]="{ 'w-100': isMobile, 'px-2': isMobile }">
             <button class="btn-dark-ld fw-light">Ver colección</button>

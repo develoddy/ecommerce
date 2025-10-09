@@ -54,7 +54,7 @@ declare function cleanupProductZoom($: any): any;
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
   euro = '€';
   besProducts: any = [];
   ourProducts: any = [];
@@ -141,9 +141,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.currentGridView = this.gridViewService.getCurrentView();
   }
 
-  ngAfterViewInit(): void {
-    this.sliderManagerService.initializeProductSliders();
-  }
+  // ngAfterViewInit(): void {
+  //   this.sliderManagerService.initializeProductSliders();
+    
+  // }
 
   ngOnInit(): void {
     this.initializeComponent();
@@ -278,22 +279,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setFirstImage();
   }
 
-  // initializePostLoadTasks() {
-  //   this.subscriptionService.setShowSubscriptionSection(false);
-  //   setTimeout(() => {
-  //     this._authEcommerce.loading$.subscribe(isLoading => {
-  //       if (!isLoading) {
-  //         this.loading = !isLoading;
-  //         this.setupFlashSaleTimers();
-  //         this.initializeUIComponents();
-  //       } else {
-  //          this.cleanupUIComponents();
-  //        }
-  //     });
-  //   }, 950);
-  // }
-
-  // Subscribe to loader to initialize sliders after HTTP calls complete
   private initializePostLoadTasks(): void {
     this.subscriptions.add(
       this.loader.loading$.subscribe((isLoading) => {
@@ -325,6 +310,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializeUIComponents(): void {
     HOMEINITTEMPLATE($);
     this.sliderManagerService.initializeGlobalProductSliders();
+    this.sliderManagerService.initializeProductSliders();
     this.extractTags();
   }
 
@@ -681,9 +667,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscribeToGridViewChanges(): void {
     this.subscriptions.add(
       this.gridViewService.currentView$.subscribe((view) => {
-        console.log('🔄 Home - Grid view changed:', view);
         this.currentGridView = view;
-        console.log('📊 Home - Updated currentGridView:', this.currentGridView);
         this.updateGridViewUI();
       })
     );

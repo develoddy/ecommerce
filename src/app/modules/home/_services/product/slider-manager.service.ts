@@ -96,7 +96,7 @@ export class SliderManagerService {
         const element = $(config.selector);
         
         if (element.length === 0) {
-          console.warn(`Slider element not found: ${config.selector}`);
+          //console.warn(`Slider element not found: ${config.selector}`);
           reject(new Error(`Element not found: ${config.selector}`));
           return;
         }

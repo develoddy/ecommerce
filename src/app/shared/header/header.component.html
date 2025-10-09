@@ -915,10 +915,10 @@
                                     <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Hombre</a>
                                     <ul class="subLinks">
                                         <li class="lvl-2">
-                                            <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
+                                            <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
                                         </li>
                                         <li class="lvl-2">
-                                            <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
+                                            <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -1055,10 +1055,10 @@
                                     <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Hombre</a>
                                     <ul class="subLinks">
                                         <li class="lvl-2">
-                                            <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
+                                            <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
                                         </li>
                                         <li class="lvl-2">
-                                            <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
+                                            <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -1285,10 +1285,10 @@
          <li class="lvl1 parent megamenu"><a href="#" onclick="return false;" class="text-uppercase">Camisetas <i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
                 <li>
-                    <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
+                    <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
                 </li>
                 <li>
-                    <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
+                    <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
                 </li>
             </ul>
         </li>
@@ -1297,10 +1297,10 @@
         <li class="lvl1 parent megamenu"><a href="#" onclick="return false;" class="text-uppercase">Sudaderas <i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
                 <li>
-                    <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
+                    <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
                 </li>
                 <li>
-                    <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
+                    <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
                 </li>
             </ul>
         </li>

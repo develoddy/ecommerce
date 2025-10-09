@@ -1,12 +1,15 @@
 
 import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { GridViewMode } from 'src/app/modules/home/_services/product/grid-view.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { CartManagerService } from 'src/app/modules/ecommerce-guest/_service/service_landing_product';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { URL_FRONTEND } from 'src/app/config/config';
+
 @Component({
   selector: 'app-cap-grid',
   templateUrl: './cap-grid.component.html',
@@ -50,8 +53,14 @@ export class CapGridComponent implements OnChanges, OnDestroy  {
     private cartService: CartService,
     private minicartService: MinicartService,
     private cartManagerService: CartManagerService,
-    private priceCalculationService: PriceCalculationService
-  ) {}
+    private priceCalculationService: PriceCalculationService,
+    public routerActived: ActivatedRoute,
+  ) {
+     this.routerActived.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  
+      this.country = params.get('country') || 'es'; 
+    });
+  }
 
   /**
    * Angular requiere que ciertas URLs sean consideradas "seguras" para evitar errores de seguridad (XSS).
@@ -70,8 +79,7 @@ export class CapGridComponent implements OnChanges, OnDestroy  {
     //   console.log('📋 Grid type:', this.gridViewMode?.type);
     // }
     
-    if (changes['capsProducts']) {
-      console.log('🔍 ProductGrid - Total products received:', this.capsProducts);
+    if (changes['capsProducts'] && this.capsProducts && this.capsProducts.length) {
 
       // Tomamos la categoría del primer producto
       this.categorie = this.capsProducts[0].categorie;
@@ -85,6 +93,11 @@ export class CapGridComponent implements OnChanges, OnDestroy  {
       .replace(/\s+/g, '-') // Reemplazar los espacios por guiones
       .replace(/-+/g, '-'); // Reemplazar múltiples guiones por uno solo
   }
+
+  getSanitizedUrl(product: any): SafeResourceUrl {
+      const url = URL_FRONTEND+`${this.locale}/${this.country}/shop/product/${product.slug}`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
   
   /**
    * Get available sizes for a product based on currently selected color
@@ -152,7 +165,7 @@ export class CapGridComponent implements OnChanges, OnDestroy  {
     // Update selected size for this product
     this.selectedSizes[productId] = size;
     
-    console.log(`✅ Size ${size} selected for product ${productId}`);
+    //console.log(`✅ Size ${size} selected for product ${productId}`);
     
     // Find the selected variety based on current color and size
     const currentColorIndex = this.selectedColors[productId] || 0;

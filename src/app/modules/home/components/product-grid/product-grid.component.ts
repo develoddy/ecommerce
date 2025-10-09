@@ -1,12 +1,14 @@
 
 import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { GridViewMode } from 'src/app/modules/home/_services/product/grid-view.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { CartManagerService } from 'src/app/modules/ecommerce-guest/_service/service_landing_product';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { URL_FRONTEND } from 'src/app/config/config';
 
 @Component({
   selector: 'app-product-grid',
@@ -51,8 +53,14 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     private cartService: CartService,
     private minicartService: MinicartService,
     private cartManagerService: CartManagerService,
-    private priceCalculationService: PriceCalculationService
-  ) {}
+    private priceCalculationService: PriceCalculationService,
+    public routerActived: ActivatedRoute,
+  ) {
+    this.routerActived.paramMap.subscribe(params => {
+      this.locale = params.get('locale') || 'es';  
+      this.country = params.get('country') || 'es'; 
+    });
+  }
 
   /**
    * Angular requiere que ciertas URLs sean consideradas "seguras" para evitar errores de seguridad (XSS).
@@ -63,28 +71,36 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
    * "unsafe value used in a resource URL context".
    */
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('🔄 ProductGrid - ngOnChanges triggered');
     
-    if (changes['gridViewMode']) {
-      console.log('📊 GridViewMode received:', this.gridViewMode);
-      console.log('🏗️ Grid className:', this.gridViewMode?.className);
-      console.log('📐 Grid columns:', this.gridViewMode?.columns);
-      console.log('📋 Grid type:', this.gridViewMode?.type);
-    }
+    //if (changes['gridViewMode']) {
+      // console.log('📊 GridViewMode received:', this.gridViewMode);
+      // console.log('🏗️ Grid className:', this.gridViewMode?.className);
+      // console.log('📐 Grid columns:', this.gridViewMode?.columns);
+      // console.log('📋 Grid type:', this.gridViewMode?.type);
+    //}
     
-    if (changes['FlashSale']) {
-      console.log('💰 FlashSale data (IGNORADO en product-grid):', this.FlashSale);
-    }
+    //if (changes['FlashSale']) {
+    //  console.log('💰 FlashSale data (IGNORADO en product-grid):', this.FlashSale);
+    //}
     
     if (changes['ourProducts'] && this.ourProducts && this.ourProducts.length > 0) {
-      console.log('🔍 ProductGrid - Total products received:', this.ourProducts?.length || 0);
-
-      console.log('📂 ProductGrid - ourProducts:', this.ourProducts);
+      //console.log('🔍 ProductGrid - Total products received:', this.ourProducts?.length || 0);
+      //console.log('📂 ProductGrid - ourProducts:', this.ourProducts);
        // Tomamos la categoría del primer producto
       this.categorie = this.ourProducts[0].categorie;
-      
-    }
+
+      // 🔽 Filtrar solo los productos con logo_position = 'center'
+      this.ourProducts = this.ourProducts.filter(
+        (p) => p.logo_position === 'center'
+      );
+        
+      }
   }  
+
+  getSanitizedUrl(product: any): SafeResourceUrl {
+    const url = URL_FRONTEND+`${this.locale}/${this.country}/shop/product/${product.slug}`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
 
   generateSlug(title: string): string {
     return title
