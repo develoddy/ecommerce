@@ -143,7 +143,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // ngAfterViewInit(): void {
   //   this.sliderManagerService.initializeProductSliders();
-    
+
   // }
 
   ngOnInit(): void {
@@ -280,13 +280,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private initializePostLoadTasks(): void {
+
     this.subscriptions.add(
       this.loader.loading$.subscribe((isLoading) => {
         if (!isLoading) {
           setTimeout(() => {
             this.setupFlashSaleTimers();
             this.initializeUIComponents();
-          }, 150);
+          }, 200);
         } else {
           this.cleanupUIComponents();
         }
@@ -307,7 +308,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+
   private initializeUIComponents(): void {
+    
     HOMEINITTEMPLATE($);
     this.sliderManagerService.initializeGlobalProductSliders();
     this.sliderManagerService.initializeProductSliders();
