@@ -50,6 +50,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   product_selected:any=null;
   categoryTitle: string = '';
   slug:any=null;
+  
   isDesktopSize: boolean = window.innerWidth >= 992;
   isMobileSize: boolean = window.innerWidth < 768;
   idCategorie:any=null;
@@ -63,6 +64,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   country: string = "";
   //  private subscription: Subscription = new Subscription();
   private subscriptions: Subscription = new Subscription();
+  logo_position:any=null;
   logo_position_selected: string = "";
   isMobile: boolean = false;
   isTablet: boolean = false;
@@ -115,6 +117,9 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
     this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
+      this.logo_position = resp["logo_position"];
+      console.log("------> this.logo_position", this.logo_position);
+      
       this.idCategorie = resp["idCategorie"];
       
       if (this.idCategorie && this.slug && this.slug != '') {
@@ -125,7 +130,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         this.filterForCategorie(this.idCategorie);
       } 
 
-      this.filterProduct(); // Aplicar filtros (principalmente categoría) sin tratar slug como posición de logo
+      this.filterProduct(this.logo_position); // Aplicar filtros (principalmente categoría) sin tratar slug como posición de logo
       
     });
 
@@ -288,14 +293,19 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
         priceMin = defaultMin;
         priceMax = defaultMax;
       }
+
+      //if (!logo_position) return; // Si logo_position no está definido, salir de la función
+      
       if (logo_position && logo_position !== '') {
-        if (logo_position == 'camisetas-logo-central') {
+        if (logo_position === 'logo-central') {
           this.logo_position_selected = 'center';
-        } else if (logo_position == 'camisetas-logo-lateral') {
+        } else if (logo_position == 'logo-lateral') {
           this.logo_position_selected = 'right_top';
         }
       }
+
       this.filtersApplied = this.categories_selecteds.length > 0 || this.selectedColors.length > 0 || this.variedad_selected.length > 0 || this.variedad_selected != '' || priceMin !== defaultMin || priceMax !== defaultMax || this.logo_position_selected !== '';
+
       let data = {
         categories_selecteds: this.categories_selecteds,
         is_discount: this.is_discount,

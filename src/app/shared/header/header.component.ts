@@ -58,25 +58,25 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   currentUser: any = null;
   width: number = 100; // valor por defecto
   height: number = 100; // valor por defecto
-
   ourProducts: any = [];
   hoodiesProducts: any = [];
   mugsProducts: any = [];
   capsProducts: any = [];
   FlashProductList: any = [];
   FlashSales: any = null;
-
   @ViewChild("filter") filter?: ElementRef;
   private subscriptions: Subscription = new Subscription();
   showSubscriptionSection: boolean = true;
-
   sanitizedUrl: SafeUrl = '';
   selectedColors: { [productId: string]: number } = {}; // Track selected color index for each product
   productImages: { [productId: string]: string } = {}; // Track current image for each product
   selectedSizes: { [productId: string]: string } = {}; // Track selected size for each product
   hoveredProduct: string | null = null; // Track which product is being hovered
-
+  
   categorieMugs: any;
+  categorieOurProducts: any;
+  categorieHoodies: any;
+  categorieCaps: any;
 
   constructor(
     private router: Router,
@@ -90,8 +90,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private localizationService: LocalizationService,
     private headerEventsService: HeaderEventsService,
     private cd: ChangeDetectorRef,
-
-    //SERVICE NEW
     public homeService: HomeService,
     private productUIService: ProductUIService,
     private priceCalculationService: PriceCalculationService,
@@ -155,10 +153,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private processBasicData(resp: any): void {
+    //console.log("----> [Components Header] Home data received:", resp);
+    
     // Asignar datos básicos primero
     this.ourProducts = resp.our_products
     this.hoodiesProducts = resp.hoodies_products;
     this.mugsProducts = resp.mugs_products;
+    this.capsProducts = resp.caps_products;
     this.FlashProductList = resp.campaign_products;
     this.FlashSales = resp.FlashSales;
     
@@ -166,24 +167,35 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.categories.forEach((category: any) => {
       category.slug = this.productUIService.generateSlug(category.title); 
     });
+    //console.log("----> [Components Header] Categories with slugs:", this.categories);
+    
 
-    // Generar slug para cada Hoodies sin modificar el título original
+    // Generar slug para cada Camisetas sin modificar el título original
     this.ourProducts.forEach((product: any) => {
       product.slug = this.productUIService.generateSlug(product.title); 
     });
+    this.categorieOurProducts = this.categories.find(cat => cat.slug.toLowerCase() === "all-shirts");
 
     // Generar slug para cada Hoodies sin modificar el título original
     this.hoodiesProducts.forEach((hoodie: any) => {
       hoodie.slug = this.productUIService.generateSlug(hoodie.title); 
     });
+    this.categorieHoodies = this.categories.find(cat => cat.slug.toLowerCase() === "hoodies");
 
     // Generar slug para cada Mugs sin modificar el título original
     this.mugsProducts.forEach((mug: any) => {
       mug.slug = this.productUIService.generateSlug(mug.title);
       mug.categorie.slug = this.productUIService.generateSlug(mug.categorie?.title || ''); 
     });
+    this.categorieMugs = this.categories.find(cat => cat.slug.toLowerCase() === "mugs");
 
-    
+    // Generar slug para cada Caps sin modificar el título original
+    this.capsProducts.forEach((cap: any) => {
+      cap.slug = this.productUIService.generateSlug(cap.title);
+      cap.categorie.slug = this.productUIService.generateSlug(cap.categorie?.title || '');
+    });
+    this.categorieCaps = this.categories.find(cat => cat.slug.toLowerCase() === "dad-hats-baseball-caps");
+
   }
 
   private processProductPrices(resp: any): void {
@@ -277,18 +289,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       .replace(/-+/g, '-'); // Reemplazar múltiples guiones por uno solo
   }
 
-    
- /**
-   * Check if a color is currently selected for a product
-   * @param product - Product object or product ID
-   * @param colorIndex - Color index to check
-   * @returns boolean
-   */
   isColorSelected(product: any, colorIndex: number): boolean {
     const productId = typeof product === 'string' ? product : (product.uniqueId || product.id || product._id);
     return this.selectedColors[productId] === colorIndex;
   }
-
 
   onColorSelect(product: any, colorIndex: number, newImage: string): void {
     const productId = product.uniqueId || product.id || product._id;
@@ -346,9 +350,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.productUIService.changeProductImage(product, imageUrl);
   }
 
-
-
-
   private checkUserAuthenticationStatus(): void {
     this.subscriptions.add(
       combineLatest([
@@ -389,10 +390,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  /**
-   * SINCRONIZAR AMBOS CARRITOS DE USUARIOS INVITADOS Y AUTENTICADOS
-   * @returns 
-   */
   private syncUserCart(): void {
     if ( !this.currentUser || !this.currentUser._id ) {
         console.error("Error: Intentando sincronizar el carrito sin un usuario autenticado.");
@@ -462,9 +459,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  /**
-   * Obtiene el precio final del item del carrito considerando descuentos
-   */
   getFinalPrice(cart: any): number {
     // Si hay descuento aplicado, usar el precio con descuento
     if (cart.type_discount && cart.discount) {
@@ -476,16 +470,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     return parseFloat(cart.variedad?.retail_price || cart.product.price_usd || 0);
   }
 
-  /**
-   * Verifica si el item tiene descuento aplicado
-   */
   hasDiscount(cart: any): boolean {
     return cart.type_discount && cart.discount && parseFloat(cart.discount) < parseFloat(cart.variedad?.retail_price || cart.product.price_usd || 0);
   }
 
-  /**
-   * Obtiene el precio original antes del descuento
-   */
   getOriginalPrice(cart: any): number {
     return parseFloat(cart.variedad?.retail_price || cart.product.price_usd || 0);
   }

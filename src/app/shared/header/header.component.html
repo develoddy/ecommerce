@@ -71,7 +71,7 @@
     <div class="header main-header d-flex align-items-center header-1 header-fixed bg-darkblue-ld">
         <div class="container-header" [ngClass]="{'container-fluid': isDesktop || isTablet, 'container': isMobile }">
             <div class="row">
-                <!-- MENU IZQUIERDA - Minimizado para dejar espacio al buscador central -->
+                <!-- MENU IZQUIERDA -->
                 <div *ngIf="!isMobile && !isTablet" class="col-1 col-sm-1 col-md-1 col-lg-3 align-self-center d-menu-col d-flex justify-content-start d-none">
                     <nav class="navigation" id="AccessibleNav">
                         <ul id="siteNav" class="site-nav medium left">
@@ -903,8 +903,7 @@
     <div class="sub-header bg-darklight-ld py-2 position-fixed w-100" [ngClass]="{'d-none': isMobile}" style="top: 80px; z-index: 99;">
         <div class="container-fluid d-menu-col">
             <nav class="menu navigation" id="AccessibleNav">
-                <!-- <ul class="menu-list d-flex justify-content-center m-0 p-0"> -->
-                <ul id="siteNav" class="site-nav medium left">
+                <ul id="siteNav" class="site-nav medium center">
                     <!-- CAMISETAS  -->
                     <li class="lvl1 parent megamenu">
                         <a href="#" class="text-uppercase">
@@ -913,24 +912,18 @@
                         <div class="megamenu style2">
                             <ul class="row mmWrapper">
                                 <li class="lvl-1 col-md-3 col-lg-3">
-                                    <a href="#;" class="site-nav lvl-1 menu-title">Hombre</a>
+                                    <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Hombre</a>
                                     <ul class="subLinks">
                                         <li class="lvl-2">
-                                            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central']" class="site-nav lvl-2">Logo Central</a>
-                                            <!-- <a *ngIf="categorie"
-                                                [routerLink]="['/', locale, country, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]"
-                                                class="category-link clr-none"
-                                                [attr.title]="'Explorar ' + categorie.title">
-                                                <button class="btn-dark-ld fw-light">Explorar {{ categorie.title }}</button>
-                                            </a> -->
+                                            <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
                                         </li>
                                         <li class="lvl-2">
-                                            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
+                                            <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="lvl-1 col-md-3 col-lg-3"><a href="#;"
-                                        class="site-nav lvl-1 menu-title">Mujer</a>
+                                <li class="lvl-1 col-md-3 col-lg-3 d-none">
+                                    <a href="#;" onclick="return false" class="site-nav lvl-1 menu-title">Mujer</a>
                                     <ul class="subLinks">
                                         <li class="lvl-2"><a href="product-standard.html"
                                                 class="site-nav lvl-2">Todas las sudaderas</a></li>
@@ -938,8 +931,8 @@
                                                 class="site-nav lvl-2">Sudaderas con capucha</a></li>
                                     </ul>
                                 </li>
-                                <li class="lvl-1 col-md-3 col-lg-6 product-col" *ngIf="ourProducts && ourProducts.length > 0">
-                                    <a href="#;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
+                                <li class="lvl-1 col-md-3 col-lg-9 product-col" *ngIf="ourProducts && ourProducts.length > 0">
+                                    <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
                                     <div class="grid-products weekly-product gp10 mt-1">
                                         <ng-container *ngFor="let ourProduct of ourProducts">
                                             <div class="item">
@@ -947,7 +940,7 @@
                                                     <!-- Start Product Image -->
                                                     <div class="product-image mb-0">
                                                         <!-- Imagen -->
-                                                        <a href="#" class="product-img">
+                                                        <a href="#" onclick="return false;" class="product-img">
                                                             <!-- Image principal -->
                                                             <img
                                                                 class="blur-up lazyload"
@@ -1059,16 +1052,18 @@
                         <div class="megamenu style2">
                             <ul class="row mmWrapper">
                                 <li class="lvl-1 col-md-3 col-lg-3">
-                                    <a href="#;" class="site-nav lvl-1 menu-title">Hombre</a>
+                                    <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Hombre</a>
                                     <ul class="subLinks">
-                                        <li class="lvl-2"><a href="product-layout1.html"
-                                                class="site-nav lvl-2">Todas las sudaderas</a></li>
-                                        <li class="lvl-2"><a href="product-layout2.html"
-                                                class="site-nav lvl-2">Sudaderas con capucha</a></li>
+                                        <li class="lvl-2">
+                                            <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
+                                        </li>
+                                        <li class="lvl-2">
+                                            <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
+                                        </li>
                                     </ul>
                                 </li>
-                                <li class="lvl-1 col-md-3 col-lg-3"><a href="#;"
-                                        class="site-nav lvl-1 menu-title">Mujer</a>
+                                <li class="lvl-1 col-md-3 col-lg-3 d-none">
+                                    <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Mujer</a>
                                     <ul class="subLinks">
                                         <li class="lvl-2"><a href="product-standard.html"
                                                 class="site-nav lvl-2">Todas las sudaderas</a></li>
@@ -1076,8 +1071,9 @@
                                                 class="site-nav lvl-2">Sudaderas con capucha</a></li>
                                     </ul>
                                 </li>
-                                <li class="lvl-1 col-md-3 col-lg-6 product-col" *ngIf="hoodiesProducts && hoodiesProducts.length > 0">
-                                    <a href="#;"class="site-nav lvl-1 menu-title">Los más vendidos</a>
+                                <!-- Result slider  -->
+                                <li class="lvl-1 col-md-3 col-lg-9 product-col" *ngIf="hoodiesProducts && hoodiesProducts.length > 0">
+                                    <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
                                     <div class="grid-products weekly-product gp10 mt-1">
                                         <ng-container *ngFor="let hoodieProduct of hoodiesProducts">
                                             <div class="item">
