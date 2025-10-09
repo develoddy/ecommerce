@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Observable, interval, EMPTY } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
@@ -23,8 +23,9 @@ export class FlashSaleTimerService {
   private timers = new Map<string, any>();
   private timerSubjects = new Map<string, BehaviorSubject<TimeLeft>>();
   private timersInitialized = false;
-
-  constructor() { }
+  private readonly TIMER_INTERVAL = 5000; // 5 segundos
+  
+  constructor(private ngZone: NgZone) { }
 
   /**
    * Inicializa todos los timers para las Flash Sales activas
@@ -82,33 +83,51 @@ export class FlashSaleTimerService {
       return;
     }
 
-    // Crear interval para actualizar cada segundo
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = endDate - now;
+    // Ejecutar el timer fuera de la zona de Angular para evitar ciclos de detección innecesarios
+    // Usar un intervalo más largo (5 segundos) para reducir carga del navegador
+    let timer: any;
+    this.ngZone.runOutsideAngular(() => {
+      timer = setInterval(() => {
+        // Calcular tiempo de manera eficiente
+        const now = new Date().getTime();
+        const distance = endDate - now;
 
-      if (distance <= 0) {
-        // Timer expirado
-        const expiredTimeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
-        timerSubject.next(expiredTimeLeft);
-        this.clearTimer(flash.id);
-        //console.log(`⏰ Timer expired for Flash Sale ${flash.id}`);
-      } else {
-        // Actualizar tiempo restante
-        const timeLeft = this.calculateTimeLeft(distance);
-        timerSubject.next(timeLeft);
-        // Log solo cada 30 segundos para evitar spam
-        if (timeLeft.seconds % 30 === 0) {
-          //console.log(`⏰ Flash Sale ${flash.id} time left:`, timeLeft);
+        if (distance <= 0) {
+          // Timer expirado - esto debería ser poco frecuente
+          clearInterval(timer);
+          this.ngZone.run(() => {
+            const expiredTimeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+            timerSubject.next(expiredTimeLeft);
+            this.timers.delete(flash.id);
+          });
+          //console.log(`⏰ Timer expired for Flash Sale ${flash.id}`);
+        } else {
+          // Actualizar tiempo restante - solo notificar cambios significativos
+          const timeLeft = this.calculateTimeLeft(distance);
+          
+          // Evitar actualizaciones si los cambios son mínimos (solo segundos cambiando)
+          const currentValue = timerSubject.getValue();
+          const shouldUpdate = 
+            timeLeft.days !== currentValue.days ||
+            timeLeft.hours !== currentValue.hours ||
+            timeLeft.minutes !== currentValue.minutes ||
+            Math.abs(timeLeft.seconds - currentValue.seconds) >= 5;
+            
+          if (shouldUpdate) {
+            this.ngZone.run(() => {
+              timerSubject.next(timeLeft);
+            });
+          }
         }
-      }
-    }, 1000);
+      }, this.TIMER_INTERVAL); // Actualizar cada 5 segundos
+    });
 
     this.timers.set(flash.id, timer);
   }
 
   /**
    * Calcula el tiempo restante basado en la distancia en milisegundos
+   * Versión optimizada que evita cálculos repetitivos
    * @param distance Distancia en milisegundos
    * @returns Objeto TimeLeft
    */
@@ -117,12 +136,25 @@ export class FlashSaleTimerService {
       return { days: 0, hours: 0, minutes: 0, seconds: 0 };
     }
 
-    return {
-      days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-      minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-      seconds: Math.floor((distance % (1000 * 60)) / 1000),
-    };
+    // Usar constantes precalculadas para evitar operaciones repetitivas
+    const SECOND = 1000;
+    const MINUTE = SECOND * 60;
+    const HOUR = MINUTE * 60;
+    const DAY = HOUR * 24;
+    
+    // División simple en lugar de múltiples operaciones de módulo
+    const days = Math.floor(distance / DAY);
+    distance %= DAY;
+    
+    const hours = Math.floor(distance / HOUR);
+    distance %= HOUR;
+    
+    const minutes = Math.floor(distance / MINUTE);
+    distance %= MINUTE;
+    
+    const seconds = Math.floor(distance / SECOND);
+    
+    return { days, hours, minutes, seconds };
   }
 
   /**
@@ -185,40 +217,58 @@ export class FlashSaleTimerService {
   }
 
   /**
-   * Limpia un timer específico
+   * Limpia un timer específico de manera eficiente
    * @param flashId ID de la Flash Sale
    */
   clearTimer(flashId: string): void {
-    const timer = this.timers.get(flashId);
-    if (timer) {
-      clearInterval(timer);
-      this.timers.delete(flashId);
-    }
+    // Usar NgZone para la limpieza del timer
+    this.ngZone.runOutsideAngular(() => {
+      const timer = this.timers.get(flashId);
+      if (timer) {
+        clearInterval(timer);
+        this.timers.delete(flashId);
+      }
+    });
 
+    // Completar el subject de forma segura
     const subject = this.timerSubjects.get(flashId);
-    if (subject) {
+    if (subject && !subject.closed) {
+      // Emitir un valor final antes de completar
+      const finalValue = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      subject.next(finalValue);
       subject.complete();
       this.timerSubjects.delete(flashId);
     }
   }
 
   /**
-   * Limpia todos los timers
+   * Limpia todos los timers de manera eficiente
    */
   clearAllTimers(): void {
     console.log('🧹 Limpiando todos los timers de Flash Sales');
     
-    // Limpiar intervals
-    this.timers.forEach((timer, flashId) => {
-      clearInterval(timer);
+    // Limpiar intervals fuera de la zona de Angular
+    this.ngZone.runOutsideAngular(() => {
+      // Usar un enfoque eficiente para limpiar todos los intervalos
+      if (this.timers.size > 0) {
+        this.timers.forEach((timer) => {
+          clearInterval(timer);
+        });
+        this.timers.clear();
+      }
     });
-    this.timers.clear();
 
     // Completar y limpiar subjects
-    this.timerSubjects.forEach((subject, flashId) => {
-      subject.complete();
-    });
-    this.timerSubjects.clear();
+    if (this.timerSubjects.size > 0) {
+      const finalValue = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      this.timerSubjects.forEach((subject) => {
+        if (!subject.closed) {
+          subject.next(finalValue);
+          subject.complete();
+        }
+      });
+      this.timerSubjects.clear();
+    }
 
     this.timersInitialized = false;
   }

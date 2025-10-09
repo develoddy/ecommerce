@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 
 declare var $: any;
 
@@ -68,45 +68,72 @@ export class TestimonialsComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  constructor() { }
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
-    this.initializeSlider();
+    // Para evitar ExpressionChangedAfterItHasBeenCheckedError
+    setTimeout(() => {
+      this.initializeSlider();
+    });
   }
 
   private initializeSlider(): void {
     if (typeof $ !== 'undefined') {
+      // Aumentamos el tiempo de espera para asegurar que el DOM está listo
       setTimeout(() => {
-        $('.testimonial-slider-3items').slick({
-          dots: true,
-          arrows: true,
-          infinite: true,
-          speed: 300,
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          autoplay: true,
-          autoplaySpeed: 5000,
-          responsive: [
-            {
-              breakpoint: 1024,
-              settings: {
-                slidesToShow: 2,
-                slidesToScroll: 1
-              }
-            },
-            {
-              breakpoint: 768,
-              settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-              }
+        try {
+          // Verificar si el elemento existe antes de inicializar el slider
+          const testimonialSlider = $('.testimonial-slider-3items');
+          
+          if (testimonialSlider.length > 0) {
+            // Intentar destruir cualquier instancia anterior de slick
+            if (testimonialSlider.hasClass('slick-initialized')) {
+              testimonialSlider.slick('unslick');
             }
-          ]
-        });
-      }, 100);
+            
+            // Inicializar slick después de un breve retraso
+            setTimeout(() => {
+              testimonialSlider.slick({
+                dots: true,
+                arrows: true,
+                infinite: true,
+                speed: 300,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                responsive: [
+                  {
+                    breakpoint: 1024,
+                    settings: {
+                      slidesToShow: 2,
+                      slidesToScroll: 1
+                    }
+                  },
+                  {
+                    breakpoint: 768,
+                    settings: {
+                      slidesToShow: 1,
+                      slidesToScroll: 1
+                    }
+                  }
+                ]
+              });
+              console.log('Testimonial slider initialized successfully');
+              
+              // Notificar a Angular sobre los cambios
+              this.cdr.detectChanges();
+            }, 50);
+          } else {
+            console.warn('Testimonial slider element not found in DOM');
+          }
+        } catch (error) {
+          console.error('Error initializing testimonial slider:', error);
+        }
+      }, 500); // Aumentamos más el tiempo de espera a 500ms
     }
   }
 

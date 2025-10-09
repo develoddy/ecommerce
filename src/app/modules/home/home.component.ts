@@ -7,6 +7,7 @@ import {
   NgZone,
   ViewChild,
   ElementRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { HomeService } from './_services/home.service';
 import { CartService } from '../ecommerce-guest/_service/cart.service';
@@ -134,17 +135,24 @@ export class HomeComponent implements OnInit, OnDestroy {
     private productSelectionService: ProductSelectionService,
     private sliderManagerService: SliderManagerService,
     private wishlistManagerService: WishlistManagerService,
-    private gridViewService: GridViewService
+    private gridViewService: GridViewService,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
     this.currentGridView = this.gridViewService.getCurrentView();
   }
 
-  // ngAfterViewInit(): void {
-  //   this.sliderManagerService.initializeProductSliders();
-
-  // }
+  ngAfterViewInit(): void {
+    // Esperar un momento después de que la vista esté completamente inicializada
+    setTimeout(() => {
+      // Comprobar si estamos en un ambiente de navegador (no SSR)
+      if (typeof window !== 'undefined' && typeof $ !== 'undefined') {
+        this.initializeUIComponents();
+      }
+    }, 100);
+  }
 
   ngOnInit(): void {
     this.initializeComponent();
@@ -280,13 +288,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private initializePostLoadTasks(): void {
-
     this.subscriptions.add(
       this.loader.loading$.subscribe((isLoading) => {
         if (!isLoading) {
           setTimeout(() => {
             this.setupFlashSaleTimers();
-            this.initializeUIComponents();
+            // La inicialización de UI se manejará en ngAfterViewInit
           }, 200);
         } else {
           this.cleanupUIComponents();
@@ -310,11 +317,178 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   private initializeUIComponents(): void {
-    
-    HOMEINITTEMPLATE($);
-    this.sliderManagerService.initializeGlobalProductSliders();
-    this.sliderManagerService.initializeProductSliders();
-    this.extractTags();
+    // Ejecutar la inicialización fuera de la zona de Angular para mejor rendimiento
+    this.ngZone.runOutsideAngular(() => {
+      // Asegurarnos de que el DOM está completamente renderizado antes de inicializar
+      setTimeout(() => {
+        try {
+          // Inicializar componentes UI específicos por separado
+          this.initializeHomeSlider();
+          
+          // Inicializar sliders globales (si existen en el servicio)
+          try {
+            // Verificamos si el método existe antes de llamarlo
+            if (typeof this.sliderManagerService.initializeGlobalProductSliders === 'function') {
+              this.sliderManagerService.initializeGlobalProductSliders();
+            }
+          } catch (globalSliderError) {
+            console.warn('Non-critical error initializing global sliders:', globalSliderError);
+          }
+          
+          // Solo inicializar sliders de producto si estamos en la página de producto
+          if (this.isProductDetailPage()) {
+            this.sliderManagerService.initializeProductSliders()
+              .catch((error: Error) => {
+                console.warn('Product sliders not initialized (may not be on product page):', error.message);
+              });
+          } else {
+            console.log('Skipping product sliders initialization - not on product page');
+          }
+          
+          // Volver a la zona de Angular para actualizar componentes si es necesario
+          this.ngZone.run(() => {
+            this.extractTags();
+            this.cdr.detectChanges();
+          });
+        } catch (error) {
+          console.error('Error initializing UI components:', error);
+        }
+      }, 500); // dar más tiempo para que el DOM se renderice completamente
+    });
+  }
+  
+  /**
+   * Determina si estamos en una página de detalle de producto
+   */
+  private isProductDetailPage(): boolean {
+    // Verificar si los elementos del detalle de producto existen en el DOM
+    return $('.single-product-thumbnail').length > 0 || $('.product-details-page').length > 0;
+  }
+  
+  /**
+   * Inicializa el slider principal de forma segura
+   */
+  private initializeHomeSlider(): void {
+    try {
+      const homeSlideshow = $('.home-slideshow');
+      
+      // Verificar si el elemento existe y tiene hijos (slides)
+      if (homeSlideshow.length && homeSlideshow.children().length > 0) {
+        // Si ya está inicializado, destruirlo primero
+        if (homeSlideshow.hasClass('slick-initialized')) {
+          homeSlideshow.slick('unslick');
+        }
+        
+        // Inicializar el slider directamente en lugar de usar HOMEINITTEMPLATE
+        homeSlideshow.slick({
+          dots: true,
+          infinite: true,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          fade: true,
+          arrows: false,
+          autoplay: true,
+          autoplaySpeed: 7000,
+          lazyLoad: 'ondemand'
+        });
+        
+        console.log('Home slideshow initialized successfully');
+        
+        // Inicializar otros componentes de HOMEINITTEMPLATE que no sean el slider principal
+        this.initializeOtherHomeComponents();
+      } else {
+        console.warn('Home slideshow element not found or has no slides, skipping initialization');
+      }
+    } catch (error) {
+      console.error('Error initializing home slider:', error);
+    }
+  }
+  
+  /**
+   * Inicializa otros componentes de la página de inicio que no sean el slider principal
+   */
+  private initializeOtherHomeComponents(): void {
+    try {
+      // Inicializar otros componentes UI que no son el slider principal
+      // sin llamar a HOMEINITTEMPLATE directamente
+      
+      if (typeof $ !== 'undefined') {
+        // Inicializar otros sliders si están presentes
+        const promoSlider = $('.promo-slider-1items');
+        if (promoSlider.length) {
+          promoSlider.slick({
+            dots: false,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            autoplay: true,
+            autoplaySpeed: 4000,
+            fade: true,
+            cssEase: 'linear'
+          });
+        }
+        
+        // Inicializar sliders de productos
+        const productSliders = $('.product-slider');
+        if (productSliders.length) {
+          productSliders.each(function(this: any) {
+            const $this = $(this);
+            if (!$this.hasClass('slick-initialized')) {
+              $this.slick({
+                dots: false,
+                infinite: true,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                arrows: true,
+                responsive: [
+                  {
+                    breakpoint: 1024,
+                    settings: {
+                      slidesToShow: 3,
+                      slidesToScroll: 1
+                    }
+                  },
+                  {
+                    breakpoint: 768,
+                    settings: {
+                      slidesToShow: 2,
+                      slidesToScroll: 1
+                    }
+                  }
+                ]
+              });
+            }
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error initializing other home components:', error);
+    }
+  }
+
+  /**
+   * Destruye todos los sliders inicializados para evitar memory leaks
+   */
+  private destroySliders(): void {
+    if (typeof $ !== 'undefined') {
+      try {
+        // Destruir el slideshow principal si existe
+        const homeSlideshow = $('.home-slideshow');
+        if (homeSlideshow.length && homeSlideshow.hasClass('slick-initialized')) {
+          homeSlideshow.slick('unslick');
+        }
+        
+        // Destruir otros sliders
+        const otherSliders = $('.slick-initialized');
+        if (otherSliders.length) {
+          otherSliders.each(function(this: any) {
+            $(this).slick('unslick');
+          });
+        }
+      } catch (error) {
+        console.error('Error destroying sliders:', error);
+      }
+    }
   }
 
   private cleanupUIComponents(): void {
@@ -333,7 +507,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getPriceParts = (price: number) => {
     if (!this.priceCalculationService) {
-      console.warn('PriceCalculationService not available');
       return { integer: '0', decimals: '00', total: '0.00' };
     }
     return this.priceCalculationService.getPriceParts(price);
@@ -707,6 +880,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
     }
+    
+    // Destruir sliders para evitar memory leaks
+    this.destroySliders();
 
     // Limpiar todos los timers de Flash Sales usando el servicio
     this.flashSaleTimerService.clearAllTimers();
