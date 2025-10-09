@@ -21,13 +21,13 @@
 <!-- End Loading -->
 
 <!--Page Wrapper-->
-<div class="page-wrapper">
+<div class="page-wrapper" [class.d-none]="loader.loading$ | async">
   <!--Header-->
   <app-header></app-header>
   <!--End Header-->
 
   <!-- Body Container -->
-  <ng-container [class.d-none]="loader.loading$ | async">
+  <!-- <ng-container [class.d-none]="loader.loading$ | async"> -->
   <!-- <ng-container [class.d-none]="!loading"> -->
     <div id="page-content" class="mb-0">
       <!--Home Slideshow-->
@@ -126,7 +126,7 @@
       <!--End Product Grid-->
 
 
-
+      <!-- SE MUESTRAN TODOS LOS PRODUCTOS D-NONE -->
       <div class="tab-pane d-none" id="newarrivals" role="tabpanel" aria-labelledby="newarrivals-tab">
           <!--Product Grid-->
           <div class="grid-products grid-view-items">
@@ -845,7 +845,7 @@
       <!--End Blog Post-->
     </div>
     <!-- End Body Container -->
-  </ng-container>
+  <!-- </ng-container> -->
 
   <!--Footer-->
   <app-footer></app-footer>

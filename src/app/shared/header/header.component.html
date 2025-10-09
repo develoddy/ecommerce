@@ -1255,12 +1255,12 @@
                     <!-- END MUGS -->
 
                     <!-- GORRAS -->
-                    <li class="lvl1 parent dropdown" *ngIf="mugsProducts && mugsProducts.length > 0">
-                        <a *ngIf="mugsProducts"
-                            [routerLink]="['/', locale, country, 'shop', 'filter-products', mugsProducts[0].categorie.slug, mugsProducts[0].categorie.id]"
+                    <li class="lvl1 parent dropdown" *ngIf="categorieCaps && categorieCaps.length > 0">
+                        <a *ngIf="categorieCaps"
+                            [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieCaps[0].categorie.slug, categorieCaps[0].categorie.id]"
                             class="text-uppercase"
-                            [attr.title]="'Explorar ' + mugsProducts[0].categorie.title">
-                            <span class="menubar-label fw-bold text-white">Gorras</span>
+                            [attr.title]="'Explorar ' + categorieCaps[0].categorie.title">
+                            Gorras
                         </a>
                     </li>
                     <!-- END GORRAS -->
@@ -1281,84 +1281,52 @@
 <div class="mobile-nav-wrapper" role="navigation">
     <div class="closemobileMenu">Menu <i class="icon anm anm-times-l"></i></div>
     <ul id="MobileNav" class="mobile-nav">
-        <li class="lvl1 parent dropdown"><a href="index.html">Hombre
-                <!--<i class="icon anm anm-angle-down-l"></i>--></a></li>
-        <li class="lvl1 parent dropdown"><a href="index.html">Mujer</a></li>
-        <li class="lvl1 parent megamenu d-none"><a href="#">Shop <i class="icon anm anm-angle-down-l"></i></a>
+        <!-- CAMISETAS -->
+         <li class="lvl1 parent megamenu"><a href="#" onclick="return false;" class="text-uppercase">Camisetas <i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
-                <li><a href="#;" class="site-nav">Collection Page <i class="icon anm anm-angle-down-l"></i></a>
-                    <ul class="lvl-3">
-                        <li><a href="collection-style1.html" class="site-nav">Collection style1</a></li>
-                        <li><a href="collection-style2.html" class="site-nav">Collection style2</a></li>
-                        <li><a href="collection-style3.html" class="site-nav">Collection style3</a></li>
-                        <li><a href="collection-style4.html" class="site-nav">Collection style4</a></li>
-                        <li><a href="sub-collection-style1.html" class="site-nav">Sub Collection style1</a></li>
-                        <li><a href="sub-collection-style2.html" class="site-nav">Sub Collection style2</a></li>
-                        <li><a href="collection-empty.html" class="site-nav">Collection Empty</a></li>
-                        <li><a href="shop-search-results.html" class="site-nav">Shop Search Results</a></li>
-                        <li><a href="shop-swatches-style.html" class="site-nav last">Shop Swatches style</a></li>
-                    </ul>
+                <li>
+                    <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
                 </li>
-                <li><a href="#;" class="site-nav">Shop Page <i class="icon anm anm-angle-down-l"></i></a>
-                    <ul class="lvl-3">
-                        <li><a href="shop-grid-view.html" class="site-nav">Shop Grid View</a></li>
-                        <li><a href="shop-list-view.html" class="site-nav">Shop List View</a></li>
-                        <li><a href="shop-left-sidebar.html" class="site-nav">Shop Left Sidebar</a></li>
-                        <li><a href="shop-right-sidebar.html" class="site-nav">Shop Right Sidebar</a></li>
-                        <li><a href="shop-top-filter.html" class="site-nav">Shop Top Filter</a></li>
-                        <li><a href="shop-masonry-grid.html" class="site-nav">Shop Masonry Grid</a></li>
-                        <li><a href="shop-with-category.html" class="site-nav">Shop With Category</a></li>
-                        <li><a href="shop-grid-view.html" class="site-nav">Classic Pagination</a></li>
-                        <li><a href="shop-right-sidebar.html" class="site-nav last">Infinite Scrolling</a></li>
-                    </ul>
-                </li>
-                <li><a href="#;" class="site-nav">Shop Other Page <i class="icon anm anm-angle-down-l"></i></a>
-                    <ul class="lvl-3">
-                        <li><a href="wishlist-style1.html" class="site-nav">Wishlist Style1</a></li>
-                        <li><a href="wishlist-style2.html" class="site-nav">Wishlist Style2</a></li>
-                        <li><a href="compare-style1.html" class="site-nav">Compare Style1</a></li>
-                        <li><a href="compare-style2.html" class="site-nav">Compare Style2</a></li>
-                        <li><a href="cart-style1.html" class="site-nav">Cart Style1</a></li>
-                        <li><a href="cart-style2.html" class="site-nav">Cart Style2</a></li>
-                        <li><a href="checkout-style1.html" class="site-nav">Checkout Style1</a></li>
-                        <li><a href="checkout-style2.html" class="site-nav">Checkout Style2</a></li>
-                        <li><a href="order-success.html" class="site-nav last">Order Success</a></li>
-                    </ul>
+                <li>
+                    <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
                 </li>
             </ul>
         </li>
-        <li class="lvl1 parent megamenu d-none"><a href="product-layout1.html">Product <i
-                    class="icon anm anm-angle-down-l"></i></a>
+
+        <!-- SUDADERAS -->
+        <li class="lvl1 parent megamenu"><a href="#" onclick="return false;" class="text-uppercase">Sudaderas <i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
-                <li><a href="product-layout1.html" class="site-nav">Product Page <i
-                            class="icon anm anm-angle-down-l"></i></a>
-                    <ul class="lvl-3">
-                        <li><a href="product-layout1.html" class="site-nav">Product Layout1</a></li>
-                        <li><a href="product-layout2.html" class="site-nav">Product Layout2</a></li>
-                        <li><a href="product-layout3.html" class="site-nav">Product Layout3</a></li>
-                        <li><a href="product-layout4.html" class="site-nav">Product Layout4</a></li>
-                        <li><a href="product-layout5.html" class="site-nav">Product Layout5</a></li>
-                        <li><a href="product-layout6.html" class="site-nav">Product Layout6</a></li>
-                        <li><a href="product-layout7.html" class="site-nav">Product Layout7</a></li>
-                        <li><a href="product-3d-ar-models.html" class="site-nav last">Product 3D, AR models</a></li>
-                    </ul>
+                <li>
+                    <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
                 </li>
-                <li><a href="product-standard.html" class="site-nav">Product Page Types <i
-                            class="icon anm anm-angle-down-l"></i></a>
-                    <ul class="lvl-3">
-                        <li><a href="product-standard.html" class="site-nav">Standard Product</a></li>
-                        <li><a href="product-variable.html" class="site-nav">Variable Product</a></li>
-                        <li><a href="product-grouped.html" class="site-nav">Grouped Product</a></li>
-                        <li><a href="product-layout4.html" class="site-nav">Product Back in stock</a></li>
-                        <li><a href="product-layout6.html" class="site-nav">Product Accordion</a></li>
-                        <li><a href="product-layout7.html" class="site-nav">Product Tabs Left</a></li>
-                        <li><a href="product-layout6.html" class="site-nav">Product Bundle</a></li>
-                        <li><a href="prodcut-360-view.html" class="site-nav last">Product 360 View</a></li>
-                    </ul>
+                <li>
+                    <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
                 </li>
             </ul>
         </li>
-        <li class="lvl1 parent dropdown d-none"><a href="#;">Pages <i class="icon anm anm-angle-down-l"></i></a>
+
+        <!-- MUGS -->
+        <li class="lvl1 parent dropdown">
+            <a *ngIf="categorieMugs"
+                [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieMugs.slug, categorieMugs._id]"
+                class="text-uppercase"
+                [attr.title]="'Explorar ' + categorieMugs.title">
+                Mugs
+            </a>
+        </li>
+
+        <!-- GORRAS -->
+        <li class="lvl1 parent dropdown">
+             <a *ngIf="categorieCaps"
+                [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieCaps.slug, categorieCaps._id]"
+                class="text-uppercase"
+                [attr.title]="'Explorar ' + categorieCaps.title">
+                Gorras
+            </a>
+        </li>
+        
+
+        <li class="lvl1 parent dropdown d-none"><a href="#" onclick="return false;">Pages <i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
                 <li><a href="aboutus-style1.html" class="site-nav">About Us <i
                             class="icon anm anm-angle-down-l"></i></a>
@@ -1399,7 +1367,7 @@
                 </li>
             </ul>
         </li>
-        <li class="lvl1 parent dropdown d-none"><a href="blog-grid.html">Blog <i
+        <li class="lvl1 parent dropdown d-none"><a href="#" onclick="return false;">Blog <i
                     class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
                 <li><a href="blog-grid.html" class="site-nav">Grid View</a></li>
@@ -1410,7 +1378,8 @@
                 <li><a href="blog-details.html" class="site-nav">Blog Details</a></li>
             </ul>
         </li>
-
+        
+        <!-- SOCIAL NETWORK -->
         <li class="mobile-menu-bottom">
             <div class="mobile-links">
                 <ul class="list-inline d-inline-flex flex-column w-100">

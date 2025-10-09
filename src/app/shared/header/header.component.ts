@@ -73,9 +73,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedSizes: { [productId: string]: string } = {}; // Track selected size for each product
   hoveredProduct: string | null = null; // Track which product is being hovered
   
-  categorieMugs: any;
+
   categorieOurProducts: any;
   categorieHoodies: any;
+  categorieMugs: any;
   categorieCaps: any;
 
   constructor(
@@ -167,7 +168,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.categories.forEach((category: any) => {
       category.slug = this.productUIService.generateSlug(category.title); 
     });
-    //console.log("----> [Components Header] Categories with slugs:", this.categories);
+    console.log("----> [Components Header] Categories with slugs:", this.categories);
     
 
     // Generar slug para cada Camisetas sin modificar el título original
@@ -195,7 +196,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       cap.categorie.slug = this.productUIService.generateSlug(cap.categorie?.title || '');
     });
     this.categorieCaps = this.categories.find(cat => cat.slug.toLowerCase() === "dad-hats-baseball-caps");
-
+    console.log("----> [Components Header] categorieCaps:", this.categorieCaps);
+    
   }
 
   private processProductPrices(resp: any): void {
