@@ -122,7 +122,6 @@ export class TestimonialsComponent implements OnInit, AfterViewInit {
                   }
                 ]
               });
-              console.log('Testimonial slider initialized successfully');
               
               // Notificar a Angular sobre los cambios
               this.cdr.detectChanges();
