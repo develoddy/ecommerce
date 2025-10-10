@@ -193,8 +193,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       cap.slug = this.productUIService.generateSlug(cap.title);
       cap.categorie.slug = this.productUIService.generateSlug(cap.categorie?.title || '');
     });
-    this.categorieCaps = this.categories.find(cat => cat.slug.toLowerCase() === "dad-hats-baseball-caps")
-  }
+    this.categorieCaps = this.categories.find(cat => cat.slug.toLowerCase() === "dad-hats-baseball-caps");
+    console.log("----> [Components Header] Categories categorieCaps:", this.categorieCaps);
+
+   }
 
   private processProductPrices(resp: any): void {
     // Calcular precios finales para productos normales usando el servicio
