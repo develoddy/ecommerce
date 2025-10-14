@@ -119,17 +119,13 @@
 
                             <!-- Product Price -->
                             <div class="product-price">
-                                <span class="price old-price" *ngIf="capProduct.campaing_discount">
-                                    {{ capProduct.price_usd }} {{ euro }}
-                                </span>
+                                <!-- Old Price -->
+                                <span class="price old-price" *ngIf="capProduct.campaing_discount">{{ capProduct.price_usd }} <span class="">{{ euro }}</span></span>
 
                                 <!-- Precio final -->
                                 <span class="price" [ngClass]="{ 'text-danger': capProduct.campaing_discount }">
-                                    <span class="">{{ getPriceParts(capProduct.finalPrice).integer }}.</span>
-                                    <span class="">
-                                        {{ getPriceParts(capProduct.finalPrice).decimals }}
-                                        <span class="">{{ euro }}</span>
-                                    </span>
+                                    <span class="">{{ getPriceParts(capProduct.finalPrice).integer }}.{{ getPriceParts(capProduct.finalPrice).decimals }}</span>
+                                    <span class="">{{ euro }}</span>
                                 </span>
                             </div>
                             <!-- End Product Price -->

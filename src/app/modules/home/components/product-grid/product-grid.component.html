@@ -96,11 +96,11 @@
                             <!--Product Vendor-->
                             <div class="product-vendor">{{ ourProduct.categorie.title || '' }}</div>
                             <!--End Product Vendor-->
-                            <!-- Product Name -->
+                            <!-- Product Name class="text-truncate d-inline-block product-title fw-light" -->
                             <div class="product-name lh-1">
                                 <a [routerLink]="['/',locale,country,'shop','product',ourProduct.slug]" 
                                     [queryParams]="getRouterDiscount(ourProduct)" 
-                                    class="text-truncate d-inline-block product-title fw-light" 
+                                    class="product-title fw-light" 
                                     itemprop="name">
                                       {{ ourProduct.title }}
                                 </a>
@@ -122,17 +122,12 @@
 
                             <!-- Product Price -->
                             <div class="product-price">
-                                <span class="price old-price" *ngIf="ourProduct.campaing_discount">
-                                    {{ourProduct.price_usd}}{{euro}}
-                                </span>
-
-                                <!-- Precio final -->
+                                <!-- Old Price -->
+                                <span class="price old-price me-1" *ngIf="ourProduct.campaing_discount">{{ ourProduct.price_usd }}<span class="">{{euro}}</span></span>
+                                <!-- Final Price -->
                                 <span class="price" [ngClass]="{ 'text-danger': ourProduct.campaing_discount }">
-                                    <span class="">{{getPriceParts(ourProduct.finalPrice).integer}}.</span>
-                                    <span class="">
-                                        {{getPriceParts(ourProduct.finalPrice).decimals}}
-                                        <span class="">{{euro}}</span>
-                                    </span>
+                                    <span class="">{{getPriceParts(ourProduct.finalPrice).integer }}.{{getPriceParts(ourProduct.finalPrice).decimals}}</span>
+                                    <span class="">{{euro}}</span>
                                 </span>
                             </div>
                             <!-- End Product Price -->

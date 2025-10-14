@@ -39,9 +39,9 @@
 }
 
 @media only screen and (min-width:1200px) {
-    .product-title {
+    /* .product-title {
         max-width: 300px;
-    }
+    } */
     .row-5col > * { width:20%; }
     .index-demo10 .newsletter-section .newsletter-wrap { padding-right: 145px; padding-left: 175px; }
     .product-notification { margin: 25px; }
@@ -51,9 +51,9 @@
 }
 
 @media only screen and (max-width: 1199px) {
-    .product-title {
+    /* .product-title {
         max-width: 300px;
-    }
+    } */
     #page-content { margin: 0 0 50px; }
     .section { padding-top: 50px; padding-bottom: 50px; }
     .text-large { font-size: 18px !important; } 
@@ -119,9 +119,9 @@
 }
 
 @media only screen and (min-width: 992px) {
-    .product-title {
-        max-width: 134px;
-    }
+    /* .product-title {
+        max-width: 240px;
+    } */
     .rounded-start-lg-0 { border-top-left-radius: 0px !important; border-bottom-left-radius: 0px !important; }
     .rounded-end-lg-0 { border-top-right-radius: 0px !important; border-bottom-right-radius: 0px !important; }
     .mih-75:not(.stickyNav) { min-height: 75px !important; }
@@ -210,9 +210,9 @@
 }
 
 @media only screen and (max-width: 991px) {
-    .product-title {
+    /* .product-title {
         max-width: 140px;
-    }
+    } */
     .container-fluid { padding-left:15px; padding-right:15px; }
     .rounded-top-md-0 { border-bottom-left-radius: 0px !important; border-bottom-right-radius: 0px !important; }
     .rounded-bottom-md-0 { border-bottom-left-radius: 0px !important; border-bottom-right-radius: 0px !important; }
@@ -596,9 +596,9 @@
 
 @media only screen and (max-width: 767px) {
     .ld-w-100 {width: 100% !important;}
-    .product-title {
+    /* .product-title {
         max-width: 140px;
-    }
+    } */
     body { line-height: 1.5; }
     h1, .h1 { font-size:22px; }
     /* h2, .h2 { font-size:18px; } */
@@ -1036,9 +1036,9 @@
 }
 
 @media only screen and (max-width: 575px) {
-    .product-title {
+    /* .product-title {
         max-width: 130px;
-    }
+    } */
     .xs-hide { display: none !important; }
     .text-medium { font-size: 14px !important; }
 

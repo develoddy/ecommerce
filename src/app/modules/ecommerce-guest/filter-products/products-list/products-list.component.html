@@ -67,20 +67,14 @@
                                 <div class="product-price">
                                     <!-- Original price (crossed out if discount exists) -->
                                     <span class="price old-price" *ngIf="hasDiscount(product)">
-                                        <span class="">{{ getOriginalPriceParts(product).integer }}.</span>
-                                        <span class="">
-                                            <span>{{ getOriginalPriceParts(product).decimals }}</span>
-                                            <span class="">{{ euro }}</span>
-                                        </span>
+                                        <span class="">{{getOriginalPriceParts(product).integer}}.{{getOriginalPriceParts(product).decimals}}</span>
+                                        <span class="">{{ euro }}</span>
                                     </span>
                                     
                                     <!-- Final price (with discount applied if exists) -->
                                     <span class="price" [ngStyle]="hasDiscount(product) ? {'color': '#dc3545', 'font-weight': 'bold'} : {}">
-                                        <span class="">{{ getFinalPriceParts(product).integer }}.</span>
-                                        <span class="">
-                                            <span>{{ getFinalPriceParts(product).decimals }}</span>
-                                            <span class="">{{ euro }}</span>
-                                        </span>
+                                        <span class="">{{getFinalPriceParts(product).integer}}.{{getFinalPriceParts(product).decimals}}</span>
+                                        <span class="">{{ euro }}</span>
                                     </span>
                                 </div>
                                 <!-- End Product Price -->

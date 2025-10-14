@@ -119,17 +119,13 @@
 
                             <!-- Product Price -->
                             <div class="product-price">
-                                <span class="price old-price" *ngIf="mugProduct.campaing_discount">
-                                    {{ mugProduct.price_usd }} {{ euro }}
-                                </span>
+                                <!-- Old Price -->
+                                <span class="price old-price" *ngIf="mugProduct.campaing_discount">{{ mugProduct.price_usd }} <span class="">{{ euro }}</span></span>
 
-                                <!-- Precio final -->
+                                <!-- Final Price -->
                                 <span class="price" [ngClass]="{ 'text-danger': mugProduct.campaing_discount }">
-                                    <span class="">{{ getPriceParts(mugProduct.finalPrice).integer }}.</span>
-                                    <span class="">
-                                        {{ getPriceParts(mugProduct.finalPrice).decimals }}
-                                        <span class="">{{ euro }}</span>
-                                    </span>
+                                    <span class="">{{getPriceParts(mugProduct.finalPrice).integer }}.{{ getPriceParts(mugProduct.finalPrice).decimals }}</span>
+                                    <span class="">{{ euro }}</span>
                                 </span>
                             </div>
                             <!-- End Product Price -->

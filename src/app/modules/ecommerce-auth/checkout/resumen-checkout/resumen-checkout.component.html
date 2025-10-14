@@ -497,11 +497,8 @@
                                 <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                     <span class="money">
                                         <span class="price-small" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through' : ''">
-                                            <span class="">{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.</span>
-                                            <span class="">
-                                                <span>{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
-                                                <span class="">{{ euro }}</span>
-                                            </span>
+                                            <span class="me-1">{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
+                                            <span class="">{{ euro }}</span>
                                         </span>
                                     </span>
                                 </span>
@@ -513,11 +510,8 @@
                                 <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
                                     <span class="money">
                                         <span class="price-small">
-                                            -<span class="">{{getFormattedPrice(getTotalDiscount()).integerPart}}.</span>
-                                            <span class="">
-                                                <span>{{ getFormattedPrice(getTotalDiscount()).decimalPart }}</span>
-                                                <span class="">{{ euro }}</span>
-                                            </span>
+                                            -<span class="me-1">{{getFormattedPrice(getTotalDiscount()).integerPart}}.{{ getFormattedPrice(getTotalDiscount()).decimalPart }}</span>
+                                            <span class="">{{ euro }}</span>
                                         </span>
                                     </span>
                                 </span>
@@ -533,12 +527,9 @@
                             <div class="row g-0">
                                 <span class="col-6 col-sm-6 cart-subtotal-title text-uppercase fw-bold">Total</span>
                                 <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                    <span class="money price">
-                                        <span class="fw-bold">{{getFormattedPrice(totalCarts).integerPart}}.</span>
-                                        <span class="fw-bold">
-                                            <span>{{ getFormattedPrice(totalCarts).decimalPart }}</span>
-                                            <span class="">{{ euro }}</span>
-                                        </span>
+                                    <span class="money price fw-bold ">
+                                        <span class="me-1">{{getFormattedPrice(totalCarts).integerPart}}.{{ getFormattedPrice(totalCarts).decimalPart }}</span>
+                                        <span class="">{{ euro }}</span>
                                     </span>
                                 </span>
                             </div>
@@ -674,11 +665,8 @@
                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                 <span class="money">
                                     <span class="price-small fw-light" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through' : ''">
-                                        <span class="">{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.</span>
-                                        <span class="">
-                                            <span>{{getFormattedPrice(getOriginalSubtotal()).decimalPart}}</span>
-                                            <span class="">{{ euro }}</span>
-                                        </span>
+                                        <span class="me-1">{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.{{getFormattedPrice(getOriginalSubtotal()).decimalPart}}</span>
+                                        <span class="">{{ euro }}</span>
                                     </span>
                                 </span>
                             </span>
@@ -690,11 +678,8 @@
                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
                                 <span class="money">
                                     <span class="price-small fw-light">
-                                        -<span class="">{{getFormattedPrice(getTotalDiscount()).integerPart}}.</span>
-                                        <span class="">
-                                            <span>{{getFormattedPrice(getTotalDiscount()).decimalPart}}</span>
-                                            <span class="">{{ euro }}</span>
-                                        </span>
+                                        -<span class="me-1">{{getFormattedPrice(getTotalDiscount()).integerPart}}.{{getFormattedPrice(getTotalDiscount()).decimalPart}}</span>
+                                        <span class="">{{ euro }}</span>
                                     </span>
                                 </span>
                             </span>
@@ -711,11 +696,8 @@
                             <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase fw-bold">Total</span>
                             <span class="col-6 col-sm-6 cart-subtotal-title fs-6 cart-subtotal text-end">
                                 <span class="money price fw-bold">
-                                    <span class="">{{getFormattedPrice(totalCarts).integerPart}}.</span>
-                                    <span class="">
-                                        <span>{{ getFormattedPrice(totalCarts).decimalPart }}</span>
-                                        <span class="">{{ euro }}</span>
-                                    </span>
+                                    <span class="me-1">{{getFormattedPrice(totalCarts).integerPart}}.{{ getFormattedPrice(totalCarts).decimalPart }}</span>
+                                    <span class="">{{ euro }}</span>
                                 </span>
                             </span>
                         </div>
@@ -749,30 +731,24 @@
                                             <!-- Datos adicionales -->
                                             <div class="d-flex flex-column ">
                                                 <div class="d-flex lh-1 mb-2">
-                                                    <div class="fw-normal me-2" style="height: 20px;">
-                                                        <a href="#" class="fw-normal text-black text-truncate d-inline-block product-title" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                                    <div class="fw-normal me-2">
+                                                        <a href="#" class="fw-normal d-inline-block" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
                                                     </div>
                                                     <div class="">
                                                         <!-- Mostrar precio con descuento si aplica -->
                                                         <ng-container *ngIf="cart.finalUnitPrice && getFinalUnitPrice(cart) < (cart.variedad?.retail_price || cart.price_unitario); else normalPrice">
                                                             <!-- Precio original tachado -->
-                                                            <span class="price-small fw-normal old-price text-decoration-line-through fw-normal">
+                                                            <span class="price-small old-price text-decoration-line-through fw-bold">
                                                                 <span class="">
-                                                                    <span class="">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}.</span>
-                                                                    <span class="">
-                                                                        <span>{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</span>
-                                                                        <span class="">{{ euro }}</span>
-                                                                    </span>
+                                                                    <span class="me-1">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}.{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</span>
+                                                                    <span class="">{{ euro }}</span>
                                                                 </span>
                                                             </span>
                                                             <!-- Precio final con descuento -->
                                                             <span class="money text-danger">
-                                                                <span class="price-small fw-normal">
-                                                                    <span class="">{{ getFormattedPrice(getFinalUnitPrice(cart)).integerPart }}.</span>
-                                                                    <span class="">
-                                                                        <span>{{ getFormattedPrice(getFinalUnitPrice(cart)).decimalPart }}</span>
-                                                                        <span class="">{{ euro }}</span>
-                                                                    </span>
+                                                                <span class="price-small fw-bold">
+                                                                    <span class="me-1">{{ getFormattedPrice(getFinalUnitPrice(cart)).integerPart }}.{{ getFormattedPrice(getFinalUnitPrice(cart)).decimalPart }}</span>
+                                                                    <span class="">{{ euro }}</span>
                                                                 </span>
                                                             </span>
                                                         </ng-container>
@@ -780,12 +756,9 @@
                                                         <!-- Precio normal sin descuento -->
                                                         <ng-template #normalPrice>
                                                             <span class="money">
-                                                                <span class="price-small fw-normal">
-                                                                    <span class="">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}.</span>
-                                                                    <span class="">
-                                                                        <span>{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</span>
-                                                                        <span class="">{{ euro }}</span>
-                                                                    </span>
+                                                                <span class="price-small fw-bold">
+                                                                    <span class="me-1">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}.{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</span>
+                                                                    <span class="">{{ euro }}</span>
                                                                 </span>
                                                             </span>
                                                         </ng-template>
@@ -811,11 +784,8 @@
                                                     <span class="w-25">Total</span>
                                                     <span class="money ms-lg-3 ms-5">
                                                         <span class="">
-                                                            <span class="">{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).integerPart }}.</span>
-                                                            <span class="">
-                                                                <span>{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).decimalPart }}</span>
-                                                                <span class="">{{ euro }}</span>
-                                                            </span>
+                                                            <span class="me-1">{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).integerPart }}.{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).decimalPart }}</span>
+                                                            <span class="">{{ euro }}</span>
                                                         </span>
                                                     </span>
                                                 </div>
@@ -825,16 +795,10 @@
                                                 <div class="fw-bold">
                                                     Subtotal:
                                                     <span class="price-small">
-                                                        <span class="price-main-small">{{
-                                 getFormattedPrice(cart.total).integerPart
-                                 }}</span>
+                                                        <span class="price-main-small">{{getFormattedPrice(cart.total).integerPart}}</span>
                                                         <span class="price-decimals-small">
-                                                            <sup>{{
-                                 getFormattedPrice(cart.total).decimalPart
-                                 }}</sup>
-                                                            <span class="currency-symbol-small">{{
-                                 euro
-                                 }}</span>
+                                                            <sup>{{getFormattedPrice(cart.total).decimalPart}}</sup>
+                                                            <span class="currency-symbol-small">{{euro}}</span>
                                                         </span>
                                                     </span>
                                                 </div>

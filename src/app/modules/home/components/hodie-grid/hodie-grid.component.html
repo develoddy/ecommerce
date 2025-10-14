@@ -119,17 +119,13 @@
 
                             <!-- Product Price -->
                             <div class="product-price">
-                                <span class="price old-price" *ngIf="hodieProduct.campaing_discount">
-                                    {{ hodieProduct.price_usd }} {{ euro }}
-                                </span>
+                                <!-- Old Price -->
+                                <span class="price old-price" *ngIf="hodieProduct.campaing_discount">{{ hodieProduct.price_usd }} <span class="">{{ euro }}</span></span>
 
                                 <!-- Precio final -->
                                 <span class="price" [ngClass]="{ 'text-danger': hodieProduct.campaing_discount }">
-                                    <span class="">{{ getPriceParts(hodieProduct.finalPrice).integer }}.</span>
-                                    <span class="">
-                                        {{ getPriceParts(hodieProduct.finalPrice).decimals }}
-                                        <span class="">{{ euro }}</span>
-                                    </span>
+                                    <span class="">{{getPriceParts(hodieProduct.finalPrice).integer }}.{{ getPriceParts(hodieProduct.finalPrice).decimals }}</span>
+                                    <span class="">{{ euro }}</span>
                                 </span>
                             </div>
                             <!-- End Product Price -->

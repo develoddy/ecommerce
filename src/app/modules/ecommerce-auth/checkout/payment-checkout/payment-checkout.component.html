@@ -870,14 +870,14 @@
                                           <!-- Datos adicionales -->
                                           <div class="d-flex flex-column ">
                                                 <div class="d-flex lh-1 mb-2">
-                                                   <div class="fw-normal me-2" style="height: 20px;">
-                                                      <a href="#" class="fw-normal text-black text-truncate d-inline-block product-title" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                                   <div class="fw-normal me-2">
+                                                      <a href="#" class="fw-normal d-inline-block" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
                                                    </div>
                                                    <div class="">
                                                       <!-- Mostrar precio con descuento si aplica -->
                                                       <ng-container *ngIf="cart.finalUnitPrice && getFinalUnitPrice(cart) < (cart.variedad?.retail_price || cart.price_unitario); else normalPrice">
                                                             <!-- Precio original tachado -->
-                                                            <span class="price-small fw-normal old-price text-decoration-line-through fw-normal">
+                                                            <span class="price-small old-price text-decoration-line-through fw-bold">
                                                                <span class="">
                                                                   <span class="">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}.</span>
                                                                   <span class="">
@@ -888,7 +888,7 @@
                                                             </span>
                                                             <!-- Precio final con descuento -->
                                                             <span class="money text-danger">
-                                                               <span class="price-small fw-normal">
+                                                               <span class="price-small fw-bold">
                                                                   <span class="">{{ getFormattedPrice(getFinalUnitPrice(cart)).integerPart }}.</span>
                                                                   <span class="">
                                                                         <span>{{ getFormattedPrice(getFinalUnitPrice(cart)).decimalPart }}</span>
@@ -901,7 +901,7 @@
                                                       <!-- Precio normal sin descuento -->
                                                       <ng-template #normalPrice>
                                                             <span class="money">
-                                                               <span class="price-small fw-normal">
+                                                               <span class="price-small fw-bold">
                                                                   <span class="">{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).integerPart }}.</span>
                                                                   <span class="">
                                                                         <span>{{ getFormattedPrice(cart.variedad?.retail_price || cart.price_unitario).decimalPart }}</span>
