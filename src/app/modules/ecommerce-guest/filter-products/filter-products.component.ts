@@ -118,7 +118,6 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     this._routerActived.params.subscribe((resp:any) => {
       this.slug = resp["slug"];
       this.logo_position = resp["logo_position"];
-      console.log("------> this.logo_position", this.logo_position);
       
       this.idCategorie = resp["idCategorie"];
       

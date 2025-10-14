@@ -13,996 +13,977 @@
 
 <div class="page-wrapper py-3" *ngIf="product_selected && related_products && interest_products">
     <ng-container [class.d-none]="loader.loading$ | async">
-    <!-- Body Container -->
-    <div id="page-content py-5">
-        <!--Page Header-->
-        <div class="page-header text-center bg-white">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12  d-flex justify-content-between align-items-center" >
-                        <!-- Breadcrumbs visual -->
-                        <div class="breadcrumbs text-uppercase">
-                            <a routerLink="/" title="Lujandev.com" class="fw-light" alt="Lujandev.com">Lujandev.com</a>
-                            <span class="main-title fw-normal">
-                                <i class="icon anm anm-angle-right-l"></i>
-                                <!-- Categoría clicable -->
-                                <a *ngIf="product_selected.categorie"
-                                [routerLink]="['/', locale, country, 'shop', 'filter-products', product_selected.categorie.slug, product_selected.categorie.id]">
-                                <span class="fw-light">{{ product_selected.categorie.title || 'Categoría' }}</span>
-                                </a>
-                                <i *ngIf="product_selected.categorie" class="icon anm anm-angle-right-l"></i>
-                                <span class="fw-bold">{{ product_selected.title }}</span>
-                            </span>
-                        </div>
-                        <!-- End Breadcrumbs visual -->
-
-                        <!-- Breadcrumbs SEO invisible -->
-                        <nav aria-label="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList"
-                            style="position:absolute; left:-9999px; top:-9999px;">
-                            <ol>
-                                <!-- Home -->
-                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                                <a itemprop="item" routerLink="/">
-                                    <span itemprop="name">Inicio</span>
-                                </a>
-                                <meta itemprop="position" content="1" />
-                                </li>
-
-                                <!-- Categoría -->
-                                <li *ngIf="product_selected.categorie" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                                <a itemprop="item"
+        <!-- Body Container -->
+        <div id="page-content py-5">
+            <!--Page Header-->
+            <div class="page-header text-center bg-white">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12  d-flex justify-content-between align-items-center" >
+                            <!-- Breadcrumbs visual -->
+                            <div class="breadcrumbs text-uppercase">
+                                <a routerLink="/" title="Lujandev.com" class="fw-light" alt="Lujandev.com">Lujandev.com</a>
+                                <span class="main-title fw-normal">
+                                    <i class="icon anm anm-angle-right-l"></i>
+                                    <!-- Categoría clicable -->
+                                    <a *ngIf="product_selected.categorie"
                                     [routerLink]="['/', locale, country, 'shop', 'filter-products', product_selected.categorie.slug, product_selected.categorie.id]">
-                                    <span itemprop="name">{{ product_selected.categorie.title || 'Categoría' }}</span>
-                                </a>
-                                <meta itemprop="position" content="2" />
-                                </li>
+                                    <span class="fw-light">{{ product_selected.categorie.title || 'Categoría' }}</span>
+                                    </a>
+                                    <i *ngIf="product_selected.categorie" class="icon anm anm-angle-right-l"></i>
+                                    <span class="fw-bold">{{ product_selected.title }}</span>
+                                </span>
+                            </div>
+                            <!-- End Breadcrumbs visual -->
 
-                                <!-- Producto -->
-                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                                <span itemprop="name">{{ product_selected.title }}</span>
-                                <meta itemprop="position" content="{{ product_selected.categorie ? 3 : 2 }}" />
-                                </li>
-                            </ol>
-                        </nav>
-                        <!-- End Breadcrumbs SEO invisible -->
+                            <!-- Breadcrumbs SEO invisible -->
+                            <nav aria-label="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList"
+                                style="position:absolute; left:-9999px; top:-9999px;">
+                                <ol>
+                                    <!-- Home -->
+                                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                    <a itemprop="item" routerLink="/">
+                                        <span itemprop="name">Inicio</span>
+                                    </a>
+                                    <meta itemprop="position" content="1" />
+                                    </li>
+
+                                    <!-- Categoría -->
+                                    <li *ngIf="product_selected.categorie" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                    <a itemprop="item"
+                                        [routerLink]="['/', locale, country, 'shop', 'filter-products', product_selected.categorie.slug, product_selected.categorie.id]">
+                                        <span itemprop="name">{{ product_selected.categorie.title || 'Categoría' }}</span>
+                                    </a>
+                                    <meta itemprop="position" content="2" />
+                                    </li>
+
+                                    <!-- Producto -->
+                                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                    <span itemprop="name">{{ product_selected.title }}</span>
+                                    <meta itemprop="position" content="{{ product_selected.categorie ? 3 : 2 }}" />
+                                    </li>
+                                </ol>
+                            </nav>
+                            <!-- End Breadcrumbs SEO invisible -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--End Page Header-->
+            <!--End Page Header-->
 
-        <!--Main Content-->
-        <div class="container" [ngClass]="{ 'px-0': isMobile }">
-            <!--Product Content-->
-            <div class="product-single">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-img mb-4 mb-md-0 px-0">
-                        <!-- Product Horizontal -->
-                        <div class="product-details-img product-horizontal-style">
-                            <!-- Product Main -->
-                            <div class="zoompro-wrap">
-                                <!-- Product Image -->
-                                <div class="zoompro-span">
-                                    <img id="zoompro" 
-                                         class="zoompro" 
-                                         [src]="firstImage" 
-                                         [attr.data-zoom-image]="firstImage" 
-                                         alt="Camiseta {{ product_selected.title }} para programadores LujanDev"
-                                         width="665" 
-                                         height="808" 
-                                         itemprop="image"/>
+            <!--Main Content-->
+            <div class="container" [ngClass]="{ 'px-0': isMobile }">
+                <!--Product Content-->
+                <div class="product-single">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-img mb-4 mb-md-0 px-0">
+                            <!-- Product Horizontal -->
+                            <div class="product-details-img product-horizontal-style">
+                                <!-- Product Main -->
+                                <div class="zoompro-wrap">
+                                    <!-- Product Image -->
+                                    <div class="zoompro-span">
+                                        <img id="zoompro" 
+                                            class="zoompro" 
+                                            [src]="firstImage" 
+                                            [attr.data-zoom-image]="firstImage" 
+                                            alt="Camiseta {{ product_selected.title }} para programadores LujanDev"
+                                            width="665" 
+                                            height="808" 
+                                            itemprop="image"/>
+                                    </div>
+                                    <!-- End Product Image -->
+                                    <!-- Product Label -->
+                                    <div class="product-labels d-none"><span class="lbl pr-label1">New</span><span class="lbl on-sale">Sale</span></div>
+                                    <!-- End Product Label -->
+                                    <!-- Product Buttons -->
+                                    <div class="product-buttons">
+                                        <a href="#;" onclick="return false;" class="btn btn-primary prlightbox" data-bs-toggle="tooltip" data-bs-placement="top" title="Zoom Image"><i class="icon anm anm-expand-l-arrows"></i></a>
+                                    </div>
+                                    <!-- End Product Buttons -->
                                 </div>
-                                <!-- End Product Image -->
-                                <!-- Product Label -->
-                                <div class="product-labels d-none"><span class="lbl pr-label1">New</span><span class="lbl on-sale">Sale</span></div>
-                                <!-- End Product Label -->
-                                <!-- Product Buttons -->
-                                <div class="product-buttons">
-                                    <a href="#;" onclick="return false;" class="btn btn-primary prlightbox" data-bs-toggle="tooltip" data-bs-placement="top" title="Zoom Image"><i class="icon anm anm-expand-l-arrows"></i></a>
-                                </div>
-                                <!-- End Product Buttons -->
-                            </div>
-                            <!-- End Product Main -->
+                                <!-- End Product Main -->
 
-                            <!-- Product Thumb -->
-                            <div class="product-thumb product-horizontal-thumb mt-3">
-                                <div id="gallery" class="product-thumb-horizontal">
+                                <!-- Product Thumb -->
+                                <div class="product-thumb product-horizontal-thumb mt-3">
+                                    <div id="gallery" class="product-thumb-horizontal">
+                                        <ng-container *ngFor="let item of uniqueGalerias">
+                                            <a [attr.data-image]="item.imagen" 
+                                            [attr.data-zoom-image]="item.imagen" 
+                                            class="slick-slide slick-cloned active"
+                                            (click)="selectThumbnail(item.imagen)">
+                                                <img class="blur-up lazyload" 
+                                                    [attr.data-src]="item.imagen" 
+                                                    [src]="item.imagen" 
+                                                    alt="{{ product_selected.title }} - {{ item.color || 'vista del producto' }}" 
+                                                    width="625" 
+                                                    height="808" />
+                                            </a>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                                <!-- End Product Thumb -->
+
+                                <!-- Product Gallery -->
+                                <div class="lightboximages">
                                     <ng-container *ngFor="let item of uniqueGalerias">
-                                        <a [attr.data-image]="item.imagen" 
-                                           [attr.data-zoom-image]="item.imagen" 
-                                           class="slick-slide slick-cloned active"
-                                           (click)="selectThumbnail(item.imagen)">
-                                            <img class="blur-up lazyload" 
-                                                 [attr.data-src]="item.imagen" 
-                                                 [src]="item.imagen" 
-                                                 alt="{{ product_selected.title }} - {{ item.color || 'vista del producto' }}" 
-                                                 width="625" 
-                                                 height="808" />
-                                        </a>
+                                        <a [href]="item.imagen" data-size="1000x1280" [attr.data-image]="item.imagen"></a>
                                     </ng-container>
                                 </div>
+                                <!-- End Product Gallery -->
                             </div>
-                            <!-- End Product Thumb -->
-
-                            <!-- Product Gallery -->
-                            <div class="lightboximages">
-                                <ng-container *ngFor="let item of uniqueGalerias">
-                                    <a [href]="item.imagen" data-size="1000x1280" [attr.data-image]="item.imagen"></a>
-                                </ng-container>
-                            </div>
-                            <!-- End Product Gallery -->
+                            <!-- End Product Horizontal -->
                         </div>
-                        <!-- End Product Horizontal -->
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-info" [ngClass]="{'px-4':isMobile, 'px-5': isDesktop }">
-                        <!-- Product Details -->
-                        <div class="product-single-meta">
-                            <div class="d-flex flex-column mb-0">
-                                <h2 class="product-main-title text-uppercase fw-light lh-1 mb-0">{{ product_selected.title }}</h2>
-                                <div class="product-price d-flex-center">
-                                    <!-- Precio original tachado si hay descuento -->
-                                    <ng-container *ngIf="hasDiscount()">
-                                        <span class="price old-price">{{ getOriginalPrice().toFixed(2) }} €</span>
-                                    </ng-container>
-                                    
-                                    <!-- Precio final (con descuento si aplica) -->
-                                    <span class="price" [class.text-danger]="hasDiscount()">
-                                        {{ getFinalPrice().toFixed(2) }} €
-                                    </span>
-                                    
-                                    <!-- Versión alternativa con separación de decimales (oculta por defecto) -->
-                                    <span class="price d-none" itemprop="priceCurrency" content="EUR">
-                                        <span class="price-main" itemprop="price">
-                                            {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 product-layout-info" [ngClass]="{'px-4':isMobile, 'px-5': isDesktop }">
+                            <!-- Product Details -->
+                            <div class="product-single-meta">
+                                <div class="d-flex flex-column mb-0">
+                                    <h2 class="product-main-title text-uppercase fw-light lh-1 mb-0">{{ product_selected.title }}</h2>
+                                    <div class="product-price d-flex-center">
+                                        <!-- Precio original tachado si hay descuento -->
+                                        <ng-container *ngIf="hasDiscount()">
+                                            <span class="price old-price">{{ getOriginalPrice().toFixed(2) }} €</span>
+                                        </ng-container>
+                                        
+                                        <!-- Precio final (con descuento si aplica) -->
+                                        <span class="price" [class.text-danger]="hasDiscount()">
+                                            {{ getFinalPrice().toFixed(2) }} €
                                         </span>
-                                        <span class="price-decimals">
-                                            <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
-                                            <span class="currency-symbol">€</span>
+                                        
+                                        <!-- Versión alternativa con separación de decimales (oculta por defecto) -->
+                                        <span class="price d-none" itemprop="priceCurrency" content="EUR">
+                                            <span class="price-main" itemprop="price">
+                                                {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
+                                            </span>
+                                            <span class="price-decimals">
+                                                <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
+                                                <span class="currency-symbol">€</span>
+                                            </span>
                                         </span>
-                                    </span>
+                                    </div>
+                                    <!-- Schema.org Offer -->
+                                    <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                                        <link itemprop="url" [href]="currentUrl" />
+                                        <meta itemprop="priceCurrency" content="EUR" />
+                                        <meta itemprop="price" content="{{ getFinalPrice().toFixed(2) }}" />
+                                        <link itemprop="availability" href="https://schema.org/InStock" />
+                                    </div>
                                 </div>
-                                <!-- Schema.org Offer -->
-                                <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                                    <link itemprop="url" [href]="currentUrl" />
-                                    <meta itemprop="priceCurrency" content="EUR" />
-                                    <meta itemprop="price" content="{{ getFinalPrice().toFixed(2) }}" />
-                                    <link itemprop="availability" href="https://schema.org/InStock" />
-                                </div>
-                            </div>
 
+                                <!-- Product Info -->
+                                    <div class="product-info">
+                                        <p class="product-stock d-flex d-none">Disponibilidad:
+                                            <span class="pro-stockLbl ps-0 d-none">
+                                                <span class="d-flex-center stockLbl instock ">En stock</span>
+                                            </span>
+                                        </p>
+                                        <p class="product-vendor d-none">Proveedor:<span class="text"><a href="#">HVL</a></span></p>
+                                        <p class="product-type d-none">Tipo de producto:<span class="text">Tops</span></p>
+                                        <p class="product-sku text-black fw-normal">Art. nº.<span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
+                                        <meta itemprop="productID" content="{{ product_selected.sku }}">
+                                        <meta itemprop="availability" content="https://schema.org/InStock" />
+                                    </div>
+                                    <!-- Product Reviews -->
+                                    <div class="product-review d-flex-center d-none">
+                                        <div class="reviewStar d-flex-center">
+                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
+                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
+                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
+                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
+                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
+                                            <span class="caption ms-2">{{ COUNT_REVIEW }} Reseñas</span>
+                                        </div>
+                                        <a class="reviewLink d-flex-center" href="#reviews">Escribe una reseña</a>
+                                    </div>
+                                    <!-- End Product Reviews -->
+                                <!-- End Product Info -->
+                                <hr class="d-none">
+                                <!-- Sort Description -->
+                                <div class="sort-description d-none" itemprop="description">{{ product_selected.resumen }}</div>
+                                <!-- End Sort Description -->
+                                <hr class="d-none">
+                                <!-- Countdown -->
+                                <h3 class=" mb-0 d-none">Date prisa! las rebajas terminan en</h3>
+                                <div class="product-countdown d-flex-center text-center my-3  d-none" data-countdown="2024/08/26"></div>
+                                <!-- End Countdown -->
+                            </div>
+                            <!-- End Product Details -->
+                            <!-- Product Form -->
+                            <form method="post" action="#" class="product-form product-form-border hidedropdown mb-0 mt-0">
+                                <!-- Swatches -->
+                                <div class="product-swatches-option">
+                                    <!-- Swatches Color -->
+                                    <div class="product-item swatches-image w-100 mb-4 swatch-0 option1" data-option-index="0">
+                                        <label class="label d-flex align-items-center fw-normal text-uppercase">Color <span class="slVariant ms-1 fw-light">{{ selectedColor || '' }}</span></label>
+                                        <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
+                                            <ng-container *ngFor="let color of coloresDisponibles">
+                                                <li class="swatch x-large available rounded" 
+                                                    [ngClass]="getSwatchClass(color.imagen, color.color)" 
+                                                    (click)="selectColor(color)"
+                                                    [attr.title]="color.color">
+                                                    <!-- círculo/cuadro del color -->
+                                                    <div class="color-swatch"
+                                                        [ngStyle]="{ 
+                                                            'background-color': getColorHex(color.color),
+                                                            'width': '100%',
+                                                            'height': '100%',
+                                                            'border-radius': '50%',
+                                                            'cursor': 'pointer',
+                                                            'display': 'block'
+                                                        }">
+                                                    </div>
+                                                </li>
+                                            </ng-container>
+                                        </ul>
+                                    </div>
+                                    <!-- End Swatches Color -->
+                                    <!-- Swatches Size -->
+                                    <div class="product-item swatches-size w-100 mb-4 swatch-1 option2" data-option-index="1">
+                                        <label class="label d-flex align-items-center fw-normal text-uppercase mb-2"> {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} <span class="slVariant ms-1 fw-light">{{ variedad_selected?.valor || '' }}</span>
+                                            <a href="#sizechart-modal" class="text-link sizelink  size-chart-modal" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Guía de tallas</a>
+                                        </label>
+                                        <ul class="variants-size size-swatches d-flex pt-1 clearfix" [ngClass]="{'border border-danger': tallaError}">
+                                            <ng-container *ngFor="let variedad of variedades; let i = index">
+                                                <li class="swatch x-large"
+                                                    [ngClass]="{
+                                                        'available': variedad.stock > 0,
+                                                        'soldout': variedad.stock === 0,
+                                                        'active': variedad.valor === variedad_selected?.valor
+                                                    }"
+                                                    [class.text-muted]="variedad.stock === 0"
+                                                    (click)="variedad.stock > 0 && selectedVariedad(variedad, i)">
+
+                                                    <span class="swatchLbl"
+                                                        [attr.data-bs-toggle]="'tooltip'"
+                                                        [attr.data-bs-placement]="'top'"
+                                                        [attr.title]="variedad.valor"
+                                                        [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'">
+                                                        {{variedad.valor}}
+                                                    </span>
+                                                </li>
+                                            </ng-container>
+                                        </ul>
+                                    </div>
+                                    <!-- End Swatches Size -->
+                                </div>
+                                <!-- End Swatches -->
+
+                                <!-- Product Action -->
+                                <div class="product-action d-flex flex-lg-row flex-column  d-flex-wrap my-3 my-md-4">
+                                    <!-- Product Quantity -->
+                                    <div class="product-form-quantity d-flex-center" [ngClass]="{'border border-danger': cantidadError, 'mb-2': isMobile, 'me-2': isDesktop}">
+                                        <label class="label d-flex align-items-center fw-normal d-none">
+                                            <span>Cantidad</span>
+                                        </label>
+                                        <div class="qtyField" [ngClass]="{ 'w-100': isMobile }">
+                                            <a class="qtyBtn minus" href="#" (click)="decreaseQuantity(); $event.preventDefault()">
+                                                <i class="icon anm anm-minus-r"></i>
+                                            </a>
+                                            <input type="number" 
+                                                name="quantity" 
+                                                id="qty-cart"
+                                                [(ngModel)]="cantidad"
+                                                (input)="onQuantityChange($event)"
+                                                class="product-form-input qty border-0"
+                                                [ngClass]="{ 'w-100': isMobile }" />
+                                            <a class="qtyBtn plus" href="#" (click)="increaseQuantity(); $event.preventDefault()">
+                                                <i class="icon anm anm-plus-r"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- End Product Quantity -->
+                                
+                                    <!-- Product Add -->
+                                    <div class="product-form-submit addcart fl-1">
+                                        <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit" (click)="storeCart()">
+                                            <span>Añadir al carrito</span>
+                                        </button>
+                                        <button type="submit" name="add" class="btn btn-secondary product-form-sold-out d-none" disabled="disabled">
+                                            <span>Out of stock</span>
+                                        </button>
+                                        <button type="submit" name="add" class="btn btn-secondary product-form-pre-order d-none">
+                                            <span>Pre-order Now</span>
+                                        </button>
+                                    </div>
+                                    <!-- Product Add -->
+                                    <!-- Product Buy -->
+                                    <div class="product-form-submit buyit fl-1 ms-3 d-none">
+                                        <button type="submit" class="btn btn-outline-secondary proceed-to-checkout" onclick="return false;" routerLink="/payment-process"><span>Compre ya</span></button>
+                                    </div>
+                                    <!-- End Product Buy -->
+                                </div>
+                                <!-- End Product Action -->
+
+                                <ng-container *ngIf="errorResponse">
+                                    <p class="text-danger fw-normal fs-12">{{ errorMessage }}</p>
+                                </ng-container>
+
+                                <!-- Product Info link -->
+                                <p class="infolinks d-flex-center justify-content-between">
+                                    <a class="text-link wishlist fw-light" href="wishlist-style1.html" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
+                                    <a class="text-link compare d-none" href="compare-style1.html"><i class="icon anm anm-sync-ar me-2"></i> <span>Añadir para comparar</span></a>
+                                    <a href="#shippingInfo-modal" class="text-link shippingInfo d-none" data-bs-toggle="modal" data-bs-target="#shippingInfo_modal"><i class="icon anm anm-paper-l-plane me-2"></i> <span>Envío y devoluciones</span></a>
+                                    <a href="#productInquiry-modal" class="text-link emaillink me-0 d-none" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>
+                                </p>
+                                <!-- End Product Info link -->
+                            </form>
+                            <!-- End Product Form -->
                             <!-- Product Info -->
-                                <div class="product-info">
-                                    <p class="product-stock d-flex d-none">Disponibilidad:
-                                        <span class="pro-stockLbl ps-0 d-none">
-                                            <span class="d-flex-center stockLbl instock ">En stock</span>
-                                        </span>
-                                    </p>
-                                    <p class="product-vendor d-none">Proveedor:<span class="text"><a href="#">HVL</a></span></p>
-                                    <p class="product-type d-none">Tipo de producto:<span class="text">Tops</span></p>
-                                    <p class="product-sku text-black fw-normal">Art. nº.<span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
-                                    <meta itemprop="productID" content="{{ product_selected.sku }}">
-                                    <meta itemprop="availability" content="https://schema.org/InStock" />
-                                </div>
-                                <!-- Product Reviews -->
-                                <div class="product-review d-flex-center d-none">
-                                    <div class="reviewStar d-flex-center">
-                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
-                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
-                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
-                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
-                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
-                                        <span class="caption ms-2">{{ COUNT_REVIEW }} Reseñas</span>
-                                    </div>
-                                    <a class="reviewLink d-flex-center" href="#reviews">Escribe una reseña</a>
-                                </div>
-                                <!-- End Product Reviews -->
+                            <div class="userViewMsg featureText d-none" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div>
+                            <!-- 135deg -->
+                            <div class="shippingMsg featureText border p-2 bg-darkseagreen" *ngIf="shippingRate > 0 && fechaEntregaMin">
+                                <!-- <p class="fw-light"><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline text-green">{{ address }}</a> </p> -->
+                                <p class="fw-light">
+                                    <i class="icon anm anm-clock-r"></i>
+                                    <span>Entrega GRATIS el </span>
+                                    <strong>{{ fechaEntregaMin }}</strong>
+                                    <ng-container *ngIf="!isFallbackAddress; else generic">
+                                        para <a href="" class="text-decoration-underline text-green">{{ address }}</a>
+                                    </ng-container>
+                                    <ng-template #generic> en toda España</ng-template>
+                                </p>
+                            </div>
+                            <!-- Mostrar mensaje alternativo cuando no hay tarifa -->
+                            <div class="shippingMsg featureText" *ngIf="shippingRate === 0">
+                                <p class="fw-normal">
+                                    <i class="icon anm anm-alert-circle"></i>
+                                    Envío no disponible para la dirección seleccionada.
+                                </p>
+                            </div>
+                            <div class="freeShipMsg featureText d-none" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}30.00</span></b> Más para envío gratis</div>
                             <!-- End Product Info -->
-                            <hr class="d-none">
-                            <!-- Sort Description -->
-                            <div class="sort-description d-none" itemprop="description">{{ product_selected.resumen }}</div>
-                            <!-- End Sort Description -->
-                            <hr class="d-none">
-                            <!-- Countdown -->
-                            <h3 class=" mb-0 d-none">Date prisa! las rebajas terminan en</h3>
-                            <div class="product-countdown d-flex-center text-center my-3  d-none" data-countdown="2024/08/26"></div>
-                            <!-- End Countdown -->
-                        </div>
-                        <!-- End Product Details -->
-                        <!-- Product Form -->
-                        <form method="post" action="#" class="product-form product-form-border hidedropdown mb-0 mt-0">
-                            <!-- Swatches -->
-                            <div class="product-swatches-option">
-                                <!-- Swatches Color -->
-                                <div class="product-item swatches-image w-100 mb-4 swatch-0 option1" data-option-index="0">
-                                    <label class="label d-flex align-items-center fw-normal text-uppercase">Color <span class="slVariant ms-1 fw-light">{{ selectedColor || '' }}</span></label>
-                                    <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
-                                        <ng-container *ngFor="let color of coloresDisponibles">
-                                            <li class="swatch x-large available rounded" 
-                                                [ngClass]="getSwatchClass(color.imagen, color.color)" 
-                                                (click)="selectColor(color)"
-                                                [attr.title]="color.color">
-                                                <!-- círculo/cuadro del color -->
-                                                <div class="color-swatch"
-                                                    [ngStyle]="{ 
-                                                        'background-color': getColorHex(color.color),
-                                                        'width': '100%',
-                                                        'height': '100%',
-                                                        'border-radius': '50%',
-                                                        'cursor': 'pointer',
-                                                        'display': 'block'
-                                                    }">
-                                                </div>
-                                            </li>
-                                        </ng-container>
-                                    </ul>
-                                </div>
-                                <!-- End Swatches Color -->
-                                <!-- Swatches Size -->
-                                <div class="product-item swatches-size w-100 mb-4 swatch-1 option2" data-option-index="1">
-                                    <label class="label d-flex align-items-center fw-normal text-uppercase mb-2"> {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} <span class="slVariant ms-1 fw-light">{{ variedad_selected?.valor || '' }}</span>
-                                        <a href="#sizechart-modal" class="text-link sizelink  size-chart-modal" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Guía de tallas</a>
-                                    </label>
-                                    <ul class="variants-size size-swatches d-flex pt-1 clearfix" [ngClass]="{'border border-danger': tallaError}">
-                                        <ng-container *ngFor="let variedad of variedades; let i = index">
-                                            <li class="swatch x-large"
-                                                [ngClass]="{
-                                                    'available': variedad.stock > 0,
-                                                    'soldout': variedad.stock === 0,
-                                                    'active': variedad.valor === variedad_selected?.valor
-                                                }"
-                                                [class.text-muted]="variedad.stock === 0"
-                                                (click)="variedad.stock > 0 && selectedVariedad(variedad, i)">
-
-                                                <span class="swatchLbl"
-                                                    [attr.data-bs-toggle]="'tooltip'"
-                                                    [attr.data-bs-placement]="'top'"
-                                                    [attr.title]="variedad.valor"
-                                                    [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'">
-                                                    {{variedad.valor}}
-                                                </span>
-                                            </li>
-                                        </ng-container>
-                                    </ul>
-                                </div>
-                                <!-- End Swatches Size -->
+                            <!-- Social Sharing -->
+                            <div class="social-sharing d-flex-center mt-2 lh-lg d-none">
+                                <span class="sharing-lbl fw-600">Compartir :</span>
+                                <a href="#" class="d-flex-center btn btn-link btn--share share-facebook"><i class="icon anm anm-facebook-f"></i><span class="share-title">Facebook</span></a>
+                                <a href="#" class="d-flex-center btn btn-link btn--share share-twitter"><i class="icon anm anm-twitter"></i><span class="share-title">Tweet</span></a>
+                                <a href="#" class="d-flex-center btn btn-link btn--share share-pinterest"><i class="icon anm anm-pinterest-p"></i> <span class="share-title">Pin it</span></a>
+                                <a href="#" class="d-flex-center btn btn-link btn--share share-linkedin"><i class="icon anm anm-linkedin-in"></i><span class="share-title">Linkedin</span></a>
+                                <a href="#" class="d-flex-center btn btn-link btn--share share-email"><i class="icon anm anm-envelope-l"></i><span class="share-title">Email</span></a>
                             </div>
-                            <!-- End Swatches -->
-
-                            <!-- Product Action -->
-                            <div class="product-action d-flex flex-lg-row flex-column  d-flex-wrap my-3 my-md-4">
-                                <!-- Product Quantity -->
-                                <div class="product-form-quantity d-flex-center" [ngClass]="{'border border-danger': cantidadError, 'mb-2': isMobile, 'me-2': isDesktop}">
-                                    <label class="label d-flex align-items-center fw-normal d-none">
-                                        <span>Cantidad</span>
-                                    </label>
-                                    <div class="qtyField" [ngClass]="{ 'w-100': isMobile }">
-                                        <a class="qtyBtn minus" href="#" (click)="decreaseQuantity(); $event.preventDefault()">
-                                            <i class="icon anm anm-minus-r"></i>
-                                        </a>
-                                        <input type="number" 
-                                            name="quantity" 
-                                            id="qty-cart"
-                                            [(ngModel)]="cantidad"
-                                            (input)="onQuantityChange($event)"
-                                            class="product-form-input qty border-0"
-                                            [ngClass]="{ 'w-100': isMobile }" />
-                                        <a class="qtyBtn plus" href="#" (click)="increaseQuantity(); $event.preventDefault()">
-                                            <i class="icon anm anm-plus-r"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <!-- End Product Quantity -->
-                            
-                                <!-- Product Add -->
-                                <div class="product-form-submit addcart fl-1">
-                                    <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit" (click)="storeCart()">
-                                        <span>Añadir al carrito</span>
-                                    </button>
-                                    <button type="submit" name="add" class="btn btn-secondary product-form-sold-out d-none" disabled="disabled">
-                                        <span>Out of stock</span>
-                                    </button>
-                                    <button type="submit" name="add" class="btn btn-secondary product-form-pre-order d-none">
-                                        <span>Pre-order Now</span>
-                                    </button>
-                                </div>
-                                <!-- Product Add -->
-                                <!-- Product Buy -->
-                                <div class="product-form-submit buyit fl-1 ms-3 d-none">
-                                    <button type="submit" class="btn btn-outline-secondary proceed-to-checkout" onclick="return false;" routerLink="/payment-process"><span>Compre ya</span></button>
-                                </div>
-                                <!-- End Product Buy -->
-                            </div>
-                            <!-- End Product Action -->
-
-                            <ng-container *ngIf="errorResponse">
-                                <p class="text-danger fw-normal fs-12">{{ errorMessage }}</p>
-                            </ng-container>
-
-                            <!-- Product Info link -->
-                            <p class="infolinks d-flex-center justify-content-between">
-                                <a class="text-link wishlist fw-light" href="wishlist-style1.html" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
-                                <a class="text-link compare d-none" href="compare-style1.html"><i class="icon anm anm-sync-ar me-2"></i> <span>Añadir para comparar</span></a>
-                                <a href="#shippingInfo-modal" class="text-link shippingInfo d-none" data-bs-toggle="modal" data-bs-target="#shippingInfo_modal"><i class="icon anm anm-paper-l-plane me-2"></i> <span>Envío y devoluciones</span></a>
-                                <a href="#productInquiry-modal" class="text-link emaillink me-0 d-none" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>
-                            </p>
-                            <!-- End Product Info link -->
-                        </form>
-                        <!-- End Product Form -->
-                        <!-- Product Info -->
-                        <div class="userViewMsg featureText d-none" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div>
-                        <!-- 135deg -->
-                        <div class="shippingMsg featureText border p-2 bg-darkseagreen" *ngIf="shippingRate > 0 && fechaEntregaMin">
-                            <!-- <p class="fw-light"><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline text-green">{{ address }}</a> </p> -->
-                            <p class="fw-light">
-                                <i class="icon anm anm-clock-r"></i>
-                                <span>Entrega GRATIS el </span>
-                                <strong>{{ fechaEntregaMin }}</strong>
-                                <ng-container *ngIf="!isFallbackAddress; else generic">
-                                    para <a href="" class="text-decoration-underline text-green">{{ address }}</a>
-                                </ng-container>
-                                <ng-template #generic> en toda España</ng-template>
-                            </p>
+                            <!-- End Social Sharing -->
+                            <div class="trustseal-img mt-4 d-none"><img src="assets/images/icons/powerby-cards.jpg" alt="powerby cards" width="470" /></div>
                         </div>
-                        <!-- Mostrar mensaje alternativo cuando no hay tarifa -->
-                        <div class="shippingMsg featureText" *ngIf="shippingRate === 0">
-                            <p class="fw-normal">
-                                <i class="icon anm anm-alert-circle"></i>
-                                Envío no disponible para la dirección seleccionada.
-                            </p>
-                        </div>
-                        <div class="freeShipMsg featureText d-none" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}30.00</span></b> Más para envío gratis</div>
-                        <!-- End Product Info -->
-                        <!-- Social Sharing -->
-                        <div class="social-sharing d-flex-center mt-2 lh-lg d-none">
-                            <span class="sharing-lbl fw-600">Compartir :</span>
-                            <a href="#" class="d-flex-center btn btn-link btn--share share-facebook"><i class="icon anm anm-facebook-f"></i><span class="share-title">Facebook</span></a>
-                            <a href="#" class="d-flex-center btn btn-link btn--share share-twitter"><i class="icon anm anm-twitter"></i><span class="share-title">Tweet</span></a>
-                            <a href="#" class="d-flex-center btn btn-link btn--share share-pinterest"><i class="icon anm anm-pinterest-p"></i> <span class="share-title">Pin it</span></a>
-                            <a href="#" class="d-flex-center btn btn-link btn--share share-linkedin"><i class="icon anm anm-linkedin-in"></i><span class="share-title">Linkedin</span></a>
-                            <a href="#" class="d-flex-center btn btn-link btn--share share-email"><i class="icon anm anm-envelope-l"></i><span class="share-title">Email</span></a>
-                        </div>
-                        <!-- End Social Sharing -->
-                        <div class="trustseal-img mt-4 d-none"><img src="assets/images/icons/powerby-cards.jpg" alt="powerby cards" width="470" /></div>
                     </div>
                 </div>
-            </div>
-            <!--Product Content-->
+                <!--Product Content-->
 
-            <!--Product Nav-->
-            <a href="product-layout7.html" class="product-nav prev-pro clr-none d-flex-center justify-content-between d-none" title="Previous Product">
-                <span class="details">
-                    <span class="name">Oxford Cuban Shirt</span>
-                    <span class="price">$99.00</span>
-                </span>
-                <span class="img"><img src="assets/images/products/120x170.jpg" alt="product" width="120" height="170" /></span>
-            </a>
+                <!--Product Tabs-->
+                <div class="tabs-listing section pb-0 px-3" >
+                    <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-center d-none d-md-flex">
+                        <li rel="description" class="active"><a class="tablink">Descripción</a></li>
+                        <li rel="shipping-return"><a class="tablink">Envíos y devoluciones</a></li>
+                        <li rel="reviews"><a class="tablink">Reseñas</a></li>
+                    </ul>
+                    <div class="tab-container">
+                        <!--Description-->
+                        <h3 class="tabs-ac-style d-md-none" rel="description">Descripción</h3>
+                        <div id="description" class="tab-content" >
+                            <div class="product-description mb-3">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description_es"></div>
+                                    <!-- <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                        <img [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="image" width="600" height="600" />
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Description-->
 
-            <a href="product-layout2.html" class="product-nav next-pro clr-none d-flex-center justify-content-between d-none" title="Next Product">
-                <span class="img"><img src="assets/images/products/120x170.jpg" alt="product" width="120" height="170" /></span>
-                <span class="details">
-                    <span class="name">Cuff Beanie Cap</span>
-                    <span class="price">$128</span>
-                </span>
-            </a>
-            <!--End Product Nav-->
+                        <!--Additional Information-->
+                        <h3 class="tabs-ac-style d-md-none d-none" rel="additionalInformation">Composición, origen y cuidados</h3>
+                        <div id="additionalInformation" class="tab-content">
+                            <div class="product-description">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-4 mb-md-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered align-middle table-part mb-0">
+                                                <!-- <ng-container *ngFor="let variedad of product_selected.variedades"></ng-container> -->
+                                                <tr>
+                                                    <th>Color</th>
+                                                    <!-- <td **ngFor="let color of coloresDisponibles">{{ Black, White, Blue, Red, Gray }}</td> -->
+                                                    <td>
+                                                        <ng-container *ngFor="let item of coloresDisponibles">
+                                                            {{ item.color }},
+                                                        </ng-container>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Dimensiones del producto</th>
+                                                    <td>15 x 15 x 3 cm; 250 Grams</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Fecha de primera disponibilidad</th>
+                                                    <td>14 May 2023</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Fabricante</th>
+                                                    <td>Fashion and Retail Limited</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Departamento</th>
+                                                    <td>Men Shirt</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Additional Information-->
 
-            <!--Product Tabs-->
-            <div class="tabs-listing section pb-0 px-3" >
-                <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-center d-none d-md-flex">
-                    <li rel="description" class="active"><a class="tablink">Descripción</a></li>
-                    <!-- <li rel="additionalInformation"><a class="tablink">Composición, origen y cuidados</a></li> -->
-                    <!-- <li rel="size-chart"><a class="tablink">Tabla de tallas</a></li> -->
-                    <li rel="shipping-return"><a class="tablink">Envíos y devoluciones</a></li>
-                    <li rel="reviews"><a class="tablink">Reseñas</a></li>
-                </ul>
-                <div class="tab-container">
-                    <!--Description-->
-                    <h3 class="tabs-ac-style d-md-none" rel="description">Descripción</h3>
-                    <div id="description" class="tab-content" >
-                        <div class="product-description mb-3">
+                        <!--Shipping &amp; Return-->
+                        <h3 class="tabs-ac-style d-md-none" rel="shipping-return">Envío y devolución</h3>
+                        <div id="shipping-return" class="tab-content">
+                            <!-- <h4 class="text-uppercase fw-bold">Envío &amp; devolución</h4> -->
+                            <div class="d-flex flex-column">
+                                <div class="border-bottom mb-4">
+                                    <h4 class="text-uppercase fw-bold mb-0">Envíos</h4>
+                                    <div class="d-flex flex-row py-3">
+                                        <div class=""><span>Envío a domicilio</span></div>
+                                        <div class=""><span>1 a 6 días laborables</span></div>
+                                        <div class="">
+                                            <span>Gratis en pedidos superiores a 30 €</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h4 class="text-uppercase fw-bold">Devoluciones</h4>
+                                    <div>Dispones de <strong>30 días</strong> para realizar tu devolución a través de cualquiera de los siguientes métodos:</div>
+                                    <div class="d-flex flex-column">
+                                        <div class="d-flex flex-row border-bottom py-3">
+                                            <div class="d-flex flex-column flex-grow-1"><span>Devolución fácil</span></div>
+                                            <div class="d-flex flex-column"><span class="fw-bold">30 días</span></div>
+                                        </div>
+                                        <div class="d-flex flex-row border-bottom py-3">
+                                            <div class="d-flex flex-column flex-grow-1"><span>Envío estándar</span></div>
+                                            <div class="d-flex flex-column"><span class="fw-bold">Gratis</span></div>
+                                        </div>
+                                        <div class="d-flex flex-row border-bottom py-3">
+                                            <div class="d-flex flex-column flex-grow-1"><span>Seguimiento de pedido</span></div>
+                                            <div class="d-flex flex-column"><span class="fw-bold">Incluido</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p>
+                                        Por motivos de higiene y personalización, no se podrán devolver productos personalizados, como camisetas, hoodies, mugs o gorras con diseños únicos. Todos los demás productos pueden devolverse dentro de los 30 días siguientes a la recepción, siempre que estén en perfecto estado.
+                                    </p>
+                                    <!-- <p>Consulta más información en <a href="#" onclick="return false;" class="fw-bold" >Ayuda</a>.</p> -->
+                                </div>
+                            </div>
+
+                            <!-- <ul class="checkmark-info">
+                                <li>Envío: En 24 horas</li>
+                                <li>1 año de garantía de marca</li>
+                                <li>Envío gratuito en todos los productos con una compra mínima de 30 .</li>
+                                <li>Plazo de entrega internacional: 7-10 días laborables</li>
+                                <li>Podría estar disponible el pago contra reembolso</li>
+                                <li>Devoluciones y cambios fáciles en 30 días</li>
+                            </ul>
+                            <h4>Devoluciones gratuitas y sencillas</h4>
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                            <h4>Special Financing</h4>
+                            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage.</p> -->
+                        </div>
+                        <!--End Shipping &amp; Return-->
+
+                        <!--Review-->
+                        <h3 class="tabs-ac-style d-md-none" rel="reviews">Reseñas</h3>
+                        <div id="reviews" class="tab-content">
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description_es"></div>
-                                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
-                                    <img [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="image" width="600" height="600" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--End Description-->
-
-                    <!--Additional Information-->
-                    <h3 class="tabs-ac-style d-md-none d-none" rel="additionalInformation">Composición, origen y cuidados</h3>
-                    <div id="additionalInformation" class="tab-content">
-                        <div class="product-description">
-                            <div class="row">
-                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 mb-4 mb-md-0">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered align-middle table-part mb-0">
-                                            <!-- <ng-container *ngFor="let variedad of product_selected.variedades"></ng-container> -->
-                                            <tr>
-                                                <th>Color</th>
-                                                <!-- <td **ngFor="let color of coloresDisponibles">{{ Black, White, Blue, Red, Gray }}</td> -->
-                                                <td>
-                                                    <ng-container *ngFor="let item of coloresDisponibles">
-                                                        {{ item.color }},
-                                                    </ng-container>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Dimensiones del producto</th>
-                                                <td>15 x 15 x 3 cm; 250 Grams</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Fecha de primera disponibilidad</th>
-                                                <td>14 May 2023</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Fabricante</th>
-                                                <td>Fashion and Retail Limited</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Departamento</th>
-                                                <td>Men Shirt</td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--End Additional Information-->
-
-                    <!--Shipping &amp; Return-->
-                    <h3 class="tabs-ac-style d-md-none" rel="shipping-return">Envío y devolución</h3>
-                    <div id="shipping-return" class="tab-content">
-                        <!-- <h4 class="text-uppercase fw-bold">Envío &amp; devolución</h4> -->
-                        <div class="d-flex flex-column">
-                            <div class="border-bottom mb-4">
-                                <h4 class="text-uppercase fw-bold mb-0">Envíos</h4>
-                                <div class="d-flex flex-row py-3">
-                                    <div class=""><span>Envío a domicilio</span></div>
-                                    <div class=""><span>1 a 6 días laborables</span></div>
-                                    <div class="">
-                                        <span>Gratis en pedidos superiores a 30 €</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <h4 class="text-uppercase fw-bold">Devoluciones</h4>
-                                <div>Dispones de <strong>30 días</strong> para realizar tu devolución a través de cualquiera de los siguientes métodos:</div>
-                                <div class="d-flex flex-column">
-                                    <div class="d-flex flex-row border-bottom py-3">
-                                        <div class="d-flex flex-column flex-grow-1"><span>Devolución en tienda</span></div>
-                                        <div class="d-flex flex-column"><span class="fw-bold">Gratis</span></div>
-                                    </div>
-                                    <div class="d-flex flex-row border-bottom py-3">
-                                        <div class="d-flex flex-column flex-grow-1"><span>Devolución en punto GLS</span></div>
-                                        <div class="d-flex flex-column"><span class="fw-bold">Gratis</span></div>
-                                    </div>
-                                    <div class="d-flex flex-row border-bottom py-3">
-                                        <div class="d-flex flex-column flex-grow-1"><span>Devolución con recogida a domicilio</span></div>
-                                        <div class="d-flex flex-column"><span class="fw-bold">Gratis</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <p>
-                                    Por motivos de higiene, no podrán devolverse los productos precintados, tales como la lencería, la ropa interior, los productos de baño y los pendientes que no conserven la etiqueta o el dispositivo de protección. Los artículos que contienen sustancias inflamables (como perfumes, body mist, etc.) solo se pueden devolver con la etiqueta de mercancías peligrosas y en su embalaje original.
-                                </p>
-                                <p>Consulta más información en <a href="#" class="fw-bold" >Ayuda</a>.</p>
-                            </div>
-                        </div>
-
-                        <!-- <ul class="checkmark-info">
-                            <li>Envío: En 24 horas</li>
-                            <li>1 año de garantía de marca</li>
-                            <li>Envío gratuito en todos los productos con una compra mínima de 30 .</li>
-                            <li>Plazo de entrega internacional: 7-10 días laborables</li>
-                            <li>Podría estar disponible el pago contra reembolso</li>
-                            <li>Devoluciones y cambios fáciles en 30 días</li>
-                        </ul>
-                        <h4>Devoluciones gratuitas y sencillas</h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-                        <h4>Special Financing</h4>
-                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage.</p> -->
-                    </div>
-                    <!--End Shipping &amp; Return-->
-                    <!--Review-->
-                    <h3 class="tabs-ac-style d-md-none" rel="reviews">Reseñas</h3>
-                    <div id="reviews" class="tab-content">
-                        <div class="row">
-                            <div [ngClass]="{'col-12 col-sm-12 col-md-12': true, 'col-lg-6': this.sale_detail_selected, 'col-lg-12': !this.sale_detail_selected }" class="mb-4">
-                                <div class="ratings-main" *ngIf="this.REVIEWS.length > 0;">
-                                    <div class="avg-rating d-flex-center mb-3">
-                                        <h4 class="avg-mark">5.0</h4>
-                                        <div class="avg-content ms-3">
-                                            <p class="text-rating">Puntuación media</p>
-                                            <div class="ratings-full product-review">
-                                                <a class="reviewLink d-flex-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><span class="caption ms-2">24 Calificaciones</span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="ratings-list">
-                                        <div class="ratings-container d-flex align-items-center mt-1">
-                                            <div class="ratings-full product-review m-0">
-                                                <a class="reviewLink d-flex align-items-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i></a>
-                                            </div>
-                                            <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100" style="width:99%;"></div></div>
-                                            <div class="progress-value">99%</div>
-                                        </div>
-                                        <div class="ratings-container d-flex align-items-center mt-1">
-                                            <div class="ratings-full product-review m-0">
-                                                <a class="reviewLink d-flex align-items-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i></a>
-                                            </div>
-                                            <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%;"></div></div>
-                                            <div class="progress-value">75%</div>
-                                        </div>
-                                        <div class="ratings-container d-flex align-items-center mt-1">
-                                            <div class="ratings-full product-review m-0">
-                                                <a class="reviewLink d-flex align-items-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i></a>
-                                            </div>
-                                            <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%;"></div></div>
-                                            <div class="progress-value">50%</div>
-                                        </div>
-                                        <div class="ratings-container d-flex align-items-center mt-1">
-                                            <div class="ratings-full product-review m-0">
-                                                <a class="reviewLink d-flex align-items-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i></a>
-                                            </div>
-                                            <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width:25%;"></div></div>
-                                            <div class="progress-value">25%</div>
-                                        </div>
-                                        <div class="ratings-container d-flex align-items-center mt-1">
-                                            <div class="ratings-full product-review m-0">
-                                                <a class="reviewLink d-flex align-items-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i></a>
-                                            </div>
-                                            <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width:5%;"></div></div>
-                                            <div class="progress-value">05%</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="spr-reviews">
-                                    <ng-container *ngIf="this.REVIEWS.length == 0; else showReview">
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <div class="p-2 text-center">
-                                                <div class="inner mb-3">
-                                                    <div class="bradcrumb-thumb">
-                                                        <!-- <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;"> -->
-                                                        <img src="assets/images/favicon.png" alt="LujanDev" title="LujanDev">
-                                                    </div>
+                                <div [ngClass]="{'col-12 col-sm-12 col-md-12': true, 'col-lg-6': this.sale_detail_selected, 'col-lg-12': !this.sale_detail_selected }" class="mb-4">
+                                    <div class="ratings-main" *ngIf="this.REVIEWS.length > 0;">
+                                        <div class="avg-rating d-flex-center mb-3">
+                                            <h4 class="avg-mark">5.0</h4>
+                                            <div class="avg-content ms-3">
+                                                <p class="text-rating">Puntuación media</p>
+                                                <div class="ratings-full product-review">
+                                                    <a class="reviewLink d-flex-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><span class="caption ms-2">24 Calificaciones</span></a>
                                                 </div>
-                                                <h5 class="header-title mb-0 text-uppercase fw-bold">Reseñas</h5>
-                                                <p>Este producto no tiene reseñas por ahora</p>
                                             </div>
                                         </div>
-                                    </ng-container>
-                                    <ng-template #showReview>
-                                        <h3 class="spr-form-title">Reseñas de clientes</h3>
-                                        <div class="review-inner">
-                                            <ng-container *ngFor="let REVIEW of REVIEWS">
-                                                <div class="spr-review d-flex w-100">
-                                                    <div class="spr-review-profile flex-shrink-0">
-                                                        <img class="blur-up lazyload" data-src="assets/images/users/user-img1.jpg" src="assets/images/users/user-img1.jpg" alt="" width="200" height="200" />
+
+                                        <div class="ratings-list">
+                                            <div class="ratings-container d-flex align-items-center mt-1">
+                                                <div class="ratings-full product-review m-0">
+                                                    <a class="reviewLink d-flex align-items-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i></a>
+                                                </div>
+                                                <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100" style="width:99%;"></div></div>
+                                                <div class="progress-value">99%</div>
+                                            </div>
+                                            <div class="ratings-container d-flex align-items-center mt-1">
+                                                <div class="ratings-full product-review m-0">
+                                                    <a class="reviewLink d-flex align-items-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i></a>
+                                                </div>
+                                                <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%;"></div></div>
+                                                <div class="progress-value">75%</div>
+                                            </div>
+                                            <div class="ratings-container d-flex align-items-center mt-1">
+                                                <div class="ratings-full product-review m-0">
+                                                    <a class="reviewLink d-flex align-items-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i></a>
+                                                </div>
+                                                <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%;"></div></div>
+                                                <div class="progress-value">50%</div>
+                                            </div>
+                                            <div class="ratings-container d-flex align-items-center mt-1">
+                                                <div class="ratings-full product-review m-0">
+                                                    <a class="reviewLink d-flex align-items-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i></a>
+                                                </div>
+                                                <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width:25%;"></div></div>
+                                                <div class="progress-value">25%</div>
+                                            </div>
+                                            <div class="ratings-container d-flex align-items-center mt-1">
+                                                <div class="ratings-full product-review m-0">
+                                                    <a class="reviewLink d-flex align-items-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i></a>
+                                                </div>
+                                                <div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width:5%;"></div></div>
+                                                <div class="progress-value">05%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="spr-reviews">
+                                        <ng-container *ngIf="this.REVIEWS.length == 0; else showReview">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <div class="p-2 text-center">
+                                                    <div class="inner mb-3">
+                                                        <div class="bradcrumb-thumb">
+                                                            <!-- <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;"> -->
+                                                            <img src="assets/images/favicon.png" alt="LujanDev" title="LujanDev">
+                                                        </div>
                                                     </div>
-                                                    <div class="spr-review-content flex-grow-1">
-                                                        <div class="d-flex justify-content-between flex-column mb-2">
-                                                            <div class="title-review d-flex align-items-center justify-content-between">
-                                                                <span class="product-review spr-starratings m-0">
+                                                    <h5 class="header-title mb-0 text-uppercase fw-bold">Reseñas</h5>
+                                                    <p>Este producto no tiene reseñas por ahora</p>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <ng-template #showReview>
+                                            <h3 class="spr-form-title">Reseñas de clientes</h3>
+                                            <div class="review-inner">
+                                                <ng-container *ngFor="let REVIEW of REVIEWS">
+                                                    <div class="spr-review d-flex w-100">
+                                                        <div class="spr-review-profile flex-shrink-0">
+                                                            <img class="blur-up lazyload" data-src="assets/images/users/user-img1.jpg" src="assets/images/users/user-img1.jpg" alt="" width="200" height="200" />
+                                                        </div>
+                                                        <div class="spr-review-content flex-grow-1">
+                                                            <div class="d-flex justify-content-between flex-column mb-2">
+                                                                <div class="title-review d-flex align-items-center justify-content-between">
                                                                     <span class="product-review spr-starratings m-0">
-                                                                        <span class="reviewLink">
-                                                                            <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 1 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(1)"></a>
-                                                                            <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 2 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(2)"></a>
-                                                                            <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 3 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(3)"></a>
-                                                                            <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 4 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(4)"></a>
-                                                                            <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 5 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(5)"></a>
+                                                                        <span class="product-review spr-starratings m-0">
+                                                                            <span class="reviewLink">
+                                                                                <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 1 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(1)"></a>
+                                                                                <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 2 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(2)"></a>
+                                                                                <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 3 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(3)"></a>
+                                                                                <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 4 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(4)"></a>
+                                                                                <a href="#" onclick="return false;" [ngClass]="REVIEW.cantidad >= 5 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(5)"></a>
+                                                                            </span>
                                                                         </span>
                                                                     </span>
-                                                                </span>
+                                                                </div>
+
                                                             </div>
-
+                                                            <b class="head-font">{{ REVIEW.title }}</b>
+                                                            <p class="spr-review-body">{{ REVIEW.description }}</p>
                                                         </div>
-                                                        <b class="head-font">{{ REVIEW.title }}</b>
-                                                        <p class="spr-review-body">{{ REVIEW.description }}</p>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <ng-container *ngIf="this.sale_detail_selected">
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-4">
+                                        <form method="post" action="#" class="product-review-form new-review-form">
+                                            <h3 class="spr-form-title">Escribe una reseña</h3>
+                                            <p>Tu dirección de correo electrónico no será publicada. Los campos obligatorios están marcados con *</p>
+                                            <fieldset class="row spr-form-contact">
+                                                <div class="col-sm-6 spr-form-contact-name form-group d-none">
+                                                    <label class="spr-form-label" for="nickname">Nombre <span class="required">*</span></label>
+                                                    <input class="spr-form-input spr-form-input-text" id="nickname" type="text" name="name" required />
+                                                </div>
+                                                <div class="col-sm-6 spr-form-contact-email form-group d-none">
+                                                    <label class="spr-form-label" for="email">Correo electrónico <span class="required">*</span></label>
+                                                    <input class="spr-form-input spr-form-input-email" id="email" type="email" name="email" required />
+                                                </div>
+                                                <div class="col-sm-6 spr-form-review-title form-group">
+                                                    <label class="spr-form-label" for="review">Título de la reseña </label>
+                                                    <input class="spr-form-input spr-form-input-text" [(ngModel)]="title" id="title" type="text" name="title" />
+                                                </div>
+                                                <div class="col-sm-6 spr-form-review-rating form-group">
+                                                    <label class="spr-form-label">Clasificación</label>
+                                                    <div class="product-review pt-1">
+                                                        <div class="review-rating">
+                                                            <a href="#" onclick="return false;" [ngClass]="cantidad >= 1 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(1)"></a>
+                                                            <a href="#" onclick="return false;" [ngClass]="cantidad >= 2 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(2)"></a>
+                                                            <a href="#" onclick="return false;" [ngClass]="cantidad >= 3 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(3)"></a>
+                                                            <a href="#" onclick="return false;" [ngClass]="cantidad >= 4 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(4)"></a>
+                                                            <a href="#" onclick="return false;" [ngClass]="cantidad >= 5 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(5)"></a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </ng-container>
-                                        </div>
-                                    </ng-template>
-                                </div>
+                                                <div class="col-12 spr-form-review-body form-group">
+                                                    <label class="spr-form-label" for="message">Cuerpo de la reseña <span class="spr-form-review-body-charactersremaining">(1500) caracteres restantes</span></label>
+                                                    <div class="spr-form-input">
+                                                        <textarea class="spr-form-input spr-form-input-textarea" [(ngModel)]="description" id="description" name="description" rows="3"></textarea>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            <div class="spr-form-actions clearfix">
+                                                <input type="submit" class="btn btn-primary spr-button spr-button-primary" (click)="storeReview()" value="Enviar reseña" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </ng-container>
                             </div>
-                            <ng-container *ngIf="this.sale_detail_selected">
-                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-4">
-                                    <form method="post" action="#" class="product-review-form new-review-form">
-                                        <h3 class="spr-form-title">Escribe una reseña</h3>
-                                        <p>Tu dirección de correo electrónico no será publicada. Los campos obligatorios están marcados con *</p>
-                                        <fieldset class="row spr-form-contact">
-                                            <div class="col-sm-6 spr-form-contact-name form-group d-none">
-                                                <label class="spr-form-label" for="nickname">Nombre <span class="required">*</span></label>
-                                                <input class="spr-form-input spr-form-input-text" id="nickname" type="text" name="name" required />
-                                            </div>
-                                            <div class="col-sm-6 spr-form-contact-email form-group d-none">
-                                                <label class="spr-form-label" for="email">Correo electrónico <span class="required">*</span></label>
-                                                <input class="spr-form-input spr-form-input-email" id="email" type="email" name="email" required />
-                                            </div>
-                                            <div class="col-sm-6 spr-form-review-title form-group">
-                                                <label class="spr-form-label" for="review">Título de la reseña </label>
-                                                <input class="spr-form-input spr-form-input-text" [(ngModel)]="title" id="title" type="text" name="title" />
-                                            </div>
-                                            <div class="col-sm-6 spr-form-review-rating form-group">
-                                                <label class="spr-form-label">Clasificación</label>
-                                                <div class="product-review pt-1">
-                                                    <div class="review-rating">
-                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 1 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(1)"></a>
-                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 2 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(2)"></a>
-                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 3 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(3)"></a>
-                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 4 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(4)"></a>
-                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 5 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(5)"></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 spr-form-review-body form-group">
-                                                <label class="spr-form-label" for="message">Cuerpo de la reseña <span class="spr-form-review-body-charactersremaining">(1500) caracteres restantes</span></label>
-                                                <div class="spr-form-input">
-                                                    <textarea class="spr-form-input spr-form-input-textarea" [(ngModel)]="description" id="description" name="description" rows="3"></textarea>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                        <div class="spr-form-actions clearfix">
-                                            <input type="submit" class="btn btn-primary spr-button spr-button-primary" (click)="storeReview()" value="Enviar reseña" />
-                                        </div>
-                                    </form>
-                                </div>
-                            </ng-container>
                         </div>
+                        <!--End Review-->
                     </div>
-                    <!--End Review-->
                 </div>
+                <!--End Product Tabs-->
             </div>
-            <!--End Product Tabs-->
-        </div>
-        <!--End Main Content-->
+            <!--End Main Content-->
 
-        <!--Related Products-->
-        <app-related-products
-            [related_products]="related_products"
-            [product_selected]="product_selected"
-            [euro]="euro"
-            (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
-            [getDiscount]="getDiscount"
-            [SALE_FLASH]="SALE_FLASH"
-        ></app-related-products>
-        <!--End Related Products-->
-
-        <ng-container *ngIf="interest_products && interest_products.length > 0">
-            <!-- Interest Products-->
-            <app-interest-products
-                [interest_products]="interest_products"
+            <!--Related Products-->
+            <app-related-products
+                [related_products]="related_products"
                 [product_selected]="product_selected"
                 [euro]="euro"
                 (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
                 [getDiscount]="getDiscount"
                 [SALE_FLASH]="SALE_FLASH"
-            ></app-interest-products>
-            <!--End Interest Products-->
-        </ng-container> 
+            ></app-related-products>
+            <!--End Related Products-->
 
-        <!--Recently Viewed Products-->
-        <section class="section product-slider pb-0 d-none">
-            <div class="container">
-                <div class="section-header">
-                    <p class="mb-1 mt-0">Browse Bestseller</p>
-                    <h2>You may also like</h2>
-                </div>
+            <ng-container *ngIf="interest_products && interest_products.length > 0">
+                <!-- Interest Products-->
+                <app-interest-products
+                    [interest_products]="interest_products"
+                    [product_selected]="product_selected"
+                    [euro]="euro"
+                    (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
+                    [getDiscount]="getDiscount"
+                    [SALE_FLASH]="SALE_FLASH"
+                ></app-interest-products>
+                <!--End Interest Products-->
+            </ng-container> 
 
-                <!--Product Grid-->
-                <div class="product-slider-5items gp10 arwOut5 grid-products">
-                    <div class="item col-item">
-                        <div class="product-box">
-                            <!-- Start Product Image -->
-                            <div class="product-image">
+            <!--Recently Viewed Products-->
+            <section class="section product-slider pb-0 d-none">
+                <div class="container">
+                    <div class="section-header">
+                        <p class="mb-1 mt-0">Browse Bestseller</p>
+                        <h2>You may also like</h2>
+                    </div>
+
+                    <!--Product Grid-->
+                    <div class="product-slider-5items gp10 arwOut5 grid-products">
+                        <div class="item col-item">
+                            <div class="product-box">
                                 <!-- Start Product Image -->
-                                <a href="product-layout1.html" class="product-img">
-                                    <!-- Image -->
-                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Image -->
-                                    <!-- Hover Image -->
-                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Hover Image -->
-                                </a>
+                                <div class="product-image">
+                                    <!-- Start Product Image -->
+                                    <a href="product-layout1.html" class="product-img">
+                                        <!-- Image -->
+                                        <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                        <!-- End Image -->
+                                        <!-- Hover Image -->
+                                        <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                        <!-- End Hover Image -->
+                                    </a>
+                                    <!-- End Product Image -->
+                                    <!-- Product label -->
+                                    <div class="product-labels"><span class="lbl on-sale">Sold out</span></div>
+                                    <!-- End Product label -->
+                                    <!--Product Button-->
+                                    <div class="button-set style1">
+                                        <!--Cart Button-->
+                                        <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal soldOutBtn disabled" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Out Of stock"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                        </a>
+                                        <!--End Cart Button-->
+                                        <!--Quick View Button-->
+                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                        </a>
+                                        <!--End Quick View Button-->
+                                        <!--Wishlist Button-->
+                                        <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                        <!--End Wishlist Button-->
+                                        <!--Compare Button-->
+                                        <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                        <!--End Compare Button-->
+                                    </div>
+                                    <!--End Product Button-->
+                                </div>
                                 <!-- End Product Image -->
-                                <!-- Product label -->
-                                <div class="product-labels"><span class="lbl on-sale">Sold out</span></div>
-                                <!-- End Product label -->
-                                <!--Product Button-->
-                                <div class="button-set style1">
-                                    <!--Cart Button-->
-                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal soldOutBtn disabled" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Out Of stock"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                    </a>
-                                    <!--End Cart Button-->
-                                    <!--Quick View Button-->
-                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                    </a>
-                                    <!--End Quick View Button-->
-                                    <!--Wishlist Button-->
-                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                    <!--End Wishlist Button-->
-                                    <!--Compare Button-->
-                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                    <!--End Compare Button-->
+                                <!-- Start Product Details -->
+                                <div class="product-details text-left">
+                                    <!-- Product Name -->
+                                    <div class="product-name">
+                                        <a href="product-layout1.html">Foldable Duffel Bag</a>
+                                    </div>
+                                    <!-- End Product Name -->
+                                    <!-- Product Price -->
+                                    <div class="product-price">
+                                        <span class="price">$299.00</span>
+                                    </div>
+                                    <!-- End Product Price -->
+                                    <!-- Product Review -->
+                                    <div class="product-review">
+                                        <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                        <span class="caption hidden ms-1">15 Reviews</span>
+                                    </div>
+                                    <!-- End Product Review -->
                                 </div>
-                                <!--End Product Button-->
+                                <!-- End product details -->
                             </div>
-                            <!-- End Product Image -->
-                            <!-- Start Product Details -->
-                            <div class="product-details text-left">
-                                <!-- Product Name -->
-                                <div class="product-name">
-                                    <a href="product-layout1.html">Foldable Duffel Bag</a>
+                        </div>
+                        <div class="item col-item">
+                            <div class="product-box">
+                                <!-- Start Product Image -->
+                                <div class="product-image">
+                                    <!-- Start Product Image -->
+                                    <a href="product-layout1.html" class="product-img">
+                                        <!-- Image -->
+                                        <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                        <!-- End Image -->
+                                        <!-- Hover Image -->
+                                        <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                        <!-- End Hover Image -->
+                                    </a>
+                                    <!-- End Product Image -->
+                                    <!-- Product label -->
+                                    <div class="product-labels"><span class="lbl pr-label1">Best seller</span></div>
+                                    <!-- End Product label -->
+                                    <!--Product Button-->
+                                    <div class="button-set style1">
+                                        <!--Cart Button-->
+                                        <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                        </a>
+                                        <!--End Cart Button-->
+                                        <!--Quick View Button-->
+                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                        </a>
+                                        <!--End Quick View Button-->
+                                        <!--Wishlist Button-->
+                                        <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                        <!--End Wishlist Button-->
+                                        <!--Compare Button-->
+                                        <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                        <!--End Compare Button-->
+                                    </div>
+                                    <!--End Product Button-->
                                 </div>
-                                <!-- End Product Name -->
-                                <!-- Product Price -->
-                                <div class="product-price">
-                                    <span class="price">$299.00</span>
+                                <!-- End Product Image -->
+                                <!-- Start Product Details -->
+                                <div class="product-details text-left">
+                                    <!-- Product Name -->
+                                    <div class="product-name">
+                                        <a href="product-layout1.html">High-Waisted Pant</a>
+                                    </div>
+                                    <!-- End Product Name -->
+                                    <!-- Product Price -->
+                                    <div class="product-price">
+                                        <span class="price">$139.00</span>
+                                    </div>
+                                    <!-- End Product Price -->
+                                    <!-- Product Review -->
+                                    <div class="product-review">
+                                        <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                        <span class="caption hidden ms-1">11 Reviews</span>
+                                    </div>
+                                    <!-- End Product Review -->
                                 </div>
-                                <!-- End Product Price -->
-                                <!-- Product Review -->
-                                <div class="product-review">
-                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                    <span class="caption hidden ms-1">15 Reviews</span>
-                                </div>
-                                <!-- End Product Review -->
+                                <!-- End product details -->
                             </div>
-                            <!-- End product details -->
+                        </div>
+                        <div class="item col-item">
+                            <div class="product-box">
+                                <!-- Start Product Image -->
+                                <div class="product-image">
+                                    <!-- Start Product Image -->
+                                    <a href="product-layout1.html" class="product-img">
+                                        <!-- Image -->
+                                        <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                        <!-- End Image -->
+                                        <!-- Hover Image -->
+                                        <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                        <!-- End Hover Image -->
+                                    </a>
+                                    <!-- End Product Image -->
+                                    <!--Product Button-->
+                                    <div class="button-set style1">
+                                        <!--Cart Button-->
+                                        <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                        </a>
+                                        <!--End Cart Button-->
+                                        <!--Quick View Button-->
+                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                        </a>
+                                        <!--End Quick View Button-->
+                                        <!--Wishlist Button-->
+                                        <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                        <!--End Wishlist Button-->
+                                        <!--Compare Button-->
+                                        <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                        <!--End Compare Button-->
+                                    </div>
+                                    <!--End Product Button-->
+                                </div>
+                                <!-- End Product Image -->
+                                <!-- Start Product Details -->
+                                <div class="product-details text-left">
+                                    <!-- Product Name -->
+                                    <div class="product-name">
+                                        <a href="product-layout1.html">Narror Neck Tie</a>
+                                    </div>
+                                    <!-- End Product Name -->
+                                    <!-- Product Price -->
+                                    <div class="product-price">
+                                        <span class="price">$134.00</span>
+                                    </div>
+                                    <!-- End Product Price -->
+                                    <!-- Product Review -->
+                                    <div class="product-review">
+                                        <i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                        <span class="caption hidden ms-1">0 Reviews</span>
+                                    </div>
+                                    <!-- End Product Review -->
+                                </div>
+                                <!-- End product details -->
+                            </div>
+                        </div>
+                        <div class="item col-item">
+                            <div class="product-box">
+                                <!-- Start Product Image -->
+                                <div class="product-image">
+                                    <!-- Start Product Image -->
+                                    <a href="product-layout1.html" class="product-img">
+                                        <!-- Image -->
+                                        <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                        <!-- End Image -->
+                                        <!-- Hover Image -->
+                                        <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                        <!-- End Hover Image -->
+                                    </a>
+                                    <!-- End Product Image -->
+                                    <!-- Product label -->
+                                    <div class="product-labels"><span class="lbl pr-label4">Popular</span></div>
+                                    <!-- End Product label -->
+                                    <!--Product Button-->
+                                    <div class="button-set style1">
+                                        <!--Cart Button-->
+                                        <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                        </a>
+                                        <!--End Cart Button-->
+                                        <!--Quick View Button-->
+                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                        </a>
+                                        <!--End Quick View Button-->
+                                        <!--Wishlist Button-->
+                                        <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                        <!--End Wishlist Button-->
+                                        <!--Compare Button-->
+                                        <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                        <!--End Compare Button-->
+                                    </div>
+                                    <!--End Product Button-->
+                                </div>
+                                <!-- End Product Image -->
+                                <!-- Start Product Details -->
+                                <div class="product-details text-left">
+                                    <!-- Product Name -->
+                                    <div class="product-name">
+                                        <a href="product-layout1.html">Men's Cheater Jacket</a>
+                                    </div>
+                                    <!-- End Product Name -->
+                                    <!-- Product Price -->
+                                    <div class="product-price">
+                                        <span class="price">$99.00</span>
+                                    </div>
+                                    <!-- End Product Price -->
+                                    <!-- Product Review -->
+                                    <div class="product-review">
+                                        <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                        <span class="caption hidden ms-1">19 Reviews</span>
+                                    </div>
+                                    <!-- End Product Review -->
+                                </div>
+                                <!-- End product details -->
+                            </div>
+                        </div>
+                        <div class="item col-item">
+                            <div class="product-box">
+                                <!-- Start Product Image -->
+                                <div class="product-image">
+                                    <!-- Start Product Image -->
+                                    <a href="product-layout1.html" class="product-img">
+                                        <!-- Image -->
+                                        <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                        <!-- End Image -->
+                                        <!-- Hover Image -->
+                                        <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                        <!-- End Hover Image -->
+                                    </a>
+                                    <!-- End Product Image -->
+                                    <!--Product Button-->
+                                    <div class="button-set style1">
+                                        <!--Cart Button-->
+                                        <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                        </a>
+                                        <!--End Cart Button-->
+                                        <!--Quick View Button-->
+                                        <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                            <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                        </a>
+                                        <!--End Quick View Button-->
+                                        <!--Wishlist Button-->
+                                        <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                        <!--End Wishlist Button-->
+                                        <!--Compare Button-->
+                                        <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                        <!--End Compare Button-->
+                                    </div>
+                                    <!--End Product Button-->
+                                </div>
+                                <!-- End Product Image -->
+                                <!-- Start Product Details -->
+                                <div class="product-details text-left">
+                                    <!-- Product Name -->
+                                    <div class="product-name">
+                                        <a href="product-layout1.html">Casual Mustard Shirt</a>
+                                    </div>
+                                    <!-- End Product Name -->
+                                    <!-- Product Price -->
+                                    <div class="product-price">
+                                        <span class="price">$167.00</span>
+                                    </div>
+                                    <!-- End Product Price -->
+                                    <!-- Product Review -->
+                                    <div class="product-review">
+                                        <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i>
+                                        <span class="caption hidden ms-1">7 Reviews</span>
+                                    </div>
+                                    <!-- End Product Review -->
+                                </div>
+                                <!-- End product details -->
+                            </div>
                         </div>
                     </div>
-                    <div class="item col-item">
-                        <div class="product-box">
-                            <!-- Start Product Image -->
-                            <div class="product-image">
-                                <!-- Start Product Image -->
-                                <a href="product-layout1.html" class="product-img">
-                                    <!-- Image -->
-                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Image -->
-                                    <!-- Hover Image -->
-                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Hover Image -->
-                                </a>
-                                <!-- End Product Image -->
-                                <!-- Product label -->
-                                <div class="product-labels"><span class="lbl pr-label1">Best seller</span></div>
-                                <!-- End Product label -->
-                                <!--Product Button-->
-                                <div class="button-set style1">
-                                    <!--Cart Button-->
-                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                    </a>
-                                    <!--End Cart Button-->
-                                    <!--Quick View Button-->
-                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                    </a>
-                                    <!--End Quick View Button-->
-                                    <!--Wishlist Button-->
-                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                    <!--End Wishlist Button-->
-                                    <!--Compare Button-->
-                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                    <!--End Compare Button-->
-                                </div>
-                                <!--End Product Button-->
-                            </div>
-                            <!-- End Product Image -->
-                            <!-- Start Product Details -->
-                            <div class="product-details text-left">
-                                <!-- Product Name -->
-                                <div class="product-name">
-                                    <a href="product-layout1.html">High-Waisted Pant</a>
-                                </div>
-                                <!-- End Product Name -->
-                                <!-- Product Price -->
-                                <div class="product-price">
-                                    <span class="price">$139.00</span>
-                                </div>
-                                <!-- End Product Price -->
-                                <!-- Product Review -->
-                                <div class="product-review">
-                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                    <span class="caption hidden ms-1">11 Reviews</span>
-                                </div>
-                                <!-- End Product Review -->
-                            </div>
-                            <!-- End product details -->
-                        </div>
-                    </div>
-                    <div class="item col-item">
-                        <div class="product-box">
-                            <!-- Start Product Image -->
-                            <div class="product-image">
-                                <!-- Start Product Image -->
-                                <a href="product-layout1.html" class="product-img">
-                                    <!-- Image -->
-                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Image -->
-                                    <!-- Hover Image -->
-                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Hover Image -->
-                                </a>
-                                <!-- End Product Image -->
-                                <!--Product Button-->
-                                <div class="button-set style1">
-                                    <!--Cart Button-->
-                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                    </a>
-                                    <!--End Cart Button-->
-                                    <!--Quick View Button-->
-                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                    </a>
-                                    <!--End Quick View Button-->
-                                    <!--Wishlist Button-->
-                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                    <!--End Wishlist Button-->
-                                    <!--Compare Button-->
-                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                    <!--End Compare Button-->
-                                </div>
-                                <!--End Product Button-->
-                            </div>
-                            <!-- End Product Image -->
-                            <!-- Start Product Details -->
-                            <div class="product-details text-left">
-                                <!-- Product Name -->
-                                <div class="product-name">
-                                    <a href="product-layout1.html">Narror Neck Tie</a>
-                                </div>
-                                <!-- End Product Name -->
-                                <!-- Product Price -->
-                                <div class="product-price">
-                                    <span class="price">$134.00</span>
-                                </div>
-                                <!-- End Product Price -->
-                                <!-- Product Review -->
-                                <div class="product-review">
-                                    <i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                    <span class="caption hidden ms-1">0 Reviews</span>
-                                </div>
-                                <!-- End Product Review -->
-                            </div>
-                            <!-- End product details -->
-                        </div>
-                    </div>
-                    <div class="item col-item">
-                        <div class="product-box">
-                            <!-- Start Product Image -->
-                            <div class="product-image">
-                                <!-- Start Product Image -->
-                                <a href="product-layout1.html" class="product-img">
-                                    <!-- Image -->
-                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Image -->
-                                    <!-- Hover Image -->
-                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Hover Image -->
-                                </a>
-                                <!-- End Product Image -->
-                                <!-- Product label -->
-                                <div class="product-labels"><span class="lbl pr-label4">Popular</span></div>
-                                <!-- End Product label -->
-                                <!--Product Button-->
-                                <div class="button-set style1">
-                                    <!--Cart Button-->
-                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                    </a>
-                                    <!--End Cart Button-->
-                                    <!--Quick View Button-->
-                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                    </a>
-                                    <!--End Quick View Button-->
-                                    <!--Wishlist Button-->
-                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                    <!--End Wishlist Button-->
-                                    <!--Compare Button-->
-                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                    <!--End Compare Button-->
-                                </div>
-                                <!--End Product Button-->
-                            </div>
-                            <!-- End Product Image -->
-                            <!-- Start Product Details -->
-                            <div class="product-details text-left">
-                                <!-- Product Name -->
-                                <div class="product-name">
-                                    <a href="product-layout1.html">Men's Cheater Jacket</a>
-                                </div>
-                                <!-- End Product Name -->
-                                <!-- Product Price -->
-                                <div class="product-price">
-                                    <span class="price">$99.00</span>
-                                </div>
-                                <!-- End Product Price -->
-                                <!-- Product Review -->
-                                <div class="product-review">
-                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                    <span class="caption hidden ms-1">19 Reviews</span>
-                                </div>
-                                <!-- End Product Review -->
-                            </div>
-                            <!-- End product details -->
-                        </div>
-                    </div>
-                    <div class="item col-item">
-                        <div class="product-box">
-                            <!-- Start Product Image -->
-                            <div class="product-image">
-                                <!-- Start Product Image -->
-                                <a href="product-layout1.html" class="product-img">
-                                    <!-- Image -->
-                                    <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Image -->
-                                    <!-- Hover Image -->
-                                    <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Hover Image -->
-                                </a>
-                                <!-- End Product Image -->
-                                <!--Product Button-->
-                                <div class="button-set style1">
-                                    <!--Cart Button-->
-                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                    </a>
-                                    <!--End Cart Button-->
-                                    <!--Quick View Button-->
-                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                    </a>
-                                    <!--End Quick View Button-->
-                                    <!--Wishlist Button-->
-                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                    <!--End Wishlist Button-->
-                                    <!--Compare Button-->
-                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                    <!--End Compare Button-->
-                                </div>
-                                <!--End Product Button-->
-                            </div>
-                            <!-- End Product Image -->
-                            <!-- Start Product Details -->
-                            <div class="product-details text-left">
-                                <!-- Product Name -->
-                                <div class="product-name">
-                                    <a href="product-layout1.html">Casual Mustard Shirt</a>
-                                </div>
-                                <!-- End Product Name -->
-                                <!-- Product Price -->
-                                <div class="product-price">
-                                    <span class="price">$167.00</span>
-                                </div>
-                                <!-- End Product Price -->
-                                <!-- Product Review -->
-                                <div class="product-review">
-                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i>
-                                    <span class="caption hidden ms-1">7 Reviews</span>
-                                </div>
-                                <!-- End Product Review -->
-                            </div>
-                            <!-- End product details -->
-                        </div>
-                    </div>
+                    <!--End Product Grid-->
                 </div>
-                <!--End Product Grid-->
-            </div>
-        </section>
-        <!--End Recently Viewed Products-->
-    </div>
-    <!-- End Body Container -->
+            </section>
+            <!--End Recently Viewed Products-->
+        </div>
+        <!-- End Body Container -->
      </ng-container>
 
     <!--Scoll Top-->
@@ -1492,7 +1473,7 @@
     <!-- Sticky Cart -->
     <!-- <div class="stickyCart" *ngIf="variedades"> -->
     <div class="stickyCart" *ngIf="showStickyCart && variedades?.length">
-        <div class="container border border-primary">
+        <div class="container">
             <form method="post" action="#" id="stickycart-form" class="d-flex-center justify-content-center">
                 <div class="product-featured-img">
                     <img class="blur-up lazyload" [attr.data-src]="firstImage" [src]="firstImage" alt="product" width="120" height="170" />

@@ -1279,28 +1279,28 @@
 
 <!-- MENU MOBILE -->
 <div class="mobile-nav-wrapper" role="navigation">
-    <div class="closemobileMenu">Menu <i class="icon anm anm-times-l"></i></div>
+    <div class="closemobileMenu" (click)="closeMobileMenuAndOverlay()">Menu <i class="icon anm anm-times-l"></i></div>
     <ul id="MobileNav" class="mobile-nav">
         <!-- CAMISETAS -->
-         <li class="lvl1 parent megamenu"><a href="#" onclick="return false;" class="text-uppercase">Camisetas <i class="icon anm anm-angle-down-l"></i></a>
+         <li class="lvl1 parent megamenu"><a href="#" (click)="toggleMobileSubmenu($event)" class="text-uppercase">Camisetas <i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
                 <li>
-                    <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
+                    <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-central']" (click)="closeMobileMenuAndOverlay()" class="site-nav lvl-2">Logo Central</a>
                 </li>
                 <li>
-                    <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
+                    <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-lateral']" (click)="closeMobileMenuAndOverlay()" class="site-nav lvl-2">Logo Lateral</a>
                 </li>
             </ul>
         </li>
 
         <!-- SUDADERAS -->
-        <li class="lvl1 parent megamenu"><a href="#" onclick="return false;" class="text-uppercase">Sudaderas <i class="icon anm anm-angle-down-l"></i></a>
+        <li class="lvl1 parent megamenu"><a href="#" (click)="toggleMobileSubmenu($event)" class="text-uppercase">Sudaderas <i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
                 <li>
-                    <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
+                    <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-central']" (click)="closeMobileMenuAndOverlay()" class="site-nav lvl-2">Logo Central</a>
                 </li>
                 <li>
-                    <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
+                    <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-lateral']" (click)="closeMobileMenuAndOverlay()" class="site-nav lvl-2">Logo Lateral</a>
                 </li>
             </ul>
         </li>
@@ -1309,6 +1309,7 @@
         <li class="lvl1 parent dropdown">
             <a *ngIf="categorieMugs"
                 [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieMugs.slug, categorieMugs._id]"
+                (click)="closeMobileMenuAndOverlay()"
                 class="text-uppercase"
                 [attr.title]="'Explorar ' + categorieMugs.title">
                 Mugs
@@ -1319,6 +1320,7 @@
         <li class="lvl1 parent dropdown">
              <a *ngIf="categorieCaps"
                 [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieCaps.slug, categorieCaps._id]"
+                (click)="closeMobileMenuAndOverlay()"
                 class="text-uppercase"
                 [attr.title]="'Explorar ' + categorieCaps.title">
                 Gorras
@@ -1326,26 +1328,26 @@
         </li>
         
 
-        <li class="lvl1 parent dropdown d-none"><a href="#" onclick="return false;">Pages <i class="icon anm anm-angle-down-l"></i></a>
+        <li class="lvl1 parent dropdown d-none"><a href="#" (click)="toggleMobileSubmenu($event)">Pages <i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
-                <li><a href="aboutus-style1.html" class="site-nav">About Us <i
+                <li><a href="#" (click)="toggleMobileSubmenu($event)" class="site-nav">About Us <i
                             class="icon anm anm-angle-down-l"></i></a>
                     <ul class="lvl-3 dropdown">
-                        <li><a href="aboutus-style1.html" class="site-nav">About Us Style1</a></li>
-                        <li><a href="aboutus-style2.html" class="site-nav">About Us Style2</a></li>
+                        <li><a href="aboutus-style1.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">About Us Style1</a></li>
+                        <li><a href="aboutus-style2.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">About Us Style2</a></li>
                     </ul>
                 </li>
-                <li><a href="contact-style1.html" class="site-nav">Contact Us <i
+                <li><a href="#" (click)="toggleMobileSubmenu($event)" class="site-nav">Contact Us <i
                             class="icon anm anm-angle-down-l"></i></a>
                     <ul class="lvl-3 dropdown">
-                        <li><a href="contact-style1.html" class="site-nav">Contact Us Style1</a></li>
-                        <li><a href="contact-style2.html" class="site-nav">Contact Us Style2</a></li>
+                        <li><a href="contact-style1.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Contact Us Style1</a></li>
+                        <li><a href="contact-style2.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Contact Us Style2</a></li>
                     </ul>
                 </li>
-                <li><a href="my-account.html" class="site-nav">My Account <i class="icon anm anm-angle-down-l"></i></a>
+                <li><a href="#" (click)="toggleMobileSubmenu($event)" class="site-nav">My Account <i class="icon anm anm-angle-down-l"></i></a>
                     <ul class="lvl-3 dropdown">
-                        <li><a href="my-account.html" class="site-nav">My Account</a></li>
-                        <li><a href="login.html" class="site-nav">Login</a></li>
+                        <li><a href="my-account.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">My Account</a></li>
+                        <li><a href="login.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Login</a></li>
                         <li><a href="register.html" class="site-nav">Register</a></li>
                         <li><a href="forgot-password.html" class="site-nav">Forgot Password</a></li>
                     </ul>
@@ -1367,15 +1369,15 @@
                 </li>
             </ul>
         </li>
-        <li class="lvl1 parent dropdown d-none"><a href="#" onclick="return false;">Blog <i
+        <li class="lvl1 parent dropdown d-none"><a href="#" (click)="toggleMobileSubmenu($event)">Blog <i
                     class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
-                <li><a href="blog-grid.html" class="site-nav">Grid View</a></li>
-                <li><a href="blog-list.html" class="site-nav">List View</a></li>
-                <li><a href="blog-grid-sidebar.html" class="site-nav">Left Sidebar</a></li>
-                <li><a href="blog-list-sidebar.html" class="site-nav">Right Sidebar</a></li>
-                <li><a href="blog-masonry.html" class="site-nav">Masonry Grid</a></li>
-                <li><a href="blog-details.html" class="site-nav">Blog Details</a></li>
+                <li><a href="blog-grid.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Grid View</a></li>
+                <li><a href="blog-list.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">List View</a></li>
+                <li><a href="blog-grid-sidebar.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Left Sidebar</a></li>
+                <li><a href="blog-list-sidebar.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Right Sidebar</a></li>
+                <li><a href="blog-masonry.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Masonry Grid</a></li>
+                <li><a href="blog-details.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Blog Details</a></li>
             </ul>
         </li>
         

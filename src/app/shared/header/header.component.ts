@@ -194,8 +194,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       cap.categorie.slug = this.productUIService.generateSlug(cap.categorie?.title || '');
     });
     this.categorieCaps = this.categories.find(cat => cat.slug.toLowerCase() === "dad-hats-baseball-caps");
-    console.log("----> [Components Header] Categories categorieCaps:", this.categorieCaps);
-
    }
 
   private processProductPrices(resp: any): void {
@@ -766,5 +764,36 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   closeMinicart(): void {
     this.minicartService.closeMinicart();
   }
+  
+  closeMobileMenuAndOverlay(): void {
+    // Cerrar el menú móvil
+    $('.mobile-nav-wrapper').removeClass("active");
+    $('body').removeClass("menuOn");
+    $('.js-mobile-nav-toggle').removeClass('mobile-nav--close').addClass('mobile-nav--open');
+    
+    // Cerrar cualquier overlay que pueda estar activo
+    $('.overlay-sidebar').removeClass('active');
+  }
 
+  toggleMobileSubmenu(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation(); // Evitar que el evento se propague al padre
+    const clickedElement = event.currentTarget as HTMLElement;
+    const parentLi = clickedElement.closest('li');
+    
+    if (parentLi) {
+      const icon = clickedElement.querySelector('i.anm');
+      // Buscar cualquier submenú (lvl-2, lvl-3, etc.)
+      const submenu = parentLi.querySelector('ul');
+      
+      if (icon && submenu) {
+        // Alternar clases del icono
+        icon.classList.toggle('anm-angle-down-l');
+        icon.classList.toggle('anm-angle-up-l');
+        
+        // Alternar la visibilidad del submenú usando jQuery
+        $(submenu).slideToggle();
+      }
+    }
+  }
 }

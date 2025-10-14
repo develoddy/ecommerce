@@ -9,17 +9,6 @@
 </div>
 <!-- End Loading -->
 
-<!-- Loading -->
-  <!-- <div *ngIf="!loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
-      <div class="row">
-          <div class="col col-12 col-lg-12 col-sm-2">
-              <div class="sp sp-bars"></div> -->
-              <!-- <img src="assets/images/logo/lujandev_loader.gif" alt="Cargando Luján" class="logo-loader" /> -->
-          <!-- </div>
-      </div>
-  </div> -->
-<!-- End Loading -->
-
 <!--Page Wrapper-->
 <div class="page-wrapper" [class.d-none]="loader.loading$ | async">
   <!--Header-->
@@ -28,7 +17,6 @@
 
   <!-- Body Container -->
   <!-- <ng-container [class.d-none]="loader.loading$ | async"> -->
-  <!-- <ng-container [class.d-none]="!loading"> -->
     <div id="page-content" class="mb-0">
       <!--Home Slideshow-->
       <app-slider-home
@@ -755,21 +743,23 @@
       </app-flash-sale-banner>
       <!--End Parallax Banner-->
 
-      <!-- Flash Sale-->
-      <app-flash-sale
-        [FlashProductList]="FlashProductList"
-        [FlashSales]="FlashSales"
-        [locale]="locale"
-        [country]="country"
-        [euro]="euro"
-        [isMobile]="isMobile"
-        [getRouterDiscount]="getRouterDiscount"
-        [openModalToCart]="openModalToCart"
-        [addWishlist]="addWishlist"
-        [changeProductImage]="changeProductImage"
-        [navigateToProduct]="navigateToProduct">
-      </app-flash-sale>
-      <!-- /End Flash Sale-->
+      <ng-container *ngIf="FlashSales && FlashSales.length > 0">
+        <!-- Flash Sale -->
+        <app-flash-sale
+          [FlashProductList]="FlashProductList"
+          [FlashSales]="FlashSales"
+          [locale]="locale"
+          [country]="country"
+          [euro]="euro"
+          [isMobile]="isMobile"
+          [getRouterDiscount]="getRouterDiscount"
+          [openModalToCart]="openModalToCart"
+          [addWishlist]="addWishlist"
+          [changeProductImage]="changeProductImage"
+          [navigateToProduct]="navigateToProduct">
+        </app-flash-sale>
+        <!-- /End Flash Sale-->
+      </ng-container>
 
       <!--Testimonial Section-->
       <app-testimonials></app-testimonials>

@@ -165,7 +165,7 @@ export class LandingProductComponent
         this.ngZone.run(() => {
           this.cdRef.detectChanges();
         });
-      }, 150);
+      }, 350);
     });
   }
 
@@ -196,7 +196,7 @@ export class LandingProductComponent
               productSlider5items($);
               menuProductSlider($);
               sliderRefresh();
-            }, 150);
+            }, 350);
           });
         } else {
           // Cleanup on loading start
