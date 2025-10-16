@@ -1,6 +1,6 @@
 
-<ng-container *ngIf="listCarts && listCarts.length > 0">
-    <div class="mb-5" *ngIf="showSubscriptionSection; else onlyLogo">
+<ng-container *ngIf="!(loader.loading$ | async)">
+    <div *ngIf="showSubscriptionSection; else onlyLogo">
         <!-- TOP HEADER -->
         <div class="top-header d-none">
             <div class="container">
@@ -71,6 +71,7 @@
 
         <!-- MAIN HEADER -->
         <div class="header main-header d-flex align-items-center header-1 header-fixed bg-darkblue-ld">
+            <!-- HEADER CONTENT -->
             <div class="container-header" [ngClass]="{'container-fluid': isDesktop || isTablet, 'container': isMobile }">
                 <div class="row">
                     <!-- MENU IZQUIERDA -->
@@ -898,6 +899,7 @@
                     <!-- END MENU DERECHA -->
                 </div>
             </div>
+            <!-- END MAIN HEADER -->
 
             <!-- SUB-HEADER -->
             <!-- <div class="header sub-header main-header d-flex align-items-center header-1 header-fixed" [ngClass]="{'d-none': isMobile}" style="top: 80px; z-index: 99;"> -->
@@ -1272,8 +1274,6 @@
             <!-- END SUB-HEADER -->
         </div>
         <!-- END MAIN HEADER -->
-
-        
     </div>
 
     <ng-template #onlyLogo>

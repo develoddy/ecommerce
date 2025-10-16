@@ -102,7 +102,7 @@ function HOMEINITTEMPLATE ($, undefined) {
                         nav.removeClass("is-fixed");
                         injectSpace.hide();
                     }
-                    if ($(window).scrollTop() > 150) { //150
+                    if ($(window).scrollTop() > 50) { //150
                         nav.addClass("is-small animated fadeIn");
                     } else {
                         nav.removeClass("is-small animated fadeIn");
@@ -133,7 +133,7 @@ function HOMEINITTEMPLATE ($, undefined) {
                             nav.removeClass("is-fixed");
                             injectSpace.hide();
                         }
-                        if ($(window).scrollTop() > 150) { //150
+                        if ($(window).scrollTop() > 50) { //150
                             nav.addClass("is-small animated fadeIn");
                         } else {
                             nav.removeClass("is-small animated fadeIn");

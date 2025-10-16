@@ -176,6 +176,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   private processBasicData(resp: any): void {
     // Asignar datos básicos primero
     this.sliders = resp.sliders.filter((slider: any) => slider.state == 1);
+    console.log(this.sliders);
+    
     this.categories = resp.categories;
     this.FlashSales = resp.FlashSales;
     this.FlashProductList = resp.campaign_products;

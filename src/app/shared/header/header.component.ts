@@ -17,6 +17,7 @@ import { HomeService } from 'src/app/modules/home/_services/home.service';
 import { ProductUIService } from 'src/app/modules/home/_services/product/product-ui.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 import { SafeUrl } from '@angular/platform-browser';
+import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 declare var $: any;
 declare var $:any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -94,6 +95,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     public homeService: HomeService,
     private productUIService: ProductUIService,
     private priceCalculationService: PriceCalculationService,
+    public loader: LoaderService,
   ) {
     this.subscriptions.add(
       this.subscriptionService.showSubscriptionSection$.subscribe(value => {
