@@ -1,21 +1,18 @@
 <!-- <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a> -->
 <!-- Loading -->
-<!-- <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+<div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
   <div class="row">
     <div class="col col-12 col-lg-12 col-sm-2">
       <div class="sp sp-bars"></div>
     </div>
   </div>
-</div> -->
+</div> 
 <!-- End Loading -->
 
 <!--Page Wrapper-->
-<!-- <div class="page-wrapper" [class.d-none]="loader.loading$ | async"> -->
-<div class="page-wrapper">
+<div class="page-wrapper" [class.d-none]="loader.loading$ | async">
 
-  <!-- Body Container -->
   <div id="page-content">
-    <!-- Header -->
     <app-header></app-header>
     <!--End Header-->
 
@@ -837,7 +834,7 @@
     <!--End Blog Post-->
 
   </div>
-  <!-- End Body Container -->
+    <!-- End Body Container -->
 
   <!--Footer-->
   <app-footer></app-footer>

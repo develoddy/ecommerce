@@ -1,8 +1,9 @@
-import { Component, OnInit, HostListener, ViewEncapsulation, ChangeDetectorRef, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, HostListener, ViewEncapsulation, ChangeDetectorRef, AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subscription } from 'rxjs';
+import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { ProductDisplayService } from '../_service/service_landing_product';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 
@@ -30,7 +31,7 @@ declare function sliderRefresh(): any;
   styleUrls: ['./filter-products.component.css'],
   encapsulation: ViewEncapsulation.None // Desactiva la encapsulación
 })
-export class FilterProductsComponent implements OnInit, OnDestroy {
+export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy {
 
   /* ------------------ PROPERTIES  ------------------ */
   // @ViewChild('grid1') grid1!: ElementRef;
@@ -81,8 +82,9 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
     public _cartService: CartService,
     public _router: Router,
     public _routerActived: ActivatedRoute,
+    public loader: LoaderService,
     public productDisplayService: ProductDisplayService,
-    public _authService: AuthService,
+     public _authService: AuthService,
   ) {
     
     this._routerActived.paramMap.subscribe(params => {
@@ -93,17 +95,13 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
 
   }
 
-  // ngAfterViewInit(): void {
-  //   setTimeout(() => {
-     
-  //     productSlider5items($);
-  //     productSlider8items($);
-  //     (window as any).sliderRefresh($);
-  //     HOMEINITTEMPLATE($);
-  //     // Lógica de gridX eliminada porque los elementos ya no existen en el padre
-  //   }, 150);
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      HOMEINITTEMPLATE($);
+      // Lógica de gridX eliminada porque los elementos ya no existen en el padre
+    }, 150);
 
-  // }
+  }
   
   /* ------------------ CYCLE INIT ------------------ */
   ngOnInit(): void {
@@ -138,24 +136,24 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
     this.configInitial();
     this.checkDeviceType();
     
-    
+
     // Slider initialization handled by loader subscription
 
     // Subscribe to loader to initialize and cleanup sliders
-    // this.subscriptions.add(
-    //   this.loader.loading$.subscribe(isLoading => {
-    //     if (!isLoading) {
-    //       setTimeout(() => {
-    //         productSlider5items($);
-    //         productSlider8items($);
-    //         (window as any).sliderRefresh($);
-    //       }, 150);
-    //     } else {
-    //       cleanupHOMEINITTEMPLATE($);
-    //       cleanupSliders($);
-    //     }
-    //   })
-    // );
+    this.subscriptions.add(
+      this.loader.loading$.subscribe(isLoading => {
+        if (!isLoading) {
+          setTimeout(() => {
+            productSlider5items($);
+            productSlider8items($);
+            (window as any).sliderRefresh($);
+          }, 150);
+        } else {
+          cleanupHOMEINITTEMPLATE($);
+          cleanupSliders($);
+        }
+      })
+    );
   }
 
 
@@ -237,9 +235,6 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
   configInitial() {
     this.subscriptions = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
-
-      // Forzar detección de cambios
-      this.cdRef.detectChanges();
       
       // GENERAR SLUG PARA CASA CATEGORIA SIN MODIFICAR EL TITULO ORIGINAL
       this.categories.forEach((category:any) => {
@@ -273,9 +268,6 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
           return true;
         }
       });
-      
-      this.initUIComponents();
-
     });
   }
 
@@ -325,27 +317,13 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
       
       this._ecommerceGuestService.filterProduct(data).subscribe((resp: any) => {
         this.products = resp.products;
-         // Forzar detección de cambios
-        this.cdRef.detectChanges();
         
         if (this.products) {
           this.setColoresDisponibles();
         }
-
-        this.initUIComponents();
       });
     }, 500);
   }
-
-  private initUIComponents(): void {
-    setTimeout(() => {
-      productSlider5items($);
-      productSlider8items($);
-      (window as any).sliderRefresh($);
-      HOMEINITTEMPLATE($);
-    }, 350);
-  }
-
 
   onFilterByPrice(priceRange: string) {
     this.filterProduct('', priceRange);

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CartService } from '../_service/cart.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
@@ -8,6 +8,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { WishlistService } from '../_service/wishlist.service';
 import { SeoService } from 'src/app/services/seo.service';
+import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 
 declare var $: any;
@@ -25,7 +26,7 @@ declare function collectionSlider4items($: any): any;
   templateUrl: './list-carts.component.html',
   styleUrls: ['./list-carts.component.css']
 })
-export class ListCartsComponent implements OnInit, OnDestroy {
+export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   euro = "€";
 
   listCarts: any[] = [];
@@ -58,10 +59,11 @@ export class ListCartsComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private authService: AuthService,
     private subscriptionService: SubscriptionService,
+    //private titleService: Title, // seo
+    //private metaService: Meta,
     private seoService: SeoService,
     public _wishlistService: WishlistService,
-    private cdRef: ChangeDetectorRef,
-    private ngZone: NgZone,
+    public loader: LoaderService,
     private priceCalculationService: PriceCalculationService
   ) {
     // Obtenemos `locale` y `country` de la ruta actual
@@ -71,33 +73,38 @@ export class ListCartsComponent implements OnInit, OnDestroy {
     });
   }
   
- 
+  ngAfterViewInit(): void {}
 
   ngOnInit() {
+   
     this.setupSEO();
     this.checkUserAuthenticationStatus();
     this.getCarts();
-    //this.inizializeLoader();
+    this.inizializeLoader();
     this.subscribeToWishlistData();
+   
+
+    
   }
 
-  // inizializeLoader() {
-  //   // Subscribe to loader to initialize carousel after content loads
-  //   this.subscriptions.add(
-  //     this.loader.loading$.subscribe(isLoading => {
-  //       if (!isLoading) {
-  //         setTimeout(() => {
-  //           HOMEINITTEMPLATE($);
-  //           collectionSlider4items($);
-  //         }, 150);
-  //       } else {
-  //         cleanupSliders($);
-  //         cleanupHOMEINITTEMPLATE($);
-  //         collectionSlider4items($);
-  //       }
-  //     })
-  //   );
-  // }
+  inizializeLoader() {
+    // Subscribe to loader to initialize carousel after content loads
+    this.subscriptions.add(
+      this.loader.loading$.subscribe(isLoading => {
+        if (!isLoading) {
+          setTimeout(() => {
+            HOMEINITTEMPLATE($);
+            
+            collectionSlider4items($);
+          }, 150);
+        } else {
+          cleanupSliders($);
+          cleanupHOMEINITTEMPLATE($);
+          collectionSlider4items($);
+        }
+      })
+    );
+  }
 
   navigateToProduct(slug: string, discountId?: string) {
     // Guarda el estado para hacer scroll hacia arriba
@@ -126,32 +133,12 @@ export class ListCartsComponent implements OnInit, OnDestroy {
     if (this.currentUser) {
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
-        this.showRelatedProducts();
+        console.log("----> resp > listCarts:", this.listCarts);
+        
+         this.showRelatedProducts();
+        // Procesar precios con descuento para cada item del carrito
         this.processCartPrices();
         this.updateTotalCarts();
-
-        // Forzar renderizado de Angular para que los sliders tengan el DOM listo
-        this.cdRef.detectChanges();
-
-        // Inicializar sliders y HOMEINITTEMPLATE
-        this.ngZone.runOutsideAngular(() => {
-          setTimeout(() => {
-           
-
-             // Inicializar sliders solo si hay datos
-            if (this.listCarts.length) {
-              (window as any).productSlider5items($);
-              (window as any).productSlider8items($);
-               (window as any).cleanupSliders($); // Limpiar sliders previos
-              (window as any).cleanupHOMEINITTEMPLATE($);
-            }
-
-
-
-            (window as any).HOMEINITTEMPLATE($);
-            (window as any).collectionSlider4items($);
-          }, 150); // Ejecutar justo después de que el DOM esté listo
-        });
       });
     } 
     this.sotoreCarts();
@@ -336,6 +323,7 @@ export class ListCartsComponent implements OnInit, OnDestroy {
   }
 
   private handleProductResponse(resp: any): void {
+    console.log("🚀 -------> [handleProductResponse] this.resp:", resp);
     this.product_selected = resp.product;
     this.related_products = resp.related_products;
     this.interest_products = resp.interest_products;

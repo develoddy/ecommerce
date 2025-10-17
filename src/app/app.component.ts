@@ -9,7 +9,7 @@ import { GuestCleanupService } from './modules/ecommerce-guest/_service/guestCle
 import { HeaderEventsService } from './services/headerEvents.service';
 import { CookieConsentService } from './services/cookie-consent.service';
 import { SeoService } from './services/seo.service';
-import { LoaderService } from './modules/home/_services/product/loader.service';
+// import { LoaderService } from './modules/home/_services/product/loader.service';
 declare var bootstrap: any;
 
 declare var $:any;
@@ -37,7 +37,7 @@ export class AppComponent implements AfterViewInit {
   height: number = 100; 
 
   constructor(
-    public loader: LoaderService,
+    // public loader: LoaderService,
     private translate: TranslateService, 
     private router: Router,
     private titleService: Title, 
