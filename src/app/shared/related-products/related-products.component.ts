@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, AfterViewInit, NgZone, OnChanges, SimpleChanges } from '@angular/core';
+import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 
 declare var $: any;
@@ -17,7 +18,11 @@ export class RelatedProductsComponent implements AfterViewInit, OnChanges {
   @Input() getDiscount: any;
   @Input() SALE_FLASH: any;
 
-  constructor(private ngZone: NgZone, public priceService: PriceCalculationService) {}
+  constructor(
+    public loader: LoaderService,
+    private ngZone: NgZone, 
+    public priceService: PriceCalculationService
+  ) {}
 
   ngAfterViewInit() {
   // console.log('🚀 ngAfterViewInit - related_products:', this.related_products);

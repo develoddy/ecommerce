@@ -1,5 +1,15 @@
+<!-- <div *ngIf="loader.loading$" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center"> -->
+<!-- <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex justify-content-center align-items-center">
+    <div class="row">
+        <div class="col col-12 col-lg-12 col-sm-2">
+            <div class="sp sp-bars"></div>
+        </div>
+    </div>
+</div>  -->
+
 <ng-container *ngIf="related_products.length > 0">
-  <section class="section product-slider pb-0">
+
+  <section class="product-slider pb-0" >
     <div class="container">
       <div class="section-header">
         <h2 class="text-uppercase">Del mismo estilo</h2>

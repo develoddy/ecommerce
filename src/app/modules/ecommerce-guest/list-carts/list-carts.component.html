@@ -441,30 +441,59 @@
                 </div>
                 <!-- END MAIN CONTENT -->
 
-                <ng-container *ngIf="related_products && related_products.length > 0">
-                    <!--Related Products-->
-                    <app-related-products
-                        [related_products]="related_products"
-                        [product_selected]="product_selected"
-                        [euro]="euro"
-                        (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
-                        [getDiscount]="getDiscount"
-                        [SALE_FLASH]="SALE_FLASH"
-                    ></app-related-products>
-                    <!--End Related Products-->
-                </ng-container> 
+                <ng-container>
+                    <!-- Loader o Skeleton -->
+                    <ng-container *ngIf="loader.loading$ | async; else product_related_slider">
+                        <div class="container">
+                            <div class="section-header mb-4">
+                            <div class="skeleton-line w-25 mb-2"></div>
+                            <div class="skeleton-line w-50"></div>
+                            </div>
+                            <div class="product-slider-5items gp10 arwOut5 grid-product">
+                                <ng-container *ngFor="let n of [1,2,3,4,5]">
+                                    <div class="item col-item">
+                                    <div class="product-box p-2 rounded-lg">
+                                        <div class="product-image mb-2 position-relative">
+                                        <div class="skeleton-img w-100" style="height: 220px; border-radius: 0px;"></div>
+                                        </div>
+                                        <div class="product-details text-center">
+                                        <div class="skeleton-line w-75 mb-2" style="height: 14px;"></div>
+                                        <div class="skeleton-line w-50" style="height: 12px;"></div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
 
-                <ng-container *ngIf="interest_products && interest_products.length > 0">
-                    <!-- Interest Products-->
-                    <app-interest-products
-                        [interest_products]="interest_products"
-                        [product_selected]="product_selected"
-                        [euro]="euro"
-                        (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
-                        [getDiscount]="getDiscount"
-                        [SALE_FLASH]="SALE_FLASH"
-                    ></app-interest-products>
-                    <!--End Interest Products-->
+                    <ng-template #product_related_slider>
+                        <ng-container *ngIf="related_products && related_products.length > 0">
+                            <!--Related Products-->
+                            <app-related-products
+                                [related_products]="related_products"
+                                [product_selected]="product_selected"
+                                [euro]="euro"
+                                (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
+                                [getDiscount]="getDiscount"
+                                [SALE_FLASH]="SALE_FLASH"
+                            ></app-related-products>
+                            <!--End Related Products-->
+                        </ng-container> 
+
+                        <ng-container *ngIf="interest_products && interest_products.length > 0">
+                            <!-- Interest Products-->
+                            <app-interest-products
+                                [interest_products]="interest_products"
+                                [product_selected]="product_selected"
+                                [euro]="euro"
+                                (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
+                                [getDiscount]="getDiscount"
+                                [SALE_FLASH]="SALE_FLASH"
+                            ></app-interest-products>
+                            <!--End Interest Products-->
+                        </ng-container>
+                    </ng-template>
                 </ng-container> 
 
             </div>
