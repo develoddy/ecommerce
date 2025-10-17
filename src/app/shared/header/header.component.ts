@@ -95,7 +95,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     public homeService: HomeService,
     private productUIService: ProductUIService,
     private priceCalculationService: PriceCalculationService,
-    public loader: LoaderService,
+    // public loader: LoaderService,
   ) {
     this.subscriptions.add(
       this.subscriptionService.showSubscriptionSection$.subscribe(value => {

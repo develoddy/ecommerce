@@ -83,8 +83,6 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.inizializeLoader();
     this.subscribeToWishlistData();
    
-
-    
   }
 
   inizializeLoader() {
@@ -458,7 +456,6 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   private updateUserCart(cartData: any): void {
     
     this.cartService.updateCart(cartData).subscribe((resp: any) => {
-      //console.log(resp);
       
       if (resp.message === 403) {
         alertDanger(resp.message_text);

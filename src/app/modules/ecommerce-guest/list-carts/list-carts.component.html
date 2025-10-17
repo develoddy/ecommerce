@@ -1,17 +1,16 @@
 <!-- Loading -->
-<div *ngIf="loader.loading$ | async"
-    class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+<!-- <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
     <div class="row">
         <div class="col col-12 col-lg-12 col-sm-2">
             <div class="sp sp-bars"></div>
         </div>
     </div>
-</div> 
+</div>  -->
 <!-- End Loading -->
 
 <!--  PAGE WRAPPER  -->
     <div class="page-wrapper">
-        <ng-container [class.d-none]="loader.loading$ | async">
+        <!-- <ng-container [class.d-none]="loader.loading$ | async"> -->
             <!-- BODY CONTAINER -->
             <div id="page-content">
                 <!-- PAGE HEADER -->
@@ -141,8 +140,7 @@
                                                     <div class="cart-qty d-flex">
                                                         <div class="qtyField">
                                                             <!-- Botón menos -->
-                                                            <a class="qtyBtn minus text-muted" href="#"
-                                                                (click)="dec(cart); $event.preventDefault()">
+                                                            <a class="qtyBtn minus text-muted" href="#" onclick="return false;" (click)="dec(cart); $event.preventDefault()">
                                                                 <i class="icon anm anm-minus-r fs-5 text-black"></i>
                                                             </a>
 
@@ -152,7 +150,7 @@
                                                                 (blur)="validateCartQuantity(cart)" />
 
                                                             <!-- Botón más -->
-                                                            <a class="qtyBtn plus text-muted" href="#"
+                                                            <a class="qtyBtn plus text-muted" href="#" onclick="return false;" 
                                                                 (click)="inc(cart); $event.preventDefault()">
                                                                 <i class="icon anm anm-plus-r fs-5 text-black"></i>
                                                             </a>
@@ -488,7 +486,7 @@
                 </div>
             </div>
         <!--End Page Header-->
-        </ng-container>
+        <!-- </ng-container> -->
 
 
         <!-- STICKY MENUBAR MOBILE -->

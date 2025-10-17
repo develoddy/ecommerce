@@ -1,16 +1,5 @@
 <!--Page Wrapper-->
 <div class="page-wrapper">
-
-    <!-- Loading -->
-    <!-- <div *ngIf="!loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
-        <div class="row">
-            <div class="col col-12 col-lg-12 col-sm-2">
-                <div class="sp sp-bars"></div>
-            </div>
-        </div>
-    </div> -->
-    <!-- End Loading -->
-
     <!-- Loading -->
     <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
@@ -22,21 +11,8 @@
     <!-- End Loading -->
 
     <!-- Body Container -->
-    <div id="page-content" [class.d-none]="loader.loading$ | async">
-
-        <!--Page Header-->
-        <!-- <div *ngIf="currentStep !== 'successfull'" class="page-header mb-0 py-4 bg-transparent">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center align-items-center">
-                        <a class="logoImg" (click)="navigateToCart()">
-                            <img src="assets/images/logo.png" alt="Lujan Ecommerce" title="Lujan Ecommerce" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!--End Page Header-->
+    <!-- <div id="page-content" [class.d-none]="loader.loading$ | async"> -->
+    <div id="page-content">
 
         <!--Main Content-->
         <div class="container">

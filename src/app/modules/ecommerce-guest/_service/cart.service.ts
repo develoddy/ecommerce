@@ -67,13 +67,19 @@ export class CartService {
     );
   }
 
+  // updateCart(data:any) {
+  //   this.loadingSubject.next(true);
+  //   let headers = new HttpHeaders({'token': this._authService.token});
+  //   let URL = URL_SERVICE+"cart/update";
+  //   return this._http.put(URL, data, {headers: headers}).pipe(
+  //     finalize(() => this.loadingSubject.next(false)) 
+  //   );
+  // }
+
   updateCart(data:any) {
-    this.loadingSubject.next(true);
     let headers = new HttpHeaders({'token': this._authService.token});
     let URL = URL_SERVICE+"cart/update";
-    return this._http.put(URL, data, {headers: headers}).pipe(
-      finalize(() => this.loadingSubject.next(false)) 
-    );
+    return this._http.put(URL, data, {headers}); // nada de show/hide
   }
 
   listCarts(user_id:any): Observable<CartResponse> {
