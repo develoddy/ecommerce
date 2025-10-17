@@ -21,7 +21,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { LocalizationService } from 'src/app/services/localization.service';
-import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
+//import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { SeoService } from 'src/app/services/seo.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 
@@ -56,8 +56,7 @@ declare function menuProductSlider($: any): any;
   templateUrl: './landing-product.component.html',
   styleUrls: ['./landing-product.component.css'],
 })
-export class LandingProductComponent
-  implements OnInit, AfterViewInit, OnDestroy
+export class LandingProductComponent implements OnInit, OnDestroy
 {
   currentUrl: string = '';
   euro = '€';
@@ -137,7 +136,7 @@ export class LandingProductComponent
     private seoService: SeoService,
     private ngZone: NgZone,
     private localizationService: LocalizationService,
-    public loader: LoaderService,
+    // public loader: LoaderService,
     private priceCalculationService: PriceCalculationService,
     // Nuevos servicios especializados
     public productDisplayService: ProductDisplayService,
@@ -150,24 +149,26 @@ export class LandingProductComponent
     this.locale = this.localizationService.locale;
   }
 
-  ngAfterViewInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
-        (window as any).cleanupSliders($);
-        (window as any).HOMEINITTEMPLATE($);
-        (window as any).productZoom($);
-        (window as any).pswp($);
-        (window as any).productSlider5items($);
-        (window as any).menuProductSlider($);
-        (window as any).sliderRefresh($);
+  // ngAfterViewInit(): void {
+  //   this.ngZone.runOutsideAngular(() => {
+  //     setTimeout(() => {
+  //       (window as any).cleanupSliders($);
+  //       (window as any).HOMEINITTEMPLATE($);
+  //       (window as any).productZoom($);
+  //       (window as any).pswp($);
+  //       (window as any).productSlider5items($);
+  //       (window as any).menuProductSlider($);
+  //       (window as any).sliderRefresh($);
+  //       cleanupHOMEINITTEMPLATE($);
+  //       cleanupProductZoom($);
 
-        // Si necesitas actualizar algo en Angular (por ejemplo, una bandera, vista, etc.)
-        this.ngZone.run(() => {
-          this.cdRef.detectChanges();
-        });
-      }, 350);
-    });
-  }
+  //       // Si necesitas actualizar algo en Angular (por ejemplo, una bandera, vista, etc.)
+  //       this.ngZone.run(() => {
+  //         this.cdRef.detectChanges();
+  //       });
+  //     }, 350);
+  //   });
+  // }
 
   ngOnInit(): void {
     this.currentUrl = window.location.href; 
@@ -177,35 +178,36 @@ export class LandingProductComponent
     this.subscribeToQueryParams();
     this.checkDeviceType();
     this.subscribeToServiceStates();
-    this.inizialiteLoading();
   }
 
-  inizialiteLoading() {
-    // Subscribe to loader to initialize and cleanup sliders when HTTP calls complete
-    this.subscriptions.add(
-      this.loader.loading$.subscribe((isLoading) => {
-        if (!isLoading) {
-          this.ngZone.runOutsideAngular(() => {
-            setTimeout(() => {
-              // Initialize sliders and templates
-              cleanupHOMEINITTEMPLATE($);
-              cleanupProductZoom($);
-              HOMEINITTEMPLATE($);
-              productZoom($);
-              pswp($);
-              productSlider5items($);
-              menuProductSlider($);
-              sliderRefresh();
-            }, 350);
-          });
-        } else {
-          // Cleanup on loading start
-          cleanupHOMEINITTEMPLATE($);
-          cleanupProductZoom($);
-        }
-      })
-    );
-  }
+  
+
+  // inizialiteLoading() {
+  //   // Subscribe to loader to initialize and cleanup sliders when HTTP calls complete
+  //   this.subscriptions.add(
+  //     this.loader.loading$.subscribe((isLoading) => {
+  //       if (!isLoading) {
+  //         this.ngZone.runOutsideAngular(() => {
+  //           setTimeout(() => {
+  //             // Initialize sliders and templates
+  //             cleanupHOMEINITTEMPLATE($);
+  //             cleanupProductZoom($);
+  //             HOMEINITTEMPLATE($);
+  //             productZoom($);
+  //             pswp($);
+  //             productSlider5items($);
+  //             menuProductSlider($);
+  //             sliderRefresh();
+  //           }, 350);
+  //         });
+  //       } else {
+  //         // Cleanup on loading start
+  //         cleanupHOMEINITTEMPLATE($);
+  //         cleanupProductZoom($);
+  //       }
+  //     })
+  //   );
+  // }
 
   private subscribeToServiceStates(): void {
     // Suscribirse a cambios en los servicios especializados
@@ -491,7 +493,7 @@ export class LandingProductComponent
   }
 
   private handleProductResponse(resp: any): void {
-    console.log("🚀 handleProductResponse: resp:", resp);
+    //console.log("🚀 handleProductResponse: resp:", resp);
 
     if (!resp || !resp.product) {
       console.error('No product data available');
@@ -499,11 +501,8 @@ export class LandingProductComponent
     }
 
     this.product_selected = resp.product;
-    
     this.related_products = resp.related_products;
-    this.interest_products = resp.interest_products
-    //console.log("🚀 Padre: handleProductResponse() -> interest_products:", this.interest_products);
-    
+    this.interest_products = resp.interest_products;
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
     this.AVG_REVIEW = resp.AVG_REVIEW;
@@ -527,16 +526,30 @@ export class LandingProductComponent
       this.initializeProductServices();
       this.sortVariedades();
 
+      // Forzar Angular a renderizar los elementos
+      this.cdRef.detectChanges();
+
+      // Inicializar sliders y plugins externos
       this.ngZone.runOutsideAngular(() => {
         setTimeout(() => {
+          // Limpiar sliders previos si existen
           (window as any).cleanupSliders($);
+
+          // Inicializar sliders solo si hay datos
+          if (this.related_products.length) {
+            (window as any).productSlider5items($);
+          }
+          if (this.interest_products.length) {
+            (window as any).productSlider8items($);
+          }
+
+          // Plugins y funcionalidades generales
           (window as any).HOMEINITTEMPLATE($);
           (window as any).productZoom($);
           (window as any).pswp($);
-          (window as any).productSlider5items($);
           (window as any).menuProductSlider($);
           (window as any).sliderRefresh($);
-        }, 150);
+        }, 150); // Ejecutar justo después de que el DOM esté listo
       });
     }
   }
