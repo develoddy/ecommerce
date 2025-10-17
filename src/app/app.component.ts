@@ -9,6 +9,7 @@ import { GuestCleanupService } from './modules/ecommerce-guest/_service/guestCle
 import { HeaderEventsService } from './services/headerEvents.service';
 import { CookieConsentService } from './services/cookie-consent.service';
 import { SeoService } from './services/seo.service';
+import { LoaderService } from './modules/home/_services/product/loader.service';
 declare var bootstrap: any;
 
 declare var $:any;
@@ -36,6 +37,7 @@ export class AppComponent implements AfterViewInit {
   height: number = 100; 
 
   constructor(
+    public loader: LoaderService,
     private translate: TranslateService, 
     private router: Router,
     private titleService: Title, 
@@ -43,7 +45,7 @@ export class AppComponent implements AfterViewInit {
     private localizationService: LocalizationService,
     private headerEventsService: HeaderEventsService,
     private cookieConsentService: CookieConsentService,
-    private authService: AuthService // <-- Inyecta AuthService para inicializarlo siempre
+    private authService: AuthService 
   ) {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translate.get('app.title').subscribe((res: string) => {
@@ -80,8 +82,6 @@ export class AppComponent implements AfterViewInit {
     }, 150);
   }
 
-  
-
   handleForceLogin() {
     this.router.navigate(['/', this.country, this.locale,  'auth', 'login']).then(() => {window.location.reload();});
   }
@@ -89,7 +89,6 @@ export class AppComponent implements AfterViewInit {
   acceptCookies() {
     this.cookieConsentService.setConsent('accepted');
     this.modalInstance?.hide();
-    // Cargar scripts de terceros si lo deseas aquí
   }
 
   rejectCookies() {
@@ -108,19 +107,18 @@ export class AppComponent implements AfterViewInit {
     this.isTablet = width > 480 && width <= 768;
     this.isDesktop = width > 768;
 
-    // Ajusta el tamaño de la imagen según el tipo de dispositivo
     if (this.isMobile) {
-        this.width = 80;  // tamaño para móviles
-        this.height = 80; // tamaño para móviles
+        this.width = 80;  
+        this.height = 80; 
     } else {
-        this.width = 100; // tamaño por defecto
-        this.height = 100; // tamaño por defecto
+        this.width = 100;
+        this.height = 100; 
     }
   }
 
   @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
-      this.checkDeviceType(); // Verifica el tamaño de la pantalla
+      this.checkDeviceType();
   } 
 }
 

@@ -13,15 +13,13 @@ import { HomeService } from './_services/home.service';
 import { CartService } from '../ecommerce-guest/_service/cart.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { LanguageService } from 'src/app/services/language.service';
+//import { LanguageService } from 'src/app/services/language.service';
 import { combineLatest, Subscription, take } from 'rxjs';
 import { WishlistService } from '../ecommerce-guest/_service/wishlist.service';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { AuthService } from '../auth-profile/_services/auth.service';
-import { MinicartService } from 'src/app/services/minicartService.service';
+//import { MinicartService } from 'src/app/services/minicartService.service';
 import { SeoService } from 'src/app/services/seo.service';
-import { CookieConsentService } from 'src/app/services/cookie-consent.service';
-import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { PriceCalculationService } from './_services/product/price-calculation.service';
 import { FlashSaleTimerService, TimeLeft } from './_services/product/flash-sale-timer.service';
 import { ProductUIService } from './_services/product/product-ui.service';
@@ -32,7 +30,7 @@ import { SliderManagerService } from 'src/app/modules/home/_services/product/sli
 import { WishlistManagerService } from 'src/app/modules/home/_services/product/wishlist-manager.service';
 import { GridViewService, GridViewMode } from 'src/app/modules/home/_services/product/grid-view.service';
 import { URL_FRONTEND } from 'src/app/config/config';
-import { SubscriptionService } from 'src/app/services/subscription.service';
+//import { SubscriptionService } from 'src/app/services/subscription.service';
 import { EcommerceAuthService } from '../ecommerce-auth/_services/ecommerce-auth.service';
 
 declare var bootstrap: any;
@@ -123,10 +121,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     public _wishlistService: WishlistService,
     public _authService: AuthService,
     private localizationService: LocalizationService,
-    private minicartService: MinicartService,
+    //private minicartService: MinicartService,
     private seoService: SeoService,
-    public loader: LoaderService,
-    //private subscriptionService: SubscriptionService,
     private priceCalculationService: PriceCalculationService,
     private flashSaleTimerService: FlashSaleTimerService,
     private productUIService: ProductUIService,
@@ -143,8 +139,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.locale = this.localizationService.locale;
     this.currentGridView = this.gridViewService.getCurrentView();
   }
-
-
 
   ngOnInit(): void {
     this.initializeComponent();
@@ -282,18 +276,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private initializePostLoadTasks(): void {
-    this.subscriptions.add(
-      this.loader.loading$.subscribe((isLoading) => {
-        if (!isLoading) {
+    //this.subscriptions.add(
+      //this.loader.loading$.subscribe((isLoading) => {
+        //if (!isLoading) {
           setTimeout(() => {
             this.setupFlashSaleTimers();
             this.initializeUIComponents();
           }, 200);
-        } else {
-          this.cleanupUIComponents();
-        }
-      })
-    );
+        //} else {
+        //  this.cleanupUIComponents();
+        //}
+      //})
+    //);
   }
 
   private setupFlashSaleTimers(): void {

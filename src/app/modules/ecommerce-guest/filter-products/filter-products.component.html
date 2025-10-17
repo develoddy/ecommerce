@@ -1,17 +1,17 @@
  <!-- Loading -->
-    <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
+    <!-- <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
             <div class="col col-12 col-lg-12  col-sm-2">
                 <div class="sp sp-bars"></div>
             </div>
         </div>
-    </div>
+    </div> -->
 <!-- End Loading -->
  
  
  <!--Page Wrapper-->
  <div class="page-wrapper">
-    <ng-container [class.d-none]="loader.loading$ | async">
+    <!-- <ng-container [class.d-none]="loader.loading$ | async"> -->
         <!-- Body Container -->
         <div id="page-content">
             <!--Page Header-->
@@ -37,7 +37,9 @@
             <!--Main Content-->
             <div class="container-fluid" [ngClass]="{ 'px-0': isMobile }">
                 <app-category-slider [categories]="categories" [locale]="locale" [country]="country"></app-category-slider>
+                
                 <app-toolbar [isDesktop]="isDesktop" [isMobile]="isMobile" [products]="products" (openSidebar)="openSidebar()"></app-toolbar>
+                
                 <app-sidebar-filter
                     [noneSidebar]="noneSidebar"
                     [categories]="categories"
@@ -71,7 +73,7 @@
             <!--End Main Content-->
         </div>
         <!-- End Body Container -->
-    </ng-container>
+    <!-- </ng-container> -->
 
     <!--Scoll Top-->
     <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
