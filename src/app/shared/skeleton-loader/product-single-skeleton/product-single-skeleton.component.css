@@ -1,12 +1,3 @@
-.bg-darkseagreen {
-    background-color: #13192129;
-    color: #131921;
-}
-
-.text-green {
-    color: #131921;
-}
-
 .skeleton-line,
 .skeleton-img {
   background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
@@ -17,4 +8,13 @@
 @keyframes shimmer {
   0% { background-position: -400px 0; }
   100% { background-position: 400px 0; }
+}
+
+.bg-darkseagreen {
+  background-color: #13192129;
+  color: #131921;
+}
+
+.text-green {
+  color: #131921;
 }

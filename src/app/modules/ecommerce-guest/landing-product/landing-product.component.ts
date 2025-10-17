@@ -151,23 +151,48 @@ export class LandingProductComponent
   }
 
   ngAfterViewInit(): void {
-    this.ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
-        (window as any).cleanupSliders($);
-        (window as any).HOMEINITTEMPLATE($);
-        (window as any).productZoom($);
-        (window as any).pswp($);
-        (window as any).productSlider5items($);
-        (window as any).menuProductSlider($);
-        (window as any).sliderRefresh($);
+    this.loader.loading$.subscribe(isLoading => {
+      if (!isLoading) {
+        // Espera a que Angular pinte el DOM
+        this.ngZone.runOutsideAngular(() => {
+          setTimeout(() => {
+            // Inicializa todos los sliders, incluido product-thumb
+            (window as any).cleanupSliders($);
+            (window as any).HOMEINITTEMPLATE($);
+            (window as any).productZoom($);
+            (window as any).pswp($);
+            (window as any).productSlider5items($);
+            (window as any).menuProductSlider($);
+            (window as any).sliderRefresh($);
 
-        // Si necesitas actualizar algo en Angular (por ejemplo, una bandera, vista, etc.)
-        this.ngZone.run(() => {
-          this.cdRef.detectChanges();
+            // Detect changes por si necesitas que Angular actualice
+            this.ngZone.run(() => {
+              this.cdRef.detectChanges();
+            });
+          }, 300); // 300ms para asegurar que el DOM esté listo
         });
-      }, 150);
+      }
     });
   }
+
+  // ngAfterViewInit(): void {
+  //   this.ngZone.runOutsideAngular(() => {
+  //     setTimeout(() => {
+  //       (window as any).cleanupSliders($);
+  //       (window as any).HOMEINITTEMPLATE($);
+  //       (window as any).productZoom($);
+  //       (window as any).pswp($);
+  //       (window as any).productSlider5items($);
+  //       (window as any).menuProductSlider($);
+  //       (window as any).sliderRefresh($);
+
+  //       // Si necesitas actualizar algo en Angular (por ejemplo, una bandera, vista, etc.)
+  //       this.ngZone.run(() => {
+  //         this.cdRef.detectChanges();
+  //       });
+  //     }, 150);
+  //   });
+  // }
 
   ngOnInit(): void {
     this.currentUrl = window.location.href; 

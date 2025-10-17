@@ -11,6 +11,8 @@ import { HttpLoaderFactory } from '../app.module';
 import { AddToCartModalComponent } from './modals/add-to-cart-modal/add-to-cart-modal.component';
 import { RelatedProductsComponent } from './related-products/related-products.component';
 import { InterestProductsComponent } from './interest-products/interest-products.component';
+import { ProductSliderSkeletonComponent } from './skeleton-loader/product-slider-skeleton/product-slider-skeleton.component';
+import { ProductSingleSkeletonComponent } from './skeleton-loader/product-single-skeleton/product-single-skeleton.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { InterestProductsComponent } from './interest-products/interest-products
     FooterComponent,
     AddToCartModalComponent,
     RelatedProductsComponent,
-    InterestProductsComponent
+    InterestProductsComponent,
+    ProductSliderSkeletonComponent,
+    ProductSingleSkeletonComponent,
   ],
   imports: [
     CommonModule,
@@ -40,7 +44,9 @@ import { InterestProductsComponent } from './interest-products/interest-products
     FooterComponent,
     AddToCartModalComponent,
     RelatedProductsComponent,
-    InterestProductsComponent
+    InterestProductsComponent,
+    ProductSliderSkeletonComponent,
+    ProductSingleSkeletonComponent
   ]
 })
 export class SharedModule { }
