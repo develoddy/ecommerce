@@ -49,7 +49,7 @@
     <!--End Popular Categories-->
 
     <!--Toolbar d-none-->
-    <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5 d-none">
+    <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5">
       <div class="row align-items-center">
         <div
           class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-end"
@@ -89,27 +89,28 @@
     </div>
     <!--End Toolbar-->
 
-    <ng-container *ngIf="ocultar">
-      <!--Product Grid-->
-      <app-product-grid
-        [currentUser]="currentUser"
-        [ourProducts]="ourProducts"
-        [locale]="locale"
-        [country]="country"
-        [euro]="euro"
-        [currentUrl]="currentUrl"
-        [isMobile]="isMobile"
-        [getRouterDiscount]="getRouterDiscount"
-        [getPriceParts]="getPriceParts"
-        [openModalToCart]="openModalToCart"
-        [addWishlist]="addWishlist"
-        [changeProductImage]="changeProductImage"
-        [navigateToProduct]="navigateToProduct"
-        [FlashSale]="FlashSales"
-        [gridViewMode]="currentGridView"
-      ></app-product-grid>
-      <!--End Product Grid-->
+    
+    <!--Product Grid-->
+    <app-product-grid
+      [currentUser]="currentUser"
+      [ourProducts]="ourProducts"
+      [locale]="locale"
+      [country]="country"
+      [euro]="euro"
+      [currentUrl]="currentUrl"
+      [isMobile]="isMobile"
+      [getRouterDiscount]="getRouterDiscount"
+      [getPriceParts]="getPriceParts"
+      [openModalToCart]="openModalToCart"
+      [addWishlist]="addWishlist"
+      [changeProductImage]="changeProductImage"
+      [navigateToProduct]="navigateToProduct"
+      [FlashSale]="FlashSales"
+      [gridViewMode]="currentGridView"
+    ></app-product-grid>
+    <!--End Product Grid-->
 
+    <ng-container *ngIf="ocultar">
       <!--Product Grid-->
       <app-hodie-grid
         [currentUser]="currentUser"

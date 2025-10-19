@@ -20,10 +20,11 @@
         <p class="text-white mb-3 lh-1 mb-3">
           Regístrate para estar al día. Recibe actualizaciones, acceso a ofertas exclusivas y mucho más.
         </p>
-        <div class="input-group">
+        <div class="input-group" [ngClass]="{'d-flex': isMobile}">
           <input
             type="email"
             class="form-control bg-transparent border-0 border-bottom border-white text-white rounded-0 shadow-none me-2"
+            [ngClass]="{'mb-3 w-100': isMobile}"
             placeholder="Introduce tu correo electrónico"
             required
           />
