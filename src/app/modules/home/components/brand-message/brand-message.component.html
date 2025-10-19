@@ -4,10 +4,10 @@
     <!-- Bloque centrado -->
     <div class="row mb-5 justify-content-center text-center">
       <div class="col-12 col-md-10 col-lg-8">
-        <h2 class="fw-bold text-white mb-3 text-uppercase fs-32 lh-1">
+        <h2 class="fw-bold text-white mb-3 text-uppercase lh-1" [ngClass]="{'fs-22': isMobile, 'fs-32': isDesktop}">
           En LujanDev creemos que programar es más que código
         </h2>
-        <p class="lead text-white mb-4 lh-1">
+        <p class="lead text-white lh-1">
           Es cultura, estilo y actitud. Nuestras camisetas <br /> están hechas 
           para developers que quieren <br /> vestir su pasión con elegancia.
         </p>
@@ -17,8 +17,8 @@
     <!-- Newsletter -->
     <div class="row justify-content-center text-center">
       <div class="col-12 col-md-8 col-lg-6">
-        <p class="text-white mb-3 lh-1 mb-3">
-          Regístrate para estar al día. Recibe actualizaciones, acceso a ofertas exclusivas y mucho más.
+        <p class="text-white mb-3 lh-1 mb-3 fs-12">
+          Recibe elegancia y código directo a tu inbox.
         </p>
         <div class="input-group" [ngClass]="{'d-flex': isMobile}">
           <input
@@ -28,7 +28,7 @@
             placeholder="Introduce tu correo electrónico"
             required
           />
-          <button type="submit" class="btn-outline-dark-ld p-0" [ngClass]="{'w-25': isDesktop}" >Suscribirse</button>
+          <button type="submit" class="btn-outline-dark-ld p-0" [ngClass]="{'w-25': isDesktop, 'py-2': isMobile}" >Suscribirse</button>
           <!-- <button type="submit" class="btn btn-outline-light">Suscribirse</button> -->
         </div>
       </div>

@@ -1,6 +1,6 @@
 <!-- Collection banner -->
-    <section class="section collection-banners pb-0">
-        <div class="container px-0">
+    <section class="section collection-banners py-5 pb-0">
+        <div class="container-fluid px-0">
             <div class="section-header ms-3 mb-0">
               <h2>Colecciones</h2>
             </div>                      
@@ -8,7 +8,7 @@
                 <div class="row sp-row">
                   <!-- Iterar sobre las categorías -->
                   <ng-container *ngFor="let cat of categories; let i = index">
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item">
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item p-0">
                       <div class="collection-item sp-col">
                         <a [routerLink]="['/', locale, country, 'shop', 'filter-products', cat.slug, cat._id]" class="zoom-scal">
                           <div class="img">

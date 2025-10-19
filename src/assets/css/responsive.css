@@ -1067,8 +1067,8 @@
     .hero-title { font-size: 23px; }
 
     .collection-banner-grid .details { padding: 15px; }
-    .collection-banner-grid .details.middle-right { right: 5px; }
-    .collection-banner-grid .details.middle-left { left: 5px; }
+    .collection-banner-grid .details.middle-right { right: 0px; }
+    .collection-banner-grid .details.middle-left { left: 0px; }
 
     .toolbar-wrapper .search-form { max-width:100%; }
     .author-bio { padding: 20px; }
