@@ -786,7 +786,7 @@
     <!--End Featured Content-->
 
     <!-- Storytelling / Brand Message -->
-    <app-brand-message></app-brand-message>
+    <app-brand-message [isMobile]="isMobile" [isDesktop]="isDesktop"></app-brand-message>
     <!-- End Storytelling / Brand Message -->
 
     <!--Testimonial Section-->
@@ -795,26 +795,7 @@
     </ng-container>
     <!--End Testimonial section-->
 
-    <!-- Newsletter Section -->
-    <div class="newsletterbg clearfix">
-        <div class="container">
-            <form action="#" method="post" class="footer-newsletter">
-                <div class="row align-items-center">
-                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3 mb-md-0">
-                        <label class="h3 mb-1 clr-none">Sign Up Our Newsletter &amp; Get 10% OFF</label>
-                        <p>Sign up to stay in the loop. Receive updates, access to exclusive deals, and more.</p>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                        <div class="input-group">
-                            <input type="email" class="form-control input-group-field newsletter-input" name="email" value="" placeholder="Enter your email address..." required="">
-                            <button type="submit" class="input-group-btn btn btn-secondary newsletter-submit" name="commit">Subscribe</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- End Newsletter Section -->
+    
 
     <!--Service Section-->
     <app-service-section></app-service-section>

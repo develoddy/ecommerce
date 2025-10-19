@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-brand-message',
@@ -7,6 +7,9 @@ import { Component } from '@angular/core';
 })
 export class BrandMessageComponent {
   
+  @Input() isMobile: boolean = false;
+  @Input() isDesktop: boolean = false;
+
   constructor() { }
 
 }

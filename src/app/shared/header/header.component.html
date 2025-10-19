@@ -955,13 +955,13 @@
                 <label for="prTearm"> I agree with the </label><a href="#" class="ms-1 text-link">Terms &amp;
                     conditions</a>
             </div>
-            <div class="minicart-action d-flex flex-lg-row flex-column mt-3">
-                <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn-dark-ld w-50 me-1 mb-2" [ngClass]="{ 'w-100': isMobile }">
-                    <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit">
+            <div class="minicart-action mt-3">
+                <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn" [ngClass]="{ 'w-100': isMobile }">
+                    <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit mb-3">
                         <span>Ver carrito</span>
                     </button>
                 </a>
-                <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout mb-2 btn-dark-ld w-50 ms-lg-1" [ngClass]="{ 'w-100': isMobile }">
+                <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout" [ngClass]="{ 'w-100': isMobile }">
                     <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit">
                         <span>Comenzar pedido</span>
                     </button>
