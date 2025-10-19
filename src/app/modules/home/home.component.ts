@@ -104,6 +104,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   timeLeft: { [flashId: string]: TimeLeft } = {};
   private timerInterval: any;
   public loading: boolean = false;
+  ocultar = false;
   
   // Grid view references
   @ViewChild('grid1') grid1!: ElementRef;

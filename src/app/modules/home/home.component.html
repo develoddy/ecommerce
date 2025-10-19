@@ -14,6 +14,7 @@
 
   <!-- <div id="page-content" [class.d-none]="loader.loading$ | async"> -->
   <div id="page-content">
+    <!-- Header -->
     <app-header></app-header>
     <!--End Header-->
 
@@ -28,34 +29,27 @@
       <!--End Home Slideshow-->
     </ng-container>
 
-    <!-- Storytelling / Brand Message -->
-    <app-brand-message></app-brand-message>
-    <!-- End Storytelling / Brand Message -->
-
-    <!--Service Section-->
-    <app-service-section></app-service-section>
-    <!--End Service Section-->
-
-    <!-- Collection banner Mujer | Hombre | Niños etc -->
+    <!-- Collection banner -->
     <app-collection-banners 
+      [categories]="categories"
       [locale]="locale"
       [country]="country"
-      [isVisible]="false">
+      [isVisible]="true">
     </app-collection-banners>
     <!--End Collection banner-->
 
     <!--Popular Categories-->
-    <ng-container *ngIf="categories && categories.length > 0">
+    <!-- <ng-container *ngIf="categories && categories.length > 0">
       <app-category-list
         [categories]="categories"
         [locale]="locale"
         [country]="country"
       ></app-category-list>
-    </ng-container>
+    </ng-container> -->
     <!--End Popular Categories-->
 
-    <!--Toolbar-->
-    <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5">
+    <!--Toolbar d-none-->
+    <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5 d-none">
       <div class="row align-items-center">
         <div
           class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-end"
@@ -95,25 +89,88 @@
     </div>
     <!--End Toolbar-->
 
-    <!--Product Grid-->
-    <app-product-grid
-      [currentUser]="currentUser"
-      [ourProducts]="ourProducts"
-      [locale]="locale"
-      [country]="country"
-      [euro]="euro"
-      [currentUrl]="currentUrl"
-      [isMobile]="isMobile"
-      [getRouterDiscount]="getRouterDiscount"
-      [getPriceParts]="getPriceParts"
-      [openModalToCart]="openModalToCart"
-      [addWishlist]="addWishlist"
-      [changeProductImage]="changeProductImage"
-      [navigateToProduct]="navigateToProduct"
-      [FlashSale]="FlashSales"
-      [gridViewMode]="currentGridView"
-    ></app-product-grid>
-    <!--End Product Grid-->
+    <ng-container *ngIf="ocultar">
+      <!--Product Grid-->
+      <app-product-grid
+        [currentUser]="currentUser"
+        [ourProducts]="ourProducts"
+        [locale]="locale"
+        [country]="country"
+        [euro]="euro"
+        [currentUrl]="currentUrl"
+        [isMobile]="isMobile"
+        [getRouterDiscount]="getRouterDiscount"
+        [getPriceParts]="getPriceParts"
+        [openModalToCart]="openModalToCart"
+        [addWishlist]="addWishlist"
+        [changeProductImage]="changeProductImage"
+        [navigateToProduct]="navigateToProduct"
+        [FlashSale]="FlashSales"
+        [gridViewMode]="currentGridView"
+      ></app-product-grid>
+      <!--End Product Grid-->
+
+      <!--Product Grid-->
+      <app-hodie-grid
+        [currentUser]="currentUser"
+        [hoodiesProducts]="hoodiesProducts"
+        [locale]="locale"
+        [country]="country"
+        [euro]="euro"
+        [currentUrl]="currentUrl"
+        [isMobile]="isMobile"
+        [getRouterDiscount]="getRouterDiscount"
+        [getPriceParts]="getPriceParts"
+        [openModalToCart]="openModalToCart"
+        [addWishlist]="addWishlist"
+        [changeProductImage]="changeProductImage"
+        [navigateToProduct]="navigateToProduct"
+        [FlashSale]="FlashSales"
+        [gridViewMode]="currentGridView"
+      ></app-hodie-grid>
+      <!--End Product Grid-->
+
+      <!--Product Grid-->
+      <app-mug-grid
+        [currentUser]="currentUser"
+        [mugsProducts]="mugsProducts"
+        [locale]="locale"
+        [country]="country"
+        [euro]="euro"
+        [currentUrl]="currentUrl"
+        [isMobile]="isMobile"
+        [getRouterDiscount]="getRouterDiscount"
+        [getPriceParts]="getPriceParts"
+        [openModalToCart]="openModalToCart"
+        [addWishlist]="addWishlist"
+        [changeProductImage]="changeProductImage"
+        [navigateToProduct]="navigateToProduct"
+        [FlashSale]="FlashSales"
+        [gridViewMode]="currentGridView"
+      ></app-mug-grid>
+      <!--End Product Grid-->
+
+      <!--Product Grid-->
+      <app-cap-grid
+        [currentUser]="currentUser"
+        [capsProducts]="capsProducts"
+        [locale]="locale"
+        [country]="country"
+        [euro]="euro"
+        [currentUrl]="currentUrl"
+        [isMobile]="isMobile"
+        [getRouterDiscount]="getRouterDiscount"
+        [getPriceParts]="getPriceParts"
+        [openModalToCart]="openModalToCart"
+        [addWishlist]="addWishlist"
+        [changeProductImage]="changeProductImage"
+        [navigateToProduct]="navigateToProduct"
+        [FlashSale]="FlashSales"
+        [gridViewMode]="currentGridView"
+      ></app-cap-grid>
+      <!--End Product Grid-->
+
+    </ng-container>
 
     <!-- SE MUESTRAN TODOS LOS PRODUCTOS D-NONE -->
     <div class="tab-pane d-none" id="newarrivals" role="tabpanel" aria-labelledby="newarrivals-tab">
@@ -673,66 +730,6 @@
         </div>
         <!--End Product Grid-->
     </div>
-
-    <!--Product Grid-->
-    <app-hodie-grid
-      [currentUser]="currentUser"
-      [hoodiesProducts]="hoodiesProducts"
-      [locale]="locale"
-      [country]="country"
-      [euro]="euro"
-      [currentUrl]="currentUrl"
-      [isMobile]="isMobile"
-      [getRouterDiscount]="getRouterDiscount"
-      [getPriceParts]="getPriceParts"
-      [openModalToCart]="openModalToCart"
-      [addWishlist]="addWishlist"
-      [changeProductImage]="changeProductImage"
-      [navigateToProduct]="navigateToProduct"
-      [FlashSale]="FlashSales"
-      [gridViewMode]="currentGridView"
-    ></app-hodie-grid>
-    <!--End Product Grid-->
-
-    <!--Product Grid-->
-    <app-mug-grid
-      [currentUser]="currentUser"
-      [mugsProducts]="mugsProducts"
-      [locale]="locale"
-      [country]="country"
-      [euro]="euro"
-      [currentUrl]="currentUrl"
-      [isMobile]="isMobile"
-      [getRouterDiscount]="getRouterDiscount"
-      [getPriceParts]="getPriceParts"
-      [openModalToCart]="openModalToCart"
-      [addWishlist]="addWishlist"
-      [changeProductImage]="changeProductImage"
-      [navigateToProduct]="navigateToProduct"
-      [FlashSale]="FlashSales"
-      [gridViewMode]="currentGridView"
-    ></app-mug-grid>
-    <!--End Product Grid-->
-
-    <!--Product Grid-->
-    <app-cap-grid
-      [currentUser]="currentUser"
-      [capsProducts]="capsProducts"
-      [locale]="locale"
-      [country]="country"
-      [euro]="euro"
-      [currentUrl]="currentUrl"
-      [isMobile]="isMobile"
-      [getRouterDiscount]="getRouterDiscount"
-      [getPriceParts]="getPriceParts"
-      [openModalToCart]="openModalToCart"
-      [addWishlist]="addWishlist"
-      [changeProductImage]="changeProductImage"
-      [navigateToProduct]="navigateToProduct"
-      [FlashSale]="FlashSales"
-      [gridViewMode]="currentGridView"
-    ></app-cap-grid>
-    <!--End Product Grid-->
     
     <!--Parallax Banner-->
     <app-flash-sale-banner
@@ -761,9 +758,67 @@
       <!-- /End Flash Sale-->
     </ng-container>
 
+    <!--Featured Content-->
+    <section class="section featured-content style1 pb-0 d-none">
+        <div class="container container-1330">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="d-flex align-items-stretch justify-content-between w-100 flex-md-row flex-column">
+                        <div class="f-item fl-1 d-flex w-100 align-items-center justify-content-center bg-light order-md-0 order-xl-0 order-sm-1 order-lg-0 order-1">
+                            <div class="f-text order-3 text-center px-4 mx-sm-5 mx-md-4 py-4 py-sm-5 py-md-4"> 
+                                <h3 class="fs-3 mb-3 mb-md-4 text-black">20% OFF Spring Summer</h3>
+                                <div class="rte rte-setting d-flex mb-4 pb-md-2">
+                                    <p class="text-medium">Save even more on our winter sale with code<br> <b>WINTER18 + FREE SHIPPING</b> on all orders over $50</p>
+                                </div>
+                                <a href="shop-right-sidebar.html" class="btn btn-lg mt20">Discover Now!</a>
+                            </div>
+                        </div>
+                        <div class="f-item fl-1 d-flex w-100 align-items-center">
+                            <div class="f-image order-2">
+                                <img class="blur-up lazyloaded" data-src="assets/images/content/fc-img1.jpg" src="assets/images/content/fc-img1.jpg" alt="image" title="" width="750" height="625">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--End Featured Content-->
+
+    <!-- Storytelling / Brand Message -->
+    <app-brand-message></app-brand-message>
+    <!-- End Storytelling / Brand Message -->
+
     <!--Testimonial Section-->
+    <ng-container *ngIf="ocultar">
     <app-testimonials></app-testimonials>
+    </ng-container>
     <!--End Testimonial section-->
+
+    <!-- Newsletter Section -->
+    <div class="newsletterbg clearfix">
+        <div class="container">
+            <form action="#" method="post" class="footer-newsletter">
+                <div class="row align-items-center">
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3 mb-md-0">
+                        <label class="h3 mb-1 clr-none">Sign Up Our Newsletter &amp; Get 10% OFF</label>
+                        <p>Sign up to stay in the loop. Receive updates, access to exclusive deals, and more.</p>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="input-group">
+                            <input type="email" class="form-control input-group-field newsletter-input" name="email" value="" placeholder="Enter your email address..." required="">
+                            <button type="submit" class="input-group-btn btn btn-secondary newsletter-submit" name="commit">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- End Newsletter Section -->
+
+    <!--Service Section-->
+    <app-service-section></app-service-section>
+    <!--End Service Section-->
 
     <!--Blog Post-->
     <section class="section home-blog-post d-none">
@@ -835,7 +890,7 @@
     <!--End Blog Post-->
 
   </div>
-    <!-- End Body Container -->
+  <!-- End Body Container -->
 
   <!--Footer-->
   <app-footer></app-footer>

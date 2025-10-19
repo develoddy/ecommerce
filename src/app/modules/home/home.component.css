@@ -32,3 +32,23 @@
   color: #ffd700; /* dorado elegante */
   letter-spacing: 1px;
 }
+
+/* 🔧 Ajusta los márgenes internos/externos de las columnas */
+.collection-banner-grid .sp-row {
+  --bs-gutter-x: 0 !important; /* elimina espacio horizontal bootstrap */
+  --bs-gutter-y: 0 !important; /* elimina espacio vertical bootstrap */
+  margin: 0 !important;
+}
+
+/* 🔧 Elimina paddings/margins adicionales del template */
+.collection-banner-item,
+.collection-item.sp-col {
+  padding: 1px; /* o 5px si quieres bordes finos entre banners */
+}
+
+/* 🔧 Ajusta espacio entre imágenes si aún quedara espacio */
+.collection-banner-grid img {
+  display: block;
+  width: 100%;
+  margin: 0;
+}

@@ -68,7 +68,7 @@
         <div class="container-header" [ngClass]="{'container-fluid': isDesktop || isTablet, 'container': isMobile }">
             <div class="row">
                 <!-- MENU IZQUIERDA -->
-                <div *ngIf="!isMobile && !isTablet" class="col-1 col-sm-1 col-md-1 col-lg-4 align-self-center d-menu-col d-flex justify-content-start">
+                <div *ngIf="!isMobile && !isTablet" class="col-1 col-sm-1 col-md-1 col-lg-5 align-self-center d-menu-col d-flex justify-content-start">
                     <nav class="navigation" id="AccessibleNav">
                         <ul id="siteNav" class="site-nav medium right">
 
@@ -361,7 +361,7 @@
                 <!-- END MENU IZQUIERDA -->
 
                 <!-- LOGO CENTRADO -->
-                <div class="logo col-4 col-sm-3 col-md-3 d-flex" [ngClass]="{'col-lg-4 justify-content-center': isDesktop, 'col-lg-3': isMobile}">
+                <div class="logo col-4 col-sm-3 col-md-3 d-flex" [ngClass]="{'col-lg-2 justify-content-center': isDesktop, 'col-lg-3': isMobile}">
                     <!--Mobile Toggle-->
                     <button type="button" class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none px-0" title="Menu">
                         <svg width="24" height="24" role="img" aria-hidden="true" class="hdr-icon icon anm anm-bars-r Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
@@ -438,7 +438,7 @@
                 <!-- END BUSCADOR CENTRAL -->
 
                 <!-- MENU DERECHA -->
-                <div class="col-8 col-sm-9 col-md-3 align-self-center icons-col d-flex justify-content-end" [ngClass]="{'col-lg-4': isDesktop}">
+                <div class="col-8 col-sm-9 col-md-3 align-self-center icons-col d-flex justify-content-end" [ngClass]="{'col-lg-5': isDesktop}">
                     <!-- CAMPO DE BUSQUEDA -->
                     <div class="search-parent iconset " [ngClass]="{'px-2': isMobile}">
                         <div class="site-search" title="Search">

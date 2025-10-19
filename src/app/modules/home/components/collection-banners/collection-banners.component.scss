@@ -1,3 +1,83 @@
+/* 🔧 Ajusta los márgenes internos/externos de las columnas */
+.collection-banner-grid .sp-row {
+  --bs-gutter-x: 0 !important; /* elimina espacio horizontal bootstrap */
+  --bs-gutter-y: 0 !important; /* elimina espacio vertical bootstrap */
+  margin: 0 !important;
+}
+
+/* 🔧 Elimina paddings/margins adicionales del template */
+.collection-banner-item,
+.collection-item.sp-col {
+  padding: 1px; /* o 5px si quieres bordes finos entre banners */
+}
+
+/* 🔧 Ajusta espacio entre imágenes si aún quedara espacio */
+.collection-banner-grid img {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+
+
+
+.details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
+  height: 100%;
+  
+  &.middle-left {
+    justify-content: flex-start;
+    padding-left: 2rem;
+  }
+  
+  &.middle-right {
+    justify-content: flex-end;
+    padding-right: 2rem;
+  }
+  
+  .inner {
+    text-align: center;
+    color: white;
+    
+    p {
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .btn {
+      font-size: 0.875rem;
+      padding: 0.5rem 1rem;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      color: white;
+      background: transparent;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: white;
+        color: #333;
+        border-color: white;
+      }
+    }
+  }
+}
+
+
 /* Collection Banners Component Styles */
 .collection-banners {
   padding: 2rem 0;
@@ -10,13 +90,13 @@
 }
 
 .collection-banner-item {
-  padding: 0.5rem;
+  padding: 0;
 }
 
 .collection-item {
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 0px;
   height: 100%;
   
   &.sp-col {
@@ -58,8 +138,9 @@
   bottom: 0;
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.2);
   transition: background 0.3s ease;
+  height: 100%;
   
   &.middle-left {
     justify-content: flex-start;

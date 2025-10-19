@@ -15,49 +15,49 @@ interface CollectionBanner {
   styleUrls: ['./collection-banners.component.scss']
 })
 export class CollectionBannersComponent {
+  @Input() categories: any[] = [];
   @Input() locale: string = '';
   @Input() country: string = '';
   @Input() isVisible: boolean = false;
 
-  banners: CollectionBanner[] = [
-    {
-      image: 'assets/images/collection/demo1-ct-img1.jpg',
-      title: 'Camisetas',
-      position: 'middle-right',
-      link: ['/', this.locale, this.country, 'shop', 'filter-products']
-    },
-    {
-      image: 'assets/images/collection/demo1-ct-img3.jpg',
-      title: 'Jerséis',
-      subtitle: 'Jersey en producción',
-      buttonText: 'Compra ahora',
-      position: 'middle-left',
-      link: ['/', this.locale, this.country, 'shop', 'filter-products']
-    },
-    {
-      image: 'assets/images/collection/demo1-ct-img3.jpg',
-      title: 'Gorras',
-      subtitle: 'Gorra master',
-      buttonText: 'Compra ahora',
-      position: 'middle-right',
-      link: ['/', this.locale, this.country, 'shop', 'filter-products']
-    },
-    {
-      image: 'assets/images/collection/demo1-ct-img2.jpg',
-      title: 'Colección',
-      position: 'middle-right',
-      link: ['/', this.locale, this.country, 'shop', 'filter-products']
-    }
-  ];
+  // banners: CollectionBanner[] = [
+  //   {
+  //     image: 'assets/images/collection/demo1-ct-img1.jpg',
+  //     title: 'Camisetas',
+  //     position: 'middle-right',
+  //     link: ['/', this.locale, this.country, 'shop', 'filter-products']
+  //   },
+  //   {
+  //     image: 'assets/images/collection/demo1-ct-img3.jpg',
+  //     title: 'Jerséis',
+  //     subtitle: 'Jersey en producción',
+  //     buttonText: 'Compra ahora',
+  //     position: 'middle-left',
+  //     link: ['/', this.locale, this.country, 'shop', 'filter-products']
+  //   },
+  //   {
+  //     image: 'assets/images/collection/demo1-ct-img3.jpg',
+  //     title: 'Gorras',
+  //     subtitle: 'Gorra master',
+  //     buttonText: 'Compra ahora',
+  //     position: 'middle-right',
+  //     link: ['/', this.locale, this.country, 'shop', 'filter-products']
+  //   },
+  //   {
+  //     image: 'assets/images/collection/demo1-ct-img2.jpg',
+  //     title: 'Colección',
+  //     position: 'middle-right',
+  //     link: ['/', this.locale, this.country, 'shop', 'filter-products']
+  //   }
+  // ];
 
-  constructor() { }
+  // constructor() { }
 
-  ngOnChanges() {
-    // Update banner links when locale/country changes
-    this.banners = this.banners.map(banner => ({
-      ...banner,
-      link: ['/', this.locale, this.country, 'shop', 'filter-products']
-    }));
-  }
+  // ngOnChanges() {
+  //   this.banners = this.banners.map(banner => ({
+  //     ...banner,
+  //     link: ['/', this.locale, this.country, 'shop', 'filter-products']
+  //   }));
+  // }
 
 }

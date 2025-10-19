@@ -127,8 +127,8 @@
     .mih-75:not(.stickyNav) { min-height: 75px !important; }
     #page-content { min-height:400px; }
 
-    .collection-banner-grid .details.middle-right { right: 20px; }
-    .collection-banner-grid .details.middle-left { left: 20px; }
+    .collection-banner-grid .details.middle-right { right: 0px; }
+    .collection-banner-grid .details.middle-left { left: 0px; }
     .collection-banner-grid .details.top-center { top: 20px; }
     .collection-banner-grid .details.top-left { top: 20px; left: 20px; }
     .collection-banner-grid .details.top-right { top: 20px; right: 20px; }
