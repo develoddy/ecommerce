@@ -1,0 +1,45 @@
+<!--MiniColor Drawer-->
+    <div id="miniSwatchesSizes-drawer" class="minicart-right-drawer offcanvas offcanvas-end" tabindex="-1">
+        <!--MiniColor Content-->
+        <div id="cart-drawer" class="block block-cart" *ngIf="variedades.length > 0">
+            <div class="minicart-header">
+                <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close">
+                    <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i>
+                </button>
+                <h4 class="fs-6 text-uppercase fw-bold">Colores</h4>
+            </div>
+            <div class="minicart-content d-flex">
+                <ul class="variants-size size-swatches d-flex pt-1 clearfix" [ngClass]="{'border border-danger': tallaError}">
+                    <ng-container *ngFor="let variedad of variedades; let i = index">
+                        <li class="swatch x-large"
+                            [ngClass]="{
+                                'available': variedad.stock > 0,
+                                'soldout': variedad.stock === 0,
+                                'active': variedad.valor === variedad_selected?.valor
+                            }"
+                            [class.text-muted]="variedad.stock === 0"   
+                            (click)="variedad.stock > 0 && selectedVariedad(variedad, i)">
+
+                            <span class="swatchLbl"
+                                [attr.data-bs-toggle]="'tooltip'"
+                                [attr.data-bs-placement]="'top'"
+                                [attr.title]="variedad.valor"
+                                [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'">
+                                {{variedad.valor}}
+                            </span>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+            <!-- <div class="minicart-bottom" *ngIf="listAddressClients.length != 0 || listAddressGuest.length != 0">
+                <div class="minicart-action d-flex flex-column mt-3">
+                    <button class="cart-btn btn-dark-ld me-1 py-3 mb-3" (click)="confirmarDireccion()">
+                        Confirmar dirección
+                    </button>
+                    <a *ngIf="CURRENT_USER_AUTHENTICATED" href="#" onclick="return false;" (click)="goToRegisterAddress()" class="cart-btn btn-outline-white-ld text-black me-1 py-3 mb-3">Añadir otra dirección</a>
+                </div>
+            </div> -->
+        </div>
+        <!--MiniColor Content-->
+    </div>
+    <!--End MiniColor Drawer-->

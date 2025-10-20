@@ -14,6 +14,8 @@ import { InterestProductsComponent } from './interest-products/interest-products
 import { ProductSliderSkeletonComponent } from './skeleton-loader/product-slider-skeleton/product-slider-skeleton.component';
 import { ProductSingleSkeletonComponent } from './skeleton-loader/product-single-skeleton/product-single-skeleton.component';
 import { MiniColorDrawerComponent } from './sidebar/mini-color-drawer/mini-color-drawer.component';
+import { MiniSizeDrawerComponent } from './sidebar/mini-size-drawer/mini-size-drawer.component';
+import { BrandMessageComponent } from './brand-message/brand-message.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { MiniColorDrawerComponent } from './sidebar/mini-color-drawer/mini-color
     ProductSliderSkeletonComponent,
     ProductSingleSkeletonComponent,
     MiniColorDrawerComponent,
+    MiniSizeDrawerComponent,
+    BrandMessageComponent,
   ],
   imports: [
     CommonModule,
@@ -49,7 +53,9 @@ import { MiniColorDrawerComponent } from './sidebar/mini-color-drawer/mini-color
     InterestProductsComponent,
     ProductSliderSkeletonComponent,
     ProductSingleSkeletonComponent,
-    MiniColorDrawerComponent
+    MiniColorDrawerComponent,
+    MiniSizeDrawerComponent,
+    BrandMessageComponent
   ]
 })
 export class SharedModule { }

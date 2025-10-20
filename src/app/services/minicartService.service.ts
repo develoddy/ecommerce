@@ -95,7 +95,16 @@ export class MinicartService {
   
   /** Swatches Size **/
   openMiniSwatchesSizes() {
-    alert("openMiniSwatchesSizes desde el servicio");
+    const miniSwatchesSizes = document.getElementById('miniSwatchesSizes-drawer');
+    if (miniSwatchesSizes) {
+      const bsOffcanvas = bootstrap.Offcanvas.getInstance(miniSwatchesSizes);
+      if (bsOffcanvas) {
+        bsOffcanvas.show();
+      } else {
+        // Crear una nueva instancia si no existe
+        new bootstrap.Offcanvas(miniSwatchesSizes).show();
+      }
+    }
   }
 
   closeMiniSwatchesSizes() {

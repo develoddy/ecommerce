@@ -8,6 +8,8 @@ import {
   OnInit,
   Inject,
   Injectable,
+  ElementRef,
+  ViewChild,
 } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -56,9 +58,7 @@ declare function menuProductSlider($: any): any;
   templateUrl: './landing-product.component.html',
   styleUrls: ['./landing-product.component.css'],
 })
-export class LandingProductComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy {
   currentUrl: string = '';
   euro = '€';
   listAddressClients: any = [];
@@ -109,6 +109,9 @@ export class LandingProductComponent
   fechaEntregaMax: string = '';
   shippingMethod: string = '';
   address: string = '';
+
+ @ViewChild('carousel') carouselRef!: ElementRef<HTMLDivElement>;
+  currentIndex = 0;
 
   fallbackAddress = {
     address: 'Gran Vía, 1',
@@ -173,6 +176,8 @@ export class LandingProductComponent
         });
       }
     });
+    
+    this.scrollToCurrent();
   }
 
   // ngAfterViewInit(): void {
@@ -203,6 +208,27 @@ export class LandingProductComponent
     this.checkDeviceType();
     this.subscribeToServiceStates();
     this.inizialiteLoading();
+  }
+
+  nextSlide() {
+    const track = this.carouselRef.nativeElement;
+    if (this.currentIndex < track.children.length - 1) {
+      this.currentIndex++;
+      this.scrollToCurrent();
+    }
+  }
+
+  prevSlide() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      this.scrollToCurrent();
+    }
+  }
+
+  scrollToCurrent() {
+    const track = this.carouselRef.nativeElement;
+    const slide = track.children[this.currentIndex] as HTMLElement;
+    track.style.transform = `translateX(-${slide.offsetLeft}px)`;
   }
 
   inizialiteLoading() {
@@ -928,7 +954,7 @@ export class LandingProductComponent
   }
 
   selectedVariedad(variedad: any, index: number) {
-    console.log('👕 Variedad seleccionada:', variedad.valor);
+    console.log('👕 Variedad seleccionada desde hijo:', variedad.valor);
     console.log('💰 Precio retail_price:', variedad.retail_price);
     
     this.variedad_selected = variedad;
@@ -1245,7 +1271,12 @@ export class LandingProductComponent
     if (this.coloresDisponibles.length > 0) {
       this.minicartService.openMiniSwatchesColor();
     }
-    
+  }
+
+  openSizesModal() {
+    if (this.variedades.length > 0) {
+      this.minicartService.openMiniSwatchesSizes();
+    }
   }
 
   ngOnDestroy(): void {
