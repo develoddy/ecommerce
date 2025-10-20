@@ -1,0 +1,43 @@
+<!--MiniColor Drawer-->
+    <div id="miniSwatchesColor-drawer" class="minicart-right-drawer offcanvas offcanvas-end" tabindex="-1">
+        <!--MiniColor Content-->
+        <div id="cart-drawer" class="block block-cart" *ngIf="coloresDisponibles.length > 0">
+            <div class="minicart-header">
+                <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close">
+                    <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i>
+                </button>
+                <h4 class="fs-6 text-uppercase fw-bold">Colores</h4>
+            </div>
+            <div class="minicart-content d-flex">
+                <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
+                    <ng-container *ngFor="let color of coloresDisponibles">
+                        <li class="swatch x-large available rounded" 
+                            [ngClass]="getSwatchClass(color.imagen, color.color)" 
+                            (click)="selectColor(color)"
+                            [attr.title]="color.color">
+                            <div class="color-swatch"
+                                [ngStyle]="{ 
+                                    'background-color': getColorHex(color.color),
+                                    'width': '100%',
+                                    'height': '100%',
+                                    'border-radius': '50%',
+                                    'cursor': 'pointer',
+                                    'display': 'block'
+                                }">
+                            </div>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+            <!-- <div class="minicart-bottom" *ngIf="listAddressClients.length != 0 || listAddressGuest.length != 0">
+                <div class="minicart-action d-flex flex-column mt-3">
+                    <button class="cart-btn btn-dark-ld me-1 py-3 mb-3" (click)="confirmarDireccion()">
+                        Confirmar dirección
+                    </button>
+                    <a *ngIf="CURRENT_USER_AUTHENTICATED" href="#" onclick="return false;" (click)="goToRegisterAddress()" class="cart-btn btn-outline-white-ld text-black me-1 py-3 mb-3">Añadir otra dirección</a>
+                </div>
+            </div> -->
+        </div>
+        <!--MiniColor Content-->
+    </div>
+    <!--End MiniColor Drawer-->

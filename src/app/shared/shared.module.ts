@@ -13,6 +13,7 @@ import { RelatedProductsComponent } from './related-products/related-products.co
 import { InterestProductsComponent } from './interest-products/interest-products.component';
 import { ProductSliderSkeletonComponent } from './skeleton-loader/product-slider-skeleton/product-slider-skeleton.component';
 import { ProductSingleSkeletonComponent } from './skeleton-loader/product-single-skeleton/product-single-skeleton.component';
+import { MiniColorDrawerComponent } from './sidebar/mini-color-drawer/mini-color-drawer.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ProductSingleSkeletonComponent } from './skeleton-loader/product-single
     InterestProductsComponent,
     ProductSliderSkeletonComponent,
     ProductSingleSkeletonComponent,
+    MiniColorDrawerComponent,
   ],
   imports: [
     CommonModule,
@@ -46,7 +48,8 @@ import { ProductSingleSkeletonComponent } from './skeleton-loader/product-single
     RelatedProductsComponent,
     InterestProductsComponent,
     ProductSliderSkeletonComponent,
-    ProductSingleSkeletonComponent
+    ProductSingleSkeletonComponent,
+    MiniColorDrawerComponent
   ]
 })
 export class SharedModule { }

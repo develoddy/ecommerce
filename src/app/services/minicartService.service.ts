@@ -73,5 +73,32 @@ export class MinicartService {
       }
     }
   }
+
+  /** Swatches Color **/
+  openMiniSwatchesColor() {
+    //alert("openMiniSwatchesColor desde el servicio");
+    const miniSwatchesColor = document.getElementById('miniSwatchesColor-drawer');
+    if (miniSwatchesColor) {
+      const bsOffcanvas = bootstrap.Offcanvas.getInstance(miniSwatchesColor);
+      if (bsOffcanvas) {
+        bsOffcanvas.show();
+      } else {
+        // Crear una nueva instancia si no existe
+        new bootstrap.Offcanvas(miniSwatchesColor).show();
+      }
+    }
+  }
+
+  closeMiniSwatchesColor() {
+    alert("closeMiniSwatchesColor desde el servicio");
+  } 
   
+  /** Swatches Size **/
+  openMiniSwatchesSizes() {
+    alert("openMiniSwatchesSizes desde el servicio");
+  }
+
+  closeMiniSwatchesSizes() {
+    alert("closeMiniSwatchesSizes desde el servicio");
+  }
 }

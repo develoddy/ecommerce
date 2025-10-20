@@ -72,7 +72,103 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container" [ngClass]="{ 'px-0': isMobile }">
+        <div class="container-fluid" [ngClass]="{ 'px-0': isMobile }">
+
+            <!-- 🔹 GALERÍA HORIZONTAL SCROLL style="min-width:100vw; height:90vh;"-->
+            <div class="product-gallery d-flex overflow-auto snap-x snap-mandatory scroll-smooth">
+                <ng-container *ngFor="let item of uniqueGalerias">
+                <div class="snap-center flex-shrink-0 position-relative" > 
+                    <img
+                    [src]="item.imagen"
+                    alt="{{ product_selected.title }} - {{ item.color || 'vista del producto' }}"
+                    class="object-fit-cover"
+                    />
+                </div>
+                </ng-container>
+            </div>
+
+            <!-- Detail Product -->
+            <div class="d-flex justify-content-between border">
+                <!-- Title Product -->
+                <div class="p-2 border border-danger">
+                    <h2 class="product-main-title text-uppercase fw-light lh-1 fs-14">{{ product_selected.title }}</h2>
+                </div>
+                <!-- Product Info link -->
+                <div class="p-2 border border-danger">
+                    <p class="infolinks d-flex-center justify-content-between">
+                        <a class="text-link wishlist fw-light" href="#" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
+                    </p>
+                </div>
+
+                <!-- Swatches Color -->
+                <div class="p-2 border border-danger">
+                    <a href="#" class="text-decoration-underline" onclick="return false;" (click)="openColorsModal()">
+                        <button type="button" class="border-0 fw-bold text-decoration-underline">
+                            + Colores
+                        </button>
+                    </a>
+                    <div class="product-swatches-option">
+                        <div class="product-item swatches-image w-100 mb-4 swatch-0 option1" data-option-index="0">
+                            <label class="label d-flex align-items-center fw-normal text-uppercase">Color <span class="slVariant ms-1 fw-light">{{ selectedColor || '' }}</span></label>
+                            <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
+                                <ng-container *ngFor="let color of coloresDisponibles">
+                                    <li class="swatch x-large available rounded" 
+                                        [ngClass]="getSwatchClass(color.imagen, color.color)" 
+                                        (click)="selectColor(color)"
+                                        [attr.title]="color.color">
+                                        <div class="color-swatch"
+                                            [ngStyle]="{ 
+                                                'background-color': getColorHex(color.color),
+                                                'width': '100%',
+                                                'height': '100%',
+                                                'border-radius': '50%',
+                                                'cursor': 'pointer',
+                                                'display': 'block'
+                                            }">
+                                        </div>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Swatches Color -->
+
+                <!-- Swatches Size -->
+                <div class="p-2 border border-danger">
+                    <div class="product-item swatches-size w-100 mb-4 swatch-1 option2" data-option-index="1">
+                        <label class="label d-flex align-items-center fw-normal text-uppercase mb-2"> {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} <span class="slVariant ms-1 fw-light">{{ variedad_selected?.valor || '' }}</span>
+                            <a href="#sizechart-modal" class="text-link sizelink  size-chart-modal" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Guía de tallas</a>
+                        </label>
+                        <ul class="variants-size size-swatches d-flex pt-1 clearfix" [ngClass]="{'border border-danger': tallaError}">
+                            <ng-container *ngFor="let variedad of variedades; let i = index">
+                                <li class="swatch x-large"
+                                    [ngClass]="{
+                                        'available': variedad.stock > 0,
+                                        'soldout': variedad.stock === 0,
+                                        'active': variedad.valor === variedad_selected?.valor
+                                    }"
+                                    [class.text-muted]="variedad.stock === 0"
+                                    (click)="variedad.stock > 0 && selectedVariedad(variedad, i)">
+
+                                    <span class="swatchLbl"
+                                        [attr.data-bs-toggle]="'tooltip'"
+                                        [attr.data-bs-placement]="'top'"
+                                        [attr.title]="variedad.valor"
+                                        [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'">
+                                        {{variedad.valor}}
+                                    </span>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </div>   
+                </div>
+                <!-- End Swatches Size -->
+
+                <div class="p-2 border border-danger">item5</div>
+            </div>
+
+            
 
             <!--Product Content-->
             <div class="product-single">
@@ -132,6 +228,7 @@
                                 </ng-container>
                             </div>
                             <!-- End Product Gallery -->
+
                         </div>
                         <!-- End Product Horizontal -->
                     </div>
@@ -367,7 +464,7 @@
                     </div>
                 </div>
             </div>
-            <!--Product Content-->
+            <!--End Product Content-->
         
             <!--Product Tabs-->
             <div class="tabs-listing section pb-0 px-3" >
@@ -645,7 +742,7 @@
         </div>
         <!--End Main Content-->
 
-
+        <!-- Products Relateds & interest -->
         <ng-container>
             <!-- Loader o Skeleton -->
             <ng-container *ngIf="loader.loading$ | async; else product_related_slider">
@@ -680,9 +777,7 @@
             </ng-template>
 
         </ng-container> 
-
-
-
+        <!-- End Products Relateds & interest -->
 
         <!--Recently Viewed Products-->
         <section class="section product-slider pb-0 d-none">
@@ -1487,7 +1582,6 @@
     <!--End Product Video Modal-->
 
     <!-- Sticky Cart -->
-    <!-- <div class="stickyCart" *ngIf="variedades"> -->
     <div class="stickyCart" *ngIf="showStickyCart && variedades?.length">
         <div class="container">
             <form method="post" action="#" id="stickycart-form" class="d-flex-center justify-content-center">
@@ -1552,6 +1646,14 @@
     </div>
     <!-- End Sticky Cart -->
 
+
+    <!--MiniColor Drawer-->
+    <app-mini-color-drawer
+    [coloresDisponibles]="coloresDisponibles"
+    [selectedColor]="selectedColor"
+    (colorSelected)="onColorSeleccionado($event)">
+    </app-mini-color-drawer>
+    
     <div class="pswp" tabindex="-1" role="dialog">
         <div class="pswp__bg"></div>
         <div class="pswp__scroll-wrap">

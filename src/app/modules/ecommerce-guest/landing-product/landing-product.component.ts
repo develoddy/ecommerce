@@ -839,8 +839,13 @@ export class LandingProductComponent
     return 0;
   }
 
+  onColorSeleccionado(event: any) {
+    const colorObj = event as { color: string; imagen: string };
+    this.selectColor(colorObj);
+  }
+
   selectColor(color: { color: string; imagen: string }) {
-    console.log('🎨 Seleccionando color:', color.color);
+    console.log('🎨 Seleccionando color hijo mini color:', color.color);
     
     // Buscar imagen específica en las galerías para este color
     const galeriaConImagen = this.product_selected.galerias?.find(
@@ -1234,6 +1239,13 @@ export class LandingProductComponent
 
   selectThumbnail(imagePath: string) {
     this.firstImage = imagePath;
+  }
+
+  openColorsModal() {
+    if (this.coloresDisponibles.length > 0) {
+      this.minicartService.openMiniSwatchesColor();
+    }
+    
   }
 
   ngOnDestroy(): void {
