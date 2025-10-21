@@ -38,13 +38,14 @@ import { EcommerceAuthService } from '../ecommerce-auth/_services/ecommerce-auth
 declare var bootstrap: any;
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
-declare function productSlider5items($: any): any;
-declare function LandingProductDetail($: any): any;
-declare function pswp([]): any;
-declare function productZoom([]): any;
-declare function ModalProductDetail(): any;
-declare function alertDanger([]): any;
-declare function alertSuccess([]): any;
+declare function homeSlider($: any): any;
+// declare function productSlider5items($: any): any;
+// declare function LandingProductDetail($: any): any;
+// declare function pswp([]): any;
+// declare function productZoom([]): any;
+// declare function ModalProductDetail(): any;
+// declare function alertDanger([]): any;
+// declare function alertSuccess([]): any;
 
 // ---------- Destruir desde main ----------
 declare function cleanupHOMEINITTEMPLATE($: any): any;
@@ -55,7 +56,7 @@ declare function cleanupProductZoom($: any): any;
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   euro = '€';
   besProducts: any = [];
   ourProducts: any = [];
@@ -145,7 +146,44 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.currentGridView = this.gridViewService.getCurrentView();
   }
 
+  ngAfterViewInit() {
+    const images = document.querySelectorAll<HTMLImageElement>('.home-slideshow img');
+    let loadedCount = 0;
 
+    images.forEach((img) => {
+      if (img.complete) {
+        loadedCount++;
+      } else {
+        img.onload = () => {
+          loadedCount++;
+          if (loadedCount === images.length) {
+            this.initSlider();
+          }
+        };
+      }
+    });
+
+    if (loadedCount === images.length) {
+      this.initSlider();
+    }
+  }
+
+  initSlider() {
+  if (window && homeSlider($)) {
+      homeSlider($);
+
+      const $slides = $('.home-slideshow .slide');
+
+      // Forzar altura a 100vh
+      const setSlideHeight = () => {
+        $slides.css('height', $(window).height() + 'px');
+      };
+
+      setSlideHeight(); // al inicio
+      $slides.on('setPosition', setSlideHeight); // cuando Slick reorganice
+      $(window).on('resize', setSlideHeight); // al redimensionar
+    }
+  }
 
   ngOnInit(): void {
     this.initializeComponent();

@@ -417,7 +417,18 @@ function HOMEINITTEMPLATE ($, undefined) {
                 arrows: false,
                 autoplay: true,
                 autoplaySpeed: 7000,
-                lazyLoad: 'ondemand'
+                lazyLoad: 'ondemand',
+                adaptiveHeight: false  // importante para fullscreen
+            });
+
+            // Forzar altura de los slides después de que Slick calcula posiciones
+            $slider.on('setPosition', function () {
+                $(this).find('.slide').css('height', $(window).height());
+            });
+
+            // Ajustar altura al redimensionar
+            $(window).on('resize', function() {
+                $slider.find('.slide').height($(window).height());
             });
         }
     }
@@ -1978,6 +1989,32 @@ function menuProductSlider($) {
     }
 }
 
+function homeSlider($) {
+    var $slider = $('.home-slideshow');
+    if ($slider.length) {
+        $slider.slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            fade: true,
+            arrows: false,
+            autoplay: true,
+            autoplaySpeed: 7000,
+            lazyLoad: 'ondemand',
+            adaptiveHeight: false  // importante para fullscreen
+        });
+
+        // Ajustar altura de los slides
+        const setSlideHeight = () => {
+            $slider.find('.slide').height($(window).height());
+        };
+        setSlideHeight();
+        $slider.on('setPosition', setSlideHeight);
+        $(window).on('resize', setSlideHeight);
+    }
+}
+
 // Expón la función al objeto global `window`
 window.HOMEINITTEMPLATE = HOMEINITTEMPLATE;
 window.pswp = pswp;
@@ -1995,3 +2032,4 @@ window.collectionSlider4items= productSlider5items;
 window.productSlider5items = productSlider5items;
 window.productSlider8items = productSlider8items;
 window.menuProductSlider = menuProductSlider;
+window.homeSlider = homeSlider;

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, EventEmitter, Output, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, debounceTime, forkJoin, fromEvent, Observable, of, Subscription, tap } from 'rxjs';
@@ -80,6 +80,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   categorieMugs: any;
   categorieCaps: any;
 
+  //isFixed: boolean = true; // por defecto fixed
+
   constructor(
     private router: Router,
     private cartService: CartService,
@@ -95,6 +97,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     public homeService: HomeService,
     private productUIService: ProductUIService,
     private priceCalculationService: PriceCalculationService,
+    private renderer: Renderer2,
+    private el: ElementRef
     // public loader: LoaderService,
   ) {
     this.subscriptions.add(
@@ -108,6 +112,40 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
 
+    // ✅ Evaluar inmediatamente según la ruta actual
+    // this.isFixed = this.router.url.includes('/home');
+    // console.log('🔹 Ruta actual:', this.router.url, '| isFixed:', this.isFixed);
+
+    // // ✅ Actualizar cuando cambie la ruta
+    // this.subscriptions.add(
+    //   this.router.events
+    //     .pipe(filter(event => event instanceof NavigationEnd))
+    //     .subscribe((event: any) => {
+    //       this.isFixed = event.urlAfterRedirects.includes('/home');
+    //       console.log('➡️ Navegaste a:', event.urlAfterRedirects, '| isFixed:', this.isFixed);
+    //     })
+    // );
+     
+
+    // this.router.events
+    //   .pipe(filter(event => event instanceof NavigationEnd))
+    //   .subscribe((event: any) => {
+    //     const header = this.el.nativeElement.querySelector('.header');
+
+    //     // ✅ Rutas donde SÍ quieres el header fijo
+    //     const fixedRoutes = ['/home'];
+
+    //     if (fixedRoutes.some(route => event.urlAfterRedirects.includes(route))) {
+    //       // Quita el modo fijo
+    //       this.renderer.removeClass(header, 'header.no-fixed-header');
+          
+    //     } else {
+    //       // Activa modo fijo
+    //       this.renderer.addClass(header, 'header.no-fixed-header');
+    //     }
+    //   });
+
+    
     this.initializeHomeData();
 
     this.checkUserAuthenticationStatus();

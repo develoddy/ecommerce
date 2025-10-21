@@ -1,1 +1,9 @@
-.slideshow { /* Puedes personalizar los estilos aquí */ }
+.home-slideshow .slide .slideshow-wrap,
+.home-slideshow .slide picture,
+.home-slideshow .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
