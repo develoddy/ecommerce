@@ -94,7 +94,7 @@
                 </div>
 
                 <!-- Detail Product -->
-                <div class="d-flex flex-column flex-lg-row justify-content-between border">
+                <div class="d-flex flex-column flex-lg-row justify-content-between">
                     <!-- Title Product -->
                     <div class="p-2 align-self-center">
                         <p class="">{{ product_selected.title }}</p>
@@ -320,7 +320,14 @@
                             <!-- Product Details -->
                             <div class="product-single-meta">
                                 <div class="d-flex flex-column mb-0">
-                                    <h2 class="product-main-title text-uppercase fw-light lh-1 mb-0">{{ product_selected.title }}</h2>
+                                    
+                                    <!-- Title Product -->
+                                    <div class="d-flex justify-content-between">
+                                        <p class="me-2 mb-0">{{ product_selected.title }}</p>
+                                        <a class="text-link wishlist fw-light" href="#" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l"></i></a>
+                                        
+                                    </div>
+
                                     <div class="product-price d-flex-center">
                                         <!-- Precio original tachado si hay descuento -->
                                         <ng-container *ngIf="hasDiscount()">
@@ -329,7 +336,7 @@
                                         
                                         <!-- Precio final (con descuento si aplica) -->
                                         <span class="price" [class.text-danger]="hasDiscount()">
-                                            {{ getFinalPrice().toFixed(2) }} €
+                                            {{ euro }} {{ getFinalPrice().toFixed(2) }}
                                         </span>
                                         
                                         <!-- Versión alternativa con separación de decimales (oculta por defecto) -->
@@ -353,31 +360,31 @@
                                 </div>
 
                                 <!-- Product Info -->
-                                    <div class="product-info">
-                                        <p class="product-stock d-flex d-none">Disponibilidad:
-                                            <span class="pro-stockLbl ps-0 d-none">
-                                                <span class="d-flex-center stockLbl instock ">En stock</span>
-                                            </span>
-                                        </p>
-                                        <p class="product-vendor d-none">Proveedor:<span class="text"><a href="#">HVL</a></span></p>
-                                        <p class="product-type d-none">Tipo de producto:<span class="text">Tops</span></p>
-                                        <p class="product-sku text-black fw-normal">Art. nº.<span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
-                                        <meta itemprop="productID" content="{{ product_selected.sku }}">
-                                        <meta itemprop="availability" content="https://schema.org/InStock" />
+                                <div class="product-info">
+                                    <p class="product-stock d-flex d-none">Disponibilidad:
+                                        <span class="pro-stockLbl ps-0 d-none">
+                                            <span class="d-flex-center stockLbl instock ">En stock</span>
+                                        </span>
+                                    </p>
+                                    <p class="product-vendor d-none">Proveedor:<span class="text"><a href="#">HVL</a></span></p>
+                                    <p class="product-type d-none">Tipo de producto:<span class="text">Tops</span></p>
+                                    <p class="product-sku text-black fw-normal">Art. nº.<span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
+                                    <meta itemprop="productID" content="{{ product_selected.sku }}">
+                                    <meta itemprop="availability" content="https://schema.org/InStock" />
+                                </div>
+                                <!-- Product Reviews -->
+                                <div class="product-review d-flex-center d-none">
+                                    <div class="reviewStar d-flex-center">
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
+                                        <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
+                                        <span class="caption ms-2">{{ COUNT_REVIEW }} Reseñas</span>
                                     </div>
-                                    <!-- Product Reviews -->
-                                    <div class="product-review d-flex-center d-none">
-                                        <div class="reviewStar d-flex-center">
-                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 1}"></i>
-                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 2}"></i>
-                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 3}"></i>
-                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 4}"></i>
-                                            <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': AVG_REVIEW < 5}"></i>
-                                            <span class="caption ms-2">{{ COUNT_REVIEW }} Reseñas</span>
-                                        </div>
-                                        <a class="reviewLink d-flex-center" href="#reviews">Escribe una reseña</a>
-                                    </div>
-                                    <!-- End Product Reviews -->
+                                    <a class="reviewLink d-flex-center" href="#reviews">Escribe una reseña</a>
+                                </div>
+                                <!-- End Product Reviews -->
                                 <!-- End Product Info -->
                                 <hr class="d-none">
                                 <!-- Sort Description -->
@@ -422,7 +429,7 @@
                                     <!-- Swatches Size -->
                                     <div class="product-item swatches-size w-100 mb-4 swatch-1 option2" data-option-index="1">
                                         <label class="label d-flex align-items-center fw-normal text-uppercase mb-2"> {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} <span class="slVariant ms-1 fw-light">{{ variedad_selected?.valor || '' }}</span>
-                                            <a href="#sizechart-modal" class="text-link sizelink  size-chart-modal" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Guía de tallas</a>
+                                            <a href="#sizechart-modal" class="text-link sizelink d-none size-chart-modal" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Guía de tallas</a>
                                         </label>
                                         <ul class="variants-size size-swatches d-flex pt-1 clearfix" [ngClass]="{'border border-danger': tallaError}">
                                             <ng-container *ngFor="let variedad of variedades; let i = index">
@@ -451,26 +458,19 @@
                                 <!-- End Swatches -->
 
                                 <!-- Product Action -->
-                                <div class="product-action d-flex flex-lg-row flex-column  d-flex-wrap my-3 my-md-4">
+                                <div class="product-action d-flex flex-lg-row flex-row d-flex-wrap my-3 my-md-4">
                                     <!-- Product Quantity -->
-                                    <div class="product-form-quantity d-flex-center" [ngClass]="{'border border-danger': cantidadError, 'mb-2': isMobile, 'me-2': isDesktop}">
-                                        <label class="label d-flex align-items-center fw-normal d-none">
-                                            <span>Cantidad</span>
-                                        </label>
-                                        <div class="qtyField" [ngClass]="{ 'w-100': isMobile }">
-                                            <a class="qtyBtn minus" href="#" (click)="decreaseQuantity(); $event.preventDefault()">
-                                                <i class="icon anm anm-minus-r"></i>
-                                            </a>
+                                    <div class="product-form-quantity d-flex-center me-2" [ngClass]="{'border border-danger': cantidadError}">
+                                        <div class="qtyField">
+                                            <a class="qtyBtn minus" href="#" (click)="decreaseQuantity(); $event.preventDefault()"><i class="icon anm anm-minus-r"></i></a>
                                             <input type="number" 
                                                 name="quantity" 
                                                 id="qty-cart"
                                                 [(ngModel)]="cantidad"
                                                 (input)="onQuantityChange($event)"
                                                 class="product-form-input qty border-0"
-                                                [ngClass]="{ 'w-100': isMobile }" />
-                                            <a class="qtyBtn plus" href="#" (click)="increaseQuantity(); $event.preventDefault()">
-                                                <i class="icon anm anm-plus-r"></i>
-                                            </a>
+                                                 />
+                                            <a class="qtyBtn plus" href="#" (click)="increaseQuantity(); $event.preventDefault()"><i class="icon anm anm-plus-r"></i></a>
                                         </div>
                                     </div>
                                     <!-- End Product Quantity -->
@@ -480,32 +480,19 @@
                                         <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit" (click)="storeCart()">
                                             <span>Añadir al carrito</span>
                                         </button>
-                                        <button type="submit" name="add" class="btn btn-secondary product-form-sold-out d-none" disabled="disabled">
-                                            <span>Out of stock</span>
-                                        </button>
-                                        <button type="submit" name="add" class="btn btn-secondary product-form-pre-order d-none">
-                                            <span>Pre-order Now</span>
-                                        </button>
                                     </div>
                                     <!-- Product Add -->
-                                    <!-- Product Buy -->
-                                    <div class="product-form-submit buyit fl-1 ms-3 d-none">
-                                        <button type="submit" class="btn btn-outline-secondary proceed-to-checkout" onclick="return false;" routerLink="/payment-process"><span>Compre ya</span></button>
-                                    </div>
-                                    <!-- End Product Buy -->
                                 </div>
                                 <!-- End Product Action -->
 
+                                <!-- Message error -->
                                 <ng-container *ngIf="errorResponse">
                                     <p class="text-danger fw-normal fs-12">{{ errorMessage }}</p>
                                 </ng-container>
 
                                 <!-- Product Info link -->
-                                <p class="infolinks d-flex-center justify-content-between">
-                                    <a class="text-link wishlist fw-light" href="wishlist-style1.html" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
-                                    <a class="text-link compare d-none" href="compare-style1.html"><i class="icon anm anm-sync-ar me-2"></i> <span>Añadir para comparar</span></a>
-                                    <a href="#shippingInfo-modal" class="text-link shippingInfo d-none" data-bs-toggle="modal" data-bs-target="#shippingInfo_modal"><i class="icon anm anm-paper-l-plane me-2"></i> <span>Envío y devoluciones</span></a>
-                                    <a href="#productInquiry-modal" class="text-link emaillink me-0 d-none" data-bs-toggle="modal" data-bs-target="#productInquiry_modal"><i class="icon anm anm-question-cil me-2"></i> <span>Consulta</span></a>
+                                <p class="infolinks d-flex-center justify-content-between d-none">
+                                    <a class="text-link wishlist fw-light" href="#" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
                                 </p>
                                 <!-- End Product Info link -->
                             </form>
@@ -552,7 +539,7 @@
             </div>
         
             <!--Product Tabs-->
-            <div class="tabs-listing section pb-0 px-3" >
+            <div class="tabs-listing section pb-0" >
                 <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-center d-none d-md-flex">
                     <li rel="description" class="active"><a class="tablink">Descripción</a></li>
                     <li rel="shipping-return"><a class="tablink">Envíos y devoluciones</a></li>
@@ -561,7 +548,7 @@
                 <div class="tab-container">
                     <!--Description-->
                     <h3 class="tabs-ac-style d-md-none" rel="description">Descripción</h3>
-                    <div id="description" class="tab-content" >
+                    <div id="description" class="tab-content px-3" >
                         <div class="product-description mb-3">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description_es"></div>
@@ -616,7 +603,7 @@
                     <!--End Additional Information-->
 
                     <!--Shipping &amp; Return-->
-                    <h3 class="tabs-ac-style d-md-none" rel="shipping-return">Envío y devolución</h3>
+                    <h3 class="tabs-ac-style d-md-none" rel="shipping-return">Envío y devolucíones</h3>
                     <div id="shipping-return" class="tab-content">
                         <!-- <h4 class="text-uppercase fw-bold">Envío &amp; devolución</h4> -->
                         <div class="d-flex flex-column">
@@ -652,7 +639,6 @@
                                 <p>
                                     Por motivos de higiene y personalización, no se podrán devolver productos personalizados, como camisetas, hoodies, mugs o gorras con diseños únicos. Todos los demás productos pueden devolverse dentro de los 30 días siguientes a la recepción, siempre que estén en perfecto estado.
                                 </p>
-                                <!-- <p>Consulta más información en <a href="#" onclick="return false;" class="fw-bold" >Ayuda</a>.</p> -->
                             </div>
                         </div>
 

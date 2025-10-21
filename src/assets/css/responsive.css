@@ -715,8 +715,8 @@
     .collection-banner-grid .details .title { font-size: 16px; }
     .collection-style2 .details .btn { min-width: 120px; height: 36px; }
 
-    .swatches li.x-large { height: 35px; width: 35px; }
-    .size-swatches li.x-large { height: 32px; width: 32px; }
+    .swatches li.x-large { height: 20px; width: 20px; }
+    .size-swatches li.x-large { height: 35px; width: 35px; }
 
     .toolbar .view-mode .mode-list.active ~ .grid-2.active:before { box-shadow:7px 0 0 #9b9b9b; }
     .pagination .page-item .page-link { width:35px; height:35px; font-size:14px; }
@@ -794,7 +794,7 @@
     .blog-article h2 { font-size: 20px; }
 
     .tabs-listing.section .tab-container { padding: 0; }
-    .tabs-listing .tabs-ac-style { position: relative; font-size: 14px; margin-bottom: 10px; cursor: pointer; color: #333333; background-color: #eeeeee; padding: 13px 30px 13px 15px; display: block; }
+    .tabs-listing .tabs-ac-style { position: relative; font-size: 14px; margin-bottom: 10px; cursor: pointer; color: #333333; /*background-color: #eeeeee;*/ padding: 13px 30px 13px 15px; display: block; }
     .tabs-listing .tabs-ac-style.active { color:#ffffff; background-color:#222; }
     .tabs-listing .tabs-ac-style:before { font-family:"annimex-icons"; content: "\eb66"; font-size:20px; position:absolute; right:13px; top:50%; -webkit-transform:translateY(-50%); transform:translateY(-50%); }
     .tabs-listing .tabs-ac-style.active:before { content: "\eb69"; }
