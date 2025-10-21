@@ -4,14 +4,21 @@
       <div class="slide">
         <div class="slideshow-wrap">
           <picture>
-            <source media="(max-width:767px)" [attr.srcset]="slider.imagen_mobile_url" width="1150" height="800">
-            <img class="blur-up lazyload" 
+            <!-- <source media="(max-width:767px)" [attr.srcset]="slider.imagen_mobile_url" width="1150" height="800"> -->
+            <img
+              [src]="getSliderImage(slider)"
+              alt="{{ slider.title }}"
+              title="{{ slider.title }}"
+              class="blur-up lazyload"
+              style="width:100%; height:100%; object-fit:cover;"
+            />
+            <!-- <img class="blur-up lazyload" 
                  [attr.src]="slider.imagen_desktop_url" 
                  [src]="slider.imagen_desktop_url" 
                  alt="{{ slider.title }}" 
                  title="{{ slider.title }}" 
-                />
-          </picture>
+                /> -->
+          </picture> 
           <div class="container">
             <div class="slideshow-content slideshow-overlay" [ngClass]="slider.position">
               <div class="slideshow-content-in">
