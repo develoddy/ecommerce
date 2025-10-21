@@ -13,9 +13,10 @@
 
 <div class="page-wrapper" *ngIf="product_selected && related_products && interest_products">
     
-    <!-- Body Container -->
+    <!-- BODY CONTAINER -->
     <div id="page-content py-5">
-        <!--Page Header-->
+
+        <!-- PAGE HEADER -->
         <div class="page-header text-center bg-white mb-0 py-0 p-0">
             <div class="container">
                 <div class="row">
@@ -69,11 +70,12 @@
                 </div>
             </div>
         </div>
-        <!--End Page Header-->
+        <!-- END PAGE HEADER -->
 
-        <!--Main Content-->
+        <!-- MAIN CONTENT -->
         <div class="container-fluid px-0" [ngClass]="{ 'px-0': isMobile }">
-            <!-- Product Content Version Desktop -->
+
+            <!-- PRODUCT CONTENT VERSION DESKTOP -->
             <div [ngClass]="{'d-none': isMobile}">
                 <!-- GALERÍA HORIZONTAL -->
                 <div class="carousel-wrapper position-relative">
@@ -94,7 +96,7 @@
                 </div>
 
                 <!-- Detail Product -->
-                <div class="d-flex flex-column flex-lg-row justify-content-between">
+                <div class="d-flex flex-column flex-lg-row justify-content-between custom-border-bottom">
                     <!-- Title Product -->
                     <div class="p-2 align-self-center">
                         <p class="">{{ product_selected.title }}</p>
@@ -251,8 +253,12 @@
                     <!-- End Product -->
                 </div>
             </div>
+            <!-- END PRODUCT CONTENT VERSION DESKTOP -->
 
-            <!-- Product Content Version Mobile -->
+            <!--  -->
+            <!--  -->
+            
+            <!-- PRODUCT CONTENT VERSION MOBILE -->
             <div [ngClass]="{'d-none': isDesktop}">
                 <!--Product Content-->
                 <div class="product-single">
@@ -320,14 +326,12 @@
                             <!-- Product Details -->
                             <div class="product-single-meta">
                                 <div class="d-flex flex-column mb-0">
-                                    
                                     <!-- Title Product -->
                                     <div class="d-flex justify-content-between">
                                         <p class="me-2 mb-0">{{ product_selected.title }}</p>
                                         <a class="text-link wishlist fw-light" href="#" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l"></i></a>
-                                        
                                     </div>
-
+                                    <!-- Price -->
                                     <div class="product-price d-flex-center">
                                         <!-- Precio original tachado si hay descuento -->
                                         <ng-container *ngIf="hasDiscount()">
@@ -537,18 +541,24 @@
                 </div>
                 <!--End Product Content-->
             </div>
-        
-            <!--Product Tabs-->
-            <div class="tabs-listing section pb-0" >
-                <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-center d-none d-md-flex">
-                    <li rel="description" class="active"><a class="tablink">Descripción</a></li>
-                    <li rel="shipping-return"><a class="tablink">Envíos y devoluciones</a></li>
-                    <li rel="reviews"><a class="tablink">Reseñas</a></li>
+            <!-- END PRODUCT CONTENT VERSION DESKTOP -->
+            
+            <!--  -->
+            <!--  -->
+            
+            <!-- PRODUCT TABS -->
+            <div class="container tabs-listing section">
+                <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-start d-none d-md-flex">
+                    <li rel="description" class="active"><a class="tablink fw-normal">Descripción</a></li>
+                    <li rel="shipping-return"><a class="tablink fw-normal">Envíos y devoluciones</a></li>
+                    <li rel="reviews"><a class="tablink fw-normal">Reseñas</a></li>
                 </ul>
                 <div class="tab-container">
-                    <!--Description-->
+                    <!-- Description -->
                     <h3 class="tabs-ac-style d-md-none" rel="description">Descripción</h3>
-                    <div id="description" class="tab-content px-3" >
+                    <div id="description" class="tab-content">
+                        <h1 class="fw-normal">{{ product_selected.title }}</h1>
+                        <p class="product-sku fw-light text-muted">Art. Nº. <span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
                         <div class="product-description mb-3">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description_es"></div>
@@ -558,9 +568,9 @@
                             </div>
                         </div>
                     </div>
-                    <!--End Description-->
+                    <!-- End Description -->
 
-                    <!--Additional Information-->
+                    <!-- Additional Information -->
                     <h3 class="tabs-ac-style d-md-none d-none" rel="additionalInformation">Composición, origen y cuidados</h3>
                     <div id="additionalInformation" class="tab-content">
                         <div class="product-description">
@@ -600,9 +610,9 @@
                             </div>
                         </div>
                     </div>
-                    <!--End Additional Information-->
+                    <!-- End Additional Information -->
 
-                    <!--Shipping &amp; Return-->
+                    <!-- Shipping &amp; Return -->
                     <h3 class="tabs-ac-style d-md-none" rel="shipping-return">Envío y devolucíones</h3>
                     <div id="shipping-return" class="tab-content">
                         <!-- <h4 class="text-uppercase fw-bold">Envío &amp; devolución</h4> -->
@@ -655,9 +665,9 @@
                         <h4>Special Financing</h4>
                         <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage.</p> -->
                     </div>
-                    <!--End Shipping &amp; Return-->
+                    <!-- End Shipping &amp; Return -->
 
-                    <!--Review-->
+                    <!-- Review -->
                     <h3 class="tabs-ac-style d-md-none" rel="reviews">Reseñas</h3>
                     <div id="reviews" class="tab-content">
                         <div class="row">
@@ -711,7 +721,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr />
+                                
                                 <div class="spr-reviews">
                                     <ng-container *ngIf="this.REVIEWS.length == 0; else showReview">
                                         <div class="d-flex justify-content-center align-items-center">
@@ -722,7 +732,7 @@
                                                         <img src="assets/images/favicon.png" alt="LujanDev" title="LujanDev">
                                                     </div>
                                                 </div>
-                                                <h5 class="header-title mb-0 text-uppercase fw-bold">Reseñas</h5>
+                                                <h5 class="header-title mb-0 text-uppercase">Reseñas</h5>
                                                 <p>Este producto no tiene reseñas por ahora</p>
                                             </div>
                                         </div>
@@ -806,18 +816,19 @@
                             </ng-container>
                         </div>
                     </div>
-                    <!--End Review-->
+                    <!-- End Review -->
                 </div>
             </div>
-            <!--End Product Tabs-->
-        </div>
-        <!--End Main Content-->
+            <!-- END PRODUCT TABS -->
 
-        <!-- Products Relateds & interest -->
+        </div>
+        <!-- END MAIN CONTENT -->
+
+        <!-- PRODUCTS RELATEDS & INTEREST | async;-->
         <ng-container>
             <!-- Loader o Skeleton -->
             <ng-container *ngIf="loader.loading$ | async; else product_related_slider">
-                <app-product-slider-skeleton [itemCount]="5" titleWidth="25%" subtitleWidth="50%"></app-product-slider-skeleton>
+                <app-product-slider-skeleton [itemCount]="5" titleWidth="20%" subtitleWidth="35%"></app-product-slider-skeleton>
             </ng-container>
             <ng-template #product_related_slider>
                 <!--Related Products-->
@@ -848,13 +859,13 @@
             </ng-template>
 
         </ng-container> 
-        <!-- End Products Relateds & interest -->
+        <!-- END PRODUCTS RELATEDS & INTEREST -->
 
-        <!-- Storytelling / Brand Message -->
+        <!-- STORYTELLING / BRAND MESSAGE -->
         <app-brand-message [isMobile]="isMobile" [isDesktop]="isDesktop"></app-brand-message>
-        <!-- End Storytelling / Brand Message -->
+        <!-- END STORYTELLING / BRAND MESSAGE -->
 
-        <!--Recently Viewed Products-->
+        <!-- RECENTLY VIEWED PRODUCTS -->
         <section class="section product-slider pb-0 d-none">
             <div class="container">
                 <div class="section-header">
@@ -1167,9 +1178,9 @@
                 <!--End Product Grid-->
             </div>
         </section>
-        <!--End Recently Viewed Products-->
+        <!-- END RECENTLY VIEWED PRODUCTS -->
     </div>
-    <!-- End Body Container -->
+    <!-- END BODY CONTAINER -->
      
 
     <!--Scoll Top-->

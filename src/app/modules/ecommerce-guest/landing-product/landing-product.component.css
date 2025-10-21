@@ -19,6 +19,9 @@
   100% { background-position: 400px 0; }
 }
 
+.custom-border-bottom {
+  border-bottom: 1px solid rgb(199 199 199 / 0.15);
+}
 
 /* New style */
 
