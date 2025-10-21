@@ -8,7 +8,7 @@
 /* 🔧 Elimina paddings/margins adicionales del template */
 .collection-banner-item,
 .collection-item.sp-col {
-  padding: 1px; /* o 5px si quieres bordes finos entre banners */
+  padding: 0px; /* o 5px si quieres bordes finos entre banners */
 }
 
 /* 🔧 Ajusta espacio entre imágenes si aún quedara espacio */
@@ -46,6 +46,9 @@
   .inner {
     text-align: center;
     color: white;
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
     
     p {
       margin-bottom: 0.5rem;
