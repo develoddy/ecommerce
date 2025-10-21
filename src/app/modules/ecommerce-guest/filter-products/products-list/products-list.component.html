@@ -63,18 +63,18 @@
                                     <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" [queryParams]="getRouterDiscount(product)" class="text-truncate d-inline-block product-title fw-light">{{ product.title }}</a>
                                 </div>
                                 <!-- End Product Name -->
-                                 <!-- Product Price -->
+                                <!-- Product Price -->
                                 <div class="product-price">
                                     <!-- Original price (crossed out if discount exists) -->
                                     <span class="price old-price" *ngIf="hasDiscount(product)">
-                                        <span class="">{{getOriginalPriceParts(product).integer}}.{{getOriginalPriceParts(product).decimals}}</span>
                                         <span class="">{{ euro }}</span>
+                                        <span class="">{{getOriginalPriceParts(product).integer}}.{{getOriginalPriceParts(product).decimals}}</span>
                                     </span>
                                     
                                     <!-- Final price (with discount applied if exists) -->
                                     <span class="price" [ngStyle]="hasDiscount(product) ? {'color': '#dc3545', 'font-weight': 'bold'} : {}">
-                                        <span class="">{{getFinalPriceParts(product).integer}}.{{getFinalPriceParts(product).decimals}}</span>
                                         <span class="">{{ euro }}</span>
+                                        <span class="">{{getFinalPriceParts(product).integer}}.{{getFinalPriceParts(product).decimals}}</span>
                                     </span>
                                 </div>
                                 <!-- End Product Price -->

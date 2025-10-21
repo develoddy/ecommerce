@@ -828,7 +828,7 @@
         <ng-container>
             <!-- Loader o Skeleton -->
             <ng-container *ngIf="loader.loading$ | async; else product_related_slider">
-                <app-product-slider-skeleton [itemCount]="5" titleWidth="20%" subtitleWidth="35%"></app-product-slider-skeleton>
+                <app-product-slider-skeleton [itemCount]="5" titleWidth="20%" subtitleWidth="30%"></app-product-slider-skeleton>
             </ng-container>
             <ng-template #product_related_slider>
                 <!--Related Products-->
