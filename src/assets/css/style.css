@@ -538,7 +538,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .breadcrumbs .main-title { font-weight: 700; }
 
 .page-header { background-color:#f3f3f3; padding:30px 0; margin-bottom:60px; background-position:center center; background-size:cover; background-repeat:no-repeat; }
-.page-title h1 { font-size:25px; font-weight:700; position:relative; margin:0; text-transform: uppercase; }
+.page-title h1 { font-size:36px; font-weight:700; position:relative; margin:0; text-transform: uppercase; }
 
 .newsletter-modal.style2 .newsltr-text { padding: 40px; border: 4px solid #ffffff; }
 .newsletter-modal.style2 .title { font-size: 25px; }
@@ -666,7 +666,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .minicart-content .item .remove:hover { color:#424242; }
 .minicart-content .item .qtyField span { display:inline-block; padding:0; border:0; }
 .minicart-content .item .variant-cart { color:#000; font-size:13px; }
-.minicart-content .item .qtyField { width:120px; }
+.minicart-content .item .qtyField { width:89px; }
 .minicart-content .item .qtyField .qtyBtn { height:35px; }
 .minicart-content .item .qtyField .qty { width:77px; height:35px; padding:0 20px; }
 

@@ -835,10 +835,14 @@
 
     <!--MiniCart Content-->
     <div id="cart-drawer" class="block block-cart" *ngIf="listCarts">
+        <!-- Header Cart -->
         <div class="minicart-header">
             <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i></button>
             <h4 class="fs-6 text-uppercase fw-bold">Carrito ({{ listCarts.length }})</h4>
         </div>
+        <!-- End Header Cart -->
+
+        <!-- Body Cart Items -->
         <div class="minicart-content d-flex">
             <ng-container *ngIf="listCarts.length == 0; else allCarts">
                 <div class="d-flex align-items-center w-100">
@@ -858,47 +862,53 @@
                 <ul class="m-0 clearfix">
                     <ng-container *ngFor="let cart of listCarts">
                         <li class="item d-flex flex-column">
+                            <!-- CONTENT CARTS -->
                             <div class="d-flex flex-row mb-2">
+
+                                <!-- HEDER TITLE CARTS -->
                                 <div class="">
                                     <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.variedad.slug]">
                                         <img class="blur-up lazyload" [src]="cart.variedad.files[1].preview_url" alt="{{ cart.product.title }}" title="{{ cart.product.title }}" width="200" height="200" />
                                     </a>
                                 </div>
+                                <!-- HEDER TITLE CARTS -->
+
+                                <!-- BODY ITEMS CARTS -->
                                 <div class="d-flex w-100">
                                     <div class="product-details">
+                                        <!-- PRODUCT TITULO & PRECIO -->
                                         <div class="priceRow mb-2">
-                                            <div class="product-price d-flex flex-row justify-content-between">
-                                                <a class="product-title text-uppercase fw-normal text-truncate d-inline-block product-title" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">{{
-                                                        cart.product.title }}</a>
+                                            <div class="product-price d-flex flex-column justify-content-between">
+                                                <a class="product-title text-uppercase fw-normal text-truncate d-inline-block product-title" 
+                                                   href="#" 
+                                                   onclick="return false;" 
+                                                   [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">{{cart.product.title }}</a>
 
                                                 <div class="price-container d-flex flex-column align-items-end">
                                                     <!-- Precio original tachado si hay descuento -->
-                                                    <span *ngIf="hasDiscount(cart)" class="price-small text-muted text-decoration-line-through mb-1" style="font-size: 0.75rem;">
-                                                        <span class="price-main-small">{{
-                                                                getFormattedPrice(getOriginalPrice(cart) * cart.cantidad).integerPart }}</span>
-                                                        <span class="price-decimals-small">
-                                                            <sup>{{ getFormattedPrice(getOriginalPrice(cart) * cart.cantidad).decimalPart }}</sup>
-                                                            <span class="currency-symbol-small">{{ euro }}</span>
-                                                        </span>
+                                                    <span *ngIf="hasDiscount(cart)" class="price-small text-muted text-decoration-line-through mb-1">
+                                                        <span class="me-1">{{ euro }}</span>
+                                                        <span class="">{{ getFormattedPrice(getOriginalPrice(cart) * cart.cantidad).integerPart }}.</span>
+                                                        <span class="">{{ getFormattedPrice(getOriginalPrice(cart) * cart.cantidad).decimalPart }}</span>
                                                     </span>
 
                                                     <!-- Precio final (con descuento si aplica) -->
                                                     <span class="price-small fw-bold" [class.text-danger]="hasDiscount(cart)">
-                                                        <span class="price-main-small">{{
-                                                                getFormattedPrice(getFinalPrice(cart) * cart.cantidad).integerPart }}</span>
-                                                        <span class="price-decimals-small" style="top: 0.2em !important;">
-                                                            <sup>{{ getFormattedPrice(getFinalPrice(cart) * cart.cantidad).decimalPart }}</sup>
-                                                            <span class="currency-symbol-small">{{ euro }}</span>
-                                                        </span>
+                                                        <span class="me-1">{{ euro }}</span>
+                                                        <span class="">{{ getFormattedPrice(getFinalPrice(cart) * cart.cantidad).integerPart }}.</span>
+                                                        <span class="">{{ getFormattedPrice(getFinalPrice(cart) * cart.cantidad).decimalPart }}</span>
                                                     </span>
 
                                                     <!-- Indicador del tipo de descuento -->
-                                                    <span *ngIf="hasDiscount(cart)" class="discount-type-indicator" style="font-size: 0.65rem; color: #28a745;">
+                                                    <span *ngIf="hasDiscount(cart)" class="discount-type-indicator">
                                                         {{ cart.type_discount === 1 ? 'Campaign Discount' : 'Flash Sale' }}
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- END PRODUCT TITULO & PRECIO -->
+
+                                        <!-- VARIANTE Y CANTIDAD -->
                                         <div class="d-flex flex-column">
                                             <div class="variant-cart fw-light d-flex" *ngIf="cart.variedad">
                                                 <span class="w-25">Color</span>
@@ -919,23 +929,31 @@
                                                 <a class="qtyBtn plus text-muted" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r text-black fw-bold"></i></a>
                                             </div>
                                         </div>
-
+                                        <!-- END VARIANTE Y CANTIDAD -->
                                     </div>
                                 </div>
+                                <!-- BODY ITEMS CARTS -->
                             </div>
-                            <div class="d-flex flex-row">
-                                <div class="me-3">
-                                    <a href="#" class="remove fw-light" onclick="return false;"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Favorito"></i> Comprar mas tarde</a>
+                            <!-- END CONTENT CARTS -->
+
+                            <!-- FOOTER CART -->
+                            <div class="d-flex flex-row justify-content-between">
+                                <div class="">
+                                    <a href="#" class="remove fw-light" onclick="return false;" (click)="removeCart(cart)">Eliminar</a>
                                 </div>
                                 <div class="">
-                                    <a href="#" class="remove fw-light" onclick="return false;" (click)="removeCart(cart)"> Eliminar</a>
+                                    <a href="#" class="remove fw-light" onclick="return false;"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Favorito"></i></a>
                                 </div>
                             </div>
+                            <!-- END FOOTER CART -->
                         </li>
                     </ng-container>
                 </ul>
             </ng-template>
         </div>
+        <!-- End MiniCart Cart Items -->
+
+        <!-- Footer Cart summary -->
         <div class="minicart-bottom" *ngIf="listCarts.length != 0">
             <div class="shipinfo d-none">
                 <div class="progress mb-2">
@@ -949,17 +967,18 @@
             <div class="subtotal clearfix my-3">
                 <div class="totalInfo clearfix">
                     <span class="text-capitalize fw-light">Subtotal</span>
-                    <div class="item product-price text-capitalize fw-normal d-flex">
-                        <span class="fw-normal me-1">{{ totalCarts | number: '1.2-2' }}</span> <span style="font-family: sans-serif;font-size: .85rem;" class="align-self-center fw-normal">{{
-                                euro }}</span>
+                    <div class="item product-price text-capitalize d-flex">
+                        <span  class="me-1 fw-light">{{euro }}</span>
+                        <span class="fw-light">{{ totalCarts | number: '1.2-2' }}</span>
+                        <!-- <span class="fw-normal me-1">{{ totalCarts | number: '1.2-2' }}</span> <span style="font-family: sans-serif;font-size: .85rem;" class="align-self-center fw-normal">{{euro }}</span> -->
                     </div>
                 </div>
                 <div class="totalInfo clearfix"><span class="text-capitalize fw-light">Envío</span><span class="item product-price text-capitalize fw-light">Gratis</span></div>
                 <div class="totalInfo clearfix">
                     <span>Total</span>
                     <div class="item product-price d-flex">
-                        <span class="me-1">{{ totalCarts | number: '1.2-2' }}</span>
-                        <span style="font-family: sans-serif;font-size: .85rem;" class="align-self-center">{{ euro }}</span>
+                        <span class="me-1">{{ euro }}</span>
+                        <span class="">{{ totalCarts | number: '1.2-2' }}</span>
                     </div>
                 </div>
             </div>
@@ -981,6 +1000,7 @@
                 </a>
             </div>
         </div>
+        <!-- End Footer Cart summary -->
     </div>
     <!--MiniCart Content-->
 </div>

@@ -632,24 +632,10 @@ img.hover {
       }
     }
   }
-
-  .grid-products,
-  .product-slider-5items {
-    .product-box {
-      .product-image {
-        .product-tag-vertical {
-          left: 5px;           /* más cerca del borde */
-          top: 72%;            /* centrado vertical */
-          font-size: 0.60rem;  /* un poco más pequeño */
-          padding: 2px 6px;
-          opacity: 0.9;
-        }
-      }
-    }
-  }
 }
 
 @media (min-width: 1400px) {
+
   .grid-products .row.col-row {
     gap: 0px;
   }
