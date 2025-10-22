@@ -612,7 +612,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 
 
 /* Main Header */
-.header { position:relative; width:100%; min-height:55px; }
+.header { position:relative; width:100%; min-height:55px; padding: 0 1rem;}
 /* .header {position:fixed; top: 0; left: 0; width: 100%;z-index: 10; min-height:55px;} */
 .header.is-fixed { position: fixed; max-width: 100%; right: 0; top: -120px; left: 0; width: 100%; z-index: 1000; background: #ffffff; -webkit-transition: all .3s ease; -moz-transition: all .3s ease; -ms-transition: all .3s ease; -o-transition: all .3s ease; transition: all .3s ease; }
 .header.is-fixed.is-small { top:0; box-shadow: 0 0 5px rgba(0,0,0,0.2) !important; -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.2) !important; }
