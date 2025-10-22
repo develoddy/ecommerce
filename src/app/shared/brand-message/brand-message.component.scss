@@ -15,6 +15,57 @@
   margin: 0 auto;
 }
 
+
+.input-group {
+  position: relative;
+
+  input.form-control {
+    padding-right: 110px; /* espacio para el botón */
+  }
+
+  .btn-subscribe {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 12px;
+    height: 100%;
+    line-height: 1;
+    
+    &:hover {
+      color: #ccc;
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+/* Mobile: mantener botón dentro del input */
+@media (max-width: 767px) {
+  .input-group {
+    input.form-control {
+      padding-right: 110px; /* mismo que desktop */
+    }
+
+    .btn-subscribe {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: auto;
+      height: 100%;
+      padding: 0 12px;
+      font-size: 12px;
+    }
+  }
+}
+
+
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .page-header {

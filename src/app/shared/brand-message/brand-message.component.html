@@ -20,16 +20,15 @@
         <p class="text-white mb-3 lh-1 mb-3 fs-12">
           Recibe elegancia y código directo a tu inbox.
         </p>
-        <div class="input-group" [ngClass]="{'d-flex': isMobile}">
+        <div class="input-group position-relative" [ngClass]="{'d-flex': isMobile}">
           <input
             type="email"
-            class="form-control bg-transparent border-0 border-bottom border-white text-white rounded-0 shadow-none me-2"
-            [ngClass]="{'mb-3 w-100': isMobile}"
+            class="form-control bg-transparent border-0 border-bottom border-white text-white rounded-0 shadow-none px-0"
+            [ngClass]="{'w-100': isMobile}"
             placeholder="Introduce tu correo electrónico"
             required
           />
-          <button type="submit" class="btn-outline-dark-ld p-0" [ngClass]="{'w-25': isDesktop, 'py-2': isMobile}" >Suscribirse</button>
-          <!-- <button type="submit" class="btn btn-outline-light">Suscribirse</button> -->
+          <button type="submit" class="btn-subscribe position-absolute px-0">Confirmar</button>
         </div>
       </div>
     </div>
