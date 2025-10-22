@@ -14,9 +14,12 @@
                         <div class="product-image" 
                              (mouseenter)="onProductHover(ourProduct)" 
                              (mouseleave)="onProductLeave()">
+
+                            <!-- Etiqueta vertical -->
+                            <span class="product-tag-vertical">Nueva colección</span>
+
                             <!-- Start Product Image -->
                             <a href="#" (click)="navigateToProduct(ourProduct.slug,ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
-                                <!-- Image alt="Camiseta {{ product_selected.title }} para programadores LujanDev"-->
                                 <img class="primary blur-up lazyload rounded-0 w-100 h-100" 
                                      data-src="{{ ourProduct.imagen }}" 
                                      src="{{ ourProduct.imagen }}" 

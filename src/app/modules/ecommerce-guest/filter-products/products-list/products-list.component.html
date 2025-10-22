@@ -9,6 +9,9 @@
                             <div class="product-image"
                                  (mouseenter)="onProductHover(product)" 
                                  (mouseleave)="onProductLeave()">
+
+                                    <!-- Etiqueta vertical -->
+                                    <span class="product-tag-vertical">Nueva colección</span>
                                 
                                     <a href="#" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" onclick="return false;" class="product-img rounded-0">
                                         <img class="primary blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />

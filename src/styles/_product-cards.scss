@@ -16,7 +16,7 @@
 }
 
 /* Grid Container - Clean Layout */
-.grid-products {
+.grid-products, .product-slider-5items {
   background: #ffffff;
   padding: 0;
   
@@ -32,6 +32,8 @@
           align-items: flex-start;
           
           .product-image {
+            position: relative;
+            overflow: hidden;
             width: 200px;
             height: 200px;
             flex-shrink: 0;
@@ -71,6 +73,30 @@
         }
       }
     }
+  }
+
+  /* Etiqueta vertical tipo Dolce&Gabbana */
+.product-tag-vertical {
+  position: absolute;
+  left: 5px; /* separación desde el borde izquierdo */
+  top: 35%;
+  transform: translateY(-50%) rotate(-90deg);
+  transform-origin: left top;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: transparent;
+  color: #000;
+  font-weight: 400;
+  padding: 4px 8px;
+  pointer-events: none;
+  opacity: 0.85;
+  z-index: 10;
+}
+
+img.hover {
+    position: relative; /* para que z-index funcione */
+    z-index: 1;
   }
   
   .item.col-item {

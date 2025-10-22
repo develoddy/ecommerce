@@ -8,7 +8,7 @@ declare function productSlider5items($: any): any;
 @Component({
   selector: 'app-interest-products',
   templateUrl: './interest-products.component.html',
-  styleUrls: ['./interest-products.component.css']
+  styleUrls: ['./interest-products.component.scss']
 })
 export class InterestProductsComponent {
 
