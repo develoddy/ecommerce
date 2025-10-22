@@ -601,16 +601,16 @@
     } */
     body { line-height: 1.5; }
     h1, .h1 { font-size:22px; }
-    /* h2, .h2 { font-size:18px; } */
-    h2, .h2  {
+    h2, .h2 { font-size:14px; }
+    /* h2, .h2  {
         font-family: "Bebas Neue", sans-serif;
         font-weight: 400;
         font-style: normal;
-        font-size: 2.5rem; /* Ajusta según el tamaño que prefieras 2.75rem */
+        font-size: 2.5rem; 
         line-height: 1.4;
         letter-spacing: 0.5px;
-        color: #171717; /* Color oscuro para buen contraste */
-      }
+        color: #171717;
+      } */
     h3, .h3 { font-size:16px; }
     p { margin: 0 0 15px; }
     blockquote { font-size: 14px; }
@@ -794,8 +794,8 @@
     .blog-article h2 { font-size: 20px; }
 
     .tabs-listing.section .tab-container { padding: 0; }
-    .tabs-listing .tabs-ac-style { position: relative; font-size: 14px; margin-bottom: 10px; cursor: pointer; color: #333333; /*background-color: #eeeeee;*/ padding: 13px 30px 13px 15px; display: block; }
-    .tabs-listing .tabs-ac-style.active { color:#ffffff; background-color:#222; }
+    .tabs-listing .tabs-ac-style { position: relative; font-size: 14px; margin-bottom: 0px; cursor: pointer; color: #333333; /*background-color: #eeeeee;*/ padding: 13px 30px 13px 0px; display: block; }
+    .tabs-listing .tabs-ac-style.active { color:#333333; background-color:#ffffff; }
     .tabs-listing .tabs-ac-style:before { font-family:"annimex-icons"; content: "\eb66"; font-size:20px; position:absolute; right:13px; top:50%; -webkit-transform:translateY(-50%); transform:translateY(-50%); }
     .tabs-listing .tabs-ac-style.active:before { content: "\eb69"; }
     .tabs-listing .tab-container .tab-content { padding:10px 0 20px; }

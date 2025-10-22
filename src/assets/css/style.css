@@ -250,20 +250,17 @@ hr { margin:20px 0; border:0; opacity:1; border-bottom:1px solid #ececec; }
 ========================================================================*/
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 { color:#000000; margin:0 0 20px; font-family: "Zen Kaku Gothic Antique", sans-serif; font-weight:700; line-height:1.2; letter-spacing:0; overflow-wrap:break-word; }
 h1, .h1 { font-size:24px; }
-/* h2, .h2 { font-size:20px; } */
-h2, .h2  {
-  /* font-family: 'Zen Kaku Gothic New', 'Zen Kaku Gothic Antique', sans-serif; */
+h2, .h2 { font-size:20px; }
+/* h2, .h2  {
   font-family: "Michroma", sans-serif;
-  /*font-weight: 700;*/ /* Bold para resaltar el título */
-  font-size: 3.5rem; /* Ajusta según el tamaño que prefieras 2.75rem */
+  font-size: 3.5rem; 
   line-height: 1.4;
   letter-spacing: -1px;
-  color: #171717; /* Color oscuro para buen contraste */
-
-  /* font-family: "Bebas Neue", sans-serif; */
+  color: #171717;
   font-weight: 400;
   font-style: normal;
-}
+} */
+
 h3, .h3 { font-size:18px; }
 h4, .h4 { font-size:17px; }
 h5, .h5 { font-size:15px; }
@@ -2786,9 +2783,10 @@ a.logo {
 #productInquiry .page-title h3, #sizechart h4 { font-size: 20px; text-transform: uppercase; }
 
 /* Product tabs */
-.tabs-listing .product-tabs li a { font-size:12px; font-weight:600; text-transform:uppercase; position:relative; display:block; padding:0 0 10px; background-color:transparent; color:#333333; border:none; cursor:pointer; margin-right:40px; }
+/* .tabs-listing .product-tabs li a { font-size:12px; font-weight:600; text-transform:uppercase; position:relative; display:block; padding:0 0 10px; background-color:transparent; color:#333333; border:none; cursor:pointer; margin-right:40px; } */
+.tabs-listing .product-tabs.style2 li a {background: transparent !important;color: #666666 !important;padding: 0 0 8px !important;margin-right: 40px !important;display: inline-block !important;text-decoration: none !important;box-shadow: none !important;}
 .tabs-listing .product-tabs li.active a, 
-.tabs-listing .product-tabs li:hover a { color: #424242; }
+.tabs-listing .product-tabs li:hover a { /*color: #424242;*/ background: transparent !important;color: #000000 !important;font-weight: 700 !important;border-bottom: 2px solid #000000;text-decoration: none !important; cursor: pointer; }
 .tabs-listing .product-tabs li a:before { content:""; width:0; height:1px; background-color:#424242; position:absolute; bottom:-1px; left:0; right:0; }
 .tabs-listing .product-tabs li.active a:before,
 .tabs-listing .product-tabs li:hover a:before { width:100%; }

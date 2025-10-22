@@ -328,7 +328,7 @@
                                 <div class="d-flex flex-column mb-0">
                                     <!-- Title Product -->
                                     <div class="d-flex justify-content-between">
-                                        <p class="me-2 mb-0">{{ product_selected.title }}</p>
+                                        <h2 class="mb-0">{{ product_selected.title }}</h2>
                                         <a class="text-link wishlist fw-light" href="#" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l"></i></a>
                                     </div>
                                     <!-- Price -->
@@ -345,12 +345,12 @@
                                         
                                         <!-- Versión alternativa con separación de decimales (oculta por defecto) -->
                                         <span class="price d-none" itemprop="priceCurrency" content="EUR">
+                                            <span class="currency-symbol">€</span>
                                             <span class="price-main" itemprop="price">
                                                 {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
                                             </span>
                                             <span class="price-decimals">
                                                 <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
-                                                <span class="currency-symbol">€</span>
                                             </span>
                                         </span>
                                     </div>
@@ -371,8 +371,6 @@
                                         </span>
                                     </p>
                                     <p class="product-vendor d-none">Proveedor:<span class="text"><a href="#">HVL</a></span></p>
-                                    <p class="product-type d-none">Tipo de producto:<span class="text">Tops</span></p>
-                                    <p class="product-sku text-black fw-normal">Art. nº.<span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
                                     <meta itemprop="productID" content="{{ product_selected.sku }}">
                                     <meta itemprop="availability" content="https://schema.org/InStock" />
                                 </div>
@@ -504,8 +502,7 @@
                             <!-- Product Info -->
                             <div class="userViewMsg featureText d-none" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div>
                             <!-- 135deg -->
-                            <div class="shippingMsg featureText border p-2 bg-darkseagreen" *ngIf="shippingRate > 0 && fechaEntregaMin">
-                                <!-- <p class="fw-light"><i class="icon anm anm-clock-r"></i><span>Entrega GRATIS el </span> <strong>{{ fechaEntregaMin }} </strong> para <a href="" class="text-decoration-underline text-green">{{ address }}</a> </p> -->
+                            <div class="shippingMsg featureText" *ngIf="shippingRate > 0 && fechaEntregaMin">
                                 <p class="fw-light">
                                     <i class="icon anm anm-clock-r"></i>
                                     <span>Entrega GRATIS el </span>
@@ -557,8 +554,8 @@
                     <!-- Description -->
                     <h3 class="tabs-ac-style d-md-none" rel="description">Descripción</h3>
                     <div id="description" class="tab-content">
-                        <h1 class="fw-normal">{{ product_selected.title }}</h1>
-                        <p class="product-sku fw-light text-muted">Art. Nº. <span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
+                        <h2 class="fw-normal" [ngClass]="{'d-none': isMobile}">{{ product_selected.title }}</h2>
+                        <p class="product-sku fw-light text-muted fs-16">Art. Nº. <span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
                         <div class="product-description mb-3">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description_es"></div>

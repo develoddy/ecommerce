@@ -123,10 +123,10 @@
                             <!-- Product Price -->
                             <div class="product-price">
                                 <!-- Old Price -->
-                                <span class="price old-price me-1" *ngIf="ourProduct.campaing_discount"><span class="">{{euro}}</span> {{ ourProduct.price_usd }}</span>
+                                <span class="price old-price me-1" *ngIf="ourProduct.campaing_discount"><span class="me-1">{{euro}}</span>{{ ourProduct.price_usd }}</span>
                                 <!-- Final Price -->
                                 <span class="price" [ngClass]="{ 'text-danger': ourProduct.campaing_discount }">
-                                    <span class="">{{euro}}</span>
+                                    <span class="me-1">{{euro}}</span>
                                     <span class="">{{getPriceParts(ourProduct.finalPrice).integer }}.{{getPriceParts(ourProduct.finalPrice).decimals}}</span>
                                 </span>
                             </div>

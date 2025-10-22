@@ -948,16 +948,10 @@
                                                 <div class="fw-bold">
                                                    Subtotal:
                                                    <span class="price-small">
-                                                      <span class="price-main-small">{{
-                                 getFormattedPrice(cart.total).integerPart
-                                 }}</span>
+                                                      <span class="currency-symbol-small me-1">{{euro}}</span>
+                                                      <span class="price-main-small">{{getFormattedPrice(cart.total).integerPart}}</span>
                                                       <span class="price-decimals-small">
-                                                            <sup>{{
-                                 getFormattedPrice(cart.total).decimalPart
-                                 }}</sup>
-                                                            <span class="currency-symbol-small">{{
-                                 euro
-                                 }}</span>
+                                                            <sup>{{getFormattedPrice(cart.total).decimalPart}}</sup>
                                                       </span>
                                                    </span>
                                                 </div>
