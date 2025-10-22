@@ -66,7 +66,7 @@
     <!-- <div class="header main-header d-flex align-items-center header-1 header-fixed"> -->
     <div class="header main-header d-flex align-items-center header-1 header-fixed">
         <!-- HEADER CONTENT -->
-        <div class="container-header" [ngClass]="{'container-fluid': isDesktop || isTablet, 'container': isMobile }">
+        <div class="container-header" [ngClass]="{'container-fluid': isDesktop || isTablet, 'container px-0': isMobile }">
             <div class="row">
                 <!-- MENU IZQUIERDA -->
                 <div *ngIf="!isMobile && !isTablet" class="col-1 col-sm-1 col-md-1 col-lg-5 align-self-center d-menu-col d-flex justify-content-start">

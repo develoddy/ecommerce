@@ -142,7 +142,8 @@
                             </div>
                             <!-- End Product Review -->
                             <!--Sort Description-->
-                            <p class="sort-desc hidden">{{ ourProduct.description_en }}</p>
+                            <!-- <p class="sort-desc hidden">{{ ourProduct.description_en }}</p> -->
+                             <p class="sort-desc hidden" *ngIf="ourProduct.description_es" [innerHTML]="ourProduct.description_es"></p>
                             <!--End Sort Description-->
                             <!-- Swatches Color -->
                             <ul class="variants-clr swatches">
