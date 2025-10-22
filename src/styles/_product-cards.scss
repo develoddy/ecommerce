@@ -535,8 +535,8 @@ img.hover {
     
     .swatch {
       &.medium {
-        width: 18px;
-        height: 18px;
+        width: 14px;
+        height: 14px;
         border-radius: 0%;
       }
       
@@ -629,6 +629,21 @@ img.hover {
         font-size: 9px !important;
         letter-spacing: 0.5px !important;
         border-radius: 12px !important;
+      }
+    }
+  }
+
+  .grid-products,
+  .product-slider-5items {
+    .product-box {
+      .product-image {
+        .product-tag-vertical {
+          left: 5px;           /* más cerca del borde */
+          top: 72%;            /* centrado vertical */
+          font-size: 0.60rem;  /* un poco más pequeño */
+          padding: 2px 6px;
+          opacity: 0.9;
+        }
       }
     }
   }
