@@ -581,7 +581,7 @@
     .slideshow .slick-arrow-dots .slick-next, 
     .slideshow .container .slick-arrow-dots .slick-next { right: 10px; }
     .grid-products .list-style.col-row { margin-top: -20px; }
-    .grid-products .list-style .item { padding-top: 20px; }
+    .grid-products .list-style .item { padding-top: 20px; padding-left: 0px; padding-right: 0px; }
     .tab-slider-product .section-header { margin-bottom: 15px; }
     .tab-slider-product .nav-tabs { margin: 0 0 20px; }
     .tab-slider-product .nav-tabs .nav-link { font-size: 14px; margin: 0px 7px 7px; }
@@ -922,8 +922,8 @@
     .author-bio { padding: 20px; }
     .author-bio .author-img { min-width:75px; width:75px; }
 
-    .grid-products .list-style .product-box { flex-direction:column; }
-    .grid-products .list-style .product-image { flex: auto; width: 100%; margin: 0 0 20px 0; }
+    .grid-products .list-style .product-box { flex-direction:column !important; }
+    .grid-products .list-style .product-image { flex: auto; width: 100% !important; height: 100% !important; margin: 0 0 20px 0; }
 
     .wishlist-table table .product-thumbnail { width: 70px; }
     .wishlist-table table .product-img { width: 50px; }
