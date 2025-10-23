@@ -24,8 +24,8 @@
 }
 
 @media only screen and (max-width: 1320px) {
-    .arwOut5 .slick-prev { left: -10px; }
-    .arwOut5 .slick-next { right: -10px; }
+    .arwOut5 .slick-prev { left: 10px; }
+    .arwOut5 .slick-next { right: 10px; }
     .index-demo2 .hdr-menu-left #siteNav > li > a { padding: 8px 10px; }
     .index-demo4 .hdr-menu-left #siteNav > li > a { padding: 8px 8px; }
     .index-demo10 .slideshow-large .slideshow-wrap { height: 500px; }
