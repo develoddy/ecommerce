@@ -10,6 +10,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './modules/auth-profile/_services/guards/auth.interceptor';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { SharedModule } from './shared/shared.module';
+import { ChatModule } from './modules/chat/chat.module';
 import { RecaptchaModule, RecaptchaFormsModule, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -37,6 +38,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
+  ChatModule,
   ],
   providers: [
     {

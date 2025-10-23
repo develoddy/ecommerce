@@ -1,0 +1,293 @@
+// Variables
+$primary-color: #000000;  // Negro para mantener el estilo del ecommerce
+$secondary-color: #ffffff; // Blanco
+$accent-color: #007bff;   // Azul para elementos de acción
+$border-radius: 10px;
+$shadow: 0 5px 15px rgba(0,0,0,0.1);
+$transition: all 0.3s ease;
+
+// Contenedor principal
+.chat-widget-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+// Botón de chat
+.chat-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: $primary-color;
+  color: $secondary-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: $shadow;
+  transition: $transition;
+  position: relative;
+  
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  
+  &.has-unread {
+    animation: pulse 2s infinite;
+  }
+  
+  .chat-icon {
+    font-size: 24px;
+  }
+  
+  .unread-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+  }
+}
+
+// Ventana de chat
+.chat-window {
+  width: 350px;
+  height: 500px;
+  background-color: $secondary-color;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-bottom: 15px;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: $transition;
+  
+  &.open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Cabecera del chat
+.chat-header {
+  background-color: $primary-color;
+  color: $secondary-color;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .chat-actions {
+    display: flex;
+    
+    button {
+      background: none;
+      border: none;
+      color: $secondary-color;
+      cursor: pointer;
+      margin-left: 10px;
+      padding: 0;
+      font-size: 16px;
+      
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+// Cuerpo del chat
+.chat-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  
+  .welcome-message {
+    text-align: center;
+    color: #888;
+    margin: 20px 0;
+    
+    p {
+      margin: 5px 0;
+    }
+  }
+  
+  .messages-list {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .message-item {
+    margin-bottom: 15px;
+    max-width: 80%;
+    
+    .message-content {
+      padding: 12px 15px;
+      border-radius: 18px;
+      position: relative;
+      
+      p {
+        margin: 0;
+        font-size: 14px;
+      }
+      
+      .message-time {
+        font-size: 10px;
+        opacity: 0.7;
+        display: block;
+        text-align: right;
+        margin-top: 5px;
+      }
+    }
+    
+    &.user-message {
+      align-self: flex-end;
+      
+      .message-content {
+        background-color: $primary-color;
+        color: $secondary-color;
+        border-bottom-right-radius: 4px;
+      }
+    }
+    
+    &.agent-message {
+      align-self: flex-start;
+      
+      .message-content {
+        background-color: #e6e6e6;
+        color: #333;
+        border-bottom-left-radius: 4px;
+      }
+    }
+    
+    &.system-message {
+      align-self: center;
+      
+      .message-content {
+        background-color: #f0f0f0;
+        color: #666;
+        font-style: italic;
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+    }
+  }
+  
+  .typing-indicator {
+    padding: 8px;
+    font-size: 12px;
+    color: #888;
+    font-style: italic;
+  }
+}
+
+// Pie del chat
+.chat-footer {
+  padding: 15px;
+  border-top: 1px solid #e6e6e6;
+  
+  .message-input-container {
+    display: flex;
+    
+    textarea {
+      flex: 1;
+      border: 1px solid #e0e0e0;
+      border-radius: 20px;
+      padding: 10px 15px;
+      font-size: 14px;
+      max-height: 100px;
+      resize: none;
+      font-family: inherit;
+      
+      &:focus {
+        outline: none;
+        border-color: $accent-color;
+      }
+    }
+    
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: $primary-color;
+      color: $secondary-color;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: $transition;
+      
+      &:hover:not(:disabled) {
+        transform: scale(1.05);
+        background-color: darken($primary-color, 10%);
+      }
+      
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      
+      i {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// Animación para botón con mensajes no leídos
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
+
+// Estilos responsive
+@media (max-width: 576px) {
+  .chat-window {
+    width: 300px;
+    height: 450px;
+    position: fixed;
+    bottom: 80px;
+    right: 10px;
+  }
+  
+  .chat-button {
+    width: 50px;
+    height: 50px;
+    bottom: 15px;
+    right: 15px;
+  }
+}

@@ -1,0 +1,65 @@
+<div class="chat-widget-container">
+  <!-- Botón flotante para abrir el chat -->
+  <div class="chat-button" [class.has-unread]="unreadCount > 0" (click)="openChat()" *ngIf="!isChatOpen">
+    <span class="chat-icon">
+      <i class="icon anm anm-envelope-o"></i>
+    </span>
+    <span class="unread-badge" *ngIf="unreadCount > 0">{{unreadCount}}</span>
+  </div>
+
+  <!-- Ventana de chat -->
+  <div class="chat-window" [class.open]="isChatOpen">
+    <!-- Cabecera del chat -->
+    <div class="chat-header">
+      <h3>Chat de soporte</h3>
+      <div class="chat-actions">
+        <button class="minimize-btn" (click)="closeChat()">
+          <i class="icon anm anm-minus-l"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Cuerpo del chat (mensajes) -->
+    <div class="chat-body" #messagesContainer>
+      <!-- Mensaje de bienvenida si no hay mensajes -->
+      <div class="welcome-message" *ngIf="messages.length === 0">
+        <p>¡Hola! ¿En qué podemos ayudarte hoy?</p>
+      </div>
+      
+      <!-- Lista de mensajes -->
+      <div class="messages-list">
+        <div class="message-item" 
+             *ngFor="let message of messages" 
+             [class.user-message]="isSentByMe(message)"
+             [class.agent-message]="!isSentByMe(message) && !isSystemMessage(message)"
+             [class.system-message]="isSystemMessage(message)">
+          <div class="message-content">
+            <p>{{message.message}}</p>
+            <span class="message-time">{{message.timestamp}}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Indicador de "está escribiendo" -->
+      <div class="typing-indicator" *ngIf="typingStatus.isTyping">
+        <p>{{typingStatus.name}} está escribiendo...</p>
+      </div>
+    </div>
+    
+    <!-- Pie del chat (formulario de envío) -->
+    <div class="chat-footer">
+      <form (ngSubmit)="sendMessage()">
+        <div class="message-input-container">
+          <textarea 
+            [formControl]="messageControl"
+            placeholder="Escribe un mensaje..."
+            (keydown)="handleEnter($event)"
+          ></textarea>
+          <button type="submit" class="send-btn" [disabled]="messageControl.invalid">
+            <i class="icon anm anm-paper-plane-o"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
