@@ -39,13 +39,6 @@ declare var bootstrap: any;
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
 declare function homeSlider($: any): any;
-// declare function productSlider5items($: any): any;
-// declare function LandingProductDetail($: any): any;
-// declare function pswp([]): any;
-// declare function productZoom([]): any;
-// declare function ModalProductDetail(): any;
-// declare function alertDanger([]): any;
-// declare function alertSuccess([]): any;
 
 // ---------- Destruir desde main ----------
 declare function cleanupHOMEINITTEMPLATE($: any): any;
