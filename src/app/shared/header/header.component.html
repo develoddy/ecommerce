@@ -107,7 +107,7 @@
                                                             <!-- Start Product Image -->
                                                             <div class="product-image mb-0">
                                                                 <!-- Imagen -->
-                                                                <a href="#" onclick="return false;" class="product-img">
+                                                                <a [routerLink]="['/',locale,country,'shop','product',ourProduct.slug]"  class="product-img">
                                                                     <!-- Image principal -->
                                                                     <img class="blur-up lazyload" data-src="{{ ourProduct.imagen }}" src="{{ ourProduct.imagen }}" alt="Camiseta {{ourProduct.title}} para programadores LujanDev" title="Camiseta {{ourProduct.title}} para programadores LujanDev" width="625" height="808" />
                                                                     <!-- End Image principal -->
@@ -135,7 +135,6 @@
                                                             <!-- Start Product Details -->
                                                             <div class="product-details">
                                                                 <div class="product-name lh-1">
-                                                                    <!-- <a class="fw-normal" href="#">Bodysuit Black</a> -->
                                                                     <a [routerLink]="['/',locale,country,'shop','product',ourProduct.slug]" [queryParams]="getRouterDiscount(ourProduct)" class="text-truncate d-inline-block product-title fw-light" itemprop="name">
                                                                         {{ ourProduct.title }}
                                                                     </a>
@@ -220,7 +219,7 @@
                                                             <!-- Start Product Image -->
                                                             <div class="product-image mb-0">
                                                                 <!-- Imagen -->
-                                                                <a href="#" class="product-img">
+                                                                <a [routerLink]="['/',locale,country,'shop','product',hoodieProduct.slug]"  class="product-img">
                                                                     <!-- Image principal -->
                                                                     <img class="blur-up lazyload" data-src="{{ hoodieProduct.imagen }}" src="{{ hoodieProduct.imagen }}" alt="Camiseta {{hoodieProduct.title}} para programadores LujanDev" title="Camiseta {{hoodieProduct.title}} para programadores LujanDev" width="625" height="808" />
                                                                     <!-- End Image principal -->
