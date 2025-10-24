@@ -4,13 +4,15 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
+import { URL_BACKEND, URL_SERVICE } from 'src/app/config/config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
   private socket: Socket | null = null;
-  private apiUrl = `${environment.URL_BACKEND}/api/chat`;
+  // Normalizar URL del servicio de chat para evitar doble slash
+  private apiUrl: string;
   
   // Estado del chat
   private conversationId: number | null = null;
@@ -34,6 +36,12 @@ export class ChatService {
     private http: HttpClient,
     private authService: AuthService
   ) {
+    // Construir apiUrl limpio: usar URL_SERVICE si existe, sino URL_BACKEND + /api
+    const svc = (typeof URL_SERVICE !== 'undefined' && URL_SERVICE) ? URL_SERVICE : `${URL_BACKEND}/api`;
+    const cleaned = svc.replace(/\/+$|\/+$/g, '').replace(/\/+$/, '');
+    // cleaned ahora puede ser 'http://host:port/api' ó 'http://host:port'
+    this.apiUrl = `${cleaned}/chat`;
+
     // Intentar recuperar sessionId del almacenamiento local
     this.sessionId = localStorage.getItem('chat_session_id');
     
@@ -52,7 +60,8 @@ export class ChatService {
       return; // Ya está conectado
     }
     
-    this.socket = io(environment.URL_BACKEND, {
+    //this.socket = io(URL_SERVICE, { //this.socket = io(environment.URL_BACKEND, {
+    this.socket = io(URL_BACKEND, { //this.socket = io(environment.URL_BACKEND, {
       transports: ['websocket'],
       upgrade: false
     });
@@ -164,11 +173,17 @@ export class ChatService {
     // Obtener el usuario actual
   const currentUser = this.authService.userSubject.value;
   const currentGuestUser = this.authService.userGuestSubject.value;
-    
+    // fallback: si no existe guest en authService, revisar localStorage
+    let guestId = currentGuestUser?._id || localStorage.getItem('chat_guest_id') || null;
+    if (!guestId) {
+      guestId = `guest_${Date.now()}_${Math.random().toString(36).substring(2,9)}`;
+      localStorage.setItem('chat_guest_id', guestId);
+    }
+
     const userData = {
       session_id: this.sessionId,
       user_id: currentUser?._id,
-      guest_id: currentGuestUser?._id
+      guest_id: guestId
     };
     
     console.log('Identificando usuario:', userData);
@@ -190,11 +205,18 @@ export class ChatService {
     // Obtener el usuario actual
   const currentUser = this.authService.userSubject.value;
   const currentGuestUser = this.authService.userGuestSubject.value;
-    
-    const userData = {
-      user_id: currentUser?._id,
-      guest_id: currentGuestUser?._id
+
+    // Asegurar que tenemos un guest_id persistente para usuarios invitados
+    let guestId = currentGuestUser?._id || localStorage.getItem('chat_guest_id') || null;
+    if (!guestId && !currentUser) {
+      guestId = `guest_${Date.now()}_${Math.random().toString(36).substring(2,9)}`;
+      localStorage.setItem('chat_guest_id', guestId);
+    }
+
+    const userData: any = {
+      user_id: currentUser?._id
     };
+    if (guestId) userData.guest_id = guestId;
     
     return new Observable(observer => {
       this.http.post(`${this.apiUrl}/init`, userData).subscribe({
