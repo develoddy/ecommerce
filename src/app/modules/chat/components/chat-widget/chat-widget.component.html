@@ -1,65 +1,67 @@
 <div class="chat-widget-container">
-  <!-- Botón flotante para abrir el chat -->
-  <div class="chat-button" [class.has-unread]="unreadCount > 0" (click)="openChat()" *ngIf="!isChatOpen">
-    <span class="chat-icon">
+  <!-- Floating toggle (keeps original bindings/directives) -->
+  <div class="chat-button" [class.has-unread]="unreadCount > 0" (click)="openChat()" *ngIf="!isChatOpen" role="button" aria-label="Abrir chat de soporte">
+    <span class="chat-button__icon chat-icon" aria-hidden="true">
       <i class="icon anm anm-envelope-o"></i>
     </span>
-    <span class="unread-badge" *ngIf="unreadCount > 0">{{unreadCount}}</span>
+    <span class="unread-badge" *ngIf="unreadCount > 0" aria-live="polite">{{unreadCount}}</span>
   </div>
 
-  <!-- Ventana de chat -->
-  <div class="chat-window" [class.open]="isChatOpen">
-    <!-- Cabecera del chat -->
-    <div class="chat-header">
-      <h3>Chat de soporte</h3>
+  <!-- Chat panel -->
+  <div class="chat-window" [class.open]="isChatOpen" [attr.aria-hidden]="!isChatOpen">
+    <!-- Header -->
+    <header class="chat-header">
+      <h3 class="chat-header__title">Chat de soporte</h3>
       <div class="chat-actions">
-        <button class="minimize-btn" (click)="closeChat()">
-          <i class="icon anm anm-minus-l"></i>
+        <button class="minimize-btn" (click)="closeChat()" aria-label="Minimizar chat">
+          <i class="icon anm anm-minus-l" aria-hidden="true"></i>
         </button>
       </div>
-    </div>
-    
-    <!-- Cuerpo del chat (mensajes) -->
-    <div class="chat-body" #messagesContainer>
-      <!-- Mensaje de bienvenida si no hay mensajes -->
+    </header>
+
+    <!-- Main content: messages -->
+    <main class="chat-body" #messagesContainer role="region" aria-live="polite">
+      <!-- Welcome placeholder when empty -->
       <div class="welcome-message" *ngIf="messages.length === 0">
         <p>¡Hola! ¿En qué podemos ayudarte hoy?</p>
       </div>
-      
-      <!-- Lista de mensajes -->
-      <div class="messages-list">
-        <div class="message-item" 
-             *ngFor="let message of messages" 
-             [class.user-message]="isSentByMe(message)"
-             [class.agent-message]="!isSentByMe(message) && !isSystemMessage(message)"
-             [class.system-message]="isSystemMessage(message)">
+
+      <!-- Messages list (semantic list for accessibility) -->
+      <ul class="messages-list" role="list">
+        <li class="message-item"
+            *ngFor="let message of messages"
+            [class.user-message]="isSentByMe(message)"
+            [class.agent-message]="!isSentByMe(message) && !isSystemMessage(message)"
+            [class.system-message]="isSystemMessage(message)"
+            role="listitem">
           <div class="message-content">
-            <p>{{message.message}}</p>
-            <span class="message-time">{{message.timestamp}}</span>
+            <p class="message-text">{{message.message}}</p>
+            <span class="message-time" aria-hidden="true">{{message.timestamp}}</span>
           </div>
-        </div>
-      </div>
-      
-      <!-- Indicador de "está escribiendo" -->
-      <div class="typing-indicator" *ngIf="typingStatus.isTyping">
+        </li>
+      </ul>
+
+      <!-- Typing indicator -->
+      <div class="typing-indicator" *ngIf="typingStatus.isTyping" role="status" aria-live="polite">
         <p>{{typingStatus.name}} está escribiendo...</p>
       </div>
-    </div>
-    
-    <!-- Pie del chat (formulario de envío) -->
-    <div class="chat-footer">
+    </main>
+
+    <!-- Footer / input -->
+    <footer class="chat-footer">
       <form (ngSubmit)="sendMessage()">
         <div class="message-input-container">
-          <textarea 
+          <textarea
             [formControl]="messageControl"
             placeholder="Escribe un mensaje..."
             (keydown)="handleEnter($event)"
+            aria-label="Escribe un mensaje"
           ></textarea>
-          <button type="submit" class="send-btn" [disabled]="messageControl.invalid">
-            <i class="icon anm anm-paper-plane-o"></i>
+          <button type="submit" class="send-btn" [disabled]="messageControl.invalid" aria-label="Enviar mensaje">
+            <i class="icon anm anm-paper-plane-o" aria-hidden="true"></i>
           </button>
         </div>
       </form>
-    </div>
+    </footer>
   </div>
 </div>
