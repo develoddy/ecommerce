@@ -306,3 +306,52 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
   .chat-window { height: calc(80vh); }
   .chat-button { width: 52px; height: 52px; }
 }
+
+/* Mobile full-screen behaviour for <= 768px */
+@media (max-width: 768px) {
+  /* Only apply fullscreen positioning when the window is actually open */
+  .chat-window.open {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: 2001;
+    background: $secondary-color;
+  }
+
+  /* Header sticky behavior only needed when the window is open/fullscreen */
+  .chat-window.open .chat-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  /* hide overlay by default; reveal it only when the chat-window is open */
+  .chat-overlay { display: none; }
+  .chat-window.open + .chat-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 2000;
+  }
+
+  .chat-window.open { z-index: 2001; }
+
+  /* style the action buttons (close/minimize) when visible in open state */
+  .chat-window.open .chat-actions { display:flex; gap:8px; align-items:center; }
+  .chat-window.open .chat-actions .close-btn,
+  .chat-window.open .chat-actions .minimize-btn {
+    background: transparent; color: $secondary-color; border: none; padding: 8px; border-radius: 8px; cursor: pointer;
+  }
+}

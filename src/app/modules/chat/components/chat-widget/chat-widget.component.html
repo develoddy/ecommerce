@@ -16,6 +16,10 @@
         <button class="minimize-btn" (click)="closeChat()" aria-label="Minimizar chat">
           <i class="icon anm anm-minus-l" aria-hidden="true"></i>
         </button>
+        <!-- full close button for mobile/fullscreen behaviour -->
+        <button class="close-btn" (click)="closeChat()" aria-label="Cerrar chat">
+          <i class="icon anm anm-times-l" aria-hidden="true"></i>
+        </button>
       </div>
     </header>
 
@@ -76,4 +80,6 @@
       </form>
     </footer>
   </div>
+  <!-- overlay shown on mobile when window is open (controlled via CSS) -->
+  <div class="chat-overlay" aria-hidden="true"></div>
 </div>
