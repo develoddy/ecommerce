@@ -75,6 +75,7 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
 
 // Ventana de chat
 .chat-window {
+  position: relative;
   width: 380px;
   max-width: calc(100vw - 40px);
   height: 620px; /* taller per request */
@@ -269,6 +270,76 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
 
       svg { width: 20px; height: 20px; }
     }
+  }
+}
+
+/* Confirmación minimalista de cierre (flotante en la parte inferior del panel) */
+.close-confirm {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 18px;
+  z-index: 2100;
+  display: flex;
+  justify-content: center;
+  pointer-events: auto;
+
+  &__content {
+    width: 100%;
+    max-width: 480px;
+    background: $secondary-color;
+    color: $primary-color;
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  &__title {
+    margin: 0 0 6px 0;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  &__text {
+    margin: 0 0 10px 0;
+    font-size: 13px;
+    color: $muted-color;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .btn {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .btn-abandon {
+    background: $primary-color;
+    color: $secondary-color;
+    border: none;
+  }
+
+  .btn-cancel {
+    background: $secondary-color;
+    color: $primary-color;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  /* Slight layout tweak on very small screens */
+  @media (max-width: 420px) {
+    left: 8px;
+    right: 8px;
+    bottom: 14px;
+    &__content { padding: 10px; }
+    .btn { padding: 7px 10px; font-size: 13px; }
   }
 }
 

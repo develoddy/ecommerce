@@ -19,6 +19,8 @@ export class ChatWidgetComponent implements OnInit, OnDestroy, AfterViewChecked 
   messageControl = new FormControl('', [Validators.required]);
   typingStatus: { isTyping: boolean, name: string } = { isTyping: false, name: '' };
   unreadCount = 0;
+  // Local flag to control showing the close-confirm popup
+  showCloseConfirm = false;
   
   // Para gestionar el estado de "está escribiendo"
   private typingSubject = new Subject<string>();
