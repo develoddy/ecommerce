@@ -1,8 +1,8 @@
 <div class="chat-widget-container">
   <!-- Floating toggle (keeps original bindings/directives) -->
-  <div class="chat-button" [class.has-unread]="unreadCount > 0" (click)="openChat()" *ngIf="!isChatOpen" role="button" aria-label="Abrir chat de soporte">
+  <div class="chat-button" [class.has-unread]="unreadCount > 0" (click)="openChat()" *ngIf="!isChatOpen" role="button" aria-label="Lujandev Assistant">
     <span class="chat-button__icon chat-icon" aria-hidden="true">
-      <i class="icon anm anm-envelope-o"></i>
+      <i class="icon anm anm-chat"></i>
     </span>
     <span class="unread-badge" *ngIf="unreadCount > 0" aria-live="polite">{{unreadCount}}</span>
   </div>
@@ -11,7 +11,7 @@
   <div class="chat-window" [class.open]="isChatOpen" [attr.aria-hidden]="!isChatOpen">
     <!-- Header -->
     <header class="chat-header">
-      <h3 class="chat-header__title">Chat de soporte</h3>
+      <h3 class="chat-header__title text-white text-uppercase fw-light">Lujandev Assistant</h3>
       <div class="chat-actions">
         <button class="minimize-btn" (click)="closeChat()" aria-label="Minimizar chat">
           <i class="icon anm anm-minus-l" aria-hidden="true"></i>
@@ -51,15 +51,27 @@
     <footer class="chat-footer">
       <form (ngSubmit)="sendMessage()">
         <div class="message-input-container">
-          <textarea
-            [formControl]="messageControl"
-            placeholder="Escribe un mensaje..."
-            (keydown)="handleEnter($event)"
-            aria-label="Escribe un mensaje"
-          ></textarea>
-          <button type="submit" class="send-btn" [disabled]="messageControl.invalid" aria-label="Enviar mensaje">
-            <i class="icon anm anm-paper-plane-o" aria-hidden="true"></i>
-          </button>
+          <div class="input-wrapper">
+            <textarea
+              [formControl]="messageControl"
+              placeholder="Pregunta lo que quieras"
+              (keydown)="handleEnter($event)"
+              aria-label="Escribe un mensaje"
+            ></textarea>
+
+            <!-- send button placed inside input wrapper; keep bindings intact -->
+            <button type="submit" class="send-btn" [disabled]="messageControl.invalid" aria-label="Enviar mensaje">
+              <!-- inline svg icon preserved -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" style="fill: currentcolor;" aria-hidden="true" class="Icon_icon-content-brand__AKwiy"><path d="m5.4 10.1-.7-.7L12 2l7.4 7.4-.7.7L12.6 4v18h-1V3.9z"></path></svg>
+            </button>
+
+            
+          </div>
+
+          <div class="lh-1 align-self-start">
+              <small class="text-muted fw-light fs-10">Al continuar, confirmas que has leído la <a class="text-black fw-bold" href="#" onclick="return false;" data-testid="mng-link" target="">Política de privacidad</a></small>
+            </div>
+          
         </div>
       </form>
     </footer>
