@@ -485,6 +485,10 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
     height: 100vh;
     overflow: hidden; /* prevent double scrolling */
     overscroll-behavior: contain; /* avoid scroll chaining to body */
+    overflow-x: hidden; /* prevent horizontal scroll */
+    touch-action: pan-y; /* allow vertical scrolling inside, prevent horizontal gestures */
+    max-width: 100vw;
+    max-height: 100vh;
   }
 
   .chat-window.open .close-confirm {
@@ -506,6 +510,9 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
+    overflow-x: hidden; /* prevent horizontal scroll inside messages list */
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   /* Keep footer sticky by default, but when an input inside the window is focused
