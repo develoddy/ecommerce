@@ -27,6 +27,12 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
 /* Prevent any horizontal scroll globally (chat UI shouldn't cause page shift) */
 html, body { overflow-x: hidden; }
 
+/* When chat is fullscreen we lock the background to avoid double scrollbars on iOS */
+.chat-fullscreen-active, .chat-fullscreen-active body {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
 // Botón de chat
 .chat-button {
   width: 64px;
@@ -456,6 +462,8 @@ html, body { overflow-x: hidden; }
     pointer-events: auto !important;
     z-index: 2001;
     background: $secondary-color;
+    /* make stacking context predictable */
+    -webkit-transform: none;
   }
 
   /* Improve iOS Safari behavior when visual viewport changes (keyboard open) */
@@ -528,12 +536,13 @@ html, body { overflow-x: hidden; }
 
   /* Add extra bottom padding so chat content can scroll above the keyboard; footer stays sticky */
   .chat-window.open .chat-body {
-    /* Use per-window computed height when available so body fits visual viewport
-       and leaves space for header/footer. Fallback to sensible calc. */
-    height: var(--chat-body-height, calc(100vh - 160px));
-    max-height: var(--chat-body-height, calc(100vh - 160px));
-    padding-bottom: calc(12px + env(safe-area-inset-bottom));
-    transition: padding-bottom 180ms ease;
+    /* Compute height from visual viewport minus header/footer (published by JS) */
+    height: calc(var(--vvh, 100vh) - var(--header-h, 56px) - var(--footer-h, 72px));
+    max-height: calc(var(--vvh, 100vh) - var(--header-h, 56px) - var(--footer-h, 72px));
+    /* leave space for the footer and safe-area
+       footer height is taken from --footer-h (JS publishes it) */
+    padding-bottom: calc(var(--footer-h, 72px) + 12px + env(safe-area-inset-bottom));
+    transition: none; /* no animated bottom/height changes to avoid jumps */
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
@@ -553,9 +562,9 @@ html, body { overflow-x: hidden; }
     z-index: 99999 !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    /* force compositor layer and ensure touch events are delivered */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    /* avoid unnecessary transforms; only use compositing hints sparingly */
+    -webkit-transform: none;
+    transform: none;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     pointer-events: auto;
@@ -578,10 +587,10 @@ html, body { overflow-x: hidden; }
     bottom: calc(var(--keyboard-offset, 0px) + 30px + env(safe-area-inset-bottom));
     z-index: 30;
     background: $secondary-color;
-    transition: bottom 180ms ease, transform 160ms ease;
-    /* improve touch responsiveness on iOS Safari */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    transition: none; /* avoid animated bottom to prevent jumps on iOS */
+    /* avoid unnecessary transforms */
+    -webkit-transform: none;
+    transform: none;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
@@ -603,8 +612,8 @@ html, body { overflow-x: hidden; }
     box-shadow: none;
     /* no transition so it stays fixed immediately when keyboard appears */
     transition: none;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    -webkit-transform: none;
+    transform: none;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }

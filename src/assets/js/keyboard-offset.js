@@ -102,55 +102,67 @@
   window.addEventListener('resize', rAFUpdate, { passive: true });
   window.addEventListener('orientationchange', () => setTimeout(rAFUpdate, 120));
 
-  // Conservative delegated iOS fallback for .send-btn ONLY when element opts-in with
-  // data-ios-send-fallback="true". Does not prevent native events; synthesizes click
-  // only if no native click arrives shortly after touchend.
-  (function delegatedSendFallback() {
-    const isIOS = typeof navigator !== 'undefined' && /iP(hone|od|ad)/i.test(navigator.userAgent);
-    if (!isIOS) return;
+  // Locking page scroll when chat is fullscreen
+  // This prevents iOS Safari from showing dual scrollbars and allows the chat to
+  // control its own viewport. We add/remove a class on <html> and fix body positioning.
+  (function fullscreenLock() {
+    let locked = false;
+    let savedScroll = 0;
 
-    document.addEventListener('click', function (ev) {
+    function lock() {
+      if (locked) return;
       try {
-        const btn = ev.target && ev.target.closest ? ev.target.closest('[data-send-btn], .send-btn') : null;
-        if (btn) nativeClickMap.set(btn, Date.now());
+        savedScroll = window.scrollY || window.pageYOffset || 0;
+        document.documentElement.classList.add('chat-fullscreen-active');
+        // Fix body to prevent background scroll; store inline styles to restore later
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${savedScroll}px`;
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+        locked = true;
       } catch (e) {}
-    }, true);
+    }
 
-    document.addEventListener('touchstart', function (ev) {
+    function unlock() {
+      if (!locked) return;
       try {
-        const btn = ev.target && ev.target.closest ? ev.target.closest('[data-send-btn], .send-btn') : null;
-        if (!btn) return;
-        btn.__ecom_touch_started = Date.now();
+        document.documentElement.classList.remove('chat-fullscreen-active');
+        // restore scroll
+        const top = document.body.style.top || '';
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        // restore previous scroll position
+        const to = parseInt((top || '0').replace('-', '').replace('px',''), 10) || savedScroll;
+        window.scrollTo(0, to);
+        locked = false;
       } catch (e) {}
-    }, { passive: true });
+    }
 
-    document.addEventListener('touchend', function (ev) {
+    function check() {
       try {
-        const target = ev.target || ev.srcElement;
-        const btn = target && target.closest ? target.closest('[data-send-btn], .send-btn') : null;
-        if (!btn) return;
-        if (btn.getAttribute('data-ios-send-fallback') !== 'true') return; // opt-in only
-        const keyboardOpen = root.classList.contains('vv-keyboard-open');
-        if (!keyboardOpen) return;
-
-        const lastNative = nativeClickMap.get(btn) || 0;
-        const now = Date.now();
-        if (now - lastNative < 150) return;
-
-        const lastSynth = parseInt(btn.getAttribute('data-ecom-last-synth') || '0', 10);
-        if (now - lastSynth < 500) return;
-
-        setTimeout(() => {
-          const lastNativeLater = nativeClickMap.get(btn) || 0;
-          if (Date.now() - lastNativeLater < 150) return; // native arrived
-          try {
-            btn.setAttribute('data-ecom-last-synth', String(Date.now()));
-            const clickEvent = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
-            btn.dispatchEvent(clickEvent);
-          } catch (e) {}
-        }, 90);
+        const anyOpen = !!document.querySelector('.chat-window.open');
+        if (anyOpen) lock(); else unlock();
       } catch (e) {}
-    }, { passive: true });
+    }
+
+    // run checks on viewport changes and focus events
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', check, { passive: true });
+      window.visualViewport.addEventListener('scroll', check, { passive: true });
+    }
+    document.addEventListener('focusin', () => setTimeout(check, 50));
+    document.addEventListener('focusout', () => setTimeout(check, 120));
+    window.addEventListener('resize', check, { passive: true });
+    window.addEventListener('orientationchange', () => setTimeout(check, 120));
+
+    // initial check
+    check();
   })();
 
   // initial
