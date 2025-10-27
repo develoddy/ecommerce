@@ -148,10 +148,10 @@
                                         <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
                                         <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                             <span class="price-small fw-light old-price text-decoration-line-through text-muted">
+                                                <span class="me-1">{{ euro }}</span>
                                                 <span class="">{{ getFormattedPrice(getOriginalSubtotal()).integerPart }}.</span>
                                                 <span class="">
                                                     <span>{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
-                                                    <span class="">{{ euro }}</span>
                                                 </span>
                                             </span>
                                         </span>
@@ -162,10 +162,10 @@
                                         <span class="col-6 col-sm-6 cart-subtotal-title fw-light text-danger">Descuento aplicado</span>
                                         <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
                                             <span class="price-small fw-light">
+                                                <span class="me-1">{{ euro }}</span>
                                                 -<span class="">{{ getFormattedPrice(getTotalDiscount()).integerPart }}.</span>
                                                 <span class="">
                                                     <span>{{ getFormattedPrice(getTotalDiscount()).decimalPart }}</span>
-                                                    <span class="">{{ euro }}</span>
                                                 </span>
                                             </span>
                                         </span>
@@ -176,10 +176,10 @@
                                         <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
                                         <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                             <span class="price-small fw-light">
+                                                <span class="me-1">{{ euro }}</span>
                                                 <span class="">{{ getFormattedPrice(totalCarts).integerPart }}.</span>
                                                 <span class="">
                                                     <span>{{ getFormattedPrice(totalCarts).decimalPart }}</span>
-                                                    <span class="">{{ euro }}</span>
                                                 </span>
                                             </span>
                                         </span>
@@ -199,10 +199,10 @@
                                     <span class="col-6 col-sm-6 cart-subtotal-title fs-5 text-uppercase fw-bold">Total</span>
                                     <span class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end">
                                         <span class="money price fw-bold">
+                                            <span class="me-1">{{ euro }}</span>
                                             <span class="">{{ getFormattedPrice(totalCarts).integerPart }}.</span>
                                             <span class="">
                                                 <span>{{ getFormattedPrice(totalCarts).decimalPart }}</span>
-                                                <span class="">{{ euro }}</span>
                                             </span>
                                         </span>
                                     </span>
