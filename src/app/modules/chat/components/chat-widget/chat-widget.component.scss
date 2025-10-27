@@ -532,9 +532,9 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
        and still respect safe-area inset. If the variable is not set, fallback to 12px. */
     bottom: calc(var(--keyboard-offset, 0px) + 12px + env(safe-area-inset-bottom));
     z-index: 99998;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    box-shadow: 0 -6px 18px rgba(0,0,0,0.07);
+    /* When keyboard is visible and footer is pinned, make it fully rectangular and minimalistic */
+    border-radius: 0;
+    box-shadow: none;
     /* no transition so it stays fixed immediately when keyboard appears */
     transition: none;
   }
