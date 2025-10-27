@@ -29,14 +29,26 @@
       const vv = window.visualViewport;
       const keyboard = Math.max(0, window.innerHeight - vv.height - (vv.offsetTop || 0));
       // Some browsers may report small differences; clamp to integer
-      setOffset(Math.round(keyboard));
+      const k = Math.round(keyboard);
+      setOffset(k);
       // publish visual viewport height so CSS can use it instead of 100vh
       setViewportHeight(vv.height);
+
+      // Toggle a class on the root when keyboard appears (threshold > 60px)
+      if (k > 60) {
+        document.documentElement.classList.add('vv-keyboard-open');
+      } else {
+        document.documentElement.classList.remove('vv-keyboard-open');
+      }
+      // Force a tiny reflow to help Safari update hit testing/layers
+      // eslint-disable-next-line no-unused-expressions
+      document.documentElement.offsetHeight;
     } else {
       // Fallback: no reliable API; assume 0
       setOffset(0);
       // fallback to window.innerHeight
       setViewportHeight(window.innerHeight || 0);
+      document.documentElement.classList.remove('vv-keyboard-open');
     }
   }
 

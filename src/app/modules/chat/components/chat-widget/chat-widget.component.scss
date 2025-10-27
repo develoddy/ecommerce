@@ -448,6 +448,17 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
     background: $secondary-color;
   }
 
+  /* Improve iOS Safari behavior when visual viewport changes (keyboard open) */
+  .vv-keyboard-open .chat-window.open {
+    /* ensure the panel uses visual viewport height and no overflow */
+    height: var(--vvh, 100vh) !important;
+    max-height: var(--vvh, 100vh) !important;
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: auto !important; /* avoid buggy bounce in some iOS builds */
+  }
+
   /* Header sticky behavior only needed when the window is open/fullscreen */
   .chat-window.open .chat-header {
     position: sticky;
@@ -514,6 +525,33 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
     overflow-x: hidden; /* prevent horizontal scroll inside messages list */
     max-width: 100%;
     box-sizing: border-box;
+  }
+
+  /* When visual viewport indicates keyboard open, improve footer layering & touch */
+  .vv-keyboard-open .chat-window.open:focus-within .chat-footer,
+  .vv-keyboard-open .chat-window.open .chat-footer {
+    /* ensure footer is fixed and above keyboard */
+    position: fixed !important;
+    left: calc(0px + env(safe-area-inset-left));
+    right: calc(0px + env(safe-area-inset-right));
+    bottom: calc(var(--keyboard-offset, 0px) + env(safe-area-inset-bottom));
+    z-index: 99999 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    /* force compositor layer and ensure touch events are delivered */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    pointer-events: auto;
+  }
+
+  /* Ensure the send button is promoted to its own layer for responsiveness */
+  .vv-keyboard-open .chat-window.open .chat-footer .send-btn {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    pointer-events: auto;
+    touch-action: manipulation;
   }
 
   /* Keep footer sticky by default, but when an input inside the window is focused
