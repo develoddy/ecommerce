@@ -328,7 +328,7 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
     max-width: 480px;
     background: $secondary-color;
     color: $primary-color;
-    border-radius: 12px;
+    border-radius: 0px;
     padding: 12px 14px;
     box-shadow: 0 8px 28px rgba(0,0,0,0.12);
     border: 1px solid rgba(0,0,0,0.06);
@@ -344,6 +344,7 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
     margin: 0 0 6px 0;
     font-size: 14px;
     font-weight: 700;
+    text-transform: uppercase;
   }
 
   &__text {
@@ -354,9 +355,9 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
 
   &__actions {
     display: flex;
+    flex-direction: column;
     gap: 8px;
-    justify-content: flex-end;
-    align-items: center;
+    justify-content: center;
   }
 
   .btn {
@@ -384,7 +385,7 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
     right: 8px;
     /* push a bit more on very small screens to avoid Safari bars */
     bottom: calc(14px + env(safe-area-inset-bottom));
-    &__content { padding: 10px; }
+    &__content { padding: 15px; }
     .btn { padding: 7px 10px; font-size: 13px; }
   }
 }
@@ -544,9 +545,9 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
   .chat-window.open .close-confirm {
     position: fixed;
     /* keep a small gap from screen edges and respect safe-area */
-    left: calc(12px + env(safe-area-inset-left));
-    right: calc(12px + env(safe-area-inset-right));
-    bottom: calc(18px + env(safe-area-inset-bottom));
+    left: calc(0px + env(safe-area-inset-left));
+    right: calc(0px + env(safe-area-inset-right));
+    bottom: calc(0px + env(safe-area-inset-bottom));
     z-index: 99999; /* ensure above everything */
     display: flex;
     justify-content: center;
