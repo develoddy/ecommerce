@@ -93,10 +93,10 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
 // Ventana de chat
 .chat-window {
   position: relative;
-  width: 380px;
+  width: 440px;
   max-width: calc(100vw - 40px);
-  height: 620px; /* taller per request */
-  max-height: calc(100vh - 120px);
+  height: 960px; /* taller per request */
+  max-height: calc(100vh - 110px);
   background-color: $secondary-color;
   border-radius: 0px;
   box-shadow: $shadow;
@@ -163,7 +163,7 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
   background-color: $secondary-color; /* white */
 
   .welcome-message {
-    text-align: center;
+    text-align: start;
     color: $muted-color;
     margin: 18px 0;
 
@@ -269,7 +269,7 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
       border-bottom: 1px solid $primary-color; /* thin bottom border */
       transition: border-color 160ms ease, box-shadow 160ms ease;
 
-      &::placeholder { color: rgba(114, 112, 112, 0.45); }
+      &::placeholder { color: #8a8a8a; }
       // &:focus { outline: none; border-bottom-color: rgba(255,255,255,0.9); }
     }
 
@@ -311,12 +311,12 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
   right: 12px;
   bottom: 18px;
   /* Older iOS Safari used constant(); modern browsers use env(). Provide both fallbacks. */
-  bottom: calc(18px + constant(safe-area-inset-bottom));
-  bottom: calc(18px + env(safe-area-inset-bottom));
-  left: calc(12px + constant(safe-area-inset-left));
-  left: calc(12px + env(safe-area-inset-left));
-  right: calc(12px + constant(safe-area-inset-right));
-  right: calc(12px + env(safe-area-inset-right));
+  bottom: calc(0px + constant(safe-area-inset-bottom));
+  bottom: calc(0px + env(safe-area-inset-bottom));
+  left: calc(0px + constant(safe-area-inset-left));
+  left: calc(0px + env(safe-area-inset-left));
+  right: calc(0px + constant(safe-area-inset-right));
+  right: calc(0px + env(safe-area-inset-right));
   /* Ensure popup sits above everything else in the app */
   z-index: 99999;
   display: flex;
