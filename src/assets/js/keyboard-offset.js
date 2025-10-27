@@ -40,6 +40,32 @@
       } else {
         document.documentElement.classList.remove('vv-keyboard-open');
       }
+
+      // Adjust any open chat-window and its chat-body to match the visual viewport
+      try {
+        const chatWindows = document.querySelectorAll('.chat-window.open');
+        chatWindows.forEach(win => {
+          // Set the panel height to visual viewport height so fixed/fullscreen matches
+          win.style.height = vv.height + 'px';
+          win.style.maxHeight = vv.height + 'px';
+          // compute available body height (subtract header/footer if present)
+          const header = win.querySelector('.chat-header');
+          const footer = win.querySelector('.chat-footer');
+          const body = win.querySelector('.chat-body');
+          const headerH = header ? header.offsetHeight : 0;
+          const footerH = footer ? footer.offsetHeight : 0;
+          if (body) {
+            const avail = Math.max(48, vv.height - headerH - footerH);
+            body.style.height = avail + 'px';
+            body.style.maxHeight = avail + 'px';
+            body.style.overflowY = 'auto';
+            body.style['-webkit-overflow-scrolling'] = 'touch';
+          }
+        });
+      } catch (e) {
+        // ignore DOM errors
+      }
+
       // Force a tiny reflow to help Safari update hit testing/layers
       // eslint-disable-next-line no-unused-expressions
       document.documentElement.offsetHeight;
@@ -84,6 +110,31 @@
   // On resize/orientation change
   window.addEventListener('resize', rAFUpdate, { passive: true });
   window.addEventListener('orientationchange', () => setTimeout(rAFUpdate, 120));
+
+  // iOS Safari touch workaround: ensure send button receives taps while keyboard visible
+  (function ensureSendButtonTouch() {
+    const isIOS = typeof navigator !== 'undefined' && /iP(hone|od|ad)/i.test(navigator.userAgent);
+    if (!isIOS) return;
+
+    // Delegate touchend on send buttons to guarantee click
+    document.addEventListener('touchend', function (ev) {
+      try {
+        const target = ev.target || ev.srcElement;
+        const btn = target.closest ? target.closest('.send-btn') : null;
+        if (btn) {
+          // If the visual viewport indicates keyboard open, synthesize a click to ensure handler runs
+          const keyboardOpen = document.documentElement.classList.contains('vv-keyboard-open');
+          if (keyboardOpen) {
+            // prevent duplicate activation if the element already handled the touch
+            ev.preventDefault();
+            btn.click();
+          }
+        }
+      } catch (e) {
+        // ignore
+      }
+    }, { passive: false });
+  })();
 
   // Initial set
   updateOffset();
