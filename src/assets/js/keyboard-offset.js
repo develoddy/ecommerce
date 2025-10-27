@@ -122,6 +122,7 @@
         document.body.style.width = '100%';
         document.body.style.overflow = 'hidden';
         locked = true;
+        try { rAFUpdate(); } catch (e) {}
       } catch (e) {}
     }
 
@@ -141,6 +142,7 @@
         const to = parseInt((top || '0').replace('-', '').replace('px',''), 10) || savedScroll;
         window.scrollTo(0, to);
         locked = false;
+        try { rAFUpdate(); } catch (e) {}
       } catch (e) {}
     }
 

@@ -155,12 +155,11 @@ html, body { overflow-x: hidden; }
   .chat-body {
   flex: 1 1 auto;
   padding: 20px;
-  /* chat-body is the only scrolling region */
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
-  overscroll-behavior: contain;
+  /* Make chat-body a column flex container; the messages-list will be the scrolling region.
+     This improves touch handling on iOS where the immediate scrolling element must receive the touches. */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* hide overflow here; messages-list will scroll */
   background-color: $secondary-color; /* white */
 
   .welcome-message {
@@ -176,6 +175,13 @@ html, body { overflow-x: hidden; }
     flex-direction: column;
     gap: 12px;
     padding: 6px 0;
+    /* Make the messages-list the native scrolling container on iOS */
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior: contain;
   }
 
   .message-item {
@@ -541,7 +547,7 @@ html, body { overflow-x: hidden; }
     max-height: calc(var(--vvh, 100vh) - var(--header-h, 56px) - var(--footer-h, 72px));
     /* leave space for the footer and safe-area
        footer height is taken from --footer-h (JS publishes it) */
-    padding-bottom: calc(var(--footer-h, 72px) + 12px + env(safe-area-inset-bottom));
+    // padding-bottom: calc(var(--footer-h, 72px) + 12px + env(safe-area-inset-bottom));
     transition: none; /* no animated bottom/height changes to avoid jumps */
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -595,9 +601,9 @@ html, body { overflow-x: hidden; }
     -webkit-tap-highlight-color: transparent;
   }
 
-  .chat-window.open:focus-within .chat-body {
-    padding-bottom: calc(220px + env(safe-area-inset-bottom));
-  }
+  // .chat-window.open:focus-within .chat-body {
+  //   padding-bottom: calc(220px + env(safe-area-inset-bottom));
+  // }
 
   .chat-window.open:focus-within .chat-footer {
     position: fixed;
