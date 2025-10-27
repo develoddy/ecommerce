@@ -533,7 +533,7 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
   width: 100vw;
   /* Use visual viewport height variable set by JS to avoid iOS 100vh bugs */
   height: var(--vvh, 100vh);
-  overflow: hidden; /* prevent double scrolling */
+  /*overflow: hidden;*/ /* prevent double scrolling */
   overscroll-behavior: contain; /* avoid scroll chaining to body */
   overflow-x: hidden; /* prevent horizontal scroll */
     touch-action: pan-y; /* allow vertical scrolling inside, prevent horizontal gestures */
@@ -555,25 +555,27 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
 
   /* Add extra bottom padding so chat content can scroll above the keyboard; footer stays sticky */
   .chat-window.open .chat-body {
-    /* Compute height from visual viewport minus header/footer (CSS vars with sensible defaults) */
-    height: calc(var(--vvh, 100vh) - var(--header-h, 56px) - var(--footer-h, 72px));
-    max-height: calc(var(--vvh, 100vh) - var(--header-h, 56px) - var(--footer-h, 72px));
-    /* Add padding to the bottom equal to footer height + safe-area so messages
-       are never hidden beneath the sticky footer or the iOS bottom chrome. */
-  padding-bottom: calc(var(--footer-h, 72px) + env(safe-area-inset-bottom, 0px) + var(--browser-nav-h, 48px));
-    transition: none; /* no animated bottom/height changes to avoid jumps */
-    overflow-y: auto;
+    // height: calc(var(--vvh, 100vh) - var(--header-h, 56px) - var(--footer-h, 72px));
+    // max-height: calc(var(--vvh, 100vh) - var(--header-h, 56px) - var(--footer-h, 72px));
+    // padding-bottom: calc(var(--footer-h, 72px) + env(safe-area-inset-bottom, 0px) + var(--browser-nav-h, 48px));
+    // transition: none; 
+    // overflow-y: auto;
+    height: 100%;
+  max-height: 100%;
+  padding-bottom: 0;    /* ya no necesitamos padding extra */
+  overflow: hidden;     /* quita scroll vertical */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    overflow-x: hidden; /* prevent horizontal scroll inside messages list */
+    overflow-x: hidden; 
     max-width: 100%;
     box-sizing: border-box;
   }
 
   /* Ensure the scrolling messages list leaves room for footer + safe-area */
-  .chat-window.open .messages-list {
-    padding-bottom: calc(var(--footer-h, 72px) + env(safe-area-inset-bottom, 0px) + var(--browser-nav-h, 48px) + 12px);
-  }
+   .chat-window.open .messages-list {
+     padding-bottom: calc(var(--footer-h, 72px) + env(safe-area-inset-bottom, 0px) + var(--browser-nav-h, 48px) + 12px);
+   }
+  
 
   /* Keep footer sticky and visible at the bottom of the chat container. 
      We avoid position:fixed to prevent layout jumps; the chat-window height
