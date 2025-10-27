@@ -33,7 +33,13 @@
     try {
       const chatWindows = document.querySelectorAll('.chat-window.open');
       chatWindows.forEach(win => {
+        // publish visual viewport and also apply explicit inline height so Safari
+        // uses the current visual viewport for the fixed fullscreen panel
         setVar(win, '--vvh', Math.round(vv.height) + 'px');
+        try {
+          win.style.height = Math.round(vv.height) + 'px';
+          win.style.maxHeight = Math.round(vv.height) + 'px';
+        } catch (e) {}
         const header = win.querySelector('.chat-header');
         const footer = win.querySelector('.chat-footer');
         const headerH = header ? header.offsetHeight : 0;
@@ -48,12 +54,16 @@
         if (messagesList && !observers.has(messagesList)) {
           try {
             const mo = new MutationObserver(() => {
-              const el = messagesList;
-              // consider user at bottom only if within 40px
-              const atBottom = (el.scrollHeight - el.scrollTop - el.clientHeight) < 40;
-              if (atBottom) {
-                requestAnimationFrame(() => { try { el.scrollTop = el.scrollHeight; } catch (e) {} });
-              }
+              // Delay slightly to ensure DOM updated after Angular inserts nodes
+              setTimeout(() => {
+                try {
+                  const el = messagesList;
+                  // If user is at (or near) bottom, auto-scroll to new message
+                  if ((el.scrollHeight - el.scrollTop - el.clientHeight) < 60) {
+                    try { el.scrollTop = el.scrollHeight; } catch (e) {}
+                  }
+                } catch (e) {}
+              }, 50);
             });
             mo.observe(messagesList, { childList: true, subtree: true });
             observers.set(messagesList, mo);
@@ -75,10 +85,13 @@
 
       updateForChatWindows(vv);
 
-      // gentle reflow to help Safari recalc layers/hit-testing
-      // eslint-disable-next-line no-unused-expressions
-      document.documentElement.offsetHeight;
-      requestAnimationFrame(() => { updateForChatWindows(vv); });
+  // gentle reflow to help Safari recalc layers/hit-testing
+  // eslint-disable-next-line no-unused-expressions
+  document.documentElement.offsetHeight;
+  // immediate rAF update
+  requestAnimationFrame(() => { updateForChatWindows(vv); });
+  // also re-apply after a short delay to let Safari stabilize when keyboard opens
+  setTimeout(() => { try { updateForChatWindows(vv); } catch (e) {} }, 50);
     } else {
       setOffset(0);
       setViewportHeight(window.innerHeight || 0);
