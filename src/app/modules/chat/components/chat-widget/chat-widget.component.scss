@@ -474,6 +474,19 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
   }
 
   /* Make the confirmation popup fixed on mobile so it remains above virtual keyboard and browser UI */
+  .chat-window.open {
+    /* ensure the open panel is fixed to viewport and doesn't allow the page behind to scroll */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* prevent double scrolling */
+    overscroll-behavior: contain; /* avoid scroll chaining to body */
+  }
+
   .chat-window.open .close-confirm {
     position: fixed;
     /* keep a small gap from screen edges and respect safe-area */
@@ -490,6 +503,9 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
   .chat-window.open .chat-body {
     padding-bottom: calc(140px + env(safe-area-inset-bottom));
     transition: padding-bottom 180ms ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
   /* Keep footer sticky by default, but when an input inside the window is focused
@@ -497,7 +513,8 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
      using safe-area insets. Use :focus-within so no TS is required. */
   .chat-window.open .chat-footer {
     position: sticky;
-    bottom: calc(18px + env(safe-area-inset-bottom));
+    /* Raise the footer a bit by default so it stays above browser UI when not focused */
+    bottom: calc(var(--keyboard-offset, 0px) + 30px + env(safe-area-inset-bottom));
     z-index: 30;
     background: $secondary-color;
     transition: bottom 180ms ease, transform 160ms ease;
