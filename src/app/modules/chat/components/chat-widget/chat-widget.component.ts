@@ -114,6 +114,28 @@ export class ChatWidgetComponent implements OnInit, OnDestroy, AfterViewChecked 
   closeChat(): void {
     this.chatService.closeChat();
   }
+
+  /**
+   * Confirma el abandono de la conversación: cerrar sesión, limpiar estado local
+   * y asegurarse de que el popup no reaparezca.
+   */
+  confirmAbandon(): void {
+    // Close the confirmation UI first so it doesn't show when reopening
+    this.showCloseConfirm = false;
+
+    // End the chat session on the service (clears session, messages, socket)
+    try {
+      this.chatService.endChat();
+    } catch (err) {
+      console.error('Error ending chat session:', err);
+    }
+
+    // Clear local state to ensure UI is fresh when reopened
+    this.messages = [];
+    try { this.messageControl.reset(); } catch (e) {}
+    // Force change detection to update template immediately
+    try { this.cdr.detectChanges(); } catch (e) {}
+  }
   
   /**
    * Envía un mensaje al chat
