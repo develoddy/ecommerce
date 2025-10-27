@@ -31,7 +31,7 @@
       </div>
 
       <!-- Messages list (semantic list for accessibility) -->
-  <ul class="messages-list border border-primary" data-chat-messages role="list">
+  <ul class="messages-list" data-chat-messages role="list">
         <li class="message-item"
             *ngFor="let message of messages"
             [class.user-message]="isSentByMe(message)"
