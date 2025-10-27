@@ -49,7 +49,8 @@
           try {
             const mo = new MutationObserver(() => {
               const el = messagesList;
-              const atBottom = (el.scrollHeight - el.scrollTop - el.clientHeight) < 80;
+              // consider user at bottom only if within 40px
+              const atBottom = (el.scrollHeight - el.scrollTop - el.clientHeight) < 40;
               if (atBottom) {
                 requestAnimationFrame(() => { try { el.scrollTop = el.scrollHeight; } catch (e) {} });
               }
@@ -112,15 +113,7 @@
     function lock() {
       if (locked) return;
       try {
-        savedScroll = window.scrollY || window.pageYOffset || 0;
         document.documentElement.classList.add('chat-fullscreen-active');
-        // Fix body to prevent background scroll; store inline styles to restore later
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${savedScroll}px`;
-        document.body.style.left = '0';
-        document.body.style.right = '0';
-        document.body.style.width = '100%';
-        document.body.style.overflow = 'hidden';
         locked = true;
         try { rAFUpdate(); } catch (e) {}
       } catch (e) {}
@@ -130,17 +123,6 @@
       if (!locked) return;
       try {
         document.documentElement.classList.remove('chat-fullscreen-active');
-        // restore scroll
-        const top = document.body.style.top || '';
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.left = '';
-        document.body.style.right = '';
-        document.body.style.width = '';
-        document.body.style.overflow = '';
-        // restore previous scroll position
-        const to = parseInt((top || '0').replace('-', '').replace('px',''), 10) || savedScroll;
-        window.scrollTo(0, to);
         locked = false;
         try { rAFUpdate(); } catch (e) {}
       } catch (e) {}

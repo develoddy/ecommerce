@@ -557,29 +557,23 @@ html, body { overflow-x: hidden; }
     box-sizing: border-box;
   }
 
-  /* When visual viewport indicates keyboard open, improve footer layering & touch */
-  .vv-keyboard-open .chat-window.open:focus-within .chat-footer,
-  .vv-keyboard-open .chat-window.open .chat-footer {
-    /* ensure footer is fixed and above keyboard */
-    position: fixed !important;
-    left: calc(0px + env(safe-area-inset-left));
-    right: calc(0px + env(safe-area-inset-right));
-    bottom: calc(var(--keyboard-offset, 0px) + env(safe-area-inset-bottom));
-    z-index: 99999 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    /* avoid unnecessary transforms; only use compositing hints sparingly */
+  /* Keep footer sticky and visible at the bottom of the chat container. 
+     We avoid position:fixed to prevent layout jumps; the chat-window height
+     is controlled by --vvh so sticky bottom lines up with viewport bottom. */
+  .chat-window.open .chat-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 40;
+    background: $secondary-color;
+    transition: none;
     -webkit-transform: none;
     transform: none;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
-    pointer-events: auto;
   }
 
-  /* Ensure the send button is promoted to its own layer for responsiveness */
-  .vv-keyboard-open .chat-window.open .chat-footer .send-btn {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+  /* Ensure the send button is interactive without forcing transforms */
+  .chat-window.open .chat-footer .send-btn {
     pointer-events: auto;
     touch-action: manipulation;
   }
@@ -587,40 +581,5 @@ html, body { overflow-x: hidden; }
   /* Keep footer sticky by default, but when an input inside the window is focused
      (virtual keyboard likely visible), pin the footer to the viewport above the keyboard
      using safe-area insets. Use :focus-within so no TS is required. */
-  .chat-window.open .chat-footer {
-    position: sticky;
-    /* Raise the footer a bit by default so it stays above browser UI when not focused */
-    bottom: calc(var(--keyboard-offset, 0px) + 30px + env(safe-area-inset-bottom));
-    z-index: 30;
-    background: $secondary-color;
-    transition: none; /* avoid animated bottom to prevent jumps on iOS */
-    /* avoid unnecessary transforms */
-    -webkit-transform: none;
-    transform: none;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  // .chat-window.open:focus-within .chat-body {
-  //   padding-bottom: calc(220px + env(safe-area-inset-bottom));
-  // }
-
-  .chat-window.open:focus-within .chat-footer {
-    position: fixed;
-    left: calc(0px + env(safe-area-inset-left));
-    right: calc(0px + env(safe-area-inset-right));
-    /* Use CSS variable set by assets/js/keyboard-offset.js to lift footer above the virtual keyboard
-       and still respect safe-area inset. If the variable is not set, fallback to 12px. */
-    bottom: calc(var(--keyboard-offset, 0px) + 12px + env(safe-area-inset-bottom));
-    z-index: 99998;
-    /* When keyboard is visible and footer is pinned, make it fully rectangular and minimalistic */
-    border-radius: 0;
-    box-shadow: none;
-    /* no transition so it stays fixed immediately when keyboard appears */
-    transition: none;
-    -webkit-transform: none;
-    transform: none;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-  }
+  
 }
