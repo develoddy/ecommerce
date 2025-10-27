@@ -469,6 +469,17 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
     flex-direction: column;
     /* make stacking context predictable */
     -webkit-transform: none;
+   /* Provide sensible CSS fallbacks for header/footer heights so CSS-only
+     layouts can compute the chat-body height without JS. These vars can be
+     overridden by JS if desired, but defaults avoid relying on runtime.
+   */
+   --header-h: 56px;
+   --footer-h: 72px;
+   /* Respect the device safe-area inset at the bottom (iOS home indicator / Safari UI)
+     so the footer remains visible and not overlapped by browser chrome.
+     Do NOT change layout on keyboard open; rely on --vvh published by JS.
+   */
+   padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   /* Improve iOS Safari behavior when visual viewport changes (keyboard open) */
@@ -541,12 +552,12 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
 
   /* Add extra bottom padding so chat content can scroll above the keyboard; footer stays sticky */
   .chat-window.open .chat-body {
-    /* Compute height from visual viewport minus header/footer (published by JS) */
+    /* Compute height from visual viewport minus header/footer (CSS vars with sensible defaults) */
     height: calc(var(--vvh, 100vh) - var(--header-h, 56px) - var(--footer-h, 72px));
     max-height: calc(var(--vvh, 100vh) - var(--header-h, 56px) - var(--footer-h, 72px));
-    /* leave space for the footer and safe-area
-       footer height is taken from --footer-h (JS publishes it) */
-    // padding-bottom: calc(var(--footer-h, 72px) + 12px + env(safe-area-inset-bottom));
+    /* Add padding to the bottom equal to footer height + safe-area so messages
+       are never hidden beneath the sticky footer or the iOS bottom chrome. */
+    padding-bottom: calc(var(--footer-h, 72px) + env(safe-area-inset-bottom, 0px));
     transition: none; /* no animated bottom/height changes to avoid jumps */
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -556,12 +567,22 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
     box-sizing: border-box;
   }
 
+  /* Ensure the scrolling messages list leaves room for footer + safe-area */
+  .chat-window.open .messages-list {
+    padding-bottom: calc(var(--footer-h, 72px) + env(safe-area-inset-bottom, 0px) + 12px);
+  }
+
   /* Keep footer sticky and visible at the bottom of the chat container. 
      We avoid position:fixed to prevent layout jumps; the chat-window height
      is controlled by --vvh so sticky bottom lines up with viewport bottom. */
   .chat-window.open .chat-footer {
     position: sticky;
-    bottom: 0;
+    bottom: 0; /* sticky to the bottom of the chat-window */
+    /* Ensure the footer itself has extra internal bottom padding for safe-area
+       and a predictable height so the chat-body calc remains stable. */
+    --footer-h: 72px; /* used by chat-body calc above */
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+    min-height: var(--footer-h, 72px);
     z-index: 40;
     background: $secondary-color;
     transition: none;
