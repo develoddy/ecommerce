@@ -435,9 +435,10 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
     right: 0;
     bottom: 0;
     width: 100vw;
-    height: 100vh;
+    /* Use visual-viewport height when available to avoid iOS Safari 100vh issues */
+    height: var(--vvh, 100vh);
     max-width: 100vw;
-    max-height: 100vh;
+    max-height: var(--vvh, 100vh);
     border-radius: 0;
     margin: 0;
     transform: none !important;
@@ -525,6 +526,11 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
     z-index: 30;
     background: $secondary-color;
     transition: bottom 180ms ease, transform 160ms ease;
+    /* improve touch responsiveness on iOS Safari */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .chat-window.open:focus-within .chat-body {
@@ -544,5 +550,9 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
     box-shadow: none;
     /* no transition so it stays fixed immediately when keyboard appears */
     transition: none;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 }
