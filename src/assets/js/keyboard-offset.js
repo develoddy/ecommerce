@@ -122,11 +122,34 @@
   (function fullscreenLock() {
     let locked = false;
     let savedScroll = 0;
+    const prevBody = { position: '', top: '', left: '', right: '', width: '', overflow: '' };
 
     function lock() {
       if (locked) return;
       try {
+        savedScroll = window.scrollY || window.pageYOffset || 0;
+        // add classes to both html and body so CSS can target either
         document.documentElement.classList.add('chat-fullscreen-active');
+        document.body.classList.add('chat-fullscreen-active');
+
+        // store previous inline styles to restore later
+        prevBody.position = document.body.style.position || '';
+        prevBody.top = document.body.style.top || '';
+        prevBody.left = document.body.style.left || '';
+        prevBody.right = document.body.style.right || '';
+        prevBody.width = document.body.style.width || '';
+        prevBody.overflow = document.body.style.overflow || '';
+
+        // attempt to fix body to current scroll to prevent background scroll
+        try {
+          document.body.style.position = 'fixed';
+          document.body.style.top = `-${savedScroll}px`;
+          document.body.style.left = '0';
+          document.body.style.right = '0';
+          document.body.style.width = '100%';
+          document.body.style.overflow = 'hidden';
+        } catch (e) {}
+
         locked = true;
         try { rAFUpdate(); } catch (e) {}
       } catch (e) {}
@@ -136,6 +159,21 @@
       if (!locked) return;
       try {
         document.documentElement.classList.remove('chat-fullscreen-active');
+        document.body.classList.remove('chat-fullscreen-active');
+
+        // restore previous inline styles
+        try {
+          document.body.style.position = prevBody.position;
+          document.body.style.top = prevBody.top;
+          document.body.style.left = prevBody.left;
+          document.body.style.right = prevBody.right;
+          document.body.style.width = prevBody.width;
+          document.body.style.overflow = prevBody.overflow;
+        } catch (e) {}
+
+        // restore scroll position
+        try { window.scrollTo(0, savedScroll); } catch (e) {}
+
         locked = false;
         try { rAFUpdate(); } catch (e) {}
       } catch (e) {}

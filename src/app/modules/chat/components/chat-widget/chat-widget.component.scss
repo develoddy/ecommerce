@@ -28,7 +28,7 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
 html, body { overflow-x: hidden; }
 
 /* When chat is fullscreen we lock the background to avoid double scrollbars on iOS */
-.chat-fullscreen-active, .chat-fullscreen-active body {
+html.chat-fullscreen-active, body.chat-fullscreen-active {
   overflow: hidden !important;
   height: 100% !important;
 }
@@ -452,10 +452,7 @@ html, body { overflow-x: hidden; }
   /* Only apply fullscreen positioning when the window is actually open */
   .chat-window.open {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     width: 100vw;
     /* Use visual-viewport height when available to avoid iOS Safari 100vh issues */
     height: var(--vvh, 100vh);
@@ -468,6 +465,8 @@ html, body { overflow-x: hidden; }
     pointer-events: auto !important;
     z-index: 2001;
     background: $secondary-color;
+    display: flex;
+    flex-direction: column;
     /* make stacking context predictable */
     -webkit-transform: none;
   }
