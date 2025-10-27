@@ -276,9 +276,17 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
 /* Confirmación minimalista de cierre (flotante en la parte inferior del panel) */
 .close-confirm {
   position: absolute;
+  /* Respect iOS safe-area insets so the popup stays above the Safari bottom bar */
   left: 12px;
   right: 12px;
   bottom: 18px;
+  /* Older iOS Safari used constant(); modern browsers use env(). Provide both fallbacks. */
+  bottom: calc(18px + constant(safe-area-inset-bottom));
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  left: calc(12px + constant(safe-area-inset-left));
+  left: calc(12px + env(safe-area-inset-left));
+  right: calc(12px + constant(safe-area-inset-right));
+  right: calc(12px + env(safe-area-inset-right));
   z-index: 2100;
   display: flex;
   justify-content: center;
