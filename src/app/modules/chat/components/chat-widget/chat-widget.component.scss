@@ -28,7 +28,7 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
 html, body { overflow-x: hidden; }
 
 /* When chat is fullscreen we lock the background to avoid double scrollbars on iOS */
-html.chat-fullscreen-active, body.chat-fullscreen-active {
+.chat-fullscreen-active, body.chat-fullscreen-active {
   overflow: hidden !important;
   height: 100% !important;
 }
@@ -452,7 +452,10 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
   /* Only apply fullscreen positioning when the window is actually open */
   .chat-window.open {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: 100vw;
     /* Use visual-viewport height when available to avoid iOS Safari 100vh issues */
     height: var(--vvh, 100vh);
@@ -465,10 +468,10 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
     pointer-events: auto !important;
     z-index: 2001;
     background: $secondary-color;
-    display: flex;
-    flex-direction: column;
     /* make stacking context predictable */
     -webkit-transform: none;
+    display: flex;
+    flex-direction: column;
   }
 
   /* Improve iOS Safari behavior when visual viewport changes (keyboard open) */
@@ -516,12 +519,12 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
     left: 0;
     right: 0;
     bottom: 0;
-  width: 100vw;
-  /* Use visual viewport height variable set by JS to avoid iOS 100vh bugs */
-  height: var(--vvh, 100vh);
-  overflow: hidden; /* prevent double scrolling */
-  overscroll-behavior: contain; /* avoid scroll chaining to body */
-  overflow-x: hidden; /* prevent horizontal scroll */
+    width: 100vw;
+    /* Use visual viewport height variable set by JS to avoid iOS 100vh bugs */
+    height: var(--vvh, 100vh);
+    overflow: hidden; /* prevent double scrolling */
+    overscroll-behavior: contain; /* avoid scroll chaining to body */
+    overflow-x: hidden; /* prevent horizontal scroll */
     touch-action: pan-y; /* allow vertical scrolling inside, prevent horizontal gestures */
     max-width: 100vw;
     max-height: var(--vvh, 100vh);

@@ -1,26 +1,13 @@
 // keyboard-offset.js
-// Small utility to detect virtual keyboard presence and set a CSS variable
-// (--keyboard-offset) with the keyboard height in pixels so CSS can adapt.
-// Intended for mobile browsers (iOS Safari, Android Chrome). No framework code.
-/**
- * keyboard-offset.js
- *
- * Revised helper for chat widget layout on mobile (iOS-focused) that:
- * - publishes CSS vars: --vvh, --keyboard-offset, --header-h, --footer-h, --chat-body-height
- * - toggles .vv-keyboard-open on documentElement when keyboard appears (threshold 60px)
- * - attaches a MutationObserver to messages-list to autoscroll only when user is at bottom
- * - provides a conservative delegated fallback for .send-btn ONLY when element has
- *   data-ios-send-fallback="true" (opt-in). No global click synthesis.
- * - guards against multiple instances / duplicate listeners
- */
+// Robust visualViewport helper for chat widget.
+// Publishes CSS variables: --vvh, --keyboard-offset, --header-h, --footer-h, --chat-body-height
+// Manages fullscreen locking (saves/restores body inline styles) and MutationObserver for autoscroll.
 (function () {
   if (typeof document === 'undefined') return;
   if (window.__ecom_chat_kb_helper_installed) return;
   window.__ecom_chat_kb_helper_installed = true;
 
   const root = document.documentElement;
-  const observers = new WeakMap();
-  const nativeClickMap = new WeakMap();
 
   function setVar(el, name, value) {
     try { el.style.setProperty(name, value); } catch (e) {}
@@ -29,17 +16,20 @@
   function setOffset(value) { setVar(root, '--keyboard-offset', value + 'px'); }
   function setViewportHeight(h) { setVar(root, '--vvh', Math.round(h) + 'px'); }
 
+  const observers = new WeakMap();
+
   function updateForChatWindows(vv) {
     try {
       const chatWindows = document.querySelectorAll('.chat-window.open');
       chatWindows.forEach(win => {
-        // publish visual viewport and also apply explicit inline height so Safari
-        // uses the current visual viewport for the fixed fullscreen panel
-        setVar(win, '--vvh', Math.round(vv.height) + 'px');
+        // publish visual viewport on element and set explicit inline heights so Safari honors them
+        const vvh = Math.round(vv.height);
+        setVar(win, '--vvh', vvh + 'px');
         try {
-          win.style.height = Math.round(vv.height) + 'px';
-          win.style.maxHeight = Math.round(vv.height) + 'px';
+          win.style.height = vvh + 'px';
+          win.style.maxHeight = vvh + 'px';
         } catch (e) {}
+
         const header = win.querySelector('.chat-header');
         const footer = win.querySelector('.chat-footer');
         const headerH = header ? header.offsetHeight : 0;
@@ -85,13 +75,13 @@
 
       updateForChatWindows(vv);
 
-  // gentle reflow to help Safari recalc layers/hit-testing
-  // eslint-disable-next-line no-unused-expressions
-  document.documentElement.offsetHeight;
-  // immediate rAF update
-  requestAnimationFrame(() => { updateForChatWindows(vv); });
-  // also re-apply after a short delay to let Safari stabilize when keyboard opens
-  setTimeout(() => { try { updateForChatWindows(vv); } catch (e) {} }, 50);
+      // gentle reflow to help Safari recalc layers/hit-testing
+      // eslint-disable-next-line no-unused-expressions
+      document.documentElement.offsetHeight;
+      // immediate rAF update
+      requestAnimationFrame(() => { updateForChatWindows(vv); });
+      // re-apply after a short delay to let Safari stabilize when keyboard opens
+      setTimeout(() => { try { updateForChatWindows(vv); } catch (e) {} }, 50);
     } else {
       setOffset(0);
       setViewportHeight(window.innerHeight || 0);
@@ -106,29 +96,17 @@
     requestAnimationFrame(() => { try { updateOffset(); } catch (e) {} ; ticking = false; });
   }
 
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', rAFUpdate, { passive: true });
-    window.visualViewport.addEventListener('scroll', rAFUpdate, { passive: true });
-  }
-
-  document.addEventListener('focusin', () => setTimeout(rAFUpdate, 50));
-  document.addEventListener('focusout', () => setTimeout(() => setOffset(0), 120));
-  window.addEventListener('resize', rAFUpdate, { passive: true });
-  window.addEventListener('orientationchange', () => setTimeout(rAFUpdate, 120));
-
-  // Locking page scroll when chat is fullscreen
-  // This prevents iOS Safari from showing dual scrollbars and allows the chat to
-  // control its own viewport. We add/remove a class on <html> and fix body positioning.
+  // Fullscreen lock: save/restore previous inline body styles and scroll position
   (function fullscreenLock() {
     let locked = false;
     let savedScroll = 0;
     const prevBody = { position: '', top: '', left: '', right: '', width: '', overflow: '' };
+    const prevDocOverflow = document.documentElement.style.overflow || '';
 
     function lock() {
       if (locked) return;
       try {
         savedScroll = window.scrollY || window.pageYOffset || 0;
-        // add classes to both html and body so CSS can target either
         document.documentElement.classList.add('chat-fullscreen-active');
         document.body.classList.add('chat-fullscreen-active');
 
@@ -140,7 +118,6 @@
         prevBody.width = document.body.style.width || '';
         prevBody.overflow = document.body.style.overflow || '';
 
-        // attempt to fix body to current scroll to prevent background scroll
         try {
           document.body.style.position = 'fixed';
           document.body.style.top = `-${savedScroll}px`;
@@ -148,6 +125,8 @@
           document.body.style.right = '0';
           document.body.style.width = '100%';
           document.body.style.overflow = 'hidden';
+          // also hide overflow on documentElement to be safer
+          document.documentElement.style.overflow = 'hidden';
         } catch (e) {}
 
         locked = true;
@@ -161,7 +140,6 @@
         document.documentElement.classList.remove('chat-fullscreen-active');
         document.body.classList.remove('chat-fullscreen-active');
 
-        // restore previous inline styles
         try {
           document.body.style.position = prevBody.position;
           document.body.style.top = prevBody.top;
@@ -169,9 +147,9 @@
           document.body.style.right = prevBody.right;
           document.body.style.width = prevBody.width;
           document.body.style.overflow = prevBody.overflow;
+          document.documentElement.style.overflow = prevDocOverflow;
         } catch (e) {}
 
-        // restore scroll position
         try { window.scrollTo(0, savedScroll); } catch (e) {}
 
         locked = false;
@@ -186,7 +164,6 @@
       } catch (e) {}
     }
 
-    // run checks on viewport changes and focus events
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', check, { passive: true });
       window.visualViewport.addEventListener('scroll', check, { passive: true });
@@ -199,6 +176,16 @@
     // initial check
     check();
   })();
+
+  // listeners to keep vars up-to-date
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', rAFUpdate, { passive: true });
+    window.visualViewport.addEventListener('scroll', rAFUpdate, { passive: true });
+  }
+  document.addEventListener('focusin', () => setTimeout(rAFUpdate, 50));
+  document.addEventListener('focusout', () => setTimeout(() => setOffset(0), 120));
+  window.addEventListener('resize', rAFUpdate, { passive: true });
+  window.addEventListener('orientationchange', () => setTimeout(rAFUpdate, 120));
 
   // initial
   updateOffset();
