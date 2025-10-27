@@ -2,79 +2,86 @@
 // Small utility to detect virtual keyboard presence and set a CSS variable
 // (--keyboard-offset) with the keyboard height in pixels so CSS can adapt.
 // Intended for mobile browsers (iOS Safari, Android Chrome). No framework code.
+/**
+ * keyboard-offset.js
+ *
+ * Revised helper for chat widget layout on mobile (iOS-focused) that:
+ * - publishes CSS vars: --vvh, --keyboard-offset, --header-h, --footer-h, --chat-body-height
+ * - toggles .vv-keyboard-open on documentElement when keyboard appears (threshold 60px)
+ * - attaches a MutationObserver to messages-list to autoscroll only when user is at bottom
+ * - provides a conservative delegated fallback for .send-btn ONLY when element has
+ *   data-ios-send-fallback="true" (opt-in). No global click synthesis.
+ * - guards against multiple instances / duplicate listeners
+ */
 (function () {
   if (typeof document === 'undefined') return;
-  const root = document.documentElement;
+  if (window.__ecom_chat_kb_helper_installed) return;
+  window.__ecom_chat_kb_helper_installed = true;
 
-  function setOffset(value) {
-    try {
-      root.style.setProperty('--keyboard-offset', value + 'px');
-    } catch (e) {
-      // ignore
-    }
+  const root = document.documentElement;
+  const observers = new WeakMap();
+  const nativeClickMap = new WeakMap();
+
+  function setVar(el, name, value) {
+    try { el.style.setProperty(name, value); } catch (e) {}
   }
 
-  function setViewportHeight(h) {
+  function setOffset(value) { setVar(root, '--keyboard-offset', value + 'px'); }
+  function setViewportHeight(h) { setVar(root, '--vvh', Math.round(h) + 'px'); }
+
+  function updateForChatWindows(vv) {
     try {
-      // expose visual viewport height in px so CSS can size fixed elements correctly
-      root.style.setProperty('--vvh', Math.round(h) + 'px');
-    } catch (e) {
-      // ignore
-    }
+      const chatWindows = document.querySelectorAll('.chat-window.open');
+      chatWindows.forEach(win => {
+        setVar(win, '--vvh', Math.round(vv.height) + 'px');
+        const header = win.querySelector('.chat-header');
+        const footer = win.querySelector('.chat-footer');
+        const headerH = header ? header.offsetHeight : 0;
+        const footerH = footer ? footer.offsetHeight : 0;
+        setVar(win, '--header-h', headerH + 'px');
+        setVar(win, '--footer-h', footerH + 'px');
+
+        const chatBodyH = Math.max(48, Math.floor(vv.height - headerH - footerH));
+        setVar(win, '--chat-body-height', chatBodyH + 'px');
+
+        const messagesList = win.querySelector('[data-chat-messages], .messages-list');
+        if (messagesList && !observers.has(messagesList)) {
+          try {
+            const mo = new MutationObserver(() => {
+              const el = messagesList;
+              const atBottom = (el.scrollHeight - el.scrollTop - el.clientHeight) < 80;
+              if (atBottom) {
+                requestAnimationFrame(() => { try { el.scrollTop = el.scrollHeight; } catch (e) {} });
+              }
+            });
+            mo.observe(messagesList, { childList: true, subtree: true });
+            observers.set(messagesList, mo);
+          } catch (e) {}
+        }
+      });
+    } catch (e) {}
   }
 
   function updateOffset() {
-    // Prefer visualViewport when available
     if (window.visualViewport) {
       const vv = window.visualViewport;
       const keyboard = Math.max(0, window.innerHeight - vv.height - (vv.offsetTop || 0));
-      // Some browsers may report small differences; clamp to integer
       const k = Math.round(keyboard);
       setOffset(k);
-      // publish visual viewport height so CSS can use it instead of 100vh
       setViewportHeight(vv.height);
 
-      // Toggle a class on the root when keyboard appears (threshold > 60px)
-      if (k > 60) {
-        document.documentElement.classList.add('vv-keyboard-open');
-      } else {
-        document.documentElement.classList.remove('vv-keyboard-open');
-      }
+      if (k > 60) root.classList.add('vv-keyboard-open'); else root.classList.remove('vv-keyboard-open');
 
-      // Adjust any open chat-window and its chat-body to match the visual viewport
-      try {
-        const chatWindows = document.querySelectorAll('.chat-window.open');
-        chatWindows.forEach(win => {
-          // Set the panel height to visual viewport height so fixed/fullscreen matches
-          win.style.height = vv.height + 'px';
-          win.style.maxHeight = vv.height + 'px';
-          // compute available body height (subtract header/footer if present)
-          const header = win.querySelector('.chat-header');
-          const footer = win.querySelector('.chat-footer');
-          const body = win.querySelector('.chat-body');
-          const headerH = header ? header.offsetHeight : 0;
-          const footerH = footer ? footer.offsetHeight : 0;
-          if (body) {
-            const avail = Math.max(48, vv.height - headerH - footerH);
-            body.style.height = avail + 'px';
-            body.style.maxHeight = avail + 'px';
-            body.style.overflowY = 'auto';
-            body.style['-webkit-overflow-scrolling'] = 'touch';
-          }
-        });
-      } catch (e) {
-        // ignore DOM errors
-      }
+      updateForChatWindows(vv);
 
-      // Force a tiny reflow to help Safari update hit testing/layers
+      // gentle reflow to help Safari recalc layers/hit-testing
       // eslint-disable-next-line no-unused-expressions
       document.documentElement.offsetHeight;
+      requestAnimationFrame(() => { updateForChatWindows(vv); });
     } else {
-      // Fallback: no reliable API; assume 0
       setOffset(0);
-      // fallback to window.innerHeight
       setViewportHeight(window.innerHeight || 0);
-      document.documentElement.classList.remove('vv-keyboard-open');
+      root.classList.remove('vv-keyboard-open');
     }
   }
 
@@ -82,66 +89,71 @@
   function rAFUpdate() {
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(() => {
-      updateOffset();
-      ticking = false;
-    });
+    requestAnimationFrame(() => { try { updateOffset(); } catch (e) {} ; ticking = false; });
   }
 
-  // Listen to visualViewport resize for keyboard open/close
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', rAFUpdate, { passive: true });
     window.visualViewport.addEventListener('scroll', rAFUpdate, { passive: true });
-    // also update immediate on resize to keep visual viewport var current
-    window.visualViewport.addEventListener('resize', () => setViewportHeight(window.visualViewport.height), { passive: true });
   }
 
-  // Also watch focusin/out so we react when inputs are focused
-  document.addEventListener('focusin', (ev) => {
-    // Delay a bit to allow viewport to settle on some browsers
-    setTimeout(rAFUpdate, 50);
-  });
-
-  document.addEventListener('focusout', () => {
-    // On blur, reset offset after short delay
-    setTimeout(() => setOffset(0), 120);
-  });
-
-  // On resize/orientation change
+  document.addEventListener('focusin', () => setTimeout(rAFUpdate, 50));
+  document.addEventListener('focusout', () => setTimeout(() => setOffset(0), 120));
   window.addEventListener('resize', rAFUpdate, { passive: true });
   window.addEventListener('orientationchange', () => setTimeout(rAFUpdate, 120));
 
-  // iOS Safari touch workaround: ensure send button receives taps while keyboard visible
-  (function ensureSendButtonTouch() {
+  // Conservative delegated iOS fallback for .send-btn ONLY when element opts-in with
+  // data-ios-send-fallback="true". Does not prevent native events; synthesizes click
+  // only if no native click arrives shortly after touchend.
+  (function delegatedSendFallback() {
     const isIOS = typeof navigator !== 'undefined' && /iP(hone|od|ad)/i.test(navigator.userAgent);
     if (!isIOS) return;
 
-    // Delegate touchend on send buttons to guarantee click
+    document.addEventListener('click', function (ev) {
+      try {
+        const btn = ev.target && ev.target.closest ? ev.target.closest('[data-send-btn], .send-btn') : null;
+        if (btn) nativeClickMap.set(btn, Date.now());
+      } catch (e) {}
+    }, true);
+
+    document.addEventListener('touchstart', function (ev) {
+      try {
+        const btn = ev.target && ev.target.closest ? ev.target.closest('[data-send-btn], .send-btn') : null;
+        if (!btn) return;
+        btn.__ecom_touch_started = Date.now();
+      } catch (e) {}
+    }, { passive: true });
+
     document.addEventListener('touchend', function (ev) {
       try {
         const target = ev.target || ev.srcElement;
-        const btn = target.closest ? target.closest('.send-btn') : null;
-        if (btn) {
-          // If the visual viewport indicates keyboard open, synthesize a click to ensure handler runs
-          const keyboardOpen = document.documentElement.classList.contains('vv-keyboard-open');
-          if (keyboardOpen) {
-            // prevent duplicate activation if the element already handled the touch
-            ev.preventDefault();
-            btn.click();
-          }
-        }
-      } catch (e) {
-        // ignore
-      }
-    }, { passive: false });
+        const btn = target && target.closest ? target.closest('[data-send-btn], .send-btn') : null;
+        if (!btn) return;
+        if (btn.getAttribute('data-ios-send-fallback') !== 'true') return; // opt-in only
+        const keyboardOpen = root.classList.contains('vv-keyboard-open');
+        if (!keyboardOpen) return;
+
+        const lastNative = nativeClickMap.get(btn) || 0;
+        const now = Date.now();
+        if (now - lastNative < 150) return;
+
+        const lastSynth = parseInt(btn.getAttribute('data-ecom-last-synth') || '0', 10);
+        if (now - lastSynth < 500) return;
+
+        setTimeout(() => {
+          const lastNativeLater = nativeClickMap.get(btn) || 0;
+          if (Date.now() - lastNativeLater < 150) return; // native arrived
+          try {
+            btn.setAttribute('data-ecom-last-synth', String(Date.now()));
+            const clickEvent = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+            btn.dispatchEvent(clickEvent);
+          } catch (e) {}
+        }, 90);
+      } catch (e) {}
+    }, { passive: true });
   })();
 
-  // Initial set
+  // initial
   updateOffset();
-  // set initial vvh
-  if (window.visualViewport) {
-    setViewportHeight(window.visualViewport.height);
-  } else {
-    setViewportHeight(window.innerHeight || 0);
-  }
+  if (window.visualViewport) setViewportHeight(window.visualViewport.height); else setViewportHeight(window.innerHeight || 0);
 })();

@@ -8,7 +8,7 @@
   </div>
 
   <!-- Chat panel -->
-  <div class="chat-window" [class.open]="isChatOpen" [attr.aria-hidden]="!isChatOpen">
+  <div class="chat-window" data-chat-widget [class.open]="isChatOpen" [attr.aria-hidden]="!isChatOpen">
     <!-- Header -->
     <header class="chat-header">
       <h3 class="chat-header__title text-white text-uppercase">Lujandev Assistant</h3>
@@ -31,7 +31,7 @@
       </div>
 
       <!-- Messages list (semantic list for accessibility) -->
-      <ul class="messages-list" role="list">
+  <ul class="messages-list" data-chat-messages role="list">
         <li class="message-item"
             *ngFor="let message of messages"
             [class.user-message]="isSentByMe(message)"
@@ -61,10 +61,11 @@
               placeholder="Pregunta lo que quieras"
               (keydown)="handleEnter($event)"
               aria-label="Escribe un mensaje"
+              data-chat-input
             ></textarea>
 
             <!-- send button placed inside input wrapper; keep bindings intact -->
-            <button type="submit" class="send-btn" [disabled]="messageControl.invalid" aria-label="Enviar mensaje">
+            <button type="submit" class="send-btn" data-send-btn [disabled]="messageControl.invalid" aria-label="Enviar mensaje">
               <!-- inline svg icon preserved -->
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" style="fill: currentcolor;" aria-hidden="true" class="Icon_icon-content-brand__AKwiy"><path d="m5.4 10.1-.7-.7L12 2l7.4 7.4-.7.7L12.6 4v18h-1V3.9z"></path></svg>
             </button>
