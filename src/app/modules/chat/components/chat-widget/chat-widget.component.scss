@@ -475,6 +475,9 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
    */
    --header-h: 56px;
    --footer-h: 72px;
+   /* Conservative extra space to avoid browser chrome (Safari bottom nav) covering footer.
+     This is a CSS-only fallback; adjust if your tests show a different toolbar height. */
+   --browser-nav-h: 48px;
    /* Respect the device safe-area inset at the bottom (iOS home indicator / Safari UI)
      so the footer remains visible and not overlapped by browser chrome.
      Do NOT change layout on keyboard open; rely on --vvh published by JS.
@@ -557,7 +560,7 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
     max-height: calc(var(--vvh, 100vh) - var(--header-h, 56px) - var(--footer-h, 72px));
     /* Add padding to the bottom equal to footer height + safe-area so messages
        are never hidden beneath the sticky footer or the iOS bottom chrome. */
-    padding-bottom: calc(var(--footer-h, 72px) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(var(--footer-h, 72px) + env(safe-area-inset-bottom, 0px) + var(--browser-nav-h, 48px));
     transition: none; /* no animated bottom/height changes to avoid jumps */
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -569,20 +572,22 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
 
   /* Ensure the scrolling messages list leaves room for footer + safe-area */
   .chat-window.open .messages-list {
-    padding-bottom: calc(var(--footer-h, 72px) + env(safe-area-inset-bottom, 0px) + 12px);
+    padding-bottom: calc(var(--footer-h, 72px) + env(safe-area-inset-bottom, 0px) + var(--browser-nav-h, 48px) + 12px);
   }
 
   /* Keep footer sticky and visible at the bottom of the chat container. 
      We avoid position:fixed to prevent layout jumps; the chat-window height
      is controlled by --vvh so sticky bottom lines up with viewport bottom. */
   .chat-window.open .chat-footer {
-    position: sticky;
-    bottom: 0; /* sticky to the bottom of the chat-window */
-    /* Ensure the footer itself has extra internal bottom padding for safe-area
-       and a predictable height so the chat-body calc remains stable. */
-    --footer-h: 72px; /* used by chat-body calc above */
-    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
-    min-height: var(--footer-h, 72px);
+   position: sticky;
+   /* lift the sticky footer above the iOS safe-area and the browser bottom nav
+     by combining the safe-area inset with a conservative browser-nav height. */
+   bottom: calc(env(safe-area-inset-bottom, 0px) + var(--browser-nav-h, 48px));
+   /* Ensure the footer itself has extra internal bottom padding for safe-area
+     and a predictable height so the chat-body calc remains stable. */
+   --footer-h: 72px; /* used by chat-body calc above */
+   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+   min-height: var(--footer-h, 72px);
     z-index: 40;
     background: $secondary-color;
     transition: none;
