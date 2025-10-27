@@ -241,8 +241,8 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
 
     textarea {
       width: 100%;
-      height: 40px; /* increased input height */
-      padding: 10px 48px 0px 0px; /* right padding for icon */
+      height: 100%; /* increased input height */
+      padding: 10px 48px 0px 10px; /* right padding for icon */
       font-size: 15px;
       resize: none;
       font-family: inherit;
@@ -533,8 +533,8 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
 
   .chat-window.open:focus-within .chat-footer {
     position: fixed;
-    left: calc(12px + env(safe-area-inset-left));
-    right: calc(12px + env(safe-area-inset-right));
+    left: calc(0px + env(safe-area-inset-left));
+    right: calc(0px + env(safe-area-inset-right));
     /* Use CSS variable set by assets/js/keyboard-offset.js to lift footer above the virtual keyboard
        and still respect safe-area inset. If the variable is not set, fallback to 12px. */
     bottom: calc(var(--keyboard-offset, 0px) + 12px + env(safe-area-inset-bottom));
