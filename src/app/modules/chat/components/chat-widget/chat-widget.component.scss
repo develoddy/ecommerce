@@ -287,7 +287,8 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
   left: calc(12px + env(safe-area-inset-left));
   right: calc(12px + constant(safe-area-inset-right));
   right: calc(12px + env(safe-area-inset-right));
-  z-index: 2100;
+  /* Ensure popup sits above everything else in the app */
+  z-index: 99999;
   display: flex;
   justify-content: center;
   pointer-events: auto;
@@ -301,6 +302,12 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
     padding: 12px 14px;
     box-shadow: 0 8px 28px rgba(0,0,0,0.12);
     border: 1px solid rgba(0,0,0,0.06);
+    /* entry animation: fade + slide from bottom */
+    opacity: 0;
+    transform: translateY(12px);
+    will-change: transform, opacity;
+    animation: fadeSlideIn 260ms cubic-bezier(.2,.9,.2,1) forwards;
+    transition: transform 200ms ease, opacity 160ms ease;
   }
 
   &__title {
@@ -345,9 +352,33 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
   @media (max-width: 420px) {
     left: 8px;
     right: 8px;
-    bottom: 14px;
+    /* push a bit more on very small screens to avoid Safari bars */
+    bottom: calc(14px + env(safe-area-inset-bottom));
     &__content { padding: 10px; }
     .btn { padding: 7px 10px; font-size: 13px; }
+  }
+}
+
+/* Keyframes for popup animation */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(12px);
   }
 }
 
