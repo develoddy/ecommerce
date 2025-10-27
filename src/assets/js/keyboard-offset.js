@@ -1,7 +1,10 @@
-// keyboard-offset.js
-// Robust visualViewport helper for chat widget.
-// Publishes CSS variables: --vvh, --keyboard-offset, --header-h, --footer-h, --chat-body-height
-// Manages fullscreen locking (saves/restores body inline styles) and MutationObserver for autoscroll.
+// keyboard-offset.js (conservative)
+// Purpose: publish visual-viewport height (--vvh) for CSS to use, and
+// provide a conservative MutationObserver for message lists that
+// auto-scrolls only when the user is already at/near the bottom.
+// IMPORTANT: this file intentionally does NOT modify inline styles
+// on body/html (no position:fixed, no inline height changes). CSS
+// should rely on `height: var(--vvh, 100vh)` and other rules.
 (function () {
   if (typeof document === 'undefined') return;
   if (window.__ecom_chat_kb_helper_installed) return;
@@ -9,185 +12,105 @@
 
   const root = document.documentElement;
 
-  function setVar(el, name, value) {
-    try { el.style.setProperty(name, value); } catch (e) {}
+  function setVar(name, value) {
+    try { root.style.setProperty(name, value); } catch (e) {}
   }
 
-  function setOffset(value) { setVar(root, '--keyboard-offset', value + 'px'); }
-  function setViewportHeight(h) { setVar(root, '--vvh', Math.round(h) + 'px'); }
+  function setVVH(px) { setVar('--vvh', Math.round(px) + 'px'); }
 
-  const observers = new WeakMap();
-
-  function updateForChatWindows(vv) {
+  // Publish visual viewport height. Do NOT calculate offsets that would
+  // encourage CSS to add space for keyboards. The CSS should use --vvh
+  // and not rely on any JS to move footers or inputs.
+  function updateVVH() {
     try {
-      const chatWindows = document.querySelectorAll('.chat-window.open');
-      chatWindows.forEach(win => {
-        // publish visual viewport on element and set explicit inline heights so Safari honors them
-        const vvh = Math.round(vv.height);
-        setVar(win, '--vvh', vvh + 'px');
-        try {
-          win.style.height = vvh + 'px';
-          win.style.maxHeight = vvh + 'px';
-        } catch (e) {}
-
-        const header = win.querySelector('.chat-header');
-        const footer = win.querySelector('.chat-footer');
-        const headerH = header ? header.offsetHeight : 0;
-        const footerH = footer ? footer.offsetHeight : 0;
-        setVar(win, '--header-h', headerH + 'px');
-        setVar(win, '--footer-h', footerH + 'px');
-
-        const chatBodyH = Math.max(48, Math.floor(vv.height - headerH - footerH));
-        setVar(win, '--chat-body-height', chatBodyH + 'px');
-
-        const messagesList = win.querySelector('[data-chat-messages], .messages-list');
-        if (messagesList && !observers.has(messagesList)) {
-          try {
-            const mo = new MutationObserver(() => {
-              // Delay slightly to ensure DOM updated after Angular inserts nodes
-              setTimeout(() => {
-                try {
-                  const el = messagesList;
-                  // If user is at (or near) bottom, auto-scroll to new message
-                  if ((el.scrollHeight - el.scrollTop - el.clientHeight) < 60) {
-                    try { el.scrollTop = el.scrollHeight; } catch (e) {}
-                  }
-                } catch (e) {}
-              }, 50);
-            });
-            mo.observe(messagesList, { childList: true, subtree: true });
-            observers.set(messagesList, mo);
-          } catch (e) {}
-        }
-      });
+      if (window.visualViewport) {
+        setVVH(window.visualViewport.height || window.innerHeight || 0);
+      } else {
+        setVVH(window.innerHeight || 0);
+      }
     } catch (e) {}
   }
 
-  function updateOffset() {
-    if (window.visualViewport) {
-      const vv = window.visualViewport;
-      const keyboard = Math.max(0, window.innerHeight - vv.height - (vv.offsetTop || 0));
-      const k = Math.round(keyboard);
-      setOffset(k);
-      setViewportHeight(vv.height);
+  // --- Messages-list observer: conservative auto-scroll ---
+  // Behavior:
+  // - Track whether the user is presently at/near the bottom (on scroll).
+  // - When new nodes are added, auto-scroll ONLY when the user was at/near the
+  //   bottom prior to the change. If the user scrolled up to read history, we
+  //   preserve their position.
+  const tracked = new WeakMap(); // element -> { atBottom: boolean, observer: MutationObserver }
 
-      if (k > 60) root.classList.add('vv-keyboard-open'); else root.classList.remove('vv-keyboard-open');
-
-      updateForChatWindows(vv);
-
-      // gentle reflow to help Safari recalc layers/hit-testing
-      // eslint-disable-next-line no-unused-expressions
-      document.documentElement.offsetHeight;
-      // immediate rAF update
-      requestAnimationFrame(() => { updateForChatWindows(vv); });
-      // re-apply after a short delay to let Safari stabilize when keyboard opens
-      setTimeout(() => { try { updateForChatWindows(vv); } catch (e) {} }, 50);
-    } else {
-      setOffset(0);
-      setViewportHeight(window.innerHeight || 0);
-      root.classList.remove('vv-keyboard-open');
-    }
+  function isNearBottom(el, threshold = 60) {
+    try {
+      return (el.scrollHeight - (el.scrollTop || 0) - el.clientHeight) <= threshold;
+    } catch (e) { return true; }
   }
 
-  let ticking = false;
-  function rAFUpdate() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => { try { updateOffset(); } catch (e) {} ; ticking = false; });
+  function attachMessagesObserver(el) {
+    if (!el || tracked.has(el)) return;
+
+    // initialize atBottom state from current scroll position
+    const state = { atBottom: isNearBottom(el), observer: null };
+    tracked.set(el, state);
+
+    // track user scrolls to update atBottom flag
+    const onScroll = () => { state.atBottom = isNearBottom(el); };
+    el.addEventListener('scroll', onScroll, { passive: true });
+
+    // MutationObserver: only auto-scroll if user was at bottom before the change
+    try {
+      const mo = new MutationObserver((mutations) => {
+        try {
+          // If the user was at bottom, scroll to bottom once the mutation settles.
+          if (state.atBottom) {
+            // schedule in next frame to let rendering settle
+            requestAnimationFrame(() => {
+              try { el.scrollTop = el.scrollHeight; } catch (e) {}
+            });
+          }
+        } catch (e) {}
+      });
+      mo.observe(el, { childList: true, subtree: true });
+      state.observer = mo;
+    } catch (e) {}
   }
 
-  // Fullscreen lock: save/restore previous inline body styles and scroll position
-  (function fullscreenLock() {
-    let locked = false;
-    let savedScroll = 0;
-    const prevBody = { position: '', top: '', left: '', right: '', width: '', overflow: '' };
-    const prevDocOverflow = document.documentElement.style.overflow || '';
+  function scanAndAttach() {
+    try {
+      const lists = document.querySelectorAll('[data-chat-messages], .messages-list');
+      lists.forEach((el) => attachMessagesObserver(el));
+    } catch (e) {}
+  }
 
-    function lock() {
-      if (locked) return;
-      try {
-        savedScroll = window.scrollY || window.pageYOffset || 0;
-        document.documentElement.classList.add('chat-fullscreen-active');
-        document.body.classList.add('chat-fullscreen-active');
+  // Keep var up-to-date on viewport changes
+  let tick = false;
+  function scheduleVVHUpdate() {
+    if (tick) return;
+    tick = true;
+    requestAnimationFrame(() => { try { updateVVH(); } catch (e) {} ; tick = false; });
+  }
 
-        // store previous inline styles to restore later
-        prevBody.position = document.body.style.position || '';
-        prevBody.top = document.body.style.top || '';
-        prevBody.left = document.body.style.left || '';
-        prevBody.right = document.body.style.right || '';
-        prevBody.width = document.body.style.width || '';
-        prevBody.overflow = document.body.style.overflow || '';
+  // Initial publish
+  updateVVH();
 
-        try {
-          document.body.style.position = 'fixed';
-          document.body.style.top = `-${savedScroll}px`;
-          document.body.style.left = '0';
-          document.body.style.right = '0';
-          document.body.style.width = '100%';
-          document.body.style.overflow = 'hidden';
-          // also hide overflow on documentElement to be safer
-          document.documentElement.style.overflow = 'hidden';
-        } catch (e) {}
-
-        locked = true;
-        try { rAFUpdate(); } catch (e) {}
-      } catch (e) {}
-    }
-
-    function unlock() {
-      if (!locked) return;
-      try {
-        document.documentElement.classList.remove('chat-fullscreen-active');
-        document.body.classList.remove('chat-fullscreen-active');
-
-        try {
-          document.body.style.position = prevBody.position;
-          document.body.style.top = prevBody.top;
-          document.body.style.left = prevBody.left;
-          document.body.style.right = prevBody.right;
-          document.body.style.width = prevBody.width;
-          document.body.style.overflow = prevBody.overflow;
-          document.documentElement.style.overflow = prevDocOverflow;
-        } catch (e) {}
-
-        try { window.scrollTo(0, savedScroll); } catch (e) {}
-
-        locked = false;
-        try { rAFUpdate(); } catch (e) {}
-      } catch (e) {}
-    }
-
-    function check() {
-      try {
-        const anyOpen = !!document.querySelector('.chat-window.open');
-        if (anyOpen) lock(); else unlock();
-      } catch (e) {}
-    }
-
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', check, { passive: true });
-      window.visualViewport.addEventListener('scroll', check, { passive: true });
-    }
-    document.addEventListener('focusin', () => setTimeout(check, 50));
-    document.addEventListener('focusout', () => setTimeout(check, 120));
-    window.addEventListener('resize', check, { passive: true });
-    window.addEventListener('orientationchange', () => setTimeout(check, 120));
-
-    // initial check
-    check();
-  })();
-
-  // listeners to keep vars up-to-date
+  // Listen for visualViewport and window events to update --vvh (no layout side-effects)
   if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', rAFUpdate, { passive: true });
-    window.visualViewport.addEventListener('scroll', rAFUpdate, { passive: true });
+    window.visualViewport.addEventListener('resize', scheduleVVHUpdate, { passive: true });
+    window.visualViewport.addEventListener('scroll', scheduleVVHUpdate, { passive: true });
   }
-  document.addEventListener('focusin', () => setTimeout(rAFUpdate, 50));
-  document.addEventListener('focusout', () => setTimeout(() => setOffset(0), 120));
-  window.addEventListener('resize', rAFUpdate, { passive: true });
-  window.addEventListener('orientationchange', () => setTimeout(rAFUpdate, 120));
+  window.addEventListener('resize', scheduleVVHUpdate, { passive: true });
+  window.addEventListener('orientationchange', () => setTimeout(updateVVH, 120));
 
-  // initial
-  updateOffset();
-  if (window.visualViewport) setViewportHeight(window.visualViewport.height); else setViewportHeight(window.innerHeight || 0);
+  // Attach observers for messages lists when DOM changes (e.g. Angular renders)
+  const domMo = new MutationObserver(() => {
+    try { scanAndAttach(); } catch (e) {}
+  });
+  try {
+    domMo.observe(document.body || document.documentElement, { childList: true, subtree: true });
+  } catch (e) {}
+
+  // Also attempt a scan right away
+  scanAndAttach();
+
+  // Expose a tiny debug hook (optional) so devs can inspect current --vvh
+  try { window.__ecom_chat_kb_helper = { updateVVH, attachMessagesObserver }; } catch (e) {}
 })();
