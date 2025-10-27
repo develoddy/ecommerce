@@ -489,12 +489,32 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
   /* Add extra bottom padding so chat content can scroll above the keyboard; footer stays sticky */
   .chat-window.open .chat-body {
     padding-bottom: calc(140px + env(safe-area-inset-bottom));
+    transition: padding-bottom 180ms ease;
   }
 
+  /* Keep footer sticky by default, but when an input inside the window is focused
+     (virtual keyboard likely visible), pin the footer to the viewport above the keyboard
+     using safe-area insets. Use :focus-within so no TS is required. */
   .chat-window.open .chat-footer {
     position: sticky;
     bottom: calc(18px + env(safe-area-inset-bottom));
     z-index: 30;
     background: $secondary-color;
+    transition: bottom 180ms ease, transform 160ms ease;
+  }
+
+  .chat-window.open:focus-within .chat-body {
+    padding-bottom: calc(220px + env(safe-area-inset-bottom));
+  }
+
+  .chat-window.open:focus-within .chat-footer {
+    position: fixed;
+    left: calc(12px + env(safe-area-inset-left));
+    right: calc(12px + env(safe-area-inset-right));
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    z-index: 99998;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 0 -6px 18px rgba(0,0,0,0.07);
   }
 }
