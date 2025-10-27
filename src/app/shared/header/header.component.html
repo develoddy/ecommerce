@@ -75,7 +75,7 @@
 
                             <!-- CAMISETAS  -->
                             <li class="lvl1 parent megamenu">
-                                <a href="#" class="text-uppercase">
+                                <a href="#" onclick="return false;" class="text-uppercase">
                                     <span class="menubar-label fw-bold">Camisetas <i class="icon anm anm-angle-down-l"></i></span>
                                 </a>
                                 <div class="megamenu style2">
@@ -186,7 +186,7 @@
 
                             <!-- SUDADERAS  -->
                             <li class="lvl1 parent megamenu">
-                                <a href="#" class="text-uppercase">
+                                <a href="#" onclick="return false;" class="text-uppercase">
                                     <span class="menubar-label fw-bold">Sudaderas <i class="icon anm anm-angle-down-l"></i></span>
                                 </a>
                                 <div class="megamenu style2">
@@ -376,67 +376,6 @@
                     </a>
                 </div>
                 <!-- END LOGO CENTRADO -->
-
-                <!-- BUSCADOR CENTRAL -->
-                <!-- <div class="col-md-6 align-self-center d-none d-lg-block d-none" [ngClass]="{'col-lg-6': isDesktop}">
-                        <div class="search-amazon-style w-100 position-relative">
-                            <div class="input-box d-flex overflow-hidden w-100 bg-white">
-                                <div class="search-category" style="width: 100px;">
-                                    <select class="rgsearch-category bg-light fw-normal fs-14" style="border: 1px solid #121314;">
-                                        <option value="0">Todos</option>
-                                        <option *ngFor="let categorie of categories" [value]="categorie.id"><span>{{ categorie.title }}</span></option>
-                                    </select>
-                                </div>
-                                <input  type="search" 
-                                        class="input-text border-end-0 border-start-0" 
-                                        [(ngModel)]="search_product" 
-                                        #filter
-                                        name="prod-search" 
-                                        id="prod-search" 
-                                        placeholder="Buscar en Lujandev.com"
-                                        value=""
-                                        style="border: 1px solid #121314;"
-                                />
-                                <button type="button" (click)="searchProduct()" class="" style="background-color: #121314; border-color: #121314;width: 70px; color: #ffffff;">
-                                    <i class="icon anm anm-search-l fw-bold fs-20"></i>
-                                </button>
-                            </div>
-                                
-                            
-                            <div class="search-products position-absolute bg-white shadow-lg mt-1  border w-100" style="z-index: 9999; max-height: 400px; overflow-y: auto; width: 48.7%;" *ngIf="products_search && products_search.length > 0">
-                                <ul class="items list-group list-group-flush">
-                                    <ng-container *ngFor="let product of products_search">
-                                        <li class="list-group-item p-2">
-                                            <div class="mini-list-item d-flex flex-row w-100 clearfix">
-                                                <div class="mini-image text-center me-2">
-                                                    <a class="item-link" href="#"
-                                                        onclick="return false;"
-                                                        (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
-                                                        <img class="blur-up lazyload"
-                                                            [attr.data-src]="product.imagen"
-                                                            [src]="product.imagen" alt="{{ product.title }}"
-                                                            title="{{ product.title }}" 
-                                                            width="50" height="50" />
-                                                    </a>
-                                                </div>
-                                                <div class="details px-2 align-self-center">
-                                                    <div class="product-name">
-                                                        <a class="item-title text-dark"
-                                                            href="#"
-                                                            onclick="return false;"
-                                                            (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
-                                                            <small class="text-uppercase">{{product.title }}</small>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ng-container>
-                                </ul>
-                            </div>
-                        </div>
-                    </div> -->
-                <!-- END BUSCADOR CENTRAL -->
 
                 <!-- MENU DERECHA -->
                 <div class="col-8 col-sm-9 col-md-3 align-self-center icons-col d-flex justify-content-end" [ngClass]="{'col-lg-5': isDesktop}">
@@ -669,8 +608,6 @@
             </div>
         </div>
         <!-- END MAIN HEADER -->
-
-
     </div>
     <!-- END MAIN HEADER -->
 </div>

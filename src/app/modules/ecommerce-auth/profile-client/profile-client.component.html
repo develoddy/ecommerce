@@ -11,14 +11,16 @@
     <!-- End Loading -->
 
     <!-- Body Container -->
-    <div id="page-content" [class.d-none]="loading"> 
+    <div id="page-content" [class.d-none]="loading">
 
         <!--Page Header-->
         <div class="page-header text-center d-none">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                        <div class="page-title"><h1>Mi cuenta</h1></div>
+                        <div class="page-title">
+                            <h1>Mi cuenta</h1>
+                        </div>
                         <!--Breadcrumbs-->
                         <div class="breadcrumbs"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Mi cuenta</span></div>
                         <!--End Breadcrumbs-->
@@ -39,22 +41,62 @@
                                 <img class="rounded-circle blur-up lazyload" data-src="assets/images/users/profile.png" src="assets/images/users/profile.png" alt="user" width="130" />
                             </div>
                             <div class="profile-detail">
-                                <!-- <h3 class="mb-1" style="font-size: 3.5rem; letter-spacing: -2px;" >{{ name_c }} {{surname_c}}</h3> -->
-                                <h2 class="mb-1" style="letter-spacing: -2px;">{{ name_c }} {{surname_c}}</h2>
+                                <h3 class="mb-1" style="font-size: 2.5rem; letter-spacing: -2px;">{{ name_c }} {{surname_c}}</h3>
+                                <!-- <h1 class="mb-1">{{ name_c }} {{surname_c}}</h1> -->
                                 <p class="text-uppercase"> {{email_c}}</p>
                             </div>
                         </div>
                         <div class="dashboard-tab">
                             <ul class="nav nav-tabs flex-lg-column border-bottom-0 flex-column" id="top-tab" role="tablist">
-                                <li class="nav-item mb-2"><a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'mypurchases']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Mis compras</span><i class="icon anm anm-arrow-s-right"></i></a></li>
-                                <li class="nav-item mb-2"><a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'registered', 'account']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Mis datos</span><i class="icon anm anm-arrow-s-right"></i></a></li>
-                                <li class="nav-item mb-2"><a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'myaddresses']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Mis direcciones</span><i class="icon anm anm-arrow-s-right"></i></a></li>
-                                <li class="nav-item mb-2"><a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'favorites']" class="nav-link d-flex justify-content-between align-items-center text-uppercase fw-bold"><span class="fs-16">Favoritos</span><i class="icon anm anm-arrow-s-right"></i></a></li>
+                                <li class="nav-item mb-2">
+                                    <a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'mypurchases']" class="nav-link d-flex justify-content-between align-items-center text-uppercase">
+                                        <span class="fs-16">Mis compras</span>
+                                        <!-- <i class="icon anm anm-arrow-s-right"></i> -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24" width="15" height="24" aria-hidden="true" class="Icon_icon-content-brand__AKwiy Icon_rotate-rtl__Bqcmu">
+                                            <path d="m13.9 5.4.7-.7L22 12l-7.4 7.4-.7-.7 6.1-6.1H2v-1h18.1z"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'registered', 'account']" class="nav-link d-flex justify-content-between align-items-center text-uppercase">
+                                        <span class="fs-16">Mis datos</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24" width="15" height="24" aria-hidden="true" class="Icon_icon-content-brand__AKwiy Icon_rotate-rtl__Bqcmu">
+                                            <path d="m13.9 5.4.7-.7L22 12l-7.4 7.4-.7-.7 6.1-6.1H2v-1h18.1z"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'myaddresses']" class="nav-link d-flex justify-content-between align-items-center text-uppercase">
+                                        <span class="fs-16">Mis direcciones</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24" width="15" height="24" aria-hidden="true" class="Icon_icon-content-brand__AKwiy Icon_rotate-rtl__Bqcmu">
+                                            <path d="m13.9 5.4.7-.7L22 12l-7.4 7.4-.7-.7 6.1-6.1H2v-1h18.1z"></path>
+                                        </svg>
+                                    </a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'favorites']" class="nav-link d-flex justify-content-between align-items-center text-uppercase">
+                                        <span class="fs-16">Favoritos</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24" width="15" height="24" aria-hidden="true" class="Icon_icon-content-brand__AKwiy Icon_rotate-rtl__Bqcmu">
+                                            <path d="m13.9 5.4.7-.7L22 12l-7.4 7.4-.7-.7 6.1-6.1H2v-1h18.1z"></path>
+                                        </svg>
+                                    </a>
+                                </li>
                                 <li class="nav-item mb-2 d-none"><a href="#" class="nav-link">Seguimiento de pedidos</a></li>
                                 <li class="nav-item mb-2 d-none"><a href="#" class="nav-link">Mi lista de deseos</a></li>
-                                <li class="nav-item mb-2 d-none"><a href="#" class="nav-link d-flex justify-content-between align-items-center text-uppercase ls-1" style="font-weight: 500;"><span>Perfil</span><i class="icon anm anm-arrow-s-right"></i></a></li>
+                                <li class="nav-item mb-2 d-none">
+                                    <a href="#" class="nav-link d-flex justify-content-between align-items-center text-uppercase ls-1" style="font-weight: 500;">
+                                        <span>Perfil</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24" width="15" height="24" aria-hidden="true" class="Icon_icon-content-brand__AKwiy Icon_rotate-rtl__Bqcmu">
+                                            <path d="m13.9 5.4.7-.7L22 12l-7.4 7.4-.7-.7 6.1-6.1H2v-1h18.1z"></path>
+                                        </svg>
+                                    </a>
+                                </li>
                                 <li class="nav-item mb-2 d-none"><a href="#" class="nav-link">Configuración</a></li>
-                                <li class="nav-item mb-2 py-5"><a href="login.html" onclick="return false;" (click)="logout()" class="nav-link fw-normal text-muted text-decoration-underline bg-transparent text-uppercase"><span class="fs-14">Cerrar sesión</span></a></li>
+                                <li class="nav-item mb-2 py-5">
+                                    <a href="#" onclick="return false;" (click)="logout()" class="nav-link text-decoration-underline text-uppercase">
+                                        <span class="fs-14">Cerrar sesión</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -130,7 +172,7 @@
                                             <ng-container *ngFor="let list_address of listAddressClients; let i=index">
                                                 <div class="box-content mt-3">
                                                     <h5>Dirección de facturación predeterminada</h5>
-                                                    <address class="mb-2">{{ list_address.address }}, <br/>{{ list_address.ciudad }}, <br/></address>
+                                                    <address class="mb-2">{{ list_address.address }}, <br />{{ list_address.ciudad }}, <br /></address>
                                                     <p class="d-none"><a href="#" onclick="return false;" class="btn-link">Editar dirección</a></p>
                                                 </div>
                                             </ng-container>
@@ -174,7 +216,7 @@
                                     <div *ngIf="loading" class="loading-spinner d-flex justify-content-center h-100 align-items-center">
                                         <div class="text-center">
                                             <div class="spinner-border text-muted" role="status">
-                                              <span class="sr-only"></span>
+                                                <span class="sr-only"></span>
                                             </div>
                                             <h4 class="text-muted">Cargando</h4>
                                         </div>
@@ -200,7 +242,7 @@
                                                         </div>
                                                         <div class="middle">
                                                             <div class="address mb-2 text-muted">
-                                                                <address class="m-0">{{ list_address.address }}, <br/>{{ list_address.ciudad }} City name, <br/></address>
+                                                                <address class="m-0">{{ list_address.address }}, <br />{{ list_address.ciudad }} City name, <br /></address>
                                                             </div>
                                                             <div class="number">
                                                                 <p>Móvil: <a href="tel:401234567890">(+34) {{ list_address.telefono }}</a></p>
@@ -224,7 +266,7 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form class="add-address-from" method="post" action="#">  
+                                                        <form class="add-address-from" method="post" action="#">
                                                             <div class="form-row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
                                                                 <div class="form-group">
                                                                     <label for="new-name">Nombre completo <span class="required">*</span></label>
@@ -245,7 +287,7 @@
                                                                 <div class="form-group">
                                                                     <label for="new-city">Ciudad <span class="required">*</span></label>
                                                                     <input name="city" placeholder="Introduzca la ciudad" [(ngModel)]="ciudad" id="new-city" type="text" />
-                                                                </div>  
+                                                                </div>
                                                                 <div class="form-group">
                                                                     <label for="new-postcode">Código postal <span class="required">*</span></label>
                                                                     <input name="postcode" placeholder="Introduzca su código postal. P.ej. 28701" [(ngModel)]="zipcode" id="new-postcode" type="text" />
@@ -283,7 +325,7 @@
                                                                 <p [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage">{{ this.errorOrSuccessMessage }}</p>
                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -301,7 +343,7 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form class="add-address-from" method="post" action="#">  
+                                                <form class="add-address-from" method="post" action="#">
                                                     <div class="form-row row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1">
                                                         <div class="form-group">
                                                             <label for="new-name">Nombre completo <span class="required">*</span></label>
@@ -322,7 +364,7 @@
                                                         <div class="form-group">
                                                             <label for="new-city">Ciudad <span class="required">*</span></label>
                                                             <input name="city" placeholder="Introduzca la ciudad" value="" [(ngModel)]="ciudad" id="new-city" type="text" />
-                                                        </div>  
+                                                        </div>
                                                         <div class="form-group">
                                                             <label for="new-postcode">Código postal <span class="required">*</span></label>
                                                             <input name="postcode" placeholder="Introduzca su código postal. P.ej. 28701" value="" [(ngModel)]="zipcode" id="new-postcode" type="text" />
@@ -357,10 +399,10 @@
                                                         <button type="submit" class="btn btn-primary mb-3" (click)="store()">
                                                             <span>Agregar dirección</span>
                                                         </button>
-                                                        <p [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p> 
+                                                        <p [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p>
                                                     </div>
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -372,7 +414,7 @@
 
                         <!-- My Orders -->
                         <div class="tab-pane fade h-100" id="orders">
-                            <div class="orders-card mt-0 h-100">    
+                            <div class="orders-card mt-0 h-100">
                                 <ng-container *ngIf="sale_details.length == 0; else allShowOrders">
                                     <div class="d-flex justify-content-center align-items-center">
                                         <div class="p-2 text-center">
@@ -451,15 +493,15 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>  
-                                </ng-template>                                             
+                                    </div>
+                                </ng-template>
                             </div>
                         </div>
                         <!-- End My Orders -->
 
                         <!-- Orders tracking -->
                         <div class="tab-pane fade h-100 d-none" id="orderstracking">
-                            <div class="orders-card mt-0 h-100">    
+                            <div class="orders-card mt-0 h-100">
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
                                     <h2 class="mb-0">Orders tracking</h2>
                                 </div>
@@ -527,7 +569,7 @@
                                             </div>
                                             <div class="col-lg-4 col-md-12 col-sm-12 mt-4 mt-lg-0">
                                                 <div class="tracking-map map-section ratio ratio-16x9 h-100">
-                                                    <iframe src="https://www.google.com/maps/embed?pb=" allowfullscreen="" height="650"></iframe>                             
+                                                    <iframe src="https://www.google.com/maps/embed?pb=" allowfullscreen="" height="650"></iframe>
                                                 </div>
                                             </div>
                                         </div>
@@ -582,7 +624,7 @@
 
                         <!-- My Wishlist -->
                         <div class="tab-pane fade h-100 d-none" id="wishlist">
-                            <div class="orders-card mt-0 h-100">    
+                            <div class="orders-card mt-0 h-100">
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
                                     <h2 class="mb-0">My Wishlist</h2>
                                 </div>
@@ -629,14 +671,14 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>                                               
+                                </div>
                             </div>
                         </div>
                         <!-- End My Wishlist -->
 
                         <!-- Saved Cards -->
                         <div class="tab-pane fade h-100 d-none" id="payment">
-                            <div class="banks-card mt-0 h-100">                                   
+                            <div class="banks-card mt-0 h-100">
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
                                     <h2 class="mb-0">Saved Cards</h2>
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCardModal"><i class="icon anm anm-plus-r me-1"></i> Add New</button>
@@ -649,7 +691,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form class="add-card-from" method="post" action="#"> 
+                                                    <form class="add-card-from" method="post" action="#">
                                                         <div class="form-row">
                                                             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12">
                                                                 <label for="card-number" class="d-none">Card Number</label>
@@ -780,7 +822,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form class="add-card-from" method="post" action="#"> 
+                                                    <form class="add-card-from" method="post" action="#">
                                                         <div class="form-row">
                                                             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12">
                                                                 <label for="editCard-number" class="d-none">Card Number</label>
@@ -840,19 +882,19 @@
                                         </div>
                                     </div>
                                     <!-- End Edit Bank card Modal -->
-                                </div>                                     
+                                </div>
                             </div>
                         </div>
                         <!-- End Saved Cards -->
 
                         <!-- Profile -->
                         <div class="tab-pane fade h-100" id="profile" *ngIf="userDetail">
-                            <div class="profile-card mt-0 h-100">                                   
+                            <div class="profile-card mt-0 h-100">
                                 <!-- Spinner -->
                                 <div *ngIf="loading" class="loading-spinner d-flex justify-content-center h-100 align-items-center">
                                     <div class="text-center">
                                         <div class="spinner-border text-muted" role="status">
-                                          <span class="sr-only"></span>
+                                            <span class="sr-only"></span>
                                         </div>
                                         <h4 class="text-muted">Cargando</h4>
                                     </div>
@@ -865,7 +907,7 @@
 
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
                                     <h2 class="mb-0">Perfil</h2>
-                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="icon anm anm-plus-r me-1"></i> Editar</button>                                         
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="icon anm anm-plus-r me-1"></i> Editar</button>
                                 </div>
 
                                 <div class="profile-book-section mb-4">
@@ -901,7 +943,7 @@
                                             <p>{{ zipcode_c }}</p>
                                         </div>
                                     </div>
-                                </div>  
+                                </div>
 
                                 <!-- Edit Profile Modal -->
                                 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
@@ -912,7 +954,7 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form class="edit-profile-from" method="post" action="#"> 
+                                                <form class="edit-profile-from" method="post" action="#">
                                                     <div class="form-row">
                                                         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-12 mb-4 d-none">
                                                             <div class="profileImg img-thumbnail shadow bg-white rounded-circle d-flex-justify-center position-relative mx-auto">
@@ -948,7 +990,7 @@
                                             </div>
                                             <div class="modal-footer justify-content-center py-3">
                                                 <button type="submit" class="btn btn-primary m-0" (click)="updateProfileClient()"><span>Guardar cambios</span></button>
-                                                <p class="text-center mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p> 
+                                                <p class="text-center mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -957,7 +999,7 @@
 
                                 <div class="top-sec d-flex-justify-center justify-content-between mb-4">
                                     <h2 class="mb-0">Datos de inicio de sesión</h2>
-                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLoginModal"><i class="icon anm anm-plus-r me-1"></i> Edit</button>                                         
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLoginModal"><i class="icon anm anm-plus-r me-1"></i> Edit</button>
                                 </div>
                                 <div class="profile-login-section">
                                     <div class="details d-flex align-items-center mb-2">
@@ -995,7 +1037,7 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form class="edit-Loginprofile-from" method="post" action="#"> 
+                                                <form class="edit-Loginprofile-from" method="post" action="#">
                                                     <div class="form-row row-cols-lg-1 row-cols-md-1 row-cols-sm-1 row-cols-1">
                                                         <div class="form-group">
                                                             <label for="editLogin-Emailaddress" class="d-none">E-mail <span class="required">*</span></label>
@@ -1031,9 +1073,9 @@
 
                         <!-- Security -->
                         <div class="tab-pane fade h-100 d-none" id="security">
-                            <div class="settings-card mt-0 h-100">                                   
+                            <div class="settings-card mt-0 h-100">
                                 <div class="dashboard-title d-flex-justify-center justify-content-between mb-4">
-                                    <h2 class="mb-0">Ajustes</h2>                                         
+                                    <h2 class="mb-0">Ajustes</h2>
                                 </div>
 
                                 <div class="settings-book-section dashboard-detail">
@@ -1103,8 +1145,8 @@
                                             </div>
                                             <button type="button" class="btn btn-sm my-2">Eliminar cuenta</button>
                                         </div>
-                                    </div>                                              
-                                </div>                                     
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- End Security -->
@@ -1120,6 +1162,6 @@
     <!--Scoll Top-->
     <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
     <!--End Scoll Top-->
-    
+
 </div>
 <!--End Page Wrapper-->
