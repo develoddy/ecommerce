@@ -20,6 +20,8 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
   align-items: flex-end;
   gap: 12px;
   -webkit-font-smoothing:antialiased;
+  /* Avoid blocking interactions underneath the page when minimized; only interactive children receive pointer events */
+  pointer-events: none;
 }
 
 // Botón de chat
@@ -71,6 +73,12 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     border: 1px solid rgba(255,255,255,0.06);
   }
+}
+
+/* Ensure interactive children can receive pointer events */
+.chat-button,
+.chat-window {
+  pointer-events: auto;
 }
 
 // Ventana de chat
@@ -463,5 +471,30 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
   .chat-window.open .chat-actions .close-btn,
   .chat-window.open .chat-actions .minimize-btn {
     background: transparent; color: $secondary-color; border: none; padding: 8px; border-radius: 8px; cursor: pointer;
+  }
+
+  /* Make the confirmation popup fixed on mobile so it remains above virtual keyboard and browser UI */
+  .chat-window.open .close-confirm {
+    position: fixed;
+    /* keep a small gap from screen edges and respect safe-area */
+    left: calc(12px + env(safe-area-inset-left));
+    right: calc(12px + env(safe-area-inset-right));
+    bottom: calc(18px + env(safe-area-inset-bottom));
+    z-index: 99999; /* ensure above everything */
+    display: flex;
+    justify-content: center;
+    pointer-events: auto;
+  }
+
+  /* Add extra bottom padding so chat content can scroll above the keyboard; footer stays sticky */
+  .chat-window.open .chat-body {
+    padding-bottom: calc(140px + env(safe-area-inset-bottom));
+  }
+
+  .chat-window.open .chat-footer {
+    position: sticky;
+    bottom: calc(18px + env(safe-area-inset-bottom));
+    z-index: 30;
+    background: $secondary-color;
   }
 }
