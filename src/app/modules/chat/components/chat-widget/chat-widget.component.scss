@@ -474,7 +474,7 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
      overridden by JS if desired, but defaults avoid relying on runtime.
    */
    --header-h: 56px;
-   --footer-h: 12px;
+   --footer-h: 72px;
    /* Conservative extra space to avoid browser chrome (Safari bottom nav) covering footer.
      This is a CSS-only fallback; adjust if your tests show a different toolbar height. */
    --browser-nav-h: 48px;
