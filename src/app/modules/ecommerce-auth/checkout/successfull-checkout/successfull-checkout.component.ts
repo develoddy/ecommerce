@@ -228,7 +228,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       guestId: payload.guestId,
       currency_payment: 'EUR',
       method_payment: 'STRIPE',
-      n_transaction: 'STRIPE_CHECKOUT',
+      n_transaction: sessionId ? `STRIPE_${sessionId}` : undefined,
       stripeSessionId: sessionId || undefined,
       // Usar precio de variante o unitario para calcular total real
       total: parseFloat(

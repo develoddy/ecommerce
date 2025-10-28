@@ -325,8 +325,7 @@ export class PaymentCheckoutComponent implements OnInit {
 
     if (!this.listAddresses || !this.address_client_selected) {
       this.validMessage = true;
-      this.errorOrSuccessMessage =
-        'Por favor, seleccione la dirección de envío correspondiente.';
+      this.errorOrSuccessMessage = 'Por favor, seleccione la dirección de envío correspondiente.';
       return;
     }
 
@@ -487,7 +486,7 @@ export class PaymentCheckoutComponent implements OnInit {
             currency_payment: 'EUR',
             method_payment: 'PAYPAL',
             n_transaction:
-              'PAYPAL_CHECKOUT_' +
+              'PAYPAL_' +
               Order.purchase_units[0].payments.captures[0].id,
             total: this.totalCarts,
           };
