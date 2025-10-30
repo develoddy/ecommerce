@@ -103,13 +103,10 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const sessionId =
-      this.routerActived.snapshot.queryParamMap.get('session_id');
-    const fromStripe =
-      this.routerActived.snapshot.queryParamMap.get('fromStripe');
+    const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
 
     if (sessionId) {
-      // Intentar recuperar orden existente por stripeSessionId
+      // Solo intentar recuperar la venta ya registrada por el webhook
       this._authEcommerce.getSaleBySession(sessionId).subscribe(
         (resp) => {
           this.saleData = resp.sale;
@@ -124,24 +121,17 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
         },
         (err) => {
           if (err.status === 404) {
-            console.debug('Sale no encontrada, ejecutando registro fallback');
-            this.registerStripeSale();
+            console.warn('Venta no encontrada. Esperando a que Stripe confirme el pago vía webhook.');
+            // No registramos nada en frontend
           } else {
             console.error('Error fetching sale by session:', err);
           }
         }
       );
-    } else if (fromStripe === '1') {
-      // Flujo legacy: registrar la venta directamente desde frontend
-      this.registerStripeSale();
-    } else {
-      // Mostrar venta ya registrada o en caché
-      this.saleData = this.checkoutService.getSaleData();
-      this.successPayStripe();
     }
 
     // Limpiar parámetros de URL para evitar re-procesar en recarga
-    if (sessionId || fromStripe) {
+    if (sessionId) {
       const cleanPath = this._router.url.split('?')[0];
       this.location.replaceState(cleanPath);
     }
@@ -160,22 +150,6 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
     }, 150);
-  }
-
-  private checkDeviceType(): void {
-    const width = window.innerWidth;
-    this.isMobile = width <= 480;
-    this.isTablet = width > 480 && width <= 768;
-    this.isDesktop = width > 768;
-
-    // Ajusta el tamaño de la imagen según el tipo de dispositivo
-    if (this.isMobile) {
-      this.width = 80; // tamaño para móviles
-      this.height = 80; // tamaño para móviles
-    } else {
-      this.width = 100; // tamaño por defecto
-      this.height = 100; // tamaño por defecto
-    }
   }
 
   successPayStripe() {
@@ -213,69 +187,73 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     });
   }
 
-  registerStripeSale() {
-    const payload = this.checkoutService.getSalePayload();
-    if (!payload) {
-      alertDanger('No se encontraron los datos necesarios de la venta.');
-      return;
-    }
+  // registerStripeSale() {
+  //   const payload = this.checkoutService.getSalePayload();
+  //   if (!payload) {
+  //     alertDanger('No se encontraron los datos necesarios de la venta.');
+  //     return;
+  //   }
 
-    // Incluir stripeSessionId para evitar duplicados en recargas
-    const sessionId =
-      this.routerActived.snapshot.queryParamMap.get('session_id');
-    const sale = {
-      user: payload.userId,
-      guestId: payload.guestId,
-      currency_payment: 'EUR',
-      method_payment: 'STRIPE',
-      n_transaction: sessionId ? `STRIPE_${sessionId}` : undefined,
-      stripeSessionId: sessionId || undefined,
-      // Usar precio de variante o unitario para calcular total real
-      total: parseFloat(
-        payload.cart
-          .reduce((sum: number, item: any) => {
-            const price = Number(
-              item.variedade?.retail_price ??
-                item.price_unitario ??
-                item.product?.price_usd ??
-                0
-            );
-            return sum + price * item.cantidad;
-          }, 0)
-          .toFixed(2)
-      ),
-    };
+  //   // Incluir stripeSessionId para evitar duplicados en recargas
+  //   const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
 
-    const sale_address = payload.address;
+  //   // Generar n_transaction siempre, con fallback seguro
+  //   const nTransaction = sessionId
+  //     ? `STRIPE_${sessionId}`
+  //     : `STRIPE_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
 
-    const isGuest = !payload.userId;
+  //   const sale = {
+  //     user: payload.userId,
+  //     guestId: payload.guestId,
+  //     currency_payment: 'EUR',
+  //     method_payment: 'STRIPE',
+  //     n_transaction: nTransaction,
+  //     stripeSessionId: sessionId || null,
+  //     // Usar precio de variante o unitario para calcular total real
+  //     total: parseFloat(
+  //       payload.cart
+  //         .reduce((sum: number, item: any) => {
+  //           const price = Number(
+  //             item.variedade?.retail_price ??
+  //               item.price_unitario ??
+  //               item.product?.price_usd ??
+  //               0
+  //           );
+  //           return sum + price * item.cantidad;
+  //         }, 0)
+  //         .toFixed(2)
+  //     ),
+  //   };
 
-    this._authEcommerce.registerSale({ sale, sale_address }, isGuest).subscribe(
-      (resp: any) => {
-        if (resp.code === 403) {
-          alertDanger(resp.message);
-          return;
-        }
+  //   const sale_address = payload.address;
+  //   const isGuest = !payload.userId;
 
-        alertSuccess(resp.message);
-        this.checkoutService.setSaleData(resp);
-        this.checkoutService.setSaleSuccess(true);
-        this._cartService.resetCart();
-        this.checkoutService.setSaleSuccess(true);
+  //   this._authEcommerce.registerSale({ sale, sale_address }, isGuest).subscribe(
+  //     (resp: any) => {
+  //       if (resp.code === 403) {
+  //         alertDanger(resp.message);
+  //         return;
+  //       }
 
-        // 🆕 Guardar fechas de entrega estimada si existen
-        this.minDeliveryDate = resp?.deliveryEstimate?.min || null;
-        this.maxDeliveryDate = resp?.deliveryEstimate?.max || null;
+  //       alertSuccess(resp.message);
+  //       this.checkoutService.setSaleData(resp);
+  //       this.checkoutService.setSaleSuccess(true);
+  //       this._cartService.resetCart();
+  //       this.checkoutService.setSaleSuccess(true);
 
-        this.saleData = resp;
-        this.successPayStripe();
-      },
-      (err) => {
-        alertDanger('Ocurrió un error al registrar la venta con Stripe.');
-        console.error(err);
-      }
-    );
-  }
+  //       // 🆕 Guardar fechas de entrega estimada si existen
+  //       this.minDeliveryDate = resp?.deliveryEstimate?.min || null;
+  //       this.maxDeliveryDate = resp?.deliveryEstimate?.max || null;
+
+  //       this.saleData = resp;
+  //       this.successPayStripe();
+  //     },
+  //     (err) => {
+  //       alertDanger('Ocurrió un error al registrar la venta con Stripe.');
+  //       console.error(err);
+  //     }
+  //   );
+  // }
 
   formatearFechaEntrega(fecha: string): { label: string; datetime: string } {
     const date = new Date(fecha);
@@ -350,15 +328,6 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       });
     }
   }
-
-  // checkIfAddressClientExists() {
-  //   this._authEcommerce.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe(
-  //     (resp: any) => {
-  //       this.listAddressClients = resp.address_client;
-  //       this.shippingAddress = this.listAddressClients[0]; // Asignamos la primera dirección
-  //       // NOTA: Ver como se puede configurar para que coja la direccion de envio habitual
-  //   });
-  // }
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
@@ -739,6 +708,22 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     const finalPrice = parseFloat(sale.discount || sale.code_discount || originalPrice);
     
     return finalPrice < originalPrice;
+  }
+
+  private checkDeviceType(): void {
+    const width = window.innerWidth;
+    this.isMobile = width <= 480;
+    this.isTablet = width > 480 && width <= 768;
+    this.isDesktop = width > 768;
+
+    // Ajusta el tamaño de la imagen según el tipo de dispositivo
+    if (this.isMobile) {
+      this.width = 80; // tamaño para móviles
+      this.height = 80; // tamaño para móviles
+    } else {
+      this.width = 100; // tamaño por defecto
+      this.height = 100; // tamaño por defecto
+    }
   }
 
   ngOnDestroy(): void {
