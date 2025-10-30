@@ -105,10 +105,14 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
 
+    console.log('[Checkout Success] ngOnInit - session_id from URL:', sessionId);
+
     if (sessionId) {
+      console.log('[Checkout Success] Attempting to fetch sale by session from backend. session_id=', sessionId);
       // Solo intentar recuperar la venta ya registrada por el webhook
       this._authEcommerce.getSaleBySession(sessionId).subscribe(
         (resp) => {
+          console.log('[Checkout Success] getSaleBySession - sale found for session:', sessionId, resp && resp.sale ? { saleId: resp.sale.id, n_transaction: resp.sale.n_transaction } : null);
           this.saleData = resp.sale;
           this.saleDetails = resp.saleDetails;
           this.totalCarts = this.saleDetails.reduce(
@@ -121,10 +125,10 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
         },
         (err) => {
           if (err.status === 404) {
-            console.warn('Venta no encontrada. Esperando a que Stripe confirme el pago vía webhook.');
+            console.warn('[Checkout Success] Venta no encontrada (404). Waiting for Stripe webhook to register the sale. session_id=', sessionId);
             // No registramos nada en frontend
           } else {
-            console.error('Error fetching sale by session:', err);
+            console.error('[Checkout Success] Error fetching sale by session:', err);
           }
         }
       );
@@ -133,6 +137,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     // Limpiar parámetros de URL para evitar re-procesar en recarga
     if (sessionId) {
       const cleanPath = this._router.url.split('?')[0];
+      console.log('[Checkout Success] Cleaning URL params, replacing state with:', cleanPath);
       this.location.replaceState(cleanPath);
     }
 
