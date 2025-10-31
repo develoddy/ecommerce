@@ -6,6 +6,7 @@ import {
   ViewChild,
   Output,
   EventEmitter,
+  NgZone,
 } from '@angular/core';
 import { Subscription, firstValueFrom, take } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
@@ -58,6 +59,7 @@ export class PaymentCheckoutComponent implements OnInit {
   code_cupon: any = null;
   sale: any;
   saleDetails: any = [];
+  saleData: any = null;
   isSaleSuccess = false;
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd: boolean = false;
@@ -114,7 +116,8 @@ export class PaymentCheckoutComponent implements OnInit {
     public routerActived: ActivatedRoute,
     private checkoutService: CheckoutService,
     private localizationService: LocalizationService,
-    private stripePayService: StripePayService
+    private stripePayService: StripePayService,
+    private ngZone: NgZone
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -515,29 +518,51 @@ export class PaymentCheckoutComponent implements OnInit {
                 if (resp.code === 403) {
                   alertDanger(resp.message);
                   return;
-                } else {
-                  alertSuccess(resp.message);
-                  this.subscriptionService.setShowSubscriptionSection(false);
-                  this._cartService.resetCart();
-                  this.checkoutService.setSaleSuccess(true); // Actualiza el servicio para indicar que la venta fue exitosa
-                  this.checkoutService.setSaleData(resp);
-                  this._router.navigate(
-                    [
-                      '/',
-                      this.country,
-                      this.locale,
-                      'account',
-                      'checkout',
-                      'successfull',
-                    ],
-                    {
-                      queryParams: {
-                        initialized: true,
-                        from: 'step4',
-                      },
+                  } else {
+                    alertSuccess(resp.message);
+                    this.subscriptionService.setShowSubscriptionSection(false);
+
+                    // IMPORTANT: set sale data & success flag BEFORE resetting cart or navigating
+                    // so the success page can read the data from CheckoutService
+                    try {
+                      this.checkoutService.setSaleData(resp);
+                      this.checkoutService.setSaleSuccess(true);
+                    } catch (e) {
+                      console.warn('Could not set sale data on CheckoutService before redirect', e);
                     }
-                  );
-                }
+
+                    // keep local reference as well (used by some components)
+                    this.saleData = resp;
+
+                    // Now reset the cart and navigate to success page
+                    this._cartService.resetCart();
+
+                    // Ensure navigation happens inside Angular zone so change detection runs
+                    try {
+                      console.debug('[PayPal Redirect] saleData before navigate:', this.checkoutService.getSaleData());
+                    } catch (dbgErr) {
+                      console.warn('Could not read saleData for debug before navigate', dbgErr);
+                    }
+
+                    this.ngZone.run(() => {
+                      this._router.navigate(
+                        [
+                          '/',
+                          this.country,
+                          this.locale,
+                          'account',
+                          'checkout',
+                          'successfull',
+                        ],
+                        {
+                          queryParams: {
+                            initialized: true,
+                            from: 'step4',
+                          },
+                        }
+                      );
+                    });
+                  }
               }, 100);
             });
           // return actions.order.capture().then(captureOrderHandler);

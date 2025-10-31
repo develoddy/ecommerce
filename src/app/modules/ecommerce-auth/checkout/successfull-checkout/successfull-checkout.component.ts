@@ -108,6 +108,68 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
     if (sessionId) {
       this.fetchSaleWithRetry(sessionId);
+    } else {
+      // No session_id -> possibly PayPal flow. Try to load sale data from several fallbacks
+      console.log('[Checkout Success] No session_id in URL, attempting PayPal fallbacks (checkoutService, navigation state, sessionStorage)');
+
+      // 1) Try CheckoutService (synchronous)
+      try {
+        const svcData = this.checkoutService.getSaleData();
+        if (svcData && (svcData.sale || svcData.saleDetails)) {
+          console.log('[Checkout Success] Loaded saleData from CheckoutService');
+          this.saleData = svcData;
+          this.sale = svcData.sale || svcData;
+          this.saleDetails = svcData.saleDetails || svcData.saleDetails || [];
+          this.minDeliveryDate = svcData?.deliveryEstimate?.min || null;
+          this.maxDeliveryDate = svcData?.deliveryEstimate?.max || null;
+          // Ensure CheckoutService is populated for other components
+          try { this.checkoutService.setSaleData(this.saleData); this.checkoutService.setSaleSuccess(true); } catch(e){/* ignore */}
+          this.successPayStripe();
+          return;
+        }
+      } catch (e) {
+        console.warn('[Checkout Success] Error reading CheckoutService saleData fallback', e);
+      }
+
+      // 2) Try navigation state (history.state or router extras)
+      try {
+        const nav = this._router.getCurrentNavigation?.();
+        const navState = (nav && nav.extras && nav.extras.state) ? nav.extras.state : (history && history.state ? history.state : null);
+        if (navState && (navState.sale || navState.saleDetails)) {
+          console.log('[Checkout Success] Loaded saleData from navigation state');
+          this.saleData = navState;
+          this.sale = navState.sale || navState;
+          this.saleDetails = navState.saleDetails || [];
+          this.minDeliveryDate = navState?.deliveryEstimate?.min || null;
+          this.maxDeliveryDate = navState?.deliveryEstimate?.max || null;
+          try { this.checkoutService.setSaleData(this.saleData); this.checkoutService.setSaleSuccess(true); } catch(e){/* ignore */}
+          this.successPayStripe();
+          return;
+        }
+      } catch (e) {
+        console.warn('[Checkout Success] Error reading navigation state fallback', e);
+      }
+
+      // 3) Try sessionStorage as a last resort (if PayPal flow stored it there)
+      try {
+        const sess = sessionStorage.getItem('checkout_sale_data');
+        if (sess) {
+          const parsed = JSON.parse(sess);
+          if (parsed && (parsed.sale || parsed.saleDetails)) {
+            console.log('[Checkout Success] Loaded saleData from sessionStorage');
+            this.saleData = parsed;
+            this.sale = parsed.sale || parsed;
+            this.saleDetails = parsed.saleDetails || [];
+            this.minDeliveryDate = parsed?.deliveryEstimate?.min || null;
+            this.maxDeliveryDate = parsed?.deliveryEstimate?.max || null;
+            try { this.checkoutService.setSaleData(this.saleData); this.checkoutService.setSaleSuccess(true); } catch(e){/* ignore */}
+            this.successPayStripe();
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('[Checkout Success] Error reading sessionStorage fallback', e);
+      }
     }
 
     // Limpiar parámetros de URL para evitar re-procesar en recarga
