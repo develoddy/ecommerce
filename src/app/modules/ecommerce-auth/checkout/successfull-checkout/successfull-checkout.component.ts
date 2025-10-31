@@ -104,34 +104,10 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
-
     console.log('[Checkout Success] ngOnInit - session_id from URL:', sessionId);
 
     if (sessionId) {
-      console.log('[Checkout Success] Attempting to fetch sale by session from backend. session_id=', sessionId);
-      // Solo intentar recuperar la venta ya registrada por el webhook
-      this._authEcommerce.getSaleBySession(sessionId).subscribe(
-        (resp) => {
-          console.log('[Checkout Success] getSaleBySession - sale found for session:', sessionId, resp && resp.sale ? { saleId: resp.sale.id, n_transaction: resp.sale.n_transaction } : null);
-          this.saleData = resp.sale;
-          this.saleDetails = resp.saleDetails;
-          this.totalCarts = this.saleDetails.reduce(
-            (sum: number, it: any) =>
-              sum + Number(it.discount ?? it.code_discount ?? it.unitPrice ?? it.price_unitario) * it.cantidad,
-            0
-          );
-          this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-          this.successPayStripe();
-        },
-        (err) => {
-          if (err.status === 404) {
-            console.warn('[Checkout Success] Venta no encontrada (404). Waiting for Stripe webhook to register the sale. session_id=', sessionId);
-            // No registramos nada en frontend
-          } else {
-            console.error('[Checkout Success] Error fetching sale by session:', err);
-          }
-        }
-      );
+      this.fetchSaleWithRetry(sessionId);
     }
 
     // Limpiar parámetros de URL para evitar re-procesar en recarga
@@ -143,6 +119,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
     this.activate.emit(true);
     this.subscriptionService.setShowSubscriptionSection(false);
+
     this._authEcommerce.loading$.subscribe((isLoading) => {
       this.loading = isLoading;
     });
@@ -156,6 +133,52 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       actionNetxCheckout($);
     }, 150);
   }
+
+  private fetchSaleWithRetry(sessionId: string, tries = 20, delay = 2000) {
+    if (tries === 0) {
+      console.warn('[Checkout Success] Venta aún no disponible en backend. session_id=', sessionId);
+      console.warn('[Checkout Success] Llamando fallback registerStripeSale() para intentar crear la venta desde frontend');
+      this.registerStripeSale(); // <-- Fallback
+      return;
+    }
+
+    console.log(`[Checkout Success] Attempting to fetch sale by session. Tries left: ${tries}`, sessionId);
+
+    this._authEcommerce.getSaleBySession(sessionId).subscribe(
+      (resp) => {
+        if (resp?.sale) {
+          console.log('[Checkout Success] Sale found for session:', sessionId, resp.sale.id);
+          this.saleData = resp.sale;
+          this.saleDetails = resp.saleDetails;
+
+          // Calcular total de la venta
+          this.totalCarts = this.saleDetails.reduce(
+            (sum: number, it: any) =>
+              sum + Number(it.discount ?? it.code_discount ?? it.unitPrice ?? it.price_unitario) * it.cantidad,
+            0
+          );
+          this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+
+          // Actualizar checkoutService para que successPayStripe() funcione
+          this.checkoutService.setSaleData({ sale: this.saleData, saleDetails: this.saleDetails });
+          this.checkoutService.setSaleSuccess(true);
+          this.successPayStripe();
+        } else {
+          // No hay venta aún, reintentar
+          setTimeout(() => this.fetchSaleWithRetry(sessionId, tries - 1, delay), delay);
+        }
+      },
+      (err) => {
+        if (err.status === 404) {
+          // Venta aún no registrada, reintentar
+          setTimeout(() => this.fetchSaleWithRetry(sessionId, tries - 1, delay), delay);
+        } else {
+          console.error('[Checkout Success] Error fetching sale by session:', err);
+        }
+      }
+    );
+  }
+
 
   successPayStripe() {
     // Initial synchronous load from CheckoutService
@@ -192,73 +215,73 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     });
   }
 
-  // registerStripeSale() {
-  //   const payload = this.checkoutService.getSalePayload();
-  //   if (!payload) {
-  //     alertDanger('No se encontraron los datos necesarios de la venta.');
-  //     return;
-  //   }
+   registerStripeSale() {
+     const payload = this.checkoutService.getSalePayload();
+     if (!payload) {
+       alertDanger('No se encontraron los datos necesarios de la venta.');
+       return;
+     }
 
-  //   // Incluir stripeSessionId para evitar duplicados en recargas
-  //   const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
+     // Incluir stripeSessionId para evitar duplicados en recargas
+     const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
 
-  //   // Generar n_transaction siempre, con fallback seguro
-  //   const nTransaction = sessionId
-  //     ? `STRIPE_${sessionId}`
-  //     : `STRIPE_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+     // Generar n_transaction siempre, con fallback seguro
+     const nTransaction = sessionId
+       ? `STRIPE_${sessionId}`
+       : `STRIPE_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
 
-  //   const sale = {
-  //     user: payload.userId,
-  //     guestId: payload.guestId,
-  //     currency_payment: 'EUR',
-  //     method_payment: 'STRIPE',
-  //     n_transaction: nTransaction,
-  //     stripeSessionId: sessionId || null,
-  //     // Usar precio de variante o unitario para calcular total real
-  //     total: parseFloat(
-  //       payload.cart
-  //         .reduce((sum: number, item: any) => {
-  //           const price = Number(
-  //             item.variedade?.retail_price ??
-  //               item.price_unitario ??
-  //               item.product?.price_usd ??
-  //               0
-  //           );
-  //           return sum + price * item.cantidad;
-  //         }, 0)
-  //         .toFixed(2)
-  //     ),
-  //   };
+     const sale = {
+       user: payload.userId,
+       guestId: payload.guestId,
+       currency_payment: 'EUR',
+       method_payment: 'STRIPE',
+       n_transaction: nTransaction,
+       stripeSessionId: sessionId || null,
+       // Usar precio de variante o unitario para calcular total real
+       total: parseFloat(
+         payload.cart
+           .reduce((sum: number, item: any) => {
+             const price = Number(
+               item.variedade?.retail_price ??
+                 item.price_unitario ??
+                 item.product?.price_usd ??
+                 0
+             );
+             return sum + price * item.cantidad;
+           }, 0)
+           .toFixed(2)
+       ),
+     };
 
-  //   const sale_address = payload.address;
-  //   const isGuest = !payload.userId;
+     const sale_address = payload.address;
+     const isGuest = !payload.userId;
 
-  //   this._authEcommerce.registerSale({ sale, sale_address }, isGuest).subscribe(
-  //     (resp: any) => {
-  //       if (resp.code === 403) {
-  //         alertDanger(resp.message);
-  //         return;
-  //       }
+     this._authEcommerce.registerSale({ sale, sale_address }, isGuest).subscribe(
+       (resp: any) => {
+         if (resp.code === 403) {
+           alertDanger(resp.message);
+           return;
+         }
 
-  //       alertSuccess(resp.message);
-  //       this.checkoutService.setSaleData(resp);
-  //       this.checkoutService.setSaleSuccess(true);
-  //       this._cartService.resetCart();
-  //       this.checkoutService.setSaleSuccess(true);
+         alertSuccess(resp.message);
+         this.checkoutService.setSaleData(resp);
+         this.checkoutService.setSaleSuccess(true);
+         this._cartService.resetCart();
+         this.checkoutService.setSaleSuccess(true);
 
-  //       // 🆕 Guardar fechas de entrega estimada si existen
-  //       this.minDeliveryDate = resp?.deliveryEstimate?.min || null;
-  //       this.maxDeliveryDate = resp?.deliveryEstimate?.max || null;
+         // 🆕 Guardar fechas de entrega estimada si existen
+        this.minDeliveryDate = resp?.deliveryEstimate?.min || null;
+        this.maxDeliveryDate = resp?.deliveryEstimate?.max || null;
 
-  //       this.saleData = resp;
-  //       this.successPayStripe();
-  //     },
-  //     (err) => {
-  //       alertDanger('Ocurrió un error al registrar la venta con Stripe.');
-  //       console.error(err);
-  //     }
-  //   );
-  // }
+        this.saleData = resp;
+        this.successPayStripe();
+      },
+      (err) => {
+        alertDanger('Ocurrió un error al registrar la venta con Stripe.');
+        console.error(err);
+      }
+    );
+  }
 
   formatearFechaEntrega(fecha: string): { label: string; datetime: string } {
     const date = new Date(fecha);
@@ -382,6 +405,36 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       integerPart: formatted[0], // Parte entera
       decimalPart: formatted[1], // Parte decimal
     };
+  }
+
+  /**
+   * Devuelve la URL de la imagen a mostrar para un detalle de venta.
+   * Usa fallbacks: sale.product.imagen, variedad.Files[0].preview_url, variedade.Files[0].preview_url, o ''
+   */
+  public getImageUrl(sale: any): string {
+    try {
+      if (!sale) return '';
+      // Preferencia: campo 'imagen' del producto (ya rellenado por backend)
+      const prodImg = sale.product && (sale.product.imagen || sale.product.image || sale.product.portada);
+      if (prodImg) return prodImg;
+
+      // Variante (forma 'variedad') con Files
+      const filesA = sale.variedad && sale.variedad.Files;
+      if (Array.isArray(filesA) && filesA.length > 0) {
+        return filesA[0].preview_url || filesA[0].thumbnail_url || filesA[0].url || '';
+      }
+
+      // Variante en otra convención (variedade)
+      const filesB = sale.variedade && sale.variedade.Files;
+      if (Array.isArray(filesB) && filesB.length > 0) {
+        return filesB[0].preview_url || filesB[0].thumbnail_url || filesB[0].url || '';
+      }
+
+      return '';
+    } catch (e) {
+      console.warn('[SuccessfullCheckout] getImageUrl error:', e);
+      return '';
+    }
   }
 
   removeAllCart(user_id: any) {

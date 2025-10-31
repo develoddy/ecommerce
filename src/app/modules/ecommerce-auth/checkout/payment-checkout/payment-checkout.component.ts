@@ -355,12 +355,14 @@ export class PaymentCheckoutComponent implements OnInit {
 
     // Guarda el payload antes de redirigir
     this.checkoutService.setSalePayload(payload);
+  console.log('[Payment Checkout] createStripeSession payload:', JSON.stringify({ cartLength: payload.cart.length, userId: payload.userId, guestId: payload.guestId }));
 
     // Aquí llama a tu backend para crear la sesión
     try {
       const session: any = await firstValueFrom(
         this.stripePayService.createStripeSession(payload)
       );
+      console.log('[Payment Checkout] Stripe create session response:', session && session.id ? { sessionId: session.id } : session);
 
       const result = await stripe.redirectToCheckout({ sessionId: session.id });
 

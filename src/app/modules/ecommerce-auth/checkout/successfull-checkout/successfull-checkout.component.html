@@ -29,14 +29,12 @@
                                                 <div class="d-flex flex-lg-row">
                                                     <!-- PRODUCTO IMAGE -->
                                                     <div class="p-2">
-                                                        <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', sale.product.slug]">
+                                                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', sale.product.slug]">
                                                             <img class="blur-up lazyload"
-                                                                [attr.data-src]="sale.variedade.files[1].preview_url" 
-                                                                [src]="sale.variedade.files[1].preview_url"
-                                                                alt="{{ sale.product.title }}" 
-                                                                title="{{ sale.product.title }}"
-                                                                alt="product"
-                                                                title="Product"
+                                                                [attr.data-src]="getImageUrl(sale)"
+                                                                [src]="getImageUrl(sale)"
+                                                                [alt]="sale.product?.title || sale.product?.name || 'product'"
+                                                                [title]="sale.product?.title || sale.product?.name || 'Product'"
                                                                 width="250"
                                                                 height="250"
                                                             />
