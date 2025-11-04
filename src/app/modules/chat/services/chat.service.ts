@@ -173,12 +173,20 @@ export class ChatService {
     // Obtener el usuario actual
   const currentUser = this.authService.userSubject.value;
   const currentGuestUser = this.authService.userGuestSubject.value;
+
+  console.log("Usuario invitado:", currentGuestUser);
+    
+
     // fallback: si no existe guest en authService, revisar localStorage
-    let guestId = currentGuestUser?._id || localStorage.getItem('chat_guest_id') || null;
-    if (!guestId) {
-      guestId = `guest_${Date.now()}_${Math.random().toString(36).substring(2,9)}`;
-      localStorage.setItem('chat_guest_id', guestId);
-    }
+    //let guestId = currentGuestUser?.id || localStorage.getItem('chat_guest_id') || null;
+    let guestId = currentGuestUser?.id || localStorage.getItem('user_guest') || null;
+
+    console.log("Get guestId: ", guestId);
+    
+    //  if (!guestId) {
+    //    guestId = `guest_${Date.now()}_${Math.random().toString(36).substring(2,9)}`;
+    //    localStorage.setItem('user_guest', guestId);
+    //  }
 
     const userData = {
       session_id: this.sessionId,
