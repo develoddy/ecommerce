@@ -74,7 +74,8 @@
                                                                 <p> {{ list_address.zipcode }} {{ list_address.poblacion }}, <span class="text-uppercase">{{ list_address.ciudad }}</span> <br/></p>
                                                             </div>
                                                             <div class="address">
-                                                                <p>Tel. (+34) {{ list_address.phone }}</p>
+                                                                <!-- <p>Tel. (+34) {{ list_address.phone }}</p> -->
+                                                                <p>Tel.{{ list_address.pais === 'ES' ? '(+34) ' : '(+XX) ' }}{{ list_address.phone }}</p>
                                                             </div>
                                                             <div class="form-text px-2 mt-3 text-dark" style="width: fit-content !important; background-color: #f3f3f3;" *ngIf="list_address.usual_shipping_address">Dirección de envío habitual</div>
                                                         </div>

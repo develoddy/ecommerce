@@ -134,6 +134,36 @@ export class PaymentCheckoutComponent implements OnInit {
     }, 150);
   }
 
+  /**
+   * Cargar el SDK de PayPal dinámicamente
+   * @param clientId 
+   * @returns 
+   */
+  loadPayPalSdk(clientId: string): Promise<any> {
+    console.log('ClientID cargado:', clientId);
+    return new Promise((resolve, reject) => {
+      // Evita cargar dos veces el script
+      if ((window as any).paypal) {
+        console.log('[PayPal SDK] Ya cargado.');
+        return resolve((window as any).paypal);
+      }
+
+      const script = document.createElement('script');
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=EUR&vault=true`;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        console.log('[PayPal SDK] Cargado correctamente.');
+        resolve((window as any).paypal);
+      };
+      script.onerror = (err) => reject(err);
+
+      document.head.appendChild(script);
+    });
+  }
+
+
+
   loadShippingRateWithAddress(
     address: any,
     items: { variant_id: number; quantity: number }[],
@@ -314,8 +344,25 @@ export class PaymentCheckoutComponent implements OnInit {
     }, 0);
   }
 
+  async loadStripeSdk(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if ((window as any).Stripe) return resolve((window as any).Stripe(environment.stripePublicKey));
+
+      const script = document.createElement('script');
+      script.src = 'https://js.stripe.com/v3/';
+      script.async = true;
+      script.onload = () => resolve((window as any).Stripe(environment.stripePublicKey));
+      script.onerror = reject;
+
+      document.head.appendChild(script);
+    });
+  }
+
   async payWithStripe() {
-    const stripe = await loadStripe(environment.stripePublicKey);
+    //const stripe = await loadStripe(environment.stripePublicKey);
+    // 🔹 Cargar Stripe solo cuando se necesita
+    const stripe = await this.loadStripeSdk();
+
     if (!stripe) {
       alertDanger('Stripe no pudo cargarse');
       return;
@@ -328,7 +375,7 @@ export class PaymentCheckoutComponent implements OnInit {
 
     if (!this.listAddresses || !this.address_client_selected) {
       this.validMessage = true;
-      this.errorOrSuccessMessage = 'Por favor, seleccione la dirección de envío correspondiente.';
+      this.errorOrSuccessMessage = 'Por favor, seleccione una dirección de envío.';
       return;
     }
 
@@ -353,20 +400,20 @@ export class PaymentCheckoutComponent implements OnInit {
         region: this.poblacion,
         telefono: this.phone,
         address: this.address,
+        zipcode: this.zipcode,
       },
     };
 
     // Guarda el payload antes de redirigir
     this.checkoutService.setSalePayload(payload);
-  console.log('[Payment Checkout] createStripeSession payload:', JSON.stringify({ cartLength: payload.cart.length, userId: payload.userId, guestId: payload.guestId }));
+    //console.log('[Payment Checkout] createStripeSession payload:', JSON.stringify({ cartLength: payload.cart.length, userId: payload.userId, guestId: payload.guestId }));
 
     // Aquí llama a tu backend para crear la sesión
     try {
-      const session: any = await firstValueFrom(
-        this.stripePayService.createStripeSession(payload)
-      );
-      console.log('[Payment Checkout] Stripe create session response:', session && session.id ? { sessionId: session.id } : session);
+      // 🔹 Redirigir al checkout de Stripe
+      const session: any = await firstValueFrom(this.stripePayService.createStripeSession(payload));
 
+      // 🔹 Redirigir al checkout de Stripe
       const result = await stripe.redirectToCheckout({ sessionId: session.id });
 
       if (result.error) {
@@ -377,11 +424,23 @@ export class PaymentCheckoutComponent implements OnInit {
     }
   }
 
-  payWithPaypal() {
-    this.disablePayments = false;
-    if (this.paypalRendered || !this.paypalElement?.nativeElement) return;
+  async payWithPaypal() {
+    //if (this.paypalRendered || !this.paypalElement?.nativeElement) return;
+    //this.paypalRendered = true;
 
+    // SOLO una verificación, y SOLO al iniciar
+    if (this.paypalRendered) return;
+
+    // Se marca aquí, PERO después se verifica el elemento
     this.paypalRendered = true;
+
+    this.disablePayments = false;
+
+    // NO repitas la condición, solo verifica el elemento
+    if (!this.paypalElement?.nativeElement) {
+      console.error("PayPal element no existe");
+      return;
+    }
 
     const isGuest = !this.CURRENT_USER_AUTHENTICATED;
 
@@ -414,8 +473,15 @@ export class PaymentCheckoutComponent implements OnInit {
       };
     } // isDesktop usa el default
 
-    paypal
-      .Buttons({
+    try {
+      // 🔹 Cargar el SDK dinámicamente antes de usar `paypal.Buttons`
+      const clientId = 'AXuACmEIWqiMwegE6pisIhiTOPldHac-2XYD0aJjoPuy34JB6grxNeDc-1jgTqv_W5QvC7o4pZIvVe8G';
+      await this.loadPayPalSdk(clientId);
+
+      const paypal = (window as any).paypal;
+      if (!paypal) throw new Error('PayPal SDK no disponible.');
+
+      paypal.Buttons({
         style: buttonStyle,
 
         // set up the transaction
@@ -507,6 +573,7 @@ export class PaymentCheckoutComponent implements OnInit {
             telefono: this.phone,
             email: this.email,
             nota: '',
+            zipcode: this.zipcode,
           };
 
           this._authEcommerce
@@ -574,8 +641,10 @@ export class PaymentCheckoutComponent implements OnInit {
             'An error prevented the buyer from checking out with PayPal'
           );
         },
-      })
-      .render(this.paypalElement?.nativeElement);
+      }).render(this.paypalElement?.nativeElement);
+    } catch (error) {
+      console.error('Error al cargar PayPal SDK:', error);
+    }
   }
 
   destroyPaypalButtons() {

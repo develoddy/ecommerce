@@ -241,7 +241,6 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     );
   }
 
-
   successPayStripe() {
     // Initial synchronous load from CheckoutService
     const initialData = this.checkoutService.getSaleData();
