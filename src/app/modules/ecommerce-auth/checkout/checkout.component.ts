@@ -162,7 +162,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   loadCurrentDataCart() {
     this._cartService.currenteDataCart$.subscribe((resp:any) => {
       this.listCarts = resp;
-      console.log("DEBBUG: Componente Padre checkout loadCurrentDataCart() > listCarts: ", this.listCarts);
       
       // Procesar precios con descuentos antes de calcular totales
       this.processCartPrices();
@@ -174,7 +173,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       }, 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       
-      console.log("DEBBUG: Total carrito con descuentos aplicados:", this.totalCarts);
     });
   }
 
@@ -190,13 +188,13 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       cart.finalSubtotal = cart.finalUnitPrice * cart.cantidad;
       cart.finalTotal = cart.finalSubtotal;
       
-      console.log(`💰 Procesando ${cart.product.title}:`, {
-        precioOriginal: cart.price_unitario,
-        precioFinal: cart.finalUnitPrice,
-        tieneDescuento: this.hasCartItemDiscount(cart),
-        cantidad: cart.cantidad,
-        subtotalFinal: cart.finalSubtotal
-      });
+      // console.log(`💰 Procesando ${cart.product.title}:`, {
+      //   precioOriginal: cart.price_unitario,
+      //   precioFinal: cart.finalUnitPrice,
+      //   tieneDescuento: this.hasCartItemDiscount(cart),
+      //   cantidad: cart.cantidad,
+      //   subtotalFinal: cart.finalSubtotal
+      // });
     });
   }
 

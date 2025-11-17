@@ -95,7 +95,7 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
   position: relative;
   width: 440px;
   max-width: calc(100vw - 40px);
-  height: 960px; /* taller per request */
+  height: 860px; /* taller per request */
   max-height: calc(100vh - 110px);
   background-color: $secondary-color;
   border-radius: 0px;

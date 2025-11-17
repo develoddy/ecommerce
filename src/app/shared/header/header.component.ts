@@ -274,11 +274,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       
       return flashProduct;
     });
-
-    // console.log("----> [Components Header] ourProducts with prices:", this.ourProducts);
-    // console.log("----> [Components Header] hoodiesProducts with prices:", this.hoodiesProducts);
-    // console.log("----> [Components Header] mugsProducts with prices:", this.mugsProducts);
-    // console.log("----> [Components Header] capsProducts with prices:", this.capsProducts);
   }
 
   getPriceParts = (price: number) => {
@@ -536,7 +531,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
-        
+  
         // Recalcular total usando precio final (con descuento si aplica)
         this.totalCarts = this.listCarts.reduce((sum, item) => {
           const finalPrice = this.getFinalPrice(item);
@@ -545,6 +540,24 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       })
     );
+  }
+
+  /**
+   * Obtiene la imagen correcta de la variedad (preview > default) o fallback al producto
+   */
+  getVarietyImage(cart: any): string {
+    if (!cart.variedad?.files?.length) return cart.product.imagen;
+
+    // Buscamos la imagen tipo 'preview'
+    const preview = cart.variedad.files.find((f: any) => f.type === 'preview' && f.preview_url);
+    if (preview) return preview.preview_url;
+
+    // Buscamos la imagen tipo 'default'
+    const def = cart.variedad.files.find((f: any) => f.type === 'default' && f.preview_url);
+    if (def) return def.preview_url;
+
+    // Fallback al producto
+    return cart.product.imagen;
   }
   
   private storeListWishlists(): void {

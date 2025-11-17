@@ -82,7 +82,16 @@
                                             </div>
                                             <div class="p-2">
                                                 <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">
-                                                    <img class="blur-up lazyload" [src]="cart.variedad.files[1].preview_url" alt="product" title="Product" width="250" height="250" />
+                                                    <img 
+                                                        class="blur-up lazyload" 
+                                                        [src]="getVarietyImage(cart)" 
+                                                        alt="product" 
+                                                        title="{{ cart.product.title }} / {{ cart.variedad?.color }}" 
+                                                        width="250" 
+                                                        height="250" 
+                                                        />
+                                                    <!-- <img class="blur-up lazyload" [src]="cart.product.imagen" alt="product" title="Product" width="250" height="250" />  -->
+                                                    <!-- <img class="blur-up lazyload" [src]="cart.variedad.files[1].preview_url" alt="product" title="Product" width="250" height="250" /> -->
                                                 </a>
                                             </div>
                                             <div class="p-2 d-flex flex-column">

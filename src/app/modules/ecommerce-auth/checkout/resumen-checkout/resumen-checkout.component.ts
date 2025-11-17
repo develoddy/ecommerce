@@ -360,6 +360,8 @@ export class ResumenCheckoutComponent implements OnInit {
     this.subscriptions.add(
       this._cartService.currenteDataCart$.subscribe((resp:any) => {
         this.listCarts = resp;
+        console.log("Get list Carts resumen: ", this.listCarts);
+        
         this.totalCarts = this.listCarts.reduce((sum: number, item: any) => {
           // Usar el precio final procesado con descuentos si existe, si no calcular 
           const finalPrice = item.finalUnitPrice || this.getFinalUnitPrice(item);
@@ -368,9 +370,26 @@ export class ResumenCheckoutComponent implements OnInit {
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       })
     );
-
-    
   }
+
+  /**
+ * Obtiene la imagen correcta de la variedad (preview > default) o fallback al producto
+ */
+getVarietyImage(cart: any): string {
+    if (!cart.variedad?.files) return cart.product.imagen;
+
+    // Buscamos primero la imagen tipo 'preview'
+    const preview = cart.variedad.files.find((f: any) => f.type === 'preview');
+    if (preview && preview.preview_url) return preview.preview_url;
+
+    // Luego buscamos 'default'
+    const def = cart.variedad.files.find((f: any) => f.type === 'default');
+    if (def && def.preview_url) return def.preview_url;
+
+    // Fallback al producto base
+    return cart.product.imagen;
+  }
+
   
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);

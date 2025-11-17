@@ -120,6 +120,8 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
           this.saleData = svcData;
           this.sale = svcData.sale || svcData;
           this.saleDetails = svcData.saleDetails || svcData.saleDetails || [];
+          console.log('1) [Checkout Success] saleData:', this.saleData);
+          
           this.minDeliveryDate = svcData?.deliveryEstimate?.min || null;
           this.maxDeliveryDate = svcData?.deliveryEstimate?.max || null;
           // Ensure CheckoutService is populated for other components
@@ -140,6 +142,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
           this.saleData = navState;
           this.sale = navState.sale || navState;
           this.saleDetails = navState.saleDetails || [];
+          console.log('2) [Checkout Success] saleData:', this.saleData);
           this.minDeliveryDate = navState?.deliveryEstimate?.min || null;
           this.maxDeliveryDate = navState?.deliveryEstimate?.max || null;
           try { this.checkoutService.setSaleData(this.saleData); this.checkoutService.setSaleSuccess(true); } catch(e){/* ignore */}
@@ -160,6 +163,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
             this.saleData = parsed;
             this.sale = parsed.sale || parsed;
             this.saleDetails = parsed.saleDetails || [];
+            console.log('3) [Checkout Success] saleData:', this.saleData);
             this.minDeliveryDate = parsed?.deliveryEstimate?.min || null;
             this.maxDeliveryDate = parsed?.deliveryEstimate?.max || null;
             try { this.checkoutService.setSaleData(this.saleData); this.checkoutService.setSaleSuccess(true); } catch(e){/* ignore */}
@@ -200,7 +204,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     if (tries === 0) {
       console.warn('[Checkout Success] Venta aún no disponible en backend. session_id=', sessionId);
       console.warn('[Checkout Success] Llamando fallback registerStripeSale() para intentar crear la venta desde frontend');
-      this.registerStripeSale(); // <-- Fallback
+      // alertDanger('La venta aún no se ha registrado. Por favor, contacta soporte si el pago se completó.');
       return;
     }
 
@@ -257,6 +261,8 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       }, 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       this.saleDetails = saleDetails;
+      console.log("SuccessPayStripe :", this.saleDetails);
+      
     }
     // Subscribe to updates (e.g., after Stripe)
     this.checkoutService.saleData$.subscribe((saleDataPayload) => {
@@ -276,17 +282,17 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     });
   }
 
-   registerStripeSale() {
+  /*
+  registerStripeSale() {
      const payload = this.checkoutService.getSalePayload();
      if (!payload) {
        alertDanger('No se encontraron los datos necesarios de la venta.');
        return;
      }
 
-     // Incluir stripeSessionId para evitar duplicados en recargas
      const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
 
-     // Generar n_transaction siempre, con fallback seguro
+     
      const nTransaction = sessionId
        ? `STRIPE_${sessionId}`
        : `STRIPE_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
@@ -298,7 +304,6 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
        method_payment: 'STRIPE',
        n_transaction: nTransaction,
        stripeSessionId: sessionId || null,
-       // Usar precio de variante o unitario para calcular total real
        total: parseFloat(
          payload.cart
            .reduce((sum: number, item: any) => {
@@ -330,7 +335,6 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
          this._cartService.resetCart();
          this.checkoutService.setSaleSuccess(true);
 
-         // 🆕 Guardar fechas de entrega estimada si existen
         this.minDeliveryDate = resp?.deliveryEstimate?.min || null;
         this.maxDeliveryDate = resp?.deliveryEstimate?.max || null;
 
@@ -342,7 +346,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
         console.error(err);
       }
     );
-  }
+  }*/
 
   formatearFechaEntrega(fecha: string): { label: string; datetime: string } {
     const date = new Date(fecha);
@@ -468,35 +472,54 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     };
   }
 
-  /**
-   * Devuelve la URL de la imagen a mostrar para un detalle de venta.
-   * Usa fallbacks: sale.product.imagen, variedad.Files[0].preview_url, variedade.Files[0].preview_url, o ''
-   */
-  public getImageUrl(sale: any): string {
-    try {
-      if (!sale) return '';
-      // Preferencia: campo 'imagen' del producto (ya rellenado por backend)
-      const prodImg = sale.product && (sale.product.imagen || sale.product.image || sale.product.portada);
-      if (prodImg) return prodImg;
 
-      // Variante (forma 'variedad') con Files
-      const filesA = sale.variedad && sale.variedad.Files;
-      if (Array.isArray(filesA) && filesA.length > 0) {
-        return filesA[0].preview_url || filesA[0].thumbnail_url || filesA[0].url || '';
-      }
 
-      // Variante en otra convención (variedade)
-      const filesB = sale.variedade && sale.variedade.Files;
-      if (Array.isArray(filesB) && filesB.length > 0) {
-        return filesB[0].preview_url || filesB[0].thumbnail_url || filesB[0].url || '';
-      }
+  getImageUrl(sale: any): string {
+    if (sale.variedade && Array.isArray(sale.variedade.files) && sale.variedade.files.length > 0) {
+      // 1️⃣ Preview (aunque visible sea false)
+      const previewFile = sale.variedade.files.find((f: any) => f.type === 'preview');
+      if (previewFile && previewFile.preview_url) return previewFile.preview_url;
 
-      return '';
-    } catch (e) {
-      console.warn('[SuccessfullCheckout] getImageUrl error:', e);
-      return '';
+      // 2️⃣ Default
+      const defaultFile = sale.variedade.files.find((f: any) => f.type === 'default');
+      if (defaultFile && defaultFile.preview_url) return defaultFile.preview_url;
+
+      // 3️⃣ Thumbnail como fallback
+      const anyFile = sale.variedade.files[0];
+      if (anyFile) return anyFile.preview_url || anyFile.thumbnail_url || anyFile.url || '';
     }
+
+    // 4️⃣ Fallback al producto
+    return sale.product?.imagen || sale.product?.portada || '';
   }
+
+
+
+  // public getImageUrl(sale: any): string {
+  //   try {
+  //     if (!sale) return '';
+  //     // Preferencia: campo 'imagen' del producto (ya rellenado por backend)
+  //     const prodImg = sale.product && (sale.product.imagen || sale.product.image || sale.product.portada);
+  //     if (prodImg) return prodImg;
+
+  //     // Variante (forma 'variedad') con Files
+  //     const filesA = sale.variedad && sale.variedad.Files;
+  //     if (Array.isArray(filesA) && filesA.length > 0) {
+  //       return filesA[0].preview_url || filesA[0].thumbnail_url || filesA[0].url || '';
+  //     }
+
+  //     // Variante en otra convención (variedade)
+  //     const filesB = sale.variedade && sale.variedade.Files;
+  //     if (Array.isArray(filesB) && filesB.length > 0) {
+  //       return filesB[0].preview_url || filesB[0].thumbnail_url || filesB[0].url || '';
+  //     }
+
+  //     return '';
+  //   } catch (e) {
+  //     console.warn('[SuccessfullCheckout] getImageUrl error:', e);
+  //     return '';
+  //   }
+  // }
 
   removeAllCart(user_id: any) {
     this._cartService.deleteAllCart(user_id).subscribe(

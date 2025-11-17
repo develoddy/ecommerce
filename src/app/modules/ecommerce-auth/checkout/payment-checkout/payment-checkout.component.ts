@@ -576,62 +576,72 @@ export class PaymentCheckoutComponent implements OnInit {
             zipcode: this.zipcode,
           };
 
-          this._authEcommerce
-            .registerSale({ sale: sale, sale_address: sale_address }, isGuest)
-            .subscribe((resp: any) => {
-              this.isLastStepActive_3 = false;
+          // Generamos external_id único y shipping
+          const externalId = `order_${Date.now()}`;
+          const shippingMethod = "STANDARD";
 
-              setTimeout(() => {
-                if (resp.code === 403) {
-                  alertDanger(resp.message);
-                  return;
-                  } else {
-                    alertSuccess(resp.message);
-                    this.subscriptionService.setShowSubscriptionSection(false);
+           // 🔹 Payload completo para backend
+          const orderDataToSend = {
+            sale,
+            sale_address,
+            external_id: externalId,
+            shipping: shippingMethod
+          };
 
-                    // IMPORTANT: set sale data & success flag BEFORE resetting cart or navigating
-                    // so the success page can read the data from CheckoutService
-                    try {
-                      this.checkoutService.setSaleData(resp);
-                      this.checkoutService.setSaleSuccess(true);
-                    } catch (e) {
-                      console.warn('Could not set sale data on CheckoutService before redirect', e);
-                    }
+          this._authEcommerce.registerSale(orderDataToSend, isGuest).subscribe((resp: any) => {
+            this.isLastStepActive_3 = false;
 
-                    // keep local reference as well (used by some components)
-                    this.saleData = resp;
+            setTimeout(() => {
+              if (resp.code === 403) {
+                alertDanger(resp.message);
+                return;
+                } else {
+                  alertSuccess(resp.message);
+                  this.subscriptionService.setShowSubscriptionSection(false);
 
-                    // Now reset the cart and navigate to success page
-                    this._cartService.resetCart();
-
-                    // Ensure navigation happens inside Angular zone so change detection runs
-                    try {
-                      console.debug('[PayPal Redirect] saleData before navigate:', this.checkoutService.getSaleData());
-                    } catch (dbgErr) {
-                      console.warn('Could not read saleData for debug before navigate', dbgErr);
-                    }
-
-                    this.ngZone.run(() => {
-                      this._router.navigate(
-                        [
-                          '/',
-                          this.country,
-                          this.locale,
-                          'account',
-                          'checkout',
-                          'successfull',
-                        ],
-                        {
-                          queryParams: {
-                            initialized: true,
-                            from: 'step4',
-                          },
-                        }
-                      );
-                    });
+                  // IMPORTANT: set sale data & success flag BEFORE resetting cart or navigating
+                  // so the success page can read the data from CheckoutService
+                  try {
+                    this.checkoutService.setSaleData(resp);
+                    this.checkoutService.setSaleSuccess(true);
+                  } catch (e) {
+                    console.warn('Could not set sale data on CheckoutService before redirect', e);
                   }
-              }, 100);
-            });
+
+                  // keep local reference as well (used by some components)
+                  this.saleData = resp;
+
+                  // Now reset the cart and navigate to success page
+                  this._cartService.resetCart();
+
+                  // Ensure navigation happens inside Angular zone so change detection runs
+                  try {
+                    console.debug('[PayPal Redirect] saleData before navigate:', this.checkoutService.getSaleData());
+                  } catch (dbgErr) {
+                    console.warn('Could not read saleData for debug before navigate', dbgErr);
+                  }
+
+                  this.ngZone.run(() => {
+                    this._router.navigate(
+                      [
+                        '/',
+                        this.country,
+                        this.locale,
+                        'account',
+                        'checkout',
+                        'successfull',
+                      ],
+                      {
+                        queryParams: {
+                          initialized: true,
+                          from: 'step4',
+                        },
+                      }
+                    );
+                  });
+                }
+            }, 100);
+          });
           // return actions.order.capture().then(captureOrderHandler);
         },
 
@@ -677,6 +687,24 @@ export class PaymentCheckoutComponent implements OnInit {
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       })
     );
+  }
+
+  /**
+  * Obtiene la imagen correcta de la variedad (preview > default) o fallback al producto
+  */
+  getVarietyImage(cart: any): string {
+      if (!cart.variedad?.files) return cart.product.imagen;
+
+      // Buscamos primero la imagen tipo 'preview'
+      const preview = cart.variedad.files.find((f: any) => f.type === 'preview');
+      if (preview && preview.preview_url) return preview.preview_url;
+
+      // Luego buscamos 'default'
+      const def = cart.variedad.files.find((f: any) => f.type === 'default');
+      if (def && def.preview_url) return def.preview_url;
+
+      // Fallback al producto base
+      return cart.product.imagen;
   }
 
   getFormattedPrice(price: any) {

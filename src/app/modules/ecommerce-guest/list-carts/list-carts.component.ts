@@ -276,6 +276,25 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     return discount;
   }
 
+/**
+ * Obtiene la imagen correcta de la variedad (preview > default) o fallback al producto
+ */
+  getVarietyImage(cart: any): string {
+    if (!cart.variedad?.files) return cart.product.imagen;
+
+    // Buscamos primero la imagen tipo 'preview'
+    const preview = cart.variedad.files.find((f:any) => f.type === 'preview');
+    if (preview && preview.preview_url) return preview.preview_url;
+
+    // Luego buscamos 'default'
+    const def = cart.variedad.files.find((f:any) => f.type === 'default');
+    if (def && def.preview_url) return def.preview_url;
+
+    // Fallback al producto base
+    return cart.product.imagen;
+  }
+
+
   public sotoreCarts() {
     this.cartService.resetCart();
     if (this.currentUser && !this.currentUser.email) {

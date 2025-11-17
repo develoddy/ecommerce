@@ -864,7 +864,16 @@
                                        <!-- Imagen -->
                                        <div style="flex: 0 0 auto">
                                           <a [routerLink]="['/landing-product',cart.product.slug]">
-                                                <img class="blur-up lazyload" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="Product" width="120" height="170" />
+                                             <img 
+                                                class="blur-up lazyload" 
+                                                [attr.data-src]="getVarietyImage(cart)" 
+                                                [src]="getVarietyImage(cart)" 
+                                                [alt]="cart.product.title" 
+                                                [title]="cart.product.title" 
+                                                width="120" 
+                                                height="170" 
+                                                />
+                                                <!-- <img class="blur-up lazyload" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="Product" width="120" height="170" /> -->
                                           </a>
                                        </div>
                                        <!-- Info del producto -->

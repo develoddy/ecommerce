@@ -764,7 +764,7 @@
         <div class="cartEmpty-content mt-4">
             <i class="icon anm anm-cart-l fs-1 text-muted"></i>
             <p class="my-3">No Products in the Cart</p>
-            <a href="index.html" class="btn btn-primary cart-btn">Continue shopping</a>
+            <a href="index.html" onclick="return false;" class="btn btn-primary cart-btn">Continue shopping</a>
         </div>
     </div>
     <!--End MiniCart Empty-->
@@ -804,7 +804,16 @@
                                 <!-- HEDER TITLE CARTS -->
                                 <div class="">
                                     <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.variedad.slug]">
-                                        <img class="blur-up lazyload" [src]="cart.variedad.files[1].preview_url" alt="{{ cart.product.title }}" title="{{ cart.product.title }}" width="200" height="200" />
+                                        <!-- <img class="blur-up lazyload" [src]="cart.variedad.files[1].preview_url" alt="{{ cart.product.title }}" title="{{ cart.product.title }}" width="200" height="200" /> -->
+                                         <img 
+                                            class="blur-up lazyload" 
+                                            [src]="getVarietyImage(cart)" 
+                                            alt="{{ cart.product.title }}" 
+                                            title="{{ cart.product.title }}" 
+                                            width="200" 
+                                            height="200" 
+                                        />
+
                                     </a>
                                 </div>
                                 <!-- HEDER TITLE CARTS -->
