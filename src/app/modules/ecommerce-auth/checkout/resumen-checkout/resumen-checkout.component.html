@@ -756,7 +756,7 @@
                                                     </div>
                                                     <div class="">
                                                         <!-- Mostrar precio con descuento si aplica -->
-                                                        <ng-container *ngIf="cart.finalUnitPrice && getFinalUnitPrice(cart) < (cart.variedad?.retail_price || cart.price_unitario); else normalPrice">
+                                                        <ng-container *ngIf="hasCartItemDiscount(cart); else normalPrice">
                                                             <!-- Precio original tachado -->
                                                             <span class="price-small old-price text-decoration-line-through fw-normal">
                                                                 <span class="">
@@ -800,7 +800,7 @@
                                                     <span class="w-25">Cantidad</span>
                                                     <span class="ms-lg-3 ms-5 fw-light">{{ cart.cantidad}}</span>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1 d-none">
+                                                <div class="d-flex fw-light lh-1 mb-1">
                                                     <span class="w-25">Total</span>
                                                     <span class="money ms-lg-3 ms-5">
                                                         <span class="">

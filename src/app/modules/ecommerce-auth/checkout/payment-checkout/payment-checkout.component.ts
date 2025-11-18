@@ -1181,20 +1181,20 @@ export class PaymentCheckoutComponent implements OnInit {
       } else {
         // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
         if (discountValue > 0 && discountValue < originalPrice) {
-          // Si discount parece ser un precio final válido, usarlo directamente
-          return parseFloat(discountValue.toFixed(2));
+          // Si discount parece ser un precio final válido, aplicar .95 rounding
+          return this.priceCalculationService.applyRoundingTo95(discountValue);
         } else {
-          // Si no, tratar como porcentaje (fallback)
+          // Si no, tratar como porcentaje (fallback) y aplicar .95 rounding
           if (discountValue > 100) return originalPrice;
           priceAfterDiscount = originalPrice * (1 - discountValue / 100);
           priceAfterDiscount = Math.max(0, priceAfterDiscount);
-          return parseFloat(priceAfterDiscount.toFixed(2));
+          return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
         }
       }
     } else if (cart.type_discount === 2) {
-      // Descuento de monto fijo - NO aplicar redondeo .95
+      // Descuento de monto fijo - Aplicar redondeo .95
       priceAfterDiscount = Math.max(0, originalPrice - discountValue);
-      return parseFloat(priceAfterDiscount.toFixed(2));
+      return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
     } else {
       // Tipo de descuento no reconocido
       return originalPrice;

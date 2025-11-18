@@ -203,20 +203,20 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
         // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
         // Para campaign discounts, el backend ya envía el precio final calculado
         if (discountValue > 0 && discountValue < originalPrice) {
-          // Si discount parece ser un precio final válido, usarlo directamente
-          return parseFloat(discountValue.toFixed(2));
+          // Si discount parece ser un precio final válido, aplicar .95 rounding
+          return this.priceCalculationService.applyRoundingTo95(discountValue);
         } else {
-          // Si no, tratar como porcentaje (fallback)
+          // Si no, tratar como porcentaje (fallback) y aplicar .95 rounding
           if (discountValue > 100) return originalPrice;
           priceAfterDiscount = originalPrice * (1 - discountValue / 100);
           priceAfterDiscount = Math.max(0, priceAfterDiscount);
-          return parseFloat(priceAfterDiscount.toFixed(2));
+          return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
         }
       }
     } else if (cart.type_discount === 2) {
-      // Descuento de monto fijo - NO aplicar redondeo .95
+      // Descuento de monto fijo - Aplicar redondeo .95
       priceAfterDiscount = Math.max(0, originalPrice - discountValue);
-      return parseFloat(priceAfterDiscount.toFixed(2));
+      return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
     } else {
       // Tipo de descuento no reconocido
       return originalPrice;
@@ -226,15 +226,24 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   /**
-   * Verifica si un item del carrito tiene descuento
+   * Verifica si un item del carrito tiene descuento aplicado
    */
   hasCartItemDiscount(cart: any): boolean {
-    if (!cart.type_discount || !cart.discount) return false;
+    if (!cart || !cart.discount || !cart.type_discount) return false;
     
-    const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
-    const discountedPrice = parseFloat(cart.discount);
+    const discountValue = parseFloat(cart.discount);
+    if (isNaN(discountValue) || discountValue <= 0) return false;
     
-    return discountedPrice < originalPrice;
+    // Cupones reales tienen código
+    if (cart.code_cupon) return true;
+    
+    // Para campaign discounts, verificar si hay descuento real
+    if (cart.type_discount === 1) {
+      const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+      return discountValue > 0 && discountValue < originalPrice;
+    }
+    
+    return cart.type_discount === 2 && discountValue > 0;
   }
 
   /**

@@ -825,51 +825,44 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       return originalPrice;
     }
 
-    // En saleDetails (ventas completadas), la lógica puede ser diferente al carrito activo
-    // Verificar si es cupón por code_cupon O por type_discount (1=percentage, 2=fixed)
+    // En saleDetails (ventas completadas), distinguir entre cupones y campaign discounts
     const isCupon = !!detail.code_cupon;
-    const isPercentageDiscount = detail.type_discount === 1;
-    const isFixedAmountDiscount = detail.type_discount === 2;
-    
     let discountValue = parseFloat(detail.code_discount || detail.discount || 0);
 
     console.log('🎯 Discount Analysis (saleDetails):', {
       isCupon: isCupon,
-      isPercentageDiscount: isPercentageDiscount,
-      isFixedAmountDiscount: isFixedAmountDiscount,
       discountValue: discountValue,
       type_discount: detail.type_discount,
-      interpretation: isCupon ? 'CUPON with code' : (isPercentageDiscount ? 'PERCENTAGE discount' : (isFixedAmountDiscount ? 'FIXED amount discount' : 'CAMPAIGN final price'))
+      interpretation: isCupon ? 'CUPON - apply percentage/fixed logic' : 'CAMPAIGN - discount value is final price'
     });
 
-    // Lógica para cupones o descuentos con type_discount
-    if (isCupon || isPercentageDiscount || isFixedAmountDiscount) {
-      // CUPONES Y DESCUENTOS: Calcular según el tipo
+    if (isCupon) {
+      // CUPONES REALES: Usar type_discount para determinar cómo procesar
       let finalPrice;
       
-      if (isPercentageDiscount) {
-        // Es porcentaje (type_discount = 1)
-        console.log('📊 Processing as PERCENTAGE:', discountValue + '%');
+      if (detail.type_discount === 1) {
+        // Cupón porcentual
+        console.log('📊 CUPON: Processing as PERCENTAGE:', discountValue + '%');
         finalPrice = originalPrice * (1 - discountValue / 100);
-      } else if (isFixedAmountDiscount) {
-        // Es monto fijo a descontar (type_discount = 2)
-        console.log('💰 Processing as FIXED AMOUNT to subtract:', discountValue);
-        finalPrice = originalPrice - discountValue;
       } else {
-        // Cupón sin type_discount definido - asumir monto fijo
-        console.log('🎫 Processing CUPON as fixed amount:', discountValue);
+        // Cupón de monto fijo
+        console.log('💰 CUPON: Processing as FIXED AMOUNT to subtract:', discountValue);
         finalPrice = originalPrice - discountValue;
       }
 
-      // Aplicar redondeo a .95 para TODOS los tipos de descuento
+      // Aplicar redondeo a .95 para cupones
       const finalWithRounding = this.priceCalculationService.applyRoundingTo95(finalPrice);
-      console.log('🔄 Applied .95 rounding to ALL discounts:', finalPrice, '→', finalWithRounding);
+      console.log('🔄 CUPON: Applied .95 rounding:', finalPrice, '→', finalWithRounding);
       return finalWithRounding;
       
     } else {
-      // CAMPAIGN/FLASH DISCOUNTS: El valor es el precio final directo
-      console.log('🏷️ Processing CAMPAIGN/FLASH discount as final price:', discountValue);
-      return parseFloat(discountValue.toFixed(2));
+      // CAMPAIGN/FLASH DISCOUNTS: El valor discount YA ES EL PRECIO FINAL
+      console.log('🏷️ CAMPAIGN: Using discount value as final price:', discountValue);
+      
+      // Aplicar redondeo a .95 para campaign discounts también
+      const finalWithRounding = this.priceCalculationService.applyRoundingTo95(discountValue);
+      console.log('🔄 CAMPAIGN: Applied .95 rounding:', discountValue, '→', finalWithRounding);
+      return finalWithRounding;
     }
   }
 

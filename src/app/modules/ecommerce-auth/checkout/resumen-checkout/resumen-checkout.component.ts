@@ -362,7 +362,7 @@ export class ResumenCheckoutComponent implements OnInit {
     this.subscriptions.add(
       this._cartService.currenteDataCart$.subscribe((resp:any) => {
         this.listCarts = resp;
-        console.log("Get list Carts resumen: ", this.listCarts);
+        //console.log("Get list Carts resumen: ", this.listCarts);
         
         this.totalCarts = this.listCarts.reduce((sum: number, item: any) => {
           // Usar el precio final procesado con descuentos si existe, si no calcular 
@@ -870,6 +870,7 @@ getVarietyImage(cart: any): string {
 
     // Si no hay descuento aplicado, retornar precio original
     if (!cart.type_discount || !cart.discount) {
+      
       return originalPrice;
     }
 
@@ -886,31 +887,51 @@ getVarietyImage(cart: any): string {
       // Descuento porcentual
       if (cart.code_cupon) {
         // CUPONES REALES - aplicar redondeo .95
+        
         if (discountValue > 100) return originalPrice;
         priceAfterDiscount = originalPrice * (1 - discountValue / 100);
         priceAfterDiscount = Math.max(0, priceAfterDiscount);
-        return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+        
+        const finalWithRounding = this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+        
+        return finalWithRounding;
       } else {
         // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
         if (discountValue > 0 && discountValue < originalPrice) {
-          // Si discount parece ser un precio final válido, usarlo directamente
-          return parseFloat(discountValue.toFixed(2));
+          // Si discount parece ser un precio final válido, aplicar .95 rounding
+          return this.priceCalculationService.applyRoundingTo95(discountValue);
         } else {
-          // Si no, tratar como porcentaje (fallback)
+          // Si no, tratar como porcentaje (fallback) y aplicar .95 rounding
           if (discountValue > 100) return originalPrice;
           priceAfterDiscount = originalPrice * (1 - discountValue / 100);
           priceAfterDiscount = Math.max(0, priceAfterDiscount);
-          return parseFloat(priceAfterDiscount.toFixed(2));
+          return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
         }
       }
     } else if (cart.type_discount === 2) {
-      // Descuento de monto fijo - NO aplicar redondeo .95
+      // Descuento de monto fijo - Aplicar redondeo .95
       priceAfterDiscount = Math.max(0, originalPrice - discountValue);
-      return parseFloat(priceAfterDiscount.toFixed(2));
+      return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
     } else {
       // Tipo de descuento no reconocido
       return originalPrice;
     }
+  }
+
+  /**
+   * Verifica si un item específico del carrito tiene descuento aplicado
+   */
+  hasCartItemDiscount(cart: any): boolean {
+    // Verificar si existe descuento
+    if (!cart.type_discount || !cart.discount) {
+      return false;
+    }
+    
+    const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+    const finalPrice = this.getFinalUnitPrice(cart);
+    
+    // Verificar si el precio final es menor al original (hay descuento real)
+    return finalPrice < originalPrice && finalPrice > 0;
   }
 
   /**
