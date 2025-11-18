@@ -492,23 +492,74 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  getFinalPrice(cart: any): number {
-    // Si hay descuento aplicado, usar el precio con descuento
-    if (cart.type_discount && cart.discount) {
-      // type_discount: 1 = Campaign Discount, 2 = Flash Sale
-      return parseFloat(cart.discount);
+  getFinalUnitPrice(cart: any): number {
+    const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+
+    // Si no hay descuento aplicado, retornar precio original
+    if (!cart.type_discount || !cart.discount) {
+      return originalPrice;
+    }
+
+    const discountValue = parseFloat(cart.discount);
+    
+    // Verificar que el descuento sea válido
+    if (isNaN(discountValue) || discountValue <= 0) {
+      return originalPrice;
+    }
+
+    let priceAfterDiscount: number;
+    
+    if (cart.type_discount === 1) { 
+      // Descuento porcentual
+      if (cart.code_cupon) {
+        // CUPONES REALES - aplicar redondeo .95
+        if (discountValue > 100) return originalPrice;
+        priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+        priceAfterDiscount = Math.max(0, priceAfterDiscount);
+        return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+      } else {
+        // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
+        if (discountValue > 0 && discountValue < originalPrice) {
+          // Si discount parece ser un precio final válido, aplicar .95 rounding
+          return this.priceCalculationService.applyRoundingTo95(discountValue);
+        } else {
+          // Si no, tratar como porcentaje (fallback) y aplicar .95 rounding
+          if (discountValue > 100) return originalPrice;
+          priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+          priceAfterDiscount = Math.max(0, priceAfterDiscount);
+          return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+        }
+      }
+    } else if (cart.type_discount === 2) {
+      // Descuento de monto fijo - Aplicar redondeo .95
+      priceAfterDiscount = Math.max(0, originalPrice - discountValue);
+      return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+    } else {
+      // Tipo de descuento no reconocido
+      return originalPrice;
+    }
+  }
+
+  hasCartItemDiscount(cart: any): boolean {
+    if (!cart || !cart.discount || !cart.type_discount) return false;
+    
+    const discountValue = parseFloat(cart.discount);
+    if (isNaN(discountValue) || discountValue <= 0) return false;
+    
+    // Cupones reales tienen código
+    if (cart.code_cupon) return true;
+    
+    // Para campaign discounts, verificar si hay descuento real
+    if (cart.type_discount === 1) {
+      const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+      return discountValue > 0 && discountValue < originalPrice;
     }
     
-    // Si no hay descuento, usar precio original
-    return parseFloat(cart.variedad?.retail_price || cart.product.price_usd || 0);
+    return cart.type_discount === 2 && discountValue > 0;
   }
 
-  hasDiscount(cart: any): boolean {
-    return cart.type_discount && cart.discount && parseFloat(cart.discount) < parseFloat(cart.variedad?.retail_price || cart.product.price_usd || 0);
-  }
-
-  getOriginalPrice(cart: any): number {
-    return parseFloat(cart.variedad?.retail_price || cart.product.price_usd || 0);
+  getOriginalUnitPrice(cart: any): number {
+    return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
   }
 
   getFormattedPrice(price: any) {
@@ -526,6 +577,55 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       decimalPart: formatted[1]  // Parte decimal
     };
   }
+
+  /**
+   * Verifica si hay algún producto en el carrito con descuento (para usar en template)
+   */
+  hasAnyCartDiscount(): boolean {
+    return this.listCarts.some(cart => this.hasCartItemDiscount(cart));
+  }
+
+  /**
+   * Calcula el subtotal original (sin descuentos) de todos los productos
+   */
+  getOriginalSubtotal(): number {
+    if (!this.listCarts || this.listCarts.length === 0) {
+      return 0;
+    }
+    return this.listCarts.reduce((total: number, cart: any) => {
+      const originalPrice = this.getOriginalUnitPrice(cart);
+      return total + (originalPrice * cart.cantidad);
+    }, 0);
+  }
+
+  /**
+   * Calcula el total de descuento aplicado
+   */
+  getTotalDiscount(): number {
+    if (!this.listCarts || this.listCarts.length === 0) {
+      return 0;
+    }
+    return this.listCarts.reduce((total: number, cart: any) => {
+      const originalPrice = this.getOriginalUnitPrice(cart);
+      const finalPrice = this.getFinalUnitPrice(cart);
+      const discountPerItem = Math.max(0, originalPrice - finalPrice);
+      return total + (discountPerItem * cart.cantidad);
+    }, 0);
+  }
+
+  /**
+   * Calcula el subtotal final (con descuentos aplicados)
+   */
+  getSubtotal(): number {
+    return this.totalCarts;
+  }
+
+  /**
+   * Calcula el total final (igual al subtotal ya que no hay costos de envío)
+   */
+  getTotal(): number {
+    return this.totalCarts;
+  }
   
   private subscribeToCartData(): void {
     this.subscriptions.add(
@@ -534,7 +634,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   
         // Recalcular total usando precio final (con descuento si aplica)
         this.totalCarts = this.listCarts.reduce((sum, item) => {
-          const finalPrice = this.getFinalPrice(item);
+          const finalPrice = this.getFinalUnitPrice(item);
           return sum + (finalPrice * item.cantidad);
         }, 0);
         this.totalCarts = parseFloat(this.totalCarts.toFixed(2));

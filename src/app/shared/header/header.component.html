@@ -831,22 +831,22 @@
 
                                                 <div class="price-container d-flex flex-column align-items-end">
                                                     <!-- Precio original tachado si hay descuento -->
-                                                    <span *ngIf="hasDiscount(cart)" class="price-small text-muted text-decoration-line-through mb-1">
+                                                    <span *ngIf="hasCartItemDiscount(cart)" class="price-small text-muted text-decoration-line-through mb-1">
                                                         <span class="me-1">{{ euro }}</span>
-                                                        <span class="">{{ getFormattedPrice(getOriginalPrice(cart) * cart.cantidad).integerPart }}.</span>
-                                                        <span class="">{{ getFormattedPrice(getOriginalPrice(cart) * cart.cantidad).decimalPart }}</span>
+                                                        <span class="">{{ getFormattedPrice(getOriginalUnitPrice(cart) * cart.cantidad).integerPart }}.</span>
+                                                        <span class="">{{ getFormattedPrice(getOriginalUnitPrice(cart) * cart.cantidad).decimalPart }}</span>
                                                     </span>
 
                                                     <!-- Precio final (con descuento si aplica) -->
-                                                    <span class="price-small fw-bold" [class.text-danger]="hasDiscount(cart)">
+                                                    <span class="price-small fw-bold" [class.text-danger]="hasCartItemDiscount(cart)">
                                                         <span class="me-1">{{ euro }}</span>
-                                                        <span class="">{{ getFormattedPrice(getFinalPrice(cart) * cart.cantidad).integerPart }}.</span>
-                                                        <span class="">{{ getFormattedPrice(getFinalPrice(cart) * cart.cantidad).decimalPart }}</span>
+                                                        <span class="">{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).integerPart }}.</span>
+                                                        <span class="">{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).decimalPart }}</span>
                                                     </span>
 
                                                     <!-- Indicador del tipo de descuento -->
-                                                    <span *ngIf="hasDiscount(cart)" class="discount-type-indicator">
-                                                        {{ cart.type_discount === 1 ? 'Campaign Discount' : 'Flash Sale' }}
+                                                    <span *ngIf="hasCartItemDiscount(cart)" class="discount-type-indicator">
+                                                        {{ cart.code_cupon ? 'Cupón aplicado' : (cart.type_discount === 1 ? 'Oferta especial' : 'Flash Sale') }}
                                                     </span>
                                                 </div>
                                             </div>
@@ -910,20 +910,39 @@
                     are eligible for <b>Free Shipping</b></div>
             </div>
             <div class="subtotal clearfix my-3">
-                <div class="totalInfo clearfix">
+                <!-- Subtotal original tachado si hay descuentos -->
+                <div class="totalInfo clearfix" *ngIf="hasAnyCartDiscount()">
                     <span class="text-capitalize fw-light">Subtotal</span>
                     <div class="item product-price text-capitalize d-flex">
-                        <span  class="me-1 fw-light">{{euro }}</span>
-                        <span class="fw-light">{{ totalCarts | number: '1.2-2' }}</span>
-                        <!-- <span class="fw-normal me-1">{{ totalCarts | number: '1.2-2' }}</span> <span style="font-family: sans-serif;font-size: .85rem;" class="align-self-center fw-normal">{{euro }}</span> -->
+                        <span class="me-1 fw-light text-muted text-decoration-line-through">{{euro }}</span>
+                        <span class="fw-light text-muted text-decoration-line-through">{{ getFormattedPrice(getOriginalSubtotal()).integerPart }}.{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
                     </div>
                 </div>
+
+                <!-- Descuento aplicado (solo si hay descuentos) -->
+                <div class="totalInfo clearfix" *ngIf="hasAnyCartDiscount()">
+                    <span class="text-capitalize fw-light text-danger">Descuento</span>
+                    <div class="item product-price text-capitalize d-flex text-danger">
+                        <span class="me-1 fw-light">-{{euro }}</span>
+                        <span class="fw-light">{{ getFormattedPrice(getTotalDiscount()).integerPart }}.{{ getFormattedPrice(getTotalDiscount()).decimalPart }}</span>
+                    </div>
+                </div>
+
+                <!-- Subtotal sin descuentos (si no hay descuentos) -->
+                <div class="totalInfo clearfix" *ngIf="!hasAnyCartDiscount()">
+                    <span class="text-capitalize fw-light">Subtotal</span>
+                    <div class="item product-price text-capitalize d-flex">
+                        <span class="me-1 fw-light">{{euro }}</span>
+                        <span class="fw-light">{{ getFormattedPrice(getSubtotal()).integerPart }}.{{ getFormattedPrice(getSubtotal()).decimalPart }}</span>
+                    </div>
+                </div>
+
                 <div class="totalInfo clearfix"><span class="text-capitalize fw-light">Envío</span><span class="item product-price text-capitalize fw-light">Gratis</span></div>
                 <div class="totalInfo clearfix">
                     <span>Total</span>
                     <div class="item product-price d-flex">
                         <span class="me-1">{{ euro }}</span>
-                        <span class="">{{ totalCarts | number: '1.2-2' }}</span>
+                        <span class="">{{ getFormattedPrice(getTotal()).integerPart }}.{{ getFormattedPrice(getTotal()).decimalPart }}</span>
                     </div>
                 </div>
             </div>
