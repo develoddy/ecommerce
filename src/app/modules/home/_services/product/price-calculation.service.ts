@@ -70,20 +70,29 @@ export class PriceCalculationService {
   }
 
   /**
-   * Aplica el algoritmo de redondeo hacia abajo al .95 más cercano
+   * Aplica el algoritmo de redondeo hacia arriba al .95 más cercano
    * @param price Precio a redondear
    * @returns Precio redondeado terminado en .95
    */
   applyRoundingTo95(price: number): number {
-    if (price >= 0.95) {
-      const integerPart = Math.floor(price);
-      if (price < (integerPart + 0.95)) {
-        return parseFloat(((integerPart > 0 ? integerPart - 1 : 0) + 0.95).toFixed(2));
-      } else {
-        return parseFloat((integerPart + 0.95).toFixed(2));
-      }
-    } else {
+    if (price < 0.95) {
       return 0.95; // Precio mínimo
+    }
+
+    const integerPart = Math.floor(price);
+    const decimalPart = price - integerPart;
+
+    // Si ya termina en .95, mantenerlo
+    if (Math.abs(decimalPart - 0.95) < 0.001) {
+      return parseFloat(price.toFixed(2));
+    }
+
+    // Si el decimal es menor a .95, redondear al .95 del mismo entero
+    // Si es mayor o igual a .95, redondear al .95 del siguiente entero
+    if (decimalPart < 0.95) {
+      return parseFloat((integerPart + 0.95).toFixed(2));
+    } else {
+      return parseFloat(((integerPart + 1) + 0.95).toFixed(2));
     }
   }
 

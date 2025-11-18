@@ -31,6 +31,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   listCarts: any[] = [];
   totalCarts: number = 0;
+  totalDiscount: number = 0;
   codeCupon: string | null = null;
   loading: boolean = false;
   currentUser: any = null;
@@ -142,25 +143,31 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.sotoreCarts();
   }
 
+  updateCartPrices(): void {
+    this.listCarts.forEach(cart => {
+      const finalUnit = this.getFinalUnitPrice(cart);
+      cart.finalUnitPrice = finalUnit;
+      cart.finalSubtotal = +(finalUnit * cart.cantidad).toFixed(2);
+    });
+
+    // Actualiza totales
+    this.totalCarts = this.listCarts.reduce((acc, cart) => acc + cart.finalSubtotal, 0);
+    this.totalDiscount = this.getTotalDiscount();
+  }
+
   /**
    * Procesa los precios de los items del carrito para calcular precios finales con descuento
    */
   private processCartPrices(): void {
     this.listCarts.forEach(cart => {
-      // Calcular el precio final unitario
-      cart.finalUnitPrice = this.getFinalUnitPrice(cart);
-      
-      // Calcular subtotal y total con precio final
-      cart.finalSubtotal = cart.finalUnitPrice * cart.cantidad;
+      const finalPrice = this.getFinalUnitPrice(cart);
+      cart.finalUnitPrice = Number(finalPrice) || 0;
+      cart.finalSubtotal = parseFloat((cart.finalUnitPrice * Number(cart.cantidad)).toFixed(2));
       cart.finalTotal = cart.finalSubtotal;
-      
-      // console.log(`💰 Procesando ${cart.product.title}:`, {
-      //   precioOriginal: cart.price_unitario,
-      //   precioFinal: cart.finalUnitPrice,
-      //   tieneDescuento: this.hasCartItemDiscount(cart),
-      //   cantidad: cart.cantidad,
-      //   subtotalFinal: cart.finalSubtotal
-      // });
+
+      // Actualiza subtotal y total usados en el template
+    cart.subtotal = cart.finalSubtotal;
+    cart.total = cart.finalTotal;
     });
   }
 
@@ -170,26 +177,53 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   getFinalUnitPrice(cart: any): number {
     const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
 
-    if (cart.type_discount && cart.discount) {
-      if (cart.type_discount === 1) { // Porcentaje
-        return parseFloat((originalPrice * (1 - cart.discount / 100)).toFixed(2));
-      } else { // Monto fijo
-        return parseFloat((originalPrice - cart.discount).toFixed(2));
-      }
+    // Si no hay descuento aplicado, retornar precio original
+    if (!cart.type_discount || !cart.discount) {
+      return originalPrice;
     }
 
-    return originalPrice;
+    const discountValue = parseFloat(cart.discount);
+    
+    // Verificar que el descuento sea válido
+    if (isNaN(discountValue) || discountValue <= 0) {
+      return originalPrice;
+    }
+
+    let priceAfterDiscount: number;
+    
+    if (cart.type_discount === 1) { 
+      // Descuento porcentual
+      if (cart.code_cupon) {
+        // CUPONES REALES - aplicar redondeo .95
+        if (discountValue > 100) return originalPrice;
+        priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+        priceAfterDiscount = Math.max(0, priceAfterDiscount);
+        return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+      } else {
+        // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
+        // Para campaign discounts, el backend ya envía el precio final calculado
+        if (discountValue > 0 && discountValue < originalPrice) {
+          // Si discount parece ser un precio final válido, usarlo directamente
+          return parseFloat(discountValue.toFixed(2));
+        } else {
+          // Si no, tratar como porcentaje (fallback)
+          if (discountValue > 100) return originalPrice;
+          priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+          priceAfterDiscount = Math.max(0, priceAfterDiscount);
+          return parseFloat(priceAfterDiscount.toFixed(2));
+        }
+      }
+    } else if (cart.type_discount === 2) {
+      // Descuento de monto fijo - NO aplicar redondeo .95
+      priceAfterDiscount = Math.max(0, originalPrice - discountValue);
+      return parseFloat(priceAfterDiscount.toFixed(2));
+    } else {
+      // Tipo de descuento no reconocido
+      return originalPrice;
+    }
   }
 
-  // getFinalUnitPrice(cart: any): number {
-  //   // Si hay descuento aplicado (type_discount y discount), usar el precio con descuento
-  //   if (cart.type_discount && cart.discount) {
-  //     return parseFloat(cart.discount);
-  //   }
-    
-  //   // Si no hay descuento, usar precio de variedad o precio unitario
-  //   return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
-  // }
+
 
   /**
    * Verifica si un item del carrito tiene descuento
@@ -213,11 +247,19 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Obtiene las partes del precio (entero y decimal) usando el servicio
    */
-  getPriceParts(price: number) {
-    if (!this.priceCalculationService) {
+  // getPriceParts(price: number) {
+  //   if (!this.priceCalculationService) {
+  //     return { integer: '0', decimals: '00', total: '0.00' };
+  //   }
+  //   return this.priceCalculationService.getPriceParts(price);
+  // }
+
+  getPriceParts(price: any) {
+    const numPrice = Number(price);
+    if (isNaN(numPrice)) {
       return { integer: '0', decimals: '00', total: '0.00' };
     }
-    return this.priceCalculationService.getPriceParts(price);
+    return this.priceCalculationService.getPriceParts(numPrice);
   }
 
   /**
@@ -252,6 +294,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   getTotalDiscount(): number {
     if (!this.listCarts || this.listCarts.length === 0) {
+      console.log("🛒 getTotalDiscount: Carrito vacío");
       return 0;
     }
     return this.listCarts.reduce((total: number, cart: any) => {
