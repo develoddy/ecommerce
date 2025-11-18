@@ -543,13 +543,25 @@
                         <div class="row g-0">
                               <span class="col-6 col-sm-6 cart-subtotal-title">Subtotal</span>
                               <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                 <span class="price-small" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through' : ''">
-                                    <span class="">{{ getFormattedPrice(getOriginalSubtotal()).integerPart}}.</span>
-                                    <span class="">
-                                          <span>{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
-                                          <span class="">{{ euro }}</span>
+                                 <!-- Mostrar subtotal original solo si hay descuentos, sino mostrar subtotal final -->
+                                 <ng-container *ngIf="hasAnyCartDiscount(); else noDiscountSubtotalMobile">
+                                    <span class="price-small old-price text-decoration-line-through">
+                                       <span class="">{{ getFormattedPrice(getOriginalSubtotal()).integerPart}}.</span>
+                                       <span class="">
+                                             <span>{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
+                                             <span class="">{{ euro }}</span>
+                                       </span>
                                     </span>
-                                 </span>
+                                 </ng-container>
+                                 <ng-template #noDiscountSubtotalMobile>
+                                    <span class="price-small">
+                                       <span class="">{{ getFormattedPrice(getSubtotal()).integerPart}}.</span>
+                                       <span class="">
+                                             <span>{{ getFormattedPrice(getSubtotal()).decimalPart }}</span>
+                                             <span class="">{{ euro }}</span>
+                                       </span>
+                                    </span>
+                                 </ng-template>
                               </span>
                         </div>
                         
@@ -579,9 +591,9 @@
                               <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                  <strong>
                                     <span class="price fw-bold">
-                                       <span class="">{{getFormattedPrice(totalCarts).integerPart}}.</span>
+                                       <span class="">{{getFormattedPrice(getTotal()).integerPart}}.</span>
                                        <span class="">
-                                          <span>{{ getFormattedPrice(totalCarts).decimalPart }}</span>
+                                          <span>{{ getFormattedPrice(getTotal()).decimalPart }}</span>
                                           <span class="">{{ euro }}</span>
                                        </span>
                                     </span>
@@ -723,14 +735,25 @@
                      <div class="row g-0">
                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                              <span class="price-small fw-light" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through' : ''">
-                                 <span class="me-1">{{ euro }}</span>
-                                 <span class="">{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.</span>
-                                 <span class="">
-                                       <span>{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
-                                       
+                              <!-- Mostrar subtotal original solo si hay descuentos, sino mostrar subtotal final -->
+                              <ng-container *ngIf="hasAnyCartDiscount(); else noDiscountSubtotalDesktop">
+                                 <span class="price-small fw-light old-price text-decoration-line-through">
+                                    <span class="me-1">{{ euro }}</span>
+                                    <span class="">{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.</span>
+                                    <span class="">
+                                          <span>{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
+                                    </span>
                                  </span>
-                              </span>
+                              </ng-container>
+                              <ng-template #noDiscountSubtotalDesktop>
+                                 <span class="price-small fw-light">
+                                    <span class="me-1">{{ euro }}</span>
+                                    <span class="">{{getFormattedPrice(getSubtotal()).integerPart}}.</span>
+                                    <span class="">
+                                          <span>{{ getFormattedPrice(getSubtotal()).decimalPart }}</span>
+                                    </span>
+                                 </span>
+                              </ng-template>
                            </span>
                      </div>
                      
@@ -762,9 +785,9 @@
                               <strong>
                                  <span class="price fw-normal">
                                     <span class="me-1">{{ euro }}</span>
-                                    <span class="">{{getFormattedPrice(totalCarts).integerPart}}.</span>
+                                    <span class="">{{getFormattedPrice(getTotal()).integerPart}}.</span>
                                     <span class="">
-                                       <span>{{getFormattedPrice(totalCarts).decimalPart}}</span>
+                                       <span>{{getFormattedPrice(getTotal()).decimalPart}}</span>
                                     </span>
                                  </span>
                               </strong>

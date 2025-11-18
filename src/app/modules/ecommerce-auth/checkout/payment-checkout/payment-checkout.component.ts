@@ -19,6 +19,7 @@ import { LocalizationService } from 'src/app/services/localization.service';
 import { environment } from 'src/environments/environment';
 import { loadStripe } from '@stripe/stripe-js';
 import { StripePayService } from '../../_services/stripePay.service';
+import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -117,7 +118,8 @@ export class PaymentCheckoutComponent implements OnInit {
     private checkoutService: CheckoutService,
     private localizationService: LocalizationService,
     private stripePayService: StripePayService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private priceCalculationService: PriceCalculationService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -1152,13 +1154,51 @@ export class PaymentCheckoutComponent implements OnInit {
    * Obtiene el precio unitario final (con descuento si aplica)
    */
   getFinalUnitPrice(cart: any): number {
-    // Si hay descuento aplicado (type_discount y discount), usar el precio con descuento
-    if (cart.type_discount && cart.discount) {
-      return parseFloat(cart.discount);
+    const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+
+    // Si no hay descuento aplicado, retornar precio original
+    if (!cart.type_discount || !cart.discount) {
+      return originalPrice;
     }
+
+    const discountValue = parseFloat(cart.discount);
     
-    // Si no hay descuento, usar precio de variedad o precio unitario
-    return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+    // Verificar que el descuento sea válido
+    if (isNaN(discountValue) || discountValue <= 0) {
+      return originalPrice;
+    }
+
+    let priceAfterDiscount: number;
+    
+    if (cart.type_discount === 1) { 
+      // Descuento porcentual
+      if (cart.code_cupon) {
+        // CUPONES REALES - aplicar redondeo .95
+        if (discountValue > 100) return originalPrice;
+        priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+        priceAfterDiscount = Math.max(0, priceAfterDiscount);
+        return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+      } else {
+        // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
+        if (discountValue > 0 && discountValue < originalPrice) {
+          // Si discount parece ser un precio final válido, usarlo directamente
+          return parseFloat(discountValue.toFixed(2));
+        } else {
+          // Si no, tratar como porcentaje (fallback)
+          if (discountValue > 100) return originalPrice;
+          priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+          priceAfterDiscount = Math.max(0, priceAfterDiscount);
+          return parseFloat(priceAfterDiscount.toFixed(2));
+        }
+      }
+    } else if (cart.type_discount === 2) {
+      // Descuento de monto fijo - NO aplicar redondeo .95
+      priceAfterDiscount = Math.max(0, originalPrice - discountValue);
+      return parseFloat(priceAfterDiscount.toFixed(2));
+    } else {
+      // Tipo de descuento no reconocido
+      return originalPrice;
+    }
   }
 
   /**
@@ -1181,12 +1221,29 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   /**
+   * Calcula el subtotal con precios finales (después de descuentos)
+   */
+  getSubtotal(): number {
+    return this.listCarts.reduce((total: number, cart: any) => {
+      const finalPrice = this.getFinalUnitPrice(cart);
+      return total + (finalPrice * (cart.cantidad || 1));
+    }, 0);
+  }
+
+  /**
    * Calcula el total de descuento aplicado - diferencia entre subtotal original y subtotal final
    */
   getTotalDiscount(): number {
     const originalSubtotal = this.getOriginalSubtotal();
-    const finalSubtotal = this.totalCarts || 0;
-    return Math.max(0, originalSubtotal - finalSubtotal);
+    const finalSubtotal = this.getSubtotal();
+    return parseFloat(Math.max(0, originalSubtotal - finalSubtotal).toFixed(2));
+  }
+
+  /**
+   * Calcula el total final (subtotal + envío - descuentos)
+   */
+  getTotal(): number {
+    return this.getSubtotal(); // Envío es gratis, así que total = subtotal final
   }
 
   ngOnDestroy(): void {

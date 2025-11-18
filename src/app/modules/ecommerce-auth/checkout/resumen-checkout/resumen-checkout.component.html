@@ -664,10 +664,19 @@
                             <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                 <span class="money">
-                                    <span class="price-small fw-light" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through' : ''">
-                                        <span class="me-1">{{ euro }}</span>
-                                        <span>{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.{{getFormattedPrice(getOriginalSubtotal()).decimalPart}}</span>
-                                    </span>
+                                    <!-- Mostrar subtotal original solo si hay descuentos, sino mostrar subtotal final -->
+                                    <ng-container *ngIf="hasAnyCartDiscount(); else noDiscountSubtotal">
+                                        <span class="price-small fw-light old-price text-decoration-line-through">
+                                            <span class="me-1">{{ euro }}</span>
+                                            <span>{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.{{getFormattedPrice(getOriginalSubtotal()).decimalPart}}</span>
+                                        </span>
+                                    </ng-container>
+                                    <ng-template #noDiscountSubtotal>
+                                        <span class="price-small fw-light">
+                                            <span class="me-1">{{ euro }}</span>
+                                            <span>{{getFormattedPrice(getSubtotal()).integerPart}}.{{getFormattedPrice(getSubtotal()).decimalPart}}</span>
+                                        </span>
+                                    </ng-template>
                                 </span>
                             </span>
                         </div>
@@ -697,7 +706,7 @@
                             <span class="col-6 col-sm-6 cart-subtotal-title fs-6 cart-subtotal text-end">
                                 <span class="money price fw-normal">
                                     <span class="me-1">{{ euro }}</span>
-                                    <span>{{getFormattedPrice(totalCarts).integerPart}}.{{ getFormattedPrice(totalCarts).decimalPart }}</span>
+                                    <span>{{getFormattedPrice(getTotal()).integerPart}}.{{ getFormattedPrice(getTotal()).decimalPart }}</span>
                                     
                                 </span>
                             </span>

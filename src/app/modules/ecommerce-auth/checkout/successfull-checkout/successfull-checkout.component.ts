@@ -18,6 +18,7 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { CheckoutService } from '../../_services/checkoutService';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { Location } from '@angular/common';
+import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -96,7 +97,8 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     private subscriptionService: SubscriptionService,
     public routerActived: ActivatedRoute,
     private checkoutService: CheckoutService,
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+    private priceCalculationService: PriceCalculationService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -228,6 +230,10 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
           // Actualizar checkoutService para que successPayStripe() funcione
           this.checkoutService.setSaleData({ sale: this.saleData, saleDetails: this.saleDetails });
           this.checkoutService.setSaleSuccess(true);
+          
+          // DEBUG: Inspeccionar estructura después de cargar datos
+          setTimeout(() => this.debugSaleDetailsStructure(), 100);
+          
           this.successPayStripe();
         } else {
           // No hay venta aún, reintentar
@@ -797,6 +803,77 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Obtiene el precio unitario final (con descuento si aplica) - adaptado para saleDetails
+   */
+  getFinalUnitPrice(detail: any): number {
+    const originalPrice = parseFloat(detail.variedade?.retail_price || detail.price_unitario || 0);
+
+    // DEBUG: Log para entender la estructura de datos
+    console.log('🔍 DEBUG SuccessfullCheckout getFinalUnitPrice:', {
+      product: detail.product?.title,
+      originalPrice: originalPrice,
+      discount: detail.discount,
+      code_discount: detail.code_discount,
+      type_discount: detail.type_discount,
+      code_cupon: detail.code_cupon,
+      hasCupon: !!detail.code_cupon
+    });
+
+    // Si no hay descuento aplicado, retornar precio original
+    if (!detail.discount && !detail.code_discount) {
+      console.log('✅ No discount found, returning original price:', originalPrice);
+      return originalPrice;
+    }
+
+    // En saleDetails (ventas completadas), la lógica puede ser diferente al carrito activo
+    // Verificar si es cupón por code_cupon O por type_discount (1=percentage, 2=fixed)
+    const isCupon = !!detail.code_cupon;
+    const isPercentageDiscount = detail.type_discount === 1;
+    const isFixedAmountDiscount = detail.type_discount === 2;
+    
+    let discountValue = parseFloat(detail.code_discount || detail.discount || 0);
+
+    console.log('🎯 Discount Analysis (saleDetails):', {
+      isCupon: isCupon,
+      isPercentageDiscount: isPercentageDiscount,
+      isFixedAmountDiscount: isFixedAmountDiscount,
+      discountValue: discountValue,
+      type_discount: detail.type_discount,
+      interpretation: isCupon ? 'CUPON with code' : (isPercentageDiscount ? 'PERCENTAGE discount' : (isFixedAmountDiscount ? 'FIXED amount discount' : 'CAMPAIGN final price'))
+    });
+
+    // Lógica para cupones o descuentos con type_discount
+    if (isCupon || isPercentageDiscount || isFixedAmountDiscount) {
+      // CUPONES Y DESCUENTOS: Calcular según el tipo
+      let finalPrice;
+      
+      if (isPercentageDiscount) {
+        // Es porcentaje (type_discount = 1)
+        console.log('📊 Processing as PERCENTAGE:', discountValue + '%');
+        finalPrice = originalPrice * (1 - discountValue / 100);
+      } else if (isFixedAmountDiscount) {
+        // Es monto fijo a descontar (type_discount = 2)
+        console.log('💰 Processing as FIXED AMOUNT to subtract:', discountValue);
+        finalPrice = originalPrice - discountValue;
+      } else {
+        // Cupón sin type_discount definido - asumir monto fijo
+        console.log('🎫 Processing CUPON as fixed amount:', discountValue);
+        finalPrice = originalPrice - discountValue;
+      }
+
+      // Aplicar redondeo a .95 para TODOS los tipos de descuento
+      const finalWithRounding = this.priceCalculationService.applyRoundingTo95(finalPrice);
+      console.log('🔄 Applied .95 rounding to ALL discounts:', finalPrice, '→', finalWithRounding);
+      return finalWithRounding;
+      
+    } else {
+      // CAMPAIGN/FLASH DISCOUNTS: El valor es el precio final directo
+      console.log('🏷️ Processing CAMPAIGN/FLASH discount as final price:', discountValue);
+      return parseFloat(discountValue.toFixed(2));
+    }
+  }
+
+  /**
    * Calcula el subtotal original (sin descuentos) de todos los productos
    */
   getOriginalSubtotal(): number {
@@ -810,46 +887,112 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Calcula el total de descuento aplicado
+   * Calcula el subtotal con precios finales (después de descuentos)
    */
-  getTotalDiscount(): number {
+  getSubtotal(): number {
     if (!this.saleDetails || this.saleDetails.length === 0) {
       return 0;
     }
     return this.saleDetails.reduce((total: number, sale: any) => {
-      const originalPrice = parseFloat(sale.variedade?.retail_price || sale.price_unitario || 0);
-      const finalPrice = parseFloat(sale.discount || sale.code_discount || originalPrice);
-      const discountPerItem = Math.max(0, originalPrice - finalPrice);
-      return total + (discountPerItem * (sale.cantidad || 1));
+      const finalPrice = this.getFinalUnitPrice(sale);
+      return total + (finalPrice * (sale.cantidad || 1));
     }, 0);
   }
 
   /**
-   * Verifica si hay algún producto con descuento (para usar en template)
-   * Solo retorna true si hay un descuento real mayor que cero
+   * Calcula el total de descuento aplicado - diferencia entre subtotal original y subtotal final
    */
-  hasAnyProductWithDiscount(): boolean {
-    if (!this.saleDetails || this.saleDetails.length === 0) {
-      return false;
-    }
-    
-    // Verificar si el descuento total es mayor que cero
-    const totalDiscount = this.getTotalDiscount();
-    return totalDiscount > 0;
+  getTotalDiscount(): number {
+    const originalSubtotal = this.getOriginalSubtotal();
+    const finalSubtotal = this.getSubtotal();
+    return parseFloat(Math.max(0, originalSubtotal - finalSubtotal).toFixed(2));
   }
 
   /**
-   * Verifica si un producto individual tiene descuento real aplicado
+   * Calcula el total final (subtotal + envío - descuentos)
    */
-  hasProductDiscount(sale: any): boolean {
-    if (!sale.discount && !sale.code_discount) {
+  getTotal(): number {
+    return this.getSubtotal(); // Envío es gratis, así que total = subtotal final
+  }
+
+  /**
+   * Verifica si hay algún producto en el carrito con descuento (para usar en template)
+   */
+  hasAnyCartDiscount(): boolean {
+    if (!this.saleDetails || this.saleDetails.length === 0) {
       return false;
     }
+    return this.saleDetails.some((sale: any) => this.hasCartItemDiscount(sale));
+  }
+
+  /**
+   * Método de debug para inspeccionar completamente la estructura de saleDetails
+   */
+  debugSaleDetailsStructure(): void {
+    console.log('🚀 COMPLETE SALE DETAILS STRUCTURE:', {
+      saleData: this.saleData,
+      saleDetails: this.saleDetails,
+      totalCarts: this.totalCarts
+    });
     
-    const originalPrice = parseFloat(sale.variedade?.retail_price || sale.price_unitario || 0);
-    const finalPrice = parseFloat(sale.discount || sale.code_discount || originalPrice);
+    if (this.saleDetails && this.saleDetails.length > 0) {
+      console.log('📦 SALE DETAILS ITEMS:');
+      this.saleDetails.forEach((detail: any, index: number) => {
+        console.log(`Item ${index + 1}:`, {
+          product_title: detail.product?.title,
+          all_fields: Object.keys(detail),
+          price_related_fields: {
+            price_unitario: detail.price_unitario,
+            retail_price: detail.variedade?.retail_price,
+            discount: detail.discount,
+            code_discount: detail.code_discount,
+            type_discount: detail.type_discount,
+            code_cupon: detail.code_cupon,
+            campaing_discount: detail.campaing_discount,
+            flash_discount: detail.flash_discount,
+            precio_original: detail.precio_original,
+            precio_final: detail.precio_final,
+            precio_descuento: detail.precio_descuento
+          }
+        });
+      });
+    }
+  }
+
+  /**
+   * Verifica si el item específico tiene descuento aplicado
+   */
+  hasCartItemDiscount(detail: any): boolean {
+    // Verificar si existe discount o code_discount
+    if (!detail.discount && !detail.code_discount) return false;
     
-    return finalPrice < originalPrice;
+    const originalPrice = parseFloat(detail.variedade?.retail_price || detail.price_unitario || 0);
+    const finalPrice = this.getFinalUnitPrice(detail);
+    
+    // DEBUG
+    console.log('🔍 DEBUG hasCartItemDiscount:', {
+      product: detail.product?.title,
+      originalPrice: originalPrice,
+      finalPrice: finalPrice,
+      hasDiscount: finalPrice < originalPrice
+    });
+    
+    // Verificar si el precio final es menor al original (hay descuento real)
+    return finalPrice < originalPrice && finalPrice > 0;
+  }
+
+  /**
+   * Verifica si un producto individual tiene descuento real aplicado (método legacy)
+   */
+  hasProductDiscount(sale: any): boolean {
+    return this.hasCartItemDiscount(sale);
+  }
+
+  /**
+   * Verifica si hay algún producto con descuento (alias para compatibilidad)
+   */
+  hasAnyProductWithDiscount(): boolean {
+    return this.hasAnyCartDiscount();
   }
 
   private checkDeviceType(): void {
