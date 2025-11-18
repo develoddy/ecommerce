@@ -168,14 +168,28 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
    * Obtiene el precio unitario final (con descuento si aplica)
    */
   getFinalUnitPrice(cart: any): number {
-    // Si hay descuento aplicado (type_discount y discount), usar el precio con descuento
+    const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+
     if (cart.type_discount && cart.discount) {
-      return parseFloat(cart.discount);
+      if (cart.type_discount === 1) { // Porcentaje
+        return parseFloat((originalPrice * (1 - cart.discount / 100)).toFixed(2));
+      } else { // Monto fijo
+        return parseFloat((originalPrice - cart.discount).toFixed(2));
+      }
     }
-    
-    // Si no hay descuento, usar precio de variedad o precio unitario
-    return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+
+    return originalPrice;
   }
+
+  // getFinalUnitPrice(cart: any): number {
+  //   // Si hay descuento aplicado (type_discount y discount), usar el precio con descuento
+  //   if (cart.type_discount && cart.discount) {
+  //     return parseFloat(cart.discount);
+  //   }
+    
+  //   // Si no hay descuento, usar precio de variedad o precio unitario
+  //   return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+  // }
 
   /**
    * Verifica si un item del carrito tiene descuento
