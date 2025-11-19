@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +14,7 @@ declare function alertSuccess([]):any;
   templateUrl: './list-address.component.html',
   styleUrls: ['./list-address.component.css']
 })
-export class ListAddressComponent implements OnInit  {
+export class ListAddressComponent implements OnInit, OnDestroy {
 
   euro = "€";
 
@@ -24,6 +24,7 @@ export class ListAddressComponent implements OnInit  {
   validMessage:boolean=false;
   status:boolean=false;
   loading: boolean = false;
+  private subscriptions: Subscription = new Subscription();
   loadingSubscription: Subscription = new Subscription();
   CURRENT_USER_AUTHENTICATED:any=null;
   locale: string = "";
@@ -53,7 +54,7 @@ export class ListAddressComponent implements OnInit  {
   }
 
   private verifyAuthenticatedUser(): void {
-    this._ecommerceAuthService._authService.user.subscribe( user => {
+    const userSubscription = this._ecommerceAuthService._authService.user.subscribe( user => {
       if ( user ) {
         this.CURRENT_USER_AUTHENTICATED = user;
         this.showProfileClient();
@@ -62,13 +63,33 @@ export class ListAddressComponent implements OnInit  {
         this.router.navigate(['/', this.country, this.locale, 'auth', 'login']);
       }
     });
+    
+    // Añadir la suscripción para limpiarla después
+    this.loadingSubscription.add(userSubscription);
   }
   
   showProfileClient() {
+    // Evitar llamadas múltiples si ya se están cargando las direcciones
+    if (this.loading) {
+      return;
+    }
+    
     this._ecommerceAuthService.listAddressClient(this.CURRENT_USER_AUTHENTICATED._id).subscribe((resp:any) => {
-      this.listAddressClients = resp.address_client;
-      console.log("listAddressClients: ", this.listAddressClients);
+      // Limpiar array antes de asignar para evitar duplicaciones visuales
+      this.listAddressClients = [];
       
+      // Asignar las direcciones únicas basándose en ID
+      const uniqueAddresses = resp.address_client || [];
+      const addressMap = new Map();
+      
+      uniqueAddresses.forEach((address: any) => {
+        addressMap.set(address.id, address);
+      });
+      
+      this.listAddressClients = Array.from(addressMap.values());
+      console.log("🔍 [ListAddress] Raw response:", resp.address_client?.length || 0, "items");
+      console.log("🔍 [ListAddress] Unique addresses:", this.listAddressClients.length, "items");
+      console.log("🔍 [ListAddress] Final list:", this.listAddressClients);
     });
   }
 
@@ -91,6 +112,9 @@ export class ListAddressComponent implements OnInit  {
   ngOnDestroy(): void {
     if (this.loadingSubscription) {
       this.loadingSubscription.unsubscribe();
+    }
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
     }
   }
 

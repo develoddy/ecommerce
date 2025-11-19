@@ -36,6 +36,7 @@ export class AddAddressComponent implements OnInit {
   validMessage:boolean=false;
   status:boolean=false;
   loading: boolean = false;
+  private isSubmitting: boolean = false; // Prevenir múltiples submissions
   //loadingSubscription: Subscription = new Subscription();
   private subscriptions: Subscription = new Subscription();
   CURRENT_USER_AUTHENTICATED:any=null;
@@ -92,13 +93,23 @@ export class AddAddressComponent implements OnInit {
   }
 
   public store() {
+    // Prevenir múltiples submissions
+    if (this.isSubmitting) {
+      console.log('⚠️ [AddAddress] Already submitting, skipping...');
+      return;
+    }
+    
     if ( !this.address_client_selected ) {
+      console.log('🔍 [AddAddress] Calling registerAddress()');
       this.registerAddress();
-    } 
+    } else {
+      console.log('🔍 [AddAddress] Skipping registerAddress() - address_client_selected exists');
+    }
   }
 
   /** Metodo para registrar direcciones de usuarios autenticados */
   private registerAddress() {
+    
     if (
       !this.name || 
       !this.surname || 
@@ -132,8 +143,14 @@ export class AddAddressComponent implements OnInit {
         usual_shipping_address: this.usual_shipping_address,
     };
     
+    
+    
+    // Marcar como enviando para evitar duplicados
+    this.isSubmitting = true;
+    
     this._ecommerceAuthService.registerAddressClient(data).subscribe(
     ( resp:any ) => {
+      
       if ( resp.status == 200 ) {
         this.status = true;
         this.validMessage = true;
@@ -147,10 +164,17 @@ export class AddAddressComponent implements OnInit {
         this.errorOrSuccessMessage = "Error al registrar la dirección.";
         this.hideMessageAfterDelay();  // Ocultar el mensaje después de X segundos
       }
+      
+      // Resetear flag de submission al finalizar
+      this.isSubmitting = false;
     }, error => {
+      console.log('❌ [AddAddress] Backend error:', error);
       this.status = false;
       this.errorOrSuccessMessage = "Error al registrar la dirección.";
       this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
+      
+      // Resetear flag de submission en caso de error
+      this.isSubmitting = false;
     });
   }
 
