@@ -303,7 +303,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   getTotalDiscount(): number {
     if (!this.listCarts || this.listCarts.length === 0) {
-      console.log("🛒 getTotalDiscount: Carrito vacío");
+      //console.log("🛒 getTotalDiscount: Carrito vacío");
       return 0;
     }
     return this.listCarts.reduce((total: number, cart: any) => {
@@ -406,7 +406,6 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private handleProductResponse(resp: any): void {
-    console.log("🚀 -------> [handleProductResponse] this.resp:", resp);
     this.product_selected = resp.product;
     this.related_products = resp.related_products;
     this.interest_products = resp.interest_products;
@@ -651,35 +650,64 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Verifica si hay productos elegibles para aplicar cupón (SIN campaign discount)
+   */
+  hasProductsEligibleForCoupon(): boolean {
+    const eligibleProducts = this.listCarts.filter(cart => {
+      // Un producto es elegible si NO tiene campaign discount
+      return !this.hasCartItemDiscount(cart) || cart.code_cupon; // O ya tiene cupón aplicado
+    });
+    return eligibleProducts.length > 0;
+  }
+
+  /**
+   * Obtiene la cantidad de productos elegibles para cupón
+   */
+  getEligibleProductsCount(): number {
+    return this.listCarts.filter(cart => {
+      return !this.hasCartItemDiscount(cart) || cart.code_cupon;
+    }).length;
+  }
+
+  /**
+   * Obtiene la cantidad de productos con campaign discount (no elegibles para cupón)
+   */
+  getCampaignDiscountProductsCount(): number {
+    return this.listCarts.filter(cart => {
+      return this.hasCartItemDiscount(cart) && !cart.code_cupon;
+    }).length;
+  }
+
+  /**
    * Verifica si hay productos en el carrito que ya tienen descuento de campaña
    * (productos con discount pero sin code_cupon)
    */
   hasProductsWithCampaignDiscount(): boolean {
     const productsWithCampaign = this.listCarts.filter(cart => {
       // DEBUG: Log cada producto para entender qué está pasando
-      console.log('🔍 Checking cart item for campaign discount:', {
-        product: cart.product?.title,
-        discount: cart.discount,
-        code_cupon: cart.code_cupon,
-        type_discount: cart.type_discount,
-        originalPrice: cart.variedad?.retail_price || cart.price_unitario
-      });
+      // console.log('🔍 Checking cart item for campaign discount:', {
+      //   product: cart.product?.title,
+      //   discount: cart.discount,
+      //   code_cupon: cart.code_cupon,
+      //   type_discount: cart.type_discount,
+      //   originalPrice: cart.variedad?.retail_price || cart.price_unitario
+      // });
 
       // 1. Si no tiene discount o es 0, definitivamente NO es campaign discount
       if (!cart.discount || parseFloat(cart.discount) <= 0) {
-        console.log('❌ No discount found, not campaign discount');
+        //console.log('❌ No discount found, not campaign discount');
         return false;
       }
 
       // 2. Si tiene cupón, NO es campaign discount
       if (cart.code_cupon) {
-        console.log('❌ Has coupon code, not campaign discount');
+        //console.log('❌ Has coupon code, not campaign discount');
         return false;
       }
 
       // 3. Si no tiene type_discount, probablemente tampoco es campaign discount
       if (!cart.type_discount) {
-        console.log('❌ No type_discount, not campaign discount');
+        //console.log('❌ No type_discount, not campaign discount');
         return false;
       }
 
@@ -689,18 +717,18 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       // 4. Para ser campaign discount, el discount debe ser menor que el precio original
       // (indica que es un precio final con descuento, no un porcentaje)
       if (discountValue >= originalPrice) {
-        console.log('❌ Discount >= original price, likely not campaign discount');
+        //console.log('❌ Discount >= original price, likely not campaign discount');
         return false;
       }
 
       // 5. Usar la misma lógica que hasCartItemDiscount() para campaign detection
       const hasDiscount = this.hasCartItemDiscount(cart);
-      console.log(hasDiscount ? '✅ HAS CAMPAIGN DISCOUNT' : '❌ No campaign discount detected');
+      //console.log(hasDiscount ? '✅ HAS CAMPAIGN DISCOUNT' : '❌ No campaign discount detected');
       
       return hasDiscount;
     });
 
-    console.log('🎯 Products with campaign discount found:', productsWithCampaign.length);
+    //console.log('🎯 Products with campaign discount found:', productsWithCampaign.length);
     return productsWithCampaign.length > 0;
   }
   
@@ -724,10 +752,19 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    // Validar que no haya productos con campaign discount antes de aplicar cupón
-    if (this.hasProductsWithCampaignDiscount()) {
-      alertDanger('El cupón no se puede aplicar en productos ya rebajados.');
+    // NUEVA LÓGICA SELECTIVA: Validar que haya al menos productos elegibles para cupón
+    if (!this.hasProductsEligibleForCoupon()) {
+      alertDanger('Todos los productos en tu carrito ya tienen descuentos aplicados.');
       return;
+    }
+
+    // Información para el usuario sobre aplicación selectiva
+    const eligibleCount = this.getEligibleProductsCount();
+    const campaignCount = this.getCampaignDiscountProductsCount();
+    
+    if (campaignCount > 0 && eligibleCount > 0) {
+      // Caso mixto: algunos productos con campaign discount, otros elegibles
+      console.log(`ℹ️ Aplicación selectiva: ${eligibleCount} productos elegibles, ${campaignCount} con descuentos previos`);
     }
 
     const data = {
@@ -739,7 +776,12 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       if (resp.message === 403) {
         alertDanger(resp.message_text);
       } else {
-        alertSuccess(resp.message_text);
+        // Mensaje de éxito personalizado según el escenario
+        if (campaignCount > 0 && eligibleCount > 0) {
+          alertSuccess(`Cupón aplicado correctamente a ${eligibleCount} producto(s). Los productos con descuentos previos mantienen sus precios especiales.`);
+        } else {
+          alertSuccess(resp.message_text);
+        }
         // Limpiar el input después de aplicar exitosamente
         this.codeCupon = '';
         this.sotoreCarts();

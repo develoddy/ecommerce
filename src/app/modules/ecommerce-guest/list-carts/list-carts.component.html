@@ -400,8 +400,11 @@
                                                             Aplicar
                                                         </button>
                                                     </div>
-                                                    <small class="form-text text-muted mt-1">
-                                                        Los cupones no se pueden aplicar en productos ya rebajados.
+                                                    <small class="form-text text-muted mt-1" *ngIf="!hasProductsWithCampaignDiscount()">
+                                                        Ingresa tu código de descuento para ahorrar en tu compra.
+                                                    </small>
+                                                    <small class="form-text text-muted mt-1" *ngIf="hasProductsWithCampaignDiscount() && hasProductsEligibleForCoupon()">
+                                                        El cupón se aplicará solo a productos sin descuentos previos.
                                                     </small>
                                                 </div>
                                             </form>
@@ -416,12 +419,21 @@
                                                 </p>
                                             </div>
 
-                                            <!-- Mensaje informativo si hay productos con descuento -->
-                                            <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount()" 
+                                            <!-- Mensaje informativo según el escenario -->
+                                            <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount() && hasProductsEligibleForCoupon()" 
+                                                 class="alert alert-info mt-3 py-2">
+                                                <small>
+                                                    <i class="icon anm anm-info-cil me-1"></i>
+                                                    El cupón se aplicará solo a productos sin descuentos previos ({{getEligibleProductsCount()}} de {{listCarts.length}} productos).
+                                                </small>
+                                            </div>
+
+                                            <!-- Mensaje si todos los productos tienen descuento -->
+                                            <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount() && !hasProductsEligibleForCoupon()" 
                                                  class="alert alert-warning mt-3 py-2">
                                                 <small>
                                                     <i class="icon anm anm-exclamation-triangle me-1"></i>
-                                                    Algunos productos ya tienen descuentos aplicados y no admiten cupones adicionales.
+                                                    Todos los productos en tu carrito ya tienen descuentos aplicados.
                                                 </small>
                                             </div>
                                         </div>
