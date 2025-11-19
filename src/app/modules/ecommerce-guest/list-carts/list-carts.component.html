@@ -9,436 +9,386 @@
 <!-- End Loading -->
 
 <!--  PAGE WRAPPER  -->
-    <div class="page-wrapper">
-        <!-- <ng-container [class.d-none]="loader.loading$ | async"> -->
-            <!-- BODY CONTAINER -->
-            <div id="page-content">
-                <!-- PAGE HEADER -->
-                <div class="page-header text-center bg-transparent mb-0 p-3">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div
-                                class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex flex-column justify-content-between align-items-start">
-                                <div class="page-title">
-                                    <h2 class="fw-bold text-uppercase">Carrito de la compra</h2>
-                                </div>
-                                <!--Breadcrumbs-->
-                                <div class="breadcrumbs d-none">
-                                    <a href="#" class="text-decoration-underline" onclick="return false;" routerLink="/" title="Lujandev.com">Lujandev.com</a>
-                                    <span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Carrito de la compra</span>
-                                </div>
-                                <!--End Breadcrumbs-->
+<div class="page-wrapper">
+    <!-- <ng-container [class.d-none]="loader.loading$ | async"> -->
+    <!-- BODY CONTAINER -->
+    <div id="page-content">
+        <!-- PAGE HEADER -->
+        <div class="page-header text-center bg-transparent mb-0 p-3">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex flex-column justify-content-between align-items-start">
+                        <div class="page-title">
+                            <h2 class="fw-bold text-uppercase">Carrito de la compra</h2>
+                        </div>
+                        <!--Breadcrumbs-->
+                        <div class="breadcrumbs d-none">
+                            <a href="#" class="text-decoration-underline" onclick="return false;" routerLink="/" title="Lujandev.com">Lujandev.com</a>
+                            <span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Carrito de la compra</span>
+                        </div>
+                        <!--End Breadcrumbs-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE HEADER -->
+
+        <!-- MAIN CONTENT -->
+        <div class="container">
+            <ng-container *ngIf="listCarts.length == 0; else allCarts">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="p-2 text-center">
+                        <div class="inner mb-3 d-none">
+                            <div class="bradcrumb-thumb">
+                                <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px" />
                             </div>
+                        </div>
+                        <h5 class="header-title mb-2 d-none">Tu carrito está vacío</h5>
+                        <strong class="h3 text-uppercase">Tu carrito de la compra está vacía</strong>
+                        <p class="pt-3">
+                            Inspírate con las últimas tendencias y descubre algo <br />
+                            nuevo para renovar tu armario
+                        </p>
+                        <div class="view-collection text-center mt-4 mb-4 mt-md-5">
+                            <a onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="btn btn-secondary btn-lg px-5 text-uppercase">Descubrir novedades</a>
                         </div>
                     </div>
                 </div>
-                <!-- END PAGE HEADER -->
+            </ng-container>
+            <ng-template #allCarts>
+                <div class="row">
+                    <!--Cart Content-->
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-8 main-col">
+                        <div class="alert alert-success py-2 alert-dismissible fade show cart-alert d-none" role="alert">
+                            <i class="align-middle icon anm anm-truck icon-large me-2"></i><strong class="text-uppercase">Felicidades!</strong> Tienes envío
+                            gratis!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <!--End Alert msg-->
+                        <!-- List carts -->
+                        <div class="d-flex flex-column gap-3">
+                            <ng-container *ngFor="let cart of listCarts">
+                                <div class="d-flex flex-lg-row">
+                                    <div class="p-2">
+                                        <a href="#" class="cart-remove remove-icon position-static" onclick="return false;" (click)="storeRemoveCart(cart)" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove to Cart"><i class="icon anm anm-times-r"></i></a>
+                                    </div>
+                                    <div class="p-2">
+                                        <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">
+                                            <img class="blur-up lazyload" [src]="getVarietyImage(cart)" alt="product" title="{{ cart.product.title }} / {{ cart.variedad?.color }}" width="250" height="250" />
+                                        </a>
+                                    </div>
+                                    <div class="p-2 d-flex flex-column">
+                                        <div class="text-uppercase lh-1">
+                                            <a href="#" class="" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                        </div>
+                                        <div class="mb-2 d-flex">
+                                            <!-- Precio original tachado si hay descuento -->
+                                            <span class="money me-2" *ngIf="hasCartItemDiscount(cart)">
+                                                <span class="price old-price text-decoration-line-through">
+                                                    {{ euro }} {{ getPriceParts(getOriginalUnitPrice(cart)).integer }}.{{ getPriceParts(getOriginalUnitPrice(cart)).decimals }}
+                                                </span>
+                                            </span>
 
-                <!-- MAIN CONTENT -->
-                <div class="container">
-                    <ng-container *ngIf="listCarts.length == 0; else allCarts">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <div class="p-2 text-center">
-                                <div class="inner mb-3 d-none">
-                                    <div class="bradcrumb-thumb">
-                                        <img src="assets/images/favicon.png" alt="Image"
-                                            style="width: 50px; height: 50px" />
+                                            <!-- Precio final (con descuento si aplica) -->
+                                            <span class="money">
+                                                <span class="price-small" [class.text-danger]="hasCartItemDiscount(cart)">
+                                                    <span class="me-1">{{ euro }}</span>
+                                                    <span class="">{{ getPriceParts(cart.finalUnitPrice || getFinalUnitPrice(cart)).integer }}.</span>
+                                                    <span class="">
+                                                        <span>{{ getPriceParts(cart.finalUnitPrice || getFinalUnitPrice(cart)).decimals }}</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="d-flex lh-1">
+                                            <span class="w-25 fw-light">Art. nº</span>
+                                            <span class="ms-lg-3 ms-5">{{ cart.product.sku }}</span>
+                                        </div>
+                                        <div class="d-flex lh-1">
+                                            <span class="w-25 fw-light">Color</span>
+                                            <span class="ms-lg-3 ms-5">{{cart.variedad.color}}</span>
+                                        </div>
+                                        <div class="d-flex lh-1" *ngIf="cart.variedad">
+                                            <span class="w-25 fw-light">Talla</span>
+                                            <span class="ms-lg-3 ms-5">{{cart.variedad.valor}}</span>
+                                        </div>
+                                        <div class="d-flex lh-1">
+                                            <span class="w-25 fw-light">Cantidad</span>
+                                            <span class="ms-lg-3 ms-5">{{ cart.cantidad }}</span>
+                                        </div>
+                                        <div class="d-flex lh-1 mb-3">
+                                            <span class="w-25 fw-light">Total</span>
+                                            <span class="money ms-lg-3 ms-5">
+                                                <span class="price-small" [class.text-danger]="hasCartItemDiscount(cart)">
+                                                    <span class="me-1">{{ euro }}</span>
+                                                    <span class="">{{ getPriceParts(cart.finalSubtotal || (cart.finalUnitPrice || getFinalUnitPrice(cart)) * cart.cantidad).integer }}.</span>
+                                                    <span class="">
+                                                        <span>{{ getPriceParts(cart.finalSubtotal || (cart.finalUnitPrice || getFinalUnitPrice(cart)) * cart.cantidad).decimals }}</span>
+
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="">
+                                            <div class="cart-qty d-flex">
+                                                <div class="qtyField">
+                                                    <!-- Botón menos -->
+                                                    <a class="qtyBtn minus text-muted" href="#" onclick="return false;" (click)="dec(cart); $event.preventDefault()">
+                                                        <i class="icon anm anm-minus-r fs-5 text-black"></i>
+                                                    </a>
+
+                                                    <!-- Input cantidad -->
+                                                    <input class="cart-qty-input qty border-0 fs-5 text-black" type="number" [(ngModel)]="cart.cantidad" min="1" (blur)="validateCartQuantity(cart)" />
+
+                                                    <!-- Botón más -->
+                                                    <a class="qtyBtn plus text-muted" href="#" onclick="return false;" (click)="inc(cart); $event.preventDefault()">
+                                                        <i class="icon anm anm-plus-r fs-5 text-black"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <h5 class="header-title mb-2 d-none">Tu carrito está vacío</h5>
-                                <strong class="h3 text-uppercase">Tu carrito de la compra está vacía</strong>
-                                <p class="pt-3">
-                                    Inspírate con las últimas tendencias y descubre algo <br />
-                                    nuevo para renovar tu armario
+                            </ng-container>
+                        </div>
+                        <!-- End List carts -->
+                    </div>
+
+
+                    <!-- Resumen de precio -->
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-5 mt-lg-0">
+                        <div class="cart-info sidebar-sticky bg-transparent border-0">
+                            <h3 class="title mb-3 ls-2 text-uppercase d-none">
+                                Resumen de Precio
+                            </h3>
+                            <div class="cart-order-detail cart-col">
+                                <!-- Subtotal sin rebajas (si hay descuentos) -->
+                                <div class="row g-0" *ngIf="hasAnyCartDiscount()">
+                                    <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
+                                    <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                                        <span class="price-small fw-light old-price text-decoration-line-through">
+                                            <span class="me-1">{{ euro }}</span>
+                                            <span class="">{{ getPriceParts(getOriginalSubtotal()).integer }}.</span>
+                                            <span class="">
+                                                <span>{{ getPriceParts(getOriginalSubtotal()).decimals }}</span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <!-- Descuento aplicado (solo si hay descuentos) -->
+                                <div class="row g-0" *ngIf="hasAnyCartDiscount()">
+                                    <span class="col-6 col-sm-6 cart-subtotal-title fw-light text-danger">Descuento</span>
+                                    <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
+                                        <span class="price-small fw-light">
+                                            <span class="me-1">{{ euro }}</span>
+                                            -<span class="">{{ getPriceParts(getTotalDiscount()).integer }}.</span>
+                                            <span class="">
+                                                <span>{{ getPriceParts(getTotalDiscount()).decimals }}</span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <!-- Subtotal (si no hay descuentos) -->
+                                <div class="row g-0" *ngIf="!hasAnyCartDiscount()">
+                                    <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
+                                    <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
+                                        <span class="price-small fw-light">
+                                            <span class="me-1">{{ euro }}</span>
+                                            <span class="">{{ getPriceParts(totalCarts).integer }}.</span>
+                                            <span class="">
+                                                <span>{{ getPriceParts(totalCarts).decimals }}</span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <!-- Envío -->
+                                <div class="row g-0 ">
+                                    <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Envío</span>
+                                    <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">Gratis</span></span>
+                                </div>
+
+                                <!-- Total -->
+                                <div class="row g-0 pt-2">
+                                    <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase fw-bold"><strong>Total</strong></span>
+                                    <span class="col-6 col-sm-6 cart-subtotal-title fs-6 cart-subtotal text-end">
+                                        <span class="money price fw-bold">
+                                            <span class="me-1">{{ euro }}</span>
+                                            <span class="">{{ getPriceParts(totalCarts).integer }}.</span>
+                                            <span class="">
+                                                <span>{{ getPriceParts(totalCarts).decimals }}</span>
+
+                                            </span>
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <p class="cart-shipping mt-3 d-none">
+                                    Envío &amp; Impuestos calculados al finalizar la compra
                                 </p>
-                                <div class="view-collection text-center mt-4 mb-4 mt-md-5">
-                                    <a onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="btn btn-secondary btn-lg px-5 text-uppercase">Descubrir novedades</a>
+                                <p class="cart-shipping fst-normal freeShipclaim d-none">
+                                    <i class="me-2 align-middle icon anm anm-truck-l"></i><b>ENVÍO GRATIS</b>
+                                    ELEGIBLE
+                                </p>
+                                <div class="customCheckbox cart-tearm d-none">
+                                    <input type="checkbox" value="allen-vela" id="cart-tearm" />
+                                    <label for="cart-tearm">Estoy de acuerdo con los términos y condiciones</label>
+                                </div>
+                                <a [href]="'/' + locale + '/' + country + '/account/checkout'" id="cartCheckout" class="">
+                                    <button _ngcontent-serverapp-c57="" type="submit" name="add" class="btn-dark-ld product-form-cart-submit fw-light mt-3 mb-2">
+                                        <span>Comenzar pedido</span>
+                                    </button>
+                                </a>
+                                <div class="paymnet-img text-center mb-3 d-none">
+                                    <img src="assets/images/icons/safepayment.png" alt="Payment" width="299" height="28" />
+                                </div>
+                                <div class="d-flex mb-3">
+                                    <ul class="d-flex flex-row">
+                                        <li class="ms-0">
+                                            <svg width="44" height="28" xmlns="http://www.w3.org/2000/svg" class="Icon_icon-content-1__kPDLF">
+                                                <title lang="en">Visa</title>
+                                                <path fill="#1434CB" d="M27.787 8.02c-2.809 0-5.32 1.456-5.32 4.146 0 3.085 4.453 3.298 4.453 4.847 0 .653-.748 1.237-2.025 1.237-1.813 0-3.168-.816-3.168-.816l-.58 2.714s1.561.69 3.633.69c3.071 0 5.488-1.528 5.488-4.264 0-3.26-4.47-3.466-4.47-4.904 0-.511.613-1.072 1.887-1.072 1.437 0 2.61.594 2.61.594l.566-2.622s-1.275-.55-3.074-.55m-25.699.198-.068.396s1.182.216 2.246.647c1.37.495 1.468.783 1.699 1.678l2.515 9.695h3.371l5.194-12.416h-3.364l-3.337 8.441-1.362-7.155c-.125-.819-.757-1.286-1.532-1.286zm16.31 0-2.639 12.416h3.208l2.629-12.416zm17.89 0c-.774 0-1.184.414-1.485 1.138l-4.699 11.278h3.364l.65-1.88h4.098l.396 1.88h2.968L38.99 8.218zm.437 3.354.997 4.66H35.05l1.674-4.66Z">
+                                                </path>
+                                            </svg>
+                                        </li>
+                                        <li class="ms-2">
+                                            <svg width="44" height="28" xmlns="http://www.w3.org/2000/svg" viewBox="7 -2 31 31" class="Icon_icon-content-1__kPDLF">
+                                                <title lang="en">Mastercard</title>
+                                                <path d="M12.601 25.947v-1.592c0-.61-.371-1.009-1.008-1.009-.319 0-.665.105-.903.452-.186-.29-.452-.452-.85-.452a.86.86 0 0 0-.743.372v-.319H8.54v2.548h.557V24.54c0-.451.238-.665.61-.665.37 0 .556.238.556.665v1.407h.557V24.54c0-.451.266-.665.609-.665.371 0 .557.238.557.665v1.407zm8.258-2.548h-.903v-.77h-.557v.77h-.504v.504h.504v1.17c0 .584.238.927.875.927.238 0 .504-.08.69-.186l-.16-.479a.9.9 0 0 1-.48.133c-.266 0-.371-.16-.371-.424v-1.14h.903v-.505zm4.726-.056a.76.76 0 0 0-.665.371v-.318h-.557v2.548h.557V24.51c0-.423.185-.665.532-.665.105 0 .238.028.346.053l.16-.532c-.11-.022-.268-.022-.373-.022Zm-7.142.266c-.266-.185-.637-.266-1.036-.266-.637 0-1.06.319-1.06.823 0 .424.318.665.875.742l.266.028c.29.053.451.133.451.266 0 .186-.213.319-.584.319-.372 0-.665-.133-.85-.266l-.267.423c.29.214.69.319 1.089.319.742 0 1.169-.346 1.169-.823 0-.451-.346-.69-.875-.77l-.266-.028c-.239-.028-.424-.08-.424-.238 0-.185.185-.29.48-.29.318 0 .636.132.797.213zm14.812-.266a.76.76 0 0 0-.665.371v-.318h-.557v2.548h.557V24.51c0-.423.185-.665.532-.665.105 0 .238.028.346.053l.16-.526c-.107-.028-.265-.028-.373-.028Zm-7.114 1.33c0 .77.532 1.327 1.355 1.327.371 0 .637-.08.903-.29l-.266-.452c-.213.16-.424.238-.665.238-.451 0-.77-.319-.77-.823 0-.48.319-.798.77-.822.238 0 .452.08.665.238l.266-.452c-.266-.213-.532-.29-.903-.29-.823-.004-1.355.556-1.355 1.326m5.15 0V23.4h-.557v.319c-.186-.239-.452-.372-.798-.372-.717 0-1.274.557-1.274 1.327s.557 1.327 1.274 1.327c.371 0 .637-.133.798-.371v.318h.557v-1.274Zm-2.045 0c0-.451.291-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.476-.028-.77-.374-.77-.823m-6.661-1.33c-.743 0-1.275.532-1.275 1.327 0 .798.532 1.327 1.302 1.327a1.62 1.62 0 0 0 1.037-.346l-.267-.4a1.26 1.26 0 0 1-.742.266c-.346 0-.69-.16-.77-.609h1.884v-.213c.024-.82-.455-1.352-1.17-1.352Zm0 .48c.346 0 .584.213.637.609h-1.327c.052-.343.29-.61.69-.61Zm13.83.85v-2.282h-.556v1.327c-.186-.239-.452-.372-.798-.372-.718 0-1.274.557-1.274 1.327S34.343 26 35.061 26c.371 0 .637-.133.798-.371v.318h.556zm-2.044 0c0-.451.29-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.48-.028-.77-.374-.77-.823m-18.637 0V23.4h-.557v.319c-.185-.239-.451-.372-.798-.372-.717 0-1.274.557-1.274 1.327s.557 1.327 1.274 1.327c.372 0 .638-.133.798-.371v.318h.557v-1.274Zm-2.069 0c0-.451.29-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.48-.028-.77-.374-.77-.823">
+                                                </path>
+                                                <path fill="#FF5A00" d="M26.62 4.044h-8.362V19.07h8.363V4.044Z">
+                                                </path>
+                                                <path fill="#EB001B" d="M18.814 11.557a9.58 9.58 0 0 1 3.637-7.513A9.5 9.5 0 0 0 16.557 2 9.55 9.55 0 0 0 7 11.557a9.55 9.55 0 0 0 9.557 9.556c2.23 0 4.274-.77 5.895-2.044a9.54 9.54 0 0 1-3.638-7.512">
+                                                </path>
+                                                <path fill="#F79E1B" d="M37.903 11.557a9.55 9.55 0 0 1-9.557 9.556c-2.23 0-4.274-.77-5.895-2.044a9.5 9.5 0 0 0 3.638-7.512 9.58 9.58 0 0 0-3.637-7.513A9.5 9.5 0 0 1 28.343 2c5.286 0 9.56 4.302 9.56 9.557">
+                                                </path>
+                                            </svg>
+                                        </li>
+                                        <li class="ms-2">
+                                            <svg width="64" height="32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="Icon_icon-content-1__kPDLF">
+                                                <g fill-rule="evenodd" clip-rule="evenodd">
+                                                    <path fill="#009EE3" d="M7.236 12.422h4.1c2.2 0 3.03 1.114 2.902 2.751-.212 2.703-1.846 4.199-4.014 4.199H9.13c-.297 0-.497.197-.578.73l-.464 3.1c-.031.202-.137.318-.296.334H5.216c-.242 0-.328-.185-.264-.586l1.57-9.941c.062-.398.28-.587.714-.587">
+                                                    </path>
+                                                    <path fill="#113984" d="M25.036 12.237c1.383 0 2.66.75 2.485 2.62-.212 2.223-1.403 3.453-3.281 3.458h-1.642c-.236 0-.35.193-.411.588l-.318 2.018c-.047.305-.204.455-.435.455h-1.527c-.243 0-.328-.155-.274-.504l1.26-8.088c.063-.398.212-.547.484-.547zm-2.487 4.331h1.243c.778-.03 1.294-.568 1.346-1.54.032-.6-.373-1.03-1.018-1.026l-1.17.005zm9.123 4.189c.14-.127.282-.193.262-.036l-.05.375c-.025.195.052.3.234.3h1.357c.228 0 .34-.093.396-.446l.836-5.248c.042-.263-.023-.392-.223-.392h-1.492c-.134 0-.2.075-.235.28l-.055.323c-.028.168-.106.198-.178.029-.252-.6-.898-.868-1.799-.847-2.092.043-3.503 1.632-3.654 3.668-.117 1.575 1.012 2.812 2.5 2.812 1.08 0 1.562-.317 2.106-.815zm-1.136-.808c-.9 0-1.528-.718-1.398-1.599.13-.88.972-1.599 1.873-1.599.9 0 1.528.719 1.398 1.6-.13.88-.971 1.599-1.873 1.599Zm6.826-4.656h-1.376c-.283 0-.399.212-.309.472l1.708 5.002-1.675 2.38c-.14.199-.032.38.166.38h1.546a.47.47 0 0 0 .46-.226l5.253-7.535c.162-.232.086-.475-.18-.475h-1.463c-.251 0-.352.1-.496.308l-2.19 3.175-.98-3.183c-.056-.192-.2-.298-.463-.298z">
+                                                    </path>
+                                                    <path fill="#009EE3" d="M48.6 12.237c1.384 0 2.66.75 2.485 2.62-.211 2.223-1.402 3.453-3.28 3.458h-1.64c-.237 0-.351.193-.413.588l-.317 2.018c-.048.305-.204.455-.435.455h-1.527c-.244 0-.328-.155-.274-.504l1.262-8.09c.063-.399.212-.547.484-.547H48.6zm-2.487 4.331h1.244c.778-.03 1.294-.568 1.346-1.54.032-.6-.373-1.03-1.018-1.026l-1.17.005zm9.124 4.189c.14-.127.282-.193.262-.036l-.05.375c-.026.195.052.3.234.3h1.357c.228 0 .34-.093.395-.446l.837-5.248c.042-.263-.023-.392-.223-.392h-1.49c-.134 0-.2.075-.235.28l-.055.323c-.029.168-.106.198-.178.029-.253-.6-.898-.868-1.799-.847-2.092.043-3.503 1.632-3.654 3.668-.117 1.575 1.012 2.812 2.5 2.812 1.079 0 1.562-.317 2.106-.815zm-1.135-.808c-.901 0-1.529-.718-1.398-1.599.13-.88.972-1.599 1.873-1.599.9 0 1.528.719 1.398 1.6-.13.88-.973 1.599-1.873 1.599Zm6.258 1.455h-1.567a.184.184 0 0 1-.191-.212l1.376-8.716a.27.27 0 0 1 .26-.212h1.566a.186.186 0 0 1 .192.212l-1.376 8.716a.27.27 0 0 1-.26.214z">
+                                                    </path>
+                                                    <path fill="#113984" d="M4.671 9h4.105c1.155 0 2.527.037 3.443.847.613.54.935 1.4.86 2.328-.251 3.134-2.125 4.89-4.64 4.89H6.415c-.345 0-.572.228-.67.846L5.18 21.51c-.037.233-.137.37-.317.388H2.33c-.28 0-.38-.212-.307-.68l1.82-11.533c.075-.465.33-.685.829-.685Z">
+                                                    </path>
+                                                    <path fill="#172C70" d="m5.805 17.546.716-4.537c.063-.398.28-.588.715-.588h4.1c.678 0 1.227.105 1.657.301-.412 2.79-2.216 4.34-4.578 4.34h-2.02c-.272 0-.47.136-.59.484">
+                                                    </path>
+                                                </g>
+                                            </svg>
+                                        </li>
+                                        <li class="ms-2">
+                                            <svg width="63" height="25" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="Icon_icon-content-1__kPDLF">
+                                                <g clip-path="url('#bizum-large-a')">
+                                                    <path fill="#51555B" fill-rule="evenodd" d="M31.643 13.35c-.5 0-.927.428-.927.891v6.85c0 .499.428.927.927.927s.928-.428.928-.928v-6.813a.92.92 0 0 0-.928-.927m0-3.39c-.57 0-1.034.464-1.034 1.035s.464 1.07 1.034 1.07 1.035-.463 1.035-1.07c.036-.57-.464-1.034-1.035-1.034m9.06 4.317c0-.57-.463-.785-.855-.785H35.21c-.464 0-.821.357-.821.785 0 .464.357.82.82.82h3.033l-3.889 5.423a1.06 1.06 0 0 0-.178.535c0 .57.464.892.856.892h4.887c.464 0 .82-.357.82-.821a.807.807 0 0 0-.82-.82h-3.317l3.817-5.315c.214-.25.285-.5.285-.714m-13.554 4.28c0 1.142-.5 1.82-1.606 1.82-1.141 0-1.605-.678-1.605-1.82v-3.495h1.677c1.355 0 1.534.749 1.534 1.57zm1.855-1.961c0-1.927-1-3.14-3.354-3.14h-1.712v-2.568c0-.5-.428-.927-.892-.927a.944.944 0 0 0-.927.927v7.705c0 1.927 1.034 3.46 3.46 3.46 2.39 0 3.46-1.57 3.46-3.46v-1.962zM47.91 13.35c-.5 0-.928.428-.928.927v4.28c0 1.142-.5 1.82-1.605 1.82-1.142 0-1.605-.678-1.605-1.82v-4.28c0-.5-.428-.927-.892-.927-.5 0-.928.428-.928.927v4.28c0 1.927 1.035 3.46 3.46 3.46 2.39 0 3.46-1.569 3.46-3.46v-4.28c-.035-.5-.463-.927-.962-.927M62 16.845c0-1.926-.892-3.46-3.282-3.46-1.07 0-1.855.321-2.39.856-.535-.499-1.284-.856-2.39-.856-2.39 0-3.282 1.57-3.282 3.46v4.281c0 .5.428.927.892.927.5 0 .928-.428.928-.927v-4.28c0-1.142.356-1.82 1.462-1.82s1.463.678 1.463 1.82v4.28c0 .5.428.927.891.927.5 0 .928-.428.928-.927v-4.28c0-1.142.357-1.82 1.462-1.82 1.106 0 1.463.678 1.463 1.82v4.28c0 .5.428.927.892.927.5 0 .927-.428.927-.927zm-56.718-3.46a1.47 1.47 0 0 0 2.033-.32l1.712-2.355a1.47 1.47 0 0 0-.32-2.033 1.47 1.47 0 0 0-2.034.32l-1.712 2.355c-.464.642-.321 1.534.32 2.033m7.776-3.317a1.47 1.47 0 0 0-2.033.32L4.176 19.77a1.47 1.47 0 0 0 .321 2.034c.642.463 1.57.32 2.033-.321l6.814-9.382c.5-.642.356-1.57-.286-2.033m-8.418-.75a1.47 1.47 0 0 0-.321-2.033c-.642-.463-1.57-.356-2.034.321a1.444 1.444 0 0 0 .321 2.034c.643.463 1.534.32 2.034-.321m10.345 12.878a1.47 1.47 0 0 0-2.034.321 1.47 1.47 0 0 0 .321 2.034 1.47 1.47 0 0 0 2.034-.321c.463-.643.32-1.534-.321-2.034m-2.676-3.71a1.47 1.47 0 0 0-2.033.321l-1.712 2.355a1.47 1.47 0 0 0 .32 2.033c.643.464 1.57.321 2.034-.321l1.712-2.354a1.47 1.47 0 0 0-.32-2.034" clip-rule="evenodd"></path>
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="bizum-large-a">
+                                                        <path fill="#fff" d="M2 7h60v17.836H2z"></path>
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p class="lh-1 fw-light">
+                                        <small>¿Necesitas ayuda? Ponte en contacto con el
+                                            <a href="#" onclick="return false;" class="text-decoration-underline fw-normal">servicio de Atención al
+                                                cliente
+                                            </a>.
+                                        </small>
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                    </ng-container>
-                    <ng-template #allCarts>
-                        <div class="row">
-                            <!--Cart Content-->
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-8 main-col">
-                                <div class="alert alert-success py-2 alert-dismissible fade show cart-alert d-none"
-                                    role="alert">
-                                    <i class="align-middle icon anm anm-truck icon-large me-2"></i><strong
-                                        class="text-uppercase">Felicidades!</strong> Tienes envío
-                                    gratis!
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                                <!--End Alert msg-->
-                                <!-- List carts -->
-                                <div class="d-flex flex-column gap-3">
-                                    <ng-container *ngFor="let cart of listCarts">
-                                        <div class="d-flex flex-lg-row">
-                                            <div class="p-2">
-                                                <a href="#" class="cart-remove remove-icon position-static"
-                                                    onclick="return false;" (click)="storeRemoveCart(cart)"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    title="Remove to Cart"><i class="icon anm anm-times-r"></i></a>
-                                            </div>
-                                            <div class="p-2">
-                                                <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">
-                                                    <img 
-                                                        class="blur-up lazyload" 
-                                                        [src]="getVarietyImage(cart)" 
-                                                        alt="product" 
-                                                        title="{{ cart.product.title }} / {{ cart.variedad?.color }}" 
-                                                        width="250" 
-                                                        height="250" 
-                                                        />
-                                                </a>
-                                            </div>
-                                            <div class="p-2 d-flex flex-column">
-                                                <div class="text-uppercase lh-1">
-                                                    <a href="#" class="" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
-                                                </div>
-                                                <div class="mb-2 d-flex">
-                                                    <!-- Precio original tachado si hay descuento -->
-                                                    <span class="money me-2" *ngIf="hasCartItemDiscount(cart)">
-                                                        <span class="price old-price text-decoration-line-through">
-                                                            {{ euro }} {{ getPriceParts(getOriginalUnitPrice(cart)).integer }}.{{ getPriceParts(getOriginalUnitPrice(cart)).decimals }}
-                                                        </span>
-                                                    </span>
-                                                    
-                                                    <!-- Precio final (con descuento si aplica) -->
-                                                    <span class="money">
-                                                        <span class="price-small" [class.text-danger]="hasCartItemDiscount(cart)">
-                                                            <span class="me-1">{{ euro }}</span>
-                                                            <span class="">{{ getPriceParts(cart.finalUnitPrice || getFinalUnitPrice(cart)).integer }}.</span>
-                                                            <span class="">
-                                                                <span>{{ getPriceParts(cart.finalUnitPrice || getFinalUnitPrice(cart)).decimals }}</span>
-                                                            </span> 
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                                <div class="d-flex lh-1">
-                                                    <span class="w-25 fw-light">Art. nº</span>
-                                                    <span class="ms-lg-3 ms-5">{{ cart.product.sku }}</span>
-                                                </div>
-                                                <div class="d-flex lh-1">
-                                                    <span class="w-25 fw-light">Color</span>
-                                                    <span class="ms-lg-3 ms-5">{{cart.variedad.color}}</span>
-                                                </div>
-                                                <div class="d-flex lh-1" *ngIf="cart.variedad">
-                                                    <span class="w-25 fw-light">Talla</span>
-                                                    <span class="ms-lg-3 ms-5">{{cart.variedad.valor}}</span>
-                                                </div>
-                                                <div class="d-flex lh-1">
-                                                    <span class="w-25 fw-light">Cantidad</span>
-                                                    <span class="ms-lg-3 ms-5">{{ cart.cantidad }}</span>
-                                                </div>
-                                                <div class="d-flex lh-1 mb-3">
-                                                    <span class="w-25 fw-light">Total</span>
-                                                    <span class="money ms-lg-3 ms-5">
-                                                        <span class="price-small" [class.text-danger]="hasCartItemDiscount(cart)">
-                                                            <span class="me-1">{{ euro }}</span>
-                                                            <span class="">{{ getPriceParts(cart.finalSubtotal || (cart.finalUnitPrice || getFinalUnitPrice(cart)) * cart.cantidad).integer }}.</span>
-                                                            <span class="">
-                                                                <span>{{ getPriceParts(cart.finalSubtotal || (cart.finalUnitPrice || getFinalUnitPrice(cart)) * cart.cantidad).decimals }}</span>
-                                                                
-                                                            </span>
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                                <div class="">
-                                                    <div class="cart-qty d-flex">
-                                                        <div class="qtyField">
-                                                            <!-- Botón menos -->
-                                                            <a class="qtyBtn minus text-muted" href="#" onclick="return false;" (click)="dec(cart); $event.preventDefault()">
-                                                                <i class="icon anm anm-minus-r fs-5 text-black"></i>
-                                                            </a>
+                    </div>
+                    <!-- End Resumen de precio -->
+                    <!--End Cart Content-->
 
-                                                            <!-- Input cantidad -->
-                                                            <input class="cart-qty-input qty border-0 fs-5 text-black"
-                                                                type="number" [(ngModel)]="cart.cantidad" min="1"
-                                                                (blur)="validateCartQuantity(cart)" />
+                    <!--CUPON-->
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 cart-footer py-5">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-12 py-3 px-3">
+                                <div class="cart-discount">
+                                    <h3 class="text-uppercase">Código de descuento</h3>
 
-                                                            <!-- Botón más -->
-                                                            <a class="qtyBtn plus text-muted" href="#" onclick="return false;" 
-                                                                (click)="inc(cart); $event.preventDefault()">
-                                                                <i class="icon anm anm-plus-r fs-5 text-black"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                    <!-- Mostrar cupón activo si existe -->
+                                    <div *ngIf="hasActiveCoupon()" class="alert alert-success d-flex justify-content-between align-items-center p-3 mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="icon anm anm-gift-l me-2"></i>
+                                            <div>
+                                                <strong class="d-block">Cupón aplicado</strong>
+                                                <span class="text-uppercase fw-bold">{{getActiveCouponCode()}}</span>
                                             </div>
                                         </div>
-                                    </ng-container>
-                                </div>
-                                <!-- End List carts -->
-                            </div>
-
-                            <!-- Resumen de precio -->
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-5 mt-lg-0">
-                                <div class="cart-info sidebar-sticky bg-transparent border-0">
-                                    <h3 class="title mb-3 ls-2 text-uppercase d-none">
-                                        Resumen de Precio
-                                    </h3>
-                                    <div class="cart-order-detail cart-col">
-                                        <!-- Subtotal sin rebajas (si hay descuentos) -->
-                                        <div class="row g-0" *ngIf="hasAnyCartDiscount()">
-                                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
-                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                                <span class="price-small fw-light old-price text-decoration-line-through">
-                                                    <span class="me-1">{{ euro }}</span>
-                                                    <span class="">{{ getPriceParts(getOriginalSubtotal()).integer }}.</span>
-                                                    <span class="">
-                                                        <span>{{ getPriceParts(getOriginalSubtotal()).decimals }}</span>
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </div>
-                                        
-                                        <!-- Descuento aplicado (solo si hay descuentos) -->
-                                        <div class="row g-0" *ngIf="hasAnyCartDiscount()">
-                                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light text-danger">Descuento</span>
-                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
-                                                <span class="price-small fw-light">
-                                                    <span class="me-1">{{ euro }}</span>
-                                                    -<span class="">{{ getPriceParts(getTotalDiscount()).integer }}.</span>
-                                                    <span class="">
-                                                        <span>{{ getPriceParts(getTotalDiscount()).decimals }}</span>
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </div>
-                                        
-                                        <!-- Subtotal (si no hay descuentos) -->
-                                        <div class="row g-0" *ngIf="!hasAnyCartDiscount()">
-                                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
-                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                                <span class="price-small fw-light">
-                                                    <span class="me-1">{{ euro }}</span>
-                                                    <span class="">{{ getPriceParts(totalCarts).integer }}.</span>
-                                                    <span class="">
-                                                        <span>{{ getPriceParts(totalCarts).decimals }}</span>
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </div>
-                                        
-                                        <!-- Envío -->
-                                        <div class="row g-0 ">
-                                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Envío</span>
-                                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">Gratis</span></span>
-                                        </div>
-                                        
-                                        <!-- Total -->
-                                        <div class="row g-0 pt-2">
-                                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase fw-bold"><strong>Total</strong></span>
-                                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6 cart-subtotal text-end">
-                                                <span class="money price fw-bold">
-                                                    <span class="me-1">{{ euro }}</span>
-                                                    <span class="">{{ getPriceParts(totalCarts).integer }}.</span>
-                                                    <span class="">
-                                                        <span>{{ getPriceParts(totalCarts).decimals }}</span>
-                                                        
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </div>
-
-                                        <p class="cart-shipping mt-3 d-none">
-                                            Envío &amp; Impuestos calculados al finalizar la compra
-                                        </p>
-                                        <p class="cart-shipping fst-normal freeShipclaim d-none">
-                                            <i class="me-2 align-middle icon anm anm-truck-l"></i><b>ENVÍO GRATIS</b>
-                                            ELEGIBLE
-                                        </p>
-                                        <div class="customCheckbox cart-tearm d-none">
-                                            <input type="checkbox" value="allen-vela" id="cart-tearm" />
-                                            <label for="cart-tearm">Estoy de acuerdo con los términos y condiciones</label>
-                                        </div>
-                                        <a [href]="'/' + locale + '/' + country + '/account/checkout'" id="cartCheckout"
-                                            class="">
-                                            <button _ngcontent-serverapp-c57="" type="submit" name="add"
-                                                class="btn-dark-ld product-form-cart-submit fw-light mt-3 mb-2">
-                                                <span>Comenzar pedido</span>
-                                            </button>
-                                        </a>
-                                        <div class="paymnet-img text-center mb-3 d-none">
-                                            <img src="assets/images/icons/safepayment.png" alt="Payment" width="299"
-                                                height="28" />
-                                        </div>
-                                        <div class="d-flex mb-3">
-                                            <ul class="d-flex flex-row">
-                                                <li class="ms-0">
-                                                    <svg width="44" height="28" xmlns="http://www.w3.org/2000/svg"
-                                                        class="Icon_icon-content-1__kPDLF">
-                                                        <title lang="en">Visa</title>
-                                                        <path fill="#1434CB"
-                                                            d="M27.787 8.02c-2.809 0-5.32 1.456-5.32 4.146 0 3.085 4.453 3.298 4.453 4.847 0 .653-.748 1.237-2.025 1.237-1.813 0-3.168-.816-3.168-.816l-.58 2.714s1.561.69 3.633.69c3.071 0 5.488-1.528 5.488-4.264 0-3.26-4.47-3.466-4.47-4.904 0-.511.613-1.072 1.887-1.072 1.437 0 2.61.594 2.61.594l.566-2.622s-1.275-.55-3.074-.55m-25.699.198-.068.396s1.182.216 2.246.647c1.37.495 1.468.783 1.699 1.678l2.515 9.695h3.371l5.194-12.416h-3.364l-3.337 8.441-1.362-7.155c-.125-.819-.757-1.286-1.532-1.286zm16.31 0-2.639 12.416h3.208l2.629-12.416zm17.89 0c-.774 0-1.184.414-1.485 1.138l-4.699 11.278h3.364l.65-1.88h4.098l.396 1.88h2.968L38.99 8.218zm.437 3.354.997 4.66H35.05l1.674-4.66Z">
-                                                        </path>
-                                                    </svg>
-                                                </li>
-                                                <li class="ms-2">
-                                                    <svg width="44" height="28" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="7 -2 31 31" class="Icon_icon-content-1__kPDLF">
-                                                        <title lang="en">Mastercard</title>
-                                                        <path
-                                                            d="M12.601 25.947v-1.592c0-.61-.371-1.009-1.008-1.009-.319 0-.665.105-.903.452-.186-.29-.452-.452-.85-.452a.86.86 0 0 0-.743.372v-.319H8.54v2.548h.557V24.54c0-.451.238-.665.61-.665.37 0 .556.238.556.665v1.407h.557V24.54c0-.451.266-.665.609-.665.371 0 .557.238.557.665v1.407zm8.258-2.548h-.903v-.77h-.557v.77h-.504v.504h.504v1.17c0 .584.238.927.875.927.238 0 .504-.08.69-.186l-.16-.479a.9.9 0 0 1-.48.133c-.266 0-.371-.16-.371-.424v-1.14h.903v-.505zm4.726-.056a.76.76 0 0 0-.665.371v-.318h-.557v2.548h.557V24.51c0-.423.185-.665.532-.665.105 0 .238.028.346.053l.16-.532c-.11-.022-.268-.022-.373-.022Zm-7.142.266c-.266-.185-.637-.266-1.036-.266-.637 0-1.06.319-1.06.823 0 .424.318.665.875.742l.266.028c.29.053.451.133.451.266 0 .186-.213.319-.584.319-.372 0-.665-.133-.85-.266l-.267.423c.29.214.69.319 1.089.319.742 0 1.169-.346 1.169-.823 0-.451-.346-.69-.875-.77l-.266-.028c-.239-.028-.424-.08-.424-.238 0-.185.185-.29.48-.29.318 0 .636.132.797.213zm14.812-.266a.76.76 0 0 0-.665.371v-.318h-.557v2.548h.557V24.51c0-.423.185-.665.532-.665.105 0 .238.028.346.053l.16-.526c-.107-.028-.265-.028-.373-.028Zm-7.114 1.33c0 .77.532 1.327 1.355 1.327.371 0 .637-.08.903-.29l-.266-.452c-.213.16-.424.238-.665.238-.451 0-.77-.319-.77-.823 0-.48.319-.798.77-.822.238 0 .452.08.665.238l.266-.452c-.266-.213-.532-.29-.903-.29-.823-.004-1.355.556-1.355 1.326m5.15 0V23.4h-.557v.319c-.186-.239-.452-.372-.798-.372-.717 0-1.274.557-1.274 1.327s.557 1.327 1.274 1.327c.371 0 .637-.133.798-.371v.318h.557v-1.274Zm-2.045 0c0-.451.291-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.476-.028-.77-.374-.77-.823m-6.661-1.33c-.743 0-1.275.532-1.275 1.327 0 .798.532 1.327 1.302 1.327a1.62 1.62 0 0 0 1.037-.346l-.267-.4a1.26 1.26 0 0 1-.742.266c-.346 0-.69-.16-.77-.609h1.884v-.213c.024-.82-.455-1.352-1.17-1.352Zm0 .48c.346 0 .584.213.637.609h-1.327c.052-.343.29-.61.69-.61Zm13.83.85v-2.282h-.556v1.327c-.186-.239-.452-.372-.798-.372-.718 0-1.274.557-1.274 1.327S34.343 26 35.061 26c.371 0 .637-.133.798-.371v.318h.556zm-2.044 0c0-.451.29-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.48-.028-.77-.374-.77-.823m-18.637 0V23.4h-.557v.319c-.185-.239-.451-.372-.798-.372-.717 0-1.274.557-1.274 1.327s.557 1.327 1.274 1.327c.372 0 .638-.133.798-.371v.318h.557v-1.274Zm-2.069 0c0-.451.29-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.48-.028-.77-.374-.77-.823">
-                                                        </path>
-                                                        <path fill="#FF5A00" d="M26.62 4.044h-8.362V19.07h8.363V4.044Z">
-                                                        </path>
-                                                        <path fill="#EB001B"
-                                                            d="M18.814 11.557a9.58 9.58 0 0 1 3.637-7.513A9.5 9.5 0 0 0 16.557 2 9.55 9.55 0 0 0 7 11.557a9.55 9.55 0 0 0 9.557 9.556c2.23 0 4.274-.77 5.895-2.044a9.54 9.54 0 0 1-3.638-7.512">
-                                                        </path>
-                                                        <path fill="#F79E1B"
-                                                            d="M37.903 11.557a9.55 9.55 0 0 1-9.557 9.556c-2.23 0-4.274-.77-5.895-2.044a9.5 9.5 0 0 0 3.638-7.512 9.58 9.58 0 0 0-3.637-7.513A9.5 9.5 0 0 1 28.343 2c5.286 0 9.56 4.302 9.56 9.557">
-                                                        </path>
-                                                    </svg>
-                                                </li>
-                                                <li class="ms-2">
-                                                    <svg width="64" height="32" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        class="Icon_icon-content-1__kPDLF">
-                                                        <g fill-rule="evenodd" clip-rule="evenodd">
-                                                            <path fill="#009EE3"
-                                                                d="M7.236 12.422h4.1c2.2 0 3.03 1.114 2.902 2.751-.212 2.703-1.846 4.199-4.014 4.199H9.13c-.297 0-.497.197-.578.73l-.464 3.1c-.031.202-.137.318-.296.334H5.216c-.242 0-.328-.185-.264-.586l1.57-9.941c.062-.398.28-.587.714-.587">
-                                                            </path>
-                                                            <path fill="#113984"
-                                                                d="M25.036 12.237c1.383 0 2.66.75 2.485 2.62-.212 2.223-1.403 3.453-3.281 3.458h-1.642c-.236 0-.35.193-.411.588l-.318 2.018c-.047.305-.204.455-.435.455h-1.527c-.243 0-.328-.155-.274-.504l1.26-8.088c.063-.398.212-.547.484-.547zm-2.487 4.331h1.243c.778-.03 1.294-.568 1.346-1.54.032-.6-.373-1.03-1.018-1.026l-1.17.005zm9.123 4.189c.14-.127.282-.193.262-.036l-.05.375c-.025.195.052.3.234.3h1.357c.228 0 .34-.093.396-.446l.836-5.248c.042-.263-.023-.392-.223-.392h-1.492c-.134 0-.2.075-.235.28l-.055.323c-.028.168-.106.198-.178.029-.252-.6-.898-.868-1.799-.847-2.092.043-3.503 1.632-3.654 3.668-.117 1.575 1.012 2.812 2.5 2.812 1.08 0 1.562-.317 2.106-.815zm-1.136-.808c-.9 0-1.528-.718-1.398-1.599.13-.88.972-1.599 1.873-1.599.9 0 1.528.719 1.398 1.6-.13.88-.971 1.599-1.873 1.599Zm6.826-4.656h-1.376c-.283 0-.399.212-.309.472l1.708 5.002-1.675 2.38c-.14.199-.032.38.166.38h1.546a.47.47 0 0 0 .46-.226l5.253-7.535c.162-.232.086-.475-.18-.475h-1.463c-.251 0-.352.1-.496.308l-2.19 3.175-.98-3.183c-.056-.192-.2-.298-.463-.298z">
-                                                            </path>
-                                                            <path fill="#009EE3"
-                                                                d="M48.6 12.237c1.384 0 2.66.75 2.485 2.62-.211 2.223-1.402 3.453-3.28 3.458h-1.64c-.237 0-.351.193-.413.588l-.317 2.018c-.048.305-.204.455-.435.455h-1.527c-.244 0-.328-.155-.274-.504l1.262-8.09c.063-.399.212-.547.484-.547H48.6zm-2.487 4.331h1.244c.778-.03 1.294-.568 1.346-1.54.032-.6-.373-1.03-1.018-1.026l-1.17.005zm9.124 4.189c.14-.127.282-.193.262-.036l-.05.375c-.026.195.052.3.234.3h1.357c.228 0 .34-.093.395-.446l.837-5.248c.042-.263-.023-.392-.223-.392h-1.49c-.134 0-.2.075-.235.28l-.055.323c-.029.168-.106.198-.178.029-.253-.6-.898-.868-1.799-.847-2.092.043-3.503 1.632-3.654 3.668-.117 1.575 1.012 2.812 2.5 2.812 1.079 0 1.562-.317 2.106-.815zm-1.135-.808c-.901 0-1.529-.718-1.398-1.599.13-.88.972-1.599 1.873-1.599.9 0 1.528.719 1.398 1.6-.13.88-.973 1.599-1.873 1.599Zm6.258 1.455h-1.567a.184.184 0 0 1-.191-.212l1.376-8.716a.27.27 0 0 1 .26-.212h1.566a.186.186 0 0 1 .192.212l-1.376 8.716a.27.27 0 0 1-.26.214z">
-                                                            </path>
-                                                            <path fill="#113984"
-                                                                d="M4.671 9h4.105c1.155 0 2.527.037 3.443.847.613.54.935 1.4.86 2.328-.251 3.134-2.125 4.89-4.64 4.89H6.415c-.345 0-.572.228-.67.846L5.18 21.51c-.037.233-.137.37-.317.388H2.33c-.28 0-.38-.212-.307-.68l1.82-11.533c.075-.465.33-.685.829-.685Z">
-                                                            </path>
-                                                            <path fill="#172C70"
-                                                                d="m5.805 17.546.716-4.537c.063-.398.28-.588.715-.588h4.1c.678 0 1.227.105 1.657.301-.412 2.79-2.216 4.34-4.578 4.34h-2.02c-.272 0-.47.136-.59.484">
-                                                            </path>
-                                                        </g>
-                                                    </svg>
-                                                </li>
-                                                <li class="ms-2">
-                                                    <svg width="63" height="25" aria-hidden="true"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        class="Icon_icon-content-1__kPDLF">
-                                                        <g clip-path="url('#bizum-large-a')">
-                                                            <path fill="#51555B" fill-rule="evenodd"
-                                                                d="M31.643 13.35c-.5 0-.927.428-.927.891v6.85c0 .499.428.927.927.927s.928-.428.928-.928v-6.813a.92.92 0 0 0-.928-.927m0-3.39c-.57 0-1.034.464-1.034 1.035s.464 1.07 1.034 1.07 1.035-.463 1.035-1.07c.036-.57-.464-1.034-1.035-1.034m9.06 4.317c0-.57-.463-.785-.855-.785H35.21c-.464 0-.821.357-.821.785 0 .464.357.82.82.82h3.033l-3.889 5.423a1.06 1.06 0 0 0-.178.535c0 .57.464.892.856.892h4.887c.464 0 .82-.357.82-.821a.807.807 0 0 0-.82-.82h-3.317l3.817-5.315c.214-.25.285-.5.285-.714m-13.554 4.28c0 1.142-.5 1.82-1.606 1.82-1.141 0-1.605-.678-1.605-1.82v-3.495h1.677c1.355 0 1.534.749 1.534 1.57zm1.855-1.961c0-1.927-1-3.14-3.354-3.14h-1.712v-2.568c0-.5-.428-.927-.892-.927a.944.944 0 0 0-.927.927v7.705c0 1.927 1.034 3.46 3.46 3.46 2.39 0 3.46-1.57 3.46-3.46v-1.962zM47.91 13.35c-.5 0-.928.428-.928.927v4.28c0 1.142-.5 1.82-1.605 1.82-1.142 0-1.605-.678-1.605-1.82v-4.28c0-.5-.428-.927-.892-.927-.5 0-.928.428-.928.927v4.28c0 1.927 1.035 3.46 3.46 3.46 2.39 0 3.46-1.569 3.46-3.46v-4.28c-.035-.5-.463-.927-.962-.927M62 16.845c0-1.926-.892-3.46-3.282-3.46-1.07 0-1.855.321-2.39.856-.535-.499-1.284-.856-2.39-.856-2.39 0-3.282 1.57-3.282 3.46v4.281c0 .5.428.927.892.927.5 0 .928-.428.928-.927v-4.28c0-1.142.356-1.82 1.462-1.82s1.463.678 1.463 1.82v4.28c0 .5.428.927.891.927.5 0 .928-.428.928-.927v-4.28c0-1.142.357-1.82 1.462-1.82 1.106 0 1.463.678 1.463 1.82v4.28c0 .5.428.927.892.927.5 0 .927-.428.927-.927zm-56.718-3.46a1.47 1.47 0 0 0 2.033-.32l1.712-2.355a1.47 1.47 0 0 0-.32-2.033 1.47 1.47 0 0 0-2.034.32l-1.712 2.355c-.464.642-.321 1.534.32 2.033m7.776-3.317a1.47 1.47 0 0 0-2.033.32L4.176 19.77a1.47 1.47 0 0 0 .321 2.034c.642.463 1.57.32 2.033-.321l6.814-9.382c.5-.642.356-1.57-.286-2.033m-8.418-.75a1.47 1.47 0 0 0-.321-2.033c-.642-.463-1.57-.356-2.034.321a1.444 1.444 0 0 0 .321 2.034c.643.463 1.534.32 2.034-.321m10.345 12.878a1.47 1.47 0 0 0-2.034.321 1.47 1.47 0 0 0 .321 2.034 1.47 1.47 0 0 0 2.034-.321c.463-.643.32-1.534-.321-2.034m-2.676-3.71a1.47 1.47 0 0 0-2.033.321l-1.712 2.355a1.47 1.47 0 0 0 .32 2.033c.643.464 1.57.321 2.034-.321l1.712-2.354a1.47 1.47 0 0 0-.32-2.034"
-                                                                clip-rule="evenodd"></path>
-                                                        </g>
-                                                        <defs>
-                                                            <clipPath id="bizum-large-a">
-                                                                <path fill="#fff" d="M2 7h60v17.836H2z"></path>
-                                                            </clipPath>
-                                                        </defs>
-                                                    </svg>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div>
-                                            <p class="lh-1 fw-light">
-                                                <small>¿Necesitas ayuda? Ponte en contacto con el
-                                                    <a href="#" onclick="return false;"
-                                                        class="text-decoration-underline fw-normal">servicio de Atención al
-                                                        cliente
-                                                    </a>.
-                                                </small>
-                                            </p>
-                                        </div>
+                                        <button type="button" (click)="removeCupon()" class="btn btn-outline-danger btn-sm d-flex align-items-center" title="Quitar cupón">
+                                            <i class="icon anm anm-times-r me-1"></i>
+                                            <span class="d-none d-md-inline">Quitar</span>
+                                        </button>
                                     </div>
-                                </div>
-                            </div>
-                            <!-- End Resumen de precio -->
-                            <!--End Cart Content-->
-                            
-                            <!--Cart Sidebar | UI OLD-->
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 cart-footer py-5">
-                                <div class="row justify-content-center">
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-4 mb-12 py-3 px-3">
-                                        <div class="cart-discount">
-                                            <h3 class="text-uppercase ls-2">Códigos de descuento</h3>
-                                            
-                                            <!-- Mostrar cupón activo si existe -->
-                                            <div *ngIf="hasActiveCoupon()" class="alert alert-success d-flex justify-content-between align-items-center p-3 mb-3">
-                                                <div class="d-flex align-items-center">
-                                                    <i class="icon anm anm-gift-l me-2"></i>
-                                                    <div>
-                                                        <strong class="d-block">Cupón aplicado</strong>
-                                                        <span class="text-uppercase fw-bold">{{getActiveCouponCode()}}</span>
-                                                    </div>
-                                                </div>
-                                                <button type="button" (click)="removeCupon()" 
-                                                        class="btn btn-outline-danger btn-sm d-flex align-items-center"
-                                                        title="Quitar cupón">
-                                                    <i class="icon anm anm-times-r me-1"></i>
-                                                    <span class="d-none d-md-inline">Quitar</span>
+
+                                    <!-- Formulario para aplicar cupón (solo visible si NO hay cupón activo) -->
+                                    <form *ngIf="!hasActiveCoupon()">
+                                        <div class="form-group">
+                                            <!-- <label for="coupon_input lh-1">
+                                                        Introduce tu código promocional y disfruta de grandes ahorros en tu compra.
+                                                    </label> -->
+                                            <div class="input-group mt-2 mb-2">
+                                                <input id="coupon_input" class="form-control" [ngClass]="{ 'me-2': isDesktop, 'mb-2': !isDesktop }"  type="text" name="coupon" placeholder="Código de cupón" [(ngModel)]="codeCupon" maxlength="20" autocomplete="off" required />
+                                                <button type="button" class="btn btn-dark text-nowrap" [ngClass]="{ 'w-25': isDesktop, 'w-100': !isDesktop }" (click)="applyCupon()" [disabled]="!codeCupon || codeCupon.trim() === ''" title="Aplicar cupón">
+                                                    <span class="fs-14"><i class="icon anm anm-plus-r me-1"></i> Aplicar</span>
                                                 </button>
                                             </div>
-
-                                            <!-- Formulario para aplicar cupón (solo visible si NO hay cupón activo) -->
-                                            <form *ngIf="!hasActiveCoupon()">
-                                                <div class="form-group">
-                                                    <label for="coupon_input">
-                                                        Introduce tu código de cupón si tienes uno.
-                                                    </label>
-                                                    <div class="input-group mt-2">
-                                                        <input 
-                                                            id="coupon_input"
-                                                            class="form-control" 
-                                                            type="text" 
-                                                            name="coupon"
-                                                            placeholder="Código de cupón" 
-                                                            [(ngModel)]="codeCupon"
-                                                            maxlength="20"
-                                                            autocomplete="off"
-                                                            required />
-                                                        <button 
-                                                            type="button" 
-                                                            class="btn btn-primary text-nowrap"
-                                                            (click)="applyCupon()" 
-                                                            [disabled]="!codeCupon || codeCupon.trim() === ''"
-                                                            title="Aplicar cupón">
-                                                            <i class="icon anm anm-plus-r me-1"></i>
-                                                            Aplicar
-                                                        </button>
-                                                    </div>
-                                                    <small class="form-text text-muted mt-1" *ngIf="!hasProductsWithCampaignDiscount()">
-                                                        Ingresa tu código de descuento para ahorrar en tu compra.
-                                                    </small>
-                                                    <small class="form-text text-muted mt-1" *ngIf="hasProductsWithCampaignDiscount() && hasProductsEligibleForCoupon()">
-                                                        El cupón se aplicará solo a productos sin descuentos previos.
-                                                    </small>
-                                                </div>
-                                            </form>
-
-                                            <!-- Información adicional cuando hay cupón aplicado -->
-                                            <div *ngIf="hasActiveCoupon()" class="mt-3">
-                                                <p class="text-muted mb-0">
-                                                    <small>
-                                                        <i class="icon anm anm-info-cil me-1"></i>
-                                                        Para aplicar un cupón diferente, primero quita el actual.
-                                                    </small>
-                                                </p>
-                                            </div>
-
-                                            <!-- Mensaje informativo según el escenario -->
-                                            <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount() && hasProductsEligibleForCoupon()" 
-                                                 class="alert alert-info mt-3 py-2">
-                                                <small>
-                                                    <i class="icon anm anm-info-cil me-1"></i>
-                                                    El cupón se aplicará solo a productos sin descuentos previos ({{getEligibleProductsCount()}} de {{listCarts.length}} productos).
-                                                </small>
-                                            </div>
-
-                                            <!-- Mensaje si todos los productos tienen descuento -->
-                                            <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount() && !hasProductsEligibleForCoupon()" 
-                                                 class="alert alert-warning mt-3 py-2">
-                                                <small>
-                                                    <i class="icon anm anm-exclamation-triangle me-1"></i>
-                                                    Todos los productos en tu carrito ya tienen descuentos aplicados.
-                                                </small>
-                                            </div>
+                                            <!-- Mensaje de error del cupón (temporal) -->
+                                            <small class="form-text text-danger mt-1 mb-2" *ngIf="showCouponError">
+                                                <i class="icon anm anm-exclamation-triangle me-1"></i>
+                                                {{couponErrorMessage}}
+                                            </small>
+                                            
+                                            <!-- Mensajes de ayuda normales (se ocultan cuando hay error) -->
+                                            <small class="form-text text-muted mt-1 mb-2" *ngIf="!hasProductsWithCampaignDiscount() && !showCouponError">
+                                                Ingresa tu código de descuento para ahorrar en tu compra.
+                                            </small>
+                                            <small class="form-text text-muted mt-1" *ngIf="hasProductsWithCampaignDiscount() && hasProductsEligibleForCoupon() && !showCouponError">
+                                                El cupón se aplicará solo a productos sin descuentos previos.
+                                            </small>
                                         </div>
+                                    </form>
+
+                                    <!-- Información adicional cuando hay cupón aplicado -->
+                                    <div *ngIf="hasActiveCoupon()" class="mt-3">
+                                        <p class="text-muted mb-0">
+                                            <small>
+                                                <i class="icon anm anm-info-cil me-1"></i>
+                                                Para aplicar un cupón diferente, primero quita el actual.
+                                            </small>
+                                        </p>
                                     </div>
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-4 mb-12">
+
+                                    <!-- Mensaje informativo según el escenario -->
+                                    <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount() && hasProductsEligibleForCoupon()" class="alert alert-info mt-3 py-2">
+                                        <small>
+                                            <i class="icon anm anm-info-cil me-1"></i>
+                                            El cupón se aplicará solo a productos sin descuentos previos ({{getEligibleProductsCount()}} de {{listCarts.length}} productos).
+                                        </small>
+                                    </div>
+
+                                    <!-- Mensaje si todos los productos tienen descuento -->
+                                    <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount() && !hasProductsEligibleForCoupon()" class="alert alert-warning mt-3 py-2">
+                                        <small>
+                                            <i class="icon anm anm-exclamation-triangle me-1"></i>
+                                            Todos los productos en tu carrito ya tienen descuentos aplicados.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-4 mb-12 d-none">
                                         <div class="cart-info sidebar-sticky">
                                             <h3 class="title mb-3 ls-2 text-uppercase">
                                                 Resumen de Precio
@@ -506,562 +456,425 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--End Cart Sidebar-->
-                        </div>
-                    </ng-template>
-                </div>
-                <!-- END MAIN CONTENT -->
-
-                <ng-container>
-                    <!-- Loader o Skeleton -->
-                    <ng-container *ngIf="loader.loading$ | async; else product_related_slider">
-                        <app-product-slider-skeleton [itemCount]="5" titleWidth="20%" subtitleWidth="30%"></app-product-slider-skeleton>
-                    </ng-container>
-
-                    <ng-template #product_related_slider>
-                        <ng-container *ngIf="related_products && related_products.length > 0">
-                            <!--Related Products-->
-                            <app-related-products
-                                [related_products]="related_products"
-                                [product_selected]="product_selected"
-                                [euro]="euro"
-                                (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
-                                [getDiscount]="getDiscount"
-                                [SALE_FLASH]="SALE_FLASH"
-                            ></app-related-products>
-                            <!--End Related Products-->
-                        </ng-container> 
-
-                        <ng-container *ngIf="interest_products && interest_products.length > 0">
-                            <!-- Interest Products-->
-                            <app-interest-products
-                                [interest_products]="interest_products"
-                                [product_selected]="product_selected"
-                                [euro]="euro"
-                                (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)"
-                                [getDiscount]="getDiscount"
-                                [SALE_FLASH]="SALE_FLASH"
-                            ></app-interest-products>
-                            <!--End Interest Products-->
-                        </ng-container>
-                    </ng-template>
-                </ng-container> 
-
-            </div>
-            <!-- END BODY CONTAINER -->
-
-            <!--Page Header-->
-            <div class="page-header text-center bg-white">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                            <!--Breadcrumbs-->
-                            <div class="breadcrumbs text-uppercase">
-                                <a href="index.html" onclick="return false;" routerLink="/" class="fw-light" title="Lujandev.com<">Lujandev.com</a>
-                                <span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Carrito de la compra</span>
-                            </div>
-                            <!--End Breadcrumbs-->
+                                    </div> -->
                         </div>
                     </div>
+                    <!--END CUPON-->
+                </div>
+            </ng-template>
+        </div>
+        <!-- END MAIN CONTENT -->
+
+        <ng-container>
+            <!-- Loader o Skeleton -->
+            <ng-container *ngIf="loader.loading$ | async; else product_related_slider">
+                <app-product-slider-skeleton [itemCount]="5" titleWidth="20%" subtitleWidth="30%"></app-product-slider-skeleton>
+            </ng-container>
+
+            <ng-template #product_related_slider>
+                <ng-container *ngIf="related_products && related_products.length > 0">
+                    <!--Related Products-->
+                    <app-related-products [related_products]="related_products" [product_selected]="product_selected" [euro]="euro" (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)" [getDiscount]="getDiscount" [SALE_FLASH]="SALE_FLASH"></app-related-products>
+                    <!--End Related Products-->
+                </ng-container>
+
+                <ng-container *ngIf="interest_products && interest_products.length > 0">
+                    <!-- Interest Products-->
+                    <app-interest-products [interest_products]="interest_products" [product_selected]="product_selected" [euro]="euro" (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)" [getDiscount]="getDiscount" [SALE_FLASH]="SALE_FLASH"></app-interest-products>
+                    <!--End Interest Products-->
+                </ng-container>
+            </ng-template>
+        </ng-container>
+
+    </div>
+    <!-- END BODY CONTAINER -->
+
+    <!--Page Header-->
+    <div class="page-header text-center bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
+                    <!--Breadcrumbs-->
+                    <div class="breadcrumbs text-uppercase">
+                        <a href="index.html" onclick="return false;" routerLink="/" class="fw-light" title="Lujandev.com<">Lujandev.com</a>
+                        <span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Carrito de la compra</span>
+                    </div>
+                    <!--End Breadcrumbs-->
                 </div>
             </div>
-        <!--End Page Header-->
-        <!-- </ng-container> -->
+        </div>
+    </div>
+    <!--End Page Header-->
+    <!-- </ng-container> -->
 
 
-        <!-- STICKY MENUBAR MOBILE -->
-        <div class="menubar-mobile d-flex align-items-center justify-content-between d-lg-none">
-            <div class="menubar-shop menubar-item">
-                <a href="shop-grid-view.html" onclick="return false;"
-                    [routerLink]="['/', locale, country, 'shop', 'filter-products']"><i
-                        class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">Compra</span></a>
-            </div>
-            <div class="menubar-account menubar-item">
-                <a href="my-account.html" [routerLink]="
+    <!-- STICKY MENUBAR MOBILE -->
+    <div class="menubar-mobile d-flex align-items-center justify-content-between d-lg-none">
+        <div class="menubar-shop menubar-item">
+            <a href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']"><i class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">Compra</span></a>
+        </div>
+        <div class="menubar-account menubar-item">
+            <a href="my-account.html" [routerLink]="
             currentUser.email
                 ? ['/', locale, country, 'account', 'my-account']
                 : ['/', locale, country, 'auth', 'login']
             "><i class="menubar-icon icon anm anm-user-al"></i><span class="menubar-label">Cuenta</span></a>
-            </div>
-            <div class="menubar-search menubar-item">
-                <a [href]="['/']"><span class="menubar-icon anm anm-home-l"></span><span
-                        class="menubar-label">Inicio</span></a>
-            </div>
-            <div class="menubar-wish menubar-item">
-                <a href="wishlist-style1.html" onclick="return false;"
-                    [routerLink]="['/', this.locale, this.country, 'account', 'favorites']">
-                    <span class="span-count position-relative text-center"><i
-                            class="menubar-icon icon anm anm-heart-l"></i><span
-                            class="wishlist-count counter menubar-count" *ngIf="listWishlists.length > 0">{{
+        </div>
+        <div class="menubar-search menubar-item">
+            <a [href]="['/']"><span class="menubar-icon anm anm-home-l"></span><span class="menubar-label">Inicio</span></a>
+        </div>
+        <div class="menubar-wish menubar-item">
+            <a href="wishlist-style1.html" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'favorites']">
+                <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-heart-l"></i><span class="wishlist-count counter menubar-count" *ngIf="listWishlists.length > 0">{{
                             listWishlists.length }}</span></span>
-                    <span class="menubar-label">Favoritos</span>
-                </a>
-            </div>
-            <div class="menubar-cart menubar-item">
-                <a href="#;" onclick="return false;" [routerLink]="
+                <span class="menubar-label">Favoritos</span>
+            </a>
+        </div>
+        <div class="menubar-cart menubar-item">
+            <a href="#;" onclick="return false;" [routerLink]="
             currentUser
                 ? ['/', locale, country, 'shop', 'cart']
                 : ['/', locale, country, 'auth', 'login']
             " class="btn-minicart" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
-                    <span class="span-count position-relative text-center"><i
-                            class="menubar-icon icon anm anm-cart-l"></i><span class="cart-count counter menubar-count"
-                            *ngIf="listCarts.length > 0">{{ listCarts.length }}</span></span>
-                    <span class="menubar-label">Carrito</span>
-                </a>
-            </div>
+                <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-cart-l"></i><span class="cart-count counter menubar-count" *ngIf="listCarts.length > 0">{{ listCarts.length }}</span></span>
+                <span class="menubar-label">Carrito</span>
+            </a>
         </div>
-        <!--END STICKY MENUBAR MOBILE-->
+    </div>
+    <!--END STICKY MENUBAR MOBILE-->
 
-        <!-- SCROLL TOP-->
-        <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
-        <!-- END SCROLL TOP-->
+    <!-- SCROLL TOP-->
+    <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
+    <!-- END SCROLL TOP-->
 
-        <!-- PRODUCT QUICKSHOP MODAL -->
-        <div class="quickshop-modal modal fade" id="quickshop_modal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <form method="post" action="#" id="product-form-quickshop"
-                            class="product-form align-items-center">
-                            <!-- Product Info -->
-                            <div class="row g-0 item mb-3">
-                                <a class="col-4 product-image" href="product-layout1.html"><img
-                                        class="rounded-0 blur-up lazyload"
-                                        data-src="assets/images/products/product1.jpg"
-                                        src="assets/images/products/product1.jpg" alt="Product" title="Product"
-                                        width="625" height="808" /></a>
-                                <div class="col-8 product-details">
-                                    <div class="product-variant ps-3">
-                                        <a class="product-title" href="product-layout1.html">Weave Hoodie Sweatshirt</a>
-                                        <div class="priceRow mt-2 mb-3">
-                                            <div class="product-price m-0">
-                                                <span class="old-price">$114.00</span><span class="price">$99.00</span>
-                                            </div>
+    <!-- PRODUCT QUICKSHOP MODAL -->
+    <div class="quickshop-modal modal fade" id="quickshop_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <form method="post" action="#" id="product-form-quickshop" class="product-form align-items-center">
+                        <!-- Product Info -->
+                        <div class="row g-0 item mb-3">
+                            <a class="col-4 product-image" href="product-layout1.html"><img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" /></a>
+                            <div class="col-8 product-details">
+                                <div class="product-variant ps-3">
+                                    <a class="product-title" href="product-layout1.html">Weave Hoodie Sweatshirt</a>
+                                    <div class="priceRow mt-2 mb-3">
+                                        <div class="product-price m-0">
+                                            <span class="old-price">$114.00</span><span class="price">$99.00</span>
                                         </div>
-                                        <div class="qtyField">
-                                            <a class="qtyBtn minus" href="#;"><i class="icon anm anm-minus-r"></i></a>
-                                            <input type="text" name="quantity" value="1" class="qty" />
-                                            <a class="qtyBtn plus" href="#;"><i class="icon anm anm-plus-r"></i></a>
-                                        </div>
+                                    </div>
+                                    <div class="qtyField">
+                                        <a class="qtyBtn minus" href="#;"><i class="icon anm anm-minus-r"></i></a>
+                                        <input type="text" name="quantity" value="1" class="qty" />
+                                        <a class="qtyBtn plus" href="#;"><i class="icon anm anm-plus-r"></i></a>
                                     </div>
                                 </div>
                             </div>
-                            <!-- End Product Info -->
-                            <!-- Swatches Color -->
-                            <div class="variants-clr swatches-image clearfix mb-3 swatch-0 option1"
-                                data-option-index="0">
-                                <label class="label d-flex justify-content-center">Color:<span
-                                        class="slVariant ms-1 fw-bold">Black</span></label>
-                                <ul class="swatches d-flex-justify-center pt-1 clearfix">
-                                    <li class="swatch large radius available active">
-                                        <img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80"
-                                            height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Blue" />
-                                    </li>
-                                    <li class="swatch large radius available">
-                                        <img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80"
-                                            height="80" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="Black" />
-                                    </li>
-                                    <li class="swatch large radius available">
-                                        <img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80"
-                                            height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Pink" />
-                                    </li>
-                                    <li class="swatch large radius available green">
-                                        <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="Green"></span>
-                                    </li>
-                                    <li class="swatch large radius soldout yellow">
-                                        <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="Yellow"></span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- End Swatches Color -->
-                            <!-- Swatches Size -->
-                            <div class="variants-size swatches-size clearfix mb-4 swatch-1 option2"
-                                data-option-index="1">
-                                <label class="label d-flex justify-content-center">Size:<span
-                                        class="slVariant ms-1 fw-bold">S</span></label>
-                                <ul class="size-swatches d-flex-justify-center pt-1 clearfix">
-                                    <li class="swatch large radius soldout">
-                                        <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="XS">XS</span>
-                                    </li>
-                                    <li class="swatch large radius available active">
-                                        <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="S">S</span>
-                                    </li>
-                                    <li class="swatch large radius available">
-                                        <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="M">M</span>
-                                    </li>
-                                    <li class="swatch large radius available">
-                                        <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="L">L</span>
-                                    </li>
-                                    <li class="swatch large radius available">
-                                        <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="XL">XL</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- End Swatches Size -->
-                            <!-- Product Action -->
-                            <div class="product-form-submit d-flex-justify-center">
-                                <button type="submit" name="add" class="btn product-cart-submit me-2">
-                                    <span>Add to cart</span>
-                                </button>
-                                <button type="submit" name="sold" class="btn btn-secondary product-sold-out d-none"
-                                    disabled="disabled">
-                                    Sold out
-                                </button>
-                                <button type="submit" name="buy" class="btn btn-secondary proceed-to-checkout">
-                                    Buy it now
-                                </button>
-                            </div>
-                            <!-- End Product Action -->
-                            <div class="text-center mt-3">
-                                <a class="text-link" href="product-layout1.html">View More Details</a>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <!-- End Product Info -->
+                        <!-- Swatches Color -->
+                        <div class="variants-clr swatches-image clearfix mb-3 swatch-0 option1" data-option-index="0">
+                            <label class="label d-flex justify-content-center">Color:<span class="slVariant ms-1 fw-bold">Black</span></label>
+                            <ul class="swatches d-flex-justify-center pt-1 clearfix">
+                                <li class="swatch large radius available active">
+                                    <img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80" height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Blue" />
+                                </li>
+                                <li class="swatch large radius available">
+                                    <img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80" height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Black" />
+                                </li>
+                                <li class="swatch large radius available">
+                                    <img src="assets/images/products/swatches/80x80.jpg" alt="image" width="80" height="80" data-bs-toggle="tooltip" data-bs-placement="top" title="Pink" />
+                                </li>
+                                <li class="swatch large radius available green">
+                                    <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Green"></span>
+                                </li>
+                                <li class="swatch large radius soldout yellow">
+                                    <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Yellow"></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- End Swatches Color -->
+                        <!-- Swatches Size -->
+                        <div class="variants-size swatches-size clearfix mb-4 swatch-1 option2" data-option-index="1">
+                            <label class="label d-flex justify-content-center">Size:<span class="slVariant ms-1 fw-bold">S</span></label>
+                            <ul class="size-swatches d-flex-justify-center pt-1 clearfix">
+                                <li class="swatch large radius soldout">
+                                    <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XS">XS</span>
+                                </li>
+                                <li class="swatch large radius available active">
+                                    <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="S">S</span>
+                                </li>
+                                <li class="swatch large radius available">
+                                    <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="M">M</span>
+                                </li>
+                                <li class="swatch large radius available">
+                                    <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="L">L</span>
+                                </li>
+                                <li class="swatch large radius available">
+                                    <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XL">XL</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- End Swatches Size -->
+                        <!-- Product Action -->
+                        <div class="product-form-submit d-flex-justify-center">
+                            <button type="submit" name="add" class="btn product-cart-submit me-2">
+                                <span>Add to cart</span>
+                            </button>
+                            <button type="submit" name="sold" class="btn btn-secondary product-sold-out d-none" disabled="disabled">
+                                Sold out
+                            </button>
+                            <button type="submit" name="buy" class="btn btn-secondary proceed-to-checkout">
+                                Buy it now
+                            </button>
+                        </div>
+                        <!-- End Product Action -->
+                        <div class="text-center mt-3">
+                            <a class="text-link" href="product-layout1.html">View More Details</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <!-- END PRODUCT QUICKSHOP MODAL -->
+    </div>
+    <!-- END PRODUCT QUICKSHOP MODAL -->
 
-        <!-- PRODUCT ADDTOCART MODAL -->
-        <div class="addtocart-modal modal fade" id="addtocart_modal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <form method="post" action="#" id="product-form-addtocart"
-                            class="product-form align-items-center">
-                            <h3 class="title mb-3 text-success text-center">
-                                Added to cart Successfully!
-                            </h3>
-                            <div class="row d-flex-center text-center">
-                                <div class="col-md-6">
-                                    <!-- Product Image -->
-                                    <a class="product-image" href="product-layout1.html"><img
-                                            class="rounded-0 blur-up lazyload"
-                                            data-src="assets/images/products/product1.jpg"
-                                            src="assets/images/products/product1.jpg" alt="Product" title="Product"
-                                            width="625" height="808" /></a>
-                                    <!-- End Product Image -->
-                                </div>
-                                <div class="col-md-6 mt-3 mt-md-0">
-                                    <!-- Product Info -->
-                                    <div class="product-details">
-                                        <a class="product-title" href="product-layout1.html">Cuff Beanie Cap</a>
-                                        <p class="product-clr my-2 text-muted">Black / XL</p>
-                                    </div>
-                                    <div class="addcart-total rounded-5">
-                                        <p class="product-items mb-2">
-                                            There are <strong>1</strong> items in your cart
-                                        </p>
-                                        <p class="d-flex-justify-center">
-                                            Total: <span class="price">$198.00</span>
-                                        </p>
-                                    </div>
-                                    <!-- End Product Info -->
-                                    <!-- Product Action -->
-                                    <div class="product-form-submit d-flex-justify-center">
-                                        <a href="#" class="btn btn-outline-primary product-continue w-100">Continue
-                                            Shopping</a>
-                                        <a href="cart-style1.html"
-                                            class="btn btn-secondary product-viewcart w-100 my-2 my-md-3">View Cart</a>
-                                        <a href="checkout-style1.html"
-                                            class="btn btn-primary product-checkout w-100">Proceed to checkout</a>
-                                    </div>
-                                    <!-- End Product Action -->
-                                </div>
+    <!-- PRODUCT ADDTOCART MODAL -->
+    <div class="addtocart-modal modal fade" id="addtocart_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <form method="post" action="#" id="product-form-addtocart" class="product-form align-items-center">
+                        <h3 class="title mb-3 text-success text-center">
+                            Added to cart Successfully!
+                        </h3>
+                        <div class="row d-flex-center text-center">
+                            <div class="col-md-6">
+                                <!-- Product Image -->
+                                <a class="product-image" href="product-layout1.html"><img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" /></a>
+                                <!-- End Product Image -->
                             </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END PRODUCT ADDTOCART MODAL -->
-
-        <!-- PRODUC QUICKVIEW MODAL -->
-        <div class="quickview-modal modal fade" id="quickview_modal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <div class="row">
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-6 mb-3 mb-md-0">
-                                <!-- Model Thumbnail -->
-                                <div id="quickView" class="carousel slide">
-                                    <!-- Image Slide carousel items -->
-                                    <div class="carousel-inner">
-                                        <div class="item carousel-item active" data-bs-slide-number="0">
-                                            <img class="rounded-0 blur-up lazyload"
-                                                data-src="assets/images/products/product1.jpg"
-                                                src="assets/images/products/product1.jpg" alt="product" title="Product"
-                                                width="625" height="808" />
-                                        </div>
-                                        <div class="item carousel-item" data-bs-slide-number="1">
-                                            <img class="rounded-0 blur-up lazyload"
-                                                data-src="assets/images/products/product1-1.jpg"
-                                                src="assets/images/products/product1-1.jpg" alt="product"
-                                                title="Product" width="625" height="808" />
-                                        </div>
-                                        <div class="item carousel-item" data-bs-slide-number="2">
-                                            <img class="rounded-0 blur-up lazyload"
-                                                data-src="assets/images/products/product1-1.jpg"
-                                                src="assets/images/products/product1-1.jpg" alt="product"
-                                                title="Product" width="625" height="808" />
-                                        </div>
-                                        <div class="item carousel-item" data-bs-slide-number="3">
-                                            <img class="rounded-0 blur-up lazyload"
-                                                data-src="assets/images/products/product1-1.jpg"
-                                                src="assets/images/products/product1-1.jpg" alt="product"
-                                                title="Product" width="625" height="808" />
-                                        </div>
-                                        <div class="item carousel-item" data-bs-slide-number="4">
-                                            <img class="rounded-0 blur-up lazyload"
-                                                data-src="assets/images/products/product1-1.jpg"
-                                                src="assets/images/products/product1-1.jpg" alt="product"
-                                                title="Product" width="625" height="808" />
-                                        </div>
-                                        <div class="item carousel-item" data-bs-slide-number="5">
-                                            <img class="rounded-0 blur-up lazyload"
-                                                data-src="assets/images/products/product1-1.jpg"
-                                                src="assets/images/products/product1-1.jpg" alt="product"
-                                                title="Product" width="625" height="808" />
-                                        </div>
-                                    </div>
-                                    <!-- End Image Slide carousel items -->
-                                    <!-- Thumbnail image -->
-                                    <div class="model-thumbnail-img">
-                                        <!-- Thumbnail slide -->
-                                        <div class="carousel-indicators list-inline">
-                                            <div class="list-inline-item active" id="carousel-selector-0"
-                                                data-bs-slide-to="0" data-bs-target="#quickView">
-                                                <img class="rounded-0 blur-up lazyload"
-                                                    data-src="assets/images/products/product1.jpg"
-                                                    src="assets/images/products/product1.jpg" alt="product"
-                                                    title="Product" width="625" height="808" />
-                                            </div>
-                                            <div class="list-inline-item" id="carousel-selector-1" data-bs-slide-to="1"
-                                                data-bs-target="#quickView">
-                                                <img class="rounded-0 blur-up lazyload"
-                                                    data-src="assets/images/products/product1-1.jpg"
-                                                    src="assets/images/products/product1-1.jpg" alt="product"
-                                                    title="Product" width="625" height="808" />
-                                            </div>
-                                            <div class="list-inline-item" id="carousel-selector-2" data-bs-slide-to="2"
-                                                data-bs-target="#quickView">
-                                                <img class="rounded-0 blur-up lazyload"
-                                                    data-src="assets/images/products/product1-1.jpg"
-                                                    src="assets/images/products/product1-1.jpg" alt="product"
-                                                    title="Product" width="625" height="808" />
-                                            </div>
-                                            <div class="list-inline-item" id="carousel-selector-3" data-bs-slide-to="3"
-                                                data-bs-target="#quickView">
-                                                <img class="rounded-0 blur-up lazyload"
-                                                    data-src="assets/images/products/product1-1.jpg"
-                                                    src="assets/images/products/product1-1.jpg" alt="product"
-                                                    title="Product" width="625" height="808" />
-                                            </div>
-                                            <div class="list-inline-item" id="carousel-selector-4" data-bs-slide-to="4"
-                                                data-bs-target="#quickView">
-                                                <img class="rounded-0 blur-up lazyload"
-                                                    data-src="assets/images/products/product1-1.jpg"
-                                                    src="assets/images/products/product1-1.jpg" alt="product"
-                                                    title="Product" width="625" height="808" />
-                                            </div>
-                                            <div class="list-inline-item" id="carousel-selector-5" data-bs-slide-to="5"
-                                                data-bs-target="#quickView">
-                                                <img class="rounded-0 blur-up lazyload"
-                                                    data-src="assets/images/products/product1-1.jpg"
-                                                    src="assets/images/products/product1-1.jpg" alt="product"
-                                                    title="Product" width="625" height="808" />
-                                            </div>
-                                        </div>
-                                        <!-- End Thumbnail slide -->
-                                        <!-- Carousel arrow button -->
-                                        <a class="carousel-control-prev carousel-arrow rounded-1" href="#quickView"
-                                            data-bs-target="#quickView" data-bs-slide="prev"><i
-                                                class="icon anm anm-angle-left-r"></i></a>
-                                        <a class="carousel-control-next carousel-arrow rounded-1" href="#quickView"
-                                            data-bs-target="#quickView" data-bs-slide="next"><i
-                                                class="icon anm anm-angle-right-r"></i></a>
-                                        <!-- End Carousel arrow button -->
-                                    </div>
-                                    <!-- End Thumbnail image -->
+                            <div class="col-md-6 mt-3 mt-md-0">
+                                <!-- Product Info -->
+                                <div class="product-details">
+                                    <a class="product-title" href="product-layout1.html">Cuff Beanie Cap</a>
+                                    <p class="product-clr my-2 text-muted">Black / XL</p>
                                 </div>
-                                <!-- End Model Thumbnail -->
-                                <div class="text-center mt-3">
-                                    <a href="product-layout1.html" class="text-link">View More Details</a>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
-                                <div class="product-arrow d-flex justify-content-between">
-                                    <h2 class="product-title">Product Quick View Popup</h2>
-                                </div>
-                                <div class="product-review d-flex mt-0 mb-2">
-                                    <div class="rating">
-                                        <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i
-                                            class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i
-                                            class="icon anm anm-star-o"></i>
-                                    </div>
-                                    <div class="reviews ms-2"><a href="#">6 Reviews</a></div>
-                                </div>
-                                <div class="product-info">
-                                    <p class="product-vendor">
-                                        Vendor:<span class="text"><a href="#">HVL</a></span>
+                                <div class="addcart-total rounded-5">
+                                    <p class="product-items mb-2">
+                                        There are <strong>1</strong> items in your cart
                                     </p>
-                                    <p class="product-sku">SKU:<span class="text">RF104</span></p>
+                                    <p class="d-flex-justify-center">
+                                        Total: <span class="price">$198.00</span>
+                                    </p>
                                 </div>
-                                <div class="pro-stockLbl my-2">
-                                    <span class="d-flex-center stockLbl instock d-none"><span> In stock</span></span>
-                                    <span class="d-flex-center stockLbl preorder d-none"><span> Pre-order
-                                            Now</span></span>
-                                    <span class="d-flex-center stockLbl outstock d-none"><span>Sold out</span></span>
+                                <!-- End Product Info -->
+                                <!-- Product Action -->
+                                <div class="product-form-submit d-flex-justify-center">
+                                    <a href="#" class="btn btn-outline-primary product-continue w-100">Continue
+                                        Shopping</a>
+                                    <a href="cart-style1.html" class="btn btn-secondary product-viewcart w-100 my-2 my-md-3">View Cart</a>
+                                    <a href="checkout-style1.html" class="btn btn-primary product-checkout w-100">Proceed to checkout</a>
                                 </div>
-                                <div class="product-price d-flex-center my-3">
-                                    <span class="price old-price">$135.00</span><span class="price">$129.00</span>
+                                <!-- End Product Action -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PRODUCT ADDTOCART MODAL -->
+
+    <!-- PRODUC QUICKVIEW MODAL -->
+    <div class="quickview-modal modal fade" id="quickview_modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6 mb-3 mb-md-0">
+                            <!-- Model Thumbnail -->
+                            <div id="quickView" class="carousel slide">
+                                <!-- Image Slide carousel items -->
+                                <div class="carousel-inner">
+                                    <div class="item carousel-item active" data-bs-slide-number="0">
+                                        <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="product" title="Product" width="625" height="808" />
+                                    </div>
+                                    <div class="item carousel-item" data-bs-slide-number="1">
+                                        <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
+                                    </div>
+                                    <div class="item carousel-item" data-bs-slide-number="2">
+                                        <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
+                                    </div>
+                                    <div class="item carousel-item" data-bs-slide-number="3">
+                                        <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
+                                    </div>
+                                    <div class="item carousel-item" data-bs-slide-number="4">
+                                        <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
+                                    </div>
+                                    <div class="item carousel-item" data-bs-slide-number="5">
+                                        <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
+                                    </div>
                                 </div>
-                                <div class="sort-description">
-                                    The standard chunk of Lorem Ipsum used since the 1500s is
-                                    reproduced below for those interested.
-                                </div>
-                                <form method="post" action="#" id="product_form--option" class="product-form">
-                                    <div class="product-options d-flex-wrap">
-                                        <div class="product-item swatches-image w-100 mb-3 swatch-0 option1"
-                                            data-option-index="0">
-                                            <label class="label d-flex align-items-center">Color:<span
-                                                    class="slVariant ms-1 fw-bold">Blue</span></label>
-                                            <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
-                                                <li class="swatch large radius available blue">
-                                                    <span class="swatchLbl" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="Blue"></span>
-                                                </li>
-                                                <li class="swatch large radius available black">
-                                                    <span class="swatchLbl" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="Black"></span>
-                                                </li>
-                                                <li class="swatch large radius available pink">
-                                                    <span class="swatchLbl" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="Pink"></span>
-                                                </li>
-                                                <li class="swatch large radius available green">
-                                                    <span class="swatchLbl" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="Green"></span>
-                                                </li>
-                                                <li class="swatch large radius soldout yellow">
-                                                    <span class="swatchLbl" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="Yellow"></span>
-                                                </li>
-                                            </ul>
+                                <!-- End Image Slide carousel items -->
+                                <!-- Thumbnail image -->
+                                <div class="model-thumbnail-img">
+                                    <!-- Thumbnail slide -->
+                                    <div class="carousel-indicators list-inline">
+                                        <div class="list-inline-item active" id="carousel-selector-0" data-bs-slide-to="0" data-bs-target="#quickView">
+                                            <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="product" title="Product" width="625" height="808" />
                                         </div>
-                                        <div class="product-item swatches-size w-100 mb-3 swatch-1 option2"
-                                            data-option-index="1">
-                                            <label class="label d-flex align-items-center">Size:<span
-                                                    class="slVariant ms-1 fw-bold">S</span></label>
-                                            <ul class="variants-size size-swatches d-flex-center pt-1 clearfix">
-                                                <li class="swatch large radius soldout">
-                                                    <span class="swatchLbl" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="XS">XS</span>
-                                                </li>
-                                                <li class="swatch large radius available active">
-                                                    <span class="swatchLbl" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="S">S</span>
-                                                </li>
-                                                <li class="swatch large radius available">
-                                                    <span class="swatchLbl" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="M">M</span>
-                                                </li>
-                                                <li class="swatch large radius available">
-                                                    <span class="swatchLbl" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="L">L</span>
-                                                </li>
-                                                <li class="swatch large radius available">
-                                                    <span class="swatchLbl" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="XL">XL</span>
-                                                </li>
-                                            </ul>
+                                        <div class="list-inline-item" id="carousel-selector-1" data-bs-slide-to="1" data-bs-target="#quickView">
+                                            <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
                                         </div>
-                                        <div class="product-action d-flex-wrap w-100 pt-1 mb-3 clearfix">
-                                            <div class="quantity">
-                                                <div class="qtyField">
-                                                    <a class="qtyBtn minus" href="#;"><i class="icon anm anm-minus-r"
-                                                            aria-hidden="true"></i></a>
-                                                    <input type="text" name="quantity" value="1"
-                                                        class="product-form__input qty" />
-                                                    <a class="qtyBtn plus" href="#;"><i class="icon anm anm-plus-l"
-                                                            aria-hidden="true"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="addtocart ms-3 fl-1">
-                                                <button type="submit" name="add" class="btn product-cart-submit w-100">
-                                                    <span>Add to cart</span>
-                                                </button>
-                                                <button type="submit" name="sold"
-                                                    class="btn btn-secondary product-sold-out w-100 d-none"
-                                                    disabled="disabled">
-                                                    <span>Sold out</span>
-                                                </button>
-                                                <button type="submit" name="buy"
-                                                    class="btn btn-secondary proceed-to-checkout w-100 d-none">
-                                                    <span>Buy it now</span>
-                                                </button>
-                                            </div>
+                                        <div class="list-inline-item" id="carousel-selector-2" data-bs-slide-to="2" data-bs-target="#quickView">
+                                            <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
+                                        </div>
+                                        <div class="list-inline-item" id="carousel-selector-3" data-bs-slide-to="3" data-bs-target="#quickView">
+                                            <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
+                                        </div>
+                                        <div class="list-inline-item" id="carousel-selector-4" data-bs-slide-to="4" data-bs-target="#quickView">
+                                            <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
+                                        </div>
+                                        <div class="list-inline-item" id="carousel-selector-5" data-bs-slide-to="5" data-bs-target="#quickView">
+                                            <img class="rounded-0 blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="product" title="Product" width="625" height="808" />
                                         </div>
                                     </div>
-                                </form>
-                                <div class="wishlist-btn d-flex-center">
-                                    <a class="add-wishlist d-flex-center me-3" href="wishlist-style1.html"
-                                        title="Add to Wishlist"><i class="icon anm anm-heart-l me-1"></i>
-                                        <span>Add to Wishlist</span></a>
-                                    <a class="add-compare d-flex-center" href="compare-style1.html"
-                                        title="Add to Compare"><i class="icon anm anm-random-r me-2"></i>
-                                        <span>Add to Compare</span></a>
+                                    <!-- End Thumbnail slide -->
+                                    <!-- Carousel arrow button -->
+                                    <a class="carousel-control-prev carousel-arrow rounded-1" href="#quickView" data-bs-target="#quickView" data-bs-slide="prev"><i class="icon anm anm-angle-left-r"></i></a>
+                                    <a class="carousel-control-next carousel-arrow rounded-1" href="#quickView" data-bs-target="#quickView" data-bs-slide="next"><i class="icon anm anm-angle-right-r"></i></a>
+                                    <!-- End Carousel arrow button -->
                                 </div>
-                                <!-- Social Sharing -->
-                                <div class="social-sharing share-icon d-flex-center mx-0 mt-3">
-                                    <span class="sharing-lbl">Share :</span>
-                                    <a href="#" class="d-flex-center btn btn-link btn--share share-facebook"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Share on Facebook"><i
-                                            class="icon anm anm-facebook-f"></i><span
-                                            class="share-title d-none">Facebook</span></a>
-                                    <a href="#" class="d-flex-center btn btn-link btn--share share-twitter"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Tweet on Twitter"><i
-                                            class="icon anm anm-twitter"></i><span
-                                            class="share-title d-none">Tweet</span></a>
-                                    <a href="#" class="d-flex-center btn btn-link btn--share share-pinterest"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Pin on Pinterest"><i
-                                            class="icon anm anm-pinterest-p"></i>
-                                        <span class="share-title d-none">Pin it</span></a>
-                                    <a href="#" class="d-flex-center btn btn-link btn--share share-linkedin"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Share on Instagram"><i
-                                            class="icon anm anm-linkedin-in"></i><span
-                                            class="share-title d-none">Instagram</span></a>
-                                    <a href="#" class="d-flex-center btn btn-link btn--share share-whatsapp"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Share on WhatsApp"><i
-                                            class="icon anm anm-envelope-l"></i><span
-                                            class="share-title d-none">WhatsApp</span></a>
-                                    <a href="#" class="d-flex-center btn btn-link btn--share share-email"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Share by Email"><i
-                                            class="icon anm anm-whatsapp"></i><span
-                                            class="share-title d-none">Email</span></a>
-                                </div>
-                                <!-- End Social Sharing -->
+                                <!-- End Thumbnail image -->
                             </div>
+                            <!-- End Model Thumbnail -->
+                            <div class="text-center mt-3">
+                                <a href="product-layout1.html" class="text-link">View More Details</a>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="product-arrow d-flex justify-content-between">
+                                <h2 class="product-title">Product Quick View Popup</h2>
+                            </div>
+                            <div class="product-review d-flex mt-0 mb-2">
+                                <div class="rating">
+                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i>
+                                </div>
+                                <div class="reviews ms-2"><a href="#">6 Reviews</a></div>
+                            </div>
+                            <div class="product-info">
+                                <p class="product-vendor">
+                                    Vendor:<span class="text"><a href="#">HVL</a></span>
+                                </p>
+                                <p class="product-sku">SKU:<span class="text">RF104</span></p>
+                            </div>
+                            <div class="pro-stockLbl my-2">
+                                <span class="d-flex-center stockLbl instock d-none"><span> In stock</span></span>
+                                <span class="d-flex-center stockLbl preorder d-none"><span> Pre-order
+                                        Now</span></span>
+                                <span class="d-flex-center stockLbl outstock d-none"><span>Sold out</span></span>
+                            </div>
+                            <div class="product-price d-flex-center my-3">
+                                <span class="price old-price">$135.00</span><span class="price">$129.00</span>
+                            </div>
+                            <div class="sort-description">
+                                The standard chunk of Lorem Ipsum used since the 1500s is
+                                reproduced below for those interested.
+                            </div>
+                            <form method="post" action="#" id="product_form--option" class="product-form">
+                                <div class="product-options d-flex-wrap">
+                                    <div class="product-item swatches-image w-100 mb-3 swatch-0 option1" data-option-index="0">
+                                        <label class="label d-flex align-items-center">Color:<span class="slVariant ms-1 fw-bold">Blue</span></label>
+                                        <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
+                                            <li class="swatch large radius available blue">
+                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Blue"></span>
+                                            </li>
+                                            <li class="swatch large radius available black">
+                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Black"></span>
+                                            </li>
+                                            <li class="swatch large radius available pink">
+                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Pink"></span>
+                                            </li>
+                                            <li class="swatch large radius available green">
+                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Green"></span>
+                                            </li>
+                                            <li class="swatch large radius soldout yellow">
+                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="Yellow"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-item swatches-size w-100 mb-3 swatch-1 option2" data-option-index="1">
+                                        <label class="label d-flex align-items-center">Size:<span class="slVariant ms-1 fw-bold">S</span></label>
+                                        <ul class="variants-size size-swatches d-flex-center pt-1 clearfix">
+                                            <li class="swatch large radius soldout">
+                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XS">XS</span>
+                                            </li>
+                                            <li class="swatch large radius available active">
+                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="S">S</span>
+                                            </li>
+                                            <li class="swatch large radius available">
+                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="M">M</span>
+                                            </li>
+                                            <li class="swatch large radius available">
+                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="L">L</span>
+                                            </li>
+                                            <li class="swatch large radius available">
+                                                <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="XL">XL</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-action d-flex-wrap w-100 pt-1 mb-3 clearfix">
+                                        <div class="quantity">
+                                            <div class="qtyField">
+                                                <a class="qtyBtn minus" href="#;"><i class="icon anm anm-minus-r" aria-hidden="true"></i></a>
+                                                <input type="text" name="quantity" value="1" class="product-form__input qty" />
+                                                <a class="qtyBtn plus" href="#;"><i class="icon anm anm-plus-l" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="addtocart ms-3 fl-1">
+                                            <button type="submit" name="add" class="btn product-cart-submit w-100">
+                                                <span>Add to cart</span>
+                                            </button>
+                                            <button type="submit" name="sold" class="btn btn-secondary product-sold-out w-100 d-none" disabled="disabled">
+                                                <span>Sold out</span>
+                                            </button>
+                                            <button type="submit" name="buy" class="btn btn-secondary proceed-to-checkout w-100 d-none">
+                                                <span>Buy it now</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="wishlist-btn d-flex-center">
+                                <a class="add-wishlist d-flex-center me-3" href="wishlist-style1.html" title="Add to Wishlist"><i class="icon anm anm-heart-l me-1"></i>
+                                    <span>Add to Wishlist</span></a>
+                                <a class="add-compare d-flex-center" href="compare-style1.html" title="Add to Compare"><i class="icon anm anm-random-r me-2"></i>
+                                    <span>Add to Compare</span></a>
+                            </div>
+                            <!-- Social Sharing -->
+                            <div class="social-sharing share-icon d-flex-center mx-0 mt-3">
+                                <span class="sharing-lbl">Share :</span>
+                                <a href="#" class="d-flex-center btn btn-link btn--share share-facebook" data-bs-toggle="tooltip" data-bs-placement="top" title="Share on Facebook"><i class="icon anm anm-facebook-f"></i><span class="share-title d-none">Facebook</span></a>
+                                <a href="#" class="d-flex-center btn btn-link btn--share share-twitter" data-bs-toggle="tooltip" data-bs-placement="top" title="Tweet on Twitter"><i class="icon anm anm-twitter"></i><span class="share-title d-none">Tweet</span></a>
+                                <a href="#" class="d-flex-center btn btn-link btn--share share-pinterest" data-bs-toggle="tooltip" data-bs-placement="top" title="Pin on Pinterest"><i class="icon anm anm-pinterest-p"></i>
+                                    <span class="share-title d-none">Pin it</span></a>
+                                <a href="#" class="d-flex-center btn btn-link btn--share share-linkedin" data-bs-toggle="tooltip" data-bs-placement="top" title="Share on Instagram"><i class="icon anm anm-linkedin-in"></i><span class="share-title d-none">Instagram</span></a>
+                                <a href="#" class="d-flex-center btn btn-link btn--share share-whatsapp" data-bs-toggle="tooltip" data-bs-placement="top" title="Share on WhatsApp"><i class="icon anm anm-envelope-l"></i><span class="share-title d-none">WhatsApp</span></a>
+                                <a href="#" class="d-flex-center btn btn-link btn--share share-email" data-bs-toggle="tooltip" data-bs-placement="top" title="Share by Email"><i class="icon anm anm-whatsapp"></i><span class="share-title d-none">Email</span></a>
+                            </div>
+                            <!-- End Social Sharing -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--END PRODUCT QUICKVIEW MODAL-->
     </div>
+    <!--END PRODUCT QUICKVIEW MODAL-->
+</div>
 
 <!-- END PAGE WRAPPER  -->

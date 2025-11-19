@@ -33,6 +33,8 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   totalCarts: number = 0;
   totalDiscount: number = 0;
   codeCupon: string | null = null;
+  couponErrorMessage: string = '';
+  showCouponError: boolean = false;
   loading: boolean = false;
   currentUser: any = null;
   slug: string | null = null;
@@ -44,6 +46,10 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   AVG_REVIEW:any=null;
   COUNT_REVIEW:any=null;
   exist_review:any=null;
+
+  isMobile: boolean = false;
+  isTablet: boolean = false;
+  isDesktop: boolean = false;
 
   listWishlists: any = [];
   totalWishlist: number = 0;
@@ -82,6 +88,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.checkUserAuthenticationStatus();
     this.getCarts();
     this.inizializeLoader();
+    this.checkDeviceType();
     this.subscribeToWishlistData();
    
   }
@@ -115,6 +122,23 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
         // Recarga la página
         window.location.reload();
       });
+  }
+
+  private checkDeviceType() {
+    const width = window.innerWidth;
+    if (width <= 480) {
+      this.isMobile = true;
+      this.isTablet = false;
+      this.isDesktop = false;
+    } else if (width > 480 && width <= 768) {
+      this.isMobile = false;
+      this.isTablet = true;
+      this.isDesktop = false;
+    } else {
+      this.isMobile = false;
+      this.isTablet = false;
+      this.isDesktop = true;
+    }
   }
 
   private checkUserAuthenticationStatus(): void {
@@ -774,7 +798,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.cartService.apllyCupon(data).subscribe((resp: any) => {
       if (resp.message === 403) {
-        alertDanger(resp.message_text);
+        this.showCouponErrorMessage(resp.message_text);
       } else {
         // Mensaje de éxito personalizado según el escenario
         if (campaignCount > 0 && eligibleCount > 0) {
@@ -787,6 +811,20 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sotoreCarts();
       }
     });
+  }
+
+  /**
+   * Método para mostrar mensaje de error temporal en el template
+   */
+  showCouponErrorMessage(message: string) {
+    this.couponErrorMessage = message;
+    this.showCouponError = true;
+    
+    // Ocultar el mensaje después de 4 segundos
+    setTimeout(() => {
+      this.showCouponError = false;
+      this.couponErrorMessage = '';
+    }, 6000);
   }
 
   /**
