@@ -613,19 +613,79 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   clearCartsDatabase(): void {
     if (!this.currentUser || !this.currentUser._id) {
-      console.error("Error: Usuario no autenticado.");
+      console.error("Error: Intentando acceder a la base de datos sin un usuario autenticado.");
       return;
     }
   
     this.cartService.deleteAllCart(this.currentUser._id).subscribe((resp: any) => {
-      this.listCarts = [];  // Limpiar la lista de artículos localmente
-      this.updateTotalCarts();  // Actualizar el total de artículos
+      console.log('Carrito eliminado desde la base de datos:', resp);
+      this.sotoreCarts(); // Actualizar el carrito después de eliminarlo
     }, (error: any) => {
-      console.error("Error al vaciar el carrito de usuario autenticado:", error);
+      console.error('Error al eliminar el carrito desde la base de datos:', error);
     });
+  }
+
+  /**
+   * Verifica si hay productos en el carrito que ya tienen descuento de campaña
+   * (productos con discount pero sin code_cupon)
+   */
+  hasProductsWithCampaignDiscount(): boolean {
+    const productsWithCampaign = this.listCarts.filter(cart => {
+      // DEBUG: Log cada producto para entender qué está pasando
+      console.log('🔍 Checking cart item for campaign discount:', {
+        product: cart.product?.title,
+        discount: cart.discount,
+        code_cupon: cart.code_cupon,
+        type_discount: cart.type_discount,
+        originalPrice: cart.variedad?.retail_price || cart.price_unitario
+      });
+
+      // 1. Si no tiene discount o es 0, definitivamente NO es campaign discount
+      if (!cart.discount || parseFloat(cart.discount) <= 0) {
+        console.log('❌ No discount found, not campaign discount');
+        return false;
+      }
+
+      // 2. Si tiene cupón, NO es campaign discount
+      if (cart.code_cupon) {
+        console.log('❌ Has coupon code, not campaign discount');
+        return false;
+      }
+
+      // 3. Si no tiene type_discount, probablemente tampoco es campaign discount
+      if (!cart.type_discount) {
+        console.log('❌ No type_discount, not campaign discount');
+        return false;
+      }
+
+      const discountValue = parseFloat(cart.discount);
+      const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+      
+      // 4. Para ser campaign discount, el discount debe ser menor que el precio original
+      // (indica que es un precio final con descuento, no un porcentaje)
+      if (discountValue >= originalPrice) {
+        console.log('❌ Discount >= original price, likely not campaign discount');
+        return false;
+      }
+
+      // 5. Usar la misma lógica que hasCartItemDiscount() para campaign detection
+      const hasDiscount = this.hasCartItemDiscount(cart);
+      console.log(hasDiscount ? '✅ HAS CAMPAIGN DISCOUNT' : '❌ No campaign discount detected');
+      
+      return hasDiscount;
+    });
+
+    console.log('🎯 Products with campaign discount found:', productsWithCampaign.length);
+    return productsWithCampaign.length > 0;
   }
   
   applyCupon(): void {
+    // Validar que no haya productos con campaign discount antes de aplicar cupón
+    if (this.hasProductsWithCampaignDiscount()) {
+      alertDanger('El cupón no se puede aplicar en productos ya rebajados.');
+      return;
+    }
+
     const data = {
       code: this.codeCupon,
       user_id: this.currentUser._id,
