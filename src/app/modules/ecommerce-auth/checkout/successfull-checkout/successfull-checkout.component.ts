@@ -856,12 +856,26 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       return finalWithRounding;
       
     } else {
-      // CAMPAIGN/FLASH DISCOUNTS: El valor discount YA ES EL PRECIO FINAL
-      console.log('🏷️ CAMPAIGN: Using discount value as final price:', discountValue);
+      // CAMPAIGN/FLASH DISCOUNTS: Procesar según type_discount
+      let finalPrice;
+      
+      if (detail.type_discount === 1) {
+        // Campaign discount porcentual
+        console.log('📊 CAMPAIGN: Processing as PERCENTAGE:', discountValue + '%');
+        finalPrice = originalPrice * (1 - discountValue / 100);
+      } else if (detail.type_discount === 2) {
+        // Campaign discount de monto fijo
+        console.log('💰 CAMPAIGN: Processing as FIXED AMOUNT to subtract:', discountValue);
+        finalPrice = originalPrice - discountValue;
+      } else {
+        // Si no hay type_discount definido, asumir que discount es precio final
+        console.log('🏷️ CAMPAIGN: Using discount value as final price (fallback):', discountValue);
+        finalPrice = discountValue;
+      }
       
       // Aplicar redondeo a .95 para campaign discounts también
-      const finalWithRounding = this.priceCalculationService.applyRoundingTo95(discountValue);
-      console.log('🔄 CAMPAIGN: Applied .95 rounding:', discountValue, '→', finalWithRounding);
+      const finalWithRounding = this.priceCalculationService.applyRoundingTo95(finalPrice);
+      console.log('🔄 CAMPAIGN: Applied .95 rounding:', finalPrice, '→', finalWithRounding);
       return finalWithRounding;
     }
   }
