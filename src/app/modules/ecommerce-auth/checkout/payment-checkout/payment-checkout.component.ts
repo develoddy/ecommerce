@@ -857,7 +857,7 @@ export class PaymentCheckoutComponent implements OnInit {
     });
   }
 
-  apllyCupon() {
+  /**apllyCupon() {
     let data = {
       code: this.code_cupon,
       user_id: this.CURRENT_USER_AUTHENTICATED._id,
@@ -870,7 +870,7 @@ export class PaymentCheckoutComponent implements OnInit {
         this.listAllCarts();
       }
     });
-  }
+  }*/
 
   listAllCarts() {
     this._cartService.resetCart();

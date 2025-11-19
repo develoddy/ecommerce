@@ -692,10 +692,11 @@
             <div class="order-1">
                <h3 class="title mb-0 text-uppercase fw-normal mb-3">TU CARRITO</h3>
 
-               <!-- CODIGO PROMOCIONAL -->
-               <div class="mb-3 codigo_promocional mb-4">
+               <!-- CODIGO PROMOCIONAL OCUTALMOS-->
+               <!-- AHORA EL CUPON SE GESTIONA EN LIST CART -->
+               <!-- 
+               <div class="mb-3 codigo_promocional mb-4 d-none">
                   <div class="block-content">
-                     <!-- <h3 class="title mb-3">Payment Methods</h3> -->
                      <div class="payment-accordion-radio">
                            <div class="accordion" id="accordionExample">
                               <div class="accordion-item card mb-2 px-3 border border-muted">
@@ -714,8 +715,8 @@
                                              ahorros en tu compra.
                                           </p>
                                           <div class="input-group mb-0 d-flex">
-                                             <input type="text" class="form-control border border-muted fs-14 mb-3" placeholder="Código de promoción" required="" />
-                                             <button class="btn-dark-ld border border-muted" type="submit">
+                                             <input type="text" [(ngModel)]="code_cupon" class="form-control border border-muted fs-14 mb-3" placeholder="Código de promoción" required="" />
+                                             <button class="btn-dark-ld border border-muted" (click)="apllyCupon()"  type="submit">
                                                    Aplicar
                                              </button>
                                           </div>
@@ -725,7 +726,7 @@
                            </div>
                      </div>
                   </div>
-               </div>
+               </div> -->
                <!-- END CODIGO PROMOCIONAL -->
                 
                <!-- CART SUMMARY VERSION DESKTOP -->

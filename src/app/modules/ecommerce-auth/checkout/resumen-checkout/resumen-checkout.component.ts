@@ -471,8 +471,12 @@ getVarietyImage(cart: any): string {
     });
   }
 
-  apllyCupon() {
-    let data = {code: this.code_cupon, user_id: this.CURRENT_USER_AUTHENTICATED._id}
+  /**apllyCupon() {
+    let data = {
+      code: this.code_cupon, 
+      user_id: this.CURRENT_USER_AUTHENTICATED._id
+    }
+
     this._cartService.apllyCupon(data).subscribe(
       (resp:any) => {
         if (resp.message == 403) {
@@ -482,7 +486,7 @@ getVarietyImage(cart: any): string {
           this.storeAllCarts();//this.listAllCarts();
         }
     });
-  }
+  }*/
 
   storeAddress() {
     this.address_client_selected ? this.storeUpdateAddress(): this.registerAddress();
