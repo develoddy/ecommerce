@@ -106,24 +106,18 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
-    console.log('[Checkout Success] ngOnInit - session_id from URL:', sessionId);
 
     if (sessionId) {
       this.fetchSaleWithRetry(sessionId);
     } else {
-      // No session_id -> possibly PayPal flow. Try to load sale data from several fallbacks
-      console.log('[Checkout Success] No session_id in URL, attempting PayPal fallbacks (checkoutService, navigation state, sessionStorage)');
-
       // 1) Try CheckoutService (synchronous)
       try {
         const svcData = this.checkoutService.getSaleData();
         if (svcData && (svcData.sale || svcData.saleDetails)) {
-          console.log('[Checkout Success] Loaded saleData from CheckoutService');
+          //console.log('[Checkout Success] Loaded saleData from CheckoutService');
           this.saleData = svcData;
           this.sale = svcData.sale || svcData;
           this.saleDetails = svcData.saleDetails || svcData.saleDetails || [];
-          console.log('1) [Checkout Success] saleData:', this.saleData);
-          
           this.minDeliveryDate = svcData?.deliveryEstimate?.min || null;
           this.maxDeliveryDate = svcData?.deliveryEstimate?.max || null;
           // Ensure CheckoutService is populated for other components
@@ -140,11 +134,10 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
         const nav = this._router.getCurrentNavigation?.();
         const navState = (nav && nav.extras && nav.extras.state) ? nav.extras.state : (history && history.state ? history.state : null);
         if (navState && (navState.sale || navState.saleDetails)) {
-          console.log('[Checkout Success] Loaded saleData from navigation state');
           this.saleData = navState;
           this.sale = navState.sale || navState;
           this.saleDetails = navState.saleDetails || [];
-          console.log('2) [Checkout Success] saleData:', this.saleData);
+       
           this.minDeliveryDate = navState?.deliveryEstimate?.min || null;
           this.maxDeliveryDate = navState?.deliveryEstimate?.max || null;
           try { this.checkoutService.setSaleData(this.saleData); this.checkoutService.setSaleSuccess(true); } catch(e){/* ignore */}
@@ -161,11 +154,11 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
         if (sess) {
           const parsed = JSON.parse(sess);
           if (parsed && (parsed.sale || parsed.saleDetails)) {
-            console.log('[Checkout Success] Loaded saleData from sessionStorage');
+            //console.log('[Checkout Success] Loaded saleData from sessionStorage');
             this.saleData = parsed;
             this.sale = parsed.sale || parsed;
             this.saleDetails = parsed.saleDetails || [];
-            console.log('3) [Checkout Success] saleData:', this.saleData);
+            //console.log('3) [Checkout Success] saleData:', this.saleData);
             this.minDeliveryDate = parsed?.deliveryEstimate?.min || null;
             this.maxDeliveryDate = parsed?.deliveryEstimate?.max || null;
             try { this.checkoutService.setSaleData(this.saleData); this.checkoutService.setSaleSuccess(true); } catch(e){/* ignore */}
@@ -181,7 +174,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     // Limpiar parámetros de URL para evitar re-procesar en recarga
     if (sessionId) {
       const cleanPath = this._router.url.split('?')[0];
-      console.log('[Checkout Success] Cleaning URL params, replacing state with:', cleanPath);
+      //console.log('[Checkout Success] Cleaning URL params, replacing state with:', cleanPath);
       this.location.replaceState(cleanPath);
     }
 
@@ -204,18 +197,18 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
   private fetchSaleWithRetry(sessionId: string, tries = 20, delay = 2000) {
     if (tries === 0) {
-      console.warn('[Checkout Success] Venta aún no disponible en backend. session_id=', sessionId);
-      console.warn('[Checkout Success] Llamando fallback registerStripeSale() para intentar crear la venta desde frontend');
+      //console.warn('[Checkout Success] Venta aún no disponible en backend. session_id=', sessionId);
+      //console.warn('[Checkout Success] Llamando fallback registerStripeSale() para intentar crear la venta desde frontend');
       // alertDanger('La venta aún no se ha registrado. Por favor, contacta soporte si el pago se completó.');
       return;
     }
 
-    console.log(`[Checkout Success] Attempting to fetch sale by session. Tries left: ${tries}`, sessionId);
+    //console.log(`[Checkout Success] Attempting to fetch sale by session. Tries left: ${tries}`, sessionId);
 
     this._authEcommerce.getSaleBySession(sessionId).subscribe(
       (resp) => {
         if (resp?.sale) {
-          console.log('[Checkout Success] Sale found for session:', sessionId, resp.sale.id);
+          //console.log('[Checkout Success] Sale found for session:', sessionId, resp.sale.id);
           this.saleData = resp.sale;
           this.saleDetails = resp.saleDetails;
 
@@ -267,7 +260,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       }, 0);
       this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
       this.saleDetails = saleDetails;
-      console.log("SuccessPayStripe :", this.saleDetails);
+      //console.log("SuccessPayStripe :", this.saleDetails);
       
     }
     // Subscribe to updates (e.g., after Stripe)
@@ -287,72 +280,6 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  /*
-  registerStripeSale() {
-     const payload = this.checkoutService.getSalePayload();
-     if (!payload) {
-       alertDanger('No se encontraron los datos necesarios de la venta.');
-       return;
-     }
-
-     const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
-
-     
-     const nTransaction = sessionId
-       ? `STRIPE_${sessionId}`
-       : `STRIPE_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-
-     const sale = {
-       user: payload.userId,
-       guestId: payload.guestId,
-       currency_payment: 'EUR',
-       method_payment: 'STRIPE',
-       n_transaction: nTransaction,
-       stripeSessionId: sessionId || null,
-       total: parseFloat(
-         payload.cart
-           .reduce((sum: number, item: any) => {
-             const price = Number(
-               item.variedade?.retail_price ??
-                 item.price_unitario ??
-                 item.product?.price_usd ??
-                 0
-             );
-             return sum + price * item.cantidad;
-           }, 0)
-           .toFixed(2)
-       ),
-     };
-
-     const sale_address = payload.address;
-     const isGuest = !payload.userId;
-
-     this._authEcommerce.registerSale({ sale, sale_address }, isGuest).subscribe(
-       (resp: any) => {
-         if (resp.code === 403) {
-           alertDanger(resp.message);
-           return;
-         }
-
-         alertSuccess(resp.message);
-         this.checkoutService.setSaleData(resp);
-         this.checkoutService.setSaleSuccess(true);
-         this._cartService.resetCart();
-         this.checkoutService.setSaleSuccess(true);
-
-        this.minDeliveryDate = resp?.deliveryEstimate?.min || null;
-        this.maxDeliveryDate = resp?.deliveryEstimate?.max || null;
-
-        this.saleData = resp;
-        this.successPayStripe();
-      },
-      (err) => {
-        alertDanger('Ocurrió un error al registrar la venta con Stripe.');
-        console.error(err);
-      }
-    );
-  }*/
 
   formatearFechaEntrega(fecha: string): { label: string; datetime: string } {
     const date = new Date(fecha);
@@ -478,8 +405,6 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     };
   }
 
-
-
   getImageUrl(sale: any): string {
     if (sale.variedade && Array.isArray(sale.variedade.files) && sale.variedade.files.length > 0) {
       // 1️⃣ Preview (aunque visible sea false)
@@ -498,34 +423,6 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     // 4️⃣ Fallback al producto
     return sale.product?.imagen || sale.product?.portada || '';
   }
-
-
-
-  // public getImageUrl(sale: any): string {
-  //   try {
-  //     if (!sale) return '';
-  //     // Preferencia: campo 'imagen' del producto (ya rellenado por backend)
-  //     const prodImg = sale.product && (sale.product.imagen || sale.product.image || sale.product.portada);
-  //     if (prodImg) return prodImg;
-
-  //     // Variante (forma 'variedad') con Files
-  //     const filesA = sale.variedad && sale.variedad.Files;
-  //     if (Array.isArray(filesA) && filesA.length > 0) {
-  //       return filesA[0].preview_url || filesA[0].thumbnail_url || filesA[0].url || '';
-  //     }
-
-  //     // Variante en otra convención (variedade)
-  //     const filesB = sale.variedade && sale.variedade.Files;
-  //     if (Array.isArray(filesB) && filesB.length > 0) {
-  //       return filesB[0].preview_url || filesB[0].thumbnail_url || filesB[0].url || '';
-  //     }
-
-  //     return '';
-  //   } catch (e) {
-  //     console.warn('[SuccessfullCheckout] getImageUrl error:', e);
-  //     return '';
-  //   }
-  // }
 
   removeAllCart(user_id: any) {
     this._cartService.deleteAllCart(user_id).subscribe(
@@ -807,26 +704,25 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
    */
   getFinalUnitPrice(detail: any): number {
     const originalPrice = parseFloat(detail.variedade?.retail_price || detail.price_unitario || 0);
-
     // DEBUG: Log para entender la estructura de datos COMPLETA
-    console.log('🔍 DEBUG SuccessfullCheckout getFinalUnitPrice:', {
-      product: detail.product?.title,
-      originalPrice: originalPrice,
-      discount: detail.discount,
-      code_discount: detail.code_discount,
-      type_discount: detail.type_discount,
-      code_cupon: detail.code_cupon,
-      hasCupon: !!detail.code_cupon,
-      // Campos adicionales que podrían identificar cupones
-      cupon: detail.cupon,
-      codigo_cupon: detail.codigo_cupon,
-      coupon_code: detail.coupon_code,
-      allFields: Object.keys(detail)
-    });
+    // console.log('🔍 DEBUG SuccessfullCheckout getFinalUnitPrice:', {
+    //   product: detail.product?.title,
+    //   originalPrice: originalPrice,
+    //   discount: detail.discount,
+    //   code_discount: detail.code_discount,
+    //   type_discount: detail.type_discount,
+    //   code_cupon: detail.code_cupon,
+    //   hasCupon: !!detail.code_cupon,
+    //   // Campos adicionales que podrían identificar cupones
+    //   cupon: detail.cupon,
+    //   codigo_cupon: detail.codigo_cupon,
+    //   coupon_code: detail.coupon_code,
+    //   allFields: Object.keys(detail)
+    // });
 
     // Si no hay descuento aplicado, retornar precio original
     if (!detail.discount && !detail.code_discount) {
-      console.log('✅ No discount found, returning original price:', originalPrice);
+      //console.log('✅ No discount found, returning original price:', originalPrice);
       return originalPrice;
     }
 
@@ -846,17 +742,9 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       // Si parece un porcentaje (número entero ≤ 100), probablemente es cupón
       if (isLikelyPercentage) {
         isCupon = true;
-        console.log('🧠 SMART DETECTION: Detected as COUPON by pattern (integer ≤ 100, likely percentage)');
+        //console.log('🧠 SMART DETECTION: Detected as COUPON by pattern (integer ≤ 100, likely percentage)');
       }
     }
-
-    console.log('🎯 Discount Analysis (saleDetails):', {
-      isCupon: isCupon,
-      discountValue: discountValue,
-      type_discount: detail.type_discount,
-      detectionMethod: detail.code_cupon ? 'code_cupon field' : 'smart pattern detection',
-      interpretation: isCupon ? 'CUPON - apply percentage/fixed logic' : 'CAMPAIGN - discount value is final price'
-    });
 
     if (isCupon) {
       // CUPONES REALES: Usar type_discount para determinar cómo procesar
@@ -864,33 +752,33 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       
       if (detail.type_discount === 1) {
         // Cupón porcentual
-        console.log('📊 CUPON: Processing as PERCENTAGE:', discountValue + '%');
+        //console.log('📊 CUPON: Processing as PERCENTAGE:', discountValue + '%');
         finalPrice = originalPrice * (1 - discountValue / 100);
       } else {
         // Cupón de monto fijo
-        console.log('💰 CUPON: Processing as FIXED AMOUNT to subtract:', discountValue);
+        //console.log('💰 CUPON: Processing as FIXED AMOUNT to subtract:', discountValue);
         finalPrice = originalPrice - discountValue;
       }
 
       // Aplicar redondeo a .95 para cupones
       const finalWithRounding = this.priceCalculationService.applyRoundingTo95(finalPrice);
-      console.log('🔄 CUPON: Applied .95 rounding:', finalPrice, '→', finalWithRounding);
+      //console.log('🔄 CUPON: Applied .95 rounding:', finalPrice, '→', finalWithRounding);
       return finalWithRounding;
       
     } else {
       // CAMPAIGN/FLASH DISCOUNTS: El valor discount ES SIEMPRE EL PRECIO FINAL
       // No importa el type_discount para campaign discounts, solo para cupones
-      console.log('🏷️ CAMPAIGN: Using discount value as final price:', discountValue);
-      console.log('💡 CAMPAIGN: Original logic - discount contains final price, not percentage');
+      //console.log('🏷️ CAMPAIGN: Using discount value as final price:', discountValue);
+      //console.log('💡 CAMPAIGN: Original logic - discount contains final price, not percentage');
       
       // Verificar que el precio final sea lógico (menor que el precio original)
       if (discountValue > 0 && discountValue < originalPrice) {
         const finalWithRounding = this.priceCalculationService.applyRoundingTo95(discountValue);
-        console.log('🔄 CAMPAIGN: Applied .95 rounding:', discountValue, '→', finalWithRounding);
+        //console.log('🔄 CAMPAIGN: Applied .95 rounding:', discountValue, '→', finalWithRounding);
         return finalWithRounding;
       } else {
         // Si el discount no parece ser un precio final válido, usar precio original
-        console.log('⚠️ CAMPAIGN: Invalid discount value, using original price');
+        //console.log('⚠️ CAMPAIGN: Invalid discount value, using original price');
         return originalPrice;
       }
     }
@@ -952,32 +840,10 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
    * Método de debug para inspeccionar completamente la estructura de saleDetails
    */
   debugSaleDetailsStructure(): void {
-    console.log('🚀 COMPLETE SALE DETAILS STRUCTURE:', {
-      saleData: this.saleData,
-      saleDetails: this.saleDetails,
-      totalCarts: this.totalCarts
-    });
-    
+  
     if (this.saleDetails && this.saleDetails.length > 0) {
-      console.log('📦 SALE DETAILS ITEMS:');
+      //console.log('📦 SALE DETAILS ITEMS:');
       this.saleDetails.forEach((detail: any, index: number) => {
-        console.log(`Item ${index + 1}:`, {
-          product_title: detail.product?.title,
-          all_fields: Object.keys(detail),
-          price_related_fields: {
-            price_unitario: detail.price_unitario,
-            retail_price: detail.variedade?.retail_price,
-            discount: detail.discount,
-            code_discount: detail.code_discount,
-            type_discount: detail.type_discount,
-            code_cupon: detail.code_cupon,
-            campaing_discount: detail.campaing_discount,
-            flash_discount: detail.flash_discount,
-            precio_original: detail.precio_original,
-            precio_final: detail.precio_final,
-            precio_descuento: detail.precio_descuento
-          }
-        });
       });
     }
   }
@@ -991,14 +857,6 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     
     const originalPrice = parseFloat(detail.variedade?.retail_price || detail.price_unitario || 0);
     const finalPrice = this.getFinalUnitPrice(detail);
-    
-    // DEBUG
-    console.log('🔍 DEBUG hasCartItemDiscount:', {
-      product: detail.product?.title,
-      originalPrice: originalPrice,
-      finalPrice: finalPrice,
-      hasDiscount: finalPrice < originalPrice
-    });
     
     // Verificar si el precio final es menor al original (hay descuento real)
     return finalPrice < originalPrice && finalPrice > 0;
