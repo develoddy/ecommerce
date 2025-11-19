@@ -73,10 +73,13 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   order_selected: any = null;
   sale_orders: any = [];
   sale_details: any = [];
-  cantidad: any = 1;
+  cantidad: number = 1; // Cantidad del producto (siempre >= 1)
   title: any = null;
   description: any = null;
   sale_detail_selected: any = null;
+  
+  // Variable separada para calificación de reseñas (1-5 estrellas)
+  calificacion: number = 0;
   REVIEWS: any = null;
   SALE_FLASH: any = null;
   AVG_REVIEW: any = null;
@@ -669,11 +672,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       this.sale_detail_selected = sale_detail;
       if (this.sale_detail_selected.review) {
         this.title = this.sale_detail_selected.review.title;
-        this.cantidad = this.sale_detail_selected.review.cantidad;
+        this.calificacion = this.sale_detail_selected.review.cantidad; // Esta es la calificación (estrellas)
         this.description = this.sale_detail_selected.review.description;
       } else {
         this.title = null;
-        this.cantidad = null;
+        this.calificacion = 0; // Reset calificación, pero cantidad del producto mantiene su valor
         this.description = null;
       }
     }
@@ -1028,7 +1031,27 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
   onQuantityChange(event: any) {
     const value = Number(event.target.value);
-    this.cantidad = value > 0 ? value : 1; // nunca menor que 1
+    
+    // Validar que sea un número válido y mayor que 0
+    if (isNaN(value) || value < 1) {
+      this.cantidad = 1;
+    } else {
+      this.cantidad = Math.floor(value); // Asegurar que sea entero
+    }
+    
+    this.cantidadError = false;
+  }
+
+  onQuantityBlur(event: any) {
+    // Asegurar que nunca esté vacío al perder foco
+    const value = Number(event.target.value);
+    
+    if (isNaN(value) || value < 1 || event.target.value.trim() === '') {
+      this.cantidad = 1;
+      // Forzar actualización del input
+      event.target.value = '1';
+    }
+    
     this.cantidadError = false;
   }
 
@@ -1129,8 +1152,13 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     alertDanger(this.errorMessage);
   }
 
+  addCalificacion(estrellas: number) {
+    this.calificacion = estrellas; // Para reseñas (1-5 estrellas)
+  }
+
+  // Mantener método anterior por compatibilidad
   addCantidad(cantidad: number) {
-    this.cantidad = cantidad;
+    this.addCalificacion(cantidad);
   }
 
   storeReview() {

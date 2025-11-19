@@ -231,8 +231,11 @@
                                         id="qty-cart"
                                         [(ngModel)]="cantidad"
                                         (input)="onQuantityChange($event)"
+                                        (blur)="onQuantityBlur($event)"
                                         class="product-form-input qty border-0"
-                                        [ngClass]="{ 'w-100': isMobile }" />
+                                        [ngClass]="{ 'w-100': isMobile }"
+                                        min="1"
+                                        step="1" />
                                     <a class="qtyBtn plus" href="#" (click)="increaseQuantity(); $event.preventDefault()">
                                         <i class="icon anm anm-plus-r"></i>
                                     </a>
@@ -470,8 +473,10 @@
                                                 id="qty-cart"
                                                 [(ngModel)]="cantidad"
                                                 (input)="onQuantityChange($event)"
+                                                (blur)="onQuantityBlur($event)"
                                                 class="product-form-input qty border-0"
-                                                 />
+                                                min="1"
+                                                step="1" />
                                             <a class="qtyBtn plus" href="#" (click)="increaseQuantity(); $event.preventDefault()"><i class="icon anm anm-plus-r"></i></a>
                                         </div>
                                     </div>
@@ -790,11 +795,11 @@
                                                 <label class="spr-form-label">Clasificación</label>
                                                 <div class="product-review pt-1">
                                                     <div class="review-rating">
-                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 1 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(1)"></a>
-                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 2 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(2)"></a>
-                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 3 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(3)"></a>
-                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 4 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(4)"></a>
-                                                        <a href="#" onclick="return false;" [ngClass]="cantidad >= 5 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCantidad(5)"></a>
+                                                        <a href="#" onclick="return false;" [ngClass]="calificacion >= 1 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCalificacion(1)"></a>
+                                                        <a href="#" onclick="return false;" [ngClass]="calificacion >= 2 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCalificacion(2)"></a>
+                                                        <a href="#" onclick="return false;" [ngClass]="calificacion >= 3 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCalificacion(3)"></a>
+                                                        <a href="#" onclick="return false;" [ngClass]="calificacion >= 4 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCalificacion(4)"></a>
+                                                        <a href="#" onclick="return false;" [ngClass]="calificacion >= 5 ? 'icon anm anm-star' : 'icon anm anm-star-o'" (click)="addCalificacion(5)"></a>
                                                     </div>
                                                 </div>
                                             </div>
