@@ -502,53 +502,71 @@ export class PaymentCheckoutComponent implements OnInit {
             return;
           }
 
-          // Procesar productos con precios finales (incluyendo descuentos)
+          // Calcular precios para PayPal (con descuentos aplicados correctamente)
+          const originalSubtotal = this.getOriginalSubtotal();
+          const finalSubtotal = this.getSubtotal();
+          const totalDiscount = this.getTotalDiscount();
+          
+          console.log('[PayPal Debug] Cálculos:', {
+            originalSubtotal: originalSubtotal.toFixed(2),
+            finalSubtotal: finalSubtotal.toFixed(2),
+            totalDiscount: totalDiscount.toFixed(2),
+            totalCarts: this.totalCarts.toFixed(2)
+          });
+
+          // Crear items con precios ORIGINALES (PayPal manejará descuentos por separado)
           const items = this.listCarts.map((item: any) => {
-            const finalPrice = this.getFinalUnitPrice(item);
             const originalPrice = parseFloat(item.variedad?.retail_price || item.price_unitario || 0);
-            const hasDiscount = finalPrice < originalPrice;
             
             return {
-              name: hasDiscount 
-                ? `${item.product.title} (Rebajado de €${originalPrice.toFixed(2)} a €${finalPrice.toFixed(2)})`
-                : item.product.title,
+              name: item.product.title,
               unit_amount: {
                 currency_code: 'EUR',
-                value: finalPrice.toFixed(2)
+                value: originalPrice.toFixed(2)
               },
               quantity: item.cantidad.toString()
             };
           });
 
-          // Calcular subtotal de items
-          const itemsSubtotal = items.reduce((sum: number, item: any) => {
-            return sum + (parseFloat(item.unit_amount.value) * parseInt(item.quantity));
-          }, 0);
+          // Crear breakdown con descuento separado
+          const breakdown: any = {
+            item_total: {
+              currency_code: 'EUR',
+              value: originalSubtotal.toFixed(2)
+            }
+          };
+
+          // Solo agregar descuento si existe
+          if (totalDiscount > 0) {
+            breakdown.discount = {
+              currency_code: 'EUR',
+              value: totalDiscount.toFixed(2)
+            };
+          }
 
           const createOrderPayload = {
             purchase_units: [
               {
                 amount: {
                   currency_code: 'EUR',
-                  value: this.totalCarts.toFixed(2),
-                  breakdown: {
-                    item_total: {
-                      currency_code: 'EUR',
-                      value: itemsSubtotal.toFixed(2)
-                    }
-                  }
+                  value: finalSubtotal.toFixed(2), // Total final = subtotal original - descuento
+                  breakdown: breakdown
                 },
                 items: items
               },
             ],
           };
 
+          console.log('[PayPal Debug] Payload final:', JSON.stringify(createOrderPayload, null, 2));
           return actions.order.create(createOrderPayload);
         },
 
         // finalize the transaction
         onApprove: async (data: any, actions: any) => {
           let Order = await actions.order.capture();
+          // Usar el total final calculado (con descuentos aplicados)
+          const finalTotal = this.getSubtotal();
+          
           let sale = {
             user: this.CURRENT_USER_AUTHENTICATED
               ? this.CURRENT_USER_AUTHENTICATED._id
@@ -561,7 +579,7 @@ export class PaymentCheckoutComponent implements OnInit {
             n_transaction:
               'PAYPAL_' +
               Order.purchase_units[0].payments.captures[0].id,
-            total: this.totalCarts,
+            total: finalTotal, // Usar total calculado con descuentos
           };
 
           let sale_address = {
