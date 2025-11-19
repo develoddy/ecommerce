@@ -21,6 +21,26 @@ export class MiniColorDrawerComponent {
 
   selectColor(color: { color: string, imagen: string }) {
     this.colorSelected.emit(color);
+    
+    // Cerrar automáticamente el sidebar después de seleccionar
+    this.closeSidebar();
+  }
+
+  private closeSidebar() {
+    // Usar Bootstrap 5 Offcanvas API para cerrar programáticamente
+    const offcanvasElement = document.getElementById('miniSwatchesColor-drawer');
+    if (offcanvasElement) {
+      const bsOffcanvas = (window as any).bootstrap?.Offcanvas?.getInstance(offcanvasElement);
+      if (bsOffcanvas) {
+        bsOffcanvas.hide();
+      } else {
+        // Fallback: simular click en el botón close
+        const closeButton = offcanvasElement.querySelector('.close-cart');
+        if (closeButton) {
+          (closeButton as HTMLElement).click();
+        }
+      }
+    }
   }
 
   getSwatchClass(imagen: string, color: string): any {
