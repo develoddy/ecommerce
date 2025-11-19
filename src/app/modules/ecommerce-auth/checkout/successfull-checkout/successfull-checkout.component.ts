@@ -808,7 +808,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   getFinalUnitPrice(detail: any): number {
     const originalPrice = parseFloat(detail.variedade?.retail_price || detail.price_unitario || 0);
 
-    // DEBUG: Log para entender la estructura de datos
+    // DEBUG: Log para entender la estructura de datos COMPLETA
     console.log('🔍 DEBUG SuccessfullCheckout getFinalUnitPrice:', {
       product: detail.product?.title,
       originalPrice: originalPrice,
@@ -816,7 +816,12 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       code_discount: detail.code_discount,
       type_discount: detail.type_discount,
       code_cupon: detail.code_cupon,
-      hasCupon: !!detail.code_cupon
+      hasCupon: !!detail.code_cupon,
+      // Campos adicionales que podrían identificar cupones
+      cupon: detail.cupon,
+      codigo_cupon: detail.codigo_cupon,
+      coupon_code: detail.coupon_code,
+      allFields: Object.keys(detail)
     });
 
     // Si no hay descuento aplicado, retornar precio original
@@ -826,13 +831,30 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     }
 
     // En saleDetails (ventas completadas), distinguir entre cupones y campaign discounts
-    const isCupon = !!detail.code_cupon;
+    // Método 1: Detectar por code_cupon (ideal pero puede ser null)
+    let isCupon = !!detail.code_cupon;
+    
+    // Método 2: Detectar por patrón de valor si code_cupon es null
     let discountValue = parseFloat(detail.code_discount || detail.discount || 0);
+    
+    if (!isCupon && discountValue > 0) {
+      // Heurística: Los cupones suelen tener valores "redondos" como 5, 10, 20, 50, 90
+      // Los campaign discounts suelen tener decimales como 18.95, 20.95
+      const isLikelyPercentage = (discountValue <= 100 && discountValue % 1 === 0); // Número entero ≤ 100
+      const isLikelyPrice = (discountValue > 100 || discountValue % 1 !== 0); // >100 o tiene decimales
+      
+      // Si parece un porcentaje (número entero ≤ 100), probablemente es cupón
+      if (isLikelyPercentage) {
+        isCupon = true;
+        console.log('🧠 SMART DETECTION: Detected as COUPON by pattern (integer ≤ 100, likely percentage)');
+      }
+    }
 
     console.log('🎯 Discount Analysis (saleDetails):', {
       isCupon: isCupon,
       discountValue: discountValue,
       type_discount: detail.type_discount,
+      detectionMethod: detail.code_cupon ? 'code_cupon field' : 'smart pattern detection',
       interpretation: isCupon ? 'CUPON - apply percentage/fixed logic' : 'CAMPAIGN - discount value is final price'
     });
 
@@ -856,27 +878,21 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       return finalWithRounding;
       
     } else {
-      // CAMPAIGN/FLASH DISCOUNTS: Procesar según type_discount
-      let finalPrice;
+      // CAMPAIGN/FLASH DISCOUNTS: El valor discount ES SIEMPRE EL PRECIO FINAL
+      // No importa el type_discount para campaign discounts, solo para cupones
+      console.log('🏷️ CAMPAIGN: Using discount value as final price:', discountValue);
+      console.log('💡 CAMPAIGN: Original logic - discount contains final price, not percentage');
       
-      if (detail.type_discount === 1) {
-        // Campaign discount porcentual
-        console.log('📊 CAMPAIGN: Processing as PERCENTAGE:', discountValue + '%');
-        finalPrice = originalPrice * (1 - discountValue / 100);
-      } else if (detail.type_discount === 2) {
-        // Campaign discount de monto fijo
-        console.log('💰 CAMPAIGN: Processing as FIXED AMOUNT to subtract:', discountValue);
-        finalPrice = originalPrice - discountValue;
+      // Verificar que el precio final sea lógico (menor que el precio original)
+      if (discountValue > 0 && discountValue < originalPrice) {
+        const finalWithRounding = this.priceCalculationService.applyRoundingTo95(discountValue);
+        console.log('🔄 CAMPAIGN: Applied .95 rounding:', discountValue, '→', finalWithRounding);
+        return finalWithRounding;
       } else {
-        // Si no hay type_discount definido, asumir que discount es precio final
-        console.log('🏷️ CAMPAIGN: Using discount value as final price (fallback):', discountValue);
-        finalPrice = discountValue;
+        // Si el discount no parece ser un precio final válido, usar precio original
+        console.log('⚠️ CAMPAIGN: Invalid discount value, using original price');
+        return originalPrice;
       }
-      
-      // Aplicar redondeo a .95 para campaign discounts también
-      const finalWithRounding = this.priceCalculationService.applyRoundingTo95(finalPrice);
-      console.log('🔄 CAMPAIGN: Applied .95 rounding:', finalPrice, '→', finalWithRounding);
-      return finalWithRounding;
     }
   }
 
