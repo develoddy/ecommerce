@@ -626,6 +626,31 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Verifica si hay un cupón ya aplicado en el carrito
+   */
+  hasActiveCoupon(): boolean {
+    return this.listCarts.some(cart => cart.code_cupon && cart.code_cupon.trim() !== '');
+  }
+
+  /**
+   * Obtiene el código del cupón actualmente aplicado
+   */
+  getActiveCouponCode(): string | null {
+    const cartWithCoupon = this.listCarts.find(cart => cart.code_cupon && cart.code_cupon.trim() !== '');
+    return cartWithCoupon ? cartWithCoupon.code_cupon : null;
+  }
+
+  /**
+   * Verifica si el cupón que se intenta aplicar ya está activo
+   */
+  isSameCouponAlreadyApplied(newCouponCode: string): boolean {
+    if (!newCouponCode || newCouponCode.trim() === '') return false;
+    
+    const activeCoupon = this.getActiveCouponCode();
+    return activeCoupon !== null && activeCoupon.toLowerCase() === newCouponCode.toLowerCase();
+  }
+
+  /**
    * Verifica si hay productos en el carrito que ya tienen descuento de campaña
    * (productos con discount pero sin code_cupon)
    */
@@ -680,6 +705,25 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   applyCupon(): void {
+    // Validar que se haya ingresado un código
+    if (!this.codeCupon || this.codeCupon.trim() === '') {
+      alertDanger('Por favor ingresa un código de cupón.');
+      return;
+    }
+
+    // Validar si el mismo cupón ya está aplicado
+    if (this.isSameCouponAlreadyApplied(this.codeCupon)) {
+      alertDanger(`El cupón "${this.codeCupon}" ya está aplicado en tu carrito.`);
+      return;
+    }
+
+    // Validar si hay otro cupón aplicado
+    if (this.hasActiveCoupon()) {
+      const activeCoupon = this.getActiveCouponCode();
+      alertDanger(`Ya tienes el cupón "${activeCoupon}" aplicado. Quítalo primero para aplicar uno nuevo.`);
+      return;
+    }
+
     // Validar que no haya productos con campaign discount antes de aplicar cupón
     if (this.hasProductsWithCampaignDiscount()) {
       alertDanger('El cupón no se puede aplicar en productos ya rebajados.');
@@ -696,9 +740,46 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
         alertDanger(resp.message_text);
       } else {
         alertSuccess(resp.message_text);
-        //this.listAllCarts();
+        // Limpiar el input después de aplicar exitosamente
+        this.codeCupon = '';
         this.sotoreCarts();
       }
+    });
+  }
+
+  /**
+   * Remueve el cupón aplicado del carrito
+   */
+  removeCupon(): void {
+    if (!this.hasActiveCoupon()) {
+      alertDanger('No hay ningún cupón aplicado para remover.');
+      return;
+    }
+
+    const activeCoupon = this.getActiveCouponCode();
+    
+    // Datos para remover cupón (enviar código vacío o null según tu API)
+    const data = {
+      code: null, // o '' según como maneje tu backend la remoción
+      user_id: this.currentUser._id,
+      action: 'remove' // flag opcional para indicar que es remoción
+    };
+
+    this.cartService.removeCupon(data).subscribe((resp: any) => {
+      if (resp.message === 403) {
+        alertDanger(resp.message_text);
+      } else {
+        alertSuccess(`Cupón "${activeCoupon}" removido correctamente.`);
+        this.codeCupon = ''; // Limpiar input
+        this.sotoreCarts();
+      }
+    }, (error) => {
+      // Si no existe el método removeCupon, usar applyCupon con código vacío
+      this.cartService.apllyCupon({ code: '', user_id: this.currentUser._id }).subscribe((resp: any) => {
+        alertSuccess(`Cupón "${activeCoupon}" removido correctamente.`);
+        this.codeCupon = '';
+        this.sotoreCarts();
+      });
     });
   }
 

@@ -117,6 +117,15 @@ export class CartService {
     );
   }
 
+  removeCupon(data:any) {
+    this.loadingSubject.next(true);
+    let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE+"cart/remove_cupon";
+    return this._http.post(URL, data, {headers: headers}).pipe(
+      finalize(() => this.loadingSubject.next(false)) 
+    );
+  }
+
   searchProduct(data:any) {
     this.loadingSubject.next(true);
     //let headers = new HttpHeaders({'token': this._authService.token});

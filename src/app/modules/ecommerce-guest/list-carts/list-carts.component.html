@@ -355,19 +355,75 @@
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-4 mb-12 py-3 px-3">
                                         <div class="cart-discount">
                                             <h3 class="text-uppercase ls-2">Códigos de descuento</h3>
-                                            <form>
-                                                <div class="form-group">
-                                                    <label for="address_zip">Introduce tu código de cupón si tienes
-                                                        uno.</label>
-                                                    <div class="input-group0">
-                                                        <input class="form-control" type="text" name="coupon"
-                                                            placeholder="Código de cupon" [(ngModel)]="codeCupon"
-                                                            required />
-                                                        <input type="submit" class="btn text-nowrap mt-3"
-                                                            (click)="applyCupon()" value="Aplicar cupón" />
+                                            
+                                            <!-- Mostrar cupón activo si existe -->
+                                            <div *ngIf="hasActiveCoupon()" class="alert alert-success d-flex justify-content-between align-items-center p-3 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="icon anm anm-gift-l me-2"></i>
+                                                    <div>
+                                                        <strong class="d-block">Cupón aplicado</strong>
+                                                        <span class="text-uppercase fw-bold">{{getActiveCouponCode()}}</span>
                                                     </div>
                                                 </div>
+                                                <button type="button" (click)="removeCupon()" 
+                                                        class="btn btn-outline-danger btn-sm d-flex align-items-center"
+                                                        title="Quitar cupón">
+                                                    <i class="icon anm anm-times-r me-1"></i>
+                                                    <span class="d-none d-md-inline">Quitar</span>
+                                                </button>
+                                            </div>
+
+                                            <!-- Formulario para aplicar cupón (solo visible si NO hay cupón activo) -->
+                                            <form *ngIf="!hasActiveCoupon()">
+                                                <div class="form-group">
+                                                    <label for="coupon_input">
+                                                        Introduce tu código de cupón si tienes uno.
+                                                    </label>
+                                                    <div class="input-group mt-2">
+                                                        <input 
+                                                            id="coupon_input"
+                                                            class="form-control" 
+                                                            type="text" 
+                                                            name="coupon"
+                                                            placeholder="Código de cupón" 
+                                                            [(ngModel)]="codeCupon"
+                                                            maxlength="20"
+                                                            autocomplete="off"
+                                                            required />
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-primary text-nowrap"
+                                                            (click)="applyCupon()" 
+                                                            [disabled]="!codeCupon || codeCupon.trim() === ''"
+                                                            title="Aplicar cupón">
+                                                            <i class="icon anm anm-plus-r me-1"></i>
+                                                            Aplicar
+                                                        </button>
+                                                    </div>
+                                                    <small class="form-text text-muted mt-1">
+                                                        Los cupones no se pueden aplicar en productos ya rebajados.
+                                                    </small>
+                                                </div>
                                             </form>
+
+                                            <!-- Información adicional cuando hay cupón aplicado -->
+                                            <div *ngIf="hasActiveCoupon()" class="mt-3">
+                                                <p class="text-muted mb-0">
+                                                    <small>
+                                                        <i class="icon anm anm-info-cil me-1"></i>
+                                                        Para aplicar un cupón diferente, primero quita el actual.
+                                                    </small>
+                                                </p>
+                                            </div>
+
+                                            <!-- Mensaje informativo si hay productos con descuento -->
+                                            <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount()" 
+                                                 class="alert alert-warning mt-3 py-2">
+                                                <small>
+                                                    <i class="icon anm anm-exclamation-triangle me-1"></i>
+                                                    Algunos productos ya tienen descuentos aplicados y no admiten cupones adicionales.
+                                                </small>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-4 mb-12">
