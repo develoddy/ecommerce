@@ -108,7 +108,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
 
     if (sessionId) {
-      this.fetchSaleWithRetry(sessionId);
+      this.fetchSaleWithRetry(sessionId, 20, 2000);
     } else {
       // 1) Try CheckoutService (synchronous)
       try {
@@ -207,28 +207,58 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
     this._authEcommerce.getSaleBySession(sessionId).subscribe(
       (resp) => {
+        console.log('[Frontend] 📦 getSaleBySession response full:', resp);
+        console.log('[Frontend] 🔍 Response structure:', {
+          hasSale: !!resp?.sale,
+          hasSaleDetails: !!resp?.saleDetails,
+          saleDetailsLength: resp?.saleDetails?.length || 0,
+          saleId: resp?.sale?.id,
+          saleTotal: resp?.sale?.total
+        });
+
         if (resp?.sale) {
-          //console.log('[Checkout Success] Sale found for session:', sessionId, resp.sale.id);
+          console.log('[Frontend] ✅ Sale found for session:', sessionId, 'saleId:', resp.sale.id);
           this.saleData = resp.sale;
-          this.saleDetails = resp.saleDetails;
+          this.saleDetails = resp.saleDetails || [];
+
+          console.log('[Frontend] 📊 Assigning saleDetails:', {
+            saleDetailsLength: this.saleDetails.length,
+            saleDetailsFirst: this.saleDetails[0],
+            saleDetailsAll: this.saleDetails
+          });
 
           // Calcular total de la venta
-          this.totalCarts = this.saleDetails.reduce(
-            (sum: number, it: any) =>
-              sum + Number(it.discount ?? it.code_discount ?? it.unitPrice ?? it.price_unitario) * it.cantidad,
-            0
-          );
-          this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+          if (this.saleDetails.length > 0) {
+            this.totalCarts = this.saleDetails.reduce(
+              (sum: number, it: any) => {
+                const itemPrice = Number(it.total || it.price_unitario || 0);
+                const itemQuantity = Number(it.cantidad || 1);
+                const itemSubtotal = itemPrice * itemQuantity;
+                console.log('[Frontend] 🧮 Item calculation:', { 
+                  itemPrice, 
+                  itemQuantity, 
+                  itemSubtotal,
+                  productTitle: it.product?.title 
+                });
+                return sum + itemSubtotal;
+              },
+              0
+            );
+            this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+            console.log('[Frontend] 💰 Final calculated total:', this.totalCarts);
+          } else {
+            console.warn('[Frontend] ⚠️ No saleDetails available for total calculation');
+            this.totalCarts = resp.sale.total || 0; // Usar el total de la venta como fallback
+          }
 
           // Actualizar checkoutService para que successPayStripe() funcione
           this.checkoutService.setSaleData({ sale: this.saleData, saleDetails: this.saleDetails });
           this.checkoutService.setSaleSuccess(true);
           
-          // DEBUG: Inspeccionar estructura después de cargar datos
-          setTimeout(() => this.debugSaleDetailsStructure(), 100);
-          
+          console.log('[Frontend] 🎯 About to call successPayStripe()');
           this.successPayStripe();
         } else {
+          console.log('[Frontend] ⏳ No sale found yet, retrying in', delay, 'ms. Tries left:', tries - 1);
           // No hay venta aún, reintentar
           setTimeout(() => this.fetchSaleWithRetry(sessionId, tries - 1, delay), delay);
         }
@@ -245,38 +275,88 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   }
 
   successPayStripe() {
+    console.log('[Frontend] 🚀 successPayStripe() called');
+    
     // Initial synchronous load from CheckoutService
     const initialData = this.checkoutService.getSaleData();
+    console.log('[Frontend] 📦 CheckoutService initialData:', initialData);
+    
     if (initialData?.sale) {
       const saleInfo = initialData.sale;
       const saleDetails = initialData.saleDetails || [];
-      this.sale = saleInfo;
-      // Calculate total immediately using final prices (with discounts)
-      this.totalCarts = saleDetails.reduce((sum: number, item: any) => {
-        const finalPrice = Number(
-          item.discount ?? item.code_discount ?? item.variedade?.retail_price ?? item.price_unitario ?? 0
-        );
-        return sum + finalPrice * item.cantidad;
-      }, 0);
-      this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
-      this.saleDetails = saleDetails;
-      //console.log("SuccessPayStripe :", this.saleDetails);
       
+      console.log('[Frontend] ✅ Processing initial data from CheckoutService:', {
+        saleId: saleInfo.id,
+        saleTotal: saleInfo.total,
+        saleDetailsLength: saleDetails.length,
+        firstDetail: saleDetails[0]
+      });
+      
+      this.sale = saleInfo;
+      
+      // Calculate total immediately using final prices (with discounts)
+      if (saleDetails.length > 0) {
+        this.totalCarts = saleDetails.reduce((sum: number, item: any) => {
+          const finalPrice = Number(
+            item.total ?? item.price_unitario ?? item.discount ?? item.code_discount ?? item.variedade?.retail_price ?? 0
+          );
+          const quantity = Number(item.cantidad ?? 1);
+          const itemSubtotal = finalPrice * quantity;
+          
+          console.log('[Frontend] 🧮 successPayStripe item calc:', { 
+            finalPrice, 
+            quantity, 
+            itemSubtotal,
+            productTitle: item.product?.title,
+            originalData: item
+          });
+          
+          return sum + itemSubtotal;
+        }, 0);
+        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+      } else {
+        this.totalCarts = saleInfo.total || 0;
+        console.warn('[Frontend] ⚠️ No saleDetails, using sale.total as fallback:', this.totalCarts);
+      }
+      
+      this.saleDetails = saleDetails;
+      
+      console.log('[Frontend] 💰 Final totals in successPayStripe:', {
+        totalCarts: this.totalCarts,
+        saleDetailsLength: this.saleDetails.length,
+        saleTotal: this.sale.total
+      });
+    } else {
+      console.warn('[Frontend] ⚠️ No initial data available from CheckoutService');
     }
+    
     // Subscribe to updates (e.g., after Stripe)
     this.checkoutService.saleData$.subscribe((saleDataPayload) => {
+      console.log('[Frontend] 🔄 CheckoutService saleData$ update:', saleDataPayload);
+      
       const saleInfo = saleDataPayload?.sale;
       const saleDetails = saleDataPayload?.saleDetails || [];
       if (saleInfo) {
         this.sale = saleInfo;
-        this.totalCarts = saleDetails.reduce((sum: number, item: any) => {
-          const finalPrice = Number(
-            item.discount ?? item.code_discount ?? item.variedade?.retail_price ?? item.price_unitario ?? 0
-          );
-          return sum + finalPrice * item.cantidad;
-        }, 0);
-        this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+        
+        if (saleDetails.length > 0) {
+          this.totalCarts = saleDetails.reduce((sum: number, item: any) => {
+            const finalPrice = Number(
+              item.total ?? item.price_unitario ?? item.discount ?? item.code_discount ?? item.variedade?.retail_price ?? 0
+            );
+            return sum + finalPrice * item.cantidad;
+          }, 0);
+          this.totalCarts = parseFloat(this.totalCarts.toFixed(2));
+        } else {
+          this.totalCarts = saleInfo.total || 0;
+        }
+        
         this.saleDetails = saleDetails;
+        
+        console.log('[Frontend] 🔄 Updated from subscription:', {
+          totalCarts: this.totalCarts,
+          saleDetailsLength: this.saleDetails.length
+        });
       }
     });
   }
@@ -801,13 +881,34 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
    * Calcula el subtotal con precios finales (después de descuentos)
    */
   getSubtotal(): number {
+    console.log('[Frontend] 🧮 getSubtotal() called:', {
+      saleDetailsExists: !!this.saleDetails,
+      saleDetailsLength: this.saleDetails?.length || 0,
+      totalCarts: this.totalCarts,
+      saleTotal: this.sale?.total
+    });
+
     if (!this.saleDetails || this.saleDetails.length === 0) {
-      return 0;
+      // Fallback: usar totalCarts calculado previamente o sale.total
+      const fallbackTotal = this.totalCarts || this.sale?.total || 0;
+      console.log('[Frontend] ⚠️ No saleDetails, using fallback total:', fallbackTotal);
+      return fallbackTotal;
     }
-    return this.saleDetails.reduce((total: number, sale: any) => {
+
+    const calculatedSubtotal = this.saleDetails.reduce((total: number, sale: any) => {
       const finalPrice = this.getFinalUnitPrice(sale);
-      return total + (finalPrice * (sale.cantidad || 1));
+      const itemSubtotal = finalPrice * (sale.cantidad || 1);
+      console.log('[Frontend] 🧮 Item subtotal calculation:', { 
+        finalPrice, 
+        cantidad: sale.cantidad,
+        itemSubtotal,
+        productTitle: sale.product?.title 
+      });
+      return total + itemSubtotal;
     }, 0);
+
+    console.log('[Frontend] ✅ Calculated subtotal from saleDetails:', calculatedSubtotal);
+    return calculatedSubtotal;
   }
 
   /**
@@ -823,7 +924,15 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
    * Calcula el total final (subtotal + envío - descuentos)
    */
   getTotal(): number {
-    return this.getSubtotal(); // Envío es gratis, así que total = subtotal final
+    const subtotal = this.getSubtotal();
+    console.log('[Frontend] 🧮 getTotal() calculation:', {
+      subtotal,
+      saleDetailsExists: !!this.saleDetails,
+      saleDetailsLength: this.saleDetails?.length || 0,
+      totalCartsBackup: this.totalCarts,
+      saleTotal: this.sale?.total
+    });
+    return subtotal; // Envío es gratis, así que total = subtotal final
   }
 
   /**
