@@ -75,6 +75,31 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
       console.log("Mis compras: ", resp);
+      console.log("Estructura de sale_orders[0]:", resp.sale_orders?.[0]);
+      console.log("Estructura de sale_details[0]:", resp.sale_orders?.[0]?.sale_details?.[0]);
+      // Debug: Examinar campos de descuento disponibles
+      if (resp.sale_orders?.[0]?.sale_details?.[0]) {
+        const detail = resp.sale_orders[0].sale_details[0];
+        console.log("🔍 Campos de descuento disponibles:", {
+          code_discount: detail.code_discount,
+          discount: detail.discount,
+          code_cupon: detail.code_cupon,
+          price_unitario: detail.price_unitario,
+          type_discount: detail.type_discount,
+          product_price_usd: detail.product?.price_usd,
+          variedad_retail_price: detail.variedad?.retail_price || detail.variedade?.retail_price
+        });
+        
+        // Debug de cálculos de descuento
+        console.log("🧮 Test de cálculos para el primer producto:", {
+          hasDiscount: this.hasDiscount(detail),
+          originalPrice: this.getOriginalPrice(detail),
+          finalPrice: this.getFinalUnitPrice(detail),
+          discountPercentage: this.getDiscountPercentage(detail),
+          discountAmount: this.getDiscountAmount(detail),
+          discountType: this.getDiscountType(detail)
+        });
+      }
       
       this.sale_orders = resp.sale_orders;
       this.sale_details = [];
@@ -258,21 +283,173 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Obtiene el total de la venta con redondeo .95
+   * Obtiene el total de la venta SIN redondeo (suma exacta)
    * @param sale Datos de la venta
-   * @returns Total con redondeo .95 aplicado
+   * @returns Total exacto como suma de productos individuales
    */
   getSaleTotalPrice(sale: any): number {
     if (!sale) return 0;
 
-    // Obtener el total de la venta
+    // Obtener el total de la venta tal como está almacenado (suma exacta)
     const totalPrice = sale.total || sale.total_amount || 0;
     
-    // Si el precio es 0 o negativo, devolverlo tal como está
-    if (totalPrice <= 0) return totalPrice;
+    // ✅ NO aplicar redondeo .95 al total - debe ser suma exacta de productos
+    // El redondeo .95 solo se aplica a precios unitarios individuales
+    return parseFloat(totalPrice.toString());
+  }
 
-    // Aplicar redondeo .95 para consistencia con el resto de la plataforma
-    return this.priceCalculationService.applyRoundingTo95(totalPrice);
+  // 🏷️ ================ MÉTODOS PARA DESCUENTOS ================ 🏷️
+
+  /**
+   * Detecta si un producto tiene descuento aplicado
+   * @param prodDetail Detalle del producto
+   * @returns true si tiene descuento
+   */
+  hasDiscount(prodDetail: any): boolean {
+    if (!prodDetail) return false;
+    
+    // Verificar si hay cupón aplicado
+    if (prodDetail.code_cupon) return true;
+    
+    // Verificar si hay flash sale o campaign discount
+    if (prodDetail.code_discount || prodDetail.discount) {
+      // Verificar que el descuento sea mayor a 0
+      const discountValue = parseFloat(prodDetail.code_discount || prodDetail.discount);
+      return discountValue > 0;
+    }
+    
+    return false;
+  }
+
+  /**
+   * Obtiene el precio original del producto (sin descuentos)
+   * @param prodDetail Detalle del producto
+   * @returns Precio original
+   */
+  getOriginalPrice(prodDetail: any): number {
+    if (!prodDetail) return 0;
+    
+    // Usar el mismo orden de prioridad que el sistema de checkout
+    const variedad = prodDetail.variedad || prodDetail.variedade;
+    const retailPrice = parseFloat(variedad?.retail_price || 0);
+    const productPrice = parseFloat(prodDetail.product?.price_usd || 0);
+    
+    // Priorizar retail_price de variedad, luego price_usd del producto
+    return retailPrice > 0 ? retailPrice : productPrice;
+  }
+
+  /**
+   * Obtiene el precio final unitario (con descuentos aplicados)
+   * @param prodDetail Detalle del producto
+   * @returns Precio final unitario
+   */
+  getFinalUnitPrice(prodDetail: any): number {
+    if (!prodDetail) return 0;
+    
+    // El precio final ya calculado está en price_unitario
+    const finalPrice = parseFloat(prodDetail.price_unitario || 0);
+    
+    // Si no hay price_unitario, usar precio original
+    return finalPrice > 0 ? finalPrice : this.getOriginalPrice(prodDetail);
+  }
+
+  /**
+   * Calcula el monto de descuento aplicado
+   * @param prodDetail Detalle del producto
+   * @returns Monto del descuento
+   */
+  getDiscountAmount(prodDetail: any): number {
+    if (!prodDetail || !this.hasDiscount(prodDetail)) return 0;
+    
+    const originalPrice = this.getOriginalPrice(prodDetail);
+    if (originalPrice <= 0) return 0;
+    
+    // Para cupones, calcular basado en el porcentaje
+    if (prodDetail.code_cupon) {
+      const percentage = this.getDiscountPercentage(prodDetail);
+      if (percentage > 0) {
+        const discountAmount = (originalPrice * percentage) / 100;
+        return this.priceCalculationService.applyRoundingTo95(discountAmount);
+      }
+    }
+    
+    // Para flash sales y campaign discounts, usar diferencia de precios
+    const finalPrice = this.getFinalUnitPrice(prodDetail);
+    if (finalPrice >= originalPrice) return 0;
+    
+    return this.priceCalculationService.applyRoundingTo95(originalPrice - finalPrice);
+  }
+
+  /**
+   * Calcula el porcentaje de descuento
+   * @param prodDetail Detalle del producto
+   * @returns Porcentaje de descuento
+   */
+  getDiscountPercentage(prodDetail: any): number {
+    if (!prodDetail || !this.hasDiscount(prodDetail)) return 0;
+    
+    // Usar el descuento almacenado en la base de datos cuando esté disponible
+    // Esto evita problemas de redondeo que causan diferencias entre 10% real y 9% calculado
+    if (prodDetail.discount && prodDetail.discount > 0) {
+      return Math.round(parseFloat(prodDetail.discount));
+    }
+    
+    // Para cupones, obtener el porcentaje del nombre del cupón
+    if (prodDetail.code_cupon) {
+      const cuponCode = prodDetail.code_cupon.toUpperCase();
+      // Extraer número del código del cupón (ej: BETA50 -> 50)
+      const match = cuponCode.match(/(\d+)/);
+      if (match) {
+        return parseInt(match[1]);
+      }
+      // Si no se puede extraer del nombre, usar descuento almacenado como fallback
+      if (prodDetail.discount && prodDetail.discount > 0) {
+        return Math.round(parseFloat(prodDetail.discount));
+      }
+    }
+    
+    // Fallback: calcular basado en precios reales solo si no hay descuento almacenado
+    const originalPrice = this.getOriginalPrice(prodDetail);
+    const finalPrice = this.getFinalUnitPrice(prodDetail);
+    
+    if (originalPrice <= 0 || finalPrice >= originalPrice) return 0;
+    
+    const discountAmount = originalPrice - finalPrice;
+    return Math.round((discountAmount / originalPrice) * 100);
+  }
+
+  /**
+   * Obtiene el tipo de descuento aplicado
+   * @param prodDetail Detalle del producto
+   * @returns Tipo de descuento como string
+   */
+  getDiscountType(prodDetail: any): string {
+    if (!prodDetail || !this.hasDiscount(prodDetail)) return '';
+    
+    // Prioridad: Cupón > Flash Sale > Campaign Discount
+    if (prodDetail.code_cupon) {
+      return `Cupón ${prodDetail.code_cupon}`;
+    }
+    
+    if (prodDetail.code_discount) {
+      return 'Flash Sale';
+    }
+    
+    if (prodDetail.discount) {
+      return 'Campaign Discount';
+    }
+    
+    return 'Descuento';
+  }
+
+  /**
+   * Obtiene el precio original con redondeo .95 para mostrar en template
+   * @param prodDetail Detalle del producto
+   * @returns Precio original con redondeo aplicado
+   */
+  getOriginalPriceForDisplay(prodDetail: any): number {
+    const originalPrice = this.getOriginalPrice(prodDetail);
+    return this.priceCalculationService.applyRoundingTo95(originalPrice);
   }
 
   ngOnDestroy(): void {

@@ -98,10 +98,31 @@
                                                                                         <div class="me-3 small text-muted">Cant: {{ prodDetail.cantidad || prodDetail.quantity || prodDetail.qty || 1 }}</div>
                                                                                         <div class="me-3 small text-muted">Estado: <span class="badge rounded-pill bg-secondary">{{ prodDetail.status || prodDetail.state || '—' }}</span></div>
                                                                                     </div>
+                                                                                    
+                                                                                    <!-- 🏷️ Información de descuentos -->
+                                                                                    <div *ngIf="hasDiscount(prodDetail)" class="mt-2 p-2 bg-light rounded">
+                                                                                        <div class="row g-2 small">
+                                                                                            <div class="col-12">
+                                                                                                <span class="badge bg-success me-2">{{ getDiscountType(prodDetail) }}</span>
+                                                                                                <span class="text-success fw-bold">{{ getDiscountPercentage(prodDetail) }}% de descuento</span>
+                                                                                            </div>
+                                                                                            <div class="col-6">
+                                                                                                <div class="text-muted">Precio original:</div>
+                                                                                                <div class="text-decoration-line-through">{{ euro }}{{ getOriginalPriceForDisplay(prodDetail) }}</div>
+                                                                                            </div>
+                                                                                            <div class="col-6">
+                                                                                                <div class="text-muted">Ahorro:</div>
+                                                                                                <div class="text-success fw-bold">-{{ euro }}{{ getDiscountAmount(prodDetail) }}</div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                                 <div class="text-end ms-3">
-                                                                                    <div class="small text-muted">Precio</div>
-                                                                                    <div class="fw-bold">{{ euro }}{{ getDisplayPrice(prodDetail) }}</div>
+                                                                                    <div class="small text-muted">{{ hasDiscount(prodDetail) ? 'Precio final' : 'Precio' }}</div>
+                                                                                    <div class="fw-bold {{ hasDiscount(prodDetail) ? 'text-success' : '' }}">{{ euro }}{{ getDisplayPrice(prodDetail) }}</div>
+                                                                                    <div *ngIf="hasDiscount(prodDetail)" class="small text-muted">
+                                                                                        por {{ prodDetail.cantidad || prodDetail.quantity || prodDetail.qty || 1 }} ud.
+                                                                                    </div>
                                                                                     <div class="mt-1">
                                                                                         <a [routerLink]="['/', locale, country, 'shop', 'product', prodDetail.product?.slug || prodDetail.product.slug]" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a>
                                                                                     </div>
