@@ -50,12 +50,12 @@ export class CartManagerService {
     if (productData.saleFlash) {
       // Flash Sale tiene prioridad - usar el type_discount del Flash Sale
       typeDiscount = productData.saleFlash.type_discount; // Usar el tipo correcto del Flash Sale
-      discountCode = productData.saleFlash._id;
+      discountCode = productData.saleFlash._id || productData.saleFlash.id; // Usar _id o id según la estructura
       discountValue = productData.saleFlash.discount;
     } else if (productData.campaignDiscount) {
       // Campaign Discount
       typeDiscount = productData.campaignDiscount.type_discount || 1; // Campaign Discount  
-      discountCode = productData.campaignDiscount._id;
+      discountCode = productData.campaignDiscount._id || productData.campaignDiscount.id; // Usar _id o id según la estructura
       discountValue = productData.campaignDiscount.discount;
     }
 

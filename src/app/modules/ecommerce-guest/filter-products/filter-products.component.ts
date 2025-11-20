@@ -498,7 +498,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     if (product.campaing_discount) {
       type_discount  = product.campaing_discount.type_discount;
       discount = product.campaing_discount.discount;
-      code_discount = product.campaing_discount._id;
+      code_discount = product.campaing_discount._id || product.campaing_discount.id;
     }
    
     let data = {

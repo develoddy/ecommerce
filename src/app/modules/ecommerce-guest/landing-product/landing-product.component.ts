@@ -992,7 +992,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       cantidad: $('#qty-cart').val(),
       variedad: this.variedad_selected ? this.variedad_selected.id : null,
       code_cupon: null,
-      code_discount: this.SALE_FLASH ? this.SALE_FLASH._id : null,
+      code_discount: this.SALE_FLASH ? (this.SALE_FLASH._id || this.SALE_FLASH.id) : null,
       price_unitario: this.cartManagerService.calculateUnitPrice(this.product_selected, this.SALE_FLASH),
       subtotal: this.cartManagerService.calculateSubtotal(this.product_selected, $('#qty-cart').val(), this.SALE_FLASH),
       total: this.cartManagerService.calculateTotal(this.product_selected, $('#qty-cart').val(), this.SALE_FLASH),

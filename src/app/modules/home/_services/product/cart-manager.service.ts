@@ -173,7 +173,7 @@ export class CartManagerService {
       cantidad: quantity,
       variedad: variedad_selected ? variedad_selected.id : null,
       code_cupon: null,
-      code_discount: SALE_FLASH ? SALE_FLASH._id : null,
+      code_discount: SALE_FLASH ? (SALE_FLASH._id || SALE_FLASH.id) : null,
       price_unitario: product_selected.price_usd,
       subtotal: subtotal,
       total: subtotal * quantity,
