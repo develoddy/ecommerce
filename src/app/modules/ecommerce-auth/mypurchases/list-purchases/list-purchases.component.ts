@@ -17,9 +17,10 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   sale_orders:any = [];
   sale_details:any = [];
 
-  pageSize: number = 5; // Número de elementos por página
+  pageSize: number = 8; // Número de compras por página (no productos)
   currentPage: number = 1; // Página actual
-  paginatedSaleDetails: any[] = []; // Detalles paginados
+  paginatedSaleOrders: any[] = []; // Compras paginadas
+  paginatedSaleDetails: any[] = []; // Detalles de las compras paginadas (para compatibilidad con template)
   totalPages: number = 0; // Total de páginas
 
   CURRENT_USER_AUTHENTICATED:any=null;
@@ -84,25 +85,67 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.totalPages = Math.ceil(this.sale_details.length / this.pageSize); // Calcular el número total de páginas
+      // Ordenar sale_details por fecha de creación de la venta (más recientes primero)
+      this.sale_details.sort((a: any, b: any) => {
+        const dateA = new Date(a.sale?.createdAt || a.sale?.updatedAt || a.createdAt || 0);
+        const dateB = new Date(b.sale?.createdAt || b.sale?.updatedAt || b.createdAt || 0);
+        return dateB.getTime() - dateA.getTime(); // Descendente: más reciente primero
+      });
+
+      // Calcular paginación basada en el número de compras (sale_orders), no productos
+      this.totalPages = Math.ceil(this.sale_orders.length / this.pageSize);
       this.updatePaginatedDetails();
     });
   }
 
-  // Función para actualizar los detalles paginados
+  // Función para actualizar los detalles paginados - ahora pagina por compras, no por productos
   updatePaginatedDetails(): void {
+    // Paginar las compras (sale_orders)
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.paginatedSaleDetails = this.sale_details.slice(start, end);
+    this.paginatedSaleOrders = this.sale_orders.slice(start, end);
 
-    console.log(this.paginatedSaleDetails);
-    
+    // Extraer todos los productos de las compras paginadas (sin limitación de productos por compra)
+    this.paginatedSaleDetails = [];
+    this.paginatedSaleOrders.forEach((order: any) => {
+      if (order && order.sale_details && Array.isArray(order.sale_details)) {
+        // Agregar TODOS los productos de esta compra (sin paginación interna)
+        order.sale_details.forEach((detail: any) => {
+          this.paginatedSaleDetails.push(detail);
+        });
+      }
+    });
+
+    console.log('Compras paginadas:', this.paginatedSaleOrders.length, 'Total productos mostrados:', this.paginatedSaleDetails.length);
   }
 
   // Función para cambiar de página
   onPageChange(page: number): void {
     this.currentPage = page;
     this.updatePaginatedDetails();
+  }
+
+  // Getter para obtener la fecha de la última compra de forma más precisa
+  get lastPurchaseDate(): Date | null {
+    if (!this.sale_details || this.sale_details.length === 0) {
+      return null;
+    }
+    
+    // Como ya están ordenados, el primer elemento es la compra más reciente
+    const lastDetail = this.sale_details[0];
+    const dateStr = lastDetail?.sale?.createdAt || lastDetail?.sale?.updatedAt || lastDetail?.createdAt;
+    
+    return dateStr ? new Date(dateStr) : null;
+  }
+
+  // Getter para obtener el total de productos en todas las compras
+  get totalProducts(): number {
+    return this.sale_details?.length || 0;
+  }
+
+  // Getter para obtener el total de compras
+  get totalPurchases(): number {
+    return this.sale_orders?.length || 0;
   }
 
   ngOnDestroy(): void {
