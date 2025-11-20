@@ -806,18 +806,20 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       return originalPrice;
     }
 
-    // En saleDetails (ventas completadas), distinguir entre cupones y campaign discounts
-    // Método 1: Detectar por code_cupon (ideal pero puede ser null)
+    // En saleDetails (ventas completadas), distinguir entre cupones, flash sales y campaign discounts
+    // Método 1: Detectar por code_cupon (cupones reales)
     let isCupon = !!detail.code_cupon;
     
-    // Método 2: Detectar por patrón de valor si code_cupon es null
+    // Método 2: Detectar Flash Sale por code_discount (sin code_cupon)
+    let isFlashSale = !detail.code_cupon && !!detail.code_discount;
+    
     let discountValue = parseFloat(detail.code_discount || detail.discount || 0);
     
-    if (!isCupon && discountValue > 0) {
+    // Si no es cupón ni flash sale, aplicar heurística para distinguir campaign discount
+    if (!isCupon && !isFlashSale && discountValue > 0) {
       // Heurística: Los cupones suelen tener valores "redondos" como 5, 10, 20, 50, 90
       // Los campaign discounts suelen tener decimales como 18.95, 20.95
       const isLikelyPercentage = (discountValue <= 100 && discountValue % 1 === 0); // Número entero ≤ 100
-      const isLikelyPrice = (discountValue > 100 || discountValue % 1 !== 0); // >100 o tiene decimales
       
       // Si parece un porcentaje (número entero ≤ 100), probablemente es cupón
       if (isLikelyPercentage) {
@@ -845,8 +847,30 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       //console.log('🔄 CUPON: Applied .95 rounding:', finalPrice, '→', finalWithRounding);
       return finalWithRounding;
       
+    } else if (isFlashSale) {
+      // FLASH SALE: Usar type_discount para determinar si es porcentaje o fijo
+      let finalPrice;
+      
+      if (detail.type_discount === 1) {
+        // Flash Sale porcentual
+        //console.log('🔥 FLASH SALE: Processing as PERCENTAGE:', discountValue + '%');
+        finalPrice = originalPrice * (1 - discountValue / 100);
+      } else if (detail.type_discount === 2) {
+        // Flash Sale monto fijo
+        //console.log('🔥 FLASH SALE: Processing as FIXED AMOUNT to subtract:', discountValue);
+        finalPrice = originalPrice - discountValue;
+      } else {
+        // Default: tratar como porcentaje
+        finalPrice = originalPrice * (1 - discountValue / 100);
+      }
+
+      // Aplicar redondeo a .95 para flash sales
+      const finalWithRounding = this.priceCalculationService.applyRoundingTo95(Math.max(0, finalPrice));
+      //console.log('🔄 FLASH SALE: Applied .95 rounding:', finalPrice, '→', finalWithRounding);
+      return finalWithRounding;
+      
     } else {
-      // CAMPAIGN/FLASH DISCOUNTS: El valor discount ES SIEMPRE EL PRECIO FINAL
+      // CAMPAIGN DISCOUNTS: El valor discount ES SIEMPRE EL PRECIO FINAL
       // No importa el type_discount para campaign discounts, solo para cupones
       //console.log('🏷️ CAMPAIGN: Using discount value as final price:', discountValue);
       //console.log('💡 CAMPAIGN: Original logic - discount contains final price, not percentage');

@@ -517,6 +517,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         priceAfterDiscount = originalPrice * (1 - discountValue / 100);
         priceAfterDiscount = Math.max(0, priceAfterDiscount);
         return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+      } else if (cart.code_discount && !cart.code_cupon) {
+        // FLASH SALE con descuento porcentual - usar el descuento como porcentaje
+        if (discountValue > 100) return originalPrice;
+        priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+        priceAfterDiscount = Math.max(0, priceAfterDiscount);
+        return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
       } else {
         // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
         if (discountValue > 0 && discountValue < originalPrice) {
@@ -548,6 +554,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     
     // Cupones reales tienen código
     if (cart.code_cupon) return true;
+    
+    // Flash Sales tienen code_discount sin code_cupon
+    if (cart.code_discount && !cart.code_cupon) return true;
     
     // Para campaign discounts, verificar si hay descuento real
     if (cart.type_discount === 1) {

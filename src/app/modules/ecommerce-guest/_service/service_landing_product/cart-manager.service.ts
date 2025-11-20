@@ -45,15 +45,18 @@ export class CartManagerService {
     // Determinar el tipo de descuento correctamente
     let typeDiscount = null;
     let discountCode = null;
+    let discountValue = 0;
     
     if (productData.saleFlash) {
-      // Flash Sale tiene prioridad
-      typeDiscount = 2; // Flash Sale
+      // Flash Sale tiene prioridad - usar el type_discount del Flash Sale
+      typeDiscount = productData.saleFlash.type_discount; // Usar el tipo correcto del Flash Sale
       discountCode = productData.saleFlash._id;
+      discountValue = productData.saleFlash.discount;
     } else if (productData.campaignDiscount) {
       // Campaign Discount
-      typeDiscount = 1; // Campaign Discount  
+      typeDiscount = productData.campaignDiscount.type_discount || 1; // Campaign Discount  
       discountCode = productData.campaignDiscount._id;
+      discountValue = productData.campaignDiscount.discount;
     }
 
     const cartItem = {
@@ -65,10 +68,10 @@ export class CartManagerService {
         variedad: productData.selectedSize?.id,
         code_cupon: null,
         code_discount: discountCode || productData.code_discount || null,
-        discount: parseFloat(productData.discount.total),
-        price_unitario: this.calculateUnitPrice(productData.product),
-        subtotal: this.calculateSubtotal(productData.product, productData.quantity),
-        total: this.calculateTotal(productData.product, productData.quantity)
+        discount: productData.saleFlash ? discountValue : (productData.campaignDiscount ? discountValue : parseFloat(productData.discount.total)),
+        price_unitario: this.calculateUnitPrice(productData.product, productData.saleFlash || productData.campaignDiscount),
+        subtotal: this.calculateSubtotal(productData.product, productData.quantity, productData.saleFlash || productData.campaignDiscount),
+        total: this.calculateTotal(productData.product, productData.quantity, productData.saleFlash || productData.campaignDiscount)
     };
 
     console.log("Añadiendo cartItem:", cartItem);

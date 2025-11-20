@@ -1196,6 +1196,12 @@ export class PaymentCheckoutComponent implements OnInit {
         priceAfterDiscount = originalPrice * (1 - discountValue / 100);
         priceAfterDiscount = Math.max(0, priceAfterDiscount);
         return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+      } else if (cart.code_discount && !cart.code_cupon) {
+        // FLASH SALE con descuento porcentual - usar el descuento como porcentaje
+        if (discountValue > 100) return originalPrice;
+        priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+        priceAfterDiscount = Math.max(0, priceAfterDiscount);
+        return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
       } else {
         // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
         if (discountValue > 0 && discountValue < originalPrice) {

@@ -223,6 +223,12 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
         priceAfterDiscount = originalPrice * (1 - discountValue / 100);
         priceAfterDiscount = Math.max(0, priceAfterDiscount);
         return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+      } else if (cart.code_discount && !cart.code_cupon) {
+        // FLASH SALE con descuento porcentual - usar el descuento como porcentaje
+        if (discountValue > 100) return originalPrice;
+        priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+        priceAfterDiscount = Math.max(0, priceAfterDiscount);
+        return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
       } else {
         // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
         // Para campaign discounts, el backend ya envía el precio final calculado
