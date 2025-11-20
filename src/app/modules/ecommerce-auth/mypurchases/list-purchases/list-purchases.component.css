@@ -1,0 +1,24 @@
+/* Estilos para el botón de descarga de recibo */
+.btn-outline-dark:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Spinner personalizado para el botón */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.1em;
+}
+
+/* Animación suave para el cambio de estado del botón */
+.btn {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Mejorar la apariencia cuando está deshabilitado */
+.btn:disabled {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  color: #6c757d;
+}

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 
 @Component({
   selector: 'app-list-purchases',
@@ -30,6 +31,9 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   locale: string = "";
   country: string = "";
+  
+  // Loading state para descarga de recibos
+  downloadingReceipts: Set<number> = new Set(); // Track múltiples descargas por saleId
 
   constructor(
     //private authService: AuthService,
@@ -37,7 +41,8 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     private router: Router,
     //private cartService: CartService,
     //private activatedRoute: ActivatedRoute,
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+    private priceCalculationService: PriceCalculationService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -148,6 +153,11 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     return this.sale_orders?.length || 0;
   }
 
+  // Método helper para verificar si un recibo específico se está descargando
+  isDownloadingReceipt(saleId: number): boolean {
+    return this.downloadingReceipts.has(saleId);
+  }
+
   // 📄 ================ MÉTODOS PARA RECIBOS ================ 📄
   
   /**
@@ -159,7 +169,15 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Evitar múltiples descargas simultáneas del mismo recibo
+    if (this.downloadingReceipts.has(saleId)) {
+      return;
+    }
+
     console.log(`Descargando recibo para venta ID: ${saleId}`);
+    
+    // Iniciar loading state
+    this.downloadingReceipts.add(saleId);
 
     // Primero obtener información del recibo
     this._ecommerceAuthService.getReceiptBySale(saleId).subscribe({
@@ -171,11 +189,15 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
           this.downloadReceiptPdf(resp.receipt.id, saleId);
         } else {
           console.warn('No se encontró recibo para esta venta');
+          // Terminar loading state
+          this.downloadingReceipts.delete(saleId);
           // Aquí podrías mostrar un mensaje al usuario
         }
       },
       error: (error) => {
         console.error('Error obteniendo recibo:', error);
+        // Terminar loading state en caso de error
+        this.downloadingReceipts.delete(saleId);
         // Aquí podrías mostrar un mensaje de error al usuario
       }
     });
@@ -202,12 +224,55 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
         window.URL.revokeObjectURL(url);
         
         console.log(`✅ Recibo descargado: recibo-pedido-${saleId}.pdf`);
+        
+        // Terminar loading state
+        this.downloadingReceipts.delete(saleId);
       },
       error: (error) => {
         console.error('Error descargando PDF del recibo:', error);
+        // Terminar loading state en caso de error
+        this.downloadingReceipts.delete(saleId);
         // Aquí podrías mostrar un mensaje de error al usuario
       }
     });
+  }
+
+  // 💰 ================ MÉTODOS PARA PRECIOS ================ 💰
+  
+  /**
+   * Obtiene el precio mostrado en la lista con redondeo .95
+   * @param prodDetail Detalle del producto de la compra
+   * @returns Precio con redondeo .95 aplicado
+   */
+  getDisplayPrice(prodDetail: any): number {
+    if (!prodDetail) return 0;
+
+    // Obtener el precio base del producto
+    const basePrice = prodDetail.total || prodDetail.subtotal || prodDetail.price || 0;
+    
+    // Si el precio es 0 o negativo, devolverlo tal como está
+    if (basePrice <= 0) return basePrice;
+
+    // Aplicar redondeo .95 para consistencia con el resto de la plataforma
+    return this.priceCalculationService.applyRoundingTo95(basePrice);
+  }
+
+  /**
+   * Obtiene el total de la venta con redondeo .95
+   * @param sale Datos de la venta
+   * @returns Total con redondeo .95 aplicado
+   */
+  getSaleTotalPrice(sale: any): number {
+    if (!sale) return 0;
+
+    // Obtener el total de la venta
+    const totalPrice = sale.total || sale.total_amount || 0;
+    
+    // Si el precio es 0 o negativo, devolverlo tal como está
+    if (totalPrice <= 0) return totalPrice;
+
+    // Aplicar redondeo .95 para consistencia con el resto de la plataforma
+    return this.priceCalculationService.applyRoundingTo95(totalPrice);
   }
 
   ngOnDestroy(): void {

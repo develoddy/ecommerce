@@ -75,7 +75,7 @@
                                                                     </div>
                                                                     <div class="text-end">
                                                                         <span class="badge bg-dark mb-1">{{ detail.sale?.status || detail.status || 'Processing' }}</span>
-                                                                        <div class="small">Total: <strong>{{ euro }}{{ detail.sale?.total || detail.sale?.total_amount || '' }}</strong></div>
+                                                                        <div class="small">Total: <strong>{{ euro }}{{ getSaleTotalPrice(detail.sale) }}</strong></div>
                                                                     </div>
                                                                 </div>
 
@@ -101,7 +101,7 @@
                                                                                 </div>
                                                                                 <div class="text-end ms-3">
                                                                                     <div class="small text-muted">Precio</div>
-                                                                                    <div class="fw-bold">{{ euro }}{{ prodDetail.total || prodDetail.subtotal || prodDetail.price || '' }}</div>
+                                                                                    <div class="fw-bold">{{ euro }}{{ getDisplayPrice(prodDetail) }}</div>
                                                                                     <div class="mt-1">
                                                                                         <a [routerLink]="['/', locale, country, 'shop', 'product', prodDetail.product?.slug || prodDetail.product.slug]" class="view"><i class="icon anm anm-eye btn-link fs-6"></i></a>
                                                                                     </div>
@@ -117,9 +117,18 @@
                                                                         type="button" 
                                                                         class="btn btn-outline-dark btn-sm d-flex align-items-center gap-1" 
                                                                         (click)="downloadReceipt(detail.sale?.id || detail.sale_id)"
+                                                                        [disabled]="isDownloadingReceipt(detail.sale?.id || detail.sale_id)"
                                                                         title="Descargar recibo en PDF">
-                                                                        <i class="icon anm anm-download-l"></i>
-                                                                        <span>Descargar recibo</span>
+                                                                        <!-- Spinner cuando está descargando -->
+                                                                        <ng-container *ngIf="isDownloadingReceipt(detail.sale?.id || detail.sale_id)">
+                                                                            <div class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></div>
+                                                                            <small>Generando...</small>
+                                                                        </ng-container>
+                                                                        <!-- Estado normal -->
+                                                                        <ng-container *ngIf="!isDownloadingReceipt(detail.sale?.id || detail.sale_id)">
+                                                                            <i class="icon anm anm-download-l"></i>
+                                                                            <small>Descargar recibo</small>
+                                                                        </ng-container>
                                                                     </button>
                                                                 </div>
                                                             </div>
