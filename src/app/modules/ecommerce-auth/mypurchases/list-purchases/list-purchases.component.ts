@@ -148,6 +148,68 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     return this.sale_orders?.length || 0;
   }
 
+  // 📄 ================ MÉTODOS PARA RECIBOS ================ 📄
+  
+  /**
+   * Descargar recibo en PDF para una venta específica
+   */
+  downloadReceipt(saleId: number): void {
+    if (!saleId) {
+      console.error('Sale ID es requerido para descargar recibo');
+      return;
+    }
+
+    console.log(`Descargando recibo para venta ID: ${saleId}`);
+
+    // Primero obtener información del recibo
+    this._ecommerceAuthService.getReceiptBySale(saleId).subscribe({
+      next: (resp: any) => {
+        console.log('Recibo obtenido:', resp);
+        
+        if (resp && resp.success && resp.receipt) {
+          // Si existe el recibo, proceder con la descarga del PDF
+          this.downloadReceiptPdf(resp.receipt.id, saleId);
+        } else {
+          console.warn('No se encontró recibo para esta venta');
+          // Aquí podrías mostrar un mensaje al usuario
+        }
+      },
+      error: (error) => {
+        console.error('Error obteniendo recibo:', error);
+        // Aquí podrías mostrar un mensaje de error al usuario
+      }
+    });
+  }
+
+  /**
+   * Descargar PDF del recibo
+   */
+  private downloadReceiptPdf(receiptId: number, saleId: number): void {
+    this._ecommerceAuthService.downloadReceiptPdf(receiptId).subscribe({
+      next: (blob: any) => {
+        // Crear URL del blob y descargar automáticamente
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `recibo-pedido-${saleId}.pdf`;
+        
+        // Simular click para iniciar descarga
+        document.body.appendChild(link);
+        link.click();
+        
+        // Limpiar
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        
+        console.log(`✅ Recibo descargado: recibo-pedido-${saleId}.pdf`);
+      },
+      error: (error) => {
+        console.error('Error descargando PDF del recibo:', error);
+        // Aquí podrías mostrar un mensaje de error al usuario
+      }
+    });
+  }
+
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();

@@ -110,6 +110,18 @@
                                                                         </ng-container>
                                                                     </ng-container>
                                                                 </div>
+                                                                
+                                                                <!-- Botón para descargar recibo -->
+                                                                <div class="d-flex justify-content-end mt-3 pt-2 border-top">
+                                                                    <button 
+                                                                        type="button" 
+                                                                        class="btn btn-outline-dark btn-sm d-flex align-items-center gap-1" 
+                                                                        (click)="downloadReceipt(detail.sale?.id || detail.sale_id)"
+                                                                        title="Descargar recibo en PDF">
+                                                                        <i class="icon anm anm-download-l"></i>
+                                                                        <span>Descargar recibo</span>
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </ng-container>
                                                     </ng-container>

@@ -213,4 +213,31 @@ export class EcommerceAuthService {
       finalize(() => this.loadingSubject.next(false))
     );
   }
+
+  // 📄 ================ MÉTODOS PARA RECIBOS ================ 📄
+  
+  /**
+   * Obtener recibo de una venta específica
+   */
+  getReceiptBySale(saleId: number) {
+    this.loadingSubject.next(true);
+    let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE + `receipts/client/sale/${saleId}`;
+    return this._http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    );
+  }
+
+  /**
+   * Descargar PDF del recibo
+   */
+  downloadReceiptPdf(receiptId: number) {
+    let headers = new HttpHeaders({'token': this._authService.token});
+    let URL = URL_SERVICE + `receipts/client/${receiptId}/pdf`;
+    
+    return this._http.get(URL, { 
+      headers: headers,
+      responseType: 'blob' as 'json' // Para recibir el archivo PDF como blob
+    });
+  }
 }
