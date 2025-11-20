@@ -877,6 +877,13 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+   * Verifica si el usuario actual es un guest (no registrado)
+   */
+  isGuestUser(): boolean {
+    return this.currentUser && !this.currentUser.email;
+  }
+
   private subscribeToWishlistData(): void {
     this.subscriptions.add(
       this._wishlistService.currenteDataWishlist$.subscribe((resp: any) => {
