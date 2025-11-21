@@ -1,0 +1,252 @@
+<!-- 🚀 PRE-LAUNCH LANDING PAGE -->
+<div class="pre-launch-container">
+
+    <!-- 1️⃣ HERO SECTION -->
+    <section class="hero-section" id="hero">
+        <div class="hero-content">
+
+            <!-- Título Principal -->
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Camisetas Técnicas para
+                    <span class="gradient-text">Programadores</span>
+                </h1>
+
+                <p class="hero-subtitle">
+                    La tienda para desarrolladores que está revolucionando el país.
+                    <strong>Sé el primero en enterarte.</strong>
+                </p>
+
+                <!-- Urgencia + Countdown -->
+                <div class="urgency-section">
+                    <div class="countdown-container">
+                        <h3 class="countdown-title">¡Lanzamos en:</h3>
+                        <div class="countdown-display">
+                            <div class="countdown-item">
+                                <span class="countdown-number">{{countdown.days}}</span>
+                                <span class="countdown-label">días</span>
+                            </div>
+                            <div class="countdown-separator">:</div>
+                            <div class="countdown-item">
+                                <span class="countdown-number">{{countdown.hours.toString().padStart(2, '0')}}</span>
+                                <span class="countdown-label">hrs</span>
+                            </div>
+                            <div class="countdown-separator">:</div>
+                            <div class="countdown-item">
+                                <span class="countdown-number">{{countdown.minutes.toString().padStart(2, '0')}}</span>
+                                <span class="countdown-label">min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de Captura Principal -->
+            <div class="email-capture-hero">
+                <div class="capture-form" *ngIf="!emailCaptured">
+                    <h3 class="form-title">Acceso Anticipado Solo para Pre-registrados</h3>
+
+                    <div class="email-form">
+                        <div class="input-group">
+                            <input type="email" [(ngModel)]="email" placeholder="Tu email profesional" class="email-input" [class.error]="emailError" (keyup.enter)="captureEmail()" />
+                            <button class="cta-button primary" [disabled]="isSubmitting" (click)="captureEmail()">
+                                <span *ngIf="!isSubmitting">Notificarme</span>
+                                <span *ngIf="isSubmitting" class="loading">
+                                    <i class="spinner"></i> Registrando...
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="error-message" *ngIf="emailError">
+                            {{emailError}}
+                        </div>
+                    </div>
+
+                    <p class="form-note">
+                        <i class="icon-gift"></i>
+                        Solo los pre-registrados recibirán el <strong>cupón exclusivo</strong> de lanzamiento.
+                    </p>
+                </div>
+
+                <!-- Success State -->
+                <div class="success-state" *ngIf="emailCaptured">
+                    <div class="success-icon">✅</div>
+                    <h3 class="success-title">¡Genial! Ya estás pre-registrado</h3>
+                    <p class="success-message">
+                        Te notificaremos el día del lanzamiento con tu cupón exclusivo.
+                        <br><strong>¡No olvides revisar tu email!</strong>
+                    </p>
+                    <button class="cta-button secondary" (click)="resetForm()">
+                        Registrar otro email
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 2️⃣ PREVIEW PRODUCTS -->
+    <section class="products-teaser" id="products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Un Vistazo a lo que Viene</h2>
+                <p class="section-subtitle">
+                    Diseños únicos, calidad premium y estilo que define tu pasión por el código.
+                </p>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-container" *ngIf="isLoading">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Cargando productos...</p>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" *ngIf="!isLoading && previewProducts.length > 0">
+                <div class="product-preview" *ngFor="let product of previewProducts">
+                    <div class="product-image-container">
+                        <img [src]="product.imagen" [alt]="product.title" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <span class="coming-soon-badge">Próximamente</span>
+                        </div>
+                    </div>
+
+                    <div class="product-info">
+                        <div class="product-category">{{product.categoryName}}</div>
+                        <h4 class="product-title">{{product.title}}</h4>
+                        <p class="product-description" *ngIf="product.resumen">
+                            {{product.resumen.length > 60 ? (product.resumen | slice:0:60) + '...' : product.resumen}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" *ngIf="!isLoading && previewProducts.length === 0">
+                <p>No se pudieron cargar los productos en este momento.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3️⃣ BENEFICIOS / ¿POR QUÉ REGISTRARTE? -->
+    <section class="benefits-section" id="benefits">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">¿Por Qué Registrarte Ahora?</h2>
+                <p class="section-subtitle">
+                    No es solo una tienda más. Es la comunidad de desarrolladores que estabas esperando.
+                </p>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎁</div>
+                    <h4 class="benefit-title">Cupón Exclusivo de Lanzamiento</h4>
+                    <p class="benefit-description">
+                        Acceso a descuentos especiales que solo los pre-registrados recibirán.
+                    </p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <h4 class="benefit-title">Acceso Prioritario</h4>
+                    <p class="benefit-description">
+                        Sé el primero en comprar antes que se agoten los diseños más populares.
+                    </p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">🚀</div>
+                    <h4 class="benefit-title">Productos Únicos</h4>
+                    <p class="benefit-description">
+                        Diseños exclusivos creados por y para la comunidad de programadores.
+                    </p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">💎</div>
+                    <h4 class="benefit-title">Calidad Premium</h4>
+                    <p class="benefit-description">
+                        Materiales de alta calidad que soportan las largas jornadas de código.
+                    </p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">🌟</div>
+                    <h4 class="benefit-title">Comunidad Exclusiva</h4>
+                    <p class="benefit-description">
+                        Únete a una red de desarrolladores que comparten tu pasión por el código.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4️⃣ CTA FINAL -->
+    <section class="final-cta" id="signup">
+        <div class="container">
+            <div class="cta-content">
+                <div class="cta-text">
+                    <h2 class="cta-title">No Te Pierdas el Lanzamiento</h2>
+                    <p class="cta-description">
+                        Únete a los <strong>+500 desarrolladores</strong> que ya están esperando.
+                        <br>El lanzamiento es <span class="highlight">limitado</span>.
+                    </p>
+                </div>
+
+                <!-- Formulario CTA Final -->
+                <div class="email-capture-final">
+                    <div class="capture-form" *ngIf="!emailCaptured">
+                        <div class="email-form-inline">
+                            <input type="email" [(ngModel)]="email" placeholder="tu@email.com" class="email-input-final" [class.error]="emailError" (keyup.enter)="captureEmail()" />
+                            <button class="cta-button primary large" [disabled]="isSubmitting" (click)="captureEmail()">
+                                <span *ngIf="!isSubmitting">Quiero Acceso VIP</span>
+                                <span *ngIf="isSubmitting">
+                                    <i class="spinner"></i> Registrando...
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="error-message" *ngIf="emailError">
+                            {{emailError}}
+                        </div>
+                    </div>
+
+                    <!-- Success State Final -->
+                    <div class="success-state-final" *ngIf="emailCaptured">
+                        <div class="success-content">
+                            <h3>🎉 ¡Bienvenido a la Lista VIP!</h3>
+                            <p>Recibirás todas las novedades y tu cupón exclusivo muy pronto.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-proof">
+                    <p class="proof-text">
+                        <i class="icon-users"></i>
+                        Más de <strong>500+ desarrolladores</strong> ya se registraron
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Simple -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">
+                    &copy; 2025 Lujandev Store - La tienda técnica para programadores
+                </p>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Política de Privacidad</a>
+                    <a href="#" class="footer-link">Términos</a>
+                    <a href="mailto:hola@lujandev.com" class="footer-link">Contacto</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</div>

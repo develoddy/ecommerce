@@ -13,6 +13,16 @@ export class CheckFirstVisitGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
+    // 🚀 PRE-LAUNCH MODE: Siempre redirigir a preHome hasta el lanzamiento
+    const PRE_LAUNCH_MODE = true; // ✅ Cambiar a false el día del lanzamiento
+
+    if (PRE_LAUNCH_MODE) {
+      console.warn('🚀 PRE-LAUNCH: Redirigiendo a landing page...');
+      this.router.navigate(['/preHome']); 
+      return false;
+    }
+
+    // 🏠 Lógica normal después del lanzamiento
     const isFirstVisit = localStorage.getItem('isFirstVisit');
     const currentUrl = state.url;
 
@@ -21,7 +31,7 @@ export class CheckFirstVisitGuard implements CanActivate {
     if (!isFirstVisit) {
       console.warn('Primera visita, permitiendo acceso...');
       localStorage.setItem('isFirstVisit', 'true');
-      this.router.navigate(['/preHome/config']); 
+      this.router.navigate(['/preHome']); 
       return false;
     } else {
       console.warn('No es la primera visita, redirigiendo a home...');

@@ -8,13 +8,15 @@ import { EcommerceInitialRoutingModule } from './ecommerce-initial-routing.modul
 import { EcommerceInitialComponent } from './ecommerce-initial.component';
 import { PreHomeComponent } from './pre-home/pre-home.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { PreLaunchLandingComponent } from './pre-launch-landing/pre-launch-landing.component';
 
 
 @NgModule({
   declarations: [
     EcommerceInitialComponent,
     PreHomeComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    PreLaunchLandingComponent
   ],
   imports: [
     CommonModule,
