@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HomeService } from '../../home/_services/home.service';
+import { PrelaunchService } from './_services/prelaunch.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,7 +12,7 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
 
   // Propiedades del componente
   countdown = {
-    days: 6,
+    days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0
@@ -19,6 +20,8 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
 
   emailCaptured = false;
   isSubmitting = false;
+  showDuplicateMessage = false;
+  showResubscribedMessage = false;
   
   // Formulario de captura
   email = '';
@@ -28,29 +31,63 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
   previewProducts: any[] = [];
   isLoading = true;
   
+  // Countdown
+  private countdownInterval: any;
+  private launchDate: Date;
+  
   // Suscripciones
   private subscriptions: Subscription = new Subscription();
 
   constructor(
-    private homeService: HomeService
-  ) {}
+    private homeService: HomeService,
+    private prelaunchService: PrelaunchService
+  ) {
+    // Configurar fecha de lanzamiento (7 días desde ahora)
+    this.launchDate = new Date();
+    this.launchDate.setDate(this.launchDate.getDate() + 7);
+    this.launchDate.setHours(12, 0, 0, 0); // Mediodía
+  }
 
   /**
    * Inicia la cuenta regresiva
    */
-  startCountdown() {
-    setInterval(() => {
-      const now = new Date().getTime();
-      const launchDate = new Date();
-      launchDate.setDate(launchDate.getDate() + this.countdown.days);
-      
-      const distance = launchDate.getTime() - now;
+  private startCountdown(): void {
+    // Actualizar inmediatamente
+    this.updateCountdown();
+    
+    // Actualizar cada segundo
+    this.countdownInterval = setInterval(() => {
+      this.updateCountdown();
+    }, 1000);
+  }
 
+  /**
+   * Actualiza los valores del countdown
+   */
+  private updateCountdown(): void {
+    const now = new Date().getTime();
+    const distance = this.launchDate.getTime() - now;
+
+    if (distance > 0) {
       this.countdown.days = Math.floor(distance / (1000 * 60 * 60 * 24));
       this.countdown.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       this.countdown.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       this.countdown.seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    }, 1000);
+    } else {
+      // El lanzamiento ha llegado
+      this.countdown = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      this.clearCountdown();
+    }
+  }
+
+  /**
+   * Limpia el interval del countdown
+   */
+  private clearCountdown(): void {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+      this.countdownInterval = null;
+    }
   }
 
   /**
@@ -79,13 +116,43 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
 
     this.isSubmitting = true;
 
-    // Simular llamada a API
-    setTimeout(() => {
-      console.log('Email capturado:', this.email);
-      this.emailCaptured = true;
-      this.isSubmitting = false;
-      this.email = '';
-    }, 1500);
+    // Llamada real al backend
+    this.subscriptions.add(
+      this.prelaunchService.subscribeEmail(this.email, 'main_form').subscribe({
+        next: (response) => {
+          console.log('Email capturado exitosamente:', response);
+          this.isSubmitting = false;
+          this.email = '';
+          
+          // Detectar si es un email ya registrado
+          if (response.data && response.data.already_subscribed) {
+            // Email duplicado - mostrar mensaje específico
+            this.emailCaptured = true;
+            this.showDuplicateMessage = true;
+          } else if (response.data && response.data.resubscribed) {
+            // Resubscripción de email previamente desuscrito
+            this.emailCaptured = true;
+            this.showResubscribedMessage = true;
+          } else {
+            // Registro nuevo exitoso
+            this.emailCaptured = true;
+            this.showDuplicateMessage = false;
+          }
+        },
+        error: (error) => {
+          console.error('Error al capturar email:', error);
+          this.isSubmitting = false;
+          
+          if (error.status === 409) {
+            // Email ya registrado - mostrar como éxito para mejor UX
+            this.emailCaptured = true;
+            this.email = '';
+          } else {
+            this.emailError = 'Error al registrar email. Intenta nuevamente.';
+          }
+        }
+      })
+    );
   }
 
   /**
@@ -93,6 +160,8 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
    */
   resetForm() {
     this.emailCaptured = false;
+    this.showDuplicateMessage = false;
+    this.showResubscribedMessage = false;
     this.email = '';
     this.emailError = '';
   }
@@ -113,6 +182,7 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    this.clearCountdown();
   }
 
   /**

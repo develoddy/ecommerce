@@ -1,6 +1,20 @@
 <!-- 🚀 PRE-LAUNCH LANDING PAGE -->
 <div class="pre-launch-container">
 
+    <!-- 📍 HEADER -->
+    <header class="pre-launch-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="assets/images/logo.png" alt="LujanDev" title="LujanDev" class="logo" />
+                </div>
+                <div class="header-tagline">
+                    <span>Próximamente</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
     <!-- 1️⃣ HERO SECTION -->
     <section class="hero-section" id="hero">
         <div class="hero-content">
@@ -36,49 +50,13 @@
                                 <span class="countdown-number">{{countdown.minutes.toString().padStart(2, '0')}}</span>
                                 <span class="countdown-label">min</span>
                             </div>
+                            <div class="countdown-separator">:</div>
+                            <div class="countdown-item">
+                                <span class="countdown-number">{{countdown.seconds.toString().padStart(2, '0')}}</span>
+                                <span class="countdown-label">seg</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Formulario de Captura Principal -->
-            <div class="email-capture-hero">
-                <div class="capture-form" *ngIf="!emailCaptured">
-                    <h3 class="form-title">Acceso Anticipado Solo para Pre-registrados</h3>
-
-                    <div class="email-form">
-                        <div class="input-group">
-                            <input type="email" [(ngModel)]="email" placeholder="Tu email profesional" class="email-input" [class.error]="emailError" (keyup.enter)="captureEmail()" />
-                            <button class="cta-button primary" [disabled]="isSubmitting" (click)="captureEmail()">
-                                <span *ngIf="!isSubmitting">Notificarme</span>
-                                <span *ngIf="isSubmitting" class="loading">
-                                    <i class="spinner"></i> Registrando...
-                                </span>
-                            </button>
-                        </div>
-
-                        <div class="error-message" *ngIf="emailError">
-                            {{emailError}}
-                        </div>
-                    </div>
-
-                    <p class="form-note">
-                        <i class="icon-gift"></i>
-                        Solo los pre-registrados recibirán el <strong>cupón exclusivo</strong> de lanzamiento.
-                    </p>
-                </div>
-
-                <!-- Success State -->
-                <div class="success-state" *ngIf="emailCaptured">
-                    <div class="success-icon">✅</div>
-                    <h3 class="success-title">¡Genial! Ya estás pre-registrado</h3>
-                    <p class="success-message">
-                        Te notificaremos el día del lanzamiento con tu cupón exclusivo.
-                        <br><strong>¡No olvides revisar tu email!</strong>
-                    </p>
-                    <button class="cta-button secondary" (click)="resetForm()">
-                        Registrar otro email
-                    </button>
                 </div>
             </div>
 
@@ -126,6 +104,77 @@
             <!-- Empty State -->
             <div class="empty-state" *ngIf="!isLoading && previewProducts.length === 0">
                 <p>No se pudieron cargar los productos en este momento.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2.5️⃣ FORMULARIO DE CAPTURA -->
+    <section class="email-capture-section" id="signup-main">
+        <div class="container">
+            <div class="email-capture-hero">
+                <div class="capture-form" *ngIf="!emailCaptured">
+                    <h3 class="form-title">Acceso Anticipado Solo para Pre-registrados</h3>
+
+                    <div class="email-form">
+                        <div class="input-group">
+                            <input type="email" [(ngModel)]="email" placeholder="Tu email profesional" class="email-input" [class.error]="emailError" (keyup.enter)="captureEmail()" />
+                            <button class="cta-button primary" [disabled]="isSubmitting" (click)="captureEmail()">
+                                <span *ngIf="!isSubmitting">Notificarme</span>
+                                <span *ngIf="isSubmitting" class="loading">
+                                    <i class="spinner"></i> Registrando...
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="error-message" *ngIf="emailError">
+                            {{emailError}}
+                        </div>
+                    </div>
+
+                    <p class="form-note">
+                        <i class="icon-gift"></i>
+                        Solo los pre-registrados recibirán el <strong>cupón exclusivo</strong> de lanzamiento.
+                    </p>
+                </div>
+
+                <!-- Success State - Registro Nuevo -->
+                <div class="success-state" *ngIf="emailCaptured && !showDuplicateMessage && !showResubscribedMessage">
+                    <div class="success-icon">✅</div>
+                    <h3 class="success-title">¡Genial! Ya estás pre-registrado</h3>
+                    <p class="success-message">
+                        Te notificaremos el día del lanzamiento con tu cupón exclusivo.
+                        <br><strong>¡No olvides revisar tu email!</strong>
+                    </p>
+                    <button class="cta-button secondary" (click)="resetForm()">
+                        Registrar otro email
+                    </button>
+                </div>
+
+                <!-- Success State - Email Ya Registrado -->
+                <div class="success-state already-registered" *ngIf="emailCaptured && showDuplicateMessage">
+                    <div class="info-icon">ℹ️</div>
+                    <h3 class="success-title">¡Ya estás en nuestra lista!</h3>
+                    <p class="success-message">
+                        Este email ya está registrado para el pre-launch.
+                        <br><strong>¡Tranquilo, recibirás todas las notificaciones VIP!</strong>
+                    </p>
+                    <button class="cta-button secondary" (click)="resetForm()">
+                        Registrar otro email
+                    </button>
+                </div>
+
+                <!-- Success State - Resubscrito -->
+                <div class="success-state resubscribed" *ngIf="emailCaptured && showResubscribedMessage">
+                    <div class="success-icon">🎉</div>
+                    <h3 class="success-title">¡Bienvenido de nuevo!</h3>
+                    <p class="success-message">
+                        Te has reactivado en nuestra lista de pre-launch.
+                        <br><strong>¡Gracias por volver!</strong>
+                    </p>
+                    <button class="cta-button secondary" (click)="resetForm()">
+                        Registrar otro email
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -214,11 +263,27 @@
                         </div>
                     </div>
 
-                    <!-- Success State Final -->
-                    <div class="success-state-final" *ngIf="emailCaptured">
+                    <!-- Success State Final - Registro Nuevo -->
+                    <div class="success-state-final" *ngIf="emailCaptured && !showDuplicateMessage && !showResubscribedMessage">
                         <div class="success-content">
                             <h3>🎉 ¡Bienvenido a la Lista VIP!</h3>
                             <p>Recibirás todas las novedades y tu cupón exclusivo muy pronto.</p>
+                        </div>
+                    </div>
+
+                    <!-- Success State Final - Email Ya Registrado -->
+                    <div class="success-state-final already-registered" *ngIf="emailCaptured && showDuplicateMessage">
+                        <div class="success-content">
+                            <h3>ℹ️ ¡Ya estás en la lista VIP!</h3>
+                            <p>Este email ya está registrado. ¡Recibirás todas las notificaciones!</p>
+                        </div>
+                    </div>
+
+                    <!-- Success State Final - Resubscrito -->
+                    <div class="success-state-final resubscribed" *ngIf="emailCaptured && showResubscribedMessage">
+                        <div class="success-content">
+                            <h3>🎉 ¡Bienvenido de nuevo a la Lista VIP!</h3>
+                            <p>Te has reactivado exitosamente. ¡Gracias por volver!</p>
                         </div>
                     </div>
                 </div>
