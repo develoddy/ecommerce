@@ -759,11 +759,32 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
    * Obtiene el precio unitario final (con descuento si aplica) - adaptado para saleDetails
    */
   getFinalUnitPrice(detail: any): number {
-    const originalPrice = parseFloat(detail.variedade?.retail_price || detail.price_unitario || 0);
+    // 🔍 DEBUG LOG
+    console.log('💰 [SUCCESSFULL-CHECKOUT] getFinalUnitPrice:', {
+      productTitle: detail.product?.title,
+      price_unitario: detail.price_unitario,
+      retail_price: detail.variedade?.retail_price,
+      discount: detail.discount,
+      code_discount: detail.code_discount,
+      type_campaign: detail.type_campaign
+    });
+    
+    // IMPORTANTE: price_unitario YA viene calculado y guardado en la BD
+    // NO necesitamos recalcular aquí
+    const savedFinalPrice = parseFloat(detail.price_unitario || 0);
+    
+    if (savedFinalPrice > 0) {
+      console.log('   ✅ Usando price_unitario guardado:', savedFinalPrice);
+      return savedFinalPrice;
+    }
+    
+    // Fallback: calcular desde retail_price solo si price_unitario no existe
+    const originalPrice = parseFloat(detail.variedade?.retail_price || 0);
+    console.log('   ⚠️ price_unitario no disponible, usando retail_price:', originalPrice);
    
     // Si no hay descuento aplicado, retornar precio original
     if (!detail.discount && !detail.code_discount) {
-      //console.log('✅ No discount found, returning original price:', originalPrice);
+      console.log('   → Sin descuento, retornando original');
       return originalPrice;
     }
 
@@ -882,7 +903,16 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   getTotalDiscount(): number {
     const originalSubtotal = this.getOriginalSubtotal();
     const finalSubtotal = this.getSubtotal();
-    return parseFloat(Math.max(0, originalSubtotal - finalSubtotal).toFixed(2));
+    const discount = parseFloat(Math.max(0, originalSubtotal - finalSubtotal).toFixed(2));
+    
+    // 🔍 DEBUG LOG
+    console.log('💵 [SUCCESSFULL-CHECKOUT] getTotalDiscount:', {
+      originalSubtotal: originalSubtotal.toFixed(2),
+      finalSubtotal: finalSubtotal.toFixed(2),
+      discount: discount.toFixed(2)
+    });
+    
+    return discount;
   }
 
   /**
@@ -941,6 +971,74 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
    */
   hasAnyProductWithDiscount(): boolean {
     return this.hasAnyCartDiscount();
+  }
+
+  /**
+   * Obtiene el tipo de descuento aplicado a un detalle de venta
+   * @param detail Detalle de la venta
+   * @returns String con el tipo de descuento
+   */
+  getDiscountType(detail: any): string {
+    if (!detail || !this.hasCartItemDiscount(detail)) return '';
+    
+    // 🔍 DEBUG LOG
+    console.log('🏷️ [SUCCESSFULL-CHECKOUT] getDiscountType:', {
+      productTitle: detail.product?.title,
+      saleDetailId: detail.id,
+      type_campaign: detail.type_campaign,
+      code_cupon: detail.code_cupon,
+      code_discount: detail.code_discount,
+      discount: detail.discount
+    });
+    
+    // Usar type_campaign para identificar el tipo de descuento
+    // type_campaign: 1=Campaign Discount, 2=Flash Sale, 3=Cupón
+    if (detail.type_campaign === 3 || detail.code_cupon) {
+      console.log('   ✅ Detectado: Cupón');
+      return `Cupón ${detail.code_cupon || ''}`;
+    } else if (detail.type_campaign === 2) {
+      console.log('   ✅ Detectado: Flash Sale');
+      return 'Flash Sale';
+    } else if (detail.type_campaign === 1) {
+      console.log('   ✅ Detectado: Campaign Discount');
+      return 'Campaign Discount';
+    }
+    
+    // Fallback para ventas sin type_campaign
+    console.log('   ⚠️ Usando fallback (type_campaign NULL)');
+    if (detail.code_cupon) {
+      console.log('   → Cupón (fallback)');
+      return `Cupón ${detail.code_cupon}`;
+    } else if (detail.code_discount) {
+      console.log('   → Flash Sale (fallback por code_discount)');
+      return 'Flash Sale';
+    } else {
+      console.log('   → Campaign Discount (fallback)');
+      return 'Campaign Discount';
+    }
+  }
+
+  /**
+   * Obtiene el porcentaje de descuento aplicado
+   * @param detail Detalle de la venta
+   * @returns Porcentaje de descuento
+   */
+  getDiscountPercentage(detail: any): number {
+    if (!detail || !this.hasCartItemDiscount(detail)) return 0;
+    
+    // Usar el descuento almacenado en la base de datos
+    if (detail.discount && detail.discount > 0) {
+      return Math.round(parseFloat(detail.discount));
+    }
+    
+    // Fallback: calcular basado en precios
+    const originalPrice = parseFloat(detail.variedade?.retail_price || detail.price_unitario || 0);
+    const finalPrice = this.getFinalUnitPrice(detail);
+    
+    if (originalPrice <= 0 || finalPrice >= originalPrice) return 0;
+    
+    const discountAmount = originalPrice - finalPrice;
+    return Math.round((discountAmount / originalPrice) * 100);
   }
 
   private checkDeviceType(): void {

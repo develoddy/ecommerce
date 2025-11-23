@@ -311,11 +311,13 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     // Verificar si hay cupón aplicado
     if (prodDetail.code_cupon) return true;
     
-    // Verificar si hay flash sale o campaign discount
-    if (prodDetail.code_discount || prodDetail.discount) {
-      // Verificar que el descuento sea mayor a 0
-      const discountValue = parseFloat(prodDetail.code_discount || prodDetail.discount);
-      return discountValue > 0;
+    // La forma más confiable es comparar precio original vs precio final
+    const originalPrice = this.getOriginalPrice(prodDetail);
+    const finalPrice = this.getFinalUnitPrice(prodDetail);
+    
+    // Si el precio final es menor que el original, hay descuento
+    if (originalPrice > 0 && finalPrice > 0 && finalPrice < originalPrice) {
+      return true;
     }
     
     return false;
@@ -426,19 +428,44 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   getDiscountType(prodDetail: any): string {
     if (!prodDetail || !this.hasDiscount(prodDetail)) return '';
     
-    // Prioridad: Cupón > Flash Sale > Campaign Discount
-    if (prodDetail.code_cupon) {
-      return `Cupón ${prodDetail.code_cupon}`;
-    }
+    // 🔍 DEBUG LOG
+    console.log('🏷️ [LIST-PURCHASES] getDiscountType:', {
+      productTitle: prodDetail.product?.title,
+      saleDetailId: prodDetail.id,
+      type_campaign: prodDetail.type_campaign,
+      code_cupon: prodDetail.code_cupon,
+      code_discount: prodDetail.code_discount,
+      discount: prodDetail.discount
+    });
     
-    if (prodDetail.code_discount) {
+    // Usar type_campaign para identificar el tipo de descuento
+    // type_campaign: 1=Campaign Discount, 2=Flash Sale, 3=Cupón
+    if (prodDetail.type_campaign === 3 || prodDetail.code_cupon) {
+      console.log('   ✅ Detectado: Cupón');
+      return `Cupón ${prodDetail.code_cupon || ''}`;
+    } else if (prodDetail.type_campaign === 2) {
+      console.log('   ✅ Detectado: Flash Sale');
       return 'Flash Sale';
-    }
-    
-    if (prodDetail.discount) {
+    } else if (prodDetail.type_campaign === 1) {
+      console.log('   ✅ Detectado: Campaign Discount');
       return 'Campaign Discount';
     }
     
+    // Fallback para registros antiguos sin type_campaign
+    console.log('   ⚠️ Usando fallback (type_campaign NULL)');
+    if (prodDetail.code_cupon) {
+      console.log('   → Cupón (fallback)');
+      return `Cupón ${prodDetail.code_cupon}`;
+    } else if (prodDetail.code_discount) {
+      // Si hay code_discount sin type_campaign, es Flash Sale
+      console.log('   → Flash Sale (fallback por code_discount)');
+      return 'Flash Sale';
+    } else if (prodDetail.discount && prodDetail.discount > 0) {
+      console.log('   → Campaign Discount (fallback por discount)');
+      return 'Campaign Discount';
+    }
+    
+    console.log('   ❌ Tipo desconocido');
     return 'Descuento';
   }
 

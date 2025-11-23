@@ -191,6 +191,7 @@ export class ResumenCheckoutComponent implements OnInit {
 
     this._authEcommerce.getShippingRates(payload).subscribe({
       next: (res:any) => {
+        console.log("✅ Tarifas de envío recibidas:", res);
         const rate = res.result?.[0];
         if (rate) {
           this.shippingRate = parseFloat(rate.rate);
