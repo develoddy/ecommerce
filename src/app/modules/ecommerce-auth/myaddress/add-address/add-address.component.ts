@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
+import { AddressValidationService } from '../../_services/address-validation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 declare var $:any;
@@ -24,13 +25,20 @@ export class AddAddressComponent implements OnInit {
   name: string = '';
   surname: string = '';
   pais: string = '';
-  address: string = '';
+  calle: string = ''; // Nombre de la calle
+  numero: string = ''; // Número de la calle (obligatorio)
+  apartamento: string = ''; // Apartamento/Piso (opcional)
+  address: string = ''; // Dirección completa (se genera combinando calle + numero + apartamento)
   zipcode: string = '';
-  poblacion: string = '';
-  ciudad: string = '';
+  poblacion: string = ''; // Ciudad/población
+  ciudad: string = ''; // Provincia/estado
   email: string | null = null;
   phone: string = '';
   usual_shipping_address:boolean=false;
+  
+  // Validación
+  isValidating: boolean = false;
+  validationMessage: string = '';
     
   errorOrSuccessMessage:any="";
   validMessage:boolean=false;
@@ -47,6 +55,7 @@ export class AddAddressComponent implements OnInit {
 
   constructor(
     public _ecommerceAuthService: EcommerceAuthService,
+    private addressValidationService: AddressValidationService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
   ) {
@@ -55,6 +64,13 @@ export class AddAddressComponent implements OnInit {
       this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
       this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
     });
+  }
+  
+  /**
+   * Obtiene la lista de países europeos soportados
+   */
+  get supportedCountries() {
+    return this.addressValidationService.EUROPEAN_COUNTRIES;
   }
 
   ngOnInit(): void {
@@ -110,11 +126,13 @@ export class AddAddressComponent implements OnInit {
   /** Metodo para registrar direcciones de usuarios autenticados */
   private registerAddress() {
     
+    // Validación de campos obligatorios
     if (
       !this.name || 
       !this.surname || 
       !this.pais || 
-      !this.address || 
+      !this.calle || 
+      !this.numero || 
       !this.zipcode || 
       !this.poblacion || 
       !this.ciudad || 
@@ -129,52 +147,102 @@ export class AddAddressComponent implements OnInit {
       return;
     }
 
-    let data = {    
-        user      : this.CURRENT_USER_AUTHENTICATED._id,
-        name      : this.name,
-        surname   : this.surname,
-        pais      : this.pais,
-        address   : this.address,
-        zipcode   : this.zipcode,
-        poblacion : this.poblacion,
-        ciudad    : this.ciudad,
-        email     : this.email,
-        phone     : this.phone,
-        usual_shipping_address: this.usual_shipping_address,
-    };
-    
-    
-    
+    // Construir la dirección completa combinando calle + número + apartamento
+    this.address = this.calle.trim() + ' ' + this.numero.trim();
+    if (this.apartamento && this.apartamento.trim()) {
+      this.address += ', ' + this.apartamento.trim();
+    }
+
     // Marcar como enviando para evitar duplicados
     this.isSubmitting = true;
-    
-    this._ecommerceAuthService.registerAddressClient(data).subscribe(
-    ( resp:any ) => {
-      
-      if ( resp.status == 200 ) {
-        this.status = true;
+    this.isValidating = true;
+    this.validationMessage = 'Validando dirección con Printful...';
+
+    // Construir objeto de dirección
+    const addressData = {
+      name: this.name,
+      surname: this.surname,
+      pais: this.pais,
+      address: this.address,
+      zipcode: this.zipcode,
+      poblacion: this.poblacion,
+      ciudad: this.ciudad,
+      email: this.email,
+      phone: this.phone
+    };
+
+    // 🔍 VALIDAR CON PRINTFUL ANTES DE GUARDAR
+    this.addressValidationService.validateWithPrintful(addressData).subscribe({
+      next: (validation) => {
+        this.isValidating = false;
+        
+        if (!validation.isValid) {
+          // ❌ Dirección no válida según Printful
+          this.isSubmitting = false;
+          this.status = false;
+          this.validMessage = true;
+          this.errorOrSuccessMessage = validation.message;
+          this.validationMessage = '';
+          this.hideMessageAfterDelay();
+          alertDanger(validation.message);
+          return;
+        }
+
+        // ✅ Dirección válida, proceder a guardar
+        this.validationMessage = 'Dirección válida, guardando...';
+        this.saveAddress(addressData);
+      },
+      error: (err) => {
+        console.error('❌ Error validando dirección:', err);
+        this.isValidating = false;
+        this.isSubmitting = false;
+        this.status = false;
         this.validMessage = true;
-        this.errorOrSuccessMessage = resp.message;
+        this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
+        this.validationMessage = '';
         this.hideMessageAfterDelay();
-        alertSuccess(resp.message);
-        this.resetForm();
-        this.router.navigateByUrl(this.returnUrl);
-      } else {
+        alertDanger("Error al validar la dirección");
+      }
+    });
+  }
+
+  /**
+   * Guarda la dirección en la base de datos después de validar con Printful
+   */
+  private saveAddress(addressData: any) {
+    const data = {    
+      user: this.CURRENT_USER_AUTHENTICATED._id,
+      ...addressData,
+      usual_shipping_address: this.usual_shipping_address,
+    };
+    
+    this._ecommerceAuthService.registerAddressClient(data).subscribe({
+      next: (resp: any) => {
+        this.isSubmitting = false;
+        this.validationMessage = '';
+        
+        if (resp.status == 200) {
+          this.status = true;
+          this.validMessage = true;
+          this.errorOrSuccessMessage = resp.message;
+          this.hideMessageAfterDelay();
+          alertSuccess(resp.message);
+          this.resetForm();
+          this.router.navigateByUrl(this.returnUrl);
+        } else {
+          this.status = false;
+          this.errorOrSuccessMessage = "Error al registrar la dirección.";
+          this.hideMessageAfterDelay();
+        }
+      },
+      error: (error) => {
+        console.log('❌ [AddAddress] Backend error:', error);
+        this.isSubmitting = false;
+        this.validationMessage = '';
         this.status = false;
         this.errorOrSuccessMessage = "Error al registrar la dirección.";
-        this.hideMessageAfterDelay();  // Ocultar el mensaje después de X segundos
+        this.hideMessageAfterDelay();
       }
-      
-      // Resetear flag de submission al finalizar
-      this.isSubmitting = false;
-    }, error => {
-      console.log('❌ [AddAddress] Backend error:', error);
-      this.status = false;
-      this.errorOrSuccessMessage = "Error al registrar la dirección.";
-      this.hideMessageAfterDelay();  // Llamamos a la función para ocultar el mensaje después de unos segundos
-      
-      // Resetear flag de submission en caso de error
-      this.isSubmitting = false;
     });
   }
 
@@ -182,9 +250,13 @@ export class AddAddressComponent implements OnInit {
     this.name = '';
     this.surname = '';
     this.pais = '';
+    this.calle = '';
+    this.numero = '';
+    this.apartamento = '';
     this.address = '';
     this.zipcode = '';
     this.poblacion = '';
+    this.ciudad = '';
     this.email = '';
     this.phone = '';
   }

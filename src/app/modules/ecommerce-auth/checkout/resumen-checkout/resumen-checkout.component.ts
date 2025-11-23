@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter, HostListener, ChangeDetectorRef } from '@angular/core';
 import { forkJoin, Subscription, take } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
+import { AddressValidationService } from '../../_services/address-validation.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,13 +33,18 @@ export class ResumenCheckoutComponent implements OnInit {
   name: string = '';
   surname: string = '';
   pais: string = '';
-  address: string = '';
+  calle: string = ''; // Nombre de la calle
+  numero: string = ''; // Número de la calle (obligatorio)
+  apartamento: string = ''; // Apartamento/Piso (opcional)
+  address: string = ''; // Dirección completa (se genera combinando calle + numero + apartamento)
   zipcode: string = '';
   poblacion: string = '';
   ciudad: string = '';
   email: string = '';
   phone: string = '';
   usual_shipping_address:boolean=false;
+  isValidating: boolean = false;
+  validationMessage: string = '';
   address_client_selected:any = null;
   listCarts:any = [];
   totalCarts:any=null;
@@ -93,6 +99,7 @@ export class ResumenCheckoutComponent implements OnInit {
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
+    private addressValidationService: AddressValidationService,
     public _authService: AuthService,
     public _cartService: CartService,
     public _router: Router,
@@ -107,6 +114,13 @@ export class ResumenCheckoutComponent implements OnInit {
       this.locale = params.get('locale') || 'es';  
       this.country = params.get('country') || 'es'; 
     });
+  }
+
+  /**
+   * Obtiene la lista de países europeos soportados
+   */
+  get supportedCountries() {
+    return this.addressValidationService.EUROPEAN_COUNTRIES;
   }
 
   ngAfterViewInit() {}
@@ -148,36 +162,13 @@ export class ResumenCheckoutComponent implements OnInit {
     this.address = addressObj.address;
     this.usandoFallback = isFallback;
 
-    const countryMap: Record<string, string> = {
-      'España': 'ES',
-      'Spain': 'ES',
-      'France': 'FR',
-      'Francia': 'FR',
-      'Germany': 'DE',
-      'Alemania': 'DE',
-      'Italy': 'IT',
-      'Italia': 'IT',
-      'Portugal': 'PT',
-      'Países Bajos': 'NL',
-      'Netherlands': 'NL',
-      'Bélgica': 'BE',
-      'Austria': 'AT',
-      'Suecia': 'SE',
-      'Dinamarca': 'DK',
-      'Finlandia': 'FI',
-      'Noruega': 'NO',
-      'Irlanda': 'IE',
-      'Polonia': 'PL',
-      'Grecia': 'GR'
-      // Puedes agregar más si los necesitas
-    };
+    // Usar el servicio de validación para obtener el código de país
+    const countryCode = this.addressValidationService.getCountryCode(addressObj.pais);
 
-    // Lista de países permitidos
-    const allowedCountries = ['ES', 'FR', 'DE', 'IT', 'PT', 'NL', 'BE', 'AT', 'SE', 'DK', 'FI', 'NO', 'IE', 'PL', 'GR'];
-    const countryCode = countryMap[address.pais as string] || 'ES';
-
-    if (!allowedCountries.includes(countryCode)) {
+    // Verificar si el país está soportado
+    if (!this.addressValidationService.isCountrySupported(countryCode)) {
       console.warn("País no permitido:", countryCode);
+      alertWarning(`Lo sentimos, no realizamos envíos a ${addressObj.pais}. Solo enviamos a países de la Unión Europea.`);
       this.shippingRate = 0;
       this.shippingMethod = '';
       this.fechaEntregaMin = '';
@@ -188,11 +179,12 @@ export class ResumenCheckoutComponent implements OnInit {
     const payload = {
       recipient: {
         address1: addressObj.address,
-        city: addressObj.ciudad,
-        country_code: countryMap[address.pais as string] || 'ES',
+        city: addressObj.ciudad || addressObj.poblacion,
+        country_code: countryCode,
         zip: addressObj.zipcode,
+        state_code: addressObj.ciudad || addressObj.poblacion
       },
-      items: items, // Aquí pasas el array completo de productos con variantes y cantidades
+      items: items,
       currency: 'EUR',
       locale: 'es_ES'
     };
@@ -206,16 +198,14 @@ export class ResumenCheckoutComponent implements OnInit {
           const fechaMinRaw = new Date(rate.minDeliveryDate);
           const fechaMaxRaw = new Date(rate.maxDeliveryDate);
 
-          /** 🚀 AÑADIR MARGEN DE +9 DÍAS */
+          /** 🚀 AÑADIR MARGEN DE +7 DÍAS */
           const fechaMaxConMargen = new Date(fechaMaxRaw);
           fechaMaxConMargen.setDate(fechaMaxConMargen.getDate() + 7);
 
-          //const fechaMin = this.formatearFechaEntrega(rate.minDeliveryDate);
-          //const fechaMax = this.formatearFechaEntrega(rate.maxDeliveryDate);
           const fechaMin = this.formatearFechaEntrega(fechaMinRaw.toISOString());
           const fechaMax = this.formatearFechaEntrega(fechaMaxConMargen.toISOString());
 
-          if (fechaMin.label === fechaMax.label) { //if (rate.minDeliveryDate === rate.maxDeliveryDate) {
+          if (fechaMin.label === fechaMax.label) {
             this.fechaEntregaLabel = fechaMin.label;
             this.fechaEntregaISO = fechaMin.datetime;
             this.entregaUnica = true;
@@ -227,8 +217,9 @@ export class ResumenCheckoutComponent implements OnInit {
             this.entregaUnica = false;
           }
 
-          this.shippingMethod = rate.name; // "Envío estándar..."
+          this.shippingMethod = rate.name;
         } else {
+          alertWarning('No se pudo calcular el envío para esta dirección. Verifica que todos los datos sean correctos.');
           this.shippingRate = 0;
           this.shippingMethod = '';
           this.fechaEntregaMin = '';
@@ -236,7 +227,20 @@ export class ResumenCheckoutComponent implements OnInit {
         }
       },
       error: (err) => {
-      console.error("Error al calcular tarifas de envío", err);
+        console.error("❌ Error al calcular tarifas de envío", err);
+        
+        // Mostrar mensaje más específico según el error
+        let errorMessage = 'No se pudo calcular el envío para esta dirección.';
+        if (err.error?.error?.message) {
+          const printfulError = err.error.error.message.toLowerCase();
+          if (printfulError.includes('zip') || printfulError.includes('postal')) {
+            errorMessage = 'El código postal no es válido para este país.';
+          } else if (printfulError.includes('address')) {
+            errorMessage = 'La dirección no es válida. Verifica que todos los datos sean correctos.';
+          }
+        }
+        
+        alertDanger(errorMessage);
         this.shippingRate = 0;
         this.shippingMethod = '';
         this.fechaEntregaMin = '';
@@ -399,6 +403,25 @@ getVarietyImage(cart: any): string {
   }
   
   goToNextStep() {
+    // Validar que haya dirección seleccionada
+    if (!this.selectedAddress) {
+      alertWarning('Por favor, selecciona una dirección de envío antes de continuar.');
+      return;
+    }
+
+    // Validar que se haya calculado el envío correctamente
+    if (this.shippingRate === 0 && !this.shippingMethod) {
+      alertWarning('No se pudo calcular el envío para la dirección seleccionada. Por favor, verifica que la dirección sea correcta o selecciona otra.');
+      return;
+    }
+
+    // Validar que haya productos en el carrito
+    if (!this.listCarts || this.listCarts.length === 0) {
+      alertWarning('Tu carrito está vacío. Añade productos antes de continuar.');
+      return;
+    }
+
+    // Todo OK, continuar al pago
     this.checkoutService.setNavigatingToPayment(true);
     this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
   }
@@ -496,7 +519,7 @@ getVarietyImage(cart: any): string {
     // Validación de campos obligatorios y usuario
     if ((!this.CURRENT_USER_AUTHENTICATED && !this.CURRENT_USER_GUEST) ||
         !this.name || !this.surname || !this.pais ||
-        !this.address || !this.zipcode || !this.poblacion ||
+        !this.calle || !this.numero || !this.zipcode || !this.poblacion ||
         !this.ciudad || !this.email || !this.phone) {
       this.status = false;
       this.validMessage = true;
@@ -506,8 +529,18 @@ getVarietyImage(cart: any): string {
       return;
     }
 
-    // Construir payload común
-    const payload: any = {
+    // Construir la dirección completa combinando calle + número + apartamento
+    this.address = this.calle.trim() + ' ' + this.numero.trim();
+    if (this.apartamento && this.apartamento.trim()) {
+      this.address += ', ' + this.apartamento.trim();
+    }
+
+    // Marcar como validando
+    this.isValidating = true;
+    this.validationMessage = 'Validando dirección con Printful...';
+
+    // Construir objeto de dirección para validación
+    const addressData = {
       name: this.name,
       surname: this.surname,
       pais: this.pais,
@@ -516,9 +549,52 @@ getVarietyImage(cart: any): string {
       poblacion: this.poblacion,
       ciudad: this.ciudad,
       email: this.email,
-      phone: this.phone,
+      phone: this.phone
+    };
+
+    // 🔍 VALIDAR CON PRINTFUL ANTES DE GUARDAR
+    this.addressValidationService.validateWithPrintful(addressData).subscribe({
+      next: (validation) => {
+        this.isValidating = false;
+        
+        if (!validation.isValid) {
+          // ❌ Dirección no válida según Printful
+          this.status = false;
+          this.validMessage = true;
+          this.errorOrSuccessMessage = validation.message;
+          this.validationMessage = '';
+          this.hideMessageAfterDelay();
+          alertDanger(validation.message);
+          return;
+        }
+
+        // ✅ Dirección válida, proceder a guardar
+        this.validationMessage = 'Dirección válida, guardando...';
+        this.saveValidatedAddress(addressData);
+      },
+      error: (err) => {
+        console.error('❌ Error validando dirección:', err);
+        this.isValidating = false;
+        this.status = false;
+        this.validMessage = true;
+        this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
+        this.validationMessage = '';
+        this.hideMessageAfterDelay();
+        alertDanger("Error al validar la dirección");
+      }
+    });
+  }
+
+  /**
+   * Guarda la dirección validada en la base de datos
+   */
+  private saveValidatedAddress(addressData: any) {
+    // Construir payload con usuario
+    const payload: any = {
+      ...addressData,
       usual_shipping_address: this.usual_shipping_address
     };
+    
     // Seleccionar petición según tipo de usuario
     let request$;
     if (this.CURRENT_USER_AUTHENTICATED) {
@@ -531,6 +607,7 @@ getVarietyImage(cart: any): string {
 
     // Ejecutar petición y manejar respuesta
     request$.subscribe((resp: any) => {
+      this.validationMessage = '';
       if (resp.status === 200) {
         this.status = true;
         this.validMessage = true;
@@ -563,9 +640,13 @@ getVarietyImage(cart: any): string {
     this.name = '';
     this.surname = '';
     this.pais = '';
+    this.calle = '';
+    this.numero = '';
+    this.apartamento = '';
     this.address = '';
     this.zipcode = '';
     this.poblacion = '';
+    this.ciudad = '';
     this.email = '';
     this.phone = '';
     this.usual_shipping_address = false;
@@ -583,13 +664,48 @@ getVarietyImage(cart: any): string {
     this.name = this.address_client_selected.name;
     this.surname = this.address_client_selected.surname;
     this.pais = this.address_client_selected.pais;
-    this.address = this.address_client_selected.address;
+    
+    // Si la dirección tiene campos separados, usarlos
+    if (this.address_client_selected.calle) {
+      this.calle = this.address_client_selected.calle;
+      this.numero = this.address_client_selected.numero || '';
+      this.apartamento = this.address_client_selected.apartamento || '';
+    } else {
+      // Si solo tiene address, intentar extraer calle, número y apartamento (backward compatibility)
+      const fullAddress = this.address_client_selected.address || '';
+      
+      // Intentar separar por coma (formato: "Calle 123, 3º B")
+      const parts = fullAddress.split(',').map((p: string) => p.trim());
+      
+      if (parts.length > 0) {
+        // Primera parte es calle + número
+        const calleYNumero = parts[0];
+        // Buscar el último número en la primera parte
+        const match = calleYNumero.match(/^(.+?)\s+(\d+[A-Za-z]?)\s*$/);
+        
+        if (match) {
+          this.calle = match[1].trim();
+          this.numero = match[2].trim();
+        } else {
+          // No se pudo separar, poner todo en calle
+          this.calle = calleYNumero;
+          this.numero = '';
+        }
+        
+        // Segunda parte es apartamento (si existe)
+        this.apartamento = parts.length > 1 ? parts[1] : '';
+      } else {
+        this.calle = fullAddress;
+        this.numero = '';
+        this.apartamento = '';
+      }
+    }
+    
     this.ciudad = this.address_client_selected.ciudad;
-    this.phone = this.address_client_selected.telefono;
+    this.phone = this.address_client_selected.telefono || this.address_client_selected.phone;
     this.email = this.address_client_selected.email;
     this.zipcode = this.address_client_selected.zipcode;
     this.poblacion = this.address_client_selected.poblacion;
-    this.phone = this.address_client_selected.phone;
     this.usual_shipping_address = this.address_client_selected.usual_shipping_address;
   }
 
@@ -692,7 +808,17 @@ getVarietyImage(cart: any): string {
     if (!this.selectedAddressId && this.listAddresses.length > 0) {
       this.selectedAddressId = this.listAddresses[0].id;
     }
+    // Abrir sidebar con la lista de direcciones
     this.minicartService.openMiniAddress();
+  }
+  
+  editAddressFromSidebar(address: any) {
+    // Cargar datos de la dirección en el modal
+    this.addressClienteSelected(address);
+    // Cerrar sidebar
+    this.minicartService.closeMiniAddress();
+    // Abrir el modal de edición
+    $('#addEditModal').modal('show');
   }
   
   removeAddressSelected(list_address:any) {
@@ -753,14 +879,72 @@ getVarietyImage(cart: any): string {
    * creando un método genérico que reciba el tipo de usuario y maneje la actualización.
    */
   private storeUpdateAddress() {
-    if (!this.name || !this.surname || !this.pais || !this.address || !this.zipcode || !this.poblacion || !this.email || !this.phone) {
+    if (!this.name || !this.surname || !this.pais || !this.calle || !this.numero || !this.zipcode || !this.poblacion || !this.ciudad || !this.email || !this.phone) {
       this.status = false;
       this.validMessage = true;
       this.errorOrSuccessMessage = "Por favor, rellene los campos obligatorios de la dirección de envío";
       this.hideMessageAfterDelay();
+      alertDanger("Rellene los campos obligatorios de la dirección de envío");
       return;
     }
 
+    // Construir la dirección completa combinando calle + número + apartamento
+    this.address = this.calle.trim() + ' ' + this.numero.trim();
+    if (this.apartamento && this.apartamento.trim()) {
+      this.address += ', ' + this.apartamento.trim();
+    }
+
+    // Marcar como validando
+    this.isValidating = true;
+    this.validationMessage = 'Validando dirección con Printful...';
+
+    // Construir objeto de dirección para validación
+    const addressData = {
+      name: this.name,
+      surname: this.surname,
+      pais: this.pais,
+      address: this.address,
+      zipcode: this.zipcode,
+      poblacion: this.poblacion,
+      ciudad: this.ciudad,
+      email: this.email,
+      phone: this.phone
+    };
+
+    // 🔍 VALIDAR CON PRINTFUL ANTES DE ACTUALIZAR
+    this.addressValidationService.validateWithPrintful(addressData).subscribe({
+      next: (validation) => {
+        this.isValidating = false;
+        
+        if (!validation.isValid) {
+          // ❌ Dirección no válida según Printful
+          this.status = false;
+          this.validMessage = true;
+          this.errorOrSuccessMessage = validation.message;
+          this.validationMessage = '';
+          this.hideMessageAfterDelay();
+          alertDanger(validation.message);
+          return;
+        }
+
+        // ✅ Dirección válida, proceder a actualizar
+        this.validationMessage = 'Dirección válida, actualizando...';
+        this.proceedWithUpdate();
+      },
+      error: (err) => {
+        console.error('❌ Error validando dirección:', err);
+        this.isValidating = false;
+        this.status = false;
+        this.validMessage = true;
+        this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
+        this.validationMessage = '';
+        this.hideMessageAfterDelay();
+        alertDanger("Error al validar la dirección");
+      }
+    });
+  }
+
+  private proceedWithUpdate() {
     let data = {
       _id       : this.address_client_selected.id,
       user      : this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : this.CURRENT_USER_GUEST,
@@ -770,6 +954,7 @@ getVarietyImage(cart: any): string {
       address   : this.address,
       zipcode   : this.zipcode,
       poblacion : this.poblacion,
+      ciudad    : this.ciudad,
       email     : this.email,
       phone     : this.phone,
       usual_shipping_address: this.usual_shipping_address,

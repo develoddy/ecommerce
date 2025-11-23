@@ -144,12 +144,13 @@
                                                                     <div class="form-group col-12">
                                                                         <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
                                                                         <select id="address_country1" name="address[country]" [(ngModel)]="pais" #paisSelect="ngModel" required class="form-control py-4 fw-light" [ngClass]="{'is-invalid': paisSelect.invalid && (paisSelect.touched || addressForm.submitted)}">
-                                                                            <option value="" disabled>
-                                                                                País
-                                                                            </option>
-                                                                            <optgroup id="country-optgroup-Eu" label="Europa">
-                                                                                <option value="ES" label="España">España</option>
-                                                                                <option value="FR" label="Francia">Francia</option>
+                                                                            <option value="" disabled>País</option>
+                                                                            <optgroup label="🇪🇺 Unión Europea">
+                                                                                <option *ngFor="let country of supportedCountries" 
+                                                                                        [value]="country.code" 
+                                                                                        [label]="country.name">
+                                                                                    {{ country.name }}
+                                                                                </option>
                                                                             </optgroup>
                                                                         </select>
                                                                         <div *ngIf="paisSelect.invalid && (paisSelect.touched || addressForm.submitted)" class="invalid-feedback">
@@ -157,16 +158,37 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Direccion -->
+                                                                <!-- Calle -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="address" class="form-label d-none">Dirección <span class="required">*</span></label>
-                                                                        <input name="address" value="" id="address" type="text" required="" [(ngModel)]="address" #addressRef="ngModel" placeholder="Dirección" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': addressRef.invalid && (addressRef.touched || addressForm.submitted)}" />
-                                                                        <div *ngIf="addressRef.invalid && (addressRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                        <label for="calle" class="form-label d-none">Calle <span class="required">*</span></label>
+                                                                        <input name="calle" id="calle" type="text" required [(ngModel)]="calle" #calleRef="ngModel" placeholder="Calle (ej: Calle Gran Vía)" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': calleRef.invalid && (calleRef.touched || addressForm.submitted)}" />
+                                                                        <div *ngIf="calleRef.invalid && (calleRef.touched || addressForm.submitted)" class="invalid-feedback">
                                                                             Completa este campo para continuar
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
+                                                                <!-- Número -->
+                                                                <div class="row justify-content-center">
+                                                                    <div class="form-group col-12">
+                                                                        <label for="numero" class="form-label d-none">Número <span class="required">*</span></label>
+                                                                        <input name="numero" id="numero" type="text" required [(ngModel)]="numero" #numeroRef="ngModel" placeholder="Número (ej: 123)" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': numeroRef.invalid && (numeroRef.touched || addressForm.submitted)}" />
+                                                                        <div *ngIf="numeroRef.invalid && (numeroRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                            Debes incluir el número de la calle para el envío
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Apartamento/Piso (Opcional) -->
+                                                                <div class="row justify-content-center">
+                                                                    <div class="form-group col-12">
+                                                                        <label for="apartamento" class="form-label d-none">Apartamento/Piso</label>
+                                                                        <input name="apartamento" id="apartamento" type="text" [(ngModel)]="apartamento" placeholder="Apartamento/Piso (opcional, ej: 3º B)" class="form-control py-4 fw-light" />
+                                                                        <small class="form-text text-muted">Opcional: piso, puerta, escalera, etc.</small>
+                                                                    </div>
+                                                                </div>
+
                                                                 <!-- Codigo postal -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
@@ -187,17 +209,19 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Provincia -->
+                                                                <!-- Provincia/Estado -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="address_State" class="form-label d-none">Provincia <span class="required">*</span></label>
-                                                                        <select id="address_State" name="address[State]" [(ngModel)]="ciudad" #ciudadRef="ngModel" required class="form-control py-4 fw-light" [ngClass]="{'is-invalid': ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)}">
-                                                                            <option value="" disabled>
-                                                                                Provincia
-                                                                            </option>
-                                                                            <option value="Madrid">Madrid</option>
-                                                                            <option value="Paris">París</option>
-                                                                        </select>
+                                                                        <label for="address_State" class="form-label d-none">Provincia/Estado <span class="required">*</span></label>
+                                                                        <input name="state" 
+                                                                               placeholder="Provincia o Estado" 
+                                                                               class="form-control py-4 fw-light" 
+                                                                               required 
+                                                                               [(ngModel)]="ciudad" 
+                                                                               #ciudadRef="ngModel" 
+                                                                               [ngClass]="{'is-invalid': ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)}" 
+                                                                               id="address_State" 
+                                                                               type="text" />
                                                                         <div *ngIf="ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)" class="invalid-feedback">
                                                                             Completa este campo para continuar
                                                                         </div>
@@ -363,87 +387,208 @@
                                                         <!-- Nombre -->
                                                         <div class="row justify-content-center">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="firstname" class="form-label d-none">Nombre <span class="required">*</span></label>
-                                                                <input name="firstname" value="" id="firstname" type="text" [(ngModel)]="name" required="" placeholder="Nombre" class="form-control" />
+                                                                <label for="edit_firstname" class="form-label d-none">Nombre <span class="required">*</span></label>
+                                                                <input name="firstname" 
+                                                                       id="edit_firstname" 
+                                                                       type="text" 
+                                                                       required
+                                                                       [(ngModel)]="name" 
+                                                                       #firstnameEditRef="ngModel"
+                                                                       placeholder="Nombre" 
+                                                                       class="form-control"
+                                                                       [ngClass]="{'is-invalid': firstnameEditRef.invalid && (firstnameEditRef.touched || addressForm.submitted)}" />
+                                                                <div *ngIf="firstnameEditRef.invalid && (firstnameEditRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                    Completa este campo para continuar
+                                                                </div>
                                                             </div>
                                                         </div>
+
                                                         <!-- Apellidos -->
                                                         <div class="row justify-content-center">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="lastname" class="form-label d-none">Apellidos <span class="required">*</span></label>
-                                                                <input name="lastname" value="" id="lastname" type="text" [(ngModel)]="surname" required="" placeholder="Aellidos" class="form-control" />
+                                                                <label for="edit_lastname" class="form-label d-none">Apellidos <span class="required">*</span></label>
+                                                                <input name="lastname" 
+                                                                       id="edit_lastname" 
+                                                                       type="text" 
+                                                                       required
+                                                                       [(ngModel)]="surname" 
+                                                                       #lastnameEditRef="ngModel"
+                                                                       placeholder="Apellidos" 
+                                                                       class="form-control"
+                                                                       [ngClass]="{'is-invalid': lastnameEditRef.invalid && (lastnameEditRef.touched || addressForm.submitted)}" />
+                                                                <div *ngIf="lastnameEditRef.invalid && (lastnameEditRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                    Completa este campo para continuar
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <!-- Pais -->
+                                                        <!-- País -->
                                                         <div class="row justify-content-center">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
-                                                                <select id="address_country1" name="address[country]" [(ngModel)]="pais" data-default="United States" disabled class="form-control text-muted">
-                                                                    <option value="0" label="Seleccione un país" selected="selected">
-                                                                        Seleccione un país
-                                                                    </option>
-                                                                    <optgroup id="country-optgroup-Eu" label="Europe">
-                                                                        <option value="IT" label="Italy">Italy</option>
-                                                                        <option value="PT" label="Portugal">
-                                                                            Portugal
-                                                                        </option>
-                                                                        <option value="RO" label="Romania">
-                                                                            Romania
-                                                                        </option>
-                                                                        <option value="SPAIN" label="Spain">
-                                                                            Spain
+                                                                <label for="edit_country" class="form-label d-none">País <span class="required">*</span></label>
+                                                                <select id="edit_country" 
+                                                                        name="address[country]" 
+                                                                        [(ngModel)]="pais" 
+                                                                        #paisEditSelect="ngModel"
+                                                                        required 
+                                                                        class="form-control" 
+                                                                        [ngClass]="{'is-invalid': paisEditSelect.invalid && (paisEditSelect.touched || addressForm.submitted)}">
+                                                                    <option value="" disabled>País</option>
+                                                                    <optgroup label="🇪🇺 Unión Europea">
+                                                                        <option *ngFor="let country of supportedCountries" 
+                                                                                [value]="country.code" 
+                                                                                [label]="country.name">
+                                                                            {{ country.name }}
                                                                         </option>
                                                                     </optgroup>
                                                                 </select>
+                                                                <div *ngIf="paisEditSelect.invalid && (paisEditSelect.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                    Selecciona un país
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <!-- Direccion -->
+
+                                                        <!-- Calle -->
                                                         <div class="row justify-content-center">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="address-1" class="form-label d-none">Dirección <span class="required">*</span></label>
-                                                                <input name="address_1" value="" id="address-1" type="text" required="" [(ngModel)]="address" placeholder="Dirección" class="form-control" />
+                                                                <label for="edit_calle" class="form-label d-none">Calle <span class="required">*</span></label>
+                                                                <input name="calle" 
+                                                                       id="edit_calle" 
+                                                                       type="text" 
+                                                                       required 
+                                                                       [(ngModel)]="calle" 
+                                                                       #calleEditRef="ngModel" 
+                                                                       placeholder="Calle (ej: Calle Gran Vía)" 
+                                                                       class="form-control" 
+                                                                       [ngClass]="{'is-invalid': calleEditRef.invalid && (calleEditRef.touched || addressForm.submitted)}" />
+                                                                <div *ngIf="calleEditRef.invalid && (calleEditRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                    Completa este campo para continuar
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Número -->
+                                                        <div class="row justify-content-center">
+                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
+                                                                <label for="edit_numero" class="form-label d-none">Número <span class="required">*</span></label>
+                                                                <input name="numero" 
+                                                                       id="edit_numero" 
+                                                                       type="text" 
+                                                                       required 
+                                                                       [(ngModel)]="numero" 
+                                                                       #numeroEditRef="ngModel" 
+                                                                       placeholder="Número (ej: 123)" 
+                                                                       class="form-control" 
+                                                                       [ngClass]="{'is-invalid': numeroEditRef.invalid && (numeroEditRef.touched || addressForm.submitted)}" />
+                                                                <div *ngIf="numeroEditRef.invalid && (numeroEditRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                    Debes incluir el número de la calle para el envío
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Apartamento/Piso (Opcional) -->
+                                                        <div class="row justify-content-center">
+                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
+                                                                <label for="edit_apartamento" class="form-label d-none">Apartamento/Piso</label>
+                                                                <input name="apartamento" 
+                                                                       id="edit_apartamento" 
+                                                                       type="text" 
+                                                                       [(ngModel)]="apartamento" 
+                                                                       placeholder="Apartamento/Piso (opcional, ej: 3º B)" 
+                                                                       class="form-control" />
+                                                                <small class="form-text text-muted">Opcional: piso, puerta, escalera, etc.</small>
                                                             </div>
                                                         </div>
                                                         <!-- Codigo postal -->
                                                         <div class="row justify-content-center">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="postcode" class="form-label d-none">Código postal
-                                                                    <span class="required">*</span></label>
-                                                                <input name="postcode" value="" id="postcode" type="text" class="form-control" [(ngModel)]="zipcode" placeholder="Código postal" />
+                                                                <label for="edit_postcode" class="form-label d-none">Código postal <span class="required">*</span></label>
+                                                                <input name="postcode" 
+                                                                       id="edit_postcode" 
+                                                                       type="text" 
+                                                                       required
+                                                                       [(ngModel)]="zipcode" 
+                                                                       #zipcodeEditRef="ngModel"
+                                                                       placeholder="Código postal" 
+                                                                       class="form-control"
+                                                                       [ngClass]="{'is-invalid': zipcodeEditRef.invalid && (zipcodeEditRef.touched || addressForm.submitted)}" />
+                                                                <div *ngIf="zipcodeEditRef.invalid && (zipcodeEditRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                    Completa este campo para continuar
+                                                                </div>
                                                             </div>
                                                         </div>
+
                                                         <!-- Población -->
                                                         <div class="row justify-content-center">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="new-city" class="form-label d-none">Población <span class="required">*</span></label>
-                                                                <input name="city" placeholder="Población" value="" required="" [(ngModel)]="poblacion" id="new-city" type="text" />
+                                                                <label for="edit_city" class="form-label d-none">Población <span class="required">*</span></label>
+                                                                <input name="city" 
+                                                                       placeholder="Población" 
+                                                                       required 
+                                                                       [(ngModel)]="poblacion" 
+                                                                       #poblacionEditRef="ngModel"
+                                                                       id="edit_city" 
+                                                                       type="text" 
+                                                                       class="form-control"
+                                                                       [ngClass]="{'is-invalid': poblacionEditRef.invalid && (poblacionEditRef.touched || addressForm.submitted)}" />
+                                                                <div *ngIf="poblacionEditRef.invalid && (poblacionEditRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                    Completa este campo para continuar
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <!-- Ciudad -->
+
+                                                        <!-- Provincia/Estado -->
                                                         <div class="row justify-content-center">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="address_State" class="form-label d-none">Ciudad <span class="required">*</span></label>
-                                                                <select id="address_State" name="address[State]" data-default="" [(ngModel)]="ciudad" class="form-control">
-                                                                    <option value="0" label="Select a state" selected="selected">
-                                                                        Provincia/Estado
-                                                                    </option>
-                                                                    <option value="Madrid">Madrid</option>
-                                                                    <option value="New York">New York</option>
-                                                                </select>
+                                                                <label for="edit_state" class="form-label d-none">Provincia/Estado <span class="required">*</span></label>
+                                                                <input name="state" 
+                                                                       placeholder="Provincia o Estado" 
+                                                                       required 
+                                                                       [(ngModel)]="ciudad" 
+                                                                       #ciudadEditRef="ngModel"
+                                                                       id="edit_state" 
+                                                                       type="text" 
+                                                                       class="form-control"
+                                                                       [ngClass]="{'is-invalid': ciudadEditRef.invalid && (ciudadEditRef.touched || addressForm.submitted)}" />
+                                                                <div *ngIf="ciudadEditRef.invalid && (ciudadEditRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                    Completa este campo para continuar
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <!-- Email -->
                                                         <div class="row justify-content-center">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="email" class="form-label d-none">E-Mail <span class="required">*</span></label>
-                                                                <input name="email" value="" id="email" type="email" required="" [(ngModel)]="email" placeholder="E-mail" disabled class="form-control text-muted text-uppercase" />
+                                                                <label for="edit_email" class="form-label d-none">E-Mail <span class="required">*</span></label>
+                                                                <input name="email" 
+                                                                       id="edit_email" 
+                                                                       type="email" 
+                                                                       required 
+                                                                       [(ngModel)]="email" 
+                                                                       #emailEditRef="ngModel"
+                                                                       placeholder="E-mail" 
+                                                                       class="form-control"
+                                                                       [ngClass]="{'is-invalid': emailEditRef.invalid && (emailEditRef.touched || addressForm.submitted)}" />
+                                                                <div *ngIf="emailEditRef.invalid && (emailEditRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                    Introduce un email válido
+                                                                </div>
                                                             </div>
                                                         </div>
+
                                                         <!-- Telefono -->
                                                         <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10 mb-5">
-                                                                <label for="phone" class="form-label d-none">Móvil <span class="required">*</span></label>
-                                                                <input name="phone" value="" id="phone" type="tel" required="" [(ngModel)]="phone" placeholder="Móvil" class="form-control" />
+                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
+                                                                <label for="edit_phone" class="form-label d-none">Móvil <span class="required">*</span></label>
+                                                                <input name="phone" 
+                                                                       id="edit_phone" 
+                                                                       type="tel" 
+                                                                       required 
+                                                                       [(ngModel)]="phone" 
+                                                                       #phoneEditRef="ngModel"
+                                                                       placeholder="Móvil" 
+                                                                       class="form-control"
+                                                                       [ngClass]="{'is-invalid': phoneEditRef.invalid && (phoneEditRef.touched || addressForm.submitted)}" />
+                                                                <div *ngIf="phoneEditRef.invalid && (phoneEditRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                    Completa este campo para continuar
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="row justify-content-center mt-0 mb-5 d-none">
@@ -453,9 +598,21 @@
                                                         </div>
                                                         <div class="row justify-content-center mt-0 mb-3">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <button type="submit" class="btn btn-primary w-100 text-uppercase fw-normal btn-lg" (click)="storeAddress()">
-                                                                    <span>Guardar cambios</span>
+                                                                <button type="submit" class="btn btn-primary w-100 text-uppercase fw-normal btn-lg" (click)="storeAddress()" [disabled]="isValidating">
+                                                                    <span *ngIf="!isValidating">Guardar cambios</span>
+                                                                    <span *ngIf="isValidating">Validando...</span>
                                                                 </button>
+                                                                
+                                                                <!-- Mensaje de validación -->
+                                                                <div *ngIf="validationMessage" class="alert alert-info mt-3 mb-0">
+                                                                    {{ validationMessage }}
+                                                                </div>
+                                                                
+                                                                <!-- Mensaje de error -->
+                                                                <p class="mt-3 fw-normal text-danger" *ngIf="validMessage && !status">
+                                                                    {{ errorOrSuccessMessage }}
+                                                                </p>
+                                                                
                                                                 <p class="fs-12">
                                                                     <small class="text-muted">Al continuar, confirmas que has leído la
                                                                         <a href="#" class="text-decoration-underline">Política de privacidad</a></small>
@@ -910,8 +1067,8 @@
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <a href="#" onclick="return false;" (click)="addressClienteSelected(list_address)">
-                                                        <button type="button" class="border-0 fw-bold text-decoration-underline" data-bs-toggle="modal" data-bs-target="#addEditModal">
+                                                    <a href="#" onclick="return false;" (click)="editAddressFromSidebar(list_address)">
+                                                        <button type="button" class="border-0 fw-bold text-decoration-underline">
                                                             Editar
                                                         </button>
                                                     </a>
