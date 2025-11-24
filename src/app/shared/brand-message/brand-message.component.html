@@ -14,22 +14,52 @@
       </div>
     </div>
 
-    <!-- Newsletter -->
-    <div class="row justify-content-center text-center">
+    <!-- Newsletter (Solo para usuarios Guest) -->
+    <div class="row justify-content-center text-center" *ngIf="isGuest">
       <div class="col-12 col-md-8 col-lg-6">
         <p class="text-white mb-3 lh-1 mb-3 fs-12">
           Recibe elegancia y código directo a tu inbox.
         </p>
-        <div class="input-group position-relative" [ngClass]="{'d-flex': isMobile}">
-          <input
-            type="email"
-            class="form-control bg-transparent border-0 border-bottom border-white text-white rounded-0 shadow-none px-0"
-            [ngClass]="{'w-100': isMobile}"
-            placeholder="Introduce tu correo electrónico"
-            required
-          />
-          <button type="submit" class="btn-subscribe position-absolute px-0">Confirmar</button>
+        
+        <!-- Success Message -->
+        <div class="alert alert-success text-center mb-3" *ngIf="showSuccessMessage">
+          <i class="fas fa-check-circle me-2"></i>
+          ¡Suscripción exitosa! Revisa tu email.
         </div>
+
+        <!-- Error Message -->
+        <div class="alert alert-danger text-center mb-3" *ngIf="showErrorMessage">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          {{ errorMessage }}
+        </div>
+
+        <!-- Newsletter Form -->
+        <form (ngSubmit)="onSubmitNewsletter()" *ngIf="!showSuccessMessage">
+          <div class="input-group position-relative" [ngClass]="{'d-flex': isMobile}">
+            <input
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              class="form-control bg-transparent border-0 border-bottom border-white text-white rounded-0 shadow-none px-0 pe-5"
+              [ngClass]="{'w-100': isMobile}"
+              placeholder="Introduce tu correo electrónico"
+              [disabled]="isSubmitting"
+              autocomplete="email"
+              required
+            />
+            <button 
+              type="submit" 
+              class="btn-subscribe position-absolute px-0"
+              [disabled]="isSubmitting"
+              style="z-index: 10;"
+            >
+              <span *ngIf="!isSubmitting">Confirmar</span>
+              <span *ngIf="isSubmitting">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

@@ -1,7 +1,8 @@
 /* Visibilidad del placeholder en selects requeridos */
 input::placeholder {
-  color: #6c757d !important;
+  color: #999999 !important;
   font-weight: 300 !important;
+  font-size: 12px !important;
 }
 
 
@@ -120,10 +121,10 @@ label { margin-bottom:5px; }
 */
 html, button, input, select, textarea { font-family:'PT Serif', sans-serif; }
 input, textarea, .form-control { padding:10px 15px; }
-input, button, select, textarea, .form-control { font-size:12px; font-family: "PT Serif", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #171717; border-radius:0; transition:all 0.4s ease-out 0s; -webkit-transition:all 0.4s ease-out 0s; outline:none !important; box-shadow:none !important; }
-input:focus, input:active, button:focus, button:active, select:focus, select:active, textarea:focus, textarea:active, .form-control:focus { outline:none; border-color:#131313; }
+input, button, select, textarea, .form-control { font-size:13px; font-family: "PT Serif", sans-serif; color:#171717; background-color: #ffffff; border:1px solid #d0d0d0; border-radius:2px; transition:all 0.25s ease; -webkit-transition:all 0.25s ease; outline:none !important; box-shadow:0 1px 3px rgba(0, 0, 0, 0.05) !important; }
+input:focus, input:active, button:focus, button:active, select:focus, select:active, textarea:focus, textarea:active, .form-control:focus { outline:none; border-color:#333333; box-shadow:0 2px 6px rgba(0, 0, 0, 0.1) !important; }
 input, select, textarea { width: 100%; }
-input, select { height:50px; }
+input, select { height:48px; }
 input[type="checkbox"], input[type="radio"] { width:auto; height:auto; }
 input[type="checkbox"]:focus, input[type="radio"]:focus { outline:0; box-shadow:none; }
 select { -webkit-appearance:none; -moz-appearance:none; appearance:none; background-image:url(../images/icons/arrow-select.png); background-repeat:no-repeat; background-position:right 10px center; background-size:10px; background-color:#ffffff; line-height:1.2; text-indent:inherit; text-overflow: ''; cursor:pointer; padding:8px 25px 8px 10px; }
@@ -290,25 +291,25 @@ p:last-child { margin-bottom:0; }
   4. Buttons 
 ========================================================================*/
 /* Button principal color dark & hover*/
-.btn, .btn-dark-ld {background: linear-gradient(135deg, #121314, #121314) !important; text-transform: uppercase; border: 1px solid #121314; color: #ffffff !important;font-family: "PT Serif", sans-serif !important;font-size: 12px !important;font-weight: 300 !important;border-radius: 0px !important;box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;transition: all 0.3s ease-in-out !important;letter-spacing: 0.3px !important;cursor: pointer !important;text-align: center;width: 100%; padding: 1rem 1rem;}
+.btn, .btn-dark-ld {background: linear-gradient(135deg, #121314, #121314) !important; text-transform: uppercase; border: 1px solid #121314; color: #ffffff !important;font-family: "PT Serif", sans-serif !important;font-size: 12px !important;font-weight: 400 !important;border-radius: 2px !important;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;transition: all 0.25s ease !important;letter-spacing: 0.5px !important;cursor: pointer !important;text-align: center;width: 100%; padding: 1rem 1rem;}
 
-.btn, .btn-outline-dark-ld {background: linear-gradient(135deg, #121314, #121314) !important; text-transform: uppercase; border: 1px solid #fff; color: #fff !important;font-family: "PT Serif", sans-serif !important;font-size: 12px !important;font-weight: 300 !important;border-radius: 0px !important;box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;transition: all 0.3s ease-in-out !important;letter-spacing: 0.3px !important;cursor: pointer !important;text-align: center;width: 100%; padding: 1rem 1rem;}
+.btn, .btn-outline-dark-ld {background: linear-gradient(135deg, #121314, #121314) !important; text-transform: uppercase; border: 1px solid #fff; color: #fff !important;font-family: "PT Serif", sans-serif !important;font-size: 12px !important;font-weight: 400 !important;border-radius: 2px !important;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;transition: all 0.25s ease !important;letter-spacing: 0.5px !important;cursor: pointer !important;text-align: center;width: 100%; padding: 1rem 1rem;}
 
-.btn-dark-ld:hover {background: linear-gradient(135deg, #5a5a5a, #5a5a5a) !important; border: 1px solid #5a5a5a; transition: color 500ms cubic-bezier(0.3, 0.85, 0.5, 1),background-color 500ms cubic-bezier(0.3,0.85, 0.5, 1)}
-.btn-dark-ld:active {transform: scale(0.98) !important;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;}
+.btn-dark-ld:hover {background: linear-gradient(135deg, #2a2a2a, #2a2a2a) !important; border: 1px solid #2a2a2a; transform: translateY(-1px) !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;}
+.btn-dark-ld:active {transform: scale(0.98) translateY(0) !important;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;}
 
 /* Button principal color white & hover*/
-.btn, .btn-outline-white-ld {background: linear-gradient(135deg, #fff, #fff) !important;color: #000 !important;font-family: "PT Serif", sans-serif !important;padding: 12px 28px !important;font-size: 16px !important;font-weight: 300 !important;border-radius: 0px !important;border: 1px solid #000;transition: all 0.3s ease-in-out !important;letter-spacing: 0.3px !important;cursor: pointer !important;text-align: center;width: 100%;}
-.btn-outline-white-ld:hover {background: linear-gradient(135deg, #000, #000) !important;transform: translateY(-2px) scale(1.02) !important;box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;color: #fff !important;}
-.btn-outline-white-ld:active {transform: scale(0.98) !important;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;color: #fff !important;}
+.btn, .btn-outline-white-ld {background: linear-gradient(135deg, #fff, #fff) !important;color: #000 !important;font-family: "PT Serif", sans-serif !important;padding: 13px 30px !important;font-size: 13px !important;font-weight: 400 !important;border-radius: 2px !important;border: 1px solid #000;transition: all 0.25s ease !important;letter-spacing: 0.5px !important;cursor: pointer !important;text-align: center;width: 100%;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;}
+.btn-outline-white-ld:hover {background: linear-gradient(135deg, #000, #000) !important;transform: translateY(-1px) !important;box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;color: #fff !important;}
+.btn-outline-white-ld:active {transform: scale(0.98) translateY(0) !important;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;color: #fff !important;}
 
 /* Button principal color transparent & hover*/
-.btn, .btn-transparent-ld {background: transparent !important;border: 1px solid #fff;color: #ffffff !important;font-family: "PT Serif", sans-serif !important;padding: 12px 28px !important;font-size: 16px !important;font-weight: 300 !important;border-radius: 0px !important;box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;transition: all 0.3s ease-in-out !important;letter-spacing: 0.3px !important;cursor: pointer !important;text-align: center;width: 100%;}
-.btn-transparent-ld:hover {background: linear-gradient(135deg, #2e2e2e, #444) !important;transform: translateY(-2px) scale(1.02) !important;box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;}
-.btn-transparent-ld:active {transform: scale(0.98) !important;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;}
+.btn, .btn-transparent-ld {background: transparent !important;border: 1px solid #fff;color: #ffffff !important;font-family: "PT Serif", sans-serif !important;padding: 13px 30px !important;font-size: 13px !important;font-weight: 400 !important;border-radius: 2px !important;box-shadow: none !important;transition: all 0.25s ease !important;letter-spacing: 0.5px !important;cursor: pointer !important;text-align: center;width: 100%;}
+.btn-transparent-ld:hover {background: rgba(255, 255, 255, 0.15) !important;transform: translateY(-1px) !important;box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;border-color: #fff !important;}
+.btn-transparent-ld:active {transform: scale(0.98) translateY(0) !important;box-shadow: none !important;}
 
-.btn, .btn-primary {font-family: "PT Serif", sans-serif; background-color:#131313 !important; color:#ffffff !important; border:1px solid #131313; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:0; padding:10px 20px; font-size:14px; font-weight:600; line-height:normal; white-space:normal; opacity:1; outline:none !important; box-shadow:none !important; -ms-transition:all 0.3s ease-in-out; -webkit-transition:all 0.3s ease-in-out; transition:all 0.3s ease-in-out; }
-.btn:hover, .btn:focus { background-color:#131313; color:#ffffff; border-color:#131313; text-decoration:none; opacity:1; }
+.btn, .btn-primary {font-family: "PT Serif", sans-serif; background-color:#131313 !important; color:#ffffff !important; border:1px solid #131313; display:inline-flex;align-items:center;justify-content:center; width:auto; height:auto; text-decoration:none; text-align:center; vertical-align:middle; cursor:pointer; border-radius:2px; padding:11px 22px; font-size:13px; font-weight:500; line-height:normal; white-space:normal; opacity:1; outline:none !important; box-shadow:0 2px 6px rgba(0, 0, 0, 0.12) !important; -ms-transition:all 0.25s ease; -webkit-transition:all 0.25s ease; transition:all 0.25s ease; }
+.btn:hover, .btn:focus { background-color:#2a2a2a !important; color:#ffffff; border-color:#2a2a2a; text-decoration:none; opacity:1; transform:translateY(-1px); box-shadow:0 4px 10px rgba(0, 0, 0, 0.18) !important; }
 
 .btn-secondary,.btn-secondary:focus { background-color:#131313; color:#ffffff; border:1px solid #131313; }
 .btn-secondary:hover { background-color:#424242; color:#ffffff; border-color:#424242; }

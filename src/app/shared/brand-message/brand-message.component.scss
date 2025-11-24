@@ -20,7 +20,17 @@
   position: relative;
 
   input.form-control {
-    padding-right: 110px; /* espacio para el botón */
+    padding-right: 120px; /* espacio para el botón */
+    
+    // Prevenir que el autocompletado del navegador tape el botón
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+      -webkit-text-fill-color: #fff;
+      transition: background-color 5000s ease-in-out 0s;
+      border-bottom: 1px solid #fff !important;
+    }
   }
 
   .btn-subscribe {
@@ -36,10 +46,16 @@
     padding: 0 12px;
     height: 100%;
     line-height: 1;
+    z-index: 10; // Asegurar que siempre esté encima del autocompletado
     
     &:hover {
       color: #ccc;
       background: rgba(255, 255, 255, 0.1);
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   }
 }
@@ -48,7 +64,7 @@
 @media (max-width: 767px) {
   .input-group {
     input.form-control {
-      padding-right: 110px; /* mismo que desktop */
+      padding-right: 120px; /* mismo que desktop (actualizado) */
     }
 
     .btn-subscribe {
@@ -60,6 +76,7 @@
       height: 100%;
       padding: 0 12px;
       font-size: 12px;
+      z-index: 10; // También en mobile
     }
   }
 }
