@@ -78,27 +78,27 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
       console.log("Estructura de sale_orders[0]:", resp.sale_orders?.[0]);
       console.log("Estructura de sale_details[0]:", resp.sale_orders?.[0]?.sale_details?.[0]);
       // Debug: Examinar campos de descuento disponibles
-      if (resp.sale_orders?.[0]?.sale_details?.[0]) {
-        const detail = resp.sale_orders[0].sale_details[0];
-        console.log("🔍 Campos de descuento disponibles:", {
-          code_discount: detail.code_discount,
-          discount: detail.discount,
-          code_cupon: detail.code_cupon,
-          price_unitario: detail.price_unitario,
-          type_discount: detail.type_discount,
-          product_price_usd: detail.product?.price_usd,
-          variedad_retail_price: detail.variedad?.retail_price || detail.variedade?.retail_price
-        });
+       if (resp.sale_orders?.[0]?.sale_details?.[0]) {
+         const detail = resp.sale_orders[0].sale_details[0];
+         console.log("🔍 Campos de descuento disponibles:", {
+           code_discount: detail.code_discount,
+           discount: detail.discount,
+           code_cupon: detail.code_cupon,
+           price_unitario: detail.price_unitario,
+           type_discount: detail.type_discount,
+           product_price_usd: detail.product?.price_usd,
+           variedad_retail_price: detail.variedad?.retail_price || detail.variedade?.retail_price
+         });
         
-        // Debug de cálculos de descuento
-        console.log("🧮 Test de cálculos para el primer producto:", {
-          hasDiscount: this.hasDiscount(detail),
-          originalPrice: this.getOriginalPrice(detail),
-          finalPrice: this.getFinalUnitPrice(detail),
-          discountPercentage: this.getDiscountPercentage(detail),
-          discountAmount: this.getDiscountAmount(detail),
-          discountType: this.getDiscountType(detail)
-        });
+      //   // Debug de cálculos de descuento
+      //   console.log("🧮 Test de cálculos para el primer producto:", {
+      //     hasDiscount: this.hasDiscount(detail),
+      //     originalPrice: this.getOriginalPrice(detail),
+      //     finalPrice: this.getFinalUnitPrice(detail),
+      //     discountPercentage: this.getDiscountPercentage(detail),
+      //     discountAmount: this.getDiscountAmount(detail),
+      //     discountType: this.getDiscountType(detail)
+      //   });
       }
       
       this.sale_orders = resp.sale_orders;
@@ -146,7 +146,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
       }
     });
 
-    console.log('Compras paginadas:', this.paginatedSaleOrders.length, 'Total productos mostrados:', this.paginatedSaleDetails.length);
+    //console.log('Compras paginadas:', this.paginatedSaleOrders.length, 'Total productos mostrados:', this.paginatedSaleDetails.length);
   }
 
   // Función para cambiar de página
@@ -199,7 +199,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log(`Descargando recibo para venta ID: ${saleId}`);
+    //console.log(`Descargando recibo para venta ID: ${saleId}`);
     
     // Iniciar loading state
     this.downloadingReceipts.add(saleId);
@@ -207,13 +207,13 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     // Primero obtener información del recibo
     this._ecommerceAuthService.getReceiptBySale(saleId).subscribe({
       next: (resp: any) => {
-        console.log('Recibo obtenido:', resp);
+        //console.log('Recibo obtenido:', resp);
         
         if (resp && resp.success && resp.receipt) {
           // Si existe el recibo, proceder con la descarga del PDF
           this.downloadReceiptPdf(resp.receipt.id, saleId);
         } else {
-          console.warn('No se encontró recibo para esta venta');
+          //console.warn('No se encontró recibo para esta venta');
           // Terminar loading state
           this.downloadingReceipts.delete(saleId);
           // Aquí podrías mostrar un mensaje al usuario
@@ -263,7 +263,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   }
 
   // 💰 ================ MÉTODOS PARA PRECIOS ================ 💰
-  
+
   /**
    * Obtiene el precio mostrado en la lista con redondeo .95
    * @param prodDetail Detalle del producto de la compra
@@ -279,7 +279,8 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     if (basePrice <= 0) return basePrice;
 
     // Aplicar redondeo .95 para consistencia con el resto de la plataforma
-    return this.priceCalculationService.applyRoundingTo95(basePrice);
+    //return this.priceCalculationService.applyRoundingTo95(basePrice);
+     return parseFloat(basePrice.toFixed(2));
   }
 
   /**
@@ -298,29 +299,29 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     return parseFloat(totalPrice.toString());
   }
 
+  getTotalForDisplay(prodDetail: any): number {
+    if (!prodDetail) return 0;
+    const unitPrice = parseFloat(prodDetail.price_unitario || 0);
+    const quantity = parseInt(prodDetail.cantidad || 1);
+    return parseFloat((unitPrice * quantity).toFixed(2)); // total exacto
+  }
+
   // 🏷️ ================ MÉTODOS PARA DESCUENTOS ================ 🏷️
 
   /**
    * Detecta si un producto tiene descuento aplicado
+   * Solo muestra descuento si type_campaign es válido (validado en backend)
    * @param prodDetail Detalle del producto
-   * @returns true si tiene descuento
+   * @returns true si tiene descuento real
    */
   hasDiscount(prodDetail: any): boolean {
     if (!prodDetail) return false;
     
-    // Verificar si hay cupón aplicado
-    if (prodDetail.code_cupon) return true;
-    
-    // La forma más confiable es comparar precio original vs precio final
-    const originalPrice = this.getOriginalPrice(prodDetail);
-    const finalPrice = this.getFinalUnitPrice(prodDetail);
-    
-    // Si el precio final es menor que el original, hay descuento
-    if (originalPrice > 0 && finalPrice > 0 && finalPrice < originalPrice) {
-      return true;
-    }
-    
-    return false;
+    // type_campaign: 1=Campaign, 2=Flash Sale, 3=Cupón
+    // Solo mostrar descuento si type_campaign está presente y discount > 0
+    return prodDetail.type_campaign && 
+           [1, 2, 3].includes(prodDetail.type_campaign) && 
+           parseFloat(prodDetail.discount || 0) > 0;
   }
 
   /**
@@ -342,17 +343,23 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
 
   /**
    * Obtiene el precio final unitario (con descuentos aplicados)
+   * IMPORTANTE: price_unitario YA viene validado y calculado desde el backend
    * @param prodDetail Detalle del producto
    * @returns Precio final unitario
    */
   getFinalUnitPrice(prodDetail: any): number {
     if (!prodDetail) return 0;
     
-    // El precio final ya calculado está en price_unitario
+    // price_unitario ya viene con el cálculo correcto desde el backend
     const finalPrice = parseFloat(prodDetail.price_unitario || 0);
     
-    // Si no hay price_unitario, usar precio original
-    return finalPrice > 0 ? finalPrice : this.getOriginalPrice(prodDetail);
+    if (finalPrice > 0) {
+      return finalPrice;
+    }
+    
+    // Fallback: usar retail_price si price_unitario no está disponible
+    const variedad = prodDetail.variedad || prodDetail.variedade;
+    return parseFloat(variedad?.retail_price || prodDetail.product?.price_usd || 0);
   }
 
   /**
@@ -364,22 +371,11 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     if (!prodDetail || !this.hasDiscount(prodDetail)) return 0;
     
     const originalPrice = this.getOriginalPrice(prodDetail);
-    if (originalPrice <= 0) return 0;
-    
-    // Para cupones, calcular basado en el porcentaje
-    if (prodDetail.code_cupon) {
-      const percentage = this.getDiscountPercentage(prodDetail);
-      if (percentage > 0) {
-        const discountAmount = (originalPrice * percentage) / 100;
-        return this.priceCalculationService.applyRoundingTo95(discountAmount);
-      }
-    }
-    
-    // Para flash sales y campaign discounts, usar diferencia de precios
     const finalPrice = this.getFinalUnitPrice(prodDetail);
-    if (finalPrice >= originalPrice) return 0;
     
-    return this.priceCalculationService.applyRoundingTo95(originalPrice - finalPrice);
+    if (originalPrice <= 0 || finalPrice >= originalPrice) return 0;
+    
+    return parseFloat((originalPrice - finalPrice).toFixed(2));
   }
 
   /**
@@ -390,33 +386,17 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   getDiscountPercentage(prodDetail: any): number {
     if (!prodDetail || !this.hasDiscount(prodDetail)) return 0;
     
-    // Usar el descuento almacenado en la base de datos cuando esté disponible
-    // Esto evita problemas de redondeo que causan diferencias entre 10% real y 9% calculado
-    if (prodDetail.discount && prodDetail.discount > 0) {
+    // Si type_discount es 1 (porcentual), usar directamente el valor de discount
+    if (prodDetail.type_discount === 1 && prodDetail.discount > 0) {
       return Math.round(parseFloat(prodDetail.discount));
     }
     
-    // Para cupones, obtener el porcentaje del nombre del cupón
-    if (prodDetail.code_cupon) {
-      const cuponCode = prodDetail.code_cupon.toUpperCase();
-      // Extraer número del código del cupón (ej: BETA50 -> 50)
-      const match = cuponCode.match(/(\d+)/);
-      if (match) {
-        return parseInt(match[1]);
-      }
-      // Si no se puede extraer del nombre, usar descuento almacenado como fallback
-      if (prodDetail.discount && prodDetail.discount > 0) {
-        return Math.round(parseFloat(prodDetail.discount));
-      }
-    }
-    
-    // Fallback: calcular basado en precios reales solo si no hay descuento almacenado
+    // Si type_discount es 2 (fijo), calcular porcentaje
     const originalPrice = this.getOriginalPrice(prodDetail);
-    const finalPrice = this.getFinalUnitPrice(prodDetail);
+    const discountAmount = parseFloat(prodDetail.discount || 0);
     
-    if (originalPrice <= 0 || finalPrice >= originalPrice) return 0;
+    if (originalPrice <= 0 || discountAmount <= 0) return 0;
     
-    const discountAmount = originalPrice - finalPrice;
     return Math.round((discountAmount / originalPrice) * 100);
   }
 
@@ -428,45 +408,17 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   getDiscountType(prodDetail: any): string {
     if (!prodDetail || !this.hasDiscount(prodDetail)) return '';
     
-    // 🔍 DEBUG LOG
-    console.log('🏷️ [LIST-PURCHASES] getDiscountType:', {
-      productTitle: prodDetail.product?.title,
-      saleDetailId: prodDetail.id,
-      type_campaign: prodDetail.type_campaign,
-      code_cupon: prodDetail.code_cupon,
-      code_discount: prodDetail.code_discount,
-      discount: prodDetail.discount
-    });
-    
-    // Usar type_campaign para identificar el tipo de descuento
+    // Usar type_campaign validado en backend
     // type_campaign: 1=Campaign Discount, 2=Flash Sale, 3=Cupón
-    if (prodDetail.type_campaign === 3 || prodDetail.code_cupon) {
-      console.log('   ✅ Detectado: Cupón');
+    if (prodDetail.type_campaign === 3) {
       return `Cupón ${prodDetail.code_cupon || ''}`;
     } else if (prodDetail.type_campaign === 2) {
-      console.log('   ✅ Detectado: Flash Sale');
       return 'Flash Sale';
     } else if (prodDetail.type_campaign === 1) {
-      console.log('   ✅ Detectado: Campaign Discount');
       return 'Campaign Discount';
     }
     
-    // Fallback para registros antiguos sin type_campaign
-    console.log('   ⚠️ Usando fallback (type_campaign NULL)');
-    if (prodDetail.code_cupon) {
-      console.log('   → Cupón (fallback)');
-      return `Cupón ${prodDetail.code_cupon}`;
-    } else if (prodDetail.code_discount) {
-      // Si hay code_discount sin type_campaign, es Flash Sale
-      console.log('   → Flash Sale (fallback por code_discount)');
-      return 'Flash Sale';
-    } else if (prodDetail.discount && prodDetail.discount > 0) {
-      console.log('   → Campaign Discount (fallback por discount)');
-      return 'Campaign Discount';
-    }
-    
-    console.log('   ❌ Tipo desconocido');
-    return 'Descuento';
+    return '';
   }
 
   /**

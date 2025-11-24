@@ -756,112 +756,19 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Obtiene el precio unitario final (con descuento si aplica) - adaptado para saleDetails
+   * Obtiene el precio unitario final (con descuento si aplica)
+   * IMPORTANTE: price_unitario YA viene validado y calculado desde el backend
    */
   getFinalUnitPrice(detail: any): number {
-    // 🔍 DEBUG LOG
-    console.log('💰 [SUCCESSFULL-CHECKOUT] getFinalUnitPrice:', {
-      productTitle: detail.product?.title,
-      price_unitario: detail.price_unitario,
-      retail_price: detail.variedade?.retail_price,
-      discount: detail.discount,
-      code_discount: detail.code_discount,
-      type_campaign: detail.type_campaign
-    });
+    // price_unitario ya viene con el cálculo correcto desde el backend
+    const finalPrice = parseFloat(detail.price_unitario || 0);
     
-    // IMPORTANTE: price_unitario YA viene calculado y guardado en la BD
-    // NO necesitamos recalcular aquí
-    const savedFinalPrice = parseFloat(detail.price_unitario || 0);
-    
-    if (savedFinalPrice > 0) {
-      console.log('   ✅ Usando price_unitario guardado:', savedFinalPrice);
-      return savedFinalPrice;
+    if (finalPrice > 0) {
+      return finalPrice;
     }
     
-    // Fallback: calcular desde retail_price solo si price_unitario no existe
-    const originalPrice = parseFloat(detail.variedade?.retail_price || 0);
-    console.log('   ⚠️ price_unitario no disponible, usando retail_price:', originalPrice);
-   
-    // Si no hay descuento aplicado, retornar precio original
-    if (!detail.discount && !detail.code_discount) {
-      console.log('   → Sin descuento, retornando original');
-      return originalPrice;
-    }
-
-    // En saleDetails (ventas completadas), distinguir entre cupones, flash sales y campaign discounts
-    // Método 1: Detectar por code_cupon (cupones reales)
-    let isCupon = !!detail.code_cupon;
-    
-    // Método 2: Detectar Flash Sale por code_discount (sin code_cupon)
-    let isFlashSale = !detail.code_cupon && !!detail.code_discount;
-    
-    let discountValue = parseFloat(detail.code_discount || detail.discount || 0);
-    
-    // Si no es cupón ni flash sale, aplicar heurística para distinguir campaign discount
-    if (!isCupon && !isFlashSale && discountValue > 0) {
-      // Heurística: Los cupones suelen tener valores "redondos" como 5, 10, 20, 50, 90
-      // Los campaign discounts suelen tener decimales como 18.95, 20.95
-      const isLikelyPercentage = (discountValue <= 100 && discountValue % 1 === 0); // Número entero ≤ 100
-      
-      // Si parece un porcentaje (número entero ≤ 100), probablemente es cupón
-      if (isLikelyPercentage) {
-        isCupon = true;
-        //console.log('🧠 SMART DETECTION: Detected as COUPON by pattern (integer ≤ 100, likely percentage)');
-      }
-    }
-
-    if (isCupon) {
-      // CUPONES REALES: Usar type_discount para determinar cómo procesar
-      let finalPrice;
-      
-      if (detail.type_discount === 1) {
-        // Cupón porcentual
-        //console.log('📊 CUPON: Processing as PERCENTAGE:', discountValue + '%');
-        finalPrice = originalPrice * (1 - discountValue / 100);
-      } else {
-        // Cupón de monto fijo
-        //console.log('💰 CUPON: Processing as FIXED AMOUNT to subtract:', discountValue);
-        finalPrice = originalPrice - discountValue;
-      }
-
-      // Aplicar redondeo a .95 para cupones
-      const finalWithRounding = this.priceCalculationService.applyRoundingTo95(finalPrice);
-      //console.log('🔄 CUPON: Applied .95 rounding:', finalPrice, '→', finalWithRounding);
-      return finalWithRounding;
-      
-    } else if (isFlashSale) {
-      // FLASH SALE: Usar type_discount para determinar si es porcentaje o fijo
-      let finalPrice;
-      
-      if (detail.type_discount === 1) {
-        // Flash Sale porcentual
-        //console.log('🔥 FLASH SALE: Processing as PERCENTAGE:', discountValue + '%');
-        finalPrice = originalPrice * (1 - discountValue / 100);
-      } else if (detail.type_discount === 2) {
-        // Flash Sale monto fijo
-        finalPrice = originalPrice - discountValue;
-      } else {
-        // Default: tratar como porcentaje
-        finalPrice = originalPrice * (1 - discountValue / 100);
-      }
-
-      // Aplicar redondeo a .95 para flash sales
-      const finalWithRounding = this.priceCalculationService.applyRoundingTo95(Math.max(0, finalPrice));
-      //console.log('🔄 FLASH SALE: Applied .95 rounding:', finalPrice, '→', finalWithRounding);
-      return finalWithRounding;
-      
-    } else {
-      // CAMPAIGN DISCOUNTS: El valor discount ES SIEMPRE EL PRECIO FINAL
-      // Verificar que el precio final sea lógico (menor que el precio original)
-      if (discountValue > 0 && discountValue < originalPrice) {
-        const finalWithRounding = this.priceCalculationService.applyRoundingTo95(discountValue);
-        //console.log('🔄 CAMPAIGN: Applied .95 rounding:', discountValue, '→', finalWithRounding);
-        return finalWithRounding;
-      } else {
-        // Si el discount no parece ser un precio final válido, usar precio original
-        return originalPrice;
-      }
-    }
+    // Fallback: usar retail_price si price_unitario no está disponible
+    return parseFloat(detail.variedade?.retail_price || 0);
   }
 
   /**
@@ -879,22 +786,20 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
   /**
    * Calcula el subtotal con precios finales (después de descuentos)
+   * Total = suma de (price_unitario * cantidad) SIN redondeo adicional
    */
   getSubtotal(): number {
     if (!this.saleDetails || this.saleDetails.length === 0) {
-      // Fallback: usar totalCarts calculado previamente o sale.total
-      const fallbackTotal = this.totalCarts || this.sale?.total || 0;
-      return fallbackTotal;
+      return this.totalCarts || this.sale?.total || 0;
     }
 
-    const calculatedSubtotal = this.saleDetails.reduce((total: number, sale: any) => {
-      const finalPrice = this.getFinalUnitPrice(sale);
-      const itemSubtotal = finalPrice * (sale.cantidad || 1);
-      
+    const calculatedSubtotal = this.saleDetails.reduce((total: number, detail: any) => {
+      const finalPrice = this.getFinalUnitPrice(detail);
+      const itemSubtotal = finalPrice * (detail.cantidad || 1);
       return total + itemSubtotal;
     }, 0);
 
-    return calculatedSubtotal;
+    return parseFloat(calculatedSubtotal.toFixed(2));
   }
 
   /**
@@ -906,11 +811,11 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     const discount = parseFloat(Math.max(0, originalSubtotal - finalSubtotal).toFixed(2));
     
     // 🔍 DEBUG LOG
-    console.log('💵 [SUCCESSFULL-CHECKOUT] getTotalDiscount:', {
-      originalSubtotal: originalSubtotal.toFixed(2),
-      finalSubtotal: finalSubtotal.toFixed(2),
-      discount: discount.toFixed(2)
-    });
+    // console.log('💵 [SUCCESSFULL-CHECKOUT] getTotalDiscount:', {
+    //   originalSubtotal: originalSubtotal.toFixed(2),
+    //   finalSubtotal: finalSubtotal.toFixed(2),
+    //   discount: discount.toFixed(2)
+    // });
     
     return discount;
   }
@@ -947,16 +852,14 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
   /**
    * Verifica si el item específico tiene descuento aplicado
+   * Solo muestra descuento si type_campaign es válido (validado en backend)
    */
   hasCartItemDiscount(detail: any): boolean {
-    // Verificar si existe discount o code_discount
-    if (!detail.discount && !detail.code_discount) return false;
-    
-    const originalPrice = parseFloat(detail.variedade?.retail_price || detail.price_unitario || 0);
-    const finalPrice = this.getFinalUnitPrice(detail);
-    
-    // Verificar si el precio final es menor al original (hay descuento real)
-    return finalPrice < originalPrice && finalPrice > 0;
+    // type_campaign: 1=Campaign, 2=Flash Sale, 3=Cupón
+    // Solo mostrar descuento si type_campaign está presente y discount > 0
+    return detail.type_campaign && 
+           [1, 2, 3].includes(detail.type_campaign) && 
+           parseFloat(detail.discount || 0) > 0;
   }
 
   /**
@@ -981,41 +884,17 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   getDiscountType(detail: any): string {
     if (!detail || !this.hasCartItemDiscount(detail)) return '';
     
-    // 🔍 DEBUG LOG
-    console.log('🏷️ [SUCCESSFULL-CHECKOUT] getDiscountType:', {
-      productTitle: detail.product?.title,
-      saleDetailId: detail.id,
-      type_campaign: detail.type_campaign,
-      code_cupon: detail.code_cupon,
-      code_discount: detail.code_discount,
-      discount: detail.discount
-    });
-    
-    // Usar type_campaign para identificar el tipo de descuento
+    // Usar type_campaign validado en backend
     // type_campaign: 1=Campaign Discount, 2=Flash Sale, 3=Cupón
-    if (detail.type_campaign === 3 || detail.code_cupon) {
-      console.log('   ✅ Detectado: Cupón');
+    if (detail.type_campaign === 3) {
       return `Cupón ${detail.code_cupon || ''}`;
     } else if (detail.type_campaign === 2) {
-      console.log('   ✅ Detectado: Flash Sale');
       return 'Flash Sale';
     } else if (detail.type_campaign === 1) {
-      console.log('   ✅ Detectado: Campaign Discount');
       return 'Campaign Discount';
     }
     
-    // Fallback para ventas sin type_campaign
-    console.log('   ⚠️ Usando fallback (type_campaign NULL)');
-    if (detail.code_cupon) {
-      console.log('   → Cupón (fallback)');
-      return `Cupón ${detail.code_cupon}`;
-    } else if (detail.code_discount) {
-      console.log('   → Flash Sale (fallback por code_discount)');
-      return 'Flash Sale';
-    } else {
-      console.log('   → Campaign Discount (fallback)');
-      return 'Campaign Discount';
-    }
+    return '';
   }
 
   /**
@@ -1026,18 +905,17 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   getDiscountPercentage(detail: any): number {
     if (!detail || !this.hasCartItemDiscount(detail)) return 0;
     
-    // Usar el descuento almacenado en la base de datos
-    if (detail.discount && detail.discount > 0) {
+    // Si type_discount es 1 (porcentual), usar directamente el valor de discount
+    if (detail.type_discount === 1 && detail.discount > 0) {
       return Math.round(parseFloat(detail.discount));
     }
     
-    // Fallback: calcular basado en precios
-    const originalPrice = parseFloat(detail.variedade?.retail_price || detail.price_unitario || 0);
-    const finalPrice = this.getFinalUnitPrice(detail);
+    // Si type_discount es 2 (fijo), calcular porcentaje
+    const originalPrice = parseFloat(detail.variedade?.retail_price || 0);
+    const discountAmount = parseFloat(detail.discount || 0);
     
-    if (originalPrice <= 0 || finalPrice >= originalPrice) return 0;
+    if (originalPrice <= 0 || discountAmount <= 0) return 0;
     
-    const discountAmount = originalPrice - finalPrice;
     return Math.round((discountAmount / originalPrice) * 100);
   }
 
