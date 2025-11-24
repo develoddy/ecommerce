@@ -75,6 +75,14 @@
                                                                     </div>
                                                                     <div class="text-end">
                                                                         <span class="badge bg-dark mb-1">{{ detail.sale?.status || detail.status || 'Processing' }}</span>
+                                                                        <div *ngIf="detail.sale?.method_payment" class="mb-1">
+                                                                            <small class="badge rounded-pill" 
+                                                                                   [ngClass]="{'bg-primary': detail.sale.method_payment.toLowerCase() === 'stripe', 'bg-info': detail.sale.method_payment.toLowerCase() === 'paypal'}">
+                                                                                <i class="icon" 
+                                                                                   [ngClass]="{'anm anm-cc-stripe': detail.sale.method_payment.toLowerCase() === 'stripe', 'anm anm-cc-paypal': detail.sale.method_payment.toLowerCase() === 'paypal'}"></i>
+                                                                                Pagado con: {{ detail.sale.method_payment }}
+                                                                            </small>
+                                                                        </div>
                                                                         <div class="small">Total: <strong>{{ euro }}{{ getSaleTotalPrice(detail.sale) }}</strong></div>
                                                                     </div>
                                                                 </div>
