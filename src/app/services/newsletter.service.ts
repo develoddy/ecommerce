@@ -43,9 +43,12 @@ export class NewsletterService {
 
   private subscribedEmailsSubject = new BehaviorSubject<string[]>([]);
   public subscribedEmails$ = this.subscribedEmailsSubject.asObservable();
+  
+  // Exponer URL_SERVICE para uso en componentes
+  public readonly API_URL = URL_SERVICE;
 
   constructor(
-    private http: HttpClient,
+    public http: HttpClient, // Public para acceso en componentes
     private authService: AuthService
   ) {
     // Cargar emails guardados en localStorage al inicializar

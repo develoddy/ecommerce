@@ -50,6 +50,10 @@ const routes: Routes = [{
       loadChildren: () => import('./mypurchases/mypurchases.module').then(m => m.MypurchasesModule),
     },
     {
+      path: 'my-subscriptions', // Añade la ruta para el módulo de suscripciones
+      loadChildren: () => import('./my-subscriptions/my-subscriptions.module').then(m => m.MySubscriptionsModule),
+    },
+    {
       path: 'registered', // Añade la ruta para el módulo de direcciones
       loadChildren: () => import('./registered/registered.module').then(m => m.RegisteredModule),
     }

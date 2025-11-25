@@ -1,0 +1,222 @@
+<!-- Loading Spinner -->
+<div *ngIf="loading" class="loading-spinner d-flex justify-content-center align-items-center" style="min-height: 400px;">
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+        <h4 class="text-muted mt-3">Cargando preferencias...</h4>
+    </div>
+</div>
+
+<!-- Contenido Principal -->
+<div class="subscriptions-card mt-0 h-100" *ngIf="!loading">
+    
+    <!-- Mensajes de éxito/error -->
+    <div *ngIf="showMessage && successMessage" class="alert alert-success py-3 alert-dismissible fade show mb-4">
+        <strong class="text-uppercase">
+            <i class="align-middle icon anm anm-check icon-large me-2"></i>¡Perfecto!
+        </strong> {{ successMessage }}
+        <button type="button" class="btn-close" (click)="showMessage = false"></button>
+    </div>
+
+    <div *ngIf="showMessage && errorMessage" class="alert alert-danger py-3 alert-dismissible fade show mb-4">
+        <strong class="text-uppercase">
+            <i class="align-middle icon anm anm-times-circle icon-large me-2"></i>Error
+        </strong> {{ errorMessage }}
+        <button type="button" class="btn-close" (click)="showMessage = false"></button>
+    </div>
+
+    <!-- Header -->
+    <div class="top-sec d-flex-justify-center justify-content-between mb-4">
+        <h2 class="mb-0">Mis suscripciones</h2>
+    </div>
+
+    <!-- Estado de Suscripción al Newsletter -->
+    <div class="subscription-status bg-block p-4 mb-4 rounded">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-2">Estado del Newsletter</h4>
+                <p class="mb-0 text-muted">
+                    <ng-container *ngIf="isSubscribedToNewsletter">
+                        Estás suscrito al newsletter con el email: <strong>{{ CURRENT_USER_AUTHENTICATED?.email }}</strong>
+                    </ng-container>
+                    <ng-container *ngIf="!isSubscribedToNewsletter">
+                        No estás suscrito al newsletter
+                    </ng-container>
+                </p>
+            </div>
+            <div>
+                <button 
+                    *ngIf="!isSubscribedToNewsletter" 
+                    type="button" 
+                    class="btn btn-primary"
+                    [disabled]="savingPreferences"
+                    (click)="subscribeToNewsletter()">
+                    <span *ngIf="!savingPreferences">Suscribirse</span>
+                    <span *ngIf="savingPreferences">
+                        <span class="spinner-border spinner-border-sm me-1"></span>
+                        Procesando...
+                    </span>
+                </button>
+                <button 
+                    *ngIf="isSubscribedToNewsletter" 
+                    type="button" 
+                    class="btn btn-outline-danger"
+                    [disabled]="savingPreferences"
+                    (click)="unsubscribeFromNewsletter()">
+                    Darme de baja
+                </button>
+            </div>
+        </div>
+
+        <!-- Info adicional si está suscrito -->
+        <div *ngIf="subscriberData" class="mt-3 pt-3 border-top">
+            <div class="row">
+                <div class="col-md-6">
+                    <small class="text-muted">
+                        <strong>Fuente:</strong> {{ subscriberData.source }}
+                    </small>
+                </div>
+                <div class="col-md-6">
+                    <small class="text-muted">
+                        <strong>Email verificado:</strong> 
+                        <span [class.text-success]="subscriberData.email_verified" 
+                              [class.text-warning]="!subscriberData.email_verified">
+                            {{ subscriberData.email_verified ? 'Sí' : 'Pendiente' }}
+                        </span>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preferencias de Suscripción (solo si está suscrito) -->
+    <div *ngIf="isSubscribedToNewsletter" class="subscription-preferences">
+        
+        <!-- Contenidos -->
+        <div class="preference-section bg-block p-4 mb-4 rounded">
+            <h4 class="mb-3 pb-2 border-bottom">
+                <i class="icon anm anm-envelope-l me-2"></i>
+                Contenidos
+            </h4>
+            <p class="text-muted mb-3">Selecciona los tipos de contenido que quieres recibir</p>
+            
+            <div class="row">
+                <div class="col-md-4" *ngFor="let pref of contentPreferences">
+                    <div class="preference-item mb-3">
+                        <div class="customCheckbox">
+                            <input 
+                                [id]="'content-' + pref.id" 
+                                type="checkbox" 
+                                [checked]="pref.enabled"
+                                (change)="togglePreference(pref)">
+                            <label [for]="'content-' + pref.id" class="mb-0 d-flex align-items-center">
+                                <span class="fs-6">{{ pref.label }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canales -->
+        <div class="preference-section bg-block p-4 mb-4 rounded">
+            <h4 class="mb-3 pb-2 border-bottom">
+                <i class="icon anm anm-phone-l me-2"></i>
+                Canales
+            </h4>
+            <p class="text-muted mb-3">Selecciona cómo quieres recibir las comunicaciones</p>
+            
+            <div class="row">
+                <div class="col-md-4" *ngFor="let pref of channelPreferences">
+                    <div class="preference-item mb-3">
+                        <div class="customCheckbox">
+                            <input 
+                                [id]="'channel-' + pref.id" 
+                                type="checkbox" 
+                                [checked]="pref.enabled"
+                                [disabled]="pref.id === 'email'"
+                                (change)="togglePreference(pref)">
+                            <label [for]="'channel-' + pref.id" class="mb-0 d-flex align-items-center">
+                                <span class="fs-6">{{ pref.label }}</span>
+                                <small *ngIf="pref.id === 'email'" class="text-muted ms-2">(Requerido)</small>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-info mt-3 mb-0">
+                <small>
+                    <i class="icon anm anm-info-circle me-1"></i>
+                    El email es el canal principal y siempre estará activo. Los otros canales son opcionales.
+                </small>
+            </div>
+        </div>
+
+        <!-- Botón Guardar Preferencias -->
+        <div class="text-center mt-4">
+            <button 
+                type="button" 
+                class="btn btn-primary btn-lg"
+                [disabled]="savingPreferences"
+                (click)="savePreferences()">
+                <span *ngIf="!savingPreferences">
+                    <i class="icon anm anm-check me-2"></i>
+                    Guardar preferencias
+                </span>
+                <span *ngIf="savingPreferences">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Guardando...
+                </span>
+            </button>
+        </div>
+
+        <!-- Información Legal RGPD -->
+        <div class="legal-info bg-light p-4 mt-4 rounded">
+            <h5 class="mb-3">
+                <i class="icon anm anm-shield me-2"></i>
+                Tus derechos
+            </h5>
+            <p class="small text-muted mb-2">
+                De acuerdo con el RGPD (Reglamento General de Protección de Datos), tienes derecho a:
+            </p>
+            <ul class="small text-muted mb-0">
+                <li>Acceder a tus datos personales</li>
+                <li>Rectificar datos incorrectos</li>
+                <li>Solicitar la eliminación de tus datos</li>
+                <li>Oponerte al procesamiento de tus datos</li>
+                <li>Revocar tu consentimiento en cualquier momento</li>
+            </ul>
+            <p class="small text-muted mt-3 mb-0">
+                Para ejercer estos derechos, contacta con nosotros en: 
+                <a href="mailto:privacy@lujandev.com">privacy@lujandev.com</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Mensaje si no está suscrito -->
+    <div *ngIf="!isSubscribedToNewsletter" class="text-center py-5">
+        <div class="empty-state">
+            <i class="icon anm anm-envelope-l" style="font-size: 4rem; color: #ccc;"></i>
+            <h4 class="mt-3 mb-2">No estás suscrito al newsletter</h4>
+            <p class="text-muted mb-4">
+                Suscríbete para recibir novedades, promociones exclusivas y ofertas especiales.
+            </p>
+            <button 
+                type="button" 
+                class="btn btn-primary"
+                [disabled]="savingPreferences"
+                (click)="subscribeToNewsletter()">
+                <span *ngIf="!savingPreferences">
+                    <i class="icon anm anm-plus-r me-2"></i>
+                    Suscribirse ahora
+                </span>
+                <span *ngIf="savingPreferences">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Procesando...
+                </span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+/* Subscriptions List Component Styles */
+
+.subscription-status {
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.subscription-status:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.preference-section {
+    border: 1px solid #e9ecef;
+}
+
+.preference-item {
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease;
+}
+
+.preference-item:hover {
+    background-color: #f8f9fa;
+}
+
+.customCheckbox input[type="checkbox"]:disabled + label {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.legal-info {
+    border: 1px solid #d6e2ea;
+}
+
+.empty-state {
+    padding: 2rem;
+}
+
+.loading-spinner {
+    min-height: 400px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .top-sec {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    
+    .top-sec h2 {
+        margin-bottom: 1rem;
+    }
+    
+    .subscription-status .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    
+    .subscription-status .d-flex > div:last-child {
+        margin-top: 1rem;
+        width: 100%;
+    }
+    
+    .subscription-status .d-flex > div:last-child button {
+        width: 100%;
+    }
+}
