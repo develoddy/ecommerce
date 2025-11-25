@@ -118,6 +118,17 @@ export class NewsletterService {
   }
 
   /**
+   * Obtener suscripción del usuario autenticado
+   * Endpoint protegido para usuarios normales (no requiere permisos admin)
+   */
+  getUserSubscription(): Observable<any> {
+    const token = this.authService.token;
+    const headers = new HttpHeaders().set('token', token || '');
+    
+    return this.http.get(`${URL_SERVICE}newsletter/subscription`, { headers });
+  }
+
+  /**
    * Exportar suscriptores a CSV (ADMIN - requiere token)
    */
   exportSubscribers(): Observable<Blob> {

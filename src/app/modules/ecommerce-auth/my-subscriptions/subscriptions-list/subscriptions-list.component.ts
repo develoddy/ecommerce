@@ -86,24 +86,21 @@ export class SubscriptionsListComponent implements OnInit, OnDestroy {
    * Cargar datos de suscripción del usuario
    */
   private loadSubscriptionData(): void {
-    if (!this.CURRENT_USER_AUTHENTICATED?.email) {
+    if (!this.CURRENT_USER_AUTHENTICATED?._id) {
       return;
     }
 
     this.loading = true;
     
-    // Verificar si el usuario está suscrito al newsletter
+    // Usar endpoint protegido /subscription para usuarios autenticados
     this.subscriptions.add(
-      this.newsletterService.getSubscribers(1, 1, { 
-        search: this.CURRENT_USER_AUTHENTICATED.email,
-        verified: 'true'
-      }).subscribe({
+      this.newsletterService.getUserSubscription().subscribe({
         next: (response) => {
           this.loading = false;
           
-          if (response.data && response.data.subscribers && response.data.subscribers.length > 0) {
-            this.subscriberData = response.data.subscribers[0];
-            this.isSubscribedToNewsletter = this.subscriberData.status === 'subscribed';
+          if (response.subscribed && response.data?.subscriber) {
+            this.subscriberData = response.data.subscriber;
+            this.isSubscribedToNewsletter = true;
             
             // Cargar preferencias guardadas si existen
             this.loadPreferencesFromSubscriber(this.subscriberData);
@@ -141,20 +138,22 @@ export class SubscriptionsListComponent implements OnInit, OnDestroy {
    * Suscribirse al newsletter
    */
   subscribeToNewsletter(): void {
-    if (!this.CURRENT_USER_AUTHENTICATED?.email) {
-      this.showErrorMessage('No se pudo obtener el email del usuario');
+    if (!this.CURRENT_USER_AUTHENTICATED?.email || !this.CURRENT_USER_AUTHENTICATED?._id) {
+      this.showErrorMessage('No se pudo obtener los datos del usuario');
       return;
     }
 
     this.savingPreferences = true;
     this.showMessage = false;
 
+    // Enviar userId junto con el email para vincular correctamente
     this.subscriptions.add(
-      this.newsletterService.subscribeEmail(
-        this.CURRENT_USER_AUTHENTICATED.email,
-        'home'
-      ).subscribe({
-        next: (response) => {
+      this.newsletterService.http.post(`${this.newsletterService.API_URL}newsletter/subscribe`, {
+        email: this.CURRENT_USER_AUTHENTICATED.email,
+        userId: this.CURRENT_USER_AUTHENTICATED._id,
+        source: 'home'
+      }).subscribe({
+        next: (response: any) => {
           this.savingPreferences = false;
           this.isSubscribedToNewsletter = true;
           
@@ -162,7 +161,14 @@ export class SubscriptionsListComponent implements OnInit, OnDestroy {
           const emailPref = this.channelPreferences.find(p => p.id === 'email');
           if (emailPref) emailPref.enabled = true;
           
-          this.showSuccessMessage('Te has suscrito correctamente al newsletter. Revisa tu email para confirmar.');
+          // Verificar si se vinculó una suscripción guest existente
+          if (response.linked) {
+            this.showSuccessMessage('Tu suscripción anterior ha sido vinculada correctamente a tu cuenta.');
+          } else if (response.resubscribed) {
+            this.showSuccessMessage('Te has vuelto a suscribir correctamente al newsletter.');
+          } else {
+            this.showSuccessMessage('Te has suscrito correctamente al newsletter. Revisa tu email para confirmar.');
+          }
           
           // Recargar datos después de 2 segundos
           setTimeout(() => {
@@ -179,15 +185,27 @@ export class SubscriptionsListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Darse de baja del newsletter
+   * Darse de baja del newsletter - Abrir modal de confirmación
    */
   unsubscribeFromNewsletter(): void {
     if (!this.CURRENT_USER_AUTHENTICATED?.email) {
       return;
     }
 
-    // Confirmación antes de dar de baja
-    if (!confirm('¿Estás seguro de que quieres darte de baja del newsletter?')) {
+    // Abrir modal Bootstrap en lugar de confirm() nativo
+    const modalElement = document.getElementById('unsubscribeModal');
+    if (modalElement) {
+      // Usar Bootstrap 5 Modal API
+      const modal = new (window as any).bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }
+
+  /**
+   * Confirmar baja del newsletter (llamado desde el modal)
+   */
+  confirmUnsubscribe(): void {
+    if (!this.CURRENT_USER_AUTHENTICATED?.email) {
       return;
     }
 
@@ -203,6 +221,13 @@ export class SubscriptionsListComponent implements OnInit, OnDestroy {
           this.savingPreferences = false;
           this.isSubscribedToNewsletter = false;
           
+          // Cerrar modal
+          const modalElement = document.getElementById('unsubscribeModal');
+          if (modalElement) {
+            const modal = (window as any).bootstrap.Modal.getInstance(modalElement);
+            if (modal) modal.hide();
+          }
+          
           // Deshabilitar todas las preferencias
           this.contentPreferences.forEach(p => p.enabled = false);
           this.channelPreferences.forEach(p => p.enabled = false);
@@ -217,6 +242,14 @@ export class SubscriptionsListComponent implements OnInit, OnDestroy {
         error: (err) => {
           this.savingPreferences = false;
           console.error('Error unsubscribing:', err);
+          
+          // Cerrar modal incluso en caso de error
+          const modalElement = document.getElementById('unsubscribeModal');
+          if (modalElement) {
+            const modal = (window as any).bootstrap.Modal.getInstance(modalElement);
+            if (modal) modal.hide();
+          }
+          
           this.showErrorMessage(err.error?.message || 'Error al darse de baja del newsletter');
         }
       })
