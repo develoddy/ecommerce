@@ -120,18 +120,33 @@ export class SubscriptionsListComponent implements OnInit, OnDestroy {
 
   /**
    * Cargar preferencias desde los datos del suscriptor
-   * Usamos el campo notified_campaign para guardar las preferencias como JSON
    */
   private loadPreferencesFromSubscriber(subscriber: any): void {
-    // Por ahora, todas las preferencias empiezan desactivadas
-    // En el futuro se puede implementar guardado de preferencias en un campo JSON
-    // del suscriptor o en una tabla separada
-    
-    // Si está suscrito al newsletter, habilitar Email por defecto
-    if (this.isSubscribedToNewsletter) {
+    if (!subscriber.preferences) {
+      // Si no hay preferencias guardadas, usar valores por defecto
+      // Email siempre habilitado
       const emailPref = this.channelPreferences.find(p => p.id === 'email');
       if (emailPref) emailPref.enabled = true;
+      return;
     }
+
+    const prefs = subscriber.preferences;
+
+    // Cargar preferencias de contenido
+    if (prefs.content && Array.isArray(prefs.content)) {
+      this.contentPreferences.forEach(p => {
+        p.enabled = prefs.content.includes(p.id);
+      });
+    }
+
+    // Cargar preferencias de canales
+    if (prefs.channels && Array.isArray(prefs.channels)) {
+      this.channelPreferences.forEach(p => {
+        p.enabled = prefs.channels.includes(p.id);
+      });
+    }
+
+    console.log('✅ Preferencias cargadas desde DB:', prefs);
   }
 
   /**
@@ -268,13 +283,32 @@ export class SubscriptionsListComponent implements OnInit, OnDestroy {
     this.savingPreferences = true;
     this.showMessage = false;
 
-    // Por ahora solo guardamos el estado localmente
-    // En el futuro se puede implementar un endpoint para guardar preferencias
-    
-    setTimeout(() => {
-      this.savingPreferences = false;
-      this.showSuccessMessage('Tus preferencias han sido guardadas correctamente');
-    }, 1000);
+    // Preparar payload con preferencias seleccionadas
+    const contentPrefs = this.contentPreferences
+      .filter(p => p.enabled)
+      .map(p => p.id);
+      
+    const channelPrefs = this.channelPreferences
+      .filter(p => p.enabled)
+      .map(p => p.id);
+
+    console.log('📤 Guardando preferencias:', { content: contentPrefs, channels: channelPrefs });
+
+    // Llamar al endpoint para actualizar preferencias
+    this.subscriptions.add(
+      this.newsletterService.updateUserPreferences(contentPrefs, channelPrefs).subscribe({
+        next: (response: any) => {
+          this.savingPreferences = false;
+          this.showSuccessMessage('Tus preferencias han sido guardadas correctamente');
+          console.log('✅ Preferencias guardadas en backend:', response);
+        },
+        error: (err) => {
+          this.savingPreferences = false;
+          console.error('❌ Error saving preferences:', err);
+          this.showErrorMessage(err.error?.message || 'Error al guardar tus preferencias');
+        }
+      })
+    );
   }
 
   /**

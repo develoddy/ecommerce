@@ -45,6 +45,13 @@ export class AddAddressComponent implements OnInit {
   status:boolean=false;
   loading: boolean = false;
   private isSubmitting: boolean = false; // Prevenir múltiples submissions
+  
+  // 🎯 Flujo Mango.es: Autocompletado de provincia y ciudades
+  availableCities: Array<{city: string, isPrimary: boolean}> = [];
+  isLoadingPostalCode: boolean = false;
+  isProvinceReadonly: boolean = true;
+  postalCodeError: string = '';
+  cityError: string = '';
   //loadingSubscription: Subscription = new Subscription();
   private subscriptions: Subscription = new Subscription();
   CURRENT_USER_AUTHENTICATED:any=null;
@@ -71,6 +78,87 @@ export class AddAddressComponent implements OnInit {
    */
   get supportedCountries() {
     return this.addressValidationService.EUROPEAN_COUNTRIES;
+  }
+
+  /**
+   * 🎯 Método tipo Mango.es: Autocompletar provincia y ciudades al ingresar código postal
+   * Se ejecuta cuando el usuario termina de escribir el CP (blur o change)
+   */
+  onZipCodeChange(zipCode: string) {
+    // Limpiar errores previos
+    this.postalCodeError = '';
+    this.cityError = '';
+    
+    // Validar longitud mínima (España: 5 dígitos)
+    if (!zipCode || zipCode.length < 5) {
+      this.availableCities = [];
+      this.ciudad = ''; // Limpiar provincia
+      this.poblacion = ''; // Limpiar ciudad
+      return;
+    }
+
+    this.isLoadingPostalCode = true;
+    const countryCode = this.addressValidationService.getCountryCode(this.pais || 'ES');
+    
+    console.log(`🔍 [AddAddress] Buscando CP ${zipCode} en ${countryCode}`);
+    
+    this.addressValidationService.getPostalCodeInfo(countryCode, zipCode)
+      .subscribe({
+        next: (info) => {
+          this.isLoadingPostalCode = false;
+          
+          if (!info || !info.exists) {
+            // ❌ Código postal no encontrado
+            this.postalCodeError = `El código postal ${zipCode} no existe en ${this.pais || 'España'}`;
+            this.availableCities = [];
+            this.ciudad = '';
+            this.poblacion = '';
+            console.log(`❌ [AddAddress] CP ${zipCode} no encontrado`);
+            return;
+          }
+          
+          // ✅ CP encontrado - autocompletar provincia (readonly)
+          console.log(`✅ [AddAddress] CP ${zipCode} encontrado:`, info);
+          this.ciudad = info.province; // Autocompletar provincia
+          this.availableCities = info.cities;
+          
+          // Si solo hay una ciudad, autoseleccionarla
+          if (info.cities.length === 1) {
+            this.poblacion = info.cities[0].city;
+            console.log(`✅ [AddAddress] Autoseleccionada ciudad única: ${this.poblacion}`);
+          } else {
+            // Si hay múltiples ciudades, limpiar para que el usuario elija
+            this.poblacion = '';
+            console.log(`ℹ️ [AddAddress] ${info.cities.length} ciudades disponibles, usuario debe elegir`);
+          }
+        },
+        error: (error) => {
+          this.isLoadingPostalCode = false;
+          console.error('❌ [AddAddress] Error al buscar CP:', error);
+          this.postalCodeError = 'Error al validar el código postal. Por favor intenta de nuevo.';
+          this.availableCities = [];
+          this.ciudad = '';
+          this.poblacion = '';
+        }
+      });
+  }
+
+  /**
+   * 🎯 Método para verificar si el botón de guardar debe estar habilitado
+   */
+  isFormValid(): boolean {
+    return !!(this.name && 
+              this.surname && 
+              this.pais && 
+              this.calle && 
+              this.numero && 
+              this.zipcode && 
+              this.poblacion && // Ciudad seleccionada
+              this.ciudad && // Provincia autocompletada
+              this.email && 
+              this.phone &&
+              !this.postalCodeError &&
+              !this.isLoadingPostalCode);
   }
 
   ngOnInit(): void {
@@ -171,8 +259,32 @@ export class AddAddressComponent implements OnInit {
       phone: this.phone
     };
 
-    // 🔍 VALIDAR CON PRINTFUL ANTES DE GUARDAR
-    this.addressValidationService.validateWithPrintful(addressData).subscribe({
+    // 🔍 PASO 1: VALIDAR CON BACKEND API (validación local con base de datos)
+    console.log('🔍 [AddAddress] Step 1: Validating with backend API...');
+    this.validationMessage = 'Validando código postal y ciudad...';
+    
+    this.addressValidationService.validateLocalRulesAsync(addressData).subscribe({
+      next: (localValidation) => {
+        if (!localValidation.isValid) {
+          // ❌ Validación local falló
+          console.log('❌ [AddAddress] Backend validation failed:', localValidation.message);
+          this.isSubmitting = false;
+          this.isValidating = false;
+          this.status = false;
+          this.validMessage = true;
+          this.errorOrSuccessMessage = localValidation.message;
+          this.validationMessage = '';
+          this.hideMessageAfterDelay();
+          alertDanger(localValidation.message);
+          return;
+        }
+        
+        // ✅ Validación local correcta, ahora validar con Printful
+        console.log('✅ [AddAddress] Backend validation passed, now validating with Printful...');
+        this.validationMessage = 'Validando dirección con Printful...';
+        
+        // 🔍 PASO 2: VALIDAR CON PRINTFUL
+        this.addressValidationService.validateWithPrintful(addressData).subscribe({
       next: (validation) => {
         this.isValidating = false;
         
@@ -201,7 +313,21 @@ export class AddAddressComponent implements OnInit {
         this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
         this.validationMessage = '';
         this.hideMessageAfterDelay();
-        alertDanger("Error al validar la dirección");
+        alertDanger("Error al validar la dirección con Printful");
+      }
+    });
+      },
+      error: (err) => {
+        // Error en validación local (backend API)
+        console.error('❌ [AddAddress] Backend API error:', err);
+        this.isValidating = false;
+        this.isSubmitting = false;
+        this.status = false;
+        this.validMessage = true;
+        this.errorOrSuccessMessage = "Error al validar la dirección con nuestro sistema. Por favor intenta de nuevo.";
+        this.validationMessage = '';
+        this.hideMessageAfterDelay();
+        alertDanger("Error de validación");
       }
     });
   }

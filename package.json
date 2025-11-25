@@ -25,6 +25,7 @@
     "bootstrap": "^5.3.3",
     "express": "^4.15.2",
     "ng-recaptcha": "^9.0.0",
+    "postal-codes-js": "^2.5.2",
     "rxjs": "^7.8.1",
     "socket.io-client": "^4.8.1",
     "tslib": "^2.1.0",

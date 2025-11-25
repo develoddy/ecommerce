@@ -129,6 +129,22 @@ export class NewsletterService {
   }
 
   /**
+   * Actualizar preferencias del usuario autenticado
+   * Endpoint protegido para usuarios normales (no requiere permisos admin)
+   */
+  updateUserPreferences(content: string[], channels: string[]): Observable<any> {
+    const token = this.authService.token;
+    const headers = new HttpHeaders()
+      .set('token', token || '')
+      .set('Content-Type', 'application/json');
+    
+    return this.http.put(`${URL_SERVICE}newsletter/preferences`, {
+      content,
+      channels
+    }, { headers });
+  }
+
+  /**
    * Exportar suscriptores a CSV (ADMIN - requiere token)
    */
   exportSubscribers(): Observable<Blob> {
