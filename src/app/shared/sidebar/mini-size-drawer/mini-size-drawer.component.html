@@ -18,8 +18,7 @@
                 </div>
             </div>
             <div class="minicart-content d-flex flex-column" style="padding: 2rem 1.5rem;">
-                <ul class="variants-size size-swatches d-flex pt-1 clearfix mb-0" 
-                    style="gap: 10px; flex-wrap: wrap; justify-content: flex-start; list-style: none; padding: 0; margin: 0;">
+                <ul class="variants-size size-swatches d-flex pt-1 clearfix mb-0">
                     <ng-container *ngFor="let variedad of variedades; let i = index">
                         <li class="swatch x-large"
                             [ngClass]="{
@@ -33,7 +32,7 @@
                             [style.transition]="'all 0.2s ease'"
                             [style.border]="variedad.valor === variedad_selected?.valor ? '2px solid #28a745' : '1px solid #e0e0e0'"
                             [style.backgroundColor]="variedad.valor === variedad_selected?.valor ? '#f0f9f4' : '#fff'"
-                            [style.borderRadius]="'6px'"
+                           
                             (click)="variedad.stock > 0 && selectedVariedad(variedad, i)"
                             onmouseover="if(this.style.opacity !== '0.5') { this.style.transform='scale(1.05)'; this.style.borderColor='#aaa'; }"
                             onmouseout="this.style.transform='scale(1)'; this.style.borderColor=this.classList.contains('active') ? '#28a745' : '#e0e0e0';">
@@ -56,7 +55,7 @@
                     <strong>¡Atención!</strong> Debes seleccionar una talla antes de continuar
                 </div>
                 
-                <div class="alert alert-info mt-3 mb-0" *ngIf="!tallaError" style="border-left: 4px solid #6c757d; border-radius: 6px; font-size: 0.85rem; background-color: #f8f9fa;">
+                <div class="alert alert-info mt-3 mb-0" *ngIf="!tallaError" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.9rem;">
                     <i class="icon anm anm-info-circle me-2" style="color: #6c757d;"></i>
                     Las tallas agotadas aparecen tachadas y deshabilitadas
                 </div>

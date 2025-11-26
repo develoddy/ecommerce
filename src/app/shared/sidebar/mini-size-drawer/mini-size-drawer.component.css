@@ -48,7 +48,7 @@
   padding: 8px 16px;
   min-width: 50px;
   text-align: center;
-  border-radius: 6px;
+  border-radius: 0px;
 }
 
 /* Estado activo con check animado */
@@ -86,7 +86,7 @@ ul.variants-size {
   cursor: not-allowed !important;
 }
 
-.swatch.soldout::before {
+/* .swatch.soldout::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -96,7 +96,7 @@ ul.variants-size {
   background-color: #dc3545;
   transform: translateY(-50%) rotate(-15deg);
   z-index: 1;
-}
+} */
 
 /* Header animado */
 .minicart-header {
