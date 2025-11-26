@@ -48,6 +48,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   totalCarts: number = 0;
   totalWishlist: number = 0;
   search_product: string = "";
+  selected_category: string = "0";
   products_search: any[] = [];
   categories: any[] = [];
   isMobile: boolean = false;
@@ -758,7 +759,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   searchProduct() {
     // Verificar si hay un término de búsqueda válido
     if (this.search_product && this.search_product.trim().length > 1) {
-      const data = { search_product: this.search_product };
+      const data: any = { 
+        search_product: this.search_product
+      };
+      
+      // Agregar filtro de categoría si no es "Todas las categorías" (0)
+      if (this.selected_category && this.selected_category !== '0') {
+        data.categorie_id = this.selected_category;
+      }
+      
       this.cartService.searchProduct(data).subscribe((resp: any) => {
         this.products_search = resp.products;
         this.cd.detectChanges();
@@ -926,6 +935,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   closeMinicart(): void {
     this.minicartService.closeMinicart();
   }
+
+  toggleMobileMenu(): void {
+    $('.mobile-nav-wrapper').toggleClass("active");
+    $('body').toggleClass("menuOn");
+    $('.js-mobile-nav-toggle').toggleClass('mobile-nav--open mobile-nav--close');
+  }
   
   closeMobileMenuAndOverlay(): void {
     // Cerrar el menú móvil
@@ -939,23 +954,53 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   toggleMobileSubmenu(event: Event): void {
     event.preventDefault();
-    event.stopPropagation(); // Evitar que el evento se propague al padre
-    const clickedElement = event.currentTarget as HTMLElement;
-    const parentLi = clickedElement.closest('li');
+    event.stopPropagation();
+    event.stopImmediatePropagation();
     
-    if (parentLi) {
-      const icon = clickedElement.querySelector('i.anm');
-      // Buscar cualquier submenú (lvl-2, lvl-3, etc.)
-      const submenu = parentLi.querySelector('ul');
-      
-      if (icon && submenu) {
-        // Alternar clases del icono
-        icon.classList.toggle('anm-angle-down-l');
-        icon.classList.toggle('anm-angle-up-l');
-        
-        // Alternar la visibilidad del submenú usando jQuery
-        $(submenu).slideToggle();
+    const clickedLink = event.currentTarget as HTMLElement;
+    const parentLi = clickedLink.closest('li');
+    
+    if (!parentLi) return;
+    
+    // Prevent multiple rapid clicks
+    if (parentLi.classList.contains('animating')) return;
+    
+    // Find the submenu
+    const submenu = parentLi.querySelector('ul.lvl-2, ul.lvl2');
+    
+    if (!submenu) return;
+    
+    // Mark as animating
+    parentLi.classList.add('animating');
+    
+    // Check if already expanded
+    const isExpanded = parentLi.classList.contains('expanded');
+    
+    // Close all other submenus at the same level
+    const allSiblings = parentLi.parentElement?.querySelectorAll('li.lvl1');
+    allSiblings?.forEach((sibling: Element) => {
+      if (sibling !== parentLi) {
+        sibling.classList.remove('expanded');
+        sibling.classList.remove('animating');
+        const siblingSubmenu = sibling.querySelector('ul.lvl-2, ul.lvl2');
+        if (siblingSubmenu) {
+          siblingSubmenu.classList.remove('show');
+        }
       }
+    });
+    
+    // Toggle current submenu
+    if (isExpanded) {
+      parentLi.classList.remove('expanded');
+      submenu.classList.remove('show');
+    } else {
+      parentLi.classList.add('expanded');
+      submenu.classList.add('show');
     }
+    
+    // Remove animating class after transition
+    setTimeout(() => {
+      parentLi.classList.remove('animating');
+    }, 350);
   }
 }

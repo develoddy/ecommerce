@@ -1,9 +1,25 @@
 <!-- <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a> -->
 <!-- Loading -->
-<div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
-  <div class="row">
-    <div class="col col-12 col-lg-12 col-sm-2">
-      <div class="sp sp-bars"></div>
+<div *ngIf="loader.loading$ | async" class="loading-overlay">
+  <div class="loading-container">
+    <div class="loading-content">
+      <!-- Logo o Icono -->
+      <div class="loading-icon-wrapper mb-4">
+        <i class="icon anm anm-bag-l loading-icon"></i>
+      </div>
+      
+      <!-- Spinner moderno -->
+      <div class="modern-spinner mb-3">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+      </div>
+      
+      <!-- Texto de carga -->
+      <div class="loading-text">
+        <h4 class="mb-2">Cargando tienda...</h4>
+        <p class="text-muted mb-0">Preparando los mejores productos para ti</p>
+      </div>
     </div>
   </div>
 </div> 
