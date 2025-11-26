@@ -940,6 +940,20 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     $('.mobile-nav-wrapper').toggleClass("active");
     $('body').toggleClass("menuOn");
     $('.js-mobile-nav-toggle').toggleClass('mobile-nav--open mobile-nav--close');
+    
+    // Reset all submenus to closed state when opening menu
+    const isOpening = $('.mobile-nav-wrapper').hasClass("active");
+    if (isOpening) {
+      console.log('🔄 Resetting all submenus to closed state');
+      const allItems = document.querySelectorAll('.mobile-nav .lvl1');
+      allItems.forEach((item) => {
+        item.classList.remove('expanded', 'animating');
+        const submenu = item.querySelector('ul.lvl-2, ul.lvl2');
+        if (submenu) {
+          submenu.classList.remove('show');
+        }
+      });
+    }
   }
   
   closeMobileMenuAndOverlay(): void {
@@ -955,26 +969,44 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   toggleMobileSubmenu(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-    event.stopImmediatePropagation();
     
     const clickedLink = event.currentTarget as HTMLElement;
-    const parentLi = clickedLink.closest('li');
+    const parentLi = clickedLink.closest('li') as HTMLElement;
     
-    if (!parentLi) return;
+    if (!parentLi) {
+      console.error('❌ No parent li found');
+      return;
+    }
     
     // Prevent multiple rapid clicks
-    if (parentLi.classList.contains('animating')) return;
+    if (parentLi.classList.contains('animating')) {
+      console.log('⏳ Already animating, skipping');
+      return;
+    }
     
     // Find the submenu
-    const submenu = parentLi.querySelector('ul.lvl-2, ul.lvl2');
+    const submenu = parentLi.querySelector('ul.lvl-2, ul.lvl2') as HTMLElement;
     
-    if (!submenu) return;
+    if (!submenu) {
+      console.error('❌ No submenu found');
+      return;
+    }
+    
+    // Check current state BEFORE any changes
+    const hasExpandedClass = parentLi.classList.contains('expanded');
+    const hasShowClass = submenu.classList.contains('show');
+    const currentMaxHeight = window.getComputedStyle(submenu).maxHeight;
+    
+    console.log('📊 Current state:', {
+      hasExpandedClass,
+      hasShowClass,
+      currentMaxHeight,
+      submenuDisplay: window.getComputedStyle(submenu).display,
+      submenuOpacity: window.getComputedStyle(submenu).opacity
+    });
     
     // Mark as animating
     parentLi.classList.add('animating');
-    
-    // Check if already expanded
-    const isExpanded = parentLi.classList.contains('expanded');
     
     // Close all other submenus at the same level
     const allSiblings = parentLi.parentElement?.querySelectorAll('li.lvl1');
@@ -990,17 +1022,35 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     
     // Toggle current submenu
-    if (isExpanded) {
-      parentLi.classList.remove('expanded');
-      submenu.classList.remove('show');
-    } else {
+    const shouldOpen = !hasShowClass;
+    
+    if (shouldOpen) {
+      console.log('✅ Opening submenu');
       parentLi.classList.add('expanded');
       submenu.classList.add('show');
+      
+      // Force reflow to ensure transition works
+      void submenu.offsetHeight;
+      
+      // Verify classes were added
+      setTimeout(() => {
+        console.log('🔍 After opening:', {
+          hasExpanded: parentLi.classList.contains('expanded'),
+          hasShow: submenu.classList.contains('show'),
+          maxHeight: window.getComputedStyle(submenu).maxHeight,
+          opacity: window.getComputedStyle(submenu).opacity
+        });
+      }, 50);
+    } else {
+      console.log('🔒 Closing submenu');
+      parentLi.classList.remove('expanded');
+      submenu.classList.remove('show');
     }
     
     // Remove animating class after transition
     setTimeout(() => {
       parentLi.classList.remove('animating');
-    }, 350);
+      console.log('✨ Animation complete');
+    }, 400);
   }
 }
