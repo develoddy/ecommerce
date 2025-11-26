@@ -98,5 +98,72 @@
   }
 }
 
+/* Animaciones para alertas y feedback */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Clases de animación */
+.shake {
+  animation: shake 0.5s;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.pulse {
+  animation: pulse 0.5s ease-in-out;
+}
+
+/* Mejora visual de swatches */
+.swatch.active {
+  box-shadow: 0 0 0 3px #28a745 !important;
+  transform: scale(1.05);
+}
+
+.swatch.soldout {
+  position: relative;
+}
+
+.swatch.soldout::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #dc3545;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* Hover effects para botones */
+.qtyBtn:active {
+  transform: scale(0.95);
+}
+
+/* Feedback visual para inputs */
+input.qty:focus {
+  outline: 2px solid #0dcaf0;
+  outline-offset: 2px;
+}
+
+/* Border error animation */
+.border-danger {
+  animation: shake 0.5s;
+}
+
 
 

@@ -2,19 +2,29 @@
     <div id="miniSwatchesColor-drawer" class="minicart-right-drawer offcanvas offcanvas-end" tabindex="-1">
         <!--MiniColor Content-->
         <div id="cart-drawer" class="block block-cart" *ngIf="coloresDisponibles.length > 0">
-            <div class="minicart-header">
-                <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close">
-                    <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i>
+            <div class="minicart-header" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 1.5rem; border-bottom: 3px solid #222;">
+                <button class="close-cart border-0" 
+                        data-bs-dismiss="offcanvas" 
+                        aria-label="Close"
+                        style="transition: transform 0.2s ease;"
+                        onmouseover="this.style.transform='scale(1.1)'"
+                        onmouseout="this.style.transform='scale(1)'">
+                    <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Cerrar" style="font-size: 1.3rem;"></i>
                 </button>
-                <h4 class="fs-6 text-uppercase fw-bold">Colores</h4>
+                <div class="text-center">
+                    <i class="icon anm anm-palette-l mb-2" style="font-size: 2.5rem; color: #222;"></i>
+                    <h4 class="fs-5 text-uppercase fw-bold mb-2" style="color: #222; letter-spacing: 1px;">Selecciona un color</h4>
+                    <p class="mb-0" style="font-size: 0.9rem; color: #6c757d;">Haz clic en el color que prefieras</p>
+                </div>
             </div>
-            <div class="minicart-content d-flex">
-                <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
+            <div class="minicart-content d-flex flex-column" style="padding: 2rem 1.5rem;">
+                <ul class="variants-clr swatches d-flex pt-1 clearfix mb-0" style="gap: 12px; flex-wrap: wrap; justify-content: flex-start; list-style: none; padding: 0;">
                     <ng-container *ngFor="let color of coloresDisponibles">
                         <li class="swatch x-large available rounded" 
                             [ngClass]="getSwatchClass(color.imagen, color.color)" 
                             (click)="selectColor(color)"
-                            [attr.title]="color.color">
+                            [attr.title]="color.color"
+                            style="transition: all 0.3s ease; position: relative; margin-bottom: 30px;">
                             <div class="color-swatch"
                                 [ngStyle]="{ 
                                     'background-color': getColorHex(color.color),
@@ -22,12 +32,19 @@
                                     'height': '100%',
                                     'border-radius': '50%',
                                     'cursor': 'pointer',
-                                    'display': 'block'
+                                    'display': 'block',
+                                    'border': '2px solid #ddd'
                                 }">
                             </div>
+                            <span style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; white-space: nowrap; color: #6c757d; font-weight: 500;">{{color.color}}</span>
                         </li>
                     </ng-container>
                 </ul>
+                
+                <div class="alert alert-info mt-3 mb-0" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.9rem;">
+                    <i class="icon anm anm-info-circle me-2"></i>
+                    <strong>Consejo:</strong> Los colores seleccionados se destacarán visualmente
+                </div>
             </div>
             <!-- <div class="minicart-bottom" *ngIf="listAddressClients.length != 0 || listAddressGuest.length != 0">
                 <div class="minicart-action d-flex flex-column mt-3">

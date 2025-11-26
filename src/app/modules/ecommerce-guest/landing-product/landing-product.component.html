@@ -128,12 +128,15 @@
                         <div class="product-swatches-option d-none">
                             <div class="product-item swatches-image w-100 swatch-0 option1" data-option-index="0">
                                 <label class="label d-flex align-items-center fw-normal fs-10">Color <span class="slVariant ms-1 fw-light">{{ selectedColor || '' }}</span></label>
-                                <ul class="variants-clr swatches d-flex-center pt-1 clearfix d-none">
+                                <ul class="variants-clr swatches d-flex-center pt-1 clearfix d-none" style="gap: 10px;">
                                     <ng-container *ngFor="let color of coloresDisponibles">
                                         <li class="swatch x-large available rounded" 
                                             [ngClass]="getSwatchClass(color.imagen, color.color)" 
                                             (click)="selectColor(color)"
-                                            [attr.title]="color.color">
+                                            [attr.title]="color.color"
+                                            style="transition: all 0.3s ease;"
+                                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)'"
+                                            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 2px 6px rgba(0,0,0,0.1)'">
                                             <div class="color-swatch"
                                                 [ngStyle]="{ 
                                                     'background-color': getColorHex(color.color),
@@ -141,7 +144,9 @@
                                                     'height': '100%',
                                                     'border-radius': '50%',
                                                     'cursor': 'pointer',
-                                                    'display': 'block'
+                                                    'display': 'block',
+                                                    'border': '2px solid #fff',
+                                                    'box-shadow': '0 2px 6px rgba(0,0,0,0.1)'
                                                 }">
                                             </div>
                                         </li>
@@ -169,7 +174,9 @@
                             <label class="label d-flex align-items-center fw-normal mb-2"> {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} <span class="slVariant ms-1 fw-light">{{ variedad_selected?.valor || '' }}</span>
                                 <a href="#sizechart-modal" class="text-link sizelink  size-chart-modal d-none" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Guía de tallas</a>
                             </label>
-                            <ul class="variants-size size-swatches d-flex pt-1 clearfix d-none" [ngClass]="{'border border-danger': tallaError}">
+                            <ul class="variants-size size-swatches d-flex pt-1 clearfix d-none" 
+                                [ngClass]="{'border border-danger': tallaError}"
+                                style="gap: 8px;">
                                 <ng-container *ngFor="let variedad of variedades; let i = index">
                                     <li class="swatch x-large"
                                         [ngClass]="{
@@ -178,13 +185,20 @@
                                             'active': variedad.valor === variedad_selected?.valor
                                         }"
                                         [class.text-muted]="variedad.stock === 0"
-                                        (click)="variedad.stock > 0 && selectedVariedad(variedad, i)">
+                                        [style.cursor]="variedad.stock > 0 ? 'pointer' : 'not-allowed'"
+                                        [style.opacity]="variedad.stock === 0 ? '0.5' : '1'"
+                                        [style.transition]="'all 0.2s ease'"
+                                        [style.box-shadow]="variedad.valor === variedad_selected?.valor ? '0 0 0 2px #28a745' : 'none'"
+                                        (click)="variedad.stock > 0 && selectedVariedad(variedad, i)"
+                                        onmouseover="if(this.style.opacity !== '0.5') { this.style.transform='scale(1.05)'; this.style.backgroundColor='#f8f9fa'; }"
+                                        onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='';">
 
                                         <span class="swatchLbl"
                                             [attr.data-bs-toggle]="'tooltip'"
                                             [attr.data-bs-placement]="'top'"
-                                            [attr.title]="variedad.valor"
-                                            [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'">
+                                            [attr.title]="variedad.stock > 0 ? variedad.valor : 'Agotado'"
+                                            [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'"
+                                            [style.font-weight]="variedad.valor === variedad_selected?.valor ? '700' : '500'">
                                             {{variedad.valor}}
                                         </span>
                                     </li>
@@ -239,7 +253,12 @@
                                     <span>Cantidad</span>
                                 </label>
                                 <div class="qtyField" [ngClass]="{ 'w-100': isMobile }">
-                                    <a class="qtyBtn minus" href="#" (click)="decreaseQuantity(); $event.preventDefault()">
+                                    <a class="qtyBtn minus" 
+                                       href="#" 
+                                       (click)="decreaseQuantity(); $event.preventDefault()"
+                                       style="transition: all 0.2s ease;"
+                                       onmouseover="this.style.backgroundColor='#222'; this.style.color='#fff'"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color=''">
                                         <i class="icon anm anm-minus-r"></i>
                                     </a>
                                     <input type="number" 
@@ -251,8 +270,14 @@
                                         class="product-form-input qty border-0"
                                         [ngClass]="{ 'w-100': isMobile }"
                                         min="1"
-                                        step="1" />
-                                    <a class="qtyBtn plus" href="#" (click)="increaseQuantity(); $event.preventDefault()">
+                                        step="1"
+                                        style="font-weight: 600; font-size: 1rem;" />
+                                    <a class="qtyBtn plus" 
+                                       href="#" 
+                                       (click)="increaseQuantity(); $event.preventDefault()"
+                                       style="transition: all 0.2s ease;"
+                                       onmouseover="this.style.backgroundColor='#222'; this.style.color='#fff'"
+                                       onmouseout="this.style.backgroundColor=''; this.style.color=''">
                                         <i class="icon anm anm-plus-r"></i>
                                     </a>
                                 </div>
@@ -440,12 +465,15 @@
                                     <!-- Swatches Color -->
                                     <div class="product-item swatches-image w-100 mb-4 swatch-0 option1" data-option-index="0">
                                         <label class="label d-flex align-items-center fw-normal text-uppercase">Color <span class="slVariant ms-1 fw-light">{{ selectedColor || '' }}</span></label>
-                                        <ul class="variants-clr swatches d-flex-center pt-1 clearfix">
+                                        <ul class="variants-clr swatches d-flex-center pt-1 clearfix" style="gap: 10px;">
                                             <ng-container *ngFor="let color of coloresDisponibles">
                                                 <li class="swatch x-large available rounded" 
                                                     [ngClass]="getSwatchClass(color.imagen, color.color)" 
                                                     (click)="selectColor(color)"
-                                                    [attr.title]="color.color">
+                                                    [attr.title]="color.color"
+                                                    style="transition: all 0.3s ease;"
+                                                    ontouchstart="this.style.transform='scale(1.1)'"
+                                                    ontouchend="this.style.transform='scale(1)'">
                                                     <!-- círculo/cuadro del color -->
                                                     <div class="color-swatch"
                                                         [ngStyle]="{ 
@@ -454,7 +482,9 @@
                                                             'height': '100%',
                                                             'border-radius': '50%',
                                                             'cursor': 'pointer',
-                                                            'display': 'block'
+                                                            'display': 'block',
+                                                            'border': '2px solid #fff',
+                                                            'box-shadow': '0 2px 6px rgba(0,0,0,0.1)'
                                                         }">
                                                     </div>
                                                 </li>
@@ -467,7 +497,9 @@
                                         <label class="label d-flex align-items-center fw-normal text-uppercase mb-2"> {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} <span class="slVariant ms-1 fw-light">{{ variedad_selected?.valor || '' }}</span>
                                             <a href="#sizechart-modal" class="text-link sizelink d-none size-chart-modal" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Guía de tallas</a>
                                         </label>
-                                        <ul class="variants-size size-swatches d-flex pt-1 clearfix" [ngClass]="{'border border-danger': tallaError}">
+                                        <ul class="variants-size size-swatches d-flex pt-1 clearfix" 
+                                            [ngClass]="{'border border-danger': tallaError}"
+                                            style="gap: 8px;">
                                             <ng-container *ngFor="let variedad of variedades; let i = index">
                                                 <li class="swatch x-large"
                                                     [ngClass]="{
@@ -476,14 +508,22 @@
                                                         'active': variedad.valor === variedad_selected?.valor
                                                     }"
                                                     [class.text-muted]="variedad.stock === 0"
-                                                    (click)="variedad.stock > 0 && selectedVariedad(variedad, i)">
+                                                    [style.cursor]="variedad.stock > 0 ? 'pointer' : 'not-allowed'"
+                                                    [style.opacity]="variedad.stock === 0 ? '0.5' : '1'"
+                                                    [style.transition]="'all 0.2s ease'"
+                                                    [style.box-shadow]="variedad.valor === variedad_selected?.valor ? '0 0 0 2px #28a745' : 'none'"
+                                                    (click)="variedad.stock > 0 && selectedVariedad(variedad, i)"
+                                                    ontouchstart="this.style.backgroundColor='#f8f9fa'"
+                                                    ontouchend="this.style.backgroundColor=''">
 
                                                     <span class="swatchLbl"
                                                         [attr.data-bs-toggle]="'tooltip'"
                                                         [attr.data-bs-placement]="'top'"
-                                                        [attr.title]="variedad.valor"
-                                                        [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'">
+                                                        [attr.title]="variedad.stock > 0 ? variedad.valor : 'Agotado'"
+                                                        [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'"
+                                                        [style.font-weight]="variedad.valor === variedad_selected?.valor ? '700' : '500'">
                                                         {{variedad.valor}}
+                                                        <i *ngIf="variedad.valor === variedad_selected?.valor" class="icon anm anm-check-cil ms-1" style="color: #28a745; font-size: 0.8rem;"></i>
                                                     </span>
                                                 </li>
                                             </ng-container>
@@ -498,7 +538,14 @@
                                     <!-- Product Quantity -->
                                     <div class="product-form-quantity d-flex-center me-2" [ngClass]="{'border border-danger': cantidadError}">
                                         <div class="qtyField">
-                                            <a class="qtyBtn minus" href="#" (click)="decreaseQuantity(); $event.preventDefault()"><i class="icon anm anm-minus-r"></i></a>
+                                            <a class="qtyBtn minus" 
+                                               href="#" 
+                                               (click)="decreaseQuantity(); $event.preventDefault()"
+                                               style="transition: all 0.2s ease;"
+                                               ontouchstart="this.style.backgroundColor='#222'; this.style.color='#fff'"
+                                               ontouchend="this.style.backgroundColor=''; this.style.color=''">
+                                                <i class="icon anm anm-minus-r"></i>
+                                            </a>
                                             <input type="number" 
                                                 name="quantity" 
                                                 id="qty-cart"
@@ -507,8 +554,16 @@
                                                 (blur)="onQuantityBlur($event)"
                                                 class="product-form-input qty border-0"
                                                 min="1"
-                                                step="1" />
-                                            <a class="qtyBtn plus" href="#" (click)="increaseQuantity(); $event.preventDefault()"><i class="icon anm anm-plus-r"></i></a>
+                                                step="1"
+                                                style="font-weight: 600; font-size: 1rem;" />
+                                            <a class="qtyBtn plus" 
+                                               href="#" 
+                                               (click)="increaseQuantity(); $event.preventDefault()"
+                                               style="transition: all 0.2s ease;"
+                                               ontouchstart="this.style.backgroundColor='#222'; this.style.color='#fff'"
+                                               ontouchend="this.style.backgroundColor=''; this.style.color=''">
+                                                <i class="icon anm anm-plus-r"></i>
+                                            </a>
                                         </div>
                                     </div>
                                     <!-- End Product Quantity -->
@@ -1779,11 +1834,25 @@
                 </div>
 
                 <div class="qtyField mx-2 bg-black" [ngClass]="{'border border-danger': cantidadError}">
-                    <a class="qtyBtn minus" href="#;" (click)="decrementQty(); $event.preventDefault()">
+                    <a class="qtyBtn minus" 
+                       href="#;" 
+                       (click)="decrementQty(); $event.preventDefault()"
+                       style="transition: all 0.2s ease;"
+                       onmouseover="this.style.opacity='0.7'"
+                       onmouseout="this.style.opacity='1'">
                         <i class="icon anm anm-minus-r"></i>
                     </a>
-                    <input type="text" name="quantity" [(ngModel)]="cantidad" class="product-form-input qty border-0" />
-                    <a class="qtyBtn plus" href="#;" (click)="incrementQty(); $event.preventDefault()">
+                    <input type="text" 
+                           name="quantity" 
+                           [(ngModel)]="cantidad" 
+                           class="product-form-input qty border-0" 
+                           style="font-weight: 600;" />
+                    <a class="qtyBtn plus" 
+                       href="#;" 
+                       (click)="incrementQty(); $event.preventDefault()"
+                       style="transition: all 0.2s ease;"
+                       onmouseover="this.style.opacity='0.7'"
+                       onmouseout="this.style.opacity='1'">
                         <i class="icon anm anm-plus-r"></i>
                     </a>
                 </div>

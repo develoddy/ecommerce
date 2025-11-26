@@ -2,14 +2,24 @@
     <div id="miniSwatchesSizes-drawer" class="minicart-right-drawer offcanvas offcanvas-end" tabindex="-1">
         <!--MiniColor Content-->
         <div id="cart-drawer" class="block block-cart" *ngIf="variedades.length > 0">
-            <div class="minicart-header">
-                <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close">
-                    <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i>
+            <div class="minicart-header" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 1.5rem; border-bottom: 3px solid #222;">
+                <button class="close-cart border-0" 
+                        data-bs-dismiss="offcanvas" 
+                        aria-label="Close"
+                        style="transition: transform 0.2s ease;"
+                        onmouseover="this.style.transform='scale(1.1)'"
+                        onmouseout="this.style.transform='scale(1)'">
+                    <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Cerrar" style="font-size: 1.3rem;"></i>
                 </button>
-                <h4 class="fs-6 text-uppercase fw-bold">Colores</h4>
+                <div class="text-center">
+                    <i class="icon anm anm-ruler-l mb-2" style="font-size: 2.5rem; color: #222;"></i>
+                    <h4 class="fs-5 text-uppercase fw-bold mb-2" style="color: #222; letter-spacing: 1px;">Selecciona una talla</h4>
+                    <p class="mb-0" style="font-size: 0.9rem; color: #6c757d;">Elige la talla que mejor se ajuste</p>
+                </div>
             </div>
-            <div class="minicart-content d-flex">
-                <ul class="variants-size size-swatches d-flex pt-1 clearfix" [ngClass]="{'border border-danger': tallaError}">
+            <div class="minicart-content d-flex flex-column" style="padding: 2rem 1.5rem;">
+                <ul class="variants-size size-swatches d-flex pt-1 clearfix mb-0" 
+                    style="gap: 10px; flex-wrap: wrap; justify-content: flex-start; list-style: none; padding: 0; margin: 0;">
                     <ng-container *ngFor="let variedad of variedades; let i = index">
                         <li class="swatch x-large"
                             [ngClass]="{
@@ -17,19 +27,39 @@
                                 'soldout': variedad.stock === 0,
                                 'active': variedad.valor === variedad_selected?.valor
                             }"
-                            [class.text-muted]="variedad.stock === 0"   
-                            (click)="variedad.stock > 0 && selectedVariedad(variedad, i)">
+                            [class.text-muted]="variedad.stock === 0"
+                            [style.cursor]="variedad.stock > 0 ? 'pointer' : 'not-allowed'"
+                            [style.opacity]="variedad.stock === 0 ? '0.5' : '1'"
+                            [style.transition]="'all 0.2s ease'"
+                            [style.border]="variedad.valor === variedad_selected?.valor ? '2px solid #28a745' : '1px solid #e0e0e0'"
+                            [style.backgroundColor]="variedad.valor === variedad_selected?.valor ? '#f0f9f4' : '#fff'"
+                            [style.borderRadius]="'6px'"
+                            (click)="variedad.stock > 0 && selectedVariedad(variedad, i)"
+                            onmouseover="if(this.style.opacity !== '0.5') { this.style.transform='scale(1.05)'; this.style.borderColor='#aaa'; }"
+                            onmouseout="this.style.transform='scale(1)'; this.style.borderColor=this.classList.contains('active') ? '#28a745' : '#e0e0e0';">
 
                             <span class="swatchLbl"
                                 [attr.data-bs-toggle]="'tooltip'"
                                 [attr.data-bs-placement]="'top'"
-                                [attr.title]="variedad.valor"
-                                [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'">
+                                [attr.title]="variedad.stock > 0 ? variedad.valor : 'Agotado'"
+                                [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'"
+                                [style.fontWeight]="variedad.valor === variedad_selected?.valor ? '600' : '400'">
                                 {{variedad.valor}}
+                                <i *ngIf="variedad.valor === variedad_selected?.valor" class="icon anm anm-check-cil ms-1" style="color: #28a745; font-size: 0.85rem;"></i>
                             </span>
                         </li>
                     </ng-container>
                 </ul>
+                
+                <div class="alert alert-warning mt-3 mb-0" *ngIf="tallaError" style="border-left: 4px solid #ffc107; border-radius: 6px; font-size: 0.9rem; animation: shake 0.5s;">
+                    <i class="icon anm anm-exclamation-triangle me-2"></i>
+                    <strong>¡Atención!</strong> Debes seleccionar una talla antes de continuar
+                </div>
+                
+                <div class="alert alert-info mt-3 mb-0" *ngIf="!tallaError" style="border-left: 4px solid #6c757d; border-radius: 6px; font-size: 0.85rem; background-color: #f8f9fa;">
+                    <i class="icon anm anm-info-circle me-2" style="color: #6c757d;"></i>
+                    Las tallas agotadas aparecen tachadas y deshabilitadas
+                </div>
             </div>
             <!-- <div class="minicart-bottom" *ngIf="listAddressClients.length != 0 || listAddressGuest.length != 0">
                 <div class="minicart-action d-flex flex-column mt-3">
