@@ -20,51 +20,76 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                     <!--Nav step checkout-->
                     <ng-container *ngIf="isCheckoutNavVisible">
-                        <div id="nav-tabs" class="step-checkout main-vertical-component clearfix">
-                            <div class="row-fluid stepsCheckout">
-                                <div class="span12" role="navigation">
-                                    <div class="row labelSteps text-center" role="list">
-                                        <div class="col-4 col-md-4 mb-2"
-                                            [ngClass]="{'medium': currentStep === 'resumen'}" role="listitem">
-                                            Envío
-                                        </div>
-                                        <div class="col-4 col-md-4 mb-2 nocheck2"
-                                            [ngClass]="{'medium': currentStep === 'payment'}" role="listitem">
-                                            Pago
-                                        </div>
-                                        <div class="col-4 col-md-4 mb-2"
-                                            [ngClass]="{'medium': currentStep === 'successfull'}" role="listitem">
-                                            Confirmación
-                                        </div>
+                        <div class="checkout-stepper mb-5" style="background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%); padding: 2rem 1rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                            <div class="container">
+                                <div class="row justify-content-center align-items-center position-relative" style="max-width: 800px; margin: 0 auto;">
+                                    
+                                    <!-- Línea de progreso -->
+                                    <div class="position-absolute w-100" style="height: 3px; background-color: #e9ecef; top: 50%; transform: translateY(-50%); z-index: 0; left: 0; right: 0;">
+                                        <div class="progress-line" 
+                                             [style.width]="currentStep === 'resumen' ? '0%' : currentStep === 'payment' ? '50%' : '100%'"
+                                             style="height: 100%; background: linear-gradient(90deg, #28a745 0%, #20c997 100%); transition: width 0.5s ease;"></div>
                                     </div>
-                                </div>
 
-                                <div class="span12" aria-hidden="true">
-                                    <div class="row bolasSteps justify-content-center">
-                                        <!-- Step 1 -->
-                                        <div class="col-4">
-                                            <div [ngClass]="{
-                                                'flechaSteps': true,
-                                                'medium1': currentStep === 'resumen'
-                                            }"></div>
-                                        </div>
-                                        <!-- Step 2 -->
-                                        <div class="col-4">
-                                            <div [ngClass]="{
-                                                'flechaStepsNoCheck2': currentStep === 'resumen',
-                                                'flechaSteps': currentStep === 'payment' || currentStep === 'successfull',
-                                                'medium2': currentStep === 'payment'
-                                            }"></div>
-                                        </div>
-                                        <!-- Step 3 -->
-                                        <div class="col-4">
-                                            <div [ngClass]="{
-                                                'flechaStepsNoCheck3': currentStep !== 'successfull',
-                                                'flechaSteps': currentStep === 'successfull',
-                                                'medium3': currentStep === 'successfull'
-                                            }"></div>
+                                    <!-- Step 1: Envío -->
+                                    <div class="col-4 text-center position-relative" style="z-index: 1;">
+                                        <div class="step-wrapper">
+                                            <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
+                                                 [style.background-color]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '#28a745' : '#ffffff'"
+                                                 [style.border]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '3px solid #28a745' : '3px solid #dee2e6'"
+                                                 style="width: 56px; height: 56px; border-radius: 50%; transition: all 0.3s ease; cursor: pointer;"
+                                                 (click)="currentStep !== 'resumen' && navigateToStep('resumen')">
+                                                <i class="icon anm anm-truck-l" 
+                                                   [style.color]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '#ffffff' : '#6c757d'"
+                                                   style="font-size: 1.5rem; transition: color 0.3s ease;"></i>
+                                            </div>
+                                            <div class="step-label fw-semibold"
+                                                 [style.color]="currentStep === 'resumen' ? '#222' : '#6c757d'"
+                                                 style="font-size: 0.95rem; letter-spacing: 0.3px; transition: color 0.3s ease;">
+                                                Envío
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <!-- Step 2: Pago -->
+                                    <div class="col-4 text-center position-relative" style="z-index: 1;">
+                                        <div class="step-wrapper">
+                                            <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
+                                                 [style.background-color]="currentStep === 'payment' || currentStep === 'successfull' ? '#28a745' : '#ffffff'"
+                                                 [style.border]="currentStep === 'payment' || currentStep === 'successfull' ? '3px solid #28a745' : '3px solid #dee2e6'"
+                                                 style="width: 56px; height: 56px; border-radius: 50%; transition: all 0.3s ease; cursor: pointer;"
+                                                 (click)="currentStep === 'successfull' && navigateToStep('payment')">
+                                                <i class="icon anm anm-credit-card-l" 
+                                                   [style.color]="currentStep === 'payment' || currentStep === 'successfull' ? '#ffffff' : '#6c757d'"
+                                                   style="font-size: 1.5rem; transition: color 0.3s ease;"></i>
+                                            </div>
+                                            <div class="step-label fw-semibold"
+                                                 [style.color]="currentStep === 'payment' ? '#222' : '#6c757d'"
+                                                 style="font-size: 0.95rem; letter-spacing: 0.3px; transition: color 0.3s ease;">
+                                                Pago
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step 3: Confirmación -->
+                                    <div class="col-4 text-center position-relative" style="z-index: 1;">
+                                        <div class="step-wrapper">
+                                            <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
+                                                 [style.background-color]="currentStep === 'successfull' ? '#28a745' : '#ffffff'"
+                                                 [style.border]="currentStep === 'successfull' ? '3px solid #28a745' : '3px solid #dee2e6'"
+                                                 style="width: 56px; height: 56px; border-radius: 50%; transition: all 0.3s ease;">
+                                                <i class="icon anm anm-check-cil" 
+                                                   [style.color]="currentStep === 'successfull' ? '#ffffff' : '#6c757d'"
+                                                   style="font-size: 1.5rem; transition: color 0.3s ease;"></i>
+                                            </div>
+                                            <div class="step-label fw-semibold"
+                                                 [style.color]="currentStep === 'successfull' ? '#222' : '#6c757d'"
+                                                 style="font-size: 0.95rem; letter-spacing: 0.3px; transition: color 0.3s ease;">
+                                                Confirmación
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

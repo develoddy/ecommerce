@@ -30,10 +30,20 @@
                   <div class="block-content">
                      <!-- Mostrar la lista de direcciones -->
                      <div class="address-book-section" [class.d-none]="loading" *ngIf="this.selectedAddress">
-                        <div class="top-sec mb-3 d-flex justify-content-between">
-                              <h3 class="mb-0 text-uppercase fw-normal">Dirección de envío</h3>
+                        <div class="top-sec mb-3 d-flex justify-content-between align-items-center">
+                              <h3 class="mb-0 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px;">
+                                 <i class="icon anm anm-map-marker-al me-2"></i>Dirección de envío
+                              </h3>
                               <div>
-                                 <a href="#" onclick="return false;" class="text-decoration-underline fw-normal" (click)="gotoResumen()">Editar</a>
+                                 <a href="#" 
+                                    onclick="return false;" 
+                                    class="text-decoration-none fw-semibold d-inline-flex align-items-center" 
+                                    (click)="gotoResumen()"
+                                    style="color: #6c757d; font-size: 0.95rem; transition: color 0.3s ease;"
+                                    onmouseover="this.style.color='#222'"
+                                    onmouseout="this.style.color='#6c757d'">
+                                    <i class="icon anm anm-edit me-1"></i>Editar
+                                 </a>
                               </div>
                         </div>
                         <div class="row">
@@ -235,7 +245,9 @@
             <!-- PAYMENT METHODS -->
             <div class="mb-3 payment-methods mb-4">
                   <div class="block-content">
-                     <h3 class="title mb-3 text-uppercase fw-normal">Método de pago</h3>
+                     <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
+                        <i class="icon anm anm-credit-card-l me-2"></i>Método de pago
+                     </h3>
                      <div class="payment-accordion-radio">
                         <div class="accordion" id="accordionExample">
                               <!-- TARJETA -->
@@ -435,7 +447,9 @@
                                           <!--Order Summary-->
                                           <div class="block order-summary">
                                              <div class="block-content">
-                                                <h3 class="title mb-3 text-uppercase">Paquete</h3>
+                                                <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.1rem; letter-spacing: 0.5px; border-bottom: 2px solid #e9ecef; padding-bottom: 0.5rem;">
+                                                   <i class="icon anm anm-bag-l me-2"></i>Resumen del pedido
+                                                </h3>
                                                 <div class="table-responsive table-bottom-brd order-table">
                                                       <table class="table table-hover align-middle mb-0">
                                                          <thead>

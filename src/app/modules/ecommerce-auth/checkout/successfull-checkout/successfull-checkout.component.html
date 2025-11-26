@@ -2,12 +2,24 @@
     <ng-container >
         <!--Order success-->
         <!-- ORDER SUCCESS -->
-        <div class="success-text checkout-card text-center py-5 mb-md-5">
-            <i class="icon anm anm-shield-check"></i>
-            <h2>¡Gracias por su compra!</h2>
-            <p class="mb-1 lh-1">Su pago se ha realizado con éxito. El pedido está en camino.</p>
-            <p class="mb-1 lh-1">Recibirá un correo con los detalles y un enlace para seguir el envío.</p>                                      
-            <p class="text-order badge bg-black p-3 mt-3 rounded-0 text-uppercase" *ngIf="this.sale" [ngClass]="{'w-100': isMobile}">Código: {{ sale.n_transaction }}</p>
+        <div class="success-text checkout-card text-center py-5 mb-md-5" style="background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <i class="icon anm anm-check-circle-o d-block mb-4" style="font-size: 5rem; color: #28a745;"></i>
+            <h2 class="mb-3" style="color: #222; font-size: 2rem; font-weight: 600; letter-spacing: 0.5px;">
+                ¡Gracias por tu compra!
+            </h2>
+            <p class="mb-2 text-muted" style="font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+                Tu pago se ha realizado con éxito. El pedido está en camino.
+            </p>
+            <p class="mb-4 text-muted" style="font-size: 1rem; max-width: 600px; margin: 0 auto;">
+                Recibirás un correo con los detalles y un enlace para seguir el envío.
+            </p>                                      
+            <div class="d-inline-flex align-items-center px-4 py-3 mt-3" *ngIf="this.sale" style="background-color: #222; border-radius: 8px;">
+                <i class="icon anm anm-file-text-l me-2" style="color: #fff; font-size: 1.5rem;"></i>
+                <div class="text-start">
+                    <small class="d-block text-white-50" style="font-size: 0.75rem; letter-spacing: 0.5px;">NÚMERO DE PEDIDO</small>
+                    <strong class="d-block text-white" style="font-size: 1.2rem; letter-spacing: 1px;">{{ sale.n_transaction }}</strong>
+                </div>
+            </div>
         </div>
         <!-- END ORDER SUCCESS -->
 
@@ -19,7 +31,9 @@
                     <div class="col-12 col-lg-8 p-0">
                         <div class="block order-summary p-2 mb-5">
                             <div class="block-content">
-                                <h3 class="title mb-3 text-uppercase">Pedido</h3>
+                                <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
+                                    <i class="icon anm anm-check-cil me-2"></i>Resumen del pedido
+                                </h3>
                                 <div class="row">
                                     <!-- CART CONTENT -->
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
@@ -138,7 +152,9 @@
                     <!-- CART SUMMARY -->
                     <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-5 mt-lg-0">
                         <div class="cart-info sidebar-sticky bg-transparent border-0">
-                            <h3  class="title mb-3 text-uppercase">Resumen de Precio</h3>
+                            <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
+                                <i class="icon anm anm-file-text-l me-2"></i>Resumen de Precio
+                            </h3>
                             <div class="cart-order-detail cart-col">
                                 <!-- SUBTOTAL -->
                                 <ng-container *ngIf="saleDetails && saleDetails.length > 0">
@@ -247,7 +263,9 @@
                         <div class="block p-0">
                             <div class="block-content"> 
                                 <div class="shipping-details mb-4 mb-sm-0 lh-1">
-                                    <h3 class="title mb-3">Dirección de envío</h3>
+                                    <h3 class="mb-3" style="color: #222; font-size: 1.1rem; letter-spacing: 0.5px; border-bottom: 2px solid #e9ecef; padding-bottom: 0.5rem;">
+                                        <i class="icon anm anm-map-marker-al me-2"></i>Dirección de envío
+                                    </h3>
                                     <ng-container *ngIf="this.shippingAddress">
                                         <p class="text-bold">{{ shippingAddress.name }} {{ shippingAddress.surname }}</p>
                                         <p>{{ shippingAddress.address }}</p>
@@ -264,7 +282,9 @@
                         <div class="block p-0">
                             <div class="block-content">
                                 <div class="billing-details lh-1">
-                                    <h3 class="title mb-3">Método de pago</h3>
+                                    <h3 class="mb-3" style="color: #222; font-size: 1.1rem; letter-spacing: 0.5px; border-bottom: 2px solid #e9ecef; padding-bottom: 0.5rem;">
+                                        <i class="icon anm anm-credit-card-l me-2"></i>Método de pago
+                                    </h3>
                                     <ng-container *ngIf="this.sale">
                                         <p>{{ sale.method_payment }}</p>
                                     </ng-container>
@@ -276,7 +296,9 @@
                         <div class="block p-0">
                             <div class="block-content">
                                 <div class="shipping-details mb-4 mb-sm-0 lh-1">
-                                    <h3 class="title mb-3">Detalles del pedido</h3>
+                                    <h3 class="mb-3" style="color: #222; font-size: 1.1rem; letter-spacing: 0.5px; border-bottom: 2px solid #e9ecef; padding-bottom: 0.5rem;">
+                                        <i class="icon anm anm-file-text-l me-2"></i>Detalles del pedido
+                                    </h3>
                                     <ng-container *ngIf="this.sale">
                                         <p>ID del pedido: {{ sale.n_transaction }}</p>
                                         <p>Fecha de pedido: {{ formatDate(sale.updatedAt) }}</p>
@@ -290,7 +312,9 @@
                         <div class="block p-0">
                             <div class="block-content">
                                 <div class="billing-details lh-1">
-                                    <h3 class="title mb-3">Fecha prevista de entrega</h3>
+                                    <h3 class="mb-3" style="color: #222; font-size: 1.1rem; letter-spacing: 0.5px; border-bottom: 2px solid #e9ecef; padding-bottom: 0.5rem;">
+                                        <i class="icon anm anm-truck-l me-2"></i>Fecha prevista de entrega
+                                    </h3>
                                     <!-- <p class="h5 my-2">18 de octubre de 2023</p> -->
                                      <p *ngIf="minDeliveryDate && maxDeliveryDate">
                                         Fecha estimada de entrega:
@@ -315,9 +339,10 @@
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                 <!--Order Delivery-->
                 <div class="d-flex-wrap mt-4 text-center justify-content-center">
-                    <a [href]="'/' + country + '/' + locale + '/home'" class="d-inline-flex align-items-center" [ngClass]="{'w-100': isMobile , 'w-25': isDesktop }">
-                        <button class="btn-dark-ld fw-light">
-                            <i class="me-2 icon an an-angle-left-r"></i>Seguir comprando
+                    <a [href]="'/' + country + '/' + locale + '/home'" class="text-decoration-none d-inline-flex" [ngClass]="{'w-100': isMobile , 'w-auto': isDesktop }">
+                        <button class="btn btn-dark px-5 py-3 text-uppercase fw-semibold d-flex align-items-center" style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
+                            <i class="me-2 icon anm anm-arrow-left" style="font-size: 1.2rem;"></i>
+                            <span>Seguir comprando</span>
                         </button>     
                     </a>
                     <button type="button" class="d-inline-flex align-items-center btn me-2 mb-2 me-sm-3 d-none"><i class="me-2 icon an an-print"></i>Orden de impresión</button>

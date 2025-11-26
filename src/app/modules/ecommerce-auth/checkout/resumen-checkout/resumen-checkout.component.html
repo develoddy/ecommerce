@@ -5,7 +5,9 @@
             <div id="main-left">
                 <!-- DELIVERY METHODS -->
                 <div class="mb-5">
-                    <h3 class="mb-0 text-uppercase mb-3">Tipo de envío</h3>
+                    <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
+                        <i class="icon anm anm-truck-l me-2"></i>Tipo de envío
+                    </h3>
                     <div class="d-flex flex-row mb-3">
                         <div class="py-3 px-5 border border-dark me-3">
                             <div class="d-flex flex-column justify-content-center">
@@ -98,7 +100,9 @@
                                                 <div class="address-card mt-0 h-100">
                                                     <!-- Mostrar la lista de direcciones -->
                                                     <div class="address-book-section">
-                                                        <h3 class="mb-4 fw-bold lh-1 text-uppercase">Datos de envío</h3>
+                                                        <h3 class="mb-4 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
+                                                            <i class="icon anm anm-map-marker-al me-2"></i>Datos de envío
+                                                        </h3>
                                                         <form #addressForm="ngForm" novalidate (ngSubmit)="storeAddress()">
                                                             <fieldset>
                                                                 <!-- Nombre -->
@@ -334,20 +338,34 @@
                                                                 <!-- Button register o update -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12 col-sm-6 col-md-6 col-lg-12">
-                                                                        <button type="submit" class="btn-dark-ld" (click)="storeAddress()" [disabled]="isValidating">
-                                                                            <span *ngIf="!isValidating">Guardar dirección</span>
-                                                                            <span *ngIf="isValidating">Validando...</span>
+                                                                        <button type="submit" 
+                                                                                class="btn btn-dark w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center" 
+                                                                                (click)="storeAddress()" 
+                                                                                [disabled]="isValidating"
+                                                                                style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
+                                                                            <ng-container *ngIf="!isValidating">
+                                                                                <i class="icon anm anm-check-cil me-2" style="font-size: 1.2rem;"></i>
+                                                                                <span>Guardar dirección</span>
+                                                                            </ng-container>
+                                                                            <ng-container *ngIf="isValidating">
+                                                                                <div class="spinner-border spinner-border-sm text-white me-2" role="status">
+                                                                                    <span class="visually-hidden">Validando...</span>
+                                                                                </div>
+                                                                                <span>Validando...</span>
+                                                                            </ng-container>
                                                                         </button>
                                                                         
                                                                         <!-- Mensaje de validación en progreso -->
-                                                                        <div *ngIf="validationMessage" class="alert alert-info mt-3 mb-0">
+                                                                        <div *ngIf="validationMessage" class="alert alert-info mt-3 mb-0 py-2 px-3" style="border-left: 4px solid #0dcaf0; border-radius: 6px;">
+                                                                            <i class="icon anm anm-info-cil me-2"></i>
                                                                             {{ validationMessage }}
                                                                         </div>
                                                                         
                                                                         <!-- Mensaje de error -->
-                                                                        <p class="mt-3 fw-normal text-danger" *ngIf="validMessage && !status">
-                                                                            {{ errorOrSuccessMessage }}
-                                                                        </p>
+                                                                        <div class="alert alert-danger mt-3 mb-0 py-2 px-3" *ngIf="validMessage && !status" style="border-left: 4px solid #dc3545; border-radius: 6px;">
+                                                                            <i class="icon anm anm-times-circle me-2"></i>
+                                                                            <strong>Error:</strong> {{ errorOrSuccessMessage }}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </fieldset>
@@ -363,12 +381,12 @@
                                 <!-- Address List -->
                                 <ng-template #allShowListAddress>
                                     <!-- Spinner -->
-                                    <div *ngIf="loading" class="loading-spinner d-flex justify-content-center h-100 align-items-center">
+                                    <div *ngIf="loading" class="loading-spinner d-flex justify-content-center h-100 align-items-center" style="min-height: 300px;">
                                         <div class="text-center">
-                                            <div class="spinner-border text-muted" role="status">
-                                                <span class="sr-only"></span>
+                                            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                                                <span class="visually-hidden">Cargando...</span>
                                             </div>
-                                            <h4 class="text-muted">Cargando</h4>
+                                            <p class="text-muted fw-semibold" style="font-size: 1rem; letter-spacing: 0.5px;">Cargando direcciones...</p>
                                         </div>
                                     </div>
 
@@ -864,14 +882,20 @@
 
                 <!-- BOTON CONTINUAR A PAGO -->
                 <ng-container *ngIf="listAddresses.length != 0">
-                    <!-- <div class="d-flex flex-column mb-4" style="max-width: 21.875rem"> -->
                     <div class="d-flex flex-column mb-4">
-                        <button type="button" class="btn-dark-ld ld-w-lg-50 ld-w-100 btnNext mb-1 fw-ligt fs-12" (click)="goToNextStep()">
-                            Continuar a pago
+                        <button type="button" 
+                                class="btn btn-dark w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center mb-3" 
+                                (click)="goToNextStep()"
+                                style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
+                            <i class="icon anm anm-arrow-right me-2" style="font-size: 1.2rem;"></i>
+                            <span>Continuar a pago</span>
                         </button>
-                        <p id="" class="fs-12">
-                            <small class="fw-light">Al continuar, confirmas que has leído la
-                                <a class="text-black fw-normal text-decoration-underline" href="#" [routerLink]="['/', locale, country, 'shop', 'privacy-policy']" onclick="return false;" data-testid="checkout.step1.legalpolicy.link" target="" aria-labelledby="checkout.step1.legalpolicy" aria-expanded="false">Política de privacidad</a></small>
+                        <p class="text-center mb-0" style="font-size: 0.85rem;">
+                            <small class="text-muted">Al continuar, confirmas que has leído la
+                                <a class="text-dark fw-semibold text-decoration-underline" 
+                                   href="#" 
+                                   [routerLink]="['/', locale, country, 'shop', 'privacy-policy']" 
+                                   onclick="return false;">Política de privacidad</a></small>
                         </p>
                     </div>
                 </ng-container>
@@ -879,13 +903,16 @@
             </div>
         </ng-container>
         <ng-template #showAddress>
-            <div id="main-left">
-                <!-- <h3>Tu carrito está vacío</h3> -->
-                <!-- <h5 class="header-title mb-2 d-none">Tu carrito está vacío</h5> -->
-                <strong class="h3 text-uppercase">Tu carrito de la compra está vacía</strong>
-                <p class="pt-2">Inspírate con las últimas tendencias y descubre algo <br /> nuevo para renovar tu armario</p>
-                <div class="view-collection mt-4 mb-4 mt-md-5 w-50">
-                    <a onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">
+            <div id="main-left" class="text-center py-5">
+                <i class="icon anm anm-bag-l d-block mb-4" style="font-size: 5rem; color: #dee2e6;"></i>
+                <h3 class="text-uppercase mb-3" style="color: #222; font-size: 1.5rem; letter-spacing: 0.5px;">
+                    Tu carrito está vacío
+                </h3>
+                <p class="text-muted mb-4" style="font-size: 1rem; max-width: 500px; margin: 0 auto;">
+                    Inspírate con las últimas tendencias y descubre algo nuevo para renovar tu armario
+                </p>
+                <div class="mt-4">
+                    <a onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="text-decoration-none">
                         <button class="btn-dark-ld text-uppercase">Descubrir novedades</button>
                     </a>
                 </div>

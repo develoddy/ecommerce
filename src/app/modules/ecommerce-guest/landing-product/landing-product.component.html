@@ -99,7 +99,9 @@
                 <div class="d-flex flex-column flex-lg-row justify-content-between custom-border-bottom">
                     <!-- Title Product -->
                     <div class="p-2 align-self-center">
-                        <p class="">{{ product_selected.title }}</p>
+                        <h1 class="mb-0" style="color: #222; font-size: 1.3rem; font-weight: 600; letter-spacing: 0.3px;">
+                            {{ product_selected.title }}
+                        </h1>
                     </div>
 
                     <!-- Product Info link -->
@@ -111,8 +113,15 @@
 
                     <!-- Swatches Color -->
                     <div class="p-2 align-self-center d-flex align-items-center">
-                        <a href="#" class="text-decoration-underline text-uppercase" onclick="return false;" (click)="openColorsModal()">
-                            <span class="me-2"><i class="icon anm anm-plus-l me-2"></i>Colores</span>
+                        <a href="#" 
+                           class="text-decoration-underline text-uppercase d-inline-flex align-items-center" 
+                           onclick="return false;" 
+                           (click)="openColorsModal()"
+                           style="color: #222; font-size: 0.9rem; letter-spacing: 0.5px; transition: color 0.3s ease;"
+                           onmouseover="this.style.color='#6c757d'"
+                           onmouseout="this.style.color='#222'">
+                            <i class="icon anm anm-plus-l me-2"></i>
+                            <span>Colores</span>
                         </a>
                         <label class="mb-0 lh-1">Color <span class="slVariant ms-1 fw-light">{{ selectedColor || '' }}</span></label>
 
@@ -145,8 +154,15 @@
 
                     <!-- Swatches Size -->
                     <div class="p-2 align-self-center d-flex align-items-center">
-                        <a href="#" class="text-decoration-underline text-uppercase" onclick="return false;" (click)="openSizesModal()">
-                            <span class="me-2"><i class="icon anm anm-plus-l me-2"></i>Tallas</span>
+                        <a href="#" 
+                           class="text-decoration-underline text-uppercase d-inline-flex align-items-center" 
+                           onclick="return false;" 
+                           (click)="openSizesModal()"
+                           style="color: #222; font-size: 0.9rem; letter-spacing: 0.5px; transition: color 0.3s ease;"
+                           onmouseover="this.style.color='#6c757d'"
+                           onmouseout="this.style.color='#222'">
+                            <i class="icon anm anm-plus-l me-2"></i>
+                            <span>Tallas</span>
                         </a>
                         <label class="mb-0 lh-1"> {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} <span class="slVariant ms-1 fw-light">{{ variedad_selected?.valor || '' }}</span></label>
                         <div class="product-item swatches-size w-100 swatch-1 option2 d-none" data-option-index="1">
@@ -245,7 +261,12 @@
                         
                             <!-- Product Add -->
                             <div class="product-form-submit addcart fl-1">
-                                <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit" (click)="storeCart()">
+                                <button type="submit" 
+                                        name="add" 
+                                        class="btn btn-dark w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center" 
+                                        (click)="storeCart()"
+                                        style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
+                                    <i class="icon anm anm-bag-l me-2" style="font-size: 1.2rem;"></i>
                                     <span>Añadir al carrito</span>
                                 </button>
                             </div>
@@ -331,8 +352,18 @@
                                 <div class="d-flex flex-column mb-0">
                                     <!-- Title Product -->
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <h2 class="mb-0">{{ product_selected.title }}</h2>
-                                        <a class="text-link wishlist lh-1" href="#" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l"></i></a>
+                                        <h1 class="mb-0" style="color: #222; font-size: 1.5rem; font-weight: 600; letter-spacing: 0.3px;">
+                                            {{ product_selected.title }}
+                                        </h1>
+                                        <a class="text-link wishlist lh-1" 
+                                           href="#" 
+                                           onclick="return false;" 
+                                           (click)="addWishlist(product_selected)"
+                                           style="font-size: 1.5rem; color: #222; transition: color 0.3s ease;"
+                                           onmouseover="this.style.color='#dc3545'"
+                                           onmouseout="this.style.color='#222'">
+                                            <i class="icon anm anm-heart-l"></i>
+                                        </a>
                                     </div>
                                     <!-- Price -->
                                     <div class="product-price d-flex-center">
@@ -484,7 +515,12 @@
                                 
                                     <!-- Product Add -->
                                     <div class="product-form-submit addcart fl-1">
-                                        <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit" (click)="storeCart()">
+                                        <button type="submit" 
+                                                name="add" 
+                                                class="btn btn-dark w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center" 
+                                                (click)="storeCart()"
+                                                style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
+                                            <i class="icon anm anm-bag-l me-2" style="font-size: 1.2rem;"></i>
                                             <span>Añadir al carrito</span>
                                         </button>
                                     </div>
@@ -494,7 +530,10 @@
 
                                 <!-- Message error -->
                                 <ng-container *ngIf="errorResponse">
-                                    <p class="text-danger fw-normal fs-12">{{ errorMessage }}</p>
+                                    <div class="alert alert-danger py-2 px-3 mt-3 mb-0" style="border-left: 4px solid #dc3545; border-radius: 6px; font-size: 0.9rem;">
+                                        <i class="icon anm anm-times-circle me-2"></i>
+                                        <strong>Error:</strong> {{ errorMessage }}
+                                    </div>
                                 </ng-container>
 
                                 <!-- Product Info link -->
@@ -508,22 +547,26 @@
                             <div class="userViewMsg featureText d-none" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div>
                             <!-- 135deg -->
                             <div class="shippingMsg featureText" *ngIf="shippingRate > 0 && fechaEntregaMin">
-                                <p class="fw-light">
-                                    <i class="icon anm anm-clock-r"></i>
-                                    <span>Entrega GRATIS el </span>
-                                    <strong>{{ fechaEntregaMin }}</strong>
+                                <div class="alert alert-success py-2 px-3 mb-3" style="border-left: 4px solid #28a745; border-radius: 6px;">
+                                    <i class="icon anm anm-truck-l me-2" style="font-size: 1.3rem;"></i>
+                                    <strong style="font-size: 0.95rem;">
+                                        Entrega GRATIS el {{ fechaEntregaMin }}
+                                    </strong>
                                     <ng-container *ngIf="!isFallbackAddress; else generic">
-                                        para <a href="" class="text-decoration-underline text-green">{{ address }}</a>
+                                        <span class="d-block" style="font-size: 0.85rem;">para <span class="text-decoration-underline">{{ address }}</span></span>
                                     </ng-container>
-                                    <ng-template #generic> en toda España</ng-template>
-                                </p>
+                                    <ng-template #generic>
+                                        <span class="d-block" style="font-size: 0.85rem;">en toda España</span>
+                                    </ng-template>
+                                </div>
                             </div>
                             <!-- Mostrar mensaje alternativo cuando no hay tarifa -->
                             <div class="shippingMsg featureText" *ngIf="shippingRate === 0">
-                                <p class="fw-normal">
-                                    <i class="icon anm anm-alert-circle"></i>
-                                    Envío no disponible para la dirección seleccionada.
-                                </p>
+                                <div class="alert alert-warning py-2 px-3 mb-3" style="border-left: 4px solid #ffc107; border-radius: 6px;">
+                                    <i class="icon anm anm-exclamation-triangle me-2" style="font-size: 1.2rem;"></i>
+                                    <strong style="font-size: 0.95rem;">Envío no disponible</strong>
+                                    <span class="d-block" style="font-size: 0.85rem;">para la dirección seleccionada.</span>
+                                </div>
                             </div>
                             <div class="freeShipMsg featureText d-none" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}30.00</span></b> Más para envío gratis</div>
                             <!-- End Product Info -->
@@ -550,16 +593,34 @@
             
             <!-- PRODUCT TABS -->
             <div class="container tabs-listing section">
-                <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-start d-none d-md-flex">
-                    <li rel="description" class="active"><a class="tablink fw-normal">Descripción</a></li>
-                    <li rel="shipping-return"><a class="tablink fw-normal">Envíos y devoluciones</a></li>
-                    <li rel="reviews"><a class="tablink fw-normal">Reseñas</a></li>
+                <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-start d-none d-md-flex" style="border-bottom: 2px solid #e9ecef;">
+                    <li rel="description" class="active">
+                        <a class="tablink fw-semibold d-flex align-items-center" style="letter-spacing: 0.5px; padding: 12px 24px; transition: all 0.3s ease;">
+                            <i class="icon anm anm-file-text-o me-2"></i>Descripción
+                        </a>
+                    </li>
+                    <li rel="shipping-return">
+                        <a class="tablink fw-semibold d-flex align-items-center" style="letter-spacing: 0.5px; padding: 12px 24px; transition: all 0.3s ease;">
+                            <i class="icon anm anm-truck-l me-2"></i>Envíos y devoluciones
+                        </a>
+                    </li>
+                    <li rel="reviews">
+                        <a class="tablink fw-semibold d-flex align-items-center" style="letter-spacing: 0.5px; padding: 12px 24px; transition: all 0.3s ease;">
+                            <i class="icon anm anm-star me-2"></i>Reseñas
+                        </a>
+                    </li>
                 </ul>
                 <div class="tab-container">
                     <!-- Description -->
-                    <h3 class="tabs-ac-style d-md-none" rel="description">Descripción</h3>
+                    <h3 class="tabs-ac-style d-md-none" rel="description" style="font-weight: 600; letter-spacing: 0.5px;">
+                        <i class="icon anm anm-file-text-o me-2"></i>Descripción
+                    </h3>
                     <div id="description" class="tab-content">
-                        <h2 class="fw-normal" [ngClass]="{'d-none': isMobile}">{{ product_selected.title }}</h2>
+                        <h2 class="fw-semibold mb-2" 
+                            [ngClass]="{'d-none': isMobile}" 
+                            style="color: #222; letter-spacing: 0.3px; font-size: 1.5rem;">
+                            {{ product_selected.title }}
+                        </h2>
                         <p class="product-sku fw-light text-muted fs-16">Art. Nº. <span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
                         <div class="product-description mb-3">
                             <div class="row">
@@ -615,12 +676,16 @@
                     <!-- End Additional Information -->
 
                     <!-- Shipping &amp; Return -->
-                    <h3 class="tabs-ac-style d-md-none" rel="shipping-return">Envío y devolucíones</h3>
+                    <h3 class="tabs-ac-style d-md-none" rel="shipping-return" style="font-weight: 600; letter-spacing: 0.5px;">
+                        <i class="icon anm anm-truck-l me-2"></i>Envío y devolucíones
+                    </h3>
                     <div id="shipping-return" class="tab-content">
                         <!-- <h4 class="text-uppercase fw-bold">Envío &amp; devolución</h4> -->
                         <div class="d-flex flex-column">
                             <div class="border-bottom mb-4">
-                                <h4 class="text-uppercase fw-bold mb-0">Envíos</h4>
+                                <h4 class="text-uppercase fw-bold mb-2" style="color: #222; letter-spacing: 1px; font-size: 1.1rem;">
+                                    <i class="icon anm anm-truck-l me-2"></i>Envíos
+                                </h4>
                                 <div class="d-flex flex-row py-3">
                                     <div class=""><span>Envío a domicilio</span></div>
                                     <div class=""><span>1 a 6 días laborables</span></div>
@@ -630,7 +695,9 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <h4 class="text-uppercase fw-bold">Devoluciones</h4>
+                                <h4 class="text-uppercase fw-bold mb-2" style="color: #222; letter-spacing: 1px; font-size: 1.1rem;">
+                                    <i class="icon anm anm-sync-ar me-2"></i>Devoluciones
+                                </h4>
                                 <div>Dispones de <strong>30 días</strong> para realizar tu devolución a través de cualquiera de los siguientes métodos:</div>
                                 <div class="d-flex flex-column">
                                     <div class="d-flex flex-row border-bottom py-3">
@@ -670,7 +737,9 @@
                     <!-- End Shipping &amp; Return -->
 
                     <!-- Review -->
-                    <h3 class="tabs-ac-style d-md-none" rel="reviews">Reseñas</h3>
+                    <h3 class="tabs-ac-style d-md-none" rel="reviews" style="font-weight: 600; letter-spacing: 0.5px;">
+                        <i class="icon anm anm-star me-2"></i>Reseñas
+                    </h3>
                     <div id="reviews" class="tab-content">
                         <div class="row">
                             <div [ngClass]="{'col-12 col-sm-12 col-md-12': true, 'col-lg-6': this.sale_detail_selected, 'col-lg-12': !this.sale_detail_selected }" class="mb-4">
@@ -726,21 +795,22 @@
                                 
                                 <div class="spr-reviews">
                                     <ng-container *ngIf="this.REVIEWS.length == 0; else showReview">
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <div class="p-2 text-center">
-                                                <div class="inner mb-3">
-                                                    <div class="bradcrumb-thumb">
-                                                        <!-- <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;"> -->
-                                                        <img src="assets/images/favicon.png" alt="LujanDev" title="LujanDev">
-                                                    </div>
-                                                </div>
-                                                <h5 class="header-title mb-0 text-uppercase">Reseñas</h5>
-                                                <p>Este producto no tiene reseñas por ahora</p>
+                                        <div class="alert alert-info py-4 px-4" style="border-left: 4px solid #0dcaf0; border-radius: 8px;">
+                                            <div class="text-center">
+                                                <i class="icon anm anm-comments-l mb-3" style="font-size: 3rem; color: #0dcaf0;"></i>
+                                                <h4 class="mb-2" style="color: #222; font-weight: 600; letter-spacing: 0.5px;">
+                                                    <i class="icon anm anm-star me-2"></i>Reseñas
+                                                </h4>
+                                                <p class="mb-0" style="color: #6c757d; font-size: 1rem;">
+                                                    Este producto no tiene reseñas por ahora. ¡Sé el primero en compartir tu opinión!
+                                                </p>
                                             </div>
                                         </div>
                                     </ng-container>
                                     <ng-template #showReview>
-                                        <h3 class="spr-form-title">Reseñas de clientes</h3>
+                                        <h3 class="spr-form-title mb-3" style="color: #222; font-weight: 600; letter-spacing: 0.5px; font-size: 1.3rem;">
+                                            <i class="icon anm anm-comments-l me-2"></i>Reseñas de clientes
+                                        </h3>
                                         <div class="review-inner">
                                             <ng-container *ngFor="let REVIEW of REVIEWS">
                                                 <div class="spr-review d-flex w-100">
@@ -776,7 +846,9 @@
                             <ng-container *ngIf="this.sale_detail_selected">
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-4">
                                     <form method="post" action="#" class="product-review-form new-review-form">
-                                        <h3 class="spr-form-title">Escribe una reseña</h3>
+                                        <h3 class="spr-form-title mb-3" style="color: #222; font-weight: 600; letter-spacing: 0.5px; font-size: 1.3rem;">
+                                            <i class="icon anm anm-pencil me-2"></i>Escribe una reseña
+                                        </h3>
                                         <p>Tu dirección de correo electrónico no será publicada. Los campos obligatorios están marcados con *</p>
                                         <fieldset class="row spr-form-contact">
                                             <div class="col-sm-6 spr-form-contact-name form-group d-none">
@@ -811,7 +883,12 @@
                                             </div>
                                         </fieldset>
                                         <div class="spr-form-actions clearfix">
-                                            <input type="submit" class="btn btn-primary spr-button spr-button-primary" (click)="storeReview()" value="Enviar reseña" />
+                                            <button type="submit" 
+                                                    class="btn btn-primary px-4 py-2 fw-semibold" 
+                                                    (click)="storeReview()"
+                                                    style="border-radius: 6px; letter-spacing: 0.5px; transition: all 0.3s ease;">
+                                                <i class="icon anm anm-send me-2"></i>Enviar reseña
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -1712,8 +1789,13 @@
                 </div>
 
                 <div class="stickyOptions position-relative">
-                    <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit text-uppercase" (click)="storeCart()">
-                        <span class="fw-normal">Añadir</span>
+                    <button type="submit" 
+                            name="add" 
+                            class="btn btn-dark text-uppercase fw-semibold px-4 py-2" 
+                            (click)="storeCart()"
+                            style="letter-spacing: 0.5px; border-radius: 6px; transition: all 0.3s ease;">
+                        <i class="icon anm anm-bag-l me-2"></i>
+                        <span>Añadir</span>
                     </button>
                 </div>
 

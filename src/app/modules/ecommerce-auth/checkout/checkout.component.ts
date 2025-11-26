@@ -594,6 +594,21 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * Permite navegar entre pasos del checkout
+   */
+  navigateToStep(step: string): void {
+    if (step === 'resumen' && this.currentStep !== 'resumen') {
+      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { 
+        queryParams: { initialized: true, from: 'stepper' }
+      });
+    } else if (step === 'payment' && this.currentStep === 'successfull') {
+      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'payment'], { 
+        queryParams: { initialized: true, from: 'stepper' }
+      });
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
