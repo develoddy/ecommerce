@@ -95,58 +95,66 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
   position: relative;
   width: 440px;
   max-width: calc(100vw - 40px);
-  height: 860px; /* taller per request */
+  height: 680px;
   max-height: calc(100vh - 110px);
   background-color: $secondary-color;
-  border-radius: 0px;
-  box-shadow: $shadow;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* wrapper hides overflow; chat-body scrolls internally */
+  overflow: hidden;
   margin: 0;
   align-self: flex-end;
-  /* Avoid transforms on the main window to preserve hit-testing on iOS Safari */
   opacity: 0;
   pointer-events: none;
-  transition: opacity 220ms ease;
+  transition: opacity 220ms ease, transform 220ms ease;
+  transform: translateY(10px);
 
   &.open {
     opacity: 1;
     pointer-events: auto;
+    transform: translateY(0);
   }
 }
 
 // Cabecera del chat
 .chat-header {
-  background: $primary-color; /* black header */
+  background: $primary-color;
   color: $secondary-color;
-  padding: 14px 16px;
+  padding: 18px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
+  border-radius: 16px 16px 0 0;
 
   h3 {
     margin: 0;
     font-size: 15px;
     font-weight: 700;
-    letter-spacing: 0.1px;
+    letter-spacing: 0.8px;
   }
 
   .chat-actions {
     display: flex;
+    gap: 4px;
 
     button {
       background: transparent;
       border: none;
       color: $secondary-color;
       cursor: pointer;
-      margin-left: 8px;
-      padding: 6px;
+      padding: 8px;
       font-size: 16px;
       border-radius: 8px;
+      transition: background-color 0.2s ease, transform 0.2s ease;
 
-      &:hover { background: rgba(255,255,255,0.05); }
+      &:hover { 
+        background: rgba(255,255,255,0.1);
+        transform: scale(1.05);
+      }
+
+      &:active { transform: scale(0.95); }
     }
   }
 }
@@ -155,150 +163,260 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
   .chat-body {
   flex: 1 1 auto;
   padding: 20px;
-  /* Make chat-body a column flex container; the messages-list will be the scrolling region.
-     This improves touch handling on iOS where the immediate scrolling element must receive the touches. */
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* hide overflow here; messages-list will scroll */
-  background-color: $secondary-color; /* white */
+  overflow: hidden;
+  background-color: $secondary-color;
 
   .welcome-message {
-    text-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    text-align: center;
     color: $muted-color;
-    margin: 18px 0;
+    margin: 0;
 
-    p { margin: 6px 0; font-size: 14px; }
+    .welcome-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 24px;
+    }
   }
 
   .messages-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding: 6px 0;
-    /* Make the messages-list the native scrolling container on iOS */
+    gap: 14px;
+    padding: 8px 0;
     flex: 1 1 auto;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
     overscroll-behavior: contain;
+    list-style: none;
+    margin: 0;
   }
 
   .message-item {
-    margin-bottom: 4px;
-    max-width: 82%;
+    max-width: 75%;
     display: flex;
+    animation: messageSlideIn 0.3s ease-out;
 
-    .message-content {
-      padding: 12px 16px;
-      border-radius: 14px;
+    .message-bubble {
+      padding: 14px 16px;
+      border-radius: 16px;
       position: relative;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-      .message-text { margin: 0 0 6px 0; font-size: 14px; line-height: 1.35; }
-      .message-time { font-size: 11px; color: $muted-color; opacity: 0.9; display:block; text-align:right; }
+      .message-text { 
+        margin: 0 0 6px 0; 
+        font-size: 14px; 
+        line-height: 1.5; 
+        word-wrap: break-word;
+      }
+      
+      .message-time { 
+        font-size: 11px; 
+        color: $muted-color; 
+        opacity: 0.8; 
+        display: block; 
+        text-align: right; 
+        margin-top: 4px;
+      }
     }
 
     &.user-message {
       align-self: flex-end;
 
-      .message-content {
-        background: $primary-color; /* black */
-        color: $secondary-color; /* white */
+      .message-bubble {
+        background: $primary-color;
+        color: $secondary-color;
         border-bottom-right-radius: 6px;
+
+        .message-time { color: rgba(255, 255, 255, 0.7); }
       }
     }
 
     &.agent-message {
       align-self: flex-start;
 
-      .message-content {
-        background: #f3f3f3; /* light gray */
-        color: #000;
+      .message-bubble {
+        background: #f5f5f5;
+        color: #222;
         border-bottom-left-radius: 6px;
+        border: 1px solid #e8e8e8;
       }
     }
 
     &.system-message {
       align-self: center;
+      max-width: 85%;
 
-      .message-content {
+      .message-bubble {
         background: transparent;
         color: $muted-color;
         font-style: italic;
-        padding: 6px 10px;
+        padding: 8px 12px;
         font-size: 13px;
         box-shadow: none;
+        text-align: center;
       }
     }
   }
 
   .typing-indicator {
-    padding: 8px 6px;
-    font-size: 13px;
-    color: $muted-color;
-    font-style: italic;
-    p { margin:0; }
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+
+    .typing-bubble {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 16px;
+      background: #f5f5f5;
+      border-radius: 16px;
+      border-bottom-left-radius: 6px;
+      border: 1px solid #e8e8e8;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background: #999;
+      border-radius: 50%;
+      animation: typingBounce 1.4s infinite;
+
+      &:nth-child(2) { animation-delay: 0.2s; }
+      &:nth-child(3) { animation-delay: 0.4s; }
+    }
+
+    .typing-text {
+      font-size: 12px;
+      color: $muted-color;
+      font-style: italic;
+      margin: 0;
+    }
   }
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
 }
 
 // Pie del chat
 .chat-footer {
-  padding: 24px 14px;
-  border-top: 1px solid rgba(0,0,0,0.06);
-  background: $secondary-color; /* footer background */
+  padding: 18px 16px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  background: $secondary-color;
 
   .message-input-container {
     display: flex;
-    gap: 5px;
+    gap: 8px;
     flex-direction: column;
-    align-items: center;
 
-    .input-wrapper { position: relative; width: 100%; }
+    .input-wrapper { 
+      position: relative; 
+      width: 100%; 
+      background: #f8f9fa;
+      border-radius: 24px;
+      border: 1px solid #e0e0e0;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &:focus-within {
+        border-color: #aaa;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      }
+    }
 
     textarea {
       width: 100%;
-      height: 100%; /* increased input height */
-      padding: 10px 48px 0px 10px; /* right padding for icon */
-      font-size: 15px;
+      min-height: 40px;
+      max-height: 120px;
+      padding: 12px 50px 12px 16px;
+      font-size: 14px;
       resize: none;
       font-family: inherit;
-      background: transparent; /* transparent per request */
-      color: $primary-color;/* white text on black footer */
+      background: transparent;
+      color: $primary-color;
       border: none;
-      border-bottom: 1px solid $primary-color; /* thin bottom border */
-      transition: border-color 160ms ease, box-shadow 160ms ease;
+      line-height: 1.4;
+      transition: none;
 
-      &::placeholder { color: #8a8a8a; }
-      // &:focus { outline: none; border-bottom-color: rgba(255,255,255,0.9); }
+      &::placeholder { color: #999; }
+      &:focus { outline: none; }
     }
 
     .send-btn {
       position: absolute;
-      right: 0px;
+      right: 4px;
       top: 50%;
       transform: translateY(-50%);
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: transparent;
-      color: $primary-color;
+      background: $primary-color;
+      color: $secondary-color;
       display: inline-flex;
       justify-content: center;
       align-items: center;
       border: none;
       cursor: pointer;
-      transition: transform 140ms ease, opacity 140ms ease;
-
-      /* promote send button to its own layer for responsiveness on iOS when necessary */
-      will-change: transform, opacity;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+      will-change: transform;
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
 
-      &:hover:not(:disabled) { transform: translateY(-50%) scale(1.05); opacity: 0.95; }
-      &:disabled { cursor: not-allowed; }
+      &:hover:not(:disabled) { 
+        transform: translateY(-50%) scale(1.08);
+        background-color: #333;
+      }
+      
+      &:disabled { 
+        cursor: not-allowed; 
+        opacity: 0.5;
+        background-color: #ccc;
+      }
 
-      svg { width: 20px; height: 20px; }
+      svg { width: 18px; height: 18px; }
+    }
+
+    .privacy-notice {
+      text-align: center;
+      padding: 0 8px;
+
+      small {
+        font-size: 11px;
+        line-height: 1.4;
+        color: #999;
+      }
+
+      .text-link {
+        color: #222;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover { color: #666; }
+      }
     }
   }
 }
@@ -306,18 +424,10 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
 /* Confirmación minimalista de cierre (flotante en la parte inferior del panel) */
 .close-confirm {
   position: absolute;
-  /* Respect iOS safe-area insets so the popup stays above the Safari bottom bar */
-  left: 12px;
-  right: 12px;
-  bottom: 18px;
-  /* Older iOS Safari used constant(); modern browsers use env(). Provide both fallbacks. */
-  bottom: calc(0px + constant(safe-area-inset-bottom));
-  bottom: calc(0px + env(safe-area-inset-bottom));
-  left: calc(0px + constant(safe-area-inset-left));
-  left: calc(0px + env(safe-area-inset-left));
-  right: calc(0px + constant(safe-area-inset-right));
-  right: calc(0px + env(safe-area-inset-right));
-  /* Ensure popup sits above everything else in the app */
+  left: 16px;
+  right: 16px;
+  bottom: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
   z-index: 99999;
   display: flex;
   justify-content: center;
@@ -325,58 +435,70 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
 
   &__content {
     width: 100%;
-    max-width: 480px;
+    max-width: 400px;
     background: $secondary-color;
     color: $primary-color;
-    border-radius: 0px;
-    padding: 12px 14px;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-    border: 1px solid rgba(0,0,0,0.06);
-    /* entry animation: fade + slide from bottom */
+    border-radius: 12px;
+    padding: 20px 18px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,0,0,0.08);
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px);
     will-change: transform, opacity;
-    animation: fadeSlideIn 260ms cubic-bezier(.2,.9,.2,1) forwards;
-    transition: transform 200ms ease, opacity 160ms ease;
+    animation: fadeSlideIn 280ms cubic-bezier(.2,.9,.2,1) forwards;
   }
 
   &__title {
-    margin: 0 0 6px 0;
-    font-size: 14px;
+    margin: 0 0 8px 0;
+    font-size: 15px;
     font-weight: 700;
-    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: $primary-color;
   }
 
   &__text {
-    margin: 0 0 10px 0;
+    margin: 0 0 16px 0;
     font-size: 13px;
-    color: $muted-color;
+    color: #666;
+    line-height: 1.5;
   }
 
   &__actions {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    justify-content: center;
+    gap: 10px;
   }
 
   .btn {
-    font-size: 13px;
-    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 16px;
     border-radius: 8px;
     cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &:active { transform: scale(0.98); }
   }
 
   .btn-abandon {
     background: $primary-color;
     color: $secondary-color;
     border: none;
+
+    &:hover { background: #333; }
   }
 
   .btn-cancel {
     background: $secondary-color;
     color: $primary-color;
-    border: 1px solid rgba(0,0,0,0.08);
+    border: 2px solid #e0e0e0;
+
+    &:hover { 
+      background: #f8f9fa;
+      border-color: #ccc;
+    }
   }
 
   /* Slight layout tweak on very small screens */

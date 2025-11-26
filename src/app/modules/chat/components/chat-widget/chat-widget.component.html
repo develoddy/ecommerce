@@ -27,18 +27,21 @@
     <main class="chat-body" #messagesContainer role="region" aria-live="polite">
       <!-- Welcome placeholder when empty -->
       <div class="welcome-message" *ngIf="messages.length === 0">
-        <p>¡Hola! ¿En qué podemos ayudarte hoy?</p>
+        <div class="welcome-content">
+          <i class="icon anm anm-comments-l mb-2" style="font-size: 2.5rem; color: #222;"></i>
+          <p class="mb-0" style="font-size: 0.95rem; color: #6c757d; line-height: 1.5;">¡Hola! ¿En qué podemos ayudarte hoy?</p>
+        </div>
       </div>
 
       <!-- Messages list (semantic list for accessibility) -->
-  <ul class="messages-list" data-chat-messages role="list">
+      <ul class="messages-list" data-chat-messages role="list">
         <li class="message-item"
             *ngFor="let message of messages"
             [class.user-message]="isSentByMe(message)"
             [class.agent-message]="!isSentByMe(message) && !isSystemMessage(message)"
             [class.system-message]="isSystemMessage(message)"
             role="listitem">
-          <div class="message-content">
+          <div class="message-bubble">
             <p class="message-text">{{message.message}}</p>
             <span class="message-time" aria-hidden="true">{{message.timestamp}}</span>
           </div>
@@ -47,7 +50,12 @@
 
       <!-- Typing indicator -->
       <div class="typing-indicator" *ngIf="typingStatus.isTyping" role="status" aria-live="polite">
-        <p>{{typingStatus.name}} está escribiendo...</p>
+        <div class="typing-bubble">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+        <p class="typing-text">{{typingStatus.name}} está escribiendo...</p>
       </div>
     </main>
 
@@ -58,10 +66,11 @@
           <div class="input-wrapper">
             <textarea
               [formControl]="messageControl"
-              placeholder="Pregunta lo que quieras"
+              placeholder="Escribe tu mensaje..."
               (keydown)="handleEnter($event)"
               aria-label="Escribe un mensaje"
               data-chat-input
+              rows="1"
             ></textarea>
 
             <!-- send button placed inside input wrapper; keep bindings intact -->
@@ -69,14 +78,11 @@
               <!-- inline svg icon preserved -->
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" style="fill: currentcolor;" aria-hidden="true" class="Icon_icon-content-brand__AKwiy"><path d="m5.4 10.1-.7-.7L12 2l7.4 7.4-.7.7L12.6 4v18h-1V3.9z"></path></svg>
             </button>
-
-            
           </div>
 
-          <div class="lh-1 align-self-start">
-              <small class="text-muted fw-light fs-10">Al continuar, confirmas que has leído la <a class="text-black fw-bold" href="#" onclick="return false;" data-testid="mng-link" target="">Política de privacidad</a></small>
-            </div>
-          
+          <div class="privacy-notice">
+            <small class="text-muted">Al continuar, confirmas que has leído la <a class="text-link" href="#" onclick="return false;" data-testid="mng-link">Política de privacidad</a></small>
+          </div>
         </div>
       </form>
     </footer>

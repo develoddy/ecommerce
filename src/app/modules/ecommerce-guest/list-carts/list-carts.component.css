@@ -32,3 +32,34 @@
   0% { background-position: -400px 0; }
   100% { background-position: 400px 0; }
 }
+
+/* Fix para botones de cantidad - sobrescribir estilos globales */
+.cart-qty .qtyField {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none !important;
+  padding: 0 !important;
+  min-height: auto !important;
+  min-width: auto !important;
+  gap: 8px;
+}
+
+.cart-qty .qtyField .qtyBtn {
+  position: static !important;
+  margin: 0 !important;
+  flex-shrink: 0;
+}
+
+.cart-qty .qtyField .qtyBtn.minus {
+  order: 1;
+}
+
+.cart-qty .qtyField .cart-qty-input {
+  order: 2;
+}
+
+.cart-qty .qtyField .qtyBtn.plus {
+  order: 3;
+}

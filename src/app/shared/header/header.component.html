@@ -1,6 +1,5 @@
-<!-- <ng-container *ngIf="!(loader.loading$ | async)"> -->
-<div *ngIf="showSubscriptionSection; else onlyLogo">
-    <!-- TOP HEADER -->
+<ng-container *ngIf="showSubscriptionSection; else onlyLogo">
+    <!--Top Header-->
     <div class="top-header d-none">
         <div class="container">
             <div class="row align-items-center">
@@ -18,19 +17,22 @@
                         <ul class="default-option">
                             <li>
                                 <div class="option english">
-                                    <div class="icon"><img src="assets/images/flag/spain.png" alt="english" width="24" height="24" /></div><span>ES</span>
+                                    <div class="icon"><img src="assets/images/flag/spain.png" alt="english" width="24"
+                                            height="24" /></div><span>ES</span>
                                 </div>
                             </li>
                         </ul>
                         <ul class="select-ul">
                             <li>
                                 <div class="option arabic">
-                                    <div class="icon"><img src="assets/images/flag/spain.png" alt="arabic" width="24" height="24" /></div><span>Español</span>
+                                    <div class="icon"><img src="assets/images/flag/spain.png" alt="arabic" width="24"
+                                            height="24" /></div><span>Español</span>
                                 </div>
                             </li>
                             <li>
                                 <div class="option english">
-                                    <div class="icon"><img src="assets/images/flag/english.png" alt="english" width="24" height="24" /></div><span>English</span>
+                                    <div class="icon"><img src="assets/images/flag/english.png" alt="english" width="24"
+                                            height="24" /></div><span>English</span>
                                 </div>
                             </li>
                         </ul>
@@ -39,19 +41,22 @@
                         <ul class="default-option">
                             <li>
                                 <div class="option USD">
-                                    <div class="icon"><img src="assets/images/flag/eur.png" alt="usd" width="24" height="24" /></div><span>EUR</span>
+                                    <div class="icon"><img src="assets/images/flag/eur.png" alt="usd" width="24"
+                                            height="24" /></div><span>EUR</span>
                                 </div>
                             </li>
                         </ul>
                         <ul class="select-ul">
                             <li>
                                 <div class="option USD">
-                                    <div class="icon"><img src="assets/images/flag/usd.png" alt="usd" width="24" height="24" /></div><span>USD</span>
+                                    <div class="icon"><img src="assets/images/flag/usd.png" alt="usd" width="24"
+                                            height="24" /></div><span>USD</span>
                                 </div>
                             </li>
                             <li>
                                 <div class="option EUR">
-                                    <div class="icon"><img src="assets/images/flag/eur.png" alt="eur" width="24" height="24" /></div><span>EUR</span>
+                                    <div class="icon"><img src="assets/images/flag/eur.png" alt="eur" width="24"
+                                            height="24" /></div><span>EUR</span>
                                 </div>
                             </li>
                         </ul>
@@ -60,272 +65,234 @@
             </div>
         </div>
     </div>
-    <!-- END TOP HEADER -->
+    <!--End Top Header-->
 
-    <!-- MAIN HEADER -->
-    <!-- <div class="header main-header d-flex align-items-center header-1 header-fixed"> -->
-    <div class="header main-header d-flex align-items-center header-1 header-fixed">
-        <!-- HEADER CONTENT -->
-        <div class="container-header" [ngClass]="{'container-fluid': isDesktop || isTablet, 'container px-0': isMobile }">
+    <!--Header-->
+    <header class="header d-flex align-items-center header-1 header-fixed">
+        <div [ngClass]="{'container-fluid px-5': isDesktop || isTablet, 'container': isMobile }"
+            class="container-header">
             <div class="row">
-                <!-- MENU IZQUIERDA -->
-                <div *ngIf="!isMobile && !isTablet" class="col-1 col-sm-1 col-md-1 col-lg-5 align-self-center d-menu-col d-flex justify-content-start">
+                <!--Menu-->
+                <div *ngIf="!isMobile && !isTablet"
+                    class="col-1 col-sm-1 col-md-1 align-self-center d-menu-col d-flex justify-content-start"
+                    [ngClass]="{'col-lg-4': isDesktop, 'col-lg-6': isMobile}">
                     <nav class="navigation" id="AccessibleNav">
-                        <ul id="siteNav" class="site-nav medium right">
-
-                            <!-- CAMISETAS  -->
-                            <li class="lvl1 parent megamenu">
-                                <a href="#" onclick="return false;" class="text-uppercase">
-                                    <span class="menubar-label fw-bold">Camisetas <i class="icon anm anm-angle-down-l"></i></span>
-                                </a>
-                                <div class="megamenu style2">
-                                    <ul class="row mmWrapper">
-                                        <li class="lvl-1 col-md-3 col-lg-3">
-                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Hombre</a>
+                        <ul id="siteNav" class="site-nav medium center">
+                            <li class="lvl1 parent dropdown text-uppercase fw-bold"><a href="#"
+                                    onclick="return false;">Mujer <i class="icon anm anm-angle-down-l d-none"></i></a>
+                                <ul class="dropdown d-none">
+                                    <li><a href="index.html" class="site-nav lvl-2">Home 01 - Fashion</a></li>
+                                    <li><a href="index2-footwear.html" class="site-nav lvl-2">Home 02 - Footwear</a>
+                                    </li>
+                                    <li><a href="index3-bags.html" class="site-nav lvl-2">Home 03 - Bags</a></li>
+                                    <li><a href="index4-electronic.html" class="site-nav lvl-2">Home 04 - Electronic</a>
+                                    </li>
+                                    <li><a href="index5-tools-parts.html" class="site-nav lvl-2">Home 05 - Tools &amp;
+                                            Parts</a></li>
+                                    <li><a href="index6-jewelry.html" class="site-nav lvl-2">Home 06 - Jewelry</a></li>
+                                    <li><a href="index7-organic-food.html" class="site-nav lvl-2">Home 07 - Organic
+                                            Food</a></li>
+                                    <li><a href="index8-cosmetics.html" class="site-nav lvl-2">Home 08 - Cosmetics</a>
+                                    </li>
+                                    <li><a href="index9-furniture.html" class="site-nav lvl-2">Home 09 - Furniture</a>
+                                    </li>
+                                    <li><a href="index10-sunglasses.html" class="site-nav lvl-2">Home 10 -
+                                            Sunglasses</a></li>
+                                    <li><a href="index11-medical.html" class="site-nav lvl-2">Home 11 - Medical</a></li>
+                                    <li><a href="index12-christmas.html" class="site-nav lvl-2">Home 12 - Christmas</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="lvl1 parent megamenu text-uppercase fw-bold"><a href="#"
+                                    onclick="return false;">Hombre <i class="icon anm anm-angle-down-l"></i></a>
+                                <div class="megamenu style1">
+                                    <ul class="row grid--uniform mmWrapper">
+                                        <li class="lvl-1 col-md-3 col-lg-3 w-22"><a href="#;" onclick="return false;"
+                                                class="site-nav lvl-1 menu-title">Camisetas</a>
                                             <ul class="subLinks">
                                                 <li class="lvl-2">
-                                                    <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
+                                                    <a href="#" onclick="return false;"
+                                                        [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central']"
+                                                        class="site-nav lvl-2 text-small">Camisetas logo Central</a>
                                                 </li>
                                                 <li class="lvl-2">
-                                                    <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
+                                                    <a href="#" onclick="return false;"
+                                                        [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral']"
+                                                        class="site-nav lvl-2 text-small">Camisetas Logo Lateral</a>
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li class="lvl-1 col-md-3 col-lg-3 d-none">
-                                            <a href="#;" onclick="return false" class="site-nav lvl-1 menu-title">Mujer</a>
+                                        <li class="lvl-1 col-md-3 col-lg-3 w-22 d-none"><a href="#;"
+                                                class="site-nav lvl-1 menu-title">Ropa</a>
                                             <ul class="subLinks">
-                                                <li class="lvl-2"><a href="product-standard.html" class="site-nav lvl-2">Todas las sudaderas</a></li>
-                                                <li class="lvl-2"><a href="product-variable.html" class="site-nav lvl-2">Sudaderas con capucha</a></li>
+                                                <li class="lvl-2"><a href="shop-grid-view.html" onclick="return false;"
+                                                        class="site-nav lvl-2">Toda la ropa</a></li>
+                                                <li class="lvl-2"><a href="shop-list-view.html" onclick="return false;"
+                                                        class="site-nav lvl-2">Tops y camisetas</a></li>
                                             </ul>
                                         </li>
-                                        <li class="lvl-1 col-md-3 col-lg-9 product-col" *ngIf="ourProducts && ourProducts.length > 0">
-                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
-                                            <div class="grid-products weekly-product gp10 mt-1">
-                                                <ng-container *ngFor="let ourProduct of ourProducts">
-                                                    <div class="item">
-                                                        <div class="product-wrap position-relative">
-                                                            <!-- Start Product Image -->
-                                                            <div class="product-image mb-0">
-                                                                <!-- Imagen -->
-                                                                <a [routerLink]="['/',locale,country,'shop','product',ourProduct.slug]"  class="product-img">
-                                                                    <!-- Image principal -->
-                                                                    <img class="blur-up lazyload" data-src="{{ ourProduct.imagen }}" src="{{ ourProduct.imagen }}" alt="Camiseta {{ourProduct.title}} para programadores LujanDev" title="Camiseta {{ourProduct.title}} para programadores LujanDev" width="625" height="808" />
-                                                                    <!-- End Image principal -->
-                                                                    <!-- Hover Image -->
-                                                                    <ng-container *ngIf="ourProduct.imagen_two">
-                                                                        <img class="hover blur-up lazyload" data-src="{{ ourProduct.imagen_two }}" src="{{ ourProduct.imagen_two }}" alt="Camiseta {{ourProduct.title}} para programadores LujanDev" title="Camiseta {{ourProduct.title}} para programadores LujanDev" width="625" height="808" style="object-fit: cover" />
-                                                                    </ng-container>
-                                                                    <!-- End Hover Image -->
-                                                                </a>
-                                                                <!-- End Imagen -->
-                                                                <!-- Product label -->
-                                                                <div class="product-labels">
-                                                                    <span *ngIf="getDiscountLabel(ourProduct)" class="lbl pr-label3">
-                                                                        {{ getDiscountLabel(ourProduct) }}
-                                                                    </span>
-                                                                    <!-- Label de mejor vendido -->
-                                                                    <span *ngIf="!ourProduct.hasDiscount && ourProduct.isBestSeller" class="lbl pr-label4">
-                                                                        Mejor Vendido
-                                                                    </span>
-                                                                </div>
-                                                                <!-- End Product label -->
-                                                            </div>
-                                                            <!-- End Product Image -->
-
-                                                            <!-- Start Product Details -->
-                                                            <div class="product-details">
-                                                                <div class="product-name lh-1">
-                                                                    <a [routerLink]="['/',locale,country,'shop','product',ourProduct.slug]" [queryParams]="getRouterDiscount(ourProduct)" class="text-truncate d-inline-block product-title fw-light" itemprop="name">
-                                                                        {{ ourProduct.title }}
-                                                                    </a>
-                                                                </div>
-
-                                                                <!-- Product Price -->
-                                                                <div class="product-price">
-                                                                    <span class="price old-price" *ngIf="ourProduct.campaing_discount">
-                                                                        {{ourProduct.price_usd}}{{euro}}
-                                                                    </span>
-
-                                                                    <!-- Precio final -->
-                                                                    <span class="price" [ngClass]="{ 'text-danger': ourProduct.campaing_discount }">
-                                                                        <span class="">{{getPriceParts(ourProduct.finalPrice).integer}}.</span>
-                                                                        <span class="">
-                                                                            {{getPriceParts(ourProduct.finalPrice).decimals}}
-                                                                            <span class="">{{euro}}</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
-                                                                <!-- End Product Price -->
-
-                                                                <!-- Swatches Color -->
-                                                                <ul class="variants-clr swatches">
-                                                                    <ng-container *ngFor="let item of ourProduct.colores; let colorIndex = index">
-                                                                        <li class="swatch medium" [class.active]="isColorSelected(ourProduct, colorIndex)" (click)="onColorSelect(ourProduct, colorIndex, item.imagen)">
-                                                                            <span class="swatchLbl" [style.background-color]="item.hex" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}">
-                                                                            </span>
-                                                                        </li>
-                                                                    </ng-container>
-                                                                </ul>
-                                                                <!-- End Swatches Color -->
-
-                                                                <div class="product-review d-none">
-                                                                    <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i>
-                                                                    <span class="caption hidden ms-1">3 Reviews</span>
-                                                                </div>
-                                                            </div>
-                                                            <!-- End product details -->
-                                                        </div>
-                                                    </div>
-                                                </ng-container>
+                                        <li class="lvl-1 col-md-3 col-lg-3 w-22 d-none"><a href="#;"
+                                                class="site-nav lvl-1 menu-title">Shop Other Page</a>
+                                            <ul class="subLinks">
+                                                <li class="lvl-2"><a href="wishlist-style1.html"
+                                                        class="site-nav lvl-2">Wishlist Style1</a></li>
+                                                <li class="lvl-2"><a href="wishlist-style2.html"
+                                                        class="site-nav lvl-2">Wishlist Style2</a></li>
+                                                <li class="lvl-2"><a href="compare-style1.html"
+                                                        class="site-nav lvl-2">Compare Style1</a></li>
+                                                <li class="lvl-2"><a href="compare-style2.html"
+                                                        class="site-nav lvl-2">Compare Style2</a></li>
+                                                <li class="lvl-2"><a href="cart-style1.html" class="site-nav lvl-2">Cart
+                                                        Style1</a></li>
+                                                <li class="lvl-2"><a href="cart-style2.html" class="site-nav lvl-2">Cart
+                                                        Style2</a></li>
+                                                <li class="lvl-2"><a href="checkout-style1.html"
+                                                        class="site-nav lvl-2">Checkout Style1</a></li>
+                                                <li class="lvl-2"><a href="checkout-style2.html"
+                                                        class="site-nav lvl-2">Checkout Style2</a></li>
+                                                <li class="lvl-2"><a href="order-success.html"
+                                                        class="site-nav lvl-2">Order Success</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="lvl-1 col-md-3 col-lg-3 w-34 banner-col d-none">
+                                            <div class="banner-wrap">
+                                                <a href="shop-left-sidebar.html"><img class="blur-up lazyload"
+                                                        data-src="assets/images/megamenu/banner-menu.jpg"
+                                                        src="assets/images/megamenu/banner-menu.jpg" alt="banner"
+                                                        width="600" height="440" /></a>
+                                                <div class="banner-content">
+                                                    <h4>Ofertas especiales</h4>
+                                                    <h3>No te lo pierdas <br>Tendencias</h3>
+                                                    <div class="banner-save">Ahorre hasta <br> el 20%</div>
+                                                    <div class="banner-btn"><a href="shop-left-sidebar.html"
+                                                            [routerLink]="['/filter-products']" onclick="return false;"
+                                                            class="btn">Compra ahora</a></div>
+                                                </div>
+                                                <div class="banner-discount">
+                                                    <h3><span>50%</span> Off</h3>
+                                                </div>
                                             </div>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
-                            <!-- END CAMISETAS -->
-
-                            <!-- SUDADERAS  -->
-                            <li class="lvl1 parent megamenu">
-                                <a href="#" onclick="return false;" class="text-uppercase">
-                                    <span class="menubar-label fw-bold">Sudaderas <i class="icon anm anm-angle-down-l"></i></span>
-                                </a>
+                            <li class="lvl1 parent megamenu d-none"><a href="#">Sudaderas <i
+                                        class="icon anm anm-angle-down-l"></i></a>
                                 <div class="megamenu style2">
                                     <ul class="row mmWrapper">
                                         <li class="lvl-1 col-md-3 col-lg-3">
-                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Hombre</a>
+                                            <a href="#;" class="site-nav lvl-1 menu-title">Hombre</a>
                                             <ul class="subLinks">
-                                                <li class="lvl-2">
-                                                    <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-central']" class="site-nav lvl-2">Logo Central</a>
-                                                </li>
-                                                <li class="lvl-2">
-                                                    <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-lateral']" class="site-nav lvl-2">Logo Lateral</a>
-                                                </li>
+                                                <li class="lvl-2"><a href="product-layout1.html"
+                                                        class="site-nav lvl-2">Todas las sudaderas</a></li>
+                                                <li class="lvl-2"><a href="product-layout2.html"
+                                                        class="site-nav lvl-2">Sudaderas con capucha</a></li>
                                             </ul>
                                         </li>
-                                        <li class="lvl-1 col-md-3 col-lg-3 d-none">
-                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Mujer</a>
+                                        <li class="lvl-1 col-md-3 col-lg-3"><a href="#;"
+                                                class="site-nav lvl-1 menu-title">Mujer</a>
                                             <ul class="subLinks">
-                                                <li class="lvl-2"><a href="product-standard.html" class="site-nav lvl-2">Todas las sudaderas</a></li>
-                                                <li class="lvl-2"><a href="product-variable.html" class="site-nav lvl-2">Sudaderas con capucha</a></li>
+                                                <li class="lvl-2"><a href="product-standard.html"
+                                                        class="site-nav lvl-2">Todas las sudaderas</a></li>
+                                                <li class="lvl-2"><a href="product-variable.html"
+                                                        class="site-nav lvl-2">Sudaderas con capucha</a></li>
                                             </ul>
                                         </li>
-                                        <!-- Result slider  -->
-                                        <li class="lvl-1 col-md-3 col-lg-9 product-col" *ngIf="hoodiesProducts && hoodiesProducts.length > 0">
-                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
+                                        <li class="lvl-1 col-md-3 col-lg-6 product-col"><a href="#;"
+                                                class="site-nav lvl-1 menu-title">Los más vendidos de la semana</a>
                                             <div class="grid-products weekly-product gp10 mt-1">
-                                                <ng-container *ngFor="let hoodieProduct of hoodiesProducts">
-                                                    <div class="item">
-                                                        <div class="product-wrap position-relative">
-                                                            <!-- Start Product Image -->
-                                                            <div class="product-image mb-0">
-                                                                <!-- Imagen -->
-                                                                <a [routerLink]="['/',locale,country,'shop','product',hoodieProduct.slug]"  class="product-img">
-                                                                    <!-- Image principal -->
-                                                                    <img class="blur-up lazyload" data-src="{{ hoodieProduct.imagen }}" src="{{ hoodieProduct.imagen }}" alt="Camiseta {{hoodieProduct.title}} para programadores LujanDev" title="Camiseta {{hoodieProduct.title}} para programadores LujanDev" width="625" height="808" />
-                                                                    <!-- End Image principal -->
-                                                                    <!-- Hover Image -->
-                                                                    <ng-container *ngIf="hoodieProduct.imagen_two">
-                                                                        <img class="hover blur-up lazyload" data-src="{{ hoodieProduct.imagen_two }}" src="{{ hoodieProduct.imagen_two }}" alt="Camiseta {{hoodieProduct.title}} para programadores LujanDev" title="Camiseta {{hoodieProduct.title}} para programadores LujanDev" width="625" height="808" style="object-fit: cover" />
-                                                                    </ng-container>
-                                                                    <!-- End Hover Image -->
-                                                                </a>
-                                                                <!-- End Imagen -->
-                                                                <!-- Product label -->
-                                                                <div class="product-labels">
-                                                                    <span *ngIf="getDiscountLabel(hoodieProduct)" class="lbl pr-label3">
-                                                                        {{ getDiscountLabel(hoodieProduct) }}
-                                                                    </span>
-                                                                    <!-- Label de mejor vendido -->
-                                                                    <span *ngIf="!hoodieProduct.hasDiscount && hoodieProduct.isBestSeller" class="lbl pr-label4">
-                                                                        Mejor Vendido
-                                                                    </span>
-                                                                </div>
-                                                                <!-- End Product label -->
-                                                            </div>
-                                                            <!-- End Product Image -->
-
-                                                            <!-- Start Product Details -->
-                                                            <div class="product-details">
-                                                                <div class="product-name lh-1">
-                                                                    <!-- <a class="fw-normal" href="#">Bodysuit Black</a> -->
-                                                                    <a [routerLink]="['/',locale,country,'shop','product',hoodieProduct.slug]" [queryParams]="getRouterDiscount(hoodieProduct)" class="text-truncate d-inline-block product-title fw-light" itemprop="name">
-                                                                        {{ hoodieProduct.title }}
-                                                                    </a>
-                                                                </div>
-
-                                                                <!-- Product Price -->
-                                                                <div class="product-price">
-                                                                    <span class="price old-price" *ngIf="hoodieProduct.campaing_discount">
-                                                                        {{hoodieProduct.price_usd}}{{euro}}
-                                                                    </span>
-
-                                                                    <!-- Precio final -->
-                                                                    <span class="price" [ngClass]="{ 'text-danger': hoodieProduct.campaing_discount }">
-                                                                        <span class="">{{getPriceParts(hoodieProduct.finalPrice).integer}}.</span>
-                                                                        <span class="">
-                                                                            {{getPriceParts(hoodieProduct.finalPrice).decimals}}
-                                                                            <span class="">{{euro}}</span>
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
-                                                                <!-- End Product Price -->
-
-                                                                <!-- Swatches Color -->
-                                                                <ul class="variants-clr swatches">
-                                                                    <ng-container *ngFor="let item of hoodieProduct.colores; let colorIndex = index">
-                                                                        <li class="swatch medium" [class.active]="isColorSelected(hoodieProduct, colorIndex)" (click)="onColorSelect(hoodieProduct, colorIndex, item.imagen)">
-                                                                            <span class="swatchLbl" [style.background-color]="item.hex" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.color }}">
-                                                                            </span>
-                                                                        </li>
-                                                                    </ng-container>
-                                                                </ul>
-                                                                <!-- End Swatches Color -->
-                                                            </div>
-                                                            <!-- End product details -->
-                                                        </div>
-                                                    </div>
-                                                </ng-container>
-
-
-
-                                                <div class="item d-none">
+                                                <div class="item">
                                                     <div class="product-wrap position-relative">
                                                         <!-- Start Product Image -->
                                                         <div class="product-image mb-0">
-                                                            <a href="product-layout1.html" class="product-img"><img class="blur-up lazyload" data-src="assets/images/megamenu/product1.jpg" src="assets/images/megamenu/product1.jpg" alt="product" title="Product" width="625" height="808" /></a>
+                                                            <a href="product-layout1.html" class="product-img"><img
+                                                                    class="blur-up lazyload"
+                                                                    data-src="assets/images/megamenu/product1.jpg"
+                                                                    src="assets/images/megamenu/product1.jpg"
+                                                                    alt="product" title="Product" width="625"
+                                                                    height="808" /></a>
+                                                            <div class="product-labels"><span
+                                                                    class="lbl on-sale">Sale</span></div>
                                                         </div>
                                                         <!-- End Product Image -->
                                                         <!-- Start Product Details -->
                                                         <div class="product-details text-center">
-                                                            <div class="product-name"><a class="fw-normal" href="product-layout1.html">Drawstring Dress</a>
+                                                            <div class="product-name"><a class="fw-normal"
+                                                                    href="product-layout1.html">Bodysuit Black</a></div>
+                                                            <div class="product-price">
+                                                                <span class="price old-price">$114.00</span><span
+                                                                    class="price">$99.00</span>
+                                                            </div>
+                                                            <div class="product-review">
+                                                                <i class="icon anm anm-star"></i><i
+                                                                    class="icon anm anm-star"></i><i
+                                                                    class="icon anm anm-star"></i><i
+                                                                    class="icon anm anm-star"></i><i
+                                                                    class="icon anm anm-star-o"></i>
+                                                                <span class="caption hidden ms-1">3 Reviews</span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- End product details -->
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="product-wrap position-relative">
+                                                        <!-- Start Product Image -->
+                                                        <div class="product-image mb-0">
+                                                            <a href="product-layout1.html" class="product-img"><img
+                                                                    class="blur-up lazyload"
+                                                                    data-src="assets/images/megamenu/product1.jpg"
+                                                                    src="assets/images/megamenu/product1.jpg"
+                                                                    alt="product" title="Product" width="625"
+                                                                    height="808" /></a>
+                                                        </div>
+                                                        <!-- End Product Image -->
+                                                        <!-- Start Product Details -->
+                                                        <div class="product-details text-center">
+                                                            <div class="product-name"><a class="fw-normal"
+                                                                    href="product-layout1.html">Drawstring Dress</a>
                                                             </div>
                                                             <div class="product-price">
                                                                 <span class="price">$165.00</span>
                                                             </div>
                                                             <div class="product-review">
-                                                                <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i>
+                                                                <i class="icon anm anm-star"></i><i
+                                                                    class="icon anm anm-star"></i><i
+                                                                    class="icon anm anm-star"></i><i
+                                                                    class="icon anm anm-star"></i><i
+                                                                    class="icon anm anm-star"></i>
                                                                 <span class="caption hidden ms-1">13 Reviews</span>
                                                             </div>
                                                         </div>
                                                         <!-- End product details -->
                                                     </div>
                                                 </div>
-                                                <div class="item d-none">
+                                                <div class="item">
                                                     <div class="product-wrap position-relative">
                                                         <!-- Start Product Image -->
                                                         <div class="product-image mb-0">
-                                                            <a href="product-layout1.html" class="product-img"><img class="blur-up lazyload" data-src="assets/images/megamenu/product1.jpg" src="assets/images/megamenu/product1.jpg" alt="product" title="Product" width="625" height="808" /></a>
+                                                            <a href="product-layout1.html" class="product-img"><img
+                                                                    class="blur-up lazyload"
+                                                                    data-src="assets/images/megamenu/product1.jpg"
+                                                                    src="assets/images/megamenu/product1.jpg"
+                                                                    alt="product" title="Product" width="625"
+                                                                    height="808" /></a>
                                                         </div>
                                                         <!-- End Product Image -->
                                                         <!-- Start Product Details -->
                                                         <div class="product-details text-center">
-                                                            <div class="product-name"><a class="fw-normal" href="product-layout1.html">Realm Solid Backpack</a>
+                                                            <div class="product-name"><a class="fw-normal"
+                                                                    href="product-layout1.html">Realm Solid Backpack</a>
                                                             </div>
                                                             <div class="product-price">
                                                                 <span class="price">$153.00</span>
                                                             </div>
                                                             <div class="product-review">
-                                                                <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                                                <i class="icon anm anm-star"></i><i
+                                                                    class="icon anm anm-star"></i><i
+                                                                    class="icon anm anm-star"></i><i
+                                                                    class="icon anm anm-star-o"></i><i
+                                                                    class="icon anm anm-star-o"></i>
                                                                 <span class="caption hidden ms-1">17 Reviews</span>
                                                             </div>
                                                         </div>
@@ -337,37 +304,80 @@
                                     </ul>
                                 </div>
                             </li>
-                            <!-- END SUDADERAS -->
-
-                            <!-- MUGS -->
-                            <li class="lvl1 parent dropdown">
-                                <a *ngIf="categorieMugs" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieMugs.slug, categorieMugs._id]" class="text-uppercase" [attr.title]="'Explorar ' + categorieMugs.title">
-                                    <span class="menubar-label fw-bold">Mugs</span>
-                                </a>
+                            <li class="lvl1 parent dropdown d-none"><a href="#">Pages <i
+                                        class="icon anm anm-angle-down-l"></i></a>
+                                <ul class="dropdown">
+                                    <li><a href="aboutus-style1.html" class="site-nav">About Us <i
+                                                class="icon anm anm-angle-right-l"></i></a>
+                                        <ul class="dropdown">
+                                            <li><a href="aboutus-style1.html" class="site-nav">About Us Style1</a></li>
+                                            <li><a href="aboutus-style2.html" class="site-nav">About Us Style2</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="contact-style1.html" class="site-nav">Contact Us <i
+                                                class="icon anm anm-angle-right-l"></i></a>
+                                        <ul class="dropdown">
+                                            <li><a href="contact-style1.html" class="site-nav">Contact Us Style1</a>
+                                            </li>
+                                            <li><a href="contact-style2.html" class="site-nav">Contact Us Style2</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="my-account.html" class="site-nav">My Account <i
+                                                class="icon anm anm-angle-right-l"></i></a>
+                                        <ul class="dropdown">
+                                            <li><a href="my-account.html" class="site-nav">My Account</a></li>
+                                            <li><a href="login.html" class="site-nav">Login</a></li>
+                                            <li><a href="register.html" class="site-nav">Register</a></li>
+                                            <li><a href="forgot-password.html" class="site-nav">Forgot Password</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="lookbook-grid.html" class="site-nav">Lookbook <i
+                                                class="icon anm anm-angle-right-l"></i></a>
+                                        <ul class="dropdown">
+                                            <li><a href="lookbook-grid.html" class="site-nav">Lookbook Grid</a></li>
+                                            <li><a href="lookbook-masonry.html" class="site-nav">Lookbook Masonry</a>
+                                            </li>
+                                            <li><a href="lookbook-shop.html" class="site-nav">Lookbook Shop</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="portfolio-page.html" class="site-nav">Portfolio Page</a></li>
+                                    <li><a href="faqs-page.html" class="site-nav">FAQs Page</a></li>
+                                    <li><a href="brands-page.html" class="site-nav">Brands Page</a></li>
+                                    <li><a href="cms-page.html" class="site-nav">CMS Page</a></li>
+                                    <li><a href="elements-icons.html" class="site-nav">Icons</a></li>
+                                    <li><a href="error-404.html" class="site-nav">Error 404</a></li>
+                                    <li><a href="coming-soon.html" class="site-nav">Coming soon <span
+                                                class="lbl nm_label2">New</span></a></li>
+                                </ul>
                             </li>
-                            <!-- END MUGS -->
-
-                            <!-- GORRAS -->
-                            <li class="lvl1 parent dropdown">
-                                <a *ngIf="categorieCaps" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieCaps.slug, categorieCaps._id]" class="text-uppercase" [attr.title]="'Explorar ' + categorieCaps.title">
-                                    <span class="menubar-label fw-bold">Gorras</span>
-                                </a>
+                            <li class="lvl1 parent dropdown d-none"><a href="#">Blog <i
+                                        class="icon anm anm-angle-down-l"></i></a>
+                                <ul class="dropdown">
+                                    <li><a href="blog-grid.html" class="site-nav">Grid View</a></li>
+                                    <li><a href="blog-list.html" class="site-nav">List View</a></li>
+                                    <li><a href="blog-grid-sidebar.html" class="site-nav">Left Sidebar</a></li>
+                                    <li><a href="blog-list-sidebar.html" class="site-nav">Right Sidebar</a></li>
+                                    <li><a href="blog-masonry.html" class="site-nav">Masonry Grid</a></li>
+                                    <li><a href="blog-details.html" class="site-nav">Blog Details</a></li>
+                                </ul>
                             </li>
-                            <!-- END GORRAS -->
-
                         </ul>
                     </nav>
                 </div>
-                <!-- END MENU IZQUIERDA -->
+                <!--End Menu-->
 
-                <!-- LOGO CENTRADO -->
-                <div class="logo col-4 col-sm-3 col-md-3 d-flex" [ngClass]="{'col-lg-2 justify-content-center': isDesktop, 'col-lg-3': isMobile}">
+                <!--Logo-->
+                <div class="logo col-4 col-sm-3 col-md-3 d-flex  align-self-center"
+                    [ngClass]="{'col-lg-4 justify-content-center': isDesktop, 'col-lg-3 justify-content-start': isMobile}">
                     <!--Mobile Toggle-->
-                    <button type="button" class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none px-0" title="Menu">
-                        <!-- <svg width="24" height="24" role="img" aria-hidden="true" class="hdr-icon icon anm anm-bars-r Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
+                    <button type="button" class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none px-0"
+                        title="Menu">
+                        <svg width="24" height="24" role="img" aria-hidden="true"
+                            class="hdr-icon icon anm anm-bars-r Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM"
+                            xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
                             <path d="M21 13H3v-1h18zm0-6H3v1h18zm0 10H3v1h18z"></path>
-                        </svg> -->
-                        <svg class=" " width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor;" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 6.5H4V5H20V6.5ZM20 11.25H4V12.75H20V11.25ZM20 17.5H4V19H20V17.5Z" fill="var(--_g-icon-fill-color)"></path></svg>
+                        </svg>
                     </button>
                     <!--End Mobile Toggle-->
                     <a class="logoImg" href="#" onclick="return false;" [routerLink]="['/',country, locale, 'home']">
@@ -375,40 +385,40 @@
                         <img src="assets/images/logo.png" alt="LujanDev" title="LujanDev" />
                     </a>
                 </div>
-                <!-- END LOGO CENTRADO -->
+                <!--End Logo-->
 
-                <!-- MENU DERECHA -->
-                <div class="col-8 col-sm-9 col-md-3 align-self-center icons-col d-flex justify-content-end" [ngClass]="{'col-lg-5': isDesktop}">
-                    <!-- CAMPO DE BUSQUEDA -->
-                    <div class="search-parent iconset  align-self-center" [ngClass]="{'px-2': isMobile}">
+                <!--Right Icon-->
+                <div class="col-8 col-sm-9 col-md-6 align-self-center icons-col d-flex justify-content-end"
+                    [ngClass]="{'col-lg-4': isDesktop}">
+                    <!--Search-->
+                    <div class="search-parent iconset" [ngClass]="{'px-2': isMobile}">
                         <div class="site-search" title="Search">
-                            <a href="#;" class="search-icon clr-none" data-bs-toggle="offcanvas" data-bs-target="#search-drawer">
-                                
-                                <ng-container *ngIf="isMobile; else desktopSearchIcon">
-                                    <!-- <svg width="24" height="24" role="img" aria-hidden="true" class="Icon_icon-content-1__kPDLF HeaderSearchBoxLegacy_icon__gSWPg" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
-                                        <path d="M18 10.5C18 6.364 14.636 3 10.5 3S3 6.364 3 10.5 6.364 18 10.5 18a7.46 7.46 0 0 0 4.93-1.862l4.716 4.716.708-.708-4.716-4.715A7.46 7.46 0 0 0 18 10.5M10.5 17C6.916 17 4 14.084 4 10.5S6.916 4 10.5 4 17 6.916 17 10.5 14.084 17 10.5 17">
-                                        </path>
-                                    </svg> -->
-                                    <span>
-                                        <svg class="" style="fill: currentColor;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20C13.94 20 15.72 19.31 17.1 18.16L18.94 20L20 18.94L18.16 17.1C19.31 15.72 20 13.94 20 12ZM12 18.5C8.42 18.5 5.5 15.58 5.5 12C5.5 8.42 8.42 5.5 12 5.5C15.58 5.5 18.5 8.42 18.5 12C18.5 15.58 15.58 18.5 12 18.5Z" fill="var(--_g-icon-fill-color)"></path></svg>
-                                    </span>
-                                </ng-container>  
-                                <ng-template #desktopSearchIcon>
-                                    <span class="menubar-label text-uppercase fw-bold">Buscar</span>
-                                </ng-template>  
+                            <a href="#;" class="search-icon clr-none" data-bs-toggle="offcanvas"
+                                data-bs-target="#search-drawer">
+                                <!-- <i class="hdr-icon icon anm anm-search-l"></i> -->
+                                <svg width="24" height="24" role="img" aria-hidden="true"
+                                    class="Icon_icon-content-1__kPDLF HeaderSearchBoxLegacy_icon__gSWPg"
+                                    xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
+                                    <path
+                                        d="M18 10.5C18 6.364 14.636 3 10.5 3S3 6.364 3 10.5 6.364 18 10.5 18a7.46 7.46 0 0 0 4.93-1.862l4.716 4.716.708-.708-4.716-4.715A7.46 7.46 0 0 0 18 10.5M10.5 17C6.916 17 4 14.084 4 10.5S6.916 4 10.5 4 17 6.916 17 10.5 14.084 17 10.5 17">
+                                    </path>
+                                </svg>
+                                <span class="menubar-label text-uppercase fw-bold">Buscar</span>
                             </a>
+                            <!-- <span class="HeaderSearchBox_text__gst9O">Buscar</span> -->
                         </div>
                         <div class="search-drawer offcanvas offcanvas-top" tabindex="-1" id="search-drawer">
                             <div class="container">
                                 <div class="search-header d-flex-center justify-content-between mb-3">
-                                    <h3 class="title m-0 text-uppercase fw-normal">Busca tu producto dev favorito</h3>
-                                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    <h3 class="title m-0">¿Qué estás buscando?</h3>
+                                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="search-body">
                                     <form class="form minisearch" id="header-search">
-                                        <!-- SEARCH FIELD -->
+                                        <!--Search Field-->
                                         <div class="d-flex searchField">
-                                            <div class="search-category d-none">
+                                            <div class="search-category">
                                                 <select class="rgsearch-category rounded-end-0">
                                                     <option value="0">Todas las categorías</option>
                                                     <option *ngFor="let categorie of categories" [value]="categorie.id">
@@ -416,53 +426,76 @@
                                                 </select>
                                             </div>
                                             <div class="input-box d-flex fl-1">
-                                                <input type="search" class="input-text border-end-0" [(ngModel)]="search_product" (keyup)="searchProduct()" name="prod-search-mobile" id="prod-search-mobile" placeholder="Buscar en Lujandev.com" value="" />
-
-                                                <button type="button" class="action search" style="background-color: #121314; color:#fff; width: 50px;" (click)="searchProduct()">
-                                                    <i class="icon anm anm-search-l fw-bold"></i>
+                                                <input type="text" class="input-text border-start-0 border-end-0"
+                                                    [(ngModel)]="search_product" (keyup.enter)="searchProduct()" #filter
+                                                    name="prod-search" id="prod-search" placeholder="Buscar" value="" />
+                                                <button type="submit"
+                                                    class="action search d-flex-justify-center btn rounded-start-0">
+                                                    <i class="icon anm anm-search-l"></i>
+                                                    <!-- <svg width="24" height="24" role="img" aria-hidden="true" class="icon Icon_icon-content-1__kPDLF Icons_icon___GFz0" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="m12 21-.4-.4c-.8-.8-1.5-1.5-2.3-2.2-3.7-3.5-6.8-6.5-6.8-10.1 0-2.8 1.9-5.1 4.3-5.3 2-.2 3.7.7 5.2 2.6 1.5-1.9 3.2-2.8 5.2-2.6 2.5.2 4.3 2.5 4.3 5.3 0 3.6-3.2 6.6-6.8 10.1-.8.7-1.5 1.5-2.3 2.2zM7.3 4h-.4C5 4.2 3.5 6 3.5 8.3c0 3.2 3 6.1 6.5 9.4.7.6 1.3 1.3 2 1.9.7-.7 1.3-1.3 2-1.9 3.5-3.3 6.5-6.2 6.5-9.4C20.5 6 19 4.2 17.1 4c-1.7-.2-3.3.7-4.7 2.7l-.4.6-.4-.6C10.3 4.9 8.9 4 7.3 4"></path></svg> -->
                                                 </button>
                                             </div>
                                         </div>
-                                        <!-- END SEARCH FIELD -->
-
-                                        <!-- SEARCH POPULAR -->
+                                        <!--End Search Field-->
+                                        <!--Search popular-->
                                         <div class="popular-searches d-flex-justify-center mt-3 d-none">
                                             <span class="title fw-600">Tendencias actuales:</span>
                                             <div class="d-flex-wrap searches-items">
                                                 <ng-container *ngFor="let categorie of categories">
                                                     <a class="text-link ms-2" href="#" onclick="return false;">{{
-                                                            categorie.title }},</a>
+                                                        categorie.title }},</a>
                                                 </ng-container>
                                             </div>
                                         </div>
-                                        <!-- END SEARCH POPULAR -->
-
-                                        <!-- RESULT SEARCH PRODUCTS -->
-                                        <div class="search-products" *ngIf="products_search && products_search.length > 0">
-                                            <ul class="items g-2 g-md-3 row row-cols-lg-12 row-cols-md-12 row-cols-sm-12">
-                                                <li class="item empty w-100 text-center text-muted d-none">No tienes ningún artículo en tu búsqueda.</li>
+                                        <!--End Search popular-->
+                                        <!--Search products-->
+                                        <div class="search-products">
+                                            <ul class="items g-2 g-md-3 row row-cols-lg-4 row-cols-md-3 row-cols-sm-2">
+                                                <li class="item empty w-100 text-center text-muted d-none">No tienes
+                                                    ningún artículo en tu búsqueda.</li>
                                                 <ng-container *ngFor="let product of products_search">
                                                     <li class="item">
-                                                        <div class="mini-list-item d-flex flex-row w-100 clearfix">
+                                                        <div
+                                                            class="mini-list-item d-flex align-items-center w-100 clearfix">
                                                             <div class="mini-image text-center">
-                                                                <a class="item-link" href="#" onclick="return false;" (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
-                                                                    <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="{{ product.title }}" title="{{ product.title }}" width="60" height="60" />
+                                                                <!-- <a href="#" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="{_id: product.campaing_discount?.id}" class="product-img"> product.campaing_discount._id-->
+                                                                <!-- <a class="item-link" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="getRouterDiscount(product)"> -->
+                                                                <a class="item-link" href="product-layout1.html"
+                                                                    onclick="return false;"
+                                                                    (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
+                                                                    <img class="blur-up lazyload"
+                                                                        [attr.data-src]="product.imagen"
+                                                                        [src]="product.imagen" alt="{{ product.title }}"
+                                                                        title="{{ product.title }}" width="120"
+                                                                        height="170" />
                                                                 </a>
                                                             </div>
-                                                            <div class="details px-3 align-self-center text-start" [ngClass]="{'fs-12': isMobile}">
-                                                                <div class="product-name">
-                                                                    <a class="item-title" href="#" onclick="return false;" (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">
-                                                                        <small class="text-uppercase">{{product.title }}</small>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="product-review d-flex align-items-center justify-content-start d-none">
-                                                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': product.avg_review < 1}"></i>
-                                                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': product.avg_review < 2}"></i>
-                                                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': product.avg_review < 3}"></i>
-                                                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': product.avg_review < 4}"></i>
-                                                                    <i class="icon anm anm-star-o" [ngClass]="{'icon anm anm-star': product.avg_review < 5}"></i>
+                                                            <div class="ms-3 details text-left">
+                                                                <!-- <div class="product-name"><a class="item-title" href="product-layout1.html" onclick="return false;" [routerLink]="['/product', product.slug]" [queryParams]="getRouterDiscount(product)">{{ product.title }}</a></div> -->
+                                                                <div class="product-name"><a class="item-title"
+                                                                        href="product-layout1.html"
+                                                                        onclick="return false;"
+                                                                        (click)="navigateToProduct(product.slug, product.campaing_discount?.id)">{{
+                                                                        product.title }}</a></div>
+                                                                <div class="product-price"><span class="old-price"
+                                                                        *ngIf="product.campaing_discount">{{ euro }}{{
+                                                                        product.price_usd }}</span><span
+                                                                        class="price">{{ euro }}{{ product.price_usd -
+                                                                        getDiscountProduct(product) }}</span></div>
+                                                                <div
+                                                                    class="product-review d-flex align-items-center justify-content-start d-none">
+                                                                    <i class="icon anm anm-star-o"
+                                                                        [ngClass]="{'icon anm anm-star': product.avg_review < 1}"></i>
+                                                                    <i class="icon anm anm-star-o"
+                                                                        [ngClass]="{'icon anm anm-star': product.avg_review < 2}"></i>
+                                                                    <i class="icon anm anm-star-o"
+                                                                        [ngClass]="{'icon anm anm-star': product.avg_review < 3}"></i>
+                                                                    <i class="icon anm anm-star-o"
+                                                                        [ngClass]="{'icon anm anm-star': product.avg_review < 4}"></i>
+                                                                    <i class="icon anm anm-star-o"
+                                                                        [ngClass]="{'icon anm anm-star': product.avg_review < 5}"></i>
                                                                     <span class="caption hidden ms-2">{{
-                                                                            product.count_review }} reseñas</span>
+                                                                        product.count_review }} reseñas</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -470,74 +503,101 @@
                                                 </ng-container>
                                             </ul>
                                         </div>
-                                        <!-- END RESULT SEARCH PRODUCTS -->
+                                        <!--End Search products-->
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- END CAMPO DE BUSQUEDA -->
+                    <!--End Search-->
 
-                    <!-- CUENTA DE USUARIO -->
-                    <div class="account-parent iconset align-self-center" [ngClass]="{'px-2': isMobile}">
+                    <!--Account-->
+                    <div class="account-parent iconset" [ngClass]="{'px-2': isMobile}">
                         <div class="account-link" title="Cuenta">
-                            <ng-container *ngIf="isMobile; else desktopAccountLink">
-                                <a [routerLink]="currentUser && currentUser.email ? ['/', country, locale, 'account', 'my-account'] : ['/', country, locale, 'auth', 'login']" class="">
-                                    <span>
-                                        <!-- <svg class="_my-account_1toe5_1" style="stroke: currentColor; fill: none;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="_no-logged_1toe5_4" d="M12 14C14.76 14 17 11.76 17 9C17 6.24 14.76 4 12 4C9.24 4 7 6.24 7 9C7 11.76 9.24 14 12 14ZM12 5.5C13.93 5.5 15.5 7.07 15.5 9C15.5 10.93 13.93 12.5 12 12.5C10.07 12.5 8.5 10.93 8.5 9C8.5 7.07 10.07 5.5 12 5.5ZM18.75 18V20H17.25V18C17.25 17.31 16.69 16.75 16 16.75H8C7.31 16.75 6.75 17.31 6.75 18V20H5.25V18C5.25 16.48 6.48 15.25 8 15.25H16C17.52 15.25 18.75 16.48 18.75 18Z" fill="var(--_g-icon-fill-color)"></path><path class="_logged_1toe5_1" d="M11.75 14C14.51 14 16.75 11.76 16.75 9C16.75 6.24 14.51 4 11.75 4C8.99 4 6.75 6.24 6.75 9C6.75 11.76 8.99 14 11.75 14ZM5 20V18C5 16.48 6.23 15.25 7.75 15.25H15.75C17.27 15.25 18.5 16.48 18.5 18V20H5Z" fill="var(--_g-icon-fill-color)"></path></svg>  -->
-                                         
-                                        <svg role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" height="16" width="16"><path fill-rule="evenodd" d="M12 4a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-1.5 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z M8 9.5c-1.888 0-3.826.201-5.319.855-.755.33-1.43.793-1.918 1.435C.268 12.444 0 13.24 0 14.17V16h1.5v-1.83c0-.626.174-1.098.458-1.473.292-.384.732-.708 1.325-.968C4.487 11.202 6.174 11 8 11c1.833 0 3.518.182 4.721.7.591.254 1.03.574 1.319.96.283.375.46.859.46 1.511V16H16v-1.829c0-.948-.265-1.755-.761-2.414-.49-.65-1.168-1.11-1.925-1.436C11.82 9.678 9.88 9.5 8 9.5Z"></path></svg> 
-
-                                         <!-- <svg width="26" height="26" viewBox="0 0 24 24"  fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="9" r="4" stroke="currentColor"></circle><path d="M14.3065 12C17.0393 12.9032 19 16.1031 19 19H5C5 16.1031 6.96071 12.9032 9.69351 12" stroke="currentColor"></path><circle cx="18.5" cy="5.5" r="1.5" fill="currentColor"></circle></svg>  -->
-                                    </span>
+                            <ng-container *ngIf="isMobile; else desktopLink">
+                                <a [routerLink]="currentUser && currentUser.email ? ['/', country, locale, 'account', 'my-account'] : ['/', country, locale, 'auth', 'login']"
+                                    class="text-white">
+                                    <svg width="24" height="24" role="img" aria-hidden="true"
+                                        class="Icon_icon-content-1__kPDLF Icons_icon___GFz0"
+                                        xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 12c2.757 0 5-2.243 5-5s-2.243-5-5-5-5 2.243-5 5 2.243 5 5 5m0-9c2.206 0 4 1.794 4 4s-1.794 4-4 4-4-1.794-4-4 1.794-4 4-4m0 11c-4.56 0-8 3.224-8 7.5v.5h16v-.5c0-4.276-3.44-7.5-8-7.5m-6.981 7c.257-3.454 3.172-6 6.981-6s6.724 2.546 6.981 6z">
+                                        </path>
+                                    </svg>
                                 </a>
                             </ng-container>
-                            <ng-template #desktopAccountLink>
-                                <span class="menubar-label text-uppercase fw-bold " *ngIf="currentUser && currentUser.email; else notAuthenticated">Mi cuenta</span>
-                                <ng-template #notAuthenticated>
-                                    <span class="menubar-label text-uppercase  fw-bold" [routerLink]="['/', country, locale, 'auth', 'login']">Iniciar sesión</span>
-                                </ng-template>
+                            <ng-template #desktopLink>
+                                <svg width="24" height="24" role="img" aria-hidden="true"
+                                    class="Icon_icon-content-1__kPDLF Icons_icon___GFz0"
+                                    xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 12c2.757 0 5-2.243 5-5s-2.243-5-5-5-5 2.243-5 5 2.243 5 5 5m0-9c2.206 0 4 1.794 4 4s-1.794 4-4 4-4-1.794-4-4 1.794-4 4-4m0 11c-4.56 0-8 3.224-8 7.5v.5h16v-.5c0-4.276-3.44-7.5-8-7.5m-6.981 7c.257-3.454 3.172-6 6.981-6s6.724 2.546 6.981 6z">
+                                    </path>
+                                </svg>
+                            </ng-template>
+                            <span class="menubar-label text-uppercase fw-bold"
+                                *ngIf="currentUser && currentUser.email; else notAuthenticated">Mi cuenta</span>
+                            <ng-template #notAuthenticated>
+                                <span class="menubar-label text-uppercase fw-bold"
+                                    [routerLink]="['/', country, locale, 'auth', 'login']">Iniciar sesión</span>
                             </ng-template>
                         </div>
                         <div id="accountBox">
                             <div class="customer-links">
                                 <ul class="m-0 m-0 list-group list-group-flush">
-                                    <li class="mt-3 mb-3" *ngIf="currentUser && !currentUser.email; else isAuthenticated">
+                                    <!-- <li class="mt-3 mb-3" *ngIf="currentUser && currentUser.user_guest; else isAuthenticated"> -->
+                                    <li class="mt-3 mb-3"
+                                        *ngIf="currentUser && !currentUser.email; else isAuthenticated">
                                         <button class="btn-dark-ld mb-3 text-uppercase">
-                                            <a href="#" onclick="return false;" (click)="goLogin()" class="text-white"><i class="icon anm anm-sign-in-al d-none"></i>Iniciar sesión</a>
+                                            <a href="login.html" onclick="return false;" (click)="goLogin()"
+                                                class="text-white"><i class="icon anm anm-sign-in-al d-none"></i>Iniciar
+                                                sesión</a>
                                         </button>
                                         <div class="login-signup-text text-center text-secondary form-text">¿No tienes
-                                            una cuenta? <a [routerLink]="['/', locale, country, 'auth', 'register']" class="fw-bold text-decoration-underline">Regístrate</a></div>
+                                            una cuenta? <a href="login.html" onclick="return false;"
+                                                [routerLink]="['/', locale, country, 'auth', 'register']"
+                                                class="fw-bold text-decoration-underline">Regístrate</a></div>
                                     </li>
                                     <ng-template #isAuthenticated>
+                                        <!-- <h5 class="text-secondary px-3">{{ currentUser && currentUser.name }}</h5> -->
                                         <h5 class="text-secondary px-3">{{ currentUser?.name }}</h5>
                                     </ng-template>
+                                    <!-- <li class="list-group-item d-flex " *ngIf="currentUser && currentUser.user_guest"> -->
                                     <li class="list-group-item d-flex" *ngIf="currentUser && !currentUser.email">
-                                        <a [routerLink]="['/', country, locale, 'auth', 'login']" class="d-flex flex-row w-100">
+                                        <a href="#" onclick="return false;"
+                                            [routerLink]="['/', country, locale, 'auth', 'login']"
+                                            class="d-flex flex-row w-100">
                                             <span class="flex-grow-1">Lujandev likes you</span>
                                             <i class="icon anm anm-chevron-r-right"></i>
                                         </a>
                                     </li>
                                     <li class="list-group-item d-flex" *ngIf="currentUser && !currentUser.email">
-                                        <a [routerLink]="['/', country, locale, 'auth', 'login']" class="d-flex flex-row w-100">
+                                        <a href="#" onclick="return false;"
+                                            [routerLink]="['/', country, locale, 'auth', 'login']"
+                                            class="d-flex flex-row w-100">
                                             <span class="flex-grow-1">Ayuda</span>
                                             <i class="icon anm anm-chevron-r-right"></i>
                                         </a>
                                     </li>
                                     <li class="list-group-item d-flex" *ngIf="currentUser?.email">
-                                        <a [routerLink]="['/', this.country, this.locale, 'account', 'my-account']" class="d-flex flex-row w-100">
+                                        <a href="my-account.html" onclick="return false;"
+                                            [routerLink]="['/', this.country, this.locale, 'account', 'my-account']"
+                                            class="d-flex flex-row w-100">
                                             <span class="flex-grow-1">Mi cuenta</span>
                                             <i class="icon anm anm-chevron-r-right"></i>
                                         </a>
                                     </li>
                                     <li class="list-group-item d-flex" *ngIf="currentUser?.email">
-                                        <a [routerLink]="['/', this.country, this.locale, 'account', 'mypurchases']" class="d-flex flex-row w-100">
+                                        <a href="register.html" onclick="return false;"
+                                            [routerLink]="['/', this.country, this.locale, 'account', 'mypurchases']"
+                                            class="d-flex flex-row w-100">
                                             <span class="flex-grow-1">Mis compras </span>
                                             <i class="icon anm anm-chevron-r-right"></i>
                                         </a>
                                     </li>
                                     <li class="list-group-item d-flex" *ngIf="currentUser?.email">
-                                        <a href="#" onclick="return false;" (click)="logout()" class="d-flex flex-row w-100">
+                                        <a href="login.html" onclick="return false;" (click)="logout()"
+                                            class="d-flex flex-row w-100">
                                             <span class="flex-grow-1">Cerrar sesión</span>
                                             <i class="con anm anm-chevron-r-right"></i>
                                         </a>
@@ -547,137 +607,163 @@
 
                         </div>
                     </div>
-                    <!-- END CUENTA DE USUARIO -->
+                    <!--End Account-->
 
-                    <!-- WHISLIST -->
-                    <div class="wishlist-link iconset align-self-center d-none" [ngClass]="{'px-2': isMobile}" title="Wishlist">
-                        <a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'account', 'favorites']">
-                            <ng-container *ngIf="isMobile; else desktopLinkWishlist">
-                                <svg width="24" height="24" role="img" aria-hidden="true" class="Icon_icon-content-1__kPDLF Icons_icon___GFz0" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
-                                    <path d="m12 21-.4-.4c-.8-.8-1.5-1.5-2.3-2.2-3.7-3.5-6.8-6.5-6.8-10.1 0-2.8 1.9-5.1 4.3-5.3 2-.2 3.7.7 5.2 2.6 1.5-1.9 3.2-2.8 5.2-2.6 2.5.2 4.3 2.5 4.3 5.3 0 3.6-3.2 6.6-6.8 10.1-.8.7-1.5 1.5-2.3 2.2zM7.3 4h-.4C5 4.2 3.5 6 3.5 8.3c0 3.2 3 6.1 6.5 9.4.7.6 1.3 1.3 2 1.9.7-.7 1.3-1.3 2-1.9 3.5-3.3 6.5-6.2 6.5-9.4C20.5 6 19 4.2 17.1 4c-1.7-.2-3.3.7-4.7 2.7l-.4.6-.4-.6C10.3 4.9 8.9 4 7.3 4">
-                                    </path>
-                                </svg>
-                            </ng-container>
-                            <ng-template #desktopLinkWishlist>
-                                <span class="menubar-label text-uppercase fw-bold">Favoritos</span>
-                                <span class="wishlist-count" *ngIf="listWishlists.length > 0">{{listWishlists.length}}</span>
-                            </ng-template>    
+                    <!--Wishlist-->
+                    <div class="wishlist-link iconset" [ngClass]="{'px-2': isMobile}" title="Wishlist">
+                        <a href="wishlist-style1.html" onclick="return false;"
+                            [routerLink]="['/', this.country, this.locale, 'account', 'favorites']">
+                            <!-- <i class="hdr-icon icon anm anm-heart-l"></i> -->
+                            <svg width="24" height="24" role="img" aria-hidden="true"
+                                class="Icon_icon-content-1__kPDLF Icons_icon___GFz0" xmlns="http://www.w3.org/2000/svg"
+                                xml:space="preserve" viewBox="0 0 24 24">
+                                <path
+                                    d="m12 21-.4-.4c-.8-.8-1.5-1.5-2.3-2.2-3.7-3.5-6.8-6.5-6.8-10.1 0-2.8 1.9-5.1 4.3-5.3 2-.2 3.7.7 5.2 2.6 1.5-1.9 3.2-2.8 5.2-2.6 2.5.2 4.3 2.5 4.3 5.3 0 3.6-3.2 6.6-6.8 10.1-.8.7-1.5 1.5-2.3 2.2zM7.3 4h-.4C5 4.2 3.5 6 3.5 8.3c0 3.2 3 6.1 6.5 9.4.7.6 1.3 1.3 2 1.9.7-.7 1.3-1.3 2-1.9 3.5-3.3 6.5-6.2 6.5-9.4C20.5 6 19 4.2 17.1 4c-1.7-.2-3.3.7-4.7 2.7l-.4.6-.4-.6C10.3 4.9 8.9 4 7.3 4">
+                                </path>
+                            </svg>
+                            <span class="menubar-label text-uppercase fw-bold">Favoritos</span>
+                            <span class="wishlist-count" *ngIf="listWishlists.length > 0">{{ listWishlists.length
+                                }}</span>
                         </a>
+                        <!-- <span class="Icons_text__HOyk8">Favoritos</span> -->
                     </div>
-                    <!-- END WISHLIST -->
+                    <!--End Wishlist-->
 
-                    <!-- MINICART -->
-                    <div class="header-cart iconset align-self-center" [ngClass]="{'px-2': isMobile}" title="Carro">
+                    <!--Minicart-->
+                    <div class="header-cart iconset" [ngClass]="{'px-2': isMobile}" title="Carro">
                         <ng-container *ngIf="isMobile; else desktopLinkMiniCart">
-                            <a href="cart-style1.html" onclick="return false;" [routerLink]="currentUser ? ['/', country, locale, 'shop', 'cart'] : ['/', country, locale, 'auth', 'login']" class="header-cart btn-minicart clr-none">
-                                <!-- <i class="hdr-icon icon anm anm-cart-l"></i> -->
-                                 <span>
-                                    <svg class="" style="fill: currentColor;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18.0002 7H15.7502V5.75C15.7502 4.79 14.9702 4 14.0002 4H9.99023C9.03023 4 8.24023 
-						4.78 8.24023 5.75V7H5.99023C4.89023 7 3.99023 7.89 3.99023 9V18C3.99023 19.1 4.88023 20 
-						5.99023 20H17.9902C19.0902 20 19.9902 19.11 19.9902 18V9C19.9902 7.9 19.1002 7 17.9902 
-						7H18.0002ZM9.75023 5.75C9.75023 5.61 9.86023 5.5 10.0002 5.5H14.0102C14.1502 5.5 14.2602 
-						5.61 14.2602 5.75V7H9.76023V5.75H9.75023ZM18.5002 18.01C18.5002 18.28 18.2802 18.51 18.0002 
-						18.51H6.00023C5.73023 18.51 5.50023 18.29 5.50023 18.01V9.01C5.50023 8.74 5.72023 8.51 6.00023 
-						8.51H8.25023V10.01H9.75023V8.51H14.2502V10.01H15.7502V8.51H18.0002C18.2702 8.51 18.5002 8.73 
-						18.5002 9.01V18.01Z" fill="var(--_g-icon-fill-color)"></path></svg>
-                                </span>
-                                <span class="menubar-label ">Carro</span><span class="cart-count" *ngIf="listCarts.length > 0">{{ listCarts.length }}</span>
+                            <a href="cart-style1.html" onclick="return false;"
+                                [routerLink]="currentUser ? ['/', country, locale, 'shop', 'cart'] : ['/', country, locale, 'auth', 'login']"
+                                class="header-cart btn-minicart clr-none">
+                                <i class="hdr-icon icon anm anm-cart-l"></i><span
+                                    class="menubar-label">Carro</span><span class="cart-count"
+                                    *ngIf="listCarts.length > 0">{{ listCarts.length }}</span>
                             </a>
                         </ng-container>
                         <ng-template #desktopLinkMiniCart>
-                            <a href="#;" onclick="return false;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
-                                <!-- <i class="hdr-icon icon anm anm-cart-l"></i> -->
-                                <span>
-                                    <svg class="" style="fill: currentColor;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18.0002 7H15.7502V5.75C15.7502 4.79 14.9702 4 14.0002 4H9.99023C9.03023 4 8.24023 
-						4.78 8.24023 5.75V7H5.99023C4.89023 7 3.99023 7.89 3.99023 9V18C3.99023 19.1 4.88023 20 
-						5.99023 20H17.9902C19.0902 20 19.9902 19.11 19.9902 18V9C19.9902 7.9 19.1002 7 17.9902 
-						7H18.0002ZM9.75023 5.75C9.75023 5.61 9.86023 5.5 10.0002 5.5H14.0102C14.1502 5.5 14.2602 
-						5.61 14.2602 5.75V7H9.76023V5.75H9.75023ZM18.5002 18.01C18.5002 18.28 18.2802 18.51 18.0002 
-						18.51H6.00023C5.73023 18.51 5.50023 18.29 5.50023 18.01V9.01C5.50023 8.74 5.72023 8.51 6.00023 
-						8.51H8.25023V10.01H9.75023V8.51H14.2502V10.01H15.7502V8.51H18.0002C18.2702 8.51 18.5002 8.73 
-						18.5002 9.01V18.01Z" fill="var(--_g-icon-fill-color)"></path></svg>
-                                </span>
-                                <span class="cart-count" *ngIf="listCarts.length > 0">{{ listCarts.length }}</span>
-                                <!-- <span class="menubar-label text-uppercase fw-bold ">Carro</span><span class="cart-count" *ngIf="listCarts.length > 0">{{ listCarts.length }}</span> -->
+                            <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas"
+                                data-bs-target="#minicart-drawer">
+                                <i class="hdr-icon icon anm anm-cart-l"></i><span
+                                    class="menubar-label text-uppercase fw-bold">Carro</span><span class="cart-count"
+                                    *ngIf="listCarts.length > 0">{{ listCarts.length }}</span>
                             </a>
                         </ng-template>
                     </div>
-                    <!-- END MINICART -->
+                    <!--End Minicart-->
                 </div>
-                <!-- END MENU DERECHA -->
+                <!--End Right Icon-->
             </div>
         </div>
-        <!-- END MAIN HEADER -->
-    </div>
-    <!-- END MAIN HEADER -->
-</div>
-
+    </header>
+    <!--End Header-->
+</ng-container>
 <ng-template #onlyLogo>
     <div class="checkout-logo-header text-center py-3">
-        <a routerLink="/" class="logo"><img src="assets/images/logo-checkout.png" alt="LujanDev" /></a>
+        <a routerLink="/" class="logo"><img src="assets/images/logo.png" alt="Lujan Ecommerce" /></a>
     </div>
 </ng-template>
 
-<!-- MENU MOBILE -->
+<!--Mobile Menu-->
 <div class="mobile-nav-wrapper" role="navigation">
-    <div class="closemobileMenu" (click)="closeMobileMenuAndOverlay()">Menu <i class="icon anm anm-times-l"></i></div>
+    <div class="closemobileMenu">Menu <i class="icon anm anm-times-l"></i></div>
     <ul id="MobileNav" class="mobile-nav">
-        <!-- CAMISETAS -->
-        <li class="lvl1 parent megamenu"><a href="#" (click)="toggleMobileSubmenu($event)" class="text-uppercase">Camisetas <i class="icon anm anm-angle-down-l"></i></a>
+        <li class="lvl1 parent dropdown"><a href="index.html">Hombre
+                <!--<i class="icon anm anm-angle-down-l"></i>--></a></li>
+        <li class="lvl1 parent dropdown"><a href="index.html">Mujer</a></li>
+        <li class="lvl1 parent megamenu d-none"><a href="#">Shop <i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
-                <li>
-                    <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-central']" (click)="closeMobileMenuAndOverlay()" class="site-nav lvl-2">Logo Central</a>
+                <li><a href="#;" class="site-nav">Collection Page <i class="icon anm anm-angle-down-l"></i></a>
+                    <ul class="lvl-3">
+                        <li><a href="collection-style1.html" class="site-nav">Collection style1</a></li>
+                        <li><a href="collection-style2.html" class="site-nav">Collection style2</a></li>
+                        <li><a href="collection-style3.html" class="site-nav">Collection style3</a></li>
+                        <li><a href="collection-style4.html" class="site-nav">Collection style4</a></li>
+                        <li><a href="sub-collection-style1.html" class="site-nav">Sub Collection style1</a></li>
+                        <li><a href="sub-collection-style2.html" class="site-nav">Sub Collection style2</a></li>
+                        <li><a href="collection-empty.html" class="site-nav">Collection Empty</a></li>
+                        <li><a href="shop-search-results.html" class="site-nav">Shop Search Results</a></li>
+                        <li><a href="shop-swatches-style.html" class="site-nav last">Shop Swatches style</a></li>
+                    </ul>
                 </li>
-                <li>
-                    <a *ngIf="categorieOurProducts" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieOurProducts.slug, categorieOurProducts._id, 'logo-lateral']" (click)="closeMobileMenuAndOverlay()" class="site-nav lvl-2">Logo Lateral</a>
+                <li><a href="#;" class="site-nav">Shop Page <i class="icon anm anm-angle-down-l"></i></a>
+                    <ul class="lvl-3">
+                        <li><a href="shop-grid-view.html" class="site-nav">Shop Grid View</a></li>
+                        <li><a href="shop-list-view.html" class="site-nav">Shop List View</a></li>
+                        <li><a href="shop-left-sidebar.html" class="site-nav">Shop Left Sidebar</a></li>
+                        <li><a href="shop-right-sidebar.html" class="site-nav">Shop Right Sidebar</a></li>
+                        <li><a href="shop-top-filter.html" class="site-nav">Shop Top Filter</a></li>
+                        <li><a href="shop-masonry-grid.html" class="site-nav">Shop Masonry Grid</a></li>
+                        <li><a href="shop-with-category.html" class="site-nav">Shop With Category</a></li>
+                        <li><a href="shop-grid-view.html" class="site-nav">Classic Pagination</a></li>
+                        <li><a href="shop-right-sidebar.html" class="site-nav last">Infinite Scrolling</a></li>
+                    </ul>
+                </li>
+                <li><a href="#;" class="site-nav">Shop Other Page <i class="icon anm anm-angle-down-l"></i></a>
+                    <ul class="lvl-3">
+                        <li><a href="wishlist-style1.html" class="site-nav">Wishlist Style1</a></li>
+                        <li><a href="wishlist-style2.html" class="site-nav">Wishlist Style2</a></li>
+                        <li><a href="compare-style1.html" class="site-nav">Compare Style1</a></li>
+                        <li><a href="compare-style2.html" class="site-nav">Compare Style2</a></li>
+                        <li><a href="cart-style1.html" class="site-nav">Cart Style1</a></li>
+                        <li><a href="cart-style2.html" class="site-nav">Cart Style2</a></li>
+                        <li><a href="checkout-style1.html" class="site-nav">Checkout Style1</a></li>
+                        <li><a href="checkout-style2.html" class="site-nav">Checkout Style2</a></li>
+                        <li><a href="order-success.html" class="site-nav last">Order Success</a></li>
+                    </ul>
                 </li>
             </ul>
         </li>
-
-        <!-- SUDADERAS -->
-        <li class="lvl1 parent megamenu"><a href="#" (click)="toggleMobileSubmenu($event)" class="text-uppercase">Sudaderas <i class="icon anm anm-angle-down-l"></i></a>
+        <li class="lvl1 parent megamenu d-none"><a href="product-layout1.html">Product <i
+                    class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
-                <li>
-                    <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-central']" (click)="closeMobileMenuAndOverlay()" class="site-nav lvl-2">Logo Central</a>
+                <li><a href="product-layout1.html" class="site-nav">Product Page <i
+                            class="icon anm anm-angle-down-l"></i></a>
+                    <ul class="lvl-3">
+                        <li><a href="product-layout1.html" class="site-nav">Product Layout1</a></li>
+                        <li><a href="product-layout2.html" class="site-nav">Product Layout2</a></li>
+                        <li><a href="product-layout3.html" class="site-nav">Product Layout3</a></li>
+                        <li><a href="product-layout4.html" class="site-nav">Product Layout4</a></li>
+                        <li><a href="product-layout5.html" class="site-nav">Product Layout5</a></li>
+                        <li><a href="product-layout6.html" class="site-nav">Product Layout6</a></li>
+                        <li><a href="product-layout7.html" class="site-nav">Product Layout7</a></li>
+                        <li><a href="product-3d-ar-models.html" class="site-nav last">Product 3D, AR models</a></li>
+                    </ul>
                 </li>
-                <li>
-                    <a *ngIf="categorieHoodies" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieHoodies.slug, categorieHoodies._id, 'logo-lateral']" (click)="closeMobileMenuAndOverlay()" class="site-nav lvl-2">Logo Lateral</a>
+                <li><a href="product-standard.html" class="site-nav">Product Page Types <i
+                            class="icon anm anm-angle-down-l"></i></a>
+                    <ul class="lvl-3">
+                        <li><a href="product-standard.html" class="site-nav">Standard Product</a></li>
+                        <li><a href="product-variable.html" class="site-nav">Variable Product</a></li>
+                        <li><a href="product-grouped.html" class="site-nav">Grouped Product</a></li>
+                        <li><a href="product-layout4.html" class="site-nav">Product Back in stock</a></li>
+                        <li><a href="product-layout6.html" class="site-nav">Product Accordion</a></li>
+                        <li><a href="product-layout7.html" class="site-nav">Product Tabs Left</a></li>
+                        <li><a href="product-layout6.html" class="site-nav">Product Bundle</a></li>
+                        <li><a href="prodcut-360-view.html" class="site-nav last">Product 360 View</a></li>
+                    </ul>
                 </li>
             </ul>
         </li>
-
-        <!-- MUGS -->
-        <li class="lvl1 parent dropdown">
-            <a *ngIf="categorieMugs" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieMugs.slug, categorieMugs._id]" (click)="closeMobileMenuAndOverlay()" class="text-uppercase" [attr.title]="'Explorar ' + categorieMugs.title">
-                Mugs
-            </a>
-        </li>
-
-        <!-- GORRAS -->
-        <li class="lvl1 parent dropdown">
-            <a *ngIf="categorieCaps" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorieCaps.slug, categorieCaps._id]" (click)="closeMobileMenuAndOverlay()" class="text-uppercase" [attr.title]="'Explorar ' + categorieCaps.title">
-                Gorras
-            </a>
-        </li>
-
-        <li class="lvl1 parent dropdown d-none"><a href="#" (click)="toggleMobileSubmenu($event)">Pages <i class="icon anm anm-angle-down-l"></i></a>
+        <li class="lvl1 parent dropdown d-none"><a href="#;">Pages <i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
-                <li><a href="#" (click)="toggleMobileSubmenu($event)" class="site-nav">About Us <i class="icon anm anm-angle-down-l"></i></a>
+                <li><a href="aboutus-style1.html" class="site-nav">About Us <i
+                            class="icon anm anm-angle-down-l"></i></a>
                     <ul class="lvl-3 dropdown">
-                        <li><a href="aboutus-style1.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">About Us Style1</a></li>
-                        <li><a href="aboutus-style2.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">About Us Style2</a></li>
+                        <li><a href="aboutus-style1.html" class="site-nav">About Us Style1</a></li>
+                        <li><a href="aboutus-style2.html" class="site-nav">About Us Style2</a></li>
                     </ul>
                 </li>
-                <li><a href="#" (click)="toggleMobileSubmenu($event)" class="site-nav">Contact Us <i class="icon anm anm-angle-down-l"></i></a>
+                <li><a href="contact-style1.html" class="site-nav">Contact Us <i
+                            class="icon anm anm-angle-down-l"></i></a>
                     <ul class="lvl-3 dropdown">
-                        <li><a href="contact-style1.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Contact Us Style1</a></li>
-                        <li><a href="contact-style2.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Contact Us Style2</a></li>
+                        <li><a href="contact-style1.html" class="site-nav">Contact Us Style1</a></li>
+                        <li><a href="contact-style2.html" class="site-nav">Contact Us Style2</a></li>
                     </ul>
                 </li>
-                <li><a href="#" (click)="toggleMobileSubmenu($event)" class="site-nav">My Account <i class="icon anm anm-angle-down-l"></i></a>
+                <li><a href="my-account.html" class="site-nav">My Account <i class="icon anm anm-angle-down-l"></i></a>
                     <ul class="lvl-3 dropdown">
-                        <li><a href="my-account.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">My Account</a></li>
-                        <li><a href="login.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Login</a></li>
+                        <li><a href="my-account.html" class="site-nav">My Account</a></li>
+                        <li><a href="login.html" class="site-nav">Login</a></li>
                         <li><a href="register.html" class="site-nav">Register</a></li>
                         <li><a href="forgot-password.html" class="site-nav">Forgot Password</a></li>
                     </ul>
@@ -699,51 +785,65 @@
                 </li>
             </ul>
         </li>
-
-        <li class="lvl1 parent dropdown d-none"><a href="#" (click)="toggleMobileSubmenu($event)">Blog <i class="icon anm anm-angle-down-l"></i></a>
+        <li class="lvl1 parent dropdown d-none"><a href="blog-grid.html">Blog <i
+                    class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
-                <li><a href="blog-grid.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Grid View</a></li>
-                <li><a href="blog-list.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">List View</a></li>
-                <li><a href="blog-grid-sidebar.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Left Sidebar</a></li>
-                <li><a href="blog-list-sidebar.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Right Sidebar</a></li>
-                <li><a href="blog-masonry.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Masonry Grid</a></li>
-                <li><a href="blog-details.html" (click)="closeMobileMenuAndOverlay()" class="site-nav">Blog Details</a></li>
+                <li><a href="blog-grid.html" class="site-nav">Grid View</a></li>
+                <li><a href="blog-list.html" class="site-nav">List View</a></li>
+                <li><a href="blog-grid-sidebar.html" class="site-nav">Left Sidebar</a></li>
+                <li><a href="blog-list-sidebar.html" class="site-nav">Right Sidebar</a></li>
+                <li><a href="blog-masonry.html" class="site-nav">Masonry Grid</a></li>
+                <li><a href="blog-details.html" class="site-nav">Blog Details</a></li>
             </ul>
         </li>
 
-        <!-- SOCIAL NETWORK -->
         <li class="mobile-menu-bottom">
             <div class="mobile-links">
                 <ul class="list-inline d-inline-flex flex-column w-100">
-                    <li *ngIf="!currentUser || !currentUser.email"><a href="login.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', country, locale,  'auth', 'login']"><i class="icon anm anm-sign-in-al"></i>Iniciar sesión</a></li>
-                    <li *ngIf="!currentUser || !currentUser.email"><a href="register.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', country, locale,  'auth', 'register']"><i class="icon anm anm-user-al"></i>Registrar</a></li>
-                    <li *ngIf="currentUser && !currentUser.user_guest"><a href="my-account.html" class="d-flex align-items-center text-uppercase" onclick="return false;" [routerLink]="['/', country, locale,  'account', 'my-account']"><i class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
+                    <li *ngIf="!currentUser || !currentUser.email"><a href="login.html"
+                            class="d-flex align-items-center text-uppercase" onclick="return false;"
+                            [routerLink]="['/', country, locale,  'auth', 'login']"><i
+                                class="icon anm anm-sign-in-al"></i>Iniciar sesión</a></li>
+                    <li *ngIf="!currentUser || !currentUser.email"><a href="register.html"
+                            class="d-flex align-items-center text-uppercase" onclick="return false;"
+                            [routerLink]="['/', country, locale,  'auth', 'register']"><i
+                                class="icon anm anm-user-al"></i>Registrar</a></li>
+                    <li *ngIf="currentUser && !currentUser.user_guest"><a href="my-account.html"
+                            class="d-flex align-items-center text-uppercase" onclick="return false;"
+                            [routerLink]="['/', country, locale,  'account', 'my-account']"><i
+                                class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
                     <!-- <a href="my-account.html" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'my-account']" class="d-flex flex-row w-100">
-                            <span class="flex-grow-1">Mi cuenta</span>
-                            <i class="icon anm anm-chevron-r-right"></i>
-                        </a> -->
+                        <span class="flex-grow-1">Mi cuenta</span>
+                        <i class="icon anm anm-chevron-r-right"></i>
+                    </a> -->
 
                     <!-- <span class="menubar-label text-uppercase fw-bold" *ngIf="currentUser.email; else notAuthenticated">
-                            Mi cuenta
-                        </span>
-                        <ng-template #notAuthenticated>
-                            <span class="menubar-label text-uppercase fw-bold" [routerLink]="['/', locale, country, 'auth', 'login']">Iniciar sesión</span>
-                        </ng-template> -->
+                        Mi cuenta
+                    </span>
+                    <ng-template #notAuthenticated>
+                        <span class="menubar-label text-uppercase fw-bold" [routerLink]="['/', locale, country, 'auth', 'login']">Iniciar sesión</span>
+                    </ng-template> -->
 
                     <li class="title h5 d-none">¿Necesitas ayuda?</li>
-                    <li class="d-none"><a href="tel:401234567890" class="d-flex align-items-center"><i class="icon anm anm-phone-l"></i> (+40) 123 456 7890</a></li>
-                    <li class="d-none"><a href="mailto:info@example.com" class="d-flex align-items-center"><i class="icon anm anm-envelope-l"></i> infoexample.com</a></li>
+                    <li class="d-none"><a href="tel:401234567890" class="d-flex align-items-center"><i
+                                class="icon anm anm-phone-l"></i> (+40) 123 456 7890</a></li>
+                    <li class="d-none"><a href="mailto:info@example.com" class="d-flex align-items-center"><i
+                                class="icon anm anm-envelope-l"></i> infoexample.com</a></li>
                 </ul>
             </div>
             <div class="mobile-follow mt-2">
                 <h5 class="title">Síganos</h5>
                 <ul class="list-inline social-icons d-inline-flex mt-1">
-                    <li class="list-inline-item"><a href="#" title="Facebook"><i class="icon anm anm-facebook-f"></i></a></li>
+                    <li class="list-inline-item"><a href="#" title="Facebook"><i
+                                class="icon anm anm-facebook-f"></i></a></li>
                     <li class="list-inline-item"><a href="#" title="Twitter"><i class="icon anm anm-twitter"></i></a>
                     </li>
-                    <li class="list-inline-item"><a href="#" title="Pinterest"><i class="icon anm anm-pinterest-p"></i></a></li>
-                    <li class="list-inline-item"><a href="#" title="Linkedin"><i class="icon anm anm-linkedin-in"></i></a></li>
-                    <li class="list-inline-item"><a href="#" title="Instagram"><i class="icon anm anm-instagram"></i></a></li>
+                    <li class="list-inline-item"><a href="#" title="Pinterest"><i
+                                class="icon anm anm-pinterest-p"></i></a></li>
+                    <li class="list-inline-item"><a href="#" title="Linkedin"><i
+                                class="icon anm anm-linkedin-in"></i></a></li>
+                    <li class="list-inline-item"><a href="#" title="Instagram"><i
+                                class="icon anm anm-instagram"></i></a></li>
                     <li class="list-inline-item"><a href="#" title="Youtube"><i class="icon anm anm-youtube"></i></a>
                     </li>
                 </ul>
@@ -751,34 +851,34 @@
         </li>
     </ul>
 </div>
-<!-- END MENU MOBILE -->
+<!--End Mobile Menu-->
 
-<!-- MINICART DRAWER -->
+<!--MiniCart Drawer-->
 <div id="minicart-drawer" class="minicart-right-drawer offcanvas offcanvas-end" tabindex="-1">
     <!--MiniCart Empty-->
     <div id="cartEmpty" class="cartEmpty d-flex-justify-center flex-column text-center p-3 text-muted d-none">
         <div class="minicart-header d-flex-center justify-content-between w-100">
             <h4 class="fs-6">Your cart (0 Items)</h4>
-            <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i></button>
+            <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close"><i
+                    class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left"
+                    title="Close"></i></button>
         </div>
         <div class="cartEmpty-content mt-4">
             <i class="icon anm anm-cart-l fs-1 text-muted"></i>
             <p class="my-3">No Products in the Cart</p>
-            <a href="index.html" onclick="return false;" class="btn btn-primary cart-btn">Continue shopping</a>
+            <a href="index.html" class="btn btn-primary cart-btn">Continue shopping</a>
         </div>
     </div>
     <!--End MiniCart Empty-->
 
     <!--MiniCart Content-->
     <div id="cart-drawer" class="block block-cart" *ngIf="listCarts">
-        <!-- Header Cart -->
         <div class="minicart-header">
-            <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close"><i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i></button>
+            <button class="close-cart border-0" data-bs-dismiss="offcanvas" aria-label="Close"><i
+                    class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left"
+                    title="Close"></i></button>
             <h4 class="fs-6 text-uppercase fw-bold">Carrito ({{ listCarts.length }})</h4>
         </div>
-        <!-- End Header Cart -->
-
-        <!-- Body Cart Items -->
         <div class="minicart-content d-flex">
             <ng-container *ngIf="listCarts.length == 0; else allCarts">
                 <div class="d-flex align-items-center w-100">
@@ -790,7 +890,8 @@
                         </div>
                         <h5 class="header-title mb-0 text-uppercase mb-3">¡Tu carrito está vacío!</h5>
                         <p class="lh-1">Explora nuestra colección y encuentra camisetas <br> que te representen.</p>
-                        <a class="btn-dark-ld text-uppercase" href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']">Descubrir lo último</a>
+                        <a class="btn-dark-ld text-uppercase" href="#" onclick="return false;"
+                            [routerLink]="['/', locale, country, 'shop', 'filter-products']">Descubrir lo último</a>
                     </div>
                 </div>
             </ng-container>
@@ -798,62 +899,36 @@
                 <ul class="m-0 clearfix">
                     <ng-container *ngFor="let cart of listCarts">
                         <li class="item d-flex flex-column">
-                            <!-- CONTENT CARTS -->
                             <div class="d-flex flex-row mb-2">
-
-                                <!-- HEDER TITLE CARTS -->
                                 <div class="">
-                                    <a class="product-image rounded-3" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', cart.variedad.slug]">
-                                        <!-- <img class="blur-up lazyload" [src]="cart.variedad.files[1].preview_url" alt="{{ cart.product.title }}" title="{{ cart.product.title }}" width="200" height="200" /> -->
-                                         <img 
-                                            class="blur-up lazyload" 
-                                            [src]="getVarietyImage(cart)" 
-                                            alt="{{ cart.product.title }}" 
-                                            title="{{ cart.product.title }}" 
-                                            width="200" 
-                                            height="200" 
-                                        />
-
+                                    <a class="product-image rounded-3" href="#" onclick="return false;"
+                                        [routerLink]="['/', country, locale, 'shop', 'product', cart.variedad.slug]">
+                                        <img class="blur-up lazyload" [src]="cart.variedad.files[1].preview_url"
+                                            alt="{{ cart.product.title }}" title="{{ cart.product.title }}" width="200"
+                                            height="200" />
                                     </a>
                                 </div>
-                                <!-- HEDER TITLE CARTS -->
-
-                                <!-- BODY ITEMS CARTS -->
                                 <div class="d-flex w-100">
                                     <div class="product-details">
-                                        <!-- PRODUCT TITULO & PRECIO -->
                                         <div class="priceRow mb-2">
-                                            <div class="product-price d-flex flex-column justify-content-between">
-                                                <a class="product-title text-uppercase fw-normal text-truncate d-inline-block product-title" 
-                                                   href="#" 
-                                                   onclick="return false;" 
-                                                   [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">{{cart.product.title }}</a>
-
-                                                <div class="price-container d-flex flex-column align-items-end">
-                                                    <!-- Precio original tachado si hay descuento -->
-                                                    <span *ngIf="hasCartItemDiscount(cart)" class="price-small text-muted text-decoration-line-through mb-1">
-                                                        <span class="me-1">{{ euro }}</span>
-                                                        <span class="">{{ getFormattedPrice(getOriginalUnitPrice(cart) * cart.cantidad).integerPart }}.</span>
-                                                        <span class="">{{ getFormattedPrice(getOriginalUnitPrice(cart) * cart.cantidad).decimalPart }}</span>
+                                            <div class="product-price d-flex flex-row justify-content-between">
+                                                <a class="product-title text-uppercase fw-normal text-truncate d-inline-block product-title"
+                                                    href="#" onclick="return false;"
+                                                    [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">{{
+                                                    cart.product.title }}</a>
+                                                <span class="price-small fw-bold">
+                                                    <span class="price-main-small">{{
+                                                        getFormattedPrice((cart.variedad?.retail_price ||
+                                                        cart.product.price_usd) * cart.cantidad).integerPart }}</span>
+                                                    <span class="price-decimals-small" style="top: 0.2em !important;">
+                                                        <sup>{{ getFormattedPrice((cart.variedad?.retail_price ||
+                                                            cart.product.price_usd) * cart.cantidad).decimalPart
+                                                            }}</sup>
+                                                        <span class="currency-symbol-small">{{ euro }}</span>
                                                     </span>
-
-                                                    <!-- Precio final (con descuento si aplica) -->
-                                                    <span class="price-small fw-bold" [class.text-danger]="hasCartItemDiscount(cart)">
-                                                        <span class="me-1">{{ euro }}</span>
-                                                        <span class="">{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).integerPart }}.</span>
-                                                        <span class="">{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).decimalPart }}</span>
-                                                    </span>
-
-                                                    <!-- Indicador del tipo de descuento -->
-                                                    <span *ngIf="hasCartItemDiscount(cart)" class="discount-type-indicator">
-                                                        {{ cart.code_cupon ? 'Cupón aplicado' : (cart.type_discount === 1 ? 'Oferta especial' : 'Flash Sale') }}
-                                                    </span>
-                                                </div>
+                                                </span>
                                             </div>
                                         </div>
-                                        <!-- END PRODUCT TITULO & PRECIO -->
-
-                                        <!-- VARIANTE Y CANTIDAD -->
                                         <div class="d-flex flex-column">
                                             <div class="variant-cart fw-light d-flex" *ngIf="cart.variedad">
                                                 <span class="w-25">Color</span>
@@ -869,80 +944,65 @@
                                             </div>
 
                                             <div class="qtyField">
-                                                <a class="qtyBtn minus text-muted" href="#;" onclick="return false;" (click)="dec(cart)"><i class="icon anm anm-minus-r text-black fw-bold"></i></a>
-                                                <input type="text" name="quantity" [value]="cart.cantidad" class="qty border-0 text-black fw-bold">
-                                                <a class="qtyBtn plus text-muted" href="#;" onclick="return false;" (click)="inc(cart)"><i class="icon anm anm-plus-r text-black fw-bold"></i></a>
+                                                <a class="qtyBtn minus text-muted" href="#;" onclick="return false;"
+                                                    (click)="dec(cart)"><i
+                                                        class="icon anm anm-minus-r text-black fw-bold"></i></a>
+                                                <input type="text" name="quantity" [value]="cart.cantidad"
+                                                    class="qty border-0 text-black fw-bold">
+                                                <a class="qtyBtn plus text-muted" href="#;" onclick="return false;"
+                                                    (click)="inc(cart)"><i
+                                                        class="icon anm anm-plus-r text-black fw-bold"></i></a>
                                             </div>
                                         </div>
-                                        <!-- END VARIANTE Y CANTIDAD -->
+
                                     </div>
                                 </div>
-                                <!-- BODY ITEMS CARTS -->
                             </div>
-                            <!-- END CONTENT CARTS -->
-
-                            <!-- FOOTER CART -->
-                            <div class="d-flex flex-row justify-content-between">
-                                <div class="">
-                                    <a href="#" class="remove fw-light" onclick="return false;" (click)="removeCart(cart)">Eliminar</a>
+                            <div class="d-flex flex-row">
+                                <div class="me-3">
+                                    <a href="#" class="remove fw-light" onclick="return false;"><i
+                                            class="icon anm anm-heart-l" data-bs-toggle="tooltip"
+                                            data-bs-placement="top" title="Favorito"></i> Comprar mas tarde</a>
                                 </div>
                                 <div class="">
-                                    <a href="#" class="remove fw-light" onclick="return false;"><i class="icon anm anm-heart-l" data-bs-toggle="tooltip" data-bs-placement="top" title="Favorito"></i></a>
+                                    <a href="#" class="remove fw-light" onclick="return false;"
+                                        (click)="removeCart(cart)"> Eliminar</a>
                                 </div>
                             </div>
-                            <!-- END FOOTER CART -->
                         </li>
                     </ng-container>
                 </ul>
             </ng-template>
         </div>
-        <!-- End MiniCart Cart Items -->
-
-        <!-- Footer Cart summary -->
         <div class="minicart-bottom" *ngIf="listCarts.length != 0">
             <div class="shipinfo d-none">
                 <div class="progress mb-2">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
                 </div>
-                <div class="freeShipMsg"><i class="icon anm anm-truck-l fs-6 me-2 align-middle"></i>A solo <span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}10.00</span> de envío<b>
+                <div class="freeShipMsg"><i class="icon anm anm-truck-l fs-6 me-2 align-middle"></i>A solo <span
+                        class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}10.00</span> de envío<b>
                         gratis</b></div>
                 <div class="freeShipMsg d-none"><i class="icon anm anm-truck-l fs-6 me-2 align-middle"></i>Congrats! You
                     are eligible for <b>Free Shipping</b></div>
             </div>
             <div class="subtotal clearfix my-3">
-                <!-- Subtotal original tachado si hay descuentos -->
-                <div class="totalInfo clearfix" *ngIf="hasAnyCartDiscount()">
+                <div class="totalInfo clearfix">
                     <span class="text-capitalize fw-light">Subtotal</span>
-                    <div class="item product-price text-capitalize d-flex">
-                        <span class="me-1 fw-light text-muted text-decoration-line-through">{{euro }}</span>
-                        <span class="fw-light text-muted text-decoration-line-through">{{ getFormattedPrice(getOriginalSubtotal()).integerPart }}.{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
+                    <div class="item product-price text-capitalize fw-normal d-flex">
+                        <span class="fw-normal me-1">{{ totalCarts | number: '1.2-2' }}</span> <span
+                            style="font-family: sans-serif;font-size: .85rem;" class="align-self-center fw-normal">{{
+                            euro }}</span>
                     </div>
                 </div>
-
-                <!-- Descuento aplicado (solo si hay descuentos) -->
-                <div class="totalInfo clearfix" *ngIf="hasAnyCartDiscount()">
-                    <span class="text-capitalize fw-light text-danger">Descuento</span>
-                    <div class="item product-price text-capitalize d-flex text-danger">
-                        <span class="me-1 fw-light">-{{euro }}</span>
-                        <span class="fw-light">{{ getFormattedPrice(getTotalDiscount()).integerPart }}.{{ getFormattedPrice(getTotalDiscount()).decimalPart }}</span>
-                    </div>
-                </div>
-
-                <!-- Subtotal sin descuentos (si no hay descuentos) -->
-                <div class="totalInfo clearfix" *ngIf="!hasAnyCartDiscount()">
-                    <span class="text-capitalize fw-light">Subtotal</span>
-                    <div class="item product-price text-capitalize d-flex">
-                        <span class="me-1 fw-light">{{euro }}</span>
-                        <span class="fw-light">{{ getFormattedPrice(getSubtotal()).integerPart }}.{{ getFormattedPrice(getSubtotal()).decimalPart }}</span>
-                    </div>
-                </div>
-
-                <div class="totalInfo clearfix"><span class="text-capitalize fw-light">Envío</span><span class="item product-price text-capitalize fw-light">Gratis</span></div>
+                <div class="totalInfo clearfix"><span class="text-capitalize fw-light">Envío</span><span
+                        class="item product-price text-capitalize fw-light">Gratis</span></div>
                 <div class="totalInfo clearfix">
                     <span>Total</span>
                     <div class="item product-price d-flex">
-                        <span class="me-1">{{ euro }}</span>
-                        <span class="">{{ getFormattedPrice(getTotal()).integerPart }}.{{ getFormattedPrice(getTotal()).decimalPart }}</span>
+                        <span class="me-1">{{ totalCarts | number: '1.2-2' }}</span><span
+                            style="font-family: sans-serif;font-size: .85rem;" class="align-self-center">{{ euro
+                            }}</span>
                     </div>
                 </div>
             </div>
@@ -951,22 +1011,15 @@
                 <label for="prTearm"> I agree with the </label><a href="#" class="ms-1 text-link">Terms &amp;
                     conditions</a>
             </div>
-            <div class="minicart-action mt-3">
-                <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn" [ngClass]="{ 'w-100': isMobile }">
-                    <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit mb-3">
-                        <span>Ver carrito</span>
-                    </button>
-                </a>
-                <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()" class="proceed-to-checkout" [ngClass]="{ 'w-100': isMobile }">
-                    <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit">
-                        <span>Comenzar pedido</span>
-                    </button>
-                </a>
+            <div class="minicart-action d-flex flex-lg-row flex-column mt-3">
+                <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn-dark-ld w-50 me-1 mb-2"
+                    [ngClass]="{ 'w-100': isMobile }">Ver carrito</a>
+                <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()"
+                    class="proceed-to-checkout mb-2 btn-dark-ld w-50 ms-lg-1" [ngClass]="{ 'w-100': isMobile }">Comenzar
+                    pedido</a>
             </div>
         </div>
-        <!-- End Footer Cart summary -->
     </div>
     <!--MiniCart Content-->
 </div>
-<!-- END MINICART DRAWER -->
-<!-- </ng-container> -->
+<!--End MiniCart Drawer-->

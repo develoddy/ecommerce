@@ -1,12 +1,12 @@
 /* Styles for checkout-only logo */
 .checkout-logo-header .logo img {
-  max-width: 170px;
-  max-height: 32px;
+  max-width: 230px;
+  max-height: 100px;
 }
 
 /* Override for mobile */
 @media (max-width: 768px) {
   .checkout-logo-header .logo img {
-    max-width: 170px;
+    max-width: 120px;
   }
 }
