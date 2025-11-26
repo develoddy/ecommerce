@@ -243,6 +243,9 @@ export class SubscriptionsListComponent implements OnInit, OnDestroy {
             if (modal) modal.hide();
           }
           
+          // Limpiar localStorage para evitar que "isEmailSubscribed" devuelva true
+          this.newsletterService.removeEmailFromSubscribed(this.CURRENT_USER_AUTHENTICATED.email);
+          
           // Deshabilitar todas las preferencias
           this.contentPreferences.forEach(p => p.enabled = false);
           this.channelPreferences.forEach(p => p.enabled = false);

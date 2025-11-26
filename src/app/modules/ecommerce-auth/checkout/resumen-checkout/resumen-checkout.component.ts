@@ -538,7 +538,7 @@ getVarietyImage(cart: any): string {
 
     // Marcar como validando
     this.isValidating = true;
-    this.validationMessage = 'Validando dirección con Printful...';
+    this.validationMessage = 'Validando código postal y ciudad...';
 
     // Construir objeto de dirección para validación
     const addressData = {
@@ -553,35 +553,70 @@ getVarietyImage(cart: any): string {
       phone: this.phone
     };
 
-    // 🔍 VALIDAR CON PRINTFUL ANTES DE GUARDAR
-    this.addressValidationService.validateWithPrintful(addressData).subscribe({
-      next: (validation) => {
-        this.isValidating = false;
-        
-        if (!validation.isValid) {
-          // ❌ Dirección no válida según Printful
+    // 🔍 PASO 1: VALIDAR CON BACKEND API (validación local con base de datos postal_codes)
+    console.log('🔍 [ResumenCheckout] Paso 1: Validando código postal con backend API...');
+    
+    this.addressValidationService.validateLocalRulesAsync(addressData).subscribe({
+      next: (localValidation) => {
+        if (!localValidation.isValid) {
+          // ❌ Validación local falló (CP o ciudad no válidos según BD)
+          console.log('❌ [ResumenCheckout] Validación de backend falló:', localValidation.message);
+          this.isValidating = false;
           this.status = false;
           this.validMessage = true;
-          this.errorOrSuccessMessage = validation.message;
+          this.errorOrSuccessMessage = localValidation.message;
           this.validationMessage = '';
           this.hideMessageAfterDelay();
-          alertDanger(validation.message);
+          alertDanger(localValidation.message);
           return;
         }
+        
+        // ✅ Validación local correcta, ahora validar con Printful
+        console.log('✅ [ResumenCheckout] Validación backend OK, validando con Printful...');
+        this.validationMessage = 'Validando dirección con Printful...';
+        
+        // 🔍 PASO 2: VALIDAR CON PRINTFUL
+        this.addressValidationService.validateWithPrintful(addressData).subscribe({
+          next: (validation) => {
+            this.isValidating = false;
+            
+            if (!validation.isValid) {
+              // ❌ Dirección no válida según Printful
+              this.status = false;
+              this.validMessage = true;
+              this.errorOrSuccessMessage = validation.message;
+              this.validationMessage = '';
+              this.hideMessageAfterDelay();
+              alertDanger(validation.message);
+              return;
+            }
 
-        // ✅ Dirección válida, proceder a guardar
-        this.validationMessage = 'Dirección válida, guardando...';
-        this.saveValidatedAddress(addressData);
+            // ✅ Dirección válida, proceder a guardar
+            console.log('✅ [ResumenCheckout] Validación Printful OK, guardando...');
+            this.validationMessage = 'Dirección válida, guardando...';
+            this.saveValidatedAddress(addressData);
+          },
+          error: (err) => {
+            console.error('❌ Error validando dirección con Printful:', err);
+            this.isValidating = false;
+            this.status = false;
+            this.validMessage = true;
+            this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
+            this.validationMessage = '';
+            this.hideMessageAfterDelay();
+            alertDanger("Error al validar la dirección");
+          }
+        });
       },
       error: (err) => {
-        console.error('❌ Error validando dirección:', err);
+        console.error('❌ Error validando con backend:', err);
         this.isValidating = false;
         this.status = false;
         this.validMessage = true;
-        this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
+        this.errorOrSuccessMessage = "Error al validar el código postal y ciudad";
         this.validationMessage = '';
         this.hideMessageAfterDelay();
-        alertDanger("Error al validar la dirección");
+        alertDanger("Error al validar el código postal y ciudad");
       }
     });
   }
@@ -897,7 +932,7 @@ getVarietyImage(cart: any): string {
 
     // Marcar como validando
     this.isValidating = true;
-    this.validationMessage = 'Validando dirección con Printful...';
+    this.validationMessage = 'Validando código postal y ciudad...';
 
     // Construir objeto de dirección para validación
     const addressData = {
@@ -912,35 +947,70 @@ getVarietyImage(cart: any): string {
       phone: this.phone
     };
 
-    // 🔍 VALIDAR CON PRINTFUL ANTES DE ACTUALIZAR
-    this.addressValidationService.validateWithPrintful(addressData).subscribe({
-      next: (validation) => {
-        this.isValidating = false;
-        
-        if (!validation.isValid) {
-          // ❌ Dirección no válida según Printful
+    // 🔍 PASO 1: VALIDAR CON BACKEND API (validación local con base de datos postal_codes)
+    console.log('🔍 [ResumenCheckout-Update] Paso 1: Validando código postal con backend API...');
+    
+    this.addressValidationService.validateLocalRulesAsync(addressData).subscribe({
+      next: (localValidation) => {
+        if (!localValidation.isValid) {
+          // ❌ Validación local falló (CP o ciudad no válidos según BD)
+          console.log('❌ [ResumenCheckout-Update] Validación de backend falló:', localValidation.message);
+          this.isValidating = false;
           this.status = false;
           this.validMessage = true;
-          this.errorOrSuccessMessage = validation.message;
+          this.errorOrSuccessMessage = localValidation.message;
           this.validationMessage = '';
           this.hideMessageAfterDelay();
-          alertDanger(validation.message);
+          alertDanger(localValidation.message);
           return;
         }
+        
+        // ✅ Validación local correcta, ahora validar con Printful
+        console.log('✅ [ResumenCheckout-Update] Validación backend OK, validando con Printful...');
+        this.validationMessage = 'Validando dirección con Printful...';
+        
+        // 🔍 PASO 2: VALIDAR CON PRINTFUL
+        this.addressValidationService.validateWithPrintful(addressData).subscribe({
+          next: (validation) => {
+            this.isValidating = false;
+            
+            if (!validation.isValid) {
+              // ❌ Dirección no válida según Printful
+              this.status = false;
+              this.validMessage = true;
+              this.errorOrSuccessMessage = validation.message;
+              this.validationMessage = '';
+              this.hideMessageAfterDelay();
+              alertDanger(validation.message);
+              return;
+            }
 
-        // ✅ Dirección válida, proceder a actualizar
-        this.validationMessage = 'Dirección válida, actualizando...';
-        this.proceedWithUpdate();
+            // ✅ Dirección válida, proceder a actualizar
+            console.log('✅ [ResumenCheckout-Update] Validación Printful OK, actualizando...');
+            this.validationMessage = 'Dirección válida, actualizando...';
+            this.proceedWithUpdate();
+          },
+          error: (err) => {
+            console.error('❌ Error validando dirección con Printful:', err);
+            this.isValidating = false;
+            this.status = false;
+            this.validMessage = true;
+            this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
+            this.validationMessage = '';
+            this.hideMessageAfterDelay();
+            alertDanger("Error al validar la dirección");
+          }
+        });
       },
       error: (err) => {
-        console.error('❌ Error validando dirección:', err);
+        console.error('❌ Error validando con backend:', err);
         this.isValidating = false;
         this.status = false;
         this.validMessage = true;
-        this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
+        this.errorOrSuccessMessage = "Error al validar el código postal y ciudad";
         this.validationMessage = '';
         this.hideMessageAfterDelay();
-        alertDanger("Error al validar la dirección");
+        alertDanger("Error al validar el código postal y ciudad");
       }
     });
   }

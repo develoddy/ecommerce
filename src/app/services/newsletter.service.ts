@@ -83,6 +83,19 @@ export class NewsletterService {
   }
 
   /**
+   * Eliminar un email específico del array de suscritos en localStorage
+   */
+  removeEmailFromSubscribed(email: string): void {
+    const normalizedEmail = email.toLowerCase().trim();
+    const currentEmails = this.subscribedEmailsSubject.value;
+    const updatedEmails = currentEmails.filter(e => e !== normalizedEmail);
+    
+    this.subscribedEmailsSubject.next(updatedEmails);
+    this.saveSubscribedEmails(updatedEmails);
+    console.log('✅ Email eliminado del localStorage:', normalizedEmail);
+  }
+
+  /**
    * Verificar si un email ya está suscrito localmente
    */
   isEmailSubscribed(email: string): boolean {

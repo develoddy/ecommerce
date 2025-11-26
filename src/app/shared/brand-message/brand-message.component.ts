@@ -68,14 +68,7 @@ export class BrandMessageComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Verificar si ya está suscrito localmente
-    if (this.newsletterService.isEmailSubscribed(this.email)) {
-      this.errorMessage = 'Ya estás suscrito a nuestro newsletter';
-      this.showErrorMessage = true;
-      return;
-    }
-
-    // Suscribir usando el servicio (desacoplado del HTTP)
+    // Suscribir usando el servicio (el backend validará si ya está suscrito)
     this.isSubmitting = true;
     
     this.newsletterService.subscribeEmail(this.email, 'home').subscribe({

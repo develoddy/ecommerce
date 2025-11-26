@@ -788,6 +788,15 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
+    // 🔍 CAPTURAR ESTADO DEL CARRITO ANTES DE APLICAR CUPÓN
+    const cartStateBeforeCoupon = this.listCarts.map(cart => ({
+      id: cart._id,
+      productId: cart.product._id,
+      discount: cart.discount,
+      code_cupon: cart.code_cupon,
+      finalPrice: this.getFinalUnitPrice(cart)
+    }));
+
     // Información para el usuario sobre aplicación selectiva
     const eligibleCount = this.getEligibleProductsCount();
     const campaignCount = this.getCampaignDiscountProductsCount();
@@ -806,15 +815,44 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       if (resp.message === 403) {
         this.showCouponErrorMessage(resp.message_text);
       } else {
-        // Mensaje de éxito personalizado según el escenario
-        if (campaignCount > 0 && eligibleCount > 0) {
-          alertSuccess(`Cupón aplicado correctamente a ${eligibleCount} producto(s). Los productos con descuentos previos mantienen sus precios especiales.`);
-        } else {
-          alertSuccess(resp.message_text);
-        }
-        // Limpiar el input después de aplicar exitosamente
-        this.codeCupon = '';
-        this.sotoreCarts();
+        // 🔄 RECARGAR CARRITO Y VALIDAR SI HUBO CAMBIOS REALES
+        this.cartService.listCarts(this.currentUser._id).subscribe((reloadResp: any) => {
+          // Actualizar el estado del carrito
+          reloadResp.carts.forEach((cart: any) => {
+            this.cartService.changeCart(cart);
+          });
+
+          // 🔍 COMPARAR ESTADO ANTES Y DESPUÉS
+          const cartStateAfterCoupon = this.listCarts.map(cart => ({
+            id: cart._id,
+            productId: cart.product._id,
+            discount: cart.discount,
+            code_cupon: cart.code_cupon,
+            finalPrice: this.getFinalUnitPrice(cart)
+          }));
+
+          // Verificar si ALGÚN producto recibió el cupón
+          const productsWithNewCoupon = cartStateAfterCoupon.filter(afterCart => {
+            const beforeCart = cartStateBeforeCoupon.find(b => b.id === afterCart.id);
+            return afterCart.code_cupon && afterCart.code_cupon === this.codeCupon && 
+                   (!beforeCart?.code_cupon || beforeCart.code_cupon !== this.codeCupon);
+          });
+
+          if (productsWithNewCoupon.length === 0) {
+            // ❌ EL CUPÓN NO SE APLICÓ A NINGÚN PRODUCTO
+            alertDanger('El cupón no se aplica a los productos de tu carrito.');
+          } else {
+            // ✅ EL CUPÓN SE APLICÓ EXITOSAMENTE
+            if (campaignCount > 0 && eligibleCount > 0) {
+              alertSuccess(`Cupón aplicado correctamente a ${productsWithNewCoupon.length} producto(s). Los productos con descuentos previos mantienen sus precios especiales.`);
+            } else {
+              alertSuccess(`Cupón aplicado correctamente a ${productsWithNewCoupon.length} producto(s).`);
+            }
+          }
+
+          // Limpiar el input después de procesar
+          this.codeCupon = '';
+        });
       }
     });
   }
