@@ -61,291 +61,6 @@ export interface PostalCodeValidation {
 export class AddressValidationService {
 
   /**
-   * Dataset selectivo de códigos postales ↔ ciudades principales
-   * Solo incluye las ciudades más comunes para validación local rápida
-   * Para direcciones no incluidas, Printful hará la validación final
-   */
-  private readonly ZIP_CITY_DATABASE: Record<string, Record<string, string[]>> = {
-    'ES': {
-      // Madrid (28xxx)
-      '28001': ['Madrid'], '28002': ['Madrid'], '28003': ['Madrid'], '28004': ['Madrid'],
-      '28005': ['Madrid'], '28006': ['Madrid'], '28007': ['Madrid'], '28008': ['Madrid'],
-      '28009': ['Madrid'], '28010': ['Madrid'], '28011': ['Madrid'], '28012': ['Madrid'],
-      '28013': ['Madrid'], '28014': ['Madrid'], '28015': ['Madrid'], '28016': ['Madrid'],
-      '28017': ['Madrid'], '28018': ['Madrid'], '28019': ['Madrid'], '28020': ['Madrid'],
-      '28021': ['Madrid'], '28022': ['Madrid'], '28023': ['Madrid'], '28024': ['Madrid'],
-      '28025': ['Madrid'], '28026': ['Madrid'], '28027': ['Madrid'], '28028': ['Madrid'],
-      '28029': ['Madrid'], '28030': ['Madrid'], '28031': ['Madrid'], '28032': ['Madrid'],
-      '28033': ['Madrid'], '28034': ['Madrid'], '28035': ['Madrid'], '28036': ['Madrid'],
-      '28037': ['Madrid'], '28038': ['Madrid'], '28039': ['Madrid'], '28040': ['Madrid'],
-      '28041': ['Madrid'], '28042': ['Madrid'], '28043': ['Madrid'], '28044': ['Madrid'],
-      '28045': ['Madrid'], '28046': ['Madrid'], '28047': ['Madrid'], '28048': ['Madrid'],
-      '28049': ['Madrid'], '28050': ['Madrid'],
-      '28100': ['Alcobendas'], '28108': ['Alcobendas'],
-      '28110': ['El Escorial', 'San Lorenzo de El Escorial'],
-      '28120': ['Algete'],
-      '28130': ['Valdemorillo'],
-      '28140': ['Fuente el Saz de Jarama'],
-      '28150': ['Valdetorres de Jarama'],
-      '28160': ['Valdeolmos-Alalpardo', 'Valdeolmos'],
-      '28170': ['El Molar'],
-      '28180': ['Torrelaguna'],
-      '28190': ['Venturada'],
-      '28200': ['San Lorenzo de El Escorial'],
-      '28220': ['Majadahonda'],
-      '28230': ['Las Rozas de Madrid', 'Las Rozas'],
-      '28240': ['Hoyo de Manzanares'],
-      '28250': ['Torrelodones'],
-      '28260': ['Galapagar'],
-      '28270': ['Colmenarejo'],
-      '28280': ['El Escorial'],
-      '28290': ['Las Matas'],
-      '28300': ['Aranjuez'],
-      '28320': ['Pinto'],
-      '28330': ['San Martín de la Vega'],
-      '28340': ['Valdemoro'],
-      '28350': ['Ciempozuelos'],
-      '28400': ['Collado Villalba'],
-      '28410': ['Manzanares el Real'],
-      '28420': ['Galapagar'],
-      '28430': ['Alpedrete'],
-      '28440': ['Guadarrama'],
-      '28450': ['Collado Mediano'],
-      '28460': ['Los Molinos'],
-      '28470': ['Cercedilla'],
-      '28480': ['Bustarviejo'],
-      '28490': ['Becerril de la Sierra'],
-      '28500': ['Arganda del Rey'],
-      '28510': ['Campo Real'],
-      '28520': ['Rivas-Vaciamadrid'],
-      '28529': ['Rivas-Vaciamadrid'],
-      '28530': ['Morata de Tajuña'],
-      '28540': ['Loeches'],
-      '28550': ['Tielmes'],
-      '28560': ['Carabaña'],
-      '28600': ['Navalcarnero'],
-      '28609': ['Navalcarnero'],
-      '28610': ['Villanueva de la Cañada'],
-      '28620': ['Guadarrama'],
-      '28630': ['Villa del Prado'],
-      '28640': ['Cadalso de los Vidrios'],
-      '28650': ['Cenicientos'],
-      '28660': ['Boadilla del Monte'],
-      '28670': ['Villaviciosa de Odón'],
-      '28680': ['San Martín de Valdeiglesias'],
-      '28690': ['Brunete'],
-      '28691': ['Villanueva de Perales'],
-      '28692': ['Villamanta'],
-      '28700': ['San Sebastián de los Reyes'],
-      '28707': ['San Sebastián de los Reyes'],
-      '28710': ['El Molar'],
-      '28720': ['Bustarviejo'],
-      '28730': ['Buitrago del Lozoya'],
-      '28740': ['Colmenar Viejo'],
-      '28750': ['San Agustín del Guadalix'],
-      '28760': ['Tres Cantos'],
-      '28770': ['Colmenar Viejo'],
-      '28780': ['Colmenar de Oreja'],
-      '28790': ['Pedrezuela'],
-      '28800': ['Alcalá de Henares'],
-      '28801': ['Alcalá de Henares'],
-      '28802': ['Alcalá de Henares'],
-      '28803': ['Alcalá de Henares'],
-      '28804': ['Alcalá de Henares'],
-      '28805': ['Alcalá de Henares'],
-      '28806': ['Alcalá de Henares'],
-      '28807': ['Alcalá de Henares'],
-      '28810': ['Villalbilla'],
-      '28820': ['Coslada'],
-      '28821': ['Coslada'],
-      '28822': ['Coslada'],
-      '28823': ['Coslada'],
-      '28830': ['San Fernando de Henares'],
-      '28840': ['Mejorada del Campo'],
-      '28850': ['Torrejón de Ardoz'],
-      '28860': ['Paracuellos de Jarama'],
-      '28870': ['Ajalvir'],
-      '28880': ['Meco'],
-      '28890': ['Loeches'],
-      '28891': ['Velilla de San Antonio'],
-      '28892': ['Velilla de San Antonio'],
-      '28900': ['Getafe'],
-      '28901': ['Getafe'],
-      '28902': ['Getafe'],
-      '28903': ['Getafe'],
-      '28904': ['Getafe'],
-      '28905': ['Getafe'],
-      '28906': ['Getafe'],
-      '28907': ['Getafe'],
-      '28908': ['Getafe'],
-      '28909': ['Getafe'],
-      '28910': ['Leganés'],
-      '28911': ['Leganés'],
-      '28912': ['Leganés'],
-      '28913': ['Leganés'],
-      '28914': ['Leganés'],
-      '28915': ['Leganés'],
-      '28916': ['Leganés'],
-      '28917': ['Leganés'],
-      '28918': ['Leganés'],
-      '28919': ['Leganés'],
-      '28920': ['Alcorcón'],
-      '28921': ['Alcorcón'],
-      '28922': ['Alcorcón'],
-      '28923': ['Alcorcón'],
-      '28924': ['Alcorcón'],
-      '28925': ['Alcorcón'],
-      '28930': ['Móstoles'],
-      '28931': ['Móstoles'],
-      '28932': ['Móstoles'],
-      '28933': ['Móstoles'],
-      '28934': ['Móstoles'],
-      '28935': ['Móstoles'],
-      '28936': ['Móstoles'],
-      '28937': ['Móstoles'],
-      '28938': ['Móstoles'],
-      '28939': ['Móstoles'],
-      '28940': ['Fuenlabrada'],
-      '28941': ['Fuenlabrada'],
-      '28942': ['Fuenlabrada'],
-      '28943': ['Fuenlabrada'],
-      '28944': ['Fuenlabrada'],
-      '28945': ['Fuenlabrada'],
-      '28946': ['Fuenlabrada'],
-      '28947': ['Fuenlabrada'],
-      '28948': ['Fuenlabrada'],
-      '28949': ['Fuenlabrada'],
-      '28950': ['Moraleja de Enmedio'],
-      '28970': ['Humanes de Madrid'],
-      '28971': ['Griñón'],
-      '28980': ['Parla'],
-      '28981': ['Parla'],
-      '28982': ['Parla'],
-      '28990': ['Torrejón de la Calzada'],
-      '28991': ['Torrejón de Velasco'],
-      '28992': ['Torrejón de Velasco'],
-      // Barcelona (08xxx)
-      '08001': ['Barcelona'], '08002': ['Barcelona'], '08003': ['Barcelona'], '08004': ['Barcelona'],
-      '08005': ['Barcelona'], '08006': ['Barcelona'], '08007': ['Barcelona'], '08008': ['Barcelona'],
-      '08009': ['Barcelona'], '08010': ['Barcelona'], '08011': ['Barcelona'], '08012': ['Barcelona'],
-      '08013': ['Barcelona'], '08014': ['Barcelona'], '08015': ['Barcelona'], '08016': ['Barcelona'],
-      '08017': ['Barcelona'], '08018': ['Barcelona'], '08019': ['Barcelona'], '08020': ['Barcelona'],
-      '08021': ['Barcelona'], '08022': ['Barcelona'], '08023': ['Barcelona'], '08024': ['Barcelona'],
-      '08025': ['Barcelona'], '08026': ['Barcelona'], '08027': ['Barcelona'], '08028': ['Barcelona'],
-      '08029': ['Barcelona'], '08030': ['Barcelona'], '08031': ['Barcelona'], '08032': ['Barcelona'],
-      '08033': ['Barcelona'], '08034': ['Barcelona'], '08035': ['Barcelona'], '08036': ['Barcelona'],
-      '08037': ['Barcelona'], '08038': ['Barcelona'], '08039': ['Barcelona'], '08040': ['Barcelona'],
-      '08041': ['Barcelona'],
-      '08100': ['Mollet del Vallès', 'Mollet del Valles'],
-      '08190': ['Sant Cugat del Vallès', 'Sant Cugat del Valles'],
-      '08201': ['Sabadell'], '08202': ['Sabadell'], '08203': ['Sabadell'],
-      '08221': ['Terrassa'], '08222': ['Terrassa'], '08223': ['Terrassa'],
-      '08290': ['Cerdanyola del Vallès', 'Cerdanyola del Valles'],
-      '08800': ['Vilanova i la Geltrú', 'Vilanova i la Geltru'],
-      '08901': ['L\'Hospitalet de Llobregat', 'Hospitalet de Llobregat'],
-      '08902': ['L\'Hospitalet de Llobregat', 'Hospitalet de Llobregat'],
-      '08903': ['L\'Hospitalet de Llobregat', 'Hospitalet de Llobregat'],
-      // Valencia (46xxx)
-      '46001': ['Valencia', 'València'], '46002': ['Valencia', 'València'],
-      '46003': ['Valencia', 'València'], '46004': ['Valencia', 'València'],
-      '46005': ['Valencia', 'València'], '46006': ['Valencia', 'València'],
-      '46007': ['Valencia', 'València'], '46008': ['Valencia', 'València'],
-      '46009': ['Valencia', 'València'], '46010': ['Valencia', 'València'],
-      '46011': ['Valencia', 'València'], '46012': ['Valencia', 'València'],
-      '46013': ['Valencia', 'València'], '46014': ['Valencia', 'València'],
-      '46015': ['Valencia', 'València'], '46016': ['Valencia', 'València'],
-      '46017': ['Valencia', 'València'], '46018': ['Valencia', 'València'],
-      '46019': ['Valencia', 'València'], '46020': ['Valencia', 'València'],
-      '46021': ['Valencia', 'València'], '46022': ['Valencia', 'València'],
-      '46023': ['Valencia', 'València'], '46024': ['Valencia', 'València'],
-      '46025': ['Valencia', 'València'],
-      // Sevilla (41xxx)
-      '41001': ['Sevilla'], '41002': ['Sevilla'], '41003': ['Sevilla'],
-      '41004': ['Sevilla'], '41005': ['Sevilla'], '41006': ['Sevilla'],
-      '41007': ['Sevilla'], '41008': ['Sevilla'], '41009': ['Sevilla'],
-      '41010': ['Sevilla'], '41011': ['Sevilla'], '41012': ['Sevilla'],
-      '41013': ['Sevilla'], '41014': ['Sevilla'], '41015': ['Sevilla'],
-      '41016': ['Sevilla'], '41017': ['Sevilla'], '41018': ['Sevilla'],
-      '41019': ['Sevilla'], '41020': ['Sevilla'],
-      // Zaragoza (50xxx)
-      '50001': ['Zaragoza'], '50002': ['Zaragoza'], '50003': ['Zaragoza'],
-      '50004': ['Zaragoza'], '50005': ['Zaragoza'], '50006': ['Zaragoza'],
-      '50007': ['Zaragoza'], '50008': ['Zaragoza'], '50009': ['Zaragoza'],
-      '50010': ['Zaragoza'], '50011': ['Zaragoza'], '50012': ['Zaragoza'],
-      '50013': ['Zaragoza'], '50014': ['Zaragoza'], '50015': ['Zaragoza'],
-      '50016': ['Zaragoza'], '50017': ['Zaragoza'], '50018': ['Zaragoza'],
-      // Málaga (29xxx)
-      '29001': ['Málaga', 'Malaga'], '29002': ['Málaga', 'Malaga'],
-      '29003': ['Málaga', 'Malaga'], '29004': ['Málaga', 'Malaga'],
-      '29005': ['Málaga', 'Malaga'], '29006': ['Málaga', 'Malaga'],
-      '29007': ['Málaga', 'Malaga'], '29008': ['Málaga', 'Malaga'],
-      '29009': ['Málaga', 'Malaga'], '29010': ['Málaga', 'Malaga'],
-      '29011': ['Málaga', 'Malaga'], '29012': ['Málaga', 'Malaga'],
-      '29013': ['Málaga', 'Malaga'], '29014': ['Málaga', 'Malaga'],
-      '29015': ['Málaga', 'Malaga'], '29016': ['Málaga', 'Malaga'],
-      '29017': ['Málaga', 'Malaga'], '29018': ['Málaga', 'Malaga'],
-      // Bilbao (48xxx)
-      '48001': ['Bilbao'], '48002': ['Bilbao'], '48003': ['Bilbao'],
-      '48004': ['Bilbao'], '48005': ['Bilbao'], '48006': ['Bilbao'],
-      '48007': ['Bilbao'], '48008': ['Bilbao'], '48009': ['Bilbao'],
-      '48010': ['Bilbao'], '48011': ['Bilbao'], '48012': ['Bilbao'],
-      '48013': ['Bilbao'], '48014': ['Bilbao'], '48015': ['Bilbao'],
-    },
-    'FR': {
-      // París (75xxx)
-      '75001': ['Paris'], '75002': ['Paris'], '75003': ['Paris'], '75004': ['Paris'],
-      '75005': ['Paris'], '75006': ['Paris'], '75007': ['Paris'], '75008': ['Paris'],
-      '75009': ['Paris'], '75010': ['Paris'], '75011': ['Paris'], '75012': ['Paris'],
-      '75013': ['Paris'], '75014': ['Paris'], '75015': ['Paris'], '75016': ['Paris'],
-      '75017': ['Paris'], '75018': ['Paris'], '75019': ['Paris'], '75020': ['Paris'],
-      // Lyon (69xxx)
-      '69001': ['Lyon'], '69002': ['Lyon'], '69003': ['Lyon'], '69004': ['Lyon'],
-      '69005': ['Lyon'], '69006': ['Lyon'], '69007': ['Lyon'], '69008': ['Lyon'],
-      '69009': ['Lyon'],
-      // Marseille (13xxx)
-      '13001': ['Marseille'], '13002': ['Marseille'], '13003': ['Marseille'],
-      '13004': ['Marseille'], '13005': ['Marseille'], '13006': ['Marseille'],
-      '13007': ['Marseille'], '13008': ['Marseille'], '13009': ['Marseille'],
-      '13010': ['Marseille'], '13011': ['Marseille'], '13012': ['Marseille'],
-      '13013': ['Marseille'], '13014': ['Marseille'], '13015': ['Marseille'],
-      '13016': ['Marseille'],
-    },
-    'DE': {
-      // Berlín (10xxx - 14xxx)
-      '10115': ['Berlin'], '10117': ['Berlin'], '10119': ['Berlin'],
-      '10178': ['Berlin'], '10179': ['Berlin'], '10243': ['Berlin'],
-      '10245': ['Berlin'], '10247': ['Berlin'], '10249': ['Berlin'],
-      // Munich (80xxx - 81xxx)
-      '80331': ['München', 'Munich'], '80333': ['München', 'Munich'],
-      '80335': ['München', 'Munich'], '80336': ['München', 'Munich'],
-      '80337': ['München', 'Munich'], '80339': ['München', 'Munich'],
-      // Frankfurt (60xxx)
-      '60311': ['Frankfurt'], '60313': ['Frankfurt'], '60314': ['Frankfurt'],
-      '60316': ['Frankfurt'], '60318': ['Frankfurt'], '60320': ['Frankfurt'],
-    },
-    'IT': {
-      // Roma (00xxx)
-      '00118': ['Roma', 'Rome'], '00119': ['Roma', 'Rome'],
-      '00120': ['Roma', 'Rome'], '00121': ['Roma', 'Rome'],
-      '00122': ['Roma', 'Rome'], '00123': ['Roma', 'Rome'],
-      '00124': ['Roma', 'Rome'], '00125': ['Roma', 'Rome'],
-      // Milano (20xxx)
-      '20121': ['Milano', 'Milan'], '20122': ['Milano', 'Milan'],
-      '20123': ['Milano', 'Milan'], '20124': ['Milano', 'Milan'],
-      '20125': ['Milano', 'Milan'], '20126': ['Milano', 'Milan'],
-    },
-    'PT': {
-      // Lisboa (1xxx-xxx)
-      '1000-001': ['Lisboa', 'Lisbon'], '1050-001': ['Lisboa', 'Lisbon'],
-      '1100-001': ['Lisboa', 'Lisbon'], '1150-001': ['Lisboa', 'Lisbon'],
-      '1200-001': ['Lisboa', 'Lisbon'], '1250-001': ['Lisboa', 'Lisbon'],
-      // Porto (4xxx-xxx)
-      '4000-001': ['Porto'], '4050-001': ['Porto'],
-      '4100-001': ['Porto'], '4150-001': ['Porto'],
-    }
-  };
-
-  /**
    * Países europeos soportados por Printful con sus códigos ISO
    * Fuente: https://developers.printful.com/docs/#section/Countries
    */
@@ -574,51 +289,16 @@ export class AddressValidationService {
   }
 
   /**
-   * ⚠️ DEPRECATED: Usar getPostalCodeInfo() y validateCrossCheck() del backend
-   * Valida que la ciudad coincida con el código postal usando dataset local
-   * @returns null si es válido o si no está en el dataset (fallback a Printful), mensaje de error si no coincide
+   * ⚠️ DEPRECATED: Este método ha sido eliminado.
+   * Usar validateLocalRulesAsync() para validación completa con backend API
+   * o getPostalCodeInfo() + validateCrossCheck() para validaciones específicas.
+   * 
+   * @deprecated Eliminado en v2.0 - La validación ciudad-CP ahora se hace exclusivamente vía backend API
    */
   validateCityMatchesZip(city: string, zipCode: string, countryCode: string): string | null {
-    try {
-      const cleanZip = this.normalizeZip(zipCode, countryCode);
-      const country = countryCode.toUpperCase();
-      const normalizedInputCity = this.normalizeString(city);
-      
-      console.log(`🔍 [AddressValidation] Checking if city "${city}" matches ZIP ${cleanZip} in ${country}`);
-      
-      // Verificar si tenemos este país en el dataset
-      const countryData = this.ZIP_CITY_DATABASE[country];
-      if (!countryData) {
-        console.log(`ℹ️ [AddressValidation] No dataset for country ${country} - fallback to Printful validation`);
-        return null; // No tenemos data para este país, Printful validará
-      }
-      
-      // Verificar si tenemos este CP en el dataset
-      const validCities = countryData[cleanZip];
-      if (!validCities || validCities.length === 0) {
-        console.log(`ℹ️ [AddressValidation] ZIP ${cleanZip} not in dataset - fallback to Printful validation`);
-        return null; // No tenemos data para este CP específico, Printful validará
-      }
-      
-      // Normalizar todas las ciudades válidas y comparar
-      const normalizedValidCities = validCities.map(c => this.normalizeString(c));
-      const isValidCity = normalizedValidCities.includes(normalizedInputCity);
-      
-      if (!isValidCity) {
-        console.log(`❌ [AddressValidation] City mismatch detected!`);
-        console.log(`   Input city: "${city}" (normalized: "${normalizedInputCity}")`);
-        console.log(`   Valid cities for ${cleanZip}: ${validCities.join(', ')}`);
-        
-        return `La ciudad "${city}" no corresponde al código postal ${cleanZip}. Las ciudades válidas para este código postal son: ${validCities.join(', ')}. Por favor verifica los datos.`;
-      }
-      
-      console.log(`✅ [AddressValidation] City "${city}" matches ZIP ${cleanZip}`);
-      return null; // Válido
-      
-    } catch (error) {
-      console.warn('⚠️ [AddressValidation] Error validating city-ZIP match:', error);
-      return null; // Fallback: no bloquear si hay error
-    }
+    console.warn('⚠️ [AddressValidation] validateCityMatchesZip() is DEPRECATED. Use validateLocalRulesAsync() instead.');
+    console.log(`ℹ️ [AddressValidation] Skipping local dataset check - backend API will validate city "${city}" with ZIP ${zipCode}`);
+    return null; // Siempre retornar null, dejar que backend o Printful validen
   }
 
   /**
@@ -865,11 +545,18 @@ export class AddressValidationService {
   }
 
   /**
-   * Validación local estricta ANTES de llamar a Printful
-   * Retorna resultado inmediato sin hacer llamadas a API
+   * ⚠️ SIMPLIFIED: Validación local BÁSICA (solo formato)
+   * Solo valida formato de CP y campos obligatorios.
+   * NO valida existencia ni correspondencia ciudad-CP.
+   * 
+   * 🎯 RECOMENDACIÓN: Usar validateLocalRulesAsync() para validación completa con backend API
+   * 
+   * @param address Dirección a validar
+   * @returns Resultado de validación básica (solo formato)
    */
   validateLocalRules(address: any): AddressValidationResult {
-    console.log('🔍 [AddressValidation] Starting local validation...', address);
+    console.log('🔍 [AddressValidation] Starting BASIC local validation (format only)...');
+    console.log('💡 [AddressValidation] TIP: Use validateLocalRulesAsync() for complete validation with backend API');
     
     const normalized = this.normalizeAddress(address);
 
@@ -893,7 +580,7 @@ export class AddressValidationService {
       };
     }
 
-    // 3. Validar formato y rango de código postal
+    // 3. Validar formato de código postal
     const zipValidation = this.validateZipCode(normalized.zipcode, normalized.country_code);
     if (zipValidation) {
       console.log(`❌ [AddressValidation] ZIP format validation failed: ${zipValidation}`);
@@ -904,54 +591,24 @@ export class AddressValidationService {
       };
     }
 
-    // 4. ⭐ VALIDACIÓN PRIORITARIA: Existencia REAL del código postal
-    // Esta validación usa postal-codes-js para verificar que el CP existe
-    console.log('🔍 [AddressValidation] Checking ZIP existence with postal-codes-js...');
-    const zipExistsValidation = this.validateZipCodeExistence(
-      normalized.zipcode, 
-      normalized.country_code,
-      normalized.city
-    );
-    
-    if (zipExistsValidation) {
-      console.log(`❌ [AddressValidation] ZIP existence validation FAILED: ${zipExistsValidation}`);
-      return {
-        isValid: false,
-        message: zipExistsValidation,
-        error: 'zip_not_found'
-      };
-    }
-
-    // 5. 🎯 VALIDACIÓN CRÍTICA: Ciudad ↔ Código Postal coinciden (backend API o dataset local como fallback)
-    // NOTA: Esta validación ahora es ASÍNCRONA - debe usarse validateLocalRulesAsync()
-    // Para mantener compatibilidad, usamos el dataset local aquí (método legacy)
-    console.log('🔍 [AddressValidation] Checking if city matches ZIP (local dataset - legacy)...');
-    const cityZipValidation = this.validateCityMatchesZip(
-      normalized.city,
-      normalized.zipcode,
-      normalized.country_code
-    );
-    
-    if (cityZipValidation) {
-      console.log(`❌ [AddressValidation] City-ZIP validation FAILED: ${cityZipValidation}`);
-      return {
-        isValid: false,
-        message: cityZipValidation,
-        error: 'city_zip_mismatch'
-      };
-    }
-
-    console.log('✅ [AddressValidation] Local validation passed (format + existence + city-zip match)');
-    console.log('💡 [AddressValidation] TIP: Use validateLocalRulesAsync() for backend API validation');
+    console.log('✅ [AddressValidation] Basic validation passed (format only)');
+    console.log('⚠️ [AddressValidation] City-ZIP correspondence NOT validated - use validateLocalRulesAsync() or backend will validate');
     return {
       isValid: true,
-      message: 'Validación local correcta - Dirección verificada'
+      message: 'Validación básica correcta - Se recomienda validación con backend'
     };
   }
 
   /**
-   * 🎯 NUEVA VERSIÓN: Validación local asíncrona usando backend API
-   * Este método reemplaza a validateLocalRules() con validación del backend
+   * 🎯 MÉTODO PRINCIPAL: Validación completa con backend API
+   * 
+   * Este es el método recomendado para validar direcciones.
+   * Realiza validación completa incluyendo:
+   * - Formato de código postal
+   * - Existencia del CP en base de datos
+   * - Correspondencia Ciudad ↔ Código Postal ↔ Provincia
+   * - Fallback a postal-codes-js si backend no disponible
+   * 
    * @param address Dirección a validar
    * @returns Observable con el resultado de la validación
    */
