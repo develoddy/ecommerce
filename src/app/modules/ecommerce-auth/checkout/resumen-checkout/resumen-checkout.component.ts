@@ -97,6 +97,13 @@ export class ResumenCheckoutComponent implements OnInit {
   
   usandoFallback: boolean = false;
 
+  // 🎯 Propiedades de validación de código postal (tipo Mango.es)
+  availableCities: Array<{city: string, isPrimary: boolean}> = [];
+  isLoadingPostalCode: boolean = false;
+  isProvinceReadonly: boolean = true;
+  postalCodeError: string = '';
+  cityError: string = '';
+
   constructor(
     public _authEcommerce: EcommerceAuthService,
     private addressValidationService: AddressValidationService,
@@ -121,6 +128,67 @@ export class ResumenCheckoutComponent implements OnInit {
    */
   get supportedCountries() {
     return this.addressValidationService.EUROPEAN_COUNTRIES;
+  }
+
+  /**
+   * 🎯 Método tipo Mango.es: Autocompletar provincia y ciudades al ingresar código postal
+   * Se ejecuta cuando el usuario termina de escribir el CP (blur o change)
+   */
+  onZipCodeChange(zipCode: string) {
+    // Limpiar errores previos
+    this.postalCodeError = '';
+    this.cityError = '';
+    
+    // Validar longitud mínima (España: 5 dígitos)
+    if (!zipCode || zipCode.length < 5) {
+      this.availableCities = [];
+      this.ciudad = ''; // Limpiar provincia
+      this.poblacion = ''; // Limpiar ciudad
+      return;
+    }
+
+    this.isLoadingPostalCode = true;
+    const countryCode = this.addressValidationService.getCountryCode(this.pais || 'ES');
+    
+    console.log(`🔍 [ResumenCheckout] Buscando CP ${zipCode} en ${countryCode}`);
+    
+    this.addressValidationService.getPostalCodeInfo(countryCode, zipCode)
+      .subscribe({
+        next: (info) => {
+          this.isLoadingPostalCode = false;
+          
+          if (!info || !info.exists) {
+            // ❌ Código postal no encontrado
+            this.postalCodeError = `El código postal ${zipCode} no existe en ${this.pais || 'España'}`;
+            this.availableCities = [];
+            this.ciudad = '';
+            this.poblacion = '';
+            console.log(`❌ [ResumenCheckout] CP ${zipCode} no encontrado`);
+            return;
+          }
+          
+          // ✅ CP encontrado - autocompletar provincia (readonly)
+          console.log(`✅ [ResumenCheckout] CP ${zipCode} encontrado:`, info);
+          this.ciudad = info.province; // Autocompletar provincia
+          this.availableCities = info.cities;
+          
+          // Si solo hay una ciudad, autoseleccionarla
+          if (info.cities.length === 1) {
+            this.poblacion = info.cities[0].city;
+            console.log(`✅ [ResumenCheckout] Ciudad autoseleccionada: ${this.poblacion}`);
+          } else if (info.cities.length > 1) {
+            // Múltiples ciudades - usuario debe seleccionar
+            this.poblacion = ''; // Limpiar para forzar selección manual
+            console.log(`ℹ️ [ResumenCheckout] ${info.cities.length} ciudades disponibles para CP ${zipCode}`);
+          }
+        },
+        error: (err) => {
+          console.error('❌ Error buscando código postal:', err);
+          this.isLoadingPostalCode = false;
+          this.postalCodeError = 'Error al validar el código postal. Por favor intenta de nuevo.';
+          this.availableCities = [];
+        }
+      });
   }
 
   ngAfterViewInit() {}

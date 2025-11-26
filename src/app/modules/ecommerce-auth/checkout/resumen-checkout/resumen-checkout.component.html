@@ -189,41 +189,125 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <!-- Codigo postal -->
+                                                                <!-- 🎯 Código postal (MANGO.ES STYLE) -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
                                                                         <label for="postcode" class="form-label d-none">Código postal <span class="required">*</span></label>
-                                                                        <input name="postcode" id="postcode" type="text" required [(ngModel)]="zipcode" #zipcodeRef="ngModel" placeholder="Código postal" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted)}" />
-                                                                        <div *ngIf="zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                        <div class="position-relative">
+                                                                            <input name="postcode" 
+                                                                                   id="postcode" 
+                                                                                   type="text" 
+                                                                                   required 
+                                                                                   [(ngModel)]="zipcode" 
+                                                                                   #zipcodeRef="ngModel"
+                                                                                   (blur)="onZipCodeChange(zipcode)"
+                                                                                   (change)="onZipCodeChange(zipcode)"
+                                                                                   placeholder="Código postal (ej: 28013)" 
+                                                                                   class="form-control py-4 fw-light" 
+                                                                                   [ngClass]="{
+                                                                                       'is-invalid': (zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted)) || postalCodeError
+                                                                                   }" />
+                                                                            <!-- Spinner de carga -->
+                                                                            <div *ngIf="isLoadingPostalCode" 
+                                                                                 class="position-absolute" 
+                                                                                 style="right: 10px; top: 50%; transform: translateY(-50%);">
+                                                                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                                                    <span class="visually-hidden">Buscando...</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- Error de validación estándar -->
+                                                                        <div *ngIf="zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted) && !postalCodeError" class="invalid-feedback d-block">
                                                                             Completa este campo para continuar
+                                                                        </div>
+                                                                        <!-- Error de código postal no encontrado -->
+                                                                        <div *ngIf="postalCodeError" class="invalid-feedback d-block">
+                                                                            <i class="icon anm anm-times-r me-1"></i>{{ postalCodeError }}
+                                                                        </div>
+                                                                        <!-- Mensaje de éxito -->
+                                                                        <div *ngIf="zipcode && !postalCodeError && !isLoadingPostalCode && ciudad" class="text-success small mt-1">
+                                                                            <i class="icon anm anm-check me-1"></i>Código postal válido
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Población -->
+                                                                <!-- 🎯 Ciudad/Población (DROPDOWN SI HAY MÚLTIPLES OPCIONES) -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="new-city" class="form-label d-none">Población <span class="required">*</span></label>
-                                                                        <input name="city" placeholder="Población" class="form-control py-4 fw-light" required [(ngModel)]="poblacion" #poblacionRef="ngModel" [ngClass]="{'is-invalid': poblacionRef.invalid && (poblacionRef.touched || addressForm.submitted)}" id="new-city" type="text" />
-                                                                        <div *ngIf="poblacionRef.invalid && (poblacionRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            Completa este campo para continuar
+                                                                        <label for="new-city" class="form-label d-none">Ciudad <span class="required">*</span></label>
+                                                                        
+                                                                        <!-- Dropdown si hay múltiples ciudades -->
+                                                                        <ng-container *ngIf="availableCities.length > 1; else singleCity">
+                                                                            <select name="city" 
+                                                                                    id="new-city-select"
+                                                                                    required 
+                                                                                    [(ngModel)]="poblacion" 
+                                                                                    #poblacionSelect="ngModel" 
+                                                                                    class="form-control py-4 fw-light"
+                                                                                    [ngClass]="{'is-invalid': poblacionSelect.invalid && (poblacionSelect.touched || addressForm.submitted)}">
+                                                                                <option value="" disabled>Selecciona tu ciudad</option>
+                                                                                <option *ngFor="let cityObj of availableCities" 
+                                                                                        [value]="cityObj.city">
+                                                                                    {{ cityObj.city }}
+                                                                                    <span *ngIf="cityObj.isPrimary"> (Principal)</span>
+                                                                                </option>
+                                                                            </select>
+                                                                            
+                                                                            <small class="form-text text-success mt-1">
+                                                                                <i class="icon anm anm-check me-1"></i>{{ availableCities.length }} ciudades disponibles para este código postal
+                                                                            </small>
+                                                                            
+                                                                            <div *ngIf="poblacionSelect.invalid && (poblacionSelect.touched || addressForm.submitted)" class="invalid-feedback d-block">
+                                                                                Por favor selecciona una ciudad
+                                                                            </div>
+                                                                        </ng-container>
+                                                                        
+                                                                        <!-- Input si hay una sola ciudad o aún no se ha buscado -->
+                                                                        <ng-template #singleCity>
+                                                                            <input name="city" 
+                                                                                   placeholder="Ciudad (se autocompleta con el CP)" 
+                                                                                   class="form-control py-4 fw-light bg-light" 
+                                                                                   required 
+                                                                                   [(ngModel)]="poblacion" 
+                                                                                   #poblacionInput="ngModel" 
+                                                                                   [readonly]="availableCities.length === 1"
+                                                                                   [ngClass]="{'is-invalid': poblacionInput.invalid && (poblacionInput.touched || addressForm.submitted)}" 
+                                                                                   id="new-city" 
+                                                                                   type="text" />
+                                                                            
+                                                                            <small class="form-text text-muted" *ngIf="availableCities.length === 0 && !poblacion">
+                                                                                <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
+                                                                            </small>
+                                                                            
+                                                                            <div *ngIf="poblacionInput.invalid && (poblacionInput.touched || addressForm.submitted)" class="invalid-feedback d-block">
+                                                                                Ingresa primero el código postal
+                                                                            </div>
+                                                                        </ng-template>
+                                                                        
+                                                                        <!-- Error de validación de ciudad -->
+                                                                        <div *ngIf="cityError" class="invalid-feedback d-block">
+                                                                            <i class="icon anm anm-times-r me-1"></i>{{ cityError }}
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Provincia/Estado -->
+                                                                <!-- 🎯 Provincia/Estado (AUTOCOMPLETADA - READONLY) -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
                                                                         <label for="address_State" class="form-label d-none">Provincia/Estado <span class="required">*</span></label>
                                                                         <input name="state" 
-                                                                               placeholder="Provincia o Estado" 
-                                                                               class="form-control py-4 fw-light" 
+                                                                               placeholder="Provincia (se autocompleta con el CP)" 
+                                                                               class="form-control py-4 fw-light bg-light" 
                                                                                required 
                                                                                [(ngModel)]="ciudad" 
                                                                                #ciudadRef="ngModel" 
+                                                                               [readonly]="isProvinceReadonly"
                                                                                [ngClass]="{'is-invalid': ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)}" 
                                                                                id="address_State" 
                                                                                type="text" />
+                                                                        <small class="form-text text-muted" *ngIf="!ciudad">
+                                                                            <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
+                                                                        </small>
                                                                         <div *ngIf="ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            Completa este campo para continuar
+                                                                            Ingresa primero el código postal
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -506,59 +590,127 @@
                                                                 <small class="form-text text-muted">Opcional: piso, puerta, escalera, etc.</small>
                                                             </div>
                                                         </div>
-                                                        <!-- Codigo postal -->
+                                                        <!-- 🎯 Código postal (MODAL EDIT) -->
                                                         <div class="row justify-content-center">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
                                                                 <label for="edit_postcode" class="form-label d-none">Código postal <span class="required">*</span></label>
-                                                                <input name="postcode" 
-                                                                       id="edit_postcode" 
-                                                                       type="text" 
-                                                                       required
-                                                                       [(ngModel)]="zipcode" 
-                                                                       #zipcodeEditRef="ngModel"
-                                                                       placeholder="Código postal" 
-                                                                       class="form-control"
-                                                                       [ngClass]="{'is-invalid': zipcodeEditRef.invalid && (zipcodeEditRef.touched || addressForm.submitted)}" />
-                                                                <div *ngIf="zipcodeEditRef.invalid && (zipcodeEditRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                <div class="position-relative">
+                                                                    <input name="postcode" 
+                                                                           id="edit_postcode" 
+                                                                           type="text" 
+                                                                           required
+                                                                           [(ngModel)]="zipcode" 
+                                                                           #zipcodeEditRef="ngModel"
+                                                                           (blur)="onZipCodeChange(zipcode)"
+                                                                           (change)="onZipCodeChange(zipcode)"
+                                                                           placeholder="Código postal (ej: 28013)" 
+                                                                           class="form-control"
+                                                                           [ngClass]="{
+                                                                               'is-invalid': (zipcodeEditRef.invalid && (zipcodeEditRef.touched || addressForm.submitted)) || postalCodeError
+                                                                           }" />
+                                                                    <!-- Spinner de carga -->
+                                                                    <div *ngIf="isLoadingPostalCode" 
+                                                                         class="position-absolute" 
+                                                                         style="right: 10px; top: 50%; transform: translateY(-50%);">
+                                                                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                                            <span class="visually-hidden">Buscando...</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Error de validación estándar -->
+                                                                <div *ngIf="zipcodeEditRef.invalid && (zipcodeEditRef.touched || addressForm.submitted) && !postalCodeError" class="invalid-feedback d-block">
                                                                     Completa este campo para continuar
+                                                                </div>
+                                                                <!-- Error de código postal no encontrado -->
+                                                                <div *ngIf="postalCodeError" class="invalid-feedback d-block">
+                                                                    <i class="icon anm anm-times-r me-1"></i>{{ postalCodeError }}
+                                                                </div>
+                                                                <!-- Mensaje de éxito -->
+                                                                <div *ngIf="zipcode && !postalCodeError && !isLoadingPostalCode && ciudad" class="text-success small mt-1">
+                                                                    <i class="icon anm anm-check me-1"></i>Código postal válido
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <!-- Población -->
+                                                        <!-- 🎯 Ciudad/Población (DROPDOWN SI HAY MÚLTIPLES OPCIONES - MODAL) -->
                                                         <div class="row justify-content-center">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_city" class="form-label d-none">Población <span class="required">*</span></label>
-                                                                <input name="city" 
-                                                                       placeholder="Población" 
-                                                                       required 
-                                                                       [(ngModel)]="poblacion" 
-                                                                       #poblacionEditRef="ngModel"
-                                                                       id="edit_city" 
-                                                                       type="text" 
-                                                                       class="form-control"
-                                                                       [ngClass]="{'is-invalid': poblacionEditRef.invalid && (poblacionEditRef.touched || addressForm.submitted)}" />
-                                                                <div *ngIf="poblacionEditRef.invalid && (poblacionEditRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                    Completa este campo para continuar
+                                                                <label for="edit_city" class="form-label d-none">Ciudad <span class="required">*</span></label>
+                                                                
+                                                                <!-- Dropdown si hay múltiples ciudades -->
+                                                                <ng-container *ngIf="availableCities.length > 1; else singleCityEdit">
+                                                                    <select name="city" 
+                                                                            id="edit_city_select"
+                                                                            required 
+                                                                            [(ngModel)]="poblacion" 
+                                                                            #poblacionEditSelect="ngModel" 
+                                                                            class="form-control"
+                                                                            [ngClass]="{'is-invalid': poblacionEditSelect.invalid && (poblacionEditSelect.touched || addressForm.submitted)}">
+                                                                        <option value="" disabled>Selecciona tu ciudad</option>
+                                                                        <option *ngFor="let cityObj of availableCities" 
+                                                                                [value]="cityObj.city">
+                                                                            {{ cityObj.city }}
+                                                                            <span *ngIf="cityObj.isPrimary"> (Principal)</span>
+                                                                        </option>
+                                                                    </select>
+                                                                    
+                                                                    <small class="form-text text-success mt-1">
+                                                                        <i class="icon anm anm-check me-1"></i>{{ availableCities.length }} ciudades disponibles
+                                                                    </small>
+                                                                    
+                                                                    <div *ngIf="poblacionEditSelect.invalid && (poblacionEditSelect.touched || addressForm.submitted)" class="invalid-feedback d-block">
+                                                                        Por favor selecciona una ciudad
+                                                                    </div>
+                                                                </ng-container>
+                                                                
+                                                                <!-- Input si hay una sola ciudad o aún no se ha buscado -->
+                                                                <ng-template #singleCityEdit>
+                                                                    <input name="city" 
+                                                                           placeholder="Ciudad (se autocompleta con el CP)" 
+                                                                           required 
+                                                                           [(ngModel)]="poblacion" 
+                                                                           #poblacionEditInput="ngModel"
+                                                                           [readonly]="availableCities.length === 1"
+                                                                           id="edit_city" 
+                                                                           type="text" 
+                                                                           class="form-control bg-light"
+                                                                           [ngClass]="{'is-invalid': poblacionEditInput.invalid && (poblacionEditInput.touched || addressForm.submitted)}" />
+                                                                    
+                                                                    <small class="form-text text-muted" *ngIf="availableCities.length === 0 && !poblacion">
+                                                                        <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
+                                                                    </small>
+                                                                    
+                                                                    <div *ngIf="poblacionEditInput.invalid && (poblacionEditInput.touched || addressForm.submitted)" class="invalid-feedback d-block">
+                                                                        Ingresa primero el código postal
+                                                                    </div>
+                                                                </ng-template>
+                                                                
+                                                                <!-- Error de validación de ciudad -->
+                                                                <div *ngIf="cityError" class="invalid-feedback d-block">
+                                                                    <i class="icon anm anm-times-r me-1"></i>{{ cityError }}
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <!-- Provincia/Estado -->
+                                                        <!-- 🎯 Provincia/Estado (AUTOCOMPLETADA - READONLY - MODAL) -->
                                                         <div class="row justify-content-center">
                                                             <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
                                                                 <label for="edit_state" class="form-label d-none">Provincia/Estado <span class="required">*</span></label>
                                                                 <input name="state" 
-                                                                       placeholder="Provincia o Estado" 
+                                                                       placeholder="Provincia (se autocompleta con el CP)" 
                                                                        required 
                                                                        [(ngModel)]="ciudad" 
                                                                        #ciudadEditRef="ngModel"
+                                                                       [readonly]="isProvinceReadonly"
                                                                        id="edit_state" 
                                                                        type="text" 
-                                                                       class="form-control"
+                                                                       class="form-control bg-light"
                                                                        [ngClass]="{'is-invalid': ciudadEditRef.invalid && (ciudadEditRef.touched || addressForm.submitted)}" />
+                                                                <small class="form-text text-muted" *ngIf="!ciudad">
+                                                                    <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
+                                                                </small>
                                                                 <div *ngIf="ciudadEditRef.invalid && (ciudadEditRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                    Completa este campo para continuar
+                                                                    Ingresa primero el código postal
                                                                 </div>
                                                             </div>
                                                         </div>
