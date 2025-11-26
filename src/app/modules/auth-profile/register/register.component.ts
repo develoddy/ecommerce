@@ -118,12 +118,14 @@ export class RegisterComponent implements OnInit {
     if (field === 'password') this.errorPassword = !this.password;
     if (field === 'repeat_password') this.errorRepeatPassword = !this.repeat_password;
 
-    // Verificar si todos los campos tienen valor
-    if (this.name && this.email && this.zipcode && this.phone &&
-        this.birthday && this.password && this.repeat_password) {
-        this.errorRegister = false; // Ocultar mensaje de error si todos los campos son válidos
-    } else {
-        this.errorRegister = true; // Mostrar mensaje de error si hay campos vacíos
+    // Solo resetear el error de registro si ya estaba visible
+    // No mostrar el error automáticamente mientras el usuario está llenando el formulario
+    if (this.errorRegister) {
+      // Verificar si todos los campos tienen valor para ocultar el mensaje de error
+      if (this.name && this.email && this.zipcode && this.phone &&
+          this.birthday && this.password && this.repeat_password) {
+          this.errorRegister = false; // Ocultar mensaje de error si todos los campos son válidos
+      }
     }
   }
 
@@ -228,6 +230,12 @@ export class RegisterComponent implements OnInit {
     this.isDesktop = width > 768;
   }
 
+  getMaxDate(): string {
+    // Calcula la fecha máxima permitida (hace 18 años desde hoy)
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+    return maxDate.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  }
 
   resetForm() {
     this.email = '';

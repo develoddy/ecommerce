@@ -32,38 +32,56 @@
                                 <div class="form-row">
                                     <div class="form-group col-12">
                                         <label for="CustomerEmail" class="d-none">Correo electrónico <span class="required">*</span></label>
-                                        <input type="email" name="email" class="py-4" [(ngModel)]="email" placeholder="Correo electrónico" id="CustomerEmail" value="" required />
+                                        <div class="input-icon-wrapper">
+                                            <i class="icon anm anm-envelope-l input-icon"></i>
+                                            <input type="email" 
+                                                   name="email" 
+                                                   class="py-4 ps-5" 
+                                                   [(ngModel)]="email" 
+                                                   placeholder="Correo electrónico" 
+                                                   id="CustomerEmail" 
+                                                   value="" 
+                                                   required 
+                                                   [ngClass]="{'border-success': email}" 
+                                                   style="border-radius: 8px; transition: all 0.3s ease;" />
+                                        </div>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerPassword" class="d-none">Contraseña <span class="required">*</span></label>
-                                        <div class="d-flex" style="border: 1px solid #171717;">
-                                          <!-- Campo de contraseña -->
-                                          <input 
-                                            [type]="isPasswordVisible ? 'text' : 'password'" 
-                                            name="password" 
-                                            [(ngModel)]="password" 
-                                            placeholder="Introduzca su contraseña" 
-                                            id="CustomerPassword" 
-                                            required
-                                            class="border-0 py-4"
-                                          />
-                                      
-                                          <!-- Botón para mostrar/ocultar contraseña -->
-                                          <button 
-                                            aria-live="polite" 
-                                            class="border-0" 
-                                            type="button" 
-                                            (click)="togglePasswordVisibility()"
-                                          >
-                                            <!-- SVG de 'Mostrar' -->
-                                            <svg *ngIf="!isPasswordVisible" width="24" height="24" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                              <path d="M12 6.266c-5.24 0-8.653 5.242-8.796 5.464l-.173.27.173.27c.143.222 3.557 5.464 8.796 5.464s8.653-5.242 8.796-5.464l.173-.27-.173-.27c-.143-.222-3.557-5.464-8.796-5.464m0 10.468c-4.046 0-7.01-3.693-7.766-4.734.755-1.041 3.72-4.734 7.766-4.734s7.01 3.693 7.766 4.734c-.755 1.041-3.72 4.734-7.766 4.734M12 9c-1.654 0-3 1.346-3 3s1.346 3 3 3 3-1.346 3-3-1.346-3-3-3m0 5c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2"></path>
-                                            </svg>
-                                            <!-- SVG de 'Ocultar' -->
-                                            <svg *ngIf="isPasswordVisible" width="24" height="24" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                              <path d="m16.878 7.83 3.976-3.976-.708-.708-4.16 4.161C14.825 6.696 13.489 6.266 12 6.266c-5.24 0-8.653 5.242-8.796 5.464l-.173.27.173.27c.091.142 1.527 2.336 3.918 3.9l-3.976 3.976.708.708 4.16-4.161c1.161.611 2.497 1.041 3.986 1.041 5.24 0 8.653-5.242 8.796-5.464l.173-.27-.173-.27c-.091-.142-1.527-2.336-3.918-3.9M4.234 12C4.99 10.959 7.954 7.266 12 7.266c1.181 0 2.267.32 3.236.791L13.733 9.56A3 3 0 0 0 12 9c-1.654 0-3 1.346-3 3 0 .647.21 1.243.56 1.733l-1.706 1.706c-1.862-1.17-3.157-2.801-3.62-3.439M14 12c0 1.103-.897 2-2 2-.37 0-.712-.108-1.01-.284l2.726-2.725c.176.297.284.64.284 1.009m-4 0c0-1.103.897-2 2-2 .37 0 .712.108 1.01.284l-2.726 2.725A2 2 0 0 1 10 12m2 4.734c-1.181 0-2.267-.32-3.236-.791l1.503-1.503c.49.35 1.086.56 1.733.56 1.654 0 3-1.346 3-3a2.97 2.97 0 0 0-.56-1.733l1.706-1.706c1.862 1.17 3.157 2.801 3.62 3.439-.755 1.041-3.72 4.734-7.766 4.734"></path>
-                                            </svg>
-                                          </button>
+                                        <div class="input-icon-wrapper position-relative">
+                                            <i class="icon anm anm-lock-l input-icon"></i>
+                                            <!-- Campo de contraseña -->
+                                            <input 
+                                              [type]="isPasswordVisible ? 'text' : 'password'" 
+                                              name="password" 
+                                              [(ngModel)]="password" 
+                                              placeholder="Contraseña" 
+                                              id="CustomerPassword" 
+                                              required
+                                              class="py-4 ps-5 pe-5"
+                                              [ngClass]="{'border-success': password}"
+                                              style="border-radius: 8px; transition: all 0.3s ease; width: 100%;"
+                                            />
+                                        
+                                            <!-- Botón para mostrar/ocultar contraseña -->
+                                            <button 
+                                              aria-live="polite" 
+                                              class="border-0 bg-transparent toggle-password-btn" 
+                                              type="button" 
+                                              (click)="togglePasswordVisibility()"
+                                              style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; transition: opacity 0.3s ease; padding: 8px;"
+                                              onmouseover="this.style.opacity='0.7'"
+                                              onmouseout="this.style.opacity='1'"
+                                            >
+                                              <!-- SVG de 'Mostrar' -->
+                                              <svg *ngIf="!isPasswordVisible" width="24" height="24" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path d="M12 6.266c-5.24 0-8.653 5.242-8.796 5.464l-.173.27.173.27c.143.222 3.557 5.464 8.796 5.464s8.653-5.242 8.796-5.464l.173-.27-.173-.27c-.143-.222-3.557-5.464-8.796-5.464m0 10.468c-4.046 0-7.01-3.693-7.766-4.734.755-1.041 3.72-4.734 7.766-4.734s7.01 3.693 7.766 4.734c-.755 1.041-3.72 4.734-7.766 4.734M12 9c-1.654 0-3 1.346-3 3s1.346 3 3 3 3-1.346 3-3-1.346-3-3-3m0 5c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2"></path>
+                                              </svg>
+                                              <!-- SVG de 'Ocultar' -->
+                                              <svg *ngIf="isPasswordVisible" width="24" height="24" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path d="m16.878 7.83 3.976-3.976-.708-.708-4.16 4.161C14.825 6.696 13.489 6.266 12 6.266c-5.24 0-8.653 5.242-8.796 5.464l-.173.27.173.27c.091.142 1.527 2.336 3.918 3.9l-3.976 3.976.708.708 4.16-4.161c1.161.611 2.497 1.041 3.986 1.041 5.24 0 8.653-5.242 8.796-5.464l.173-.27-.173-.27c-.091-.142-1.527-2.336-3.918-3.9M4.234 12C4.99 10.959 7.954 7.266 12 7.266c1.181 0 2.267.32 3.236.791L13.733 9.56A3 3 0 0 0 12 9c-1.654 0-3 1.346-3 3 0 .647.21 1.243.56 1.733l-1.706 1.706c-1.862-1.17-3.157-2.801-3.62-3.439M14 12c0 1.103-.897 2-2 2-.37 0-.712-.108-1.01-.284l2.726-2.725c.176.297.284.64.284 1.009m-4 0c0-1.103.897-2 2-2 .37 0 .712.108 1.01.284l-2.726 2.725A2 2 0 0 1 10 12m2 4.734c-1.181 0-2.267-.32-3.236-.791l1.503-1.503c.49.35 1.086.56 1.733.56 1.654 0 3-1.346 3-3a2.97 2.97 0 0 0-.56-1.733l1.706-1.706c1.862 1.17 3.157 2.801 3.62 3.439-.755 1.041-3.72 4.734-7.766 4.734"></path>
+                                              </svg>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="form-group col-12 mb-3">
@@ -76,20 +94,41 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-12" *ngIf="this.errorAutenticate">
-                                        <p class="text-danger">{{ this.errorMessageAutenticate }}</p>
+                                        <div class="alert alert-danger py-3 alert-dismissible fade show" role="alert" style="border-left: 4px solid #dc3545; border-radius: 8px;">
+                                            <div class="d-flex align-items-start">
+                                                <i class="icon anm anm-times-circle me-3" style="font-size: 1.5rem;"></i>
+                                                <div>
+                                                    <strong class="d-block mb-1">Error al iniciar sesión</strong>
+                                                    <small>{{ this.errorMessageAutenticate }}</small>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn-close" (click)="errorAutenticate = false" aria-label="Close"></button>
+                                        </div>
                                     </div>
                                     <div class="form-group col-12 mt-3 mb-3">
-                                        <button type="submit" class="btn-dark-ld text-uppercase" (click)="login()" [disabled]="loading">
-                                            <ng-container *ngIf="!loading">Iniciar sesión</ng-container>
+                                        <button type="submit" 
+                                                class="btn-dark-ld  w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center" 
+                                                (click)="login()" 
+                                                [disabled]="loading"
+                                                style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
+                                            <ng-container *ngIf="!loading">
+                                                <i class="icon anm anm-sign-in-al me-2" style="font-size: 1.2rem;"></i>
+                                                <span>Iniciar sesión</span>
+                                            </ng-container>
                                             <ng-container *ngIf="loading">
-                                                <div class="sp sp-bars bg-light"></div>
-                                          </ng-container>
+                                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                <span>Iniciando sesión...</span>
+                                            </ng-container>
                                         </button>
                                     </div>
-                                    <div class="form-group col-12 ">
-                                        <a href="register.html" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'register']" class="btn-link">
-                                            <!-- <input type="submit" class="btn btn-outline-secondary btn-lg py-3 w-100 text-uppercase fw-normal" value="Crear cuenta" /> -->
-                                            <button class="btn-outline-white-ld text-uppercase">Crear cuenta</button>
+                                    <div class="form-group col-12">
+                                        <a href="register.html" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'register']" class="text-decoration-none d-block">
+                                            <button type="button" 
+                                                    class="btn-outline-white-ld w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center" 
+                                                    style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
+                                                <i class="icon anm anm-user-plus me-2" style="font-size: 1.2rem;"></i>
+                                                <span>Crear cuenta</span>
+                                            </button>
                                         </a>
                                     </div>
                                 </div>
@@ -103,9 +142,9 @@
                                     <a class="social-link twitter rounded-5 d-flex-justify-center" href="#"><i class="icon anm anm-twitter me-2"></i> Twitter</a>
                                 </div>
 
-                                <div class="d-flex flex-row justify-content-center align-items-center">
-                                    <svg role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"  height="16" width="16"><path fill-rule="evenodd" d="M7.25 12.75V10h1.5v2.75h-1.5Z M13.25 6.75v-1.5a5.25 5.25 0 1 0-10.5 0v1.5H1V16h14V6.75h-1.75ZM8 1.5a3.75 3.75 0 0 0-3.75 3.75v1.5h7.5v-1.5A3.75 3.75 0 0 0 8 1.5Zm-5.5 13V8.25h11v6.25h-11Z"></path></svg>
-                                    <section><small class="text-small px-2">Todos los datos se mantienen de forma segura</small></section>
+                                <div class="d-flex flex-row justify-content-center align-items-center py-3" style="background-color: #f8f9fa; border-radius: 8px; margin-top: 1rem;">
+                                    <i class="icon anm anm-shield-check me-2" style="font-size: 1.2rem; color: #28a745;"></i>
+                                    <section><small class="fw-light" style="color: #6c757d;">Todos los datos se mantienen de forma segura</small></section>
                                 </div>
 
                                 <!-- <div class="login-signup-text mt-4 mb-2 fs-6 text-center text-muted">¿No tienes una cuenta? <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="btn-link">Regístrate ahora</a></div> -->

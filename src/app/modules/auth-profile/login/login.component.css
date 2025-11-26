@@ -1,0 +1,124 @@
+/* Input con icono (email y password) */
+.input-icon-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-icon-wrapper .input-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #6c757d;
+  pointer-events: none;
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+
+.input-icon-wrapper input {
+  position: relative;
+  width: 100%;
+}
+
+.input-icon-wrapper input:focus + .input-icon,
+.input-icon-wrapper input:not(:placeholder-shown) + .input-icon {
+  color: #222;
+}
+
+/* Mejorar inputs en general */
+.form-group input {
+  font-size: 0.95rem;
+}
+
+.form-group input:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
+  border-color: #222 !important;
+}
+
+.form-group input.border-success {
+  border-color: #28a745 !important;
+}
+
+.form-group input.border-success:focus {
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15);
+}
+
+/* Toggle password button */
+.toggle-password-btn {
+  outline: none;
+}
+
+.toggle-password-btn:focus {
+  outline: 2px solid rgba(0, 0, 0, 0.1);
+  outline-offset: 2px;
+}
+
+/* Animación para los alerts */
+.alert {
+  animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading spinner */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.15em;
+}
+
+/* Botones mejorados */
+button.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.btn-outline-dark:hover:not(:disabled) {
+  background-color: #222;
+  color: #fff;
+}
+
+/* Checkbox personalizado */
+.customCheckbox input[type="checkbox"] {
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.customCheckbox label {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .input-icon-wrapper .input-icon,
+  .password-input-wrapper .input-icon-password {
+    left: 14px;
+    font-size: 1rem;
+  }
+
+  .form-group input {
+    font-size: 0.9rem;
+  }
+
+  .toggle-password-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+}

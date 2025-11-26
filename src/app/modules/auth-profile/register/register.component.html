@@ -19,12 +19,22 @@
         <!--Main Content-->
         <div class="container">
             <!--Order success-->
-            <div class="success-text checkout-card text-center mb-4 mb-md-5" *ngIf="success">
-                <i class="icon anm anm-shield-check"></i>
-                <h2>¡Gracias por registrarte!</h2>
-                <p class="mb-1">Su cuenta ha sido creada satisfactoriamente</p>
-                <p class="mb-1 d-none">Se ha enviado un correo electrónico de confirmación a la dirección de correo electrónico proporcionada con más detalles.</p>  
-                <p class="mb-1">Por favor revise su correo electrónico para verificar su cuenta y completar el proceso de registro.</p>
+            <div class="alert alert-success py-4 alert-dismissible fade show mb-4 mb-md-5" *ngIf="success" role="alert" style="border-left: 4px solid #28a745; border-radius: 8px;">
+                <div class="d-flex align-items-start">
+                    <i class="icon anm anm-shield-check me-3" style="font-size: 2.5rem; color: #28a745;"></i>
+                    <div class="flex-grow-1">
+                        <h4 class="alert-heading mb-2">
+                            <i class="icon anm anm-check-cil me-2"></i>¡Gracias por registrarte!
+                        </h4>
+                        <p class="mb-2">Tu cuenta ha sido creada satisfactoriamente.</p>
+                        <hr class="my-2">
+                        <p class="mb-0">
+                            <i class="icon anm anm-envelope-l me-2"></i>
+                            <small>Por favor revisa tu correo electrónico para verificar tu cuenta y completar el proceso de registro.</small>
+                        </p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <!--End Order success-->
             <div class="login-register">
@@ -38,50 +48,129 @@
                                 <div class="form-row">
                                     <div class="form-group col-12">
                                         <label for="CustomerUsername" class="d-none">Nombre <span class="required">*</span></label>
-                                        <input type="text" name="name" [(ngModel)]="name" placeholder="Nombre" class="py-4" [ngClass]="{'border border-danger': errorName}" (input)="onInputChange('name')"   id="CustomerUsername" value=""  required />
-                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['name'] && !name">Completa este campo para continuar</div>
+                                        <div class="input-icon-wrapper">
+                                            <i class="icon anm anm-user-al input-icon"></i>
+                                            <input type="text" name="name" [(ngModel)]="name" placeholder="Nombre" class="py-4 ps-5" [ngClass]="{'border border-danger': errorName, 'border-success': touchedFields['name'] && name && !errorName}" (input)="onInputChange('name')" id="CustomerUsername" value="" required style="border-radius: 8px; transition: all 0.3s ease;" />
+                                        </div>
+                                        <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['name'] && !name" style="border-left: 4px solid #dc3545; border-radius: 6px;">
+                                            <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
+                                        </div>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerEmail"  class="d-none">E-mail <span class="required">*</span></label>
-                                        <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" class="py-4" [ngClass]="{'border border-danger': errorEmail}" (input)="onInputChange('email')" id="CustomerEmail" value="" required />
-                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['email'] && !email">Completa este campo para continuar</div>
+                                        <div class="input-icon-wrapper">
+                                            <i class="icon anm anm-envelope-l input-icon"></i>
+                                            <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" class="py-4 ps-5" [ngClass]="{'border border-danger': errorEmail, 'border-success': touchedFields['email'] && email && !errorEmail}" (input)="onInputChange('email')" id="CustomerEmail" value="" required style="border-radius: 8px; transition: all 0.3s ease;" />
+                                        </div>
+                                        <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['email'] && !email" style="border-left: 4px solid #dc3545; border-radius: 6px;">
+                                            <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
+                                        </div>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerZipcode" class="d-none">Código postal <span class="required">*</span></label>
-                                        <input type="text" name="zipcode" [(ngModel)]="zipcode" placeholder="Código postal" class="py-4" [ngClass]="{'border border-danger': errorZipcode}" (input)="onInputChange('zipcode')" id="CustomerZipcode" value="" required />
-                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['zipcode'] && !zipcode">Completa este campo para continuar</div>
+                                        <div class="input-icon-wrapper">
+                                            <i class="icon anm anm-map-marker-al input-icon"></i>
+                                            <input type="text" name="zipcode" [(ngModel)]="zipcode" placeholder="Código postal" class="py-4 ps-5" [ngClass]="{'border border-danger': errorZipcode, 'border-success': touchedFields['zipcode'] && zipcode && !errorZipcode}" (input)="onInputChange('zipcode')" id="CustomerZipcode" value="" required style="border-radius: 8px; transition: all 0.3s ease;" />
+                                        </div>
+                                        <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['zipcode'] && !zipcode" style="border-left: 4px solid #dc3545; border-radius: 6px;">
+                                            <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
+                                        </div>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerMovil" class="d-none">Móvil<span class="required">*</span></label>
-                                        <input type="tel" name="phone" [(ngModel)]="phone" placeholder="Movil" class="py-4" [ngClass]="{'border border-danger': errorPhone}" (input)="onInputChange('phone')" id="CustomerMovil" value="" required />
-                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['phone'] && !phone">Completa este campo para continuar</div>
-                                        <div class="form-text text-danger mt-0" *ngIf="errorPhone && phone">Revisa el formato de tu móvil (ej. +346xxxxxxxx / 6xxxxxxxx)</div>
+                                        <div class="input-icon-wrapper">
+                                            <i class="icon anm anm-phone-l input-icon"></i>
+                                            <input type="tel" name="phone" [(ngModel)]="phone" placeholder="Móvil" class="py-4 ps-5" [ngClass]="{'border border-danger': errorPhone, 'border-success': touchedFields['phone'] && phone && !errorPhone}" (input)="onInputChange('phone')" id="CustomerMovil" value="" required style="border-radius: 8px; transition: all 0.3s ease;" />
+                                        </div>
+                                        <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['phone'] && !phone" style="border-left: 4px solid #dc3545; border-radius: 6px;">
+                                            <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
+                                        </div>
+                                        <div class="alert alert-warning py-2 px-3 mt-2 mb-0" *ngIf="errorPhone && phone" style="border-left: 4px solid #ffc107; border-radius: 6px;">
+                                            <i class="icon anm anm-exclamation-triangle me-2"></i><small>Formato incorrecto. Usa: +346xxxxxxxx o 6xxxxxxxx</small>
+                                        </div>
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerBirthday" class="text-uppercase fw-bold">Fecha de nacimiento<span class="required d-none">*</span></label>
-                                        <input type="date" name="birthday" [(ngModel)]="birthday" class="py-4" placeholder="Fecha de nacimiento" [ngClass]="{'border border-danger': errorBirthday}" (input)="onInputChange('birthday')" id="CustomerBirthday" value="" required />
-                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['birthday'] && !birthday">Completa este campo para continuar</div>
+                                        <label for="CustomerBirthday" class="fw-semibold mb-2" style="color: #222; font-size: 0.9rem; letter-spacing: 0.3px;">
+                                            <i class="icon anm anm-calendar-l me-2"></i>Fecha de nacimiento
+                                        </label>
+                                        <div class="input-icon-wrapper position-relative">
+                                            <i class="icon anm anm-calendar-l input-icon" style="color: #6c757d;"></i>
+                                            <input type="date" 
+                                                   name="birthday" 
+                                                   [(ngModel)]="birthday" 
+                                                   class="py-4 ps-5" 
+                                                   [ngClass]="{'border border-danger': errorBirthday, 'border-success': touchedFields['birthday'] && birthday && !errorBirthday}" 
+                                                   (input)="onInputChange('birthday')" 
+                                                   id="CustomerBirthday" 
+                                                   value="" 
+                                                   required 
+                                                   style="border-radius: 8px; transition: all 0.3s ease; font-size: 0.95rem; cursor: pointer;"
+                                                   [max]="getMaxDate()" />
+                                        </div>
+                                        <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['birthday'] && !birthday" style="border-left: 4px solid #dc3545; border-radius: 6px;">
+                                            <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
+                                        </div>
+                                        <div class="alert alert-info py-2 px-3 mt-2 mb-0" *ngIf="!touchedFields['birthday'] && !birthday" style="border-left: 4px solid #0dcaf0; border-radius: 6px;">
+                                            <i class="icon anm anm-info-cil me-2"></i><small>Debes ser mayor de 18 años para registrarte</small>
+                                        </div>
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerPassword" class="fw-bold text-uppercase">Contraseña <span class="required d-none">*</span></label>
-                                        <input type="password" name="password"[(ngModel)]="password" class="py-4" placeholder="Contraseña" [ngClass]="{'border border-danger': errorPassword}" (input)="onInputChange('password')" id="CustomerPassword" value="" required />                        	
-                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['password'] && !password">Completa este campo para continuar</div>
+                                        <label for="CustomerPassword" class="fw-semibold mb-2" style="color: #222; font-size: 0.9rem; letter-spacing: 0.3px;">
+                                            <i class="icon anm anm-lock-l me-2"></i>Contraseña
+                                        </label>
+                                        <div class="input-icon-wrapper">
+                                            <i class="icon anm anm-lock-l input-icon"></i>
+                                            <input type="password" name="password" [(ngModel)]="password" class="py-4 ps-5" placeholder="Contraseña" [ngClass]="{'border border-danger': errorPassword, 'border-success': touchedFields['password'] && password && !errorPassword}" (input)="onInputChange('password')" id="CustomerPassword" value="" required style="border-radius: 8px; transition: all 0.3s ease;" />                        	
+                                        </div>
+                                        <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['password'] && !password" style="border-left: 4px solid #dc3545; border-radius: 6px;">
+                                            <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
+                                        </div>
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerConfirmPassword" class="d-none">Confirmar Contraseña<span class="required">*</span></label>
-                                        <input id="CustomerConfirmPassword" type="Password" class="py-4" name="repeat_password" [(ngModel)]="repeat_password" [ngClass]="{'border border-danger': errorRepeatPassword}" (input)="onInputChange('repeat_password')" placeholder="Confirmar Contraseña" required />                         	
-                                        <div class="form-text text-danger mt-0" *ngIf="touchedFields['repeat_password'] && !repeat_password">Completa este campo para continuar</div>
+                                        <label for="CustomerConfirmPassword" class="fw-semibold mb-2" style="color: #222; font-size: 0.9rem; letter-spacing: 0.3px;">
+                                            <i class="icon anm anm-lock-l me-2"></i>Confirmar Contraseña
+                                        </label>
+                                        <div class="input-icon-wrapper">
+                                            <i class="icon anm anm-lock-l input-icon"></i>
+                                            <input id="CustomerConfirmPassword" type="Password" class="py-4 ps-5" name="repeat_password" [(ngModel)]="repeat_password" [ngClass]="{'border border-danger': errorRepeatPassword, 'border-success': touchedFields['repeat_password'] && repeat_password && !errorRepeatPassword && password === repeat_password}" (input)="onInputChange('repeat_password')" placeholder="Confirmar Contraseña" required style="border-radius: 8px; transition: all 0.3s ease;" />                         	
+                                        </div>
+                                        <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['repeat_password'] && !repeat_password" style="border-left: 4px solid #dc3545; border-radius: 6px;">
+                                            <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
+                                        </div>
+                                        <div class="alert alert-success py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['repeat_password'] && repeat_password && password === repeat_password" style="border-left: 4px solid #28a745; border-radius: 6px;">
+                                            <i class="icon anm anm-check-cil me-2"></i><small>Las contraseñas coinciden</small>
+                                        </div>
+                                        <div class="alert alert-warning py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['repeat_password'] && repeat_password && password !== repeat_password" style="border-left: 4px solid #ffc107; border-radius: 6px;">
+                                            <i class="icon anm anm-exclamation-triangle me-2"></i><small>Las contraseñas no coinciden</small>
+                                        </div>
                                     </div>
                                     <div class="form-group col-12 mt-3 mb-3">
-                                        <button type="submit" class="btn-dark-ld text-uppercase" (click)="register()" [disabled]="loading">
-                                            <ng-container *ngIf="!loading">Crear cuenta</ng-container>
+                                        <button type="submit" 
+                                                class="btn btn-dark w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center" 
+                                                (click)="register()" 
+                                                [disabled]="loading"
+                                                style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
+                                            <ng-container *ngIf="!loading">
+                                                <i class="icon anm anm-user-plus me-2" style="font-size: 1.2rem;"></i>
+                                                <span>Crear cuenta</span>
+                                            </ng-container>
                                             <ng-container *ngIf="loading">
-                                                <div class="sp sp-bars bg-light" style="width: 7px !important; height: 21px !important; margin: 0px auto !important;"></div>
-                                          </ng-container>
+                                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                <span>Creando cuenta...</span>
+                                            </ng-container>
                                         </button>
                                     </div>  
                                     <div class="form-group col-12" *ngIf="this.errorRegister">
-                                        <p class="text-danger">{{ this.errorMessage }}</p>
+                                        <div class="alert alert-danger py-3 alert-dismissible fade show" role="alert" style="border-left: 4px solid #dc3545; border-radius: 8px;">
+                                            <div class="d-flex align-items-start">
+                                                <i class="icon anm anm-times-circle me-3" style="font-size: 1.5rem;"></i>
+                                                <div>
+                                                    <strong class="d-block mb-1">Error al registrar</strong>
+                                                    <small>{{ this.errorMessage }}</small>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn-close" (click)="errorRegister = false" aria-label="Close"></button>
+                                        </div>
                                     </div>
                                 </div>
 
