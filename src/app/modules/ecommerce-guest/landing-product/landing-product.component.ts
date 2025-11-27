@@ -97,6 +97,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   availableSizesMugs = ['11 oz', '15 oz'];
   availableSizesCaps = ['One size'];
   tallaError = false;
+  colorError = false;
   cantidadError = false;
   isMobile: boolean = false;
   isTablet: boolean = false;
@@ -896,6 +897,9 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.selectedColor = color.color;
     this.firstImage = imagenFinal;
     
+    // ✅ Resetear error de color al seleccionar
+    this.colorError = false;
+    
     // Actualizar variedades basadas en el color seleccionado
     this.updateVariedadesByColor(color.color);
   }
@@ -1069,6 +1073,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private saveCart() {
+    // Resetear errores visuales
+    this.colorError = false;
+    this.tallaError = false;
+    this.cantidadError = false;
+    
     // Validaciones básicas
     if (this.cantidad <= 0) {
       this.showError('Debe seleccionar al menos 1 unidad');
@@ -1077,6 +1086,14 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     if (this.product_selected.type_inventario == 2) {
+      // ✅ VALIDACIÓN 1: Color
+      if (!this.selectedColor) {
+        this.colorError = true;
+        this.showError('Por favor seleccione un color');
+        return;
+      }
+      
+      // ✅ VALIDACIÓN 2: Talla
       if (!this.variedad_selected) {
         this.tallaError = true;
         this.showError('Por favor seleccione una talla');
