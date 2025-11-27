@@ -38,11 +38,11 @@
 }
 
 .form-group input.border-success {
-  border-color: #28a745 !important;
+  border-color: #667eea !important;
 }
 
 .form-group input.border-success:focus {
-  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15);
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
 }
 
 /* Toggle password button */

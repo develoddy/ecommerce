@@ -78,31 +78,6 @@
                     [ngClass]="{'col-lg-4': isDesktop, 'col-lg-6': isMobile}">
                     <nav class="navigation" id="AccessibleNav">
                         <ul id="siteNav" class="site-nav medium center">
-                            <li class="lvl1 parent dropdown text-uppercase fw-bold"><a href="#"
-                                    onclick="return false;">Mujer <i class="icon anm anm-angle-down-l d-none"></i></a>
-                                <ul class="dropdown d-none">
-                                    <li><a href="index.html" class="site-nav lvl-2">Home 01 - Fashion</a></li>
-                                    <li><a href="index2-footwear.html" class="site-nav lvl-2">Home 02 - Footwear</a>
-                                    </li>
-                                    <li><a href="index3-bags.html" class="site-nav lvl-2">Home 03 - Bags</a></li>
-                                    <li><a href="index4-electronic.html" class="site-nav lvl-2">Home 04 - Electronic</a>
-                                    </li>
-                                    <li><a href="index5-tools-parts.html" class="site-nav lvl-2">Home 05 - Tools &amp;
-                                            Parts</a></li>
-                                    <li><a href="index6-jewelry.html" class="site-nav lvl-2">Home 06 - Jewelry</a></li>
-                                    <li><a href="index7-organic-food.html" class="site-nav lvl-2">Home 07 - Organic
-                                            Food</a></li>
-                                    <li><a href="index8-cosmetics.html" class="site-nav lvl-2">Home 08 - Cosmetics</a>
-                                    </li>
-                                    <li><a href="index9-furniture.html" class="site-nav lvl-2">Home 09 - Furniture</a>
-                                    </li>
-                                    <li><a href="index10-sunglasses.html" class="site-nav lvl-2">Home 10 -
-                                            Sunglasses</a></li>
-                                    <li><a href="index11-medical.html" class="site-nav lvl-2">Home 11 - Medical</a></li>
-                                    <li><a href="index12-christmas.html" class="site-nav lvl-2">Home 12 - Christmas</a>
-                                    </li>
-                                </ul>
-                            </li>
                             <li class="lvl1 parent megamenu text-uppercase fw-bold">
                                 <a href="#" onclick="return false;">Camisetas <i class="icon anm anm-angle-down-l"></i></a>
                                 <div class="megamenu style1">
@@ -591,7 +566,7 @@
                         <div class="search-drawer offcanvas offcanvas-top" tabindex="-1" id="search-drawer">
                             <div class="container">
                                 <div class="search-header d-flex-center justify-content-between mb-3">
-                                    <h3 class="title m-0">¿Qué estás buscando?</h3>
+                                    <h3 class="title m-0">Busca tu outfit developer 🕶</h3>
                                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                                         aria-label="Close"></button>
                                 </div>
@@ -599,7 +574,7 @@
                                     <form class="form minisearch" id="header-search">
                                         <!--Search Field-->
                                         <div class="d-flex searchField">
-                                            <div class="search-category">
+                                            <div class="search-category d-none">
                                                 <select class="rgsearch-category rounded-end-0" [(ngModel)]="selected_category" name="category">
                                                     <option value="0">Todas las categorías</option>
                                                     <option *ngFor="let categorie of categories" [value]="categorie.id">
@@ -607,13 +582,13 @@
                                                 </select>
                                             </div>
                                             <div class="input-box d-flex fl-1">
-                                                <input type="text" class="input-text border-start-0 border-end-0"
+                                                <input type="text" class="input-text border-end-0"
                                                     [(ngModel)]="search_product" (keyup.enter)="searchProduct()" #filter
-                                                    name="prod-search" id="prod-search" placeholder="Buscar" value="" />
+                                                    name="prod-search" id="prod-search" placeholder="Buscar en Lujandev." value="" 
+                                                    style="border-bottom-left-radius: 8px; border-top-left-radius: 8px;"/>
                                                 <button type="submit"
                                                     class="action search d-flex-justify-center btn rounded-start-0">
                                                     <i class="icon anm anm-search-l"></i>
-                                                    <!-- <svg width="24" height="24" role="img" aria-hidden="true" class="icon Icon_icon-content-1__kPDLF Icons_icon___GFz0" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path d="m12 21-.4-.4c-.8-.8-1.5-1.5-2.3-2.2-3.7-3.5-6.8-6.5-6.8-10.1 0-2.8 1.9-5.1 4.3-5.3 2-.2 3.7.7 5.2 2.6 1.5-1.9 3.2-2.8 5.2-2.6 2.5.2 4.3 2.5 4.3 5.3 0 3.6-3.2 6.6-6.8 10.1-.8.7-1.5 1.5-2.3 2.2zM7.3 4h-.4C5 4.2 3.5 6 3.5 8.3c0 3.2 3 6.1 6.5 9.4.7.6 1.3 1.3 2 1.9.7-.7 1.3-1.3 2-1.9 3.5-3.3 6.5-6.2 6.5-9.4C20.5 6 19 4.2 17.1 4c-1.7-.2-3.3.7-4.7 2.7l-.4.6-.4-.6C10.3 4.9 8.9 4 7.3 4"></path></svg> -->
                                                 </button>
                                             </div>
                                         </div>
