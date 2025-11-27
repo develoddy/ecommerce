@@ -13,8 +13,12 @@
                 </button>
                 <div class="text-center">
                     <i class="icon anm anm-ruler-l mb-2" style="font-size: 2.5rem; color: #222;"></i>
-                    <h4 class="fs-5 text-uppercase fw-bold mb-2" style="color: #222; letter-spacing: 1px;">Selecciona una talla</h4>
-                    <p class="mb-0" style="font-size: 0.9rem; color: #6c757d;">Elige la talla que mejor se ajuste</p>
+                    <h4 class="fs-5 text-uppercase fw-bold mb-2" style="color: #222; letter-spacing: 1px;">
+                        {{ selectedColor ? 'Selecciona una talla' : 'Primero elige un color' }}
+                    </h4>
+                    <p class="mb-0" style="font-size: 0.9rem; color: #6c757d;">
+                        {{ selectedColor ? 'Elige la talla que mejor se ajuste' : 'Selecciona un color para ver las tallas disponibles' }}
+                    </p>
                 </div>
             </div>
             <div class="minicart-content d-flex flex-column" style="padding: 2rem 1.5rem;">
@@ -40,7 +44,7 @@
                             <span class="swatchLbl"
                                 [attr.data-bs-toggle]="'tooltip'"
                                 [attr.data-bs-placement]="'top'"
-                                [attr.title]="variedad.stock > 0 ? variedad.valor : 'Agotado'"
+                                [attr.title]="!selectedColor ? 'Primero selecciona un color' : (variedad.stock > 0 ? variedad.valor : 'Agotado')"
                                 [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'"
                                 [style.fontWeight]="variedad.valor === variedad_selected?.valor ? '600' : '400'">
                                 {{variedad.valor}}
@@ -55,7 +59,14 @@
                     <strong>¡Atención!</strong> Debes seleccionar una talla antes de continuar
                 </div>
                 
-                <div class="alert alert-info mt-3 mb-0" *ngIf="!tallaError" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.9rem;">
+                <!-- Mensaje cuando NO hay color seleccionado -->
+                <div class="alert alert-primary mt-3 mb-0" *ngIf="!tallaError && !selectedColor" style="border-left: 4px solid #0d6efd; border-radius: 6px; font-size: 0.9rem; background-color: #e7f1ff;">
+                    <i class="icon anm anm-palette-l me-2" style="color: #0d6efd;"></i>
+                    <strong>¡Paso 1!</strong> Primero selecciona un color para ver las tallas disponibles
+                </div>
+                
+                <!-- Mensaje cuando SÍ hay color seleccionado -->
+                <div class="alert alert-info mt-3 mb-0" *ngIf="!tallaError && selectedColor" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.9rem;">
                     <i class="icon anm anm-info-circle me-2" style="color: #6c757d;"></i>
                     Las tallas agotadas aparecen tachadas y deshabilitadas
                 </div>

@@ -13,6 +13,9 @@ export class MiniSizeDrawerComponent {
   // Recibe la talla seleccionada para marcarla
   @Input() variedad_selected?: { valor: string, stock: number };
 
+  // Recibe el color seleccionado para mostrar mensajes contextuales
+  @Input() selectedColor?: string;
+
   // Emitimos la talla seleccionada al padre
   @Output() variedadSeleccionada = new EventEmitter<{ variedad: any, index: number }>();
 

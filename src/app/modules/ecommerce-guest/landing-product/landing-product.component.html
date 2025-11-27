@@ -124,38 +124,9 @@
                             <span>Colores</span>
                         </a>
                         <label class="mb-0 lh-1">
-                            Color <span class="slVariant ms-1 fw-bold text-uppercase">{{ selectedColor || '' }}</span>
+                            {{ selectedColor ? 'Color seleccionado' : 'Seleccionar color' }} 
+                            <span class="slVariant ms-1 fw-bold text-uppercase">{{ selectedColor || '' }}</span>
                         </label>
-
-                        <div class="product-swatches-option d-none">
-                            <div class="product-item swatches-image w-100 swatch-0 option1" data-option-index="0">
-                                <label class="label d-flex align-items-center fw-normal fs-10">Color <span class="slVariant ms-1 fw-light">{{ selectedColor || '' }}</span></label>
-                                <ul class="variants-clr swatches d-flex-center pt-1 clearfix d-none" style="gap: 10px;">
-                                    <ng-container *ngFor="let color of coloresDisponibles">
-                                        <li class="swatch x-large available rounded" 
-                                            [ngClass]="getSwatchClass(color.imagen, color.color)" 
-                                            (click)="selectColor(color)"
-                                            [attr.title]="color.color"
-                                            style="transition: all 0.3s ease;"
-                                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)'"
-                                            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 2px 6px rgba(0,0,0,0.1)'">
-                                            <div class="color-swatch"
-                                                [ngStyle]="{ 
-                                                    'background-color': getColorHex(color.color),
-                                                    'width': '100%',
-                                                    'height': '100%',
-                                                    'border-radius': '50%',
-                                                    'cursor': 'pointer',
-                                                    'display': 'block',
-                                                    'border': '2px solid #fff',
-                                                    'box-shadow': '0 2px 6px rgba(0,0,0,0.1)'
-                                                }">
-                                            </div>
-                                        </li>
-                                    </ng-container>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                     <!-- End Swatches Color -->
 
@@ -175,39 +146,6 @@
                             {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} 
                             <span class="slVariant ms-1 fw-bold text-uppercase">{{ variedad_selected?.valor || '' }}</span>
                         </label>
-                        <div class="product-item swatches-size w-100 swatch-1 option2 d-none" data-option-index="1">
-                            <label class="label d-flex align-items-center fw-normal mb-2"> {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} <span class="slVariant ms-1 fw-light">{{ variedad_selected?.valor || '' }}</span>
-                                <a href="#sizechart-modal" class="text-link sizelink  size-chart-modal d-none" data-bs-toggle="modal" data-bs-target="#sizechart_modal">Guía de tallas</a>
-                            </label>
-                            <ul class="variants-size size-swatches d-flex pt-1 clearfix d-none" style="gap: 8px;">
-                                <ng-container *ngFor="let variedad of variedades; let i = index">
-                                    <li class="swatch x-large"
-                                        [ngClass]="{
-                                            'available': variedad.stock > 0,
-                                            'soldout': variedad.stock === 0,
-                                            'active': variedad.valor === variedad_selected?.valor
-                                        }"
-                                        [class.text-muted]="variedad.stock === 0"
-                                        [style.cursor]="variedad.stock > 0 ? 'pointer' : 'not-allowed'"
-                                        [style.opacity]="variedad.stock === 0 ? '0.5' : '1'"
-                                        [style.transition]="'all 0.2s ease'"
-                                        [style.box-shadow]="variedad.valor === variedad_selected?.valor ? '0 0 0 2px #28a745' : 'none'"
-                                        (click)="variedad.stock > 0 && selectedVariedad(variedad, i)"
-                                        onmouseover="if(this.style.opacity !== '0.5') { this.style.transform='scale(1.05)'; this.style.backgroundColor='#f8f9fa'; }"
-                                        onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='';">
-
-                                        <span class="swatchLbl"
-                                            [attr.data-bs-toggle]="'tooltip'"
-                                            [attr.data-bs-placement]="'top'"
-                                            [attr.title]="variedad.stock > 0 ? variedad.valor : 'Agotado'"
-                                            [style.textDecoration]="variedad.stock === 0 ? 'line-through' : 'none'"
-                                            [style.font-weight]="variedad.valor === variedad_selected?.valor ? '700' : '500'">
-                                            {{variedad.valor}}
-                                        </span>
-                                    </li>
-                                </ng-container>
-                            </ul>
-                        </div>   
                     </div>
                     <!-- End Swatches Size -->
                         
@@ -467,7 +405,10 @@
                                 <div class="product-swatches-option">
                                     <!-- Swatches Color -->
                                     <div class="product-item swatches-image w-100 mb-4 swatch-0 option1" data-option-index="0">
-                                        <label class="label d-flex align-items-center fw-normal text-uppercase">Color <span class="slVariant ms-1 fw-light">{{ selectedColor || '' }}</span></label>
+                                        <label class="label d-flex align-items-center fw-normal text-uppercase">
+                                            {{ selectedColor ? 'Color seleccionado' : 'Seleccionar color' }} 
+                                            <span class="slVariant ms-1 fw-light">{{ selectedColor || '' }}</span>
+                                        </label>
                                         <ul class="variants-clr swatches d-flex-center pt-1 clearfix" style="gap: 10px;">
                                             <ng-container *ngFor="let color of coloresDisponibles">
                                                 <li class="swatch x-large available rounded" 
@@ -1900,6 +1841,7 @@
     <app-mini-size-drawer
     [variedades]="variedades"
     [variedad_selected]="variedad_selected"
+    [selectedColor]="selectedColor"
     [tallaError]="tallaError"
     (variedadSeleccionada)="selectedVariedad($event.variedad, $event.index)">
     </app-mini-size-drawer>

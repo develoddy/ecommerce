@@ -616,12 +616,15 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private sortVariedades() {
-    this.selectedColor = this.product_selected.variedades[0]?.color || '';
+    // ✅ No autoseleccionar color - el usuario debe elegirlo explícitamente
+    this.selectedColor = '';
 
-    // Filtra las variedades por color y stock
-    this.variedades = this.product_selected.variedades.filter(
-      (variedad: any) => variedad.color === this.selectedColor
-    );
+    // Filtra las variedades por color y stock (solo si hay un color seleccionado)
+    this.variedades = this.selectedColor 
+      ? this.product_selected.variedades.filter(
+          (variedad: any) => variedad.color === this.selectedColor
+        )
+      : [];
 
     // Selecciona el array de tallas de acuerdo a la categoría del producto
     const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
@@ -649,9 +652,9 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       })
       .sort((a: any, b: any) => (a.valor > b.valor ? 1 : -1));
 
-    // Selecciona la primera variedad con stock positivo
+    // ✅ No autoseleccionar talla - el usuario debe elegirla explícitamente
     this.variedad_selected = null;
-    this.activeIndex = 0;
+    this.activeIndex = -1;
   }
 
   private extractSaleDetails(orders: any[]): any[] {
@@ -945,11 +948,17 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       return foundVariedad ? foundVariedad : { valor: size, stock: 0 };
     });
 
-    // Selecciona automáticamente la primera talla disponible
-    this.variedad_selected = this.variedades.find((v) => v.stock > 0) || null;
-    this.activeIndex = this.variedad_selected
-      ? this.variedades.indexOf(this.variedad_selected)
-      : 0;
+    // ✅ NO autoseleccionar talla - el usuario debe elegirla manualmente
+    // Mantener la talla previamente seleccionada si existe y está disponible en el nuevo color
+    if (this.variedad_selected) {
+      const existsInNewColor = this.variedades.find(
+        (v) => v.valor === this.variedad_selected?.valor && v.stock > 0
+      );
+      if (!existsInNewColor) {
+        this.variedad_selected = null;
+        this.activeIndex = -1;
+      }
+    }
   }
 
   toggleOptions() {
