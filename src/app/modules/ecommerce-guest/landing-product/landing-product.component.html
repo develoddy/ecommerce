@@ -124,7 +124,7 @@
                                 <i class="icon anm anm-plus-l me-2"></i>
                                 <span>Colores</span>
                             </a>
-                            <label class="mb-0 lh-1" [style.color]="colorError ? '#dc3545' : '#222'">
+                            <label class="mb-0 lh-1"> <!-- [style.color]="colorError ? '#dc3545' : '#222'" -->
                                 {{ selectedColor ? 'Color seleccionado' : 'Seleccionar color' }} 
                                 <span class="slVariant ms-1 fw-bold text-uppercase">{{ selectedColor || '' }}</span>
                             </label>
@@ -148,7 +148,7 @@
                                 <i class="icon anm anm-plus-l me-2"></i>
                                 <span>Tallas</span>
                             </a>
-                            <label class="mb-0 lh-1" [style.color]="tallaError ? '#dc3545' : '#222'"> 
+                            <label class="mb-0 lh-1"> <!-- [style.color]="tallaError ? '#dc3545' : '#222'" -->
                                 {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} 
                                 <span class="slVariant ms-1 fw-bold text-uppercase">{{ variedad_selected?.valor || '' }}</span>
                             </label>
