@@ -17,7 +17,8 @@
                 <i class="icon anm anm-file-text-l me-2" style="color: #fff; font-size: 1.5rem;"></i>
                 <div class="text-start">
                     <small class="d-block text-white-50" style="font-size: 0.75rem; letter-spacing: 0.5px;">NÚMERO DE PEDIDO</small>
-                    <strong class="d-block text-white" style="font-size: 1.2rem; letter-spacing: 1px;">{{ sale.n_transaction }}</strong>
+                    <strong class="d-block text-white" style="font-size: 1.2rem; letter-spacing: 1px;" *ngIf="sale.printfulOrderId">#PF{{ sale.printfulOrderId }}</strong>
+                    <strong class="d-block text-white" style="font-size: 1.2rem; letter-spacing: 1px;" *ngIf="!sale.printfulOrderId">{{ sale.n_transaction }}</strong>
                 </div>
             </div>
         </div>
