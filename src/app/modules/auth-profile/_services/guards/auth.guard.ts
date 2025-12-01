@@ -23,16 +23,28 @@ export class AuthGuard implements CanActivate {
       const locale = this.localizationService.locale;
       const country = this.localizationService.country;
 
-      if ( !this._authService.user || !this._authService.token ) {
+      // ✅ Verificar tokens en localStorage (fuente de verdad)
+      const accessToken = localStorage.getItem('access_token');
+      const user = localStorage.getItem('user');
+
+      if ( !user || !accessToken ) {
+        console.log('🚫 AuthGuard: No hay usuario o token, redirigiendo a login');
         this._router.navigate(['/', country, locale, 'auth', 'login']);
         return false;
       }
 
-      let token = this._authService.token;
-      let expiration = (JSON.parse(atob(token.split('.')[1]))).exp;
-      let currentTime = Math.floor(new Date().getTime() / 1000);
+      // Verificar expiración del token
+      try {
+        let expiration = (JSON.parse(atob(accessToken.split('.')[1]))).exp;
+        let currentTime = Math.floor(new Date().getTime() / 1000);
 
-      if ( currentTime >= expiration ) {
+        if ( currentTime >= expiration ) {
+          console.log('⏰ AuthGuard: Token expirado, redirigiendo a login');
+          this._router.navigate(['/', country, locale, 'auth', 'login']);
+          return false;
+        }
+      } catch (error) {
+        console.error('❌ AuthGuard: Error al decodificar token', error);
         this._router.navigate(['/', country, locale, 'auth', 'login']);
         return false;
       }

@@ -29,6 +29,11 @@ export class AuthService {
     private localizationService : LocalizationService,
     private tokenService        : TokenService
   ) {
+    // Registrar callback de logout en TokenService
+    if (this.tokenService) {
+      (this.tokenService as any).onLogoutCallback = () => this.clearUserState();
+    }
+    
     if(!this.isAuthenticatedUser()) {
       this.validateOrCreateGuest();
     }
@@ -349,5 +354,21 @@ export class AuthService {
   removeUserGuestLocalStorage() {
     localStorage.removeItem("user_guest");
     this.userGuestSubject.next(null);
+  }
+
+  /**
+   * Limpia el estado de usuario en BehaviorSubjects
+   * Llamado por TokenService.handleLogout() via callback
+   * Notifica a componentes suscritos (header, etc.) que no hay usuario autenticado
+   */
+  clearUserState(): void {
+    console.log('🔄 AuthService: Limpiando BehaviorSubjects de usuario');
+    
+    // Limpiar tokens y estado
+    this.token = null;
+    this.userSubject.next(null);        // ✅ Esto actualiza header y componentes suscritos
+    this.userGuestSubject.next(null);
+    
+    console.log('✅ AuthService: Estado limpiado, componentes suscritos notificados');
   }
 }

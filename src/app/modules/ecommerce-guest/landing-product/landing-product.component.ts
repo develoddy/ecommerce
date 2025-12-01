@@ -609,13 +609,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   navigateToProduct(slug: string, discountId?: string) {
     // Guarda el estado para hacer scroll hacia arriba
     sessionStorage.setItem('scrollToTop', 'true');
-    // Navega a la página del producto
-    this._router
-      .navigate(['/', this.locale, this.country, 'shop', 'product', slug])
-      .then(() => {
-        // Recarga la página
-        window.location.reload();
-      });
+    // Navega a la página del producto (SPA-friendly sin reload)
+    this._router.navigate(['/', this.locale, this.country, 'shop', 'product', slug]);
   }
 
   private sortVariedades() {

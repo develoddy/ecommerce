@@ -425,11 +425,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   navigateToProduct = (slug: string, discountId?: string) => {
     sessionStorage.setItem('scrollToTop', 'true');
-    this._router
-      .navigate(['/', this.locale, this.country, 'shop', 'product', slug])
-      .then(() => {
-        window.location.reload();
-      });
+    // Navegación SPA-friendly sin reload
+    this._router.navigate(['/', this.locale, this.country, 'shop', 'product', slug]);
   };
 
   sizesUnicos(product_selected: any) {

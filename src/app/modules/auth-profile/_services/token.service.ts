@@ -1,9 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, switchMap, catchError, tap, filter, throwError, take, map } from 'rxjs';
+import { BehaviorSubject, Observable, switchMap, catchError, tap, filter, throwError, take, map, timeout } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { URL_SERVICE } from 'src/app/config/config';
+
+// Declaraciones de funciones de alerta personalizadas (main.js)
+declare function alertDanger(text: string): void;
+declare function alertWarning(text: string): void;
+declare function alertSuccess(text: string): void;
 
 /**
  * ⏰ SERVICIO DE GESTIÓN DE TOKENS (CONSOLIDADO)
@@ -34,10 +39,12 @@ import { URL_SERVICE } from 'src/app/config/config';
 export class TokenService {
   private accessTokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('access_token'));
   private refreshTokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('refresh_token'));
-  //private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
-    isRefreshing = false;
-  //refreshTokenInProgress = false;
+  isRefreshing = false;
+  private logoutInProgress = false; // Flag para evitar múltiples logout
+  
+  // Callback para notificar a AuthService cuando se ejecuta logout
+  public onLogoutCallback: (() => void) | null = null;
 
   constructor(
       private _http: HttpClient,
@@ -75,17 +82,100 @@ export class TokenService {
     }
   }
 
-handleLogout(): void {
+  /**
+   * 🚪 LOGOUT COMPLETO (Angular SPA-friendly)
+   * 
+   * Realiza limpieza completa del estado de autenticación sin romper flujo SPA.
+   * 
+   * LIMPIEZA EJECUTADA:
+   * ==================
+   * 1. Tokens de localStorage (access_token, refresh_token)
+   * 2. Datos de usuario (user, user_guest)
+   * 3. BehaviorSubjects (accessTokenSubject, refreshTokenSubject)
+   * 4. AuthService.userSubject (notifica componentes suscritos)
+   * 5. Redirección a /auth/login vía Angular Router
+   * 
+   * ARQUITECTURA:
+   * ============
+   * - NO usa window.location.href (mantiene SPA sin recarga completa)
+   * - Usa Injector para obtener AuthService (evita dependencia circular)
+   * - Guards detectan ausencia de tokens y bloquean rutas protegidas
+   * - Componentes suscritos a authService.user detectan cambio inmediatamente
+   * - Router.navigate() preserva estado de servicios no relacionados con auth
+   */
+  /**
+   * 🚪 LOGOUT COMPLETO (Angular SPA-friendly)
+   * 
+   * Realiza limpieza completa del estado de autenticación sin romper flujo SPA.
+   * Previene loops usando flag logoutInProgress.
+   * Muestra notificación al usuario cuando su sesión expira.
+   */
+  handleLogout(): void {
+    // Prevenir múltiples ejecuciones simultáneas
+    if (this.logoutInProgress) {
+      console.log('⏸️ TokenService: Logout ya en progreso, omitiendo...');
+      return;
+    }
+    
+    this.logoutInProgress = true;
+    this.isRefreshing = false; // Detener cualquier refresh en progreso
+    
+    console.log('🚪 TokenService: Ejecutando logout completo (SPA-friendly)');
+    
     const country = this.localizationService.country;
     const locale = this.localizationService.locale;
+    
+    // 1. Limpiar tokens de localStorage
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
-  }
-
-   refreshingToken(): Observable<string> {
-  
-      const refreshToken = localStorage.getItem('refresh_token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('user_guest');
+    
+    // 2. Limpiar BehaviorSubjects de TokenService (crucial para requests en espera)
+    this.accessTokenSubject.next(null);
+    this.refreshTokenSubject.next(null);
+    
+    // 3. Notificar a AuthService usando callback (evita circular dependency)
+    if (this.onLogoutCallback) {
+      console.log('🔔 TokenService: Notificando a AuthService via callback');
+      this.onLogoutCallback();
+    } else {
+      console.warn('⚠️ TokenService: Callback de logout no registrado');
+    }
+    
+    // 4. 🎨 UX: Notificar al usuario que su sesión expiró
+    try {
+      alertWarning('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+    } catch (error) {
+      console.warn('⚠️ No se pudo mostrar notificación de sesión expirada:', error);
+    }
+    
+    // 5. Redirección Angular sin recarga completa
+    this._router.navigate(['/', country, locale, 'auth', 'login'])
+      .then(() => {
+        console.log('✅ Redirección a login completada (SPA preservada)');
+        this.logoutInProgress = false; // Reset flag después de navegación
+      })
+      .catch(err => {
+        console.error('❌ Error en redirección, fallback a recarga completa:', err);
+        this.logoutInProgress = false;
+        window.location.href = `/${country}/${locale}/auth/login`;
+      });
+  }   refreshingToken(): Observable<string> {
+    // ⚠️ CRÍTICO: No intentar refresh si ya estamos en proceso de logout
+    if (this.logoutInProgress) {
+      console.log('⏸️ TokenService: Logout en progreso, cancelando refresh');
+      return throwError(() => new Error('Logout in progress'));
+    }
+    
+    const refreshToken = localStorage.getItem('refresh_token');
+    
+    // ⚠️ CRÍTICO: Si no hay refresh_token, no intentar refresh
+    if (!refreshToken) {
+      console.log('❌ TokenService: No hay refresh_token, ejecutando logout');
+      this.handleLogout();
+      return throwError(() => new Error('No refresh token available'));
+    }
       const URL = URL_SERVICE + "users/refresh-token";
   
       if ( !refreshToken ) {
@@ -142,6 +232,11 @@ handleLogout(): void {
           catchError(( error ) => {
             console.error('❌ TokenService: Error en refresh:', error);
             this.isRefreshing = false;
+            
+            // ✅ Limpiar tokens del BehaviorSubject para que requests en espera fallen
+            this.accessTokenSubject.next(null);
+            this.refreshTokenSubject.next(null);
+            
             this.handleLogout();
             return throwError(() => error);
           })
@@ -150,25 +245,27 @@ handleLogout(): void {
          // Si ya estamos en el proceso de refrescar el token, esperamos que se complete
          console.log('⏳ TokenService: Refresh en progreso, esperando...');
          
-         // Crear un observable que espera a que isRefreshing sea false
-         return new Observable<string>((observer) => {
-           const checkInterval = setInterval(() => {
-             if (!this.isRefreshing) {
-               clearInterval(checkInterval);
-               const currentToken = this.accessToken;
-               if (currentToken) {
-                 console.log('✅ TokenService: Refresh completado, retornando token actualizado');
-                 console.log(`🔑 TokenService: Token a retornar (primeros 30 chars): ${currentToken.substring(0, 30)}...`);
-                 console.log(`📏 TokenService: Longitud del token: ${currentToken.length}`);
-                 observer.next(currentToken);
-                 observer.complete();
-               } else {
-                 console.error('❌ TokenService: No hay access token después del refresh');
-                 observer.error(new Error('No access token after refresh'));
-               }
-             }
-           }, 50); // Verificar cada 50ms
-         });
+         // Esperar al resultado del refresh principal
+         return this.accessTokenSubject.pipe(
+           filter((token): token is string => {
+             // Solo emitir cuando:
+             // 1. El token NO sea null (hay token válido)
+             // 2. Y el refresh ya NO esté en progreso (completó exitosamente)
+             return token !== null && !this.isRefreshing;
+           }),
+           take(1),
+           tap((token) => {
+             console.log('✅ TokenService: Refresh completado, retornando token actualizado');
+             console.log(`🔑 TokenService: Token a retornar (primeros 30 chars): ${token.substring(0, 30)}...`);
+             console.log(`📏 TokenService: Longitud del token: ${token.length}`);
+           }),
+           // Si el refresh falla, el BehaviorSubject NO emitirá un token válido
+           // y este observable quedará esperando hasta timeout
+           timeout({
+             each: 10000, // Timeout de 10 segundos
+             with: () => throwError(() => new Error('Refresh timeout - posiblemente falló'))
+           })
+         );
       }
     }
 

@@ -1,0 +1,97 @@
+/* Estilos para página de confirmación */
+
+/* Mejoras de accesibilidad y responsividad */
+@media (max-width: 768px) {
+  .product-card {
+    margin-bottom: 1rem;
+  }
+  
+  .d-flex.flex-column.flex-md-row {
+    flex-direction: column !important;
+  }
+  
+  .product-image-container {
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+}
+
+/* Estilos para iconos de atributos */
+.attribute-icon {
+  /* Sin animaciones */
+}
+
+/* Secciones limpias sin efectos */
+.shipping-info, 
+.payment-info, 
+.order-details, 
+.delivery-estimate {
+  /* Sin efectos de animación */
+}
+
+/* Imágenes de productos claras */
+.product-image {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Mejoras tipográficas */
+.money {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+
+/* Prevenir scroll horizontal */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.min-w-0 {
+  min-width: 0;
+}
+
+/* Loading spinner mejorado */
+.loading-spinner {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  position: relative;
+}
+
+.loading-spinner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBzdHJva2U9IiNlOWVjZWYiPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMSAxKSIgc3Ryb2tlLXdpZHRoPSIyIj48Y2lyY2xlIHN0cm9rZS1vcGFjaXR5PSIuNSIgY3g9IjE4IiBjeT0iMTgiIHI9IjE4Ii8+PHBhdGggZD0ibTM5IDMwYzAtOS45LTguMS0xOC0xOC0xOCI+PGFuaW1hdGVUcmFuc2Zvcm0gYXR0cmlidXRlTmFtZT0idHJhbnNmb3JtIiB0eXBlPSJyb3RhdGUiIGZyb209IjAgMTggMTgiIHRvPSIzNjAgMTggMTgiIGR1cj0iMXMiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIi8+PC9wYXRoPjwvZz48L2c+PC9zdmc+') center/40px 40px no-repeat;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+/* Responsive para número de pedido */
+@media (max-width: 576px) {
+  .success-text {
+    padding: 2rem 1rem !important;
+  }
+  
+  .success-text h1 {
+    font-size: 1.8rem !important;
+  }
+  
+  .success-text .d-flex {
+    max-width: 320px !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+/* Efectos para badges - sin animaciones */
+.badge {
+  /* Sin transiciones ni efectos */
+}
+
+/* Alertas sin animaciones */
+.alert {
+  /* Sin animaciones */
+}

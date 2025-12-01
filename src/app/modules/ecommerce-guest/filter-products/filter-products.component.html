@@ -1,17 +1,15 @@
- <!-- Loading -->
-    <!-- <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
-        <div class="row">
-            <div class="col col-12 col-lg-12  col-sm-2">
-                <div class="sp sp-bars"></div>
-            </div>
+<!-- Loading Spinner Elegante -->
+<div *ngIf="loader.loading$ | async" class="loading-spinner d-flex justify-content-center align-items-center" style="min-height: 400px;">
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="sr-only"></span>
         </div>
-    </div> -->
-<!-- End Loading -->
+        <h4 class="text-muted mt-3">Cargando productos...</h4>
+    </div>
+</div>
  
- 
- <!--Page Wrapper-->
- <div class="page-wrapper">
-    <!-- <ng-container [class.d-none]="loader.loading$ | async"> -->
+<!--Page Wrapper-->
+<div class="page-wrapper" *ngIf="!(loader.loading$ | async)">
     <!-- Body Container -->
     <div id="page-content">
         <!--Page Header-->

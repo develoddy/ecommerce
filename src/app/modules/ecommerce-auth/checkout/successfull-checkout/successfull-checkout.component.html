@@ -1,25 +1,56 @@
+<!-- Loading Spinner -->
+<div *ngIf="loading" class="loading-spinner d-flex justify-content-center align-items-center" style="min-height: 400px;">
+    <div class="text-center">
+        <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+            <span class="sr-only"></span>
+        </div>
+        <h4 class="text-muted mt-3">Procesando tu pago...</h4>
+        <p class="text-muted">Por favor espera, estamos confirmando tu pedido</p>
+    </div>
+</div>
+
 <div [ngClass]="{'tab-pane': true, 'active': isLastStepActive_4 && isSaleSuccess}" id="steps4" [class.d-none]="loading">
-    <ng-container >
+    <ng-container>
         <!--Order success-->
         <!-- ORDER SUCCESS -->
-        <div class="success-text checkout-card text-center py-5 mb-md-5" style="background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <i class="icon anm anm-check-circle-o d-block mb-4" style="font-size: 5rem; color: #28a745;"></i>
-            <h2 class="mb-3" style="color: #222; font-size: 2rem; font-weight: 600; letter-spacing: 0.5px;">
+        <div class="success-text checkout-card text-center py-5 mb-md-5" style="background: #f8fff8; border-radius: 16px; box-shadow: 0 4px 20px rgba(40, 167, 69, 0.1); border: 1px solid #e8f5e8;">
+            <!-- Animación de confirmación -->
+            <div class="position-relative d-inline-block mb-4">
+                <i class="icon anm anm-check-circle-o d-block" style="font-size: 5rem; color: #28a745;"></i>
+            </div>
+            
+            <h1 class="mb-3" style="color: #1a5928; font-size: 2.2rem; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                 ¡Gracias por tu compra!
-            </h2>
-            <p class="mb-2 text-muted" style="font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
-                Tu pago se ha realizado con éxito. El pedido está en camino.
+            </h1>
+            <p class="mb-2 text-success" style="font-size: 1.2rem; font-weight: 600; max-width: 600px; margin: 0 auto;">
+                ✅ Tu pago se ha realizado con éxito
             </p>
             <p class="mb-4 text-muted" style="font-size: 1rem; max-width: 600px; margin: 0 auto;">
-                Recibirás un correo con los detalles y un enlace para seguir el envío.
-            </p>                                      
-            <div class="d-inline-flex align-items-center px-4 py-3 mt-3" *ngIf="this.sale" style="background-color: #222; border-radius: 8px;">
-                <i class="icon anm anm-file-text-l me-2" style="color: #fff; font-size: 1.5rem;"></i>
-                <div class="text-start">
-                    <small class="d-block text-white-50" style="font-size: 0.75rem; letter-spacing: 0.5px;">NÚMERO DE PEDIDO</small>
-                    <strong class="d-block text-white" style="font-size: 1.2rem; letter-spacing: 1px;" *ngIf="sale.printfulOrderId">#PF{{ sale.printfulOrderId }}</strong>
-                    <strong class="d-block text-white" style="font-size: 1.2rem; letter-spacing: 1px;" *ngIf="!sale.printfulOrderId">{{ sale.n_transaction }}</strong>
+                <i class="icon anm anm-truck-l me-2 text-primary"></i>
+                Tu pedido está en camino y lo recibirás pronto. Recibirás un correo con todos los detalles.
+            </p>
+            
+            <!-- Número de pedido mejorado -->
+            <div class="d-flex align-items-center justify-content-center px-3 py-3 mt-3 mb-4 mx-auto" *ngIf="this.sale" style="background: #28a745; border-radius: 12px; box-shadow: 0 4px 16px rgba(40, 167, 69, 0.2); max-width: 400px; overflow: hidden;">
+                <i class="icon anm anm-file-text-l me-3 flex-shrink-0" style="color: #fff; font-size: 1.5rem;"></i>
+                <div class="text-start min-w-0 flex-grow-1">
+                    <small class="d-block text-white-50" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Número de Pedido</small>
+                    <strong class="d-block text-white text-truncate" style="font-size: 1.1rem; letter-spacing: 0.5px; font-family: 'Courier New', monospace;" *ngIf="sale.printfulOrderId" [title]="'#PF' + sale.printfulOrderId">#PF{{ sale.printfulOrderId }}</strong>
+                    <strong class="d-block text-white text-truncate" style="font-size: 1.1rem; letter-spacing: 0.5px; font-family: 'Courier New', monospace;" *ngIf="!sale.printfulOrderId" [title]="sale.n_transaction">{{ sale.n_transaction }}</strong>
                 </div>
+            </div>
+            
+            <!-- Botones de acción principales -->
+            <div class="d-flex flex-column flex-md-row gap-3 justify-content-center mt-4">
+                <button class="btn btn-primary btn-lg px-4 py-3 d-flex align-items-center justify-content-center" style="background: #007bff; border: none; border-radius: 12px; font-weight: 600; letter-spacing: 0.5px; min-width: 200px; box-shadow: 0 4px 16px rgba(0, 123, 255, 0.2);">
+                    <i class="icon anm anm-search-plus-l me-2" style="font-size: 1.2rem;"></i>
+                    <span>Seguir mi pedido</span>
+                </button>
+                
+                <a [href]="'mailto:soporte@lujandev.com?subject=Consulta sobre pedido ' + (sale?.printfulOrderId ? '#PF' + sale.printfulOrderId : sale?.n_transaction)" class="btn btn-outline-success btn-lg px-4 py-3 d-flex align-items-center justify-content-center text-decoration-none" style="border: 2px solid #28a745; color: #28a745; border-radius: 12px; font-weight: 600; letter-spacing: 0.5px; min-width: 200px;">
+                    <i class="icon anm anm-envelope-l me-2" style="font-size: 1.2rem;"></i>
+                    <span>Contactar soporte</span>
+                </a>
             </div>
         </div>
         <!-- END ORDER SUCCESS -->
@@ -39,32 +70,33 @@
                                     <!-- CART CONTENT -->
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
                                         <!-- LIST CARTS -->
-                                        <div class="d-flex flex-column">
+                                        <div class="d-flex flex-column gap-3">
                                             <ng-container *ngFor="let sale of saleDetails">
-                                                <div class="d-flex flex-lg-row">
-                                                    <!-- PRODUCTO IMAGE -->
-                                                    <div class="p-2">
-                                                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', sale.product.slug]">
-                                                            <img class="blur-up lazyload"
-                                                                [attr.data-src]="getImageUrl(sale)"
+                                                <div class="product-card p-3" style="background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
+                                                    <div class="d-flex flex-column flex-md-row align-items-start gap-3">
+                                                        <!-- PRODUCTO IMAGE -->
+                                                        <div class="product-image-container" style="min-width: 120px;">
+                                                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', sale.product.slug]" class="d-block" style="border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                                            <img class="product-image"
                                                                 [src]="getImageUrl(sale)"
                                                                 [alt]="sale.product?.title || sale.product?.name || 'product'"
                                                                 [title]="sale.product?.title || sale.product?.name || 'Product'"
-                                                                width="250"
-                                                                height="250"
+                                                                width="120"
+                                                                height="120"
+                                                                style="object-fit: cover; border-radius: 8px;"
                                                             />
                                                         </a>
                                                     </div>
-                                                    <!--  END PRODUCTO IMAGE -->
-                                                    
-                                                    <!-- DETALLES DEL PRODUCTO -->
-                                                    <div class="p-2 d-flex flex-column">
-                                                        <!-- TITULO DEL PRODUCTO-->
-                                                        <div class="text-uppercase lh-1">
-                                                            <a class="fw-light"  [routerLink]="['/', this.locale, this.country, 'shop', 'product', sale.product.slug]">
-                                                                <span>{{ sale.product.title }}</span>
-                                                            </a>
-                                                        </div>
+                                                        <!--  END PRODUCTO IMAGE -->
+                                                        
+                                                        <!-- DETALLES DEL PRODUCTO -->
+                                                        <div class="flex-grow-1">
+                                                            <!-- TITULO DEL PRODUCTO-->
+                                                            <div class="mb-2">
+                                                                <a class="text-decoration-none" [routerLink]="['/', this.locale, this.country, 'shop', 'product', sale.product.slug]">
+                                                                    <h5 class="mb-1" style="color: #2c3e50; font-weight: 600; font-size: 1.1rem;">{{ sale.product.title }}</h5>
+                                                                </a>
+                                                            </div>
 
                                                         <!-- PRECIO DEL PRODUCTO -->
                                                         <div class="mb-2 lh-1">
@@ -105,38 +137,55 @@
                                                             </ng-template>
                                                         </div>
                                                         
-                                                        <!-- COLOR DEL PRODUCTO-->
-                                                        <div class="d-flex fw-light lh-1">
-                                                            <span class="w-25">Color</span>
-                                                            <span class="ms-lg-3 ms-5">{{ sale.variedade.color }}</span>
-                                                        </div>
+                                                            <!-- ATRIBUTOS DEL PRODUCTO -->
+                                                            <div class="product-attributes mb-3">
+                                                                <div class="row g-2">
+                                                                    <div class="col-6 col-md-4">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div class="attribute-icon me-2" style="width: 20px; height: 20px; background: #e3f2fd; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                                                <i class="icon anm anm-palette" style="font-size: 0.7rem; color: #1976d2;"></i>
+                                                                            </div>
+                                                                            <div>
+                                                                                <small class="text-muted d-block" style="font-size: 0.75rem;">Color</small>
+                                                                                <span class="fw-medium" style="font-size: 0.85rem;">{{ sale.variedade.color }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6 col-md-4" *ngIf="sale.variedade">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div class="attribute-icon me-2" style="width: 20px; height: 20px; background: #f3e5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                                                <i class="icon anm anm-expand" style="font-size: 0.7rem; color: #7b1fa2;"></i>
+                                                                            </div>
+                                                                            <div>
+                                                                                <small class="text-muted d-block" style="font-size: 0.75rem;">Talla</small>
+                                                                                <span class="fw-medium" style="font-size: 0.85rem;">{{ sale.variedade.valor }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6 col-md-4">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div class="attribute-icon me-2" style="width: 20px; height: 20px; background: #e8f5e8; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                                                <i class="icon anm anm-plus-l" style="font-size: 0.7rem; color: #2e7d32;"></i>
+                                                                            </div>
+                                                                            <div>
+                                                                                <small class="text-muted d-block" style="font-size: 0.75rem;">Cantidad</small>
+                                                                                <span class="fw-medium" style="font-size: 0.85rem;">{{ sale.cantidad }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         
-                                                        <!-- VARIEDAD O TALLA DEL PRODUCTO -->
-                                                        <div class="d-flex fw-light lh-1" *ngIf="sale.variedade">
-                                                            <span class="w-25">Talla</span>
-                                                            <span class="ms-lg-3 ms-5">{{ sale.variedade.valor }}</span>
-                                                        </div>
-                                                        
-                                                        <!-- CANTIDAD DEL PRODUCTO-->
-                                                        <div class="d-flex fw-light lh-1">
-                                                            <span class="w-25">Cantidad</span>
-                                                            <span class="ms-lg-3 ms-5">{{ sale.cantidad}}</span>
-                                                        </div>
-                                                        
-                                                        <!-- TOTAL -->
-                                                        <div class="d-flex fw-bold mb-2">
-                                                            <span class="w-25">Total</span>
-                                                            <span class="money ms-lg-3 ms-5">
-                                                                <span class="price-small">
+                                                            <!-- TOTAL DEL PRODUCTO -->
+                                                            <div class="product-total d-flex justify-content-between align-items-center p-2" style="background: #f8f9fa; border-radius: 8px; border-left: 4px solid #28a745;">
+                                                                <span class="fw-semibold text-success" style="font-size: 0.9rem;">Total del producto:</span>
+                                                                <span class="money fw-bold" style="font-size: 1.1rem; color: #28a745;">
                                                                     <span class="me-1">{{ euro }}</span>
-                                                                    <span class="">{{ getFormattedPrice(getFinalUnitPrice(sale) * sale.cantidad).integerPart }}.</span>
-                                                                    <span class="">
-                                                                        <span>{{ getFormattedPrice(getFinalUnitPrice(sale) * sale.cantidad).decimalPart }}</span>
-                                                                    </span>
+                                                                    <span>{{ getFormattedPrice(getFinalUnitPrice(sale) * sale.cantidad).integerPart }}.</span>
+                                                                    <span>{{ getFormattedPrice(getFinalUnitPrice(sale) * sale.cantidad).decimalPart }}</span>
                                                                 </span>
-                                                            </span>
+                                                            </div>
                                                         </div>
-                                                       
                                                     </div>
                                                 </div>
                                             </ng-container>
@@ -152,9 +201,9 @@
 
                     <!-- CART SUMMARY -->
                     <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-5 mt-lg-0">
-                        <div class="cart-info sidebar-sticky bg-transparent border-0">
-                            <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
-                                <i class="icon anm anm-file-text-l me-2"></i>Resumen de Precio
+                        <div class="cart-info sidebar-sticky" style="background: #ffffff; border: 1px solid #e9ecef; border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                            <h3 class="mb-4 text-center" style="color: #2c3e50; font-size: 1.4rem; font-weight: 700; letter-spacing: 0.5px; border-bottom: 3px solid #28a745; padding-bottom: 0.75rem; text-transform: uppercase;">
+                                <i class="icon anm anm-calculator me-2" style="color: #28a745;"></i>Resumen Final
                             </h3>
                             <div class="cart-order-detail cart-col">
                                 <!-- SUBTOTAL -->
@@ -264,15 +313,33 @@
                         <div class="block p-0">
                             <div class="block-content"> 
                                 <div class="shipping-details mb-4 mb-sm-0 lh-1">
-                                    <h3 class="mb-3" style="color: #222; font-size: 1.1rem; letter-spacing: 0.5px; border-bottom: 2px solid #e9ecef; padding-bottom: 0.5rem;">
-                                        <i class="icon anm anm-map-marker-al me-2"></i>Dirección de envío
+                                    <h3 class="mb-3 d-flex align-items-center" style="color: #2c3e50; font-size: 1.2rem; font-weight: 600;">
+                                        <div class="icon-container me-3" style="width: 32px; height: 32px; background: #007bff; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="icon anm anm-map-marker-al" style="color: white; font-size: 0.9rem;"></i>
+                                        </div>
+                                        Dirección de envío
                                     </h3>
                                     <ng-container *ngIf="this.shippingAddress">
-                                        <p class="text-bold">{{ shippingAddress.name }} {{ shippingAddress.surname }}</p>
-                                        <p>{{ shippingAddress.address }}</p>
-                                        <p>{{ shippingAddress.zipcode }} {{ shippingAddress.poblacion }}, {{ shippingAddress.ciudad }}</p>
-                                        <p>Tel: {{ shippingAddress.phone }}</p>
-                                        <div class="form-text px-3 p-2 mt-3" style="width: fit-content !important; background-color: #f3f3f3;">Dirección de envío habitual</div>
+                                        <div class="shipping-info p-3" style="background: #f8f9fa; border-radius: 12px; border-left: 4px solid #007bff;">
+                                            <div class="mb-2 d-flex align-items-center">
+                                                <i class="icon anm anm-user me-2 text-primary"></i>
+                                                <strong style="color: #2c3e50;">{{ shippingAddress.name }} {{ shippingAddress.surname }}</strong>
+                                            </div>
+                                            <div class="mb-2 d-flex align-items-start">
+                                                <i class="icon anm anm-map-marker-al me-2 text-primary mt-1"></i>
+                                                <div>
+                                                    <div>{{ shippingAddress.address }}</div>
+                                                    <div>{{ shippingAddress.zipcode }} {{ shippingAddress.poblacion }}, {{ shippingAddress.ciudad }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-2 d-flex align-items-center">
+                                                <i class="icon anm anm-phone me-2 text-primary"></i>
+                                                <span>{{ shippingAddress.phone }}</span>
+                                            </div>
+                                            <div class="mt-3">
+                                                <span class="badge bg-primary" style="font-size: 0.75rem;">📍 Dirección habitual</span>
+                                            </div>
+                                        </div>
                                     </ng-container>
                                 </div>
                             </div>
@@ -282,12 +349,20 @@
                     <div class="col-12 col-lg-3">
                         <div class="block p-0">
                             <div class="block-content">
-                                <div class="billing-details lh-1">
-                                    <h3 class="mb-3" style="color: #222; font-size: 1.1rem; letter-spacing: 0.5px; border-bottom: 2px solid #e9ecef; padding-bottom: 0.5rem;">
-                                        <i class="icon anm anm-credit-card-l me-2"></i>Método de pago
+                                <div class="billing-details">
+                                    <h3 class="mb-3 d-flex align-items-center" style="color: #2c3e50; font-size: 1.2rem; font-weight: 600;">
+                                        <div class="icon-container me-3" style="width: 32px; height: 32px; background: #28a745; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="icon anm anm-credit-card-l" style="color: white; font-size: 0.9rem;"></i>
+                                        </div>
+                                        Método de pago
                                     </h3>
                                     <ng-container *ngIf="this.sale">
-                                        <p>{{ sale.method_payment }}</p>
+                                        <div class="payment-info p-3" style="background: #f8f9fa; border-radius: 12px; border-left: 4px solid #28a745;">
+                                            <div class="d-flex align-items-center">
+                                                <i class="icon anm anm-check-circle-o me-2 text-success"></i>
+                                                <strong style="color: #2c3e50;">{{ sale.method_payment }}</strong>
+                                            </div>
+                                        </div>
                                     </ng-container>
                                 </div>
                             </div>
@@ -296,14 +371,37 @@
                     <div class="col-12 col-lg-3">
                         <div class="block p-0">
                             <div class="block-content">
-                                <div class="shipping-details mb-4 mb-sm-0 lh-1">
-                                    <h3 class="mb-3" style="color: #222; font-size: 1.1rem; letter-spacing: 0.5px; border-bottom: 2px solid #e9ecef; padding-bottom: 0.5rem;">
-                                        <i class="icon anm anm-file-text-l me-2"></i>Detalles del pedido
+                                <div class="shipping-details mb-4 mb-sm-0">
+                                    <h3 class="mb-3 d-flex align-items-center" style="color: #2c3e50; font-size: 1.2rem; font-weight: 600;">
+                                        <div class="icon-container me-3" style="width: 32px; height: 32px; background: #6f42c1; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="icon anm anm-file-text-l" style="color: white; font-size: 0.9rem;"></i>
+                                        </div>
+                                        Detalles del pedido
                                     </h3>
                                     <ng-container *ngIf="this.sale">
-                                        <p>ID del pedido: {{ sale.n_transaction }}</p>
-                                        <p>Fecha de pedido: {{ formatDate(sale.updatedAt) }}</p>
-                                        <p>Total del pedido {{ sale.total }}{{ euro }}</p>
+                                        <div class="order-details p-3" style="background: #f8f9fa; border-radius: 12px; border-left: 4px solid #6f42c1;">
+                                            <div class="mb-2 d-flex align-items-center">
+                                                <i class="icon anm anm-hashtag me-2" style="color: #6f42c1;"></i>
+                                                <div>
+                                                    <small class="text-muted d-block" style="font-size: 0.75rem;">ID del pedido</small>
+                                                    <strong style="font-family: 'Courier New', monospace;">{{ sale.n_transaction }}</strong>
+                                                </div>
+                                            </div>
+                                            <div class="mb-2 d-flex align-items-center">
+                                                <i class="icon anm anm-calendar-l me-2" style="color: #6f42c1;"></i>
+                                                <div>
+                                                    <small class="text-muted d-block" style="font-size: 0.75rem;">Fecha del pedido</small>
+                                                    <strong>{{ formatDate(sale.updatedAt) }}</strong>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <i class="icon anm anm-dollar me-2" style="color: #6f42c1;"></i>
+                                                <div>
+                                                    <small class="text-muted d-block" style="font-size: 0.75rem;">Total pagado</small>
+                                                    <strong class="text-success" style="font-size: 1.1rem;">{{ sale.total }}{{ euro }}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </ng-container>
                                 </div>
                             </div>
@@ -312,22 +410,58 @@
                     <div class="col-12 col-lg-3">
                         <div class="block p-0">
                             <div class="block-content">
-                                <div class="billing-details lh-1">
-                                    <h3 class="mb-3" style="color: #222; font-size: 1.1rem; letter-spacing: 0.5px; border-bottom: 2px solid #e9ecef; padding-bottom: 0.5rem;">
-                                        <i class="icon anm anm-truck-l me-2"></i>Fecha prevista de entrega
+                                <div class="billing-details">
+                                    <h3 class="mb-3 d-flex align-items-center" style="color: #2c3e50; font-size: 1.2rem; font-weight: 600;">
+                                        <div class="icon-container me-3" style="width: 32px; height: 32px; background: #fd7e14; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="icon anm anm-truck-l" style="color: white; font-size: 0.9rem;"></i>
+                                        </div>
+                                        Estado del envío
                                     </h3>
-                                    <!-- <p class="h5 my-2">18 de octubre de 2023</p> -->
-                                     <p *ngIf="minDeliveryDate && maxDeliveryDate">
-                                        Fecha estimada de entrega:
-                                        <strong *ngIf="minDeliveryDate === maxDeliveryDate">
-                                            {{ formatearFechaEntrega(minDeliveryDate).label }}
-                                        </strong>
-                                        <strong *ngIf="minDeliveryDate !== maxDeliveryDate">
-                                            {{ formatearFechaEntrega(minDeliveryDate).label }} - {{ formatearFechaEntrega(maxDeliveryDate).label }}
-                                        </strong>
-                                        </p>
-
-                                    <p><a href="#" onclick="return false;" class="btn-link">Seguimiento de pedidos</a></p>
+                                    
+                                    <!-- Estado visual del envío -->
+                                    <div class="shipping-status mb-3 p-3" style="background: #fff3cd; border-radius: 12px; border-left: 4px solid #fd7e14;">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="status-indicator me-3" style="width: 12px; height: 12px; background: #fd7e14; border-radius: 50%;"></div>
+                                            <strong style="color: #856404;">🔄 Procesando pedido</strong>
+                                        </div>
+                                        <small class="text-muted">Tu pedido está siendo preparado por nuestro proveedor Printful</small>
+                                    </div>
+                                    
+                                    <!-- Fecha estimada -->
+                                    <div class="delivery-estimate p-3" style="background: #f8f9fa; border-radius: 12px; border-left: 4px solid #fd7e14;">
+                                        <div class="mb-2">
+                                            <i class="icon anm anm-calendar-l me-2" style="color: #fd7e14;"></i>
+                                            <small class="text-muted d-block" style="font-size: 0.75rem;">Fecha estimada de entrega</small>
+                                        </div>
+                                        <!-- Si hay fechas específicas -->
+                                        <div *ngIf="minDeliveryDate && maxDeliveryDate; else defaultDelivery">
+                                            <strong class="text-primary" style="font-size: 1rem;">
+                                                <span *ngIf="minDeliveryDate === maxDeliveryDate">
+                                                    📅 {{ formatearFechaEntrega(minDeliveryDate).label }}
+                                                </span>
+                                                <span *ngIf="minDeliveryDate !== maxDeliveryDate">
+                                                    📅 {{ formatearFechaEntrega(minDeliveryDate).label }} - {{ formatearFechaEntrega(maxDeliveryDate).label }}
+                                                </span>
+                                            </strong>
+                                        </div>
+                                        <!-- Fallback cuando no hay fechas específicas -->
+                                        <ng-template #defaultDelivery>
+                                            <strong class="text-primary" style="font-size: 1rem;">
+                                                📅 3-7 días laborables
+                                            </strong>
+                                            <div class="mt-1">
+                                                <small class="text-muted">Tiempo estimado según tu ubicación</small>
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                    
+                                    <!-- Botón de seguimiento mejorado -->
+                                    <div class="mt-3">
+                                        <button class="btn btn-outline-primary w-100 py-2" style="border-radius: 8px; font-weight: 600;">
+                                            <i class="icon anm anm-search-plus-l me-2"></i>
+                                            Seguir mi pedido
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -336,20 +470,45 @@
             </div>
             <!-- DETAILS COMPRA -->
 
-            <!-- BOTON SEGUIR COMPRANDO -->
+            <!-- ACCIONES FINALES -->
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                <!--Order Delivery-->
-                <div class="d-flex-wrap mt-4 text-center justify-content-center">
-                    <a [href]="'/' + country + '/' + locale + '/home'" class="text-decoration-none d-inline-flex" [ngClass]="{'w-100': isMobile , 'w-auto': isDesktop }">
-                        <button class="btn btn-dark px-5 py-3 text-uppercase fw-semibold d-flex align-items-center" style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
-                            <i class="me-2 icon anm anm-arrow-left" style="font-size: 1.2rem;"></i>
-                            <span>Seguir comprando</span>
-                        </button>     
-                    </a>
-                    <button type="button" class="d-inline-flex align-items-center btn me-2 mb-2 me-sm-3 d-none"><i class="me-2 icon an an-print"></i>Orden de impresión</button>
-                    <button type="button" class="d-inline-flex align-items-center btn me-2 mb-2 me-sm-3 d-none"><i class="me-2 icon an an-sync-ar"></i>Re-Order</button>
+                <!--Acciones del usuario-->
+                <div class="final-actions mt-5 p-4" style="background: #ffffff; border-radius: 16px; border: 1px solid #e9ecef; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                    <h4 class="text-center mb-4" style="color: #2c3e50; font-weight: 600;">¿Qué te gustaría hacer ahora?</h4>
+                    
+                    <div class="row g-3">
+                        <!-- Seguir comprando -->
+                        <div class="col-12 col-md-6">
+                            <a [href]="'/' + country + '/' + locale + '/home'" class="text-decoration-none d-block">
+                                <button class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center" style="background: #007bff; border: none; border-radius: 12px; font-weight: 600; letter-spacing: 0.5px; box-shadow: 0 4px 16px rgba(0, 123, 255, 0.2);">
+                                    <i class="me-3 icon anm anm-bag-l" style="font-size: 1.3rem;"></i>
+                                    <span style="font-size: 1rem;">Seguir comprando</span>
+                                </button>
+                            </a>
+                        </div>
+                        
+                        <!-- Contactar soporte -->
+                        <div class="col-12 col-md-6">
+                            <a [href]="'mailto:soporte@lujandev.com?subject=Consulta sobre pedido ' + (sale?.printfulOrderId ? '#PF' + sale.printfulOrderId : sale?.n_transaction) + '&body=Hola, tengo una consulta sobre mi pedido.'" class="text-decoration-none d-block">
+                                <button class="btn btn-outline-success w-100 py-3 d-flex align-items-center justify-content-center" style="border: 2px solid #28a745; color: #28a745; border-radius: 12px; font-weight: 600; letter-spacing: 0.5px;">
+                                    <i class="me-3 icon anm anm-envelope-l" style="font-size: 1.3rem;"></i>
+                                    <span style="font-size: 1rem;">¿Necesitas ayuda?</span>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Mensaje adicional -->
+                    <div class="text-center mt-4">
+                        <div class="alert alert-light border-0" style="background: #f0f8f0; border-radius: 12px;">
+                            <i class="icon anm anm-heart text-danger me-2"></i>
+                            <strong>¡Gracias por confiar en nosotros!</strong> 
+                            <br>
+                            <small class="text-muted">Recibirás actualizaciones del estado de tu pedido por email y podrás seguir el envío en tiempo real.</small>
+                        </div>
+                    </div>
                 </div>
-                <!--Order delivery-->
+                <!--Fin acciones del usuario-->
             </div>
             <!-- END BOTON SEGUIR COMPRANDO -->
         </div>

@@ -390,12 +390,24 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.authService.user,
         this.authService.userGuest
       ]).subscribe(([user, userGuest]) => {
+        const previousUser = this.currentUser;
         this.currentUser = user || userGuest; // Usa el usuario autenticado o invitado
+        
+        // ✅ Detectar cambios en el estado de autenticación
         if (this.currentUser) {
+          console.log('✅ Header: Usuario detectado', this.currentUser.email || 'Guest');
           this.processUserStatus();  // Procesar el usuario
         } else {
-          console.warn("Error: No hay usuario autenticado o invitado.");
+          console.log('⚠️ Header: No hay usuario autenticado o invitado');
+          // Limpiar carritos y wishlists cuando no hay usuario
+          this.listCarts = [];
+          this.listWishlists = [];
+          this.totalCarts = 0;
+          this.totalWishlist = 0;
         }
+        
+        // Forzar detección de cambios en UI
+        this.cd.detectChanges();
       })
     );
   }
@@ -690,10 +702,19 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   navigateToProduct(slug: string, discountId?: string) {
-    this.router.navigate(['/', this.country, this.locale, 'shop', 'product', slug], { queryParams: { _id: discountId } })
-      .then(() => {
-          window.location.reload();
-      });
+    // Cerrar el offcanvas del buscador
+    const searchDrawer = document.getElementById('search-drawer');
+    const bsOffcanvas = (window as any).bootstrap?.Offcanvas?.getInstance(searchDrawer);
+    if (bsOffcanvas) {
+      bsOffcanvas.hide();
+    }
+    
+    // Limpiar campo de búsqueda
+    this.search_product = '';
+    this.products_search = [];
+    
+    // Navegación SPA-friendly sin reload
+    this.router.navigate(['/', this.country, this.locale, 'shop', 'product', slug], { queryParams: { _id: discountId } });
   }
 
   private checkDeviceType(): void {

@@ -110,7 +110,8 @@ export class AppComponent implements AfterViewInit {
   }
 
   handleForceLogin() {
-    this.router.navigate(['/', this.country, this.locale,  'auth', 'login']).then(() => {window.location.reload();});
+    // Navegación SPA sin recarga completa
+    this.router.navigate(['/', this.country, this.locale, 'auth', 'login']);
   }
 
   acceptCookies() {
