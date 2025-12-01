@@ -86,7 +86,8 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
            code_cupon: detail.code_cupon,
            price_unitario: detail.price_unitario,
            type_discount: detail.type_discount,
-           product_price_usd: detail.product?.price_usd,
+           product_price_eur: detail.product?.price_eur || detail.product?.price || detail.product?.price_usd,
+           product_price_usd: detail.product?.price_usd, // Legacy
            variedad_retail_price: detail.variedad?.retail_price || detail.variedade?.retail_price
          });
         
@@ -335,7 +336,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     // Usar el mismo orden de prioridad que el sistema de checkout
     const variedad = prodDetail.variedad || prodDetail.variedade;
     const retailPrice = parseFloat(variedad?.retail_price || 0);
-    const productPrice = parseFloat(prodDetail.product?.price_usd || 0);
+    const productPrice = parseFloat(prodDetail.product?.price_eur || prodDetail.product?.price || prodDetail.product?.price_usd || 0);
     
     // Priorizar retail_price de variedad, luego price_usd del producto
     return retailPrice > 0 ? retailPrice : productPrice;
@@ -359,7 +360,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     
     // Fallback: usar retail_price si price_unitario no está disponible
     const variedad = prodDetail.variedad || prodDetail.variedade;
-    return parseFloat(variedad?.retail_price || prodDetail.product?.price_usd || 0);
+    return parseFloat(variedad?.retail_price || prodDetail.product?.price_eur || prodDetail.product?.price || prodDetail.product?.price_usd || 0);
   }
 
   /**

@@ -341,7 +341,7 @@ export class PaymentCheckoutComponent implements OnInit {
 
   calculateTotal(cart: any[]): number {
     return cart.reduce((sum, item) => {
-      const price = Number(item.product?.price_usd || 0);
+      const price = Number(item.product?.price_eur || item.product?.price || item.product?.price_usd || 0);
       return sum + price * item.cantidad;
     }, 0);
   }

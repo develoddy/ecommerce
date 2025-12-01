@@ -129,14 +129,28 @@ export class ProfileClientComponent implements OnInit {
     let data = {
       email: this.CURRENT_USER_AUTHENTICATED.email,
     }
-    this._ecommerceAuthService.detail_user(data).subscribe((resp:any) => {
-      if (resp.status = 200) {
-        this.userDetail = resp.user;
-        this.name_c  =  resp.user.name;
-        this.surname_c  =  resp.user.surname;
-        this.email_c  =  resp.user.email;
-        this.phone_c = resp.user.phone;
-        this.zipcode_c = resp.user.zipcode;
+    this._ecommerceAuthService.detail_user(data).subscribe({
+      next: (resp: any) => {
+        if (resp.status = 200) {
+          this.userDetail = resp.user;
+          this.name_c  =  resp.user.name;
+          this.surname_c  =  resp.user.surname;
+          this.email_c  =  resp.user.email;
+          this.phone_c = resp.user.phone;
+          this.zipcode_c = resp.user.zipcode;
+        }
+      },
+      error: (err: any) => {
+        console.error('❌ Error al obtener detalles del usuario:', err);
+        if (err.status === 401) {
+          alertWarning(['Tu sesión ha expirado. Por favor, inicia sesión nuevamente.']);
+          // Esperar 2 segundos antes de redirigir para que el usuario vea el mensaje
+          setTimeout(() => {
+            this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
+          }, 2000);
+        } else {
+          alertDanger(['Error al cargar tus datos. Por favor, intenta nuevamente.']);
+        }
       }
     });
   }
@@ -148,27 +162,38 @@ export class ProfileClientComponent implements OnInit {
       user_id: this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : 0, //this.user._id, //this._ecommerceAuthService._authService.user._id,
     };
 
-    this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
+    this._ecommerceAuthService.showProfileClient(data).subscribe({
+      next: (resp: any) => {
+        console.log("---- PROFILE CLIENT: ", resp);
 
-      console.log("---- PROFILE CLIENT: ", resp);
-      
+        this.sale_orders = resp.sale_orders;
 
-      this.sale_orders = resp.sale_orders;
+        this.sale_details = [];
 
-      this.sale_details = [];
+        // Recorremos cada objeto en sale_orders
+        this.sale_orders.forEach((order: any) => {
+          // Verificamos si existe la propiedad sale_details y si es un array
+          if (order && order.sale_details && Array.isArray(order.sale_details)) {
+            // Añadimos cada detalle de venta a sale_details
+            order.sale_details.forEach((detail: any) => {
+              this.sale_details.push(detail);
+            });
+          }
+        });
 
-      // Recorremos cada objeto en sale_orders
-      this.sale_orders.forEach((order: any) => {
-        // Verificamos si existe la propiedad sale_details y si es un array
-        if (order && order.sale_details && Array.isArray(order.sale_details)) {
-          // Añadimos cada detalle de venta a sale_details
-          order.sale_details.forEach((detail: any) => {
-            this.sale_details.push(detail);
-          });
+        this.listAddressClients = resp.address_client;
+      },
+      error: (err: any) => {
+        console.error('❌ Error al cargar perfil del cliente:', err);
+        if (err.status === 401) {
+          alertWarning(['Tu sesión ha expirado. Por favor, inicia sesión nuevamente.']);
+          setTimeout(() => {
+            this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
+          }, 2000);
+        } else {
+          alertDanger(['Error al cargar tu perfil. Por favor, recarga la página.']);
         }
-      });
-
-      this.listAddressClients = resp.address_client;
+      }
     });
   }
 

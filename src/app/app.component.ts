@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from './modules/auth-profile/_services/auth.service';
+import { TokenService } from './modules/auth-profile/_services/token.service';
 import { Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { BodyClassService } from './services/body-class.service';
@@ -45,7 +46,8 @@ export class AppComponent implements AfterViewInit {
     private localizationService: LocalizationService,
     private headerEventsService: HeaderEventsService,
     private cookieConsentService: CookieConsentService,
-    private authService: AuthService 
+    private authService: AuthService,
+    private tokenService: TokenService
   ) {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translate.get('app.title').subscribe((res: string) => {
@@ -75,11 +77,36 @@ export class AppComponent implements AfterViewInit {
     });
     this.checkDeviceType();
 
+    // 🔄 Refresh proactivo de tokens cada 2 minutos
+    this.initTokenRefreshTimer();
+
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       productSlider5items($);
       (window as any).sliderRefresh($);
     }, 150);
+  }
+
+  /**
+   * Inicializa timer para refrescar token automáticamente antes de que expire
+   */
+  private initTokenRefreshTimer(): void {
+    // Verificar cada 2 minutos si el token está cerca de expirar
+    setInterval(() => {
+      const isAuthenticated = this.authService.isAuthenticatedUser();
+      if (!isAuthenticated) return;
+
+      if (this.tokenService.isTokenNearExpiration()) {
+        console.log('🔄 Token cerca de expirar, refrescando automáticamente...');
+        this.tokenService.refreshingToken().subscribe({
+          next: () => console.log('✅ Token refrescado exitosamente'),
+          error: (err: any) => {
+            console.error('❌ Error refrescando token:', err);
+            // El interceptor manejará el logout si es necesario
+          }
+        });
+      }
+    }, 120000); // 2 minutos
   }
 
   handleForceLogin() {

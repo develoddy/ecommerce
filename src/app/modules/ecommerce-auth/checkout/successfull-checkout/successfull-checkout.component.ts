@@ -356,6 +356,8 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       const price = Number(
         item.variedade?.retail_price ??
           item.price_unitario ??
+          item.product?.price_eur ??
+          item.product?.price ??
           item.product?.price_usd ??
           0
       );

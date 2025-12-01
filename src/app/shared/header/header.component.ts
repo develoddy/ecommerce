@@ -403,14 +403,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private processUserStatus(): void {
     this.storeListCarts();
     this.storeListWishlists();
-    if (this.currentUser && !this.currentUser.email) {
-      let user_guest = "Guest";
-      this.cartService.listCartsCache(user_guest).subscribe((resp: any) => {
-        if (resp.carts.length > 0) {
-          this.syncUserCart();
-        }
-      });
-    }
+    // ⚠️ REMOVIDO: La migración guest→usuario ahora se maneja en login.component.ts
+    // La sincronización aquí causaba el error: "sin un usuario autenticado"
   }
 
   private storeListCarts(): void {

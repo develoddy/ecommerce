@@ -465,7 +465,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       // Crear un objeto temporal con el precio de la variedad
       productForCalculation = {
         ...this.product_selected,
-        price_usd: parseFloat(this.variedad_selected.retail_price)
+        price_eur: parseFloat(this.variedad_selected.retail_price),
+        price_usd: parseFloat(this.variedad_selected.retail_price) // Legacy compatibility
       };
     }
 
@@ -506,7 +507,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       // Crear un objeto temporal con el precio de la variedad
       productForCalculation = {
         ...this.product_selected,
-        price_usd: parseFloat(this.variedad_selected.retail_price)
+        price_eur: parseFloat(this.variedad_selected.retail_price),
+        price_usd: parseFloat(this.variedad_selected.retail_price) // Legacy compatibility
       };
     }
 
@@ -531,7 +533,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     // Si no, usar el precio base del producto
-    return this.product_selected.price_usd;
+    return this.product_selected.price_eur || this.product_selected.price || this.product_selected.price_usd;
   }
 
   /**
@@ -837,7 +839,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     let discount = 0;
-    const basePrice = this.product_selected.price_usd || this.product_selected.price_soles || 0;
+    const basePrice = this.product_selected.price_eur || this.product_selected.price || this.product_selected.price_usd || 0;
 
     // Prioridad 1: Flash Sale (si existe)
     if (this.SALE_FLASH) {

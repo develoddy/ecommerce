@@ -364,7 +364,8 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     let discount = 0;
     if ( this.SALE_FLASH ) {
       if (this.SALE_FLASH.type_discount == 1) {
-        return (this.SALE_FLASH.discount*this.product_selected.price_usd*0.01).toFixed(2);
+        const price = this.product_selected.price_eur || this.product_selected.price || this.product_selected.price_usd;
+        return (this.SALE_FLASH.discount*price*0.01).toFixed(2);
       } else {
         return this.SALE_FLASH.discount;
       }

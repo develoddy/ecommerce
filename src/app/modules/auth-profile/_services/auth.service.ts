@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { URL_SERVICE } from 'src/app/config/config';
 import { catchError, map, of, BehaviorSubject, finalize, window, Observable, tap, filter, throwError, switchMap, take } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,8 @@ export class AuthService {
   constructor(
     private _http               : HttpClient, 
     private _router             : Router, 
-    private localizationService : LocalizationService
+    private localizationService : LocalizationService,
+    private tokenService        : TokenService
   ) {
     if(!this.isAuthenticatedUser()) {
       this.validateOrCreateGuest();
@@ -137,9 +139,10 @@ export class AuthService {
           resp.USER_FRONTED.refreshToken 
         ){
           this.localStorageSave(resp.USER_FRONTED);
-          this.removeUserGuestLocalStorage();
-          this.deleteGuestAndAddresses();
-          return true;
+          // ⚠️ NO borrar user_guest aquí - lo maneja login.component.ts DESPUÉS de migrar el carrito
+          // this.removeUserGuestLocalStorage();  // REMOVIDO
+          // this.deleteGuestAndAddresses();       // REMOVIDO
+          return resp;  // ✅ Retornar resp completa en lugar de true
         } else {
           return resp;
         }
@@ -239,157 +242,13 @@ export class AuthService {
   }
 
   /* ------------------ Zona de Token --------------- */
-  /*  ¿Qué pasa cuando el Access Token expira?
-   *  Usuario inicia sesión → Se generan accessToken (6 min) y refreshToken (30 días).
-   *  El usuario usa el accessToken para hacer peticiones al backend.
-   *  Cuando el accessToken expira (pasan 6 minutos), el sistema detecta que está vencido.
-   *  Se usa el refreshToken para generar un nuevo accessToken.
-   *  Este ciclo se repite cada 6 minutos hasta que el refreshToken también expire (30 días).
-   *
-   *  📌 Importante: El refreshToken NO cambia cada 6 minutos. Solo se usa para obtener un nuevo accessToken.
-  */
-  verifyTokenExpiration(token: string) {
-    try {
-  
-      // EXTRAER LA PARTE DEL PAYLOAD DEL TOKEN JWT
-      const base64Url = token.split('.')[1];
-      
-      // ASEGURAR QUE LA CADENA BASE64 ESTÉ EN EL FORMATO CORRECTO
-      const base64 = base64Url.replace('-', '+').replace('_', '/');
-      
-      // DECODIFICAR EL TOKEN MANUALMENTE
-      const decoded = JSON.parse(atob(base64));
-      
-      // MOSTRAR LA FECHA DE EMISION (IAT) Y EXPIRACION (EXP) EN FORMATO LEGIBLE
-      const iatTimestamp = decoded.iat;
-      const expTimestamp = decoded.exp;
-
-      if ( !iatTimestamp || !expTimestamp ) {
-        throw new Error("El token no contiene la fecha de emisión (iat) o de expiración (exp).");
-      }
-
-      // VERIFICAR SI EL TOKEN HA EXPIRADA
-      // OBTENER EL TIEMPO ACTUAL EN SEGUNDOS
-      const currentTimestamp = Math.floor(Date.now() / 1000);
-
-      if ( decoded.exp < currentTimestamp ) {  
-        // INTENTAR REFRESCAR EL TOKEN SI HAY UN refresh_token DISPONIBLE
-        const refreshToken = localStorage.getItem('refresh_token');
-        if ( refreshToken ) {
-
-          this.refreshToken().subscribe({
-            error: () => {
-              // SI FALLA LA RENOVACION, REDIRIGIR AL LOGIN
-              const country = this.localizationService.country;
-              const locale = this.localizationService.locale;
-              this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
-            }
-          });
-        }
-      }
-
-    } catch (error) {
-      console.error("❌ ERROR AL DECODIFICAR EL TOKEN:", error);
-    }
-  }
-
-  // OLD
-  isTokenNearExpiration(token: string): boolean {
-    try {
-      // EXTRAER LA PARTE DEL PAYLOAD DEL TOKEN JWT
-      const base64Url = token.split('.')[1];
-      const base64    = base64Url.replace('-', '+').replace('_', '/');
-      const decoded   = JSON.parse(atob(base64));
-  
-      const exp = decoded.exp;
-      const currentTimestamp = Math.floor(Date.now() / 1000); // OBTENER EL TIEMPO ACTUAL EN SEGUNDOS
-  
-      // DEFINIR EL UMBRAL DE "CERCA DE EXPIRAR" (EN SEGUNDOS, POR EJEMPLO, 5 MINUTOS)
-      const expirationThreshold = 5 * 60; // 5 MINUTOS ANTES DE LA EXPIRACIÓN
-  
-      // VERIFICAR SI EL TOKEN ESTÁ CERCA DE EXPIRAR
-      if (exp - currentTimestamp <= expirationThreshold) {
-        return true; // EL TOKEN ESTÁ CERCA DE EXPIRAR
-      }
-  
-      return false; 
-
-    } catch ( error ) {
-      const { locale, country } = this.getLocaleAndCountry();
-      this._router.navigate(['/', locale, country, 'auth', 'login']);
-      return false;
-    }
-  }
-
-  private handleLogout(): void {
-    const country = this.localizationService.country;
-    const locale = this.localizationService.locale;
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    this._router.navigateByUrl(`/${country}/${locale}/auth/login`);
-  }
-  
-  refreshToken(): Observable<string> {
-
-    const refreshToken = localStorage.getItem('refresh_token');
-    const URL = URL_SERVICE + "users/refresh-token";
-
-    if ( !refreshToken ) {
-      this.handleLogout();
-      return throwError(() => new Error('No refresh token found.'));
-    }
-    
-    if ( !this.isRefreshing ) {
-      this.isRefreshing = true;
-      this.refreshTokenSubject.next(null); // LIMPIAR EL SUBJECT ANTES DE HACER LA LLAMADA
-
-      return this._http.post<any>(URL, { refresh_token: refreshToken }).pipe(
-        tap(( response ) => {
-          // VERIFICAR SI EL BACKEND AHA RESPONDIDO CON UN REFRESH TOKEN VALIDO
-          if ( !response || !response.refreshToken || !response.accessToken) {
-            this.handleLogout();
-            throw new Error('Invalid refresh response');
-            this.isRefreshing = false;
-            return;
-          }
-
-          // DECODIFICAR EL PAYLOAD DEL NUEVO refreshToken PARA VERIFICAR SU EXPIRACION
-          const base64Url      = response.refreshToken.split('.')[1];
-          const base64         = base64Url.replace('-', '+').replace('_', '/');
-          const decodedPayload = JSON.parse(atob(base64));
-          // console.log("📌 NUEVO PAYLOAD DEL REFRESH TOKEN:", decodedPayload);
-          console.warn("📅 REFRESH TOKEN EXPIRA EN:", new Date(decodedPayload.exp * 1000).toLocaleString());
-
-          // GUARDA EL NUEVO accessToken
-          localStorage.setItem("access_token", response.accessToken);
-          localStorage.setItem('refresh_token', response.refreshToken);
-          this.accessTokenSubject.next(response.accessToken); // EMITIMOS NUEVO TOKEN A LOS QUE ESTÁN ESPERANDO
-          this.isRefreshing = false;
-
-        }),
-        //switchMap(() => this.refreshTokenSubject.pipe(filter(token => token !== null), take(1))), 
-        // DEVOLVEMOS EL TOKEN NUEVO
-        switchMap(() =>
-          this.refreshTokenSubject.pipe(
-            filter((token): token is string => token !== null), // 👈 forzamos tipo
-            take(1)
-          )
-        ),
-        catchError(( error ) => {
-          this.handleLogout();
-          this.isRefreshing = false;
-          return throwError(() => error); //throw error; // PROPAGAR EL ERROR
-        })
-      );
-    } else {
-      //return this.refreshTokenSubject.asObservable();
-      // YA SE ESTÁ REFRESCANDO, DEVOLVEMOS EL OBSERVABLE QUE ESPERA EL TOKEN
-      return this.refreshTokenSubject.pipe(
-        filter((token): token is string => token !== null), // 👈 aquí también
-        take(1)
-      );
-    }
-  }
+  /*  NOTA: La lógica de tokens ha sido consolidada en token.service.ts
+   *  Usa tokenService para:
+   *  - refreshingToken(): Renovar tokens
+   *  - isTokenNearExpiration(): Verificar si está cerca de expirar
+   *  - isTokenExpired(): Verificar si ya expiró
+   *  - getTimeUntilExpiration(): Obtener tiempo restante
+   */
 
   getSessionId(): string | null {
     const guestUser = localStorage.getItem("user_guest");

@@ -247,8 +247,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       return product;
     });
 
-    console.log("this.ourProducts", this.ourProducts);
-    
 
     // Calcular precios finales para productos hodies usando el servicio
     this.hoodiesProducts = resp.hoodies_products.map((hodieProduct: any) => {

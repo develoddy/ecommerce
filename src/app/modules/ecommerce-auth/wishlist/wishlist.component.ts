@@ -128,7 +128,8 @@ export class WishlistComponent implements OnInit, OnDestroy {
     let discount = 0;
     if ( this.SALE_FLASH ) {
       if (this.SALE_FLASH.type_discount == 1) {
-        return (this.SALE_FLASH.discount*this.product_selected.price_usd*0.01).toFixed(2);
+        const price = this.product_selected.price_eur || this.product_selected.price || this.product_selected.price_usd;
+        return (this.SALE_FLASH.discount*price*0.01).toFixed(2);
       } else {
         return this.SALE_FLASH.discount;
       }
@@ -214,9 +215,9 @@ export class WishlistComponent implements OnInit, OnDestroy {
        variedad: this.variedad_selected ? this.variedad_selected.id : null,
        code_cupon: null,
        code_discount: 0,//this.SALE_FLASH ? this.SALE_FLASH._id : null,
-       price_unitario: product.price_usd,
-       subtotal: product.price_usd - 0,//this.getDiscount(),
-       total: (product.price_usd - /*this.getDiscount()*/0 )*$("#qty-cart").val(), // De momento es igual, luego aplicamos el descuento
+       price_unitario: product.price_eur || product.price || product.price_usd,
+       subtotal: (product.price_eur || product.price || product.price_usd) - 0,//this.getDiscount(),
+       total: ((product.price_eur || product.price || product.price_usd) - /*this.getDiscount()*/0 )*$("#qty-cart").val(), // De momento es igual, luego aplicamos el descuento
     }
 
     this._cartService.registerCart(data).subscribe((resp:any) => {

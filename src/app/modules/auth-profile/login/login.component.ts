@@ -81,6 +81,113 @@ export class LoginComponent implements OnInit {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
 
+  /**
+   * Migra el carrito del guest al usuario autenticado
+   */
+  private migrateGuestCart(user: any): void {
+    const user_guest = "Guest";
+    
+    // 1. Obtener carritos del guest (cache) y del usuario (database)
+    this.cartService.listCartsCache(user_guest).subscribe({
+      next: (respCache: any) => {
+        console.log(`📦 Carrito guest encontrado: ${respCache.carts.length} productos`);
+        
+        if (respCache.carts.length === 0) {
+          // No hay productos en guest, solo limpiar y navegar
+          console.log('ℹ️ Guest sin productos, limpiando guest y continuando...');
+          this._authService.removeUserGuestLocalStorage();
+          this._authService.deleteGuestAndAddresses().subscribe();
+          this.cartService.resetCart();
+          this._router.navigate(['/', this.country, this.locale, 'home']);
+          return;
+        }
+
+        // 2. Obtener carrito del usuario autenticado
+        this.cartService.listCarts(user._id).subscribe({
+          next: (respDatabase: any) => {
+            console.log(`🛒 Carrito usuario encontrado: ${respDatabase.carts.length} productos`);
+            
+            // 3. Merge de ambos carritos (eliminar duplicados)
+            const mergedCarts = this.mergeAndRemoveDuplicates(
+              respDatabase.carts || [], 
+              respCache.carts || []
+            );
+            
+            console.log(`✅ Carritos fusionados: ${mergedCarts.length} productos totales`);
+            
+            // 4. Sincronizar con backend
+            this.cartService.syncCartWithBackend(mergedCarts, user._id).subscribe({
+              next: (syncResp: any) => {
+                console.log('✅ Carrito migrado exitosamente:', syncResp);
+                
+                // 5. Actualizar el BehaviorSubject del carrito
+                this.cartService.resetCart();
+                syncResp.carts?.forEach((cart: any) => {
+                  this.cartService.changeCart(cart);
+                });
+                
+                // 6. Limpiar datos del guest DESPUÉS de la migración exitosa
+                this._authService.removeUserGuestLocalStorage();
+                this._authService.deleteGuestAndAddresses().subscribe({
+                  next: () => console.log('🧹 Guest limpiado después de migración'),
+                  error: (err) => console.warn('⚠️ Error al limpiar guest:', err)
+                });
+                
+                // 7. Navegar al home
+                this._router.navigate(['/', this.country, this.locale, 'home']);
+              },
+              error: (syncError) => {
+                console.error('❌ Error al sincronizar carrito:', syncError);
+                // Aún así limpiar guest y navegar
+                this._authService.removeUserGuestLocalStorage();
+                this.cartService.resetCart();
+                this._router.navigate(['/', this.country, this.locale, 'home']);
+              }
+            });
+          },
+          error: (dbError) => {
+            console.error('❌ Error al obtener carrito del usuario:', dbError);
+            this._authService.removeUserGuestLocalStorage();
+            this.cartService.resetCart();
+            this._router.navigate(['/', this.country, this.locale, 'home']);
+          }
+        });
+      },
+      error: (cacheError) => {
+        console.error('❌ Error al obtener carrito guest:', cacheError);
+        this._authService.removeUserGuestLocalStorage();
+        this.cartService.resetCart();
+        this._router.navigate(['/', this.country, this.locale, 'home']);
+      }
+    });
+  }
+
+  /**
+   * Fusiona carritos eliminando duplicados
+   */
+  private mergeAndRemoveDuplicates(databaseCarts: any[], cacheCarts: any[]): any[] {
+    const combinedCarts = [...databaseCarts, ...cacheCarts];
+    const uniqueCarts = new Map();
+
+    combinedCarts.forEach(cart => {
+      const productId = cart.product?._id || cart.productId;
+      const variedadId = cart.variedad?.id || cart.variedadId;
+      const key = `${productId}-${variedadId || 'null'}`;
+      
+      if (!uniqueCarts.has(key)) {
+        uniqueCarts.set(key, cart);
+      } else {
+        // Si existe, sumar cantidades
+        const existing = uniqueCarts.get(key);
+        existing.cantidad = (existing.cantidad || 1) + (cart.cantidad || 1);
+        existing.subtotal = existing.price_unitario * existing.cantidad;
+        existing.total = existing.subtotal;
+      }
+    });
+
+    return Array.from(uniqueCarts.values());
+  }
+
   public login() {
     if (!this.email) {
       alertDanger("Es necesario ingresar el email");
@@ -92,15 +199,21 @@ export class LoginComponent implements OnInit {
 
     const subscriptionLogin = this._authService.login(this.email, this.password).subscribe((
       resp:any) => {
-        if ( !resp.error && resp ) {
-          // this._router.navigate(["/"]);
-          this._router.navigate(['/', this.country, this.locale, 'home']);
-          // this._router.navigate(['/', this.country, this.locale,  'home']).then(() => {window.location.reload();});
-          // window.location.href = `/${this.country}/${this.locale}/home`;
-          this.cartService.resetCart(); 
+        if ( !resp.error && resp && resp.USER_FRONTED ) {
+          // ✅ MIGRACIÓN DE CARRITO GUEST → USUARIO AUTENTICADO
+          const guestData = localStorage.getItem('user_guest');
+          if (guestData) {
+            console.log('🔄 Detectado guest con carrito, iniciando migración...');
+            this.migrateGuestCart(resp.USER_FRONTED.user);
+          } else {
+            // No hay guest, limpiar cualquier dato residual y navegar
+            console.log('ℹ️ Login sin guest, navegando...');
+            this._authService.removeUserGuestLocalStorage();
+            this._router.navigate(['/', this.country, this.locale, 'home']);
+          }
         } else {
           this.errorAutenticate = true;
-          this.errorMessageAutenticate = resp.error.message;
+          this.errorMessageAutenticate = resp.error?.message || 'Error de autenticación';
         }
       });
     this.subscriptions.add(subscriptionLogin);
