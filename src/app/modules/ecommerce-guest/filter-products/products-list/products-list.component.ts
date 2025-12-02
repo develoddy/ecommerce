@@ -166,7 +166,6 @@ export class ProductsListComponent implements OnInit, OnChanges {
     // Update selected size for this product
     this.selectedSizes[productId] = size;
     
-    console.log(`✅ Size ${size} selected for product ${productId}`);
     
     // Find the selected variety based on current color and size
     const currentColorIndex = this.selectedColors[productId] || 0;
@@ -207,9 +206,6 @@ export class ProductsListComponent implements OnInit, OnChanges {
       campaignDiscount: product.campaing_discount || null
     };
 
-    console.log('🛒 Añadiendo al carrito desde grid con productData:', productData);
-    console.log('👤 Current user:', this.currentUser);
-    console.log('📊 Selected variety:', selectedVariety);
     
     // Use cartManagerService like landing-product does
     this.subscriptions.add(
@@ -285,7 +281,7 @@ export class ProductsListComponent implements OnInit, OnChanges {
       // Success: update cart and open minicart
       this.cartService.changeCart(resp.cart);
       this.minicartService.openMinicart();
-      console.log('✅ Product added to cart successfully');
+      
       
       // Clear any previous errors
       this.errorResponse = false;

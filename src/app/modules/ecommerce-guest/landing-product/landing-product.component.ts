@@ -548,7 +548,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private handleProductResponse(resp: any): void {
-    console.log("🚀 handleProductResponse: resp:", resp);
+  
 
     if (!resp || !resp.product) {
       console.error('No product data available');
@@ -556,11 +556,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     this.product_selected = resp.product;
-    
     this.related_products = resp.related_products;
     this.interest_products = resp.interest_products
-    //console.log("🚀 Padre: handleProductResponse() -> interest_products:", this.interest_products);
-    
     this.SALE_FLASH = resp.SALE_FLASH;
     this.REVIEWS = resp.REVIEWS;
     this.AVG_REVIEW = resp.AVG_REVIEW;
@@ -875,7 +872,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   selectColor(color: { color: string; imagen: string }) {
-    console.log('🎨 Seleccionando color hijo mini color:', color.color);
+    
     
     // Buscar imagen específica en las galerías para este color
     const galeriaConImagen = this.product_selected.galerias?.find(
@@ -883,8 +880,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     );
     
     const imagenFinal = galeriaConImagen?.imagen || color.imagen;
-    console.log('🎨 Imagen encontrada en galería:', galeriaConImagen?.imagen);
-    console.log('🎨 Imagen final a mostrar:', imagenFinal);
+    
     
     // Delegar al servicio especializado
     this.productDisplayService.selectColor({ ...color, imagen: imagenFinal });
@@ -967,8 +963,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   selectedVariedad(variedad: any, index: number) {
-    console.log('👕 Variedad seleccionada desde hijo:', variedad.valor);
-    console.log('💰 Precio retail_price:', variedad.retail_price);
+    
     
     this.variedad_selected = variedad;
     this.activeIndex = index;
@@ -1120,12 +1115,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       user: this.currentUser,
       saleFlash: this.SALE_FLASH, // Flash Sale si existe
       campaignDiscount: this.product_selected.campaing_discount // Campaign Discount si existe
-    };
-
-    console.log('🛒 Añadiendo al carrito con datos:', productData);
-    console.log('🔥 SALE_FLASH:', this.SALE_FLASH);
-    console.log('📢 Campaign Discount:', this.product_selected.campaing_discount);
-    
+    };  
 
     // Añadir al carrito usando el servicio especializado
     this.subscriptions.add(

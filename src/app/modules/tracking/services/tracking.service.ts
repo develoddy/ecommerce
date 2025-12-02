@@ -46,8 +46,7 @@ export class TrackingService {
     this.isLoadingSubject.next(true);
     
     const url = `${URL_SERVICE}/orders/tracking/${orderId}/${token}`;
-    
-    console.log('🔍 Consultando tracking para orden:', orderId, 'con token:', token.substring(0, 8) + '...');
+
 
     return this._http.get<TrackingResponse>(url).pipe(
       timeout(this.DEFAULT_TIMEOUT),
@@ -56,8 +55,7 @@ export class TrackingService {
         if (!response.success || !response.data) {
           throw new Error(response.message || 'No se pudo obtener el estado del pedido');
         }
-        
-        console.log('✅ Tracking obtenido:', response.data);
+    
         return response.data;
       }),
       catchError(error => {
@@ -100,7 +98,7 @@ export class TrackingService {
       }),
       finalize(() => {
         this.isLoadingSubject.next(false);
-        console.log('🏁 Consulta de tracking finalizada');
+        
       })
     );
   }

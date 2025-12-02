@@ -151,7 +151,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentUser) {
       this.cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
-        console.log("----> resp > listCarts:", this.listCarts);
+        
         
          this.showRelatedProducts();
         // Procesar precios con descuento para cada item del carrito

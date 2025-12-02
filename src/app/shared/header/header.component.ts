@@ -195,7 +195,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private processBasicData(resp: any): void {
-    //console.log("----> [Components Header] Home data received:", resp);
+   
     
     // Asignar datos básicos primero
     this.ourProducts = resp.our_products
@@ -395,10 +395,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         
         // ✅ Detectar cambios en el estado de autenticación
         if (this.currentUser) {
-          console.log('✅ Header: Usuario detectado', this.currentUser.email || 'Guest');
+          
           this.processUserStatus();  // Procesar el usuario
         } else {
-          console.log('⚠️ Header: No hay usuario autenticado o invitado');
+          
           // Limpiar carritos y wishlists cuando no hay usuario
           this.listCarts = [];
           this.listWishlists = [];
@@ -484,7 +484,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private listCartsDatabase(): void {
     //if (!this.currentUser || !this.currentUser._id) {
     if(this.currentUser && !this.currentUser.email) {
-      console.error("Error: Intentando acceder a la base de datos sin un usuario autenticado.");
+      
       return;
     }
     this.cartService.listCarts(this.currentUser._id).subscribe((resp: any) => {
@@ -959,7 +959,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     // Reset all submenus to closed state when opening menu
     const isOpening = $('.mobile-nav-wrapper').hasClass("active");
     if (isOpening) {
-      console.log('🔄 Resetting all submenus to closed state');
+      
       const allItems = document.querySelectorAll('.mobile-nav .lvl1');
       allItems.forEach((item) => {
         item.classList.remove('expanded', 'animating');
@@ -995,7 +995,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     
     // Prevent multiple rapid clicks
     if (parentLi.classList.contains('animating')) {
-      console.log('⏳ Already animating, skipping');
       return;
     }
     
@@ -1012,13 +1011,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     const hasShowClass = submenu.classList.contains('show');
     const currentMaxHeight = window.getComputedStyle(submenu).maxHeight;
     
-    console.log('📊 Current state:', {
-      hasExpandedClass,
-      hasShowClass,
-      currentMaxHeight,
-      submenuDisplay: window.getComputedStyle(submenu).display,
-      submenuOpacity: window.getComputedStyle(submenu).opacity
-    });
+    
     
     // Mark as animating
     parentLi.classList.add('animating');
@@ -1040,7 +1033,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     const shouldOpen = !hasShowClass;
     
     if (shouldOpen) {
-      console.log('✅ Opening submenu');
+      
       parentLi.classList.add('expanded');
       submenu.classList.add('show');
       
@@ -1048,16 +1041,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       void submenu.offsetHeight;
       
       // Verify classes were added
-      setTimeout(() => {
-        console.log('🔍 After opening:', {
-          hasExpanded: parentLi.classList.contains('expanded'),
-          hasShow: submenu.classList.contains('show'),
-          maxHeight: window.getComputedStyle(submenu).maxHeight,
-          opacity: window.getComputedStyle(submenu).opacity
-        });
-      }, 50);
+      // setTimeout(() => {
+      //   console.log('🔍 After opening:', {
+      //     hasExpanded: parentLi.classList.contains('expanded'),
+      //     hasShow: submenu.classList.contains('show'),
+      //     maxHeight: window.getComputedStyle(submenu).maxHeight,
+      //     opacity: window.getComputedStyle(submenu).opacity
+      //   });
+      // }, 50);
     } else {
-      console.log('🔒 Closing submenu');
       parentLi.classList.remove('expanded');
       submenu.classList.remove('show');
     }
@@ -1065,7 +1057,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     // Remove animating class after transition
     setTimeout(() => {
       parentLi.classList.remove('animating');
-      console.log('✨ Animation complete');
+      
     }, 400);
   }
 }

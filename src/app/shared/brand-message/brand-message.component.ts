@@ -103,7 +103,7 @@ export class BrandMessageComponent implements OnInit, OnDestroy {
             this.showSuccessMessage = false;
           }, 5000);
           
-          console.log('✅ Newsletter subscription:', subscribedEmail);
+          
         } else {
           this.errorMessage = resp.message || 'Ocurrió un error al suscribirte';
           this.showErrorMessage = true;

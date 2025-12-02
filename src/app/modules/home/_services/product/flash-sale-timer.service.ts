@@ -35,11 +35,10 @@ export class FlashSaleTimerService {
   initializeTimers(flashSales: any[]): Observable<{[flashId: string]: TimeLeft}> {
     // Evitar inicialización múltiple
     if (this.timersInitialized) {
-      console.log('⚠️ Timers ya están inicializados, cancelando inicialización duplicada');
+      
       return this.getAllTimersObservable();
     }
 
-    console.log('🕐 Iniciando timers para Flash Sales:', flashSales);
     this.clearAllTimers();
 
     if (!flashSales || flashSales.length === 0) {
@@ -64,13 +63,12 @@ export class FlashSaleTimerService {
    * @param flash Flash Sale object
    */
   private createTimerForFlashSale(flash: any): void {
-    console.log(`🕐 Configurando timer para Flash Sale ${flash.id}, end_date: ${flash.end_date}`);
     
     const endDate = new Date(flash.end_date).getTime();
     const now = new Date().getTime();
     const initialDistance = endDate - now;
 
-    console.log(`🕐 Flash Sale ${flash.id}: endDate=${endDate}, now=${now}, distance=${initialDistance}`);
+
 
     // Crear BehaviorSubject para este timer
     const initialTimeLeft = this.calculateTimeLeft(initialDistance);

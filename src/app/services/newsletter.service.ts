@@ -92,7 +92,7 @@ export class NewsletterService {
     
     this.subscribedEmailsSubject.next(updatedEmails);
     this.saveSubscribedEmails(updatedEmails);
-    console.log('✅ Email eliminado del localStorage:', normalizedEmail);
+    
   }
 
   /**

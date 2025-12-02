@@ -213,10 +213,6 @@ export class HodieGridComponent implements OnChanges, OnDestroy{
       saleFlash: null, // No flash sales in grid yet
       campaignDiscount: product.campaing_discount || null
     };
-
-    console.log('🛒 Añadiendo al carrito desde grid con productData:', productData);
-    console.log('👤 Current user:', this.currentUser);
-    console.log('📊 Selected variety:', selectedVariety);
     
     // Use cartManagerService like landing-product does
     this.subscriptions.add(

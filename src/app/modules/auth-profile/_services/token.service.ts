@@ -256,8 +256,6 @@ export class TokenService {
            take(1),
            tap((token) => {
              console.log('✅ TokenService: Refresh completado, retornando token actualizado');
-             console.log(`🔑 TokenService: Token a retornar (primeros 30 chars): ${token.substring(0, 30)}...`);
-             console.log(`📏 TokenService: Longitud del token: ${token.length}`);
            }),
            // Si el refresh falla, el BehaviorSubject NO emitirá un token válido
            // y este observable quedará esperando hasta timeout

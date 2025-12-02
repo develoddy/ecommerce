@@ -525,7 +525,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       }
     }, error => {
       if (error.error.message == "EL TOKEN NO ES VALIDO") {
-        console.log("🛑 [DEBUG][FilterProductsComponent] El token expiró. Usuario será deslogueado. Detalle:", error);
+        
         this._cartService._authService.logout();
       }
     });

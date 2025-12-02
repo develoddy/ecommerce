@@ -704,9 +704,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Grid View Methods
   setGridView(columns: number): void {
-    console.log('🎯 Home - setGridView called with columns:', columns);
     this.gridViewService.setGridView(columns);
-    console.log('📊 Home - Current grid view after set:', this.currentGridView);
+   
   }
 
   private updateGridViewUI(): void {

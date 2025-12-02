@@ -83,7 +83,7 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
           this.trackingData = data;
           this.timeline = data.timeline || this.generateTimeline(data);
           this.isLoading = false;
-          console.log('✅ Tracking data loaded:', data);
+          
         },
         error: (error) => {
           this.error = error.message || 'Error al cargar el estado del pedido';
