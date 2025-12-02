@@ -101,13 +101,62 @@
                                                                                     <div class="text-uppercase lh-1">
                                                                                         <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', prodDetail.product?.slug || prodDetail.product.slug]">{{ prodDetail.product?.title || prodDetail.product.title }}</a>
                                                                                     </div>
-                                                                                    <div class="d-flex align-items-center mt-1">
-                                                                                        <div class="me-3 small text-muted">Art. nº {{ prodDetail.product?.sku || prodDetail.product.sku || '—' }}</div>
-                                                                                        <div class="me-3 small text-muted">Cant: {{ prodDetail.cantidad || prodDetail.quantity || prodDetail.qty || 1 }}</div>
-                                                                                        <div class="me-3 small text-muted">Estado: <span class="badge rounded-pill bg-secondary">{{ prodDetail.status || prodDetail.state || '—' }}</span></div>
+                                                                    <div class="d-flex align-items-center mt-1">
+                                                                        <div class="me-3 small text-muted">Art. nº {{ prodDetail.product?.sku || prodDetail.product.sku || '—' }}</div>
+                                                                        <div class="me-3 small text-muted">Cant: {{ prodDetail.cantidad || prodDetail.quantity || prodDetail.qty || 1 }}</div>
+                                                                        <div class="me-3 small text-muted">Estado: <span class="badge rounded-pill bg-secondary">{{ prodDetail.status || prodDetail.state || '—' }}</span></div>
+                                                                    </div>
+                                                                    
+                                                                    <!-- 🚚 TRACKING INFORMATION (usando campos existentes de Printful) -->
+                                                                    <div *ngIf="hasTrackingInfo(detail.sale)" class="mt-2">
+                                                                        <div class="p-2 bg-light rounded border-start border-primary border-3">
+                                                                            <div class="d-flex align-items-center justify-content-between">
+                                                                                <div class="flex-grow-1">
+                                                                                    <div class="d-flex align-items-center mb-1">
+                                                                                        <i class="icon anm anm-truck-l me-2 text-primary"></i>
+                                                                                        <span class="badge" 
+                                                                                              [ngClass]="getSyncStatusClass(detail.sale?.syncStatus)">
+                                                                                            {{ getSyncStatusText(detail.sale?.syncStatus) }}
+                                                                                        </span>
                                                                                     </div>
-                                                                                    
-                                                                                    <!-- 🏷️ Información de descuentos -->
+                                                                                    <div *ngIf="detail.sale?.trackingNumber" class="small text-muted">
+                                                                                        <strong>Número de seguimiento:</strong> {{ detail.sale.trackingNumber }}
+                                                                                    </div>
+                                                                                    <div *ngIf="detail.sale?.carrier" class="small text-muted">
+                                                                                        <strong>Transportista:</strong> {{ detail.sale.carrier }}
+                                                                                    </div>
+                                                                                    <div *ngIf="detail.sale?.shippedAt" class="small text-muted">
+                                                                                        <strong>Enviado:</strong> {{ detail.sale.shippedAt | date:'short' }}
+                                                                                    </div>
+                                                                                    <div *ngIf="detail.sale?.printfulOrderId" class="small text-muted">
+                                                                                        <strong>ID Printful:</strong> #PF{{ detail.sale.printfulOrderId }}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div *ngIf="detail.sale?.trackingUrl" class="ms-2">
+                                                                                    <a [href]="detail.sale.trackingUrl" 
+                                                                                       target="_blank" 
+                                                                                       class="btn btn-sm btn-outline-primary"
+                                                                                       title="Seguir envío en tiempo real">
+                                                                                        <i class="icon anm anm-search-plus-l me-1"></i>
+                                                                                        Seguir envío
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!-- 📦 ESTADO SIN TRACKING AÚN -->
+                                                                    <div *ngIf="!hasTrackingInfo(detail.sale)" class="mt-2">
+                                                                        <div class="p-2 bg-warning bg-opacity-10 rounded border-start border-warning border-3">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <i class="icon anm anm-clock me-2 text-warning"></i>
+                                                                                <span class="small">
+                                                                                    <strong>{{ getProcessingStatusText(detail.sale?.syncStatus) }}</strong><br>
+                                                                                    <span class="text-muted">{{ getProcessingStatusDescription(detail.sale?.syncStatus) }}</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>                                                                                    <!-- 🏷️ Información de descuentos -->
                                                                                     <div *ngIf="hasDiscount(prodDetail)" class="mt-2 p-2 bg-light rounded">
                                                                                         <div class="row g-2 small">
                                                                                             <div class="col-12">

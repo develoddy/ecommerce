@@ -418,6 +418,14 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
   }
 
+  /**
+   * Navigate to My Purchases page to track the order
+   */
+  navigateToTrackOrder() {
+    // Navigate to my purchases page where customer can track their order
+    this._router.navigate(['/', this.country, this.locale, 'account', 'mypurchases']);
+  }
+
   goToNextStep() {
     this.isLastStepActive_2 = true;
     this.isLastStepActive_3 = true;

@@ -432,6 +432,100 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     return this.priceCalculationService.applyRoundingTo95(originalPrice);
   }
 
+  /**
+   * 🚚 PRINTFUL TRACKING METHODS (usando campos existentes)
+   */
+
+  /**
+   * Get CSS class for Printful sync status badge
+   * @param syncStatus syncStatus from Sale model
+   * @returns Bootstrap badge class
+   */
+  getSyncStatusClass(syncStatus: string): string {
+    switch (syncStatus?.toLowerCase()) {
+      case 'pending':
+        return 'bg-warning text-dark';
+      case 'shipped':
+        return 'bg-info text-white';
+      case 'fulfilled':
+        return 'bg-success text-white';
+      case 'failed':
+        return 'bg-danger text-white';
+      case 'canceled':
+        return 'bg-secondary text-white';
+      default:
+        return 'bg-secondary text-white';
+    }
+  }
+
+  /**
+   * Get Spanish text for Printful sync status
+   * @param syncStatus syncStatus from Sale model
+   * @returns Spanish status text
+   */
+  getSyncStatusText(syncStatus: string): string {
+    switch (syncStatus?.toLowerCase()) {
+      case 'pending':
+        return '⏳ Procesando';
+      case 'shipped':
+        return '🚚 Enviado';
+      case 'fulfilled':
+        return '📦 Entregado';
+      case 'failed':
+        return '❌ Error';
+      case 'canceled':
+        return '❌ Cancelado';
+      default:
+        return '❓ Estado desconocido';
+    }
+  }
+
+  /**
+   * Check if order has tracking information from Printful
+   * @param sale Sale object with Printful tracking fields
+   * @returns True if has tracking
+   */
+  hasTrackingInfo(sale: any): boolean {
+    return sale && (
+      sale.trackingNumber || 
+      sale.trackingUrl || 
+      sale.printfulOrderId ||
+      (sale.syncStatus && sale.syncStatus !== 'pending')
+    );
+  }
+
+  /**
+   * Get processing status text for orders without tracking yet
+   * @param syncStatus Current sync status
+   * @returns Processing status text
+   */
+  getProcessingStatusText(syncStatus: string): string {
+    switch (syncStatus?.toLowerCase()) {
+      case 'failed':
+        return 'Error en el procesamiento';
+      case 'canceled':
+        return 'Pedido cancelado';
+      default:
+        return 'Procesando pedido';
+    }
+  }
+
+  /**
+   * Get processing status description
+   * @param syncStatus Current sync status
+   * @returns Processing description
+   */
+  getProcessingStatusDescription(syncStatus: string): string {
+    switch (syncStatus?.toLowerCase()) {
+      case 'failed':
+        return 'Hubo un problema con tu pedido. Contacta con soporte.';
+      case 'canceled':
+        return 'Tu pedido ha sido cancelado.';
+      default:
+        return 'Tu pedido está siendo preparado por Printful. Te notificaremos cuando sea enviado.';
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();

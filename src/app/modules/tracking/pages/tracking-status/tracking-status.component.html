@@ -1,0 +1,248 @@
+<!-- Header del ecommerce -->
+<app-header></app-header>
+
+<!-- 📦 PÁGINA DE ESTADO DE TRACKING (Estilo Amazon) -->
+<div class="tracking-status-container">
+  
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-3 text-muted">Consultando estado del pedido...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && error" class="container py-5">
+    <div class="alert alert-danger shadow-sm" role="alert">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-exclamation-triangle-fill fs-3 me-3"></i>
+        <div>
+          <h5 class="alert-heading mb-1">Error al cargar el tracking</h5>
+          <p class="mb-0">{{ error }}</p>
+        </div>
+      </div>
+      <hr>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-danger" (click)="goBack()">
+          <i class="bi bi-arrow-left me-2"></i>Volver
+        </button>
+        <button class="btn btn-danger" (click)="refreshTracking()">
+          <i class="bi bi-arrow-clockwise me-2"></i>Reintentar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success State - Tracking Data -->
+  <div *ngIf="!isLoading && !error && trackingData" class="container py-4">
+    
+    <!-- Header -->
+    <div class="tracking-header mb-4">
+      <button class="btn btn-link ps-0" (click)="goBack()">
+        <i class="bi bi-arrow-left me-2"></i>Volver a búsqueda
+      </button>
+      <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+          <h2 class="mb-2">Orden #{{ trackingData.orderId }}</h2>
+          <p class="text-muted mb-0">
+            Creado: {{ formatDate(trackingData.dates.created) }}
+          </p>
+        </div>
+        <div>
+          <span class="badge {{ getStatusBadgeClass() }} fs-6 px-3 py-2">
+            {{ getStatusText() }}
+          </span>
+          <button class="btn btn-outline-primary ms-2" (click)="refreshTracking()">
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Bar (estilo Amazon) -->
+    <div class="progress-section card mb-4">
+      <div class="card-body p-4">
+        <div class="progress-steps">
+          <div class="progress-bar-container mb-4">
+            <div class="progress" style="height: 8px;">
+              <div 
+                class="progress-bar bg-success" 
+                role="progressbar" 
+                [style.width.%]="getProgressPercentage()"
+                [attr.aria-valuenow]="getProgressPercentage()"
+                aria-valuemin="0" 
+                aria-valuemax="100">
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline Steps -->
+          <div class="timeline-steps">
+            <div 
+              *ngFor="let event of timeline" 
+              class="timeline-step"
+              [ngClass]="getTimelineStepClass(event)">
+              
+              <div class="step-icon">
+                <i class="bi" [ngClass]="{
+                  'bi-check-circle-fill': event.completed,
+                  'bi-circle-fill': !event.completed && event.status === 'pending',
+                  'bi-arrow-repeat': event.status === 'processing'
+                }"></i>
+              </div>
+              
+              <div class="step-content">
+                <h6 class="step-title mb-1">{{ event.title }}</h6>
+                <p class="step-description text-muted mb-1">{{ event.description }}</p>
+                <small *ngIf="event.date" class="step-date text-muted">
+                  {{ formatDate(event.date) }}
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Left Column: Items & Details -->
+      <div class="col-lg-8">
+        
+        <!-- Tracking Info Card (si existe tracking) -->
+        <div *ngIf="trackingData.trackingNumber" class="card mb-4 border-primary">
+          <div class="card-body">
+            <h5 class="card-title mb-3">
+              <i class="bi bi-truck me-2 text-primary"></i>
+              Información de Envío
+            </h5>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="text-muted small">Número de Tracking</label>
+                <p class="mb-0 fw-semibold">{{ trackingData.trackingNumber }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="text-muted small">Carrier</label>
+                <p class="mb-0 fw-semibold">{{ trackingData.carrier }}</p>
+              </div>
+              <div *ngIf="trackingData.dates.shipped" class="col-md-6 mb-3">
+                <label class="text-muted small">Fecha de Envío</label>
+                <p class="mb-0">{{ formatDate(trackingData.dates.shipped) }}</p>
+              </div>
+              <div *ngIf="trackingData.estimated.max" class="col-md-6 mb-3">
+                <label class="text-muted small">Entrega Estimada</label>
+                <p class="mb-0">{{ formatDate(trackingData.estimated.max) }}</p>
+              </div>
+            </div>
+            <button 
+              *ngIf="trackingData.trackingUrl" 
+              class="btn btn-primary w-100 mt-2"
+              (click)="openTrackingUrl()">
+              <i class="bi bi-box-arrow-up-right me-2"></i>
+              Rastrear en {{ trackingData.carrier }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Items del Pedido -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title mb-3">
+              <i class="bi bi-bag-check me-2"></i>
+              Artículos del Pedido
+            </h5>
+            
+            <div *ngFor="let item of trackingData.items" class="order-item d-flex mb-3 pb-3 border-bottom">
+              <div class="item-image me-3">
+                <img 
+                  [src]="getItemImage(item)" 
+                  [alt]="item.name"
+                  class="img-fluid rounded"
+                  style="width: 80px; height: 80px; object-fit: cover;"
+                  onerror="this.src='assets/images/placeholder.png'"
+                >
+              </div>
+              <div class="item-details flex-grow-1">
+                <h6 class="mb-1">{{ item.name }}</h6>
+                <p class="text-muted small mb-1" *ngIf="item.sku">SKU: {{ item.sku }}</p>
+                <p class="text-muted small mb-1" *ngIf="item.product?.name">{{ item.product?.name }}</p>
+                <p class="mb-0">
+                  <span class="text-muted">Cantidad:</span> 
+                  <strong>{{ item.quantity }}</strong>
+                </p>
+              </div>
+              <div class="item-price text-end">
+                <p class="fw-bold mb-0">{{ formatPrice(item.retail_price) }}</p>
+                <small class="text-muted">c/u</small>
+              </div>
+            </div>
+
+            <!-- Total -->
+            <div class="d-flex justify-content-end pt-3">
+              <div class="text-end">
+                <p class="text-muted mb-1">Total</p>
+                <h4 class="mb-0 text-primary">{{ formatPrice(getTotalPrice()) }}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Summary & Help -->
+      <div class="col-lg-4">
+        
+        <!-- Order Summary -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h6 class="card-title mb-3">Resumen del Pedido</h6>
+            <ul class="list-unstyled mb-0">
+              <li class="d-flex justify-content-between mb-2">
+                <span class="text-muted">ID Orden:</span>
+                <strong>{{ trackingData.orderId }}</strong>
+              </li>
+              <li class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Estado:</span>
+                <span class="badge {{ getStatusBadgeClass() }}">
+                  {{ getStatusText() }}
+                </span>
+              </li>
+              <li class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Artículos:</span>
+                <strong>{{ getTotalItems() }}</strong>
+              </li>
+              <li *ngIf="trackingData.dates.updated" class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Última actualización:</span>
+                <small>{{ formatDate(trackingData.dates.updated) }}</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Help Card -->
+        <div class="card bg-light">
+          <div class="card-body">
+            <h6 class="card-title mb-3">
+              <i class="bi bi-question-circle me-2"></i>
+              ¿Necesitas ayuda?
+            </h6>
+            <p class="small text-muted mb-3">
+              Si tienes preguntas sobre tu pedido, no dudes en contactarnos.
+            </p>
+            <a href="mailto:support@tutienda.com" class="btn btn-outline-primary btn-sm w-100 mb-2">
+              <i class="bi bi-envelope me-2"></i>
+              Enviar Email
+            </a>
+            <a href="tel:+1234567890" class="btn btn-outline-primary btn-sm w-100">
+              <i class="bi bi-telephone me-2"></i>
+              Llamar
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,167 @@
+<!-- Header del ecommerce -->
+<app-header></app-header>
+
+<!-- 🔍 PÁGINA DE BÚSQUEDA DE TRACKING -->
+<div class="tracking-search-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        
+        <!-- Breadcrumb -->
+        <div class="breadcrumb-section">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a [routerLink]="['/', country, locale, 'home']">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Seguimiento de Pedido</li>
+          </ol>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header text-center text-white">
+          <h1 class="page-title text-white">Seguimiento de Pedido</h1>
+          <p class="page-description text-white">Ingresa tu número de orden para consultar el estado de tu envío</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8">
+        
+        <!-- Search Card -->
+        <div class="tracking-search-card">
+          <div class="card-content">
+            
+            <!-- Search Form -->
+            <form class="tracking-search-form" (submit)="searchTracking(); $event.preventDefault()">
+              <div class="form-group mb-3">
+                <label for="orderIdInput" class="form-label">Número de Orden</label>
+                <input 
+                  type="text" 
+                  class="form-control py-3" 
+                  id="orderIdInput"
+                  [(ngModel)]="orderId"
+                  name="orderId"
+                  placeholder="Ej: #PF135327909 o 135327909"
+                  [class.is-invalid]="orderIdTouched && !orderId"
+                  (blur)="validateOrderId()"
+                  (input)="clearError()"
+                  autocomplete="off"
+                  required
+                >
+                <small *ngIf="orderIdTouched && !orderId" class="text-danger">
+                  <i class="icon anm anm-times-r me-1"></i>Campo requerido
+                </small>
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="trackingTokenInput" class="form-label">Token de Seguimiento</label>
+                <input 
+                  type="text" 
+                  class="form-control py-3" 
+                  id="trackingTokenInput"
+                  [(ngModel)]="trackingToken"
+                  name="trackingToken"
+                  placeholder="Token de 32 caracteres"
+                  [class.is-invalid]="tokenTouched && (!trackingToken || trackingToken.trim().length !== 32)"
+                  (blur)="validateToken()"
+                  (input)="clearError()"
+                  autocomplete="off"
+                  maxlength="32"
+                  required
+                >
+                <small *ngIf="tokenTouched && !trackingToken" class="text-danger">
+                  <i class="icon anm anm-times-r me-1"></i>Campo requerido
+                </small>
+                <small *ngIf="tokenTouched && trackingToken && trackingToken.trim().length !== 32" class="text-muted">
+                  <i class="icon anm anm-info-r me-1"></i>{{ trackingToken.trim().length }}/32 caracteres
+                </small>
+              </div>
+
+              <button 
+                class="btn-dark-ld btn-lg w-100 mb-2" 
+                type="submit"
+                [disabled]="!orderId || !trackingToken || isSearching"
+              >
+                <span *ngIf="!isSearching">
+                  <i class="icon anm anm-search-l me-2"></i>Rastrear Pedido
+                </span>
+                <span *ngIf="isSearching">
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Buscando...
+                </span>
+              </button>
+                
+              <!-- Error Message (debajo del botón) -->
+              <div *ngIf="errorMessage" class="alert alert-danger mt-2 mb-3" role="alert">
+                <i class="icon anm anm-times-r me-2"></i>
+                {{ errorMessage }}
+              </div>
+
+              <!-- Helper Text -->
+              <small class="form-text text-muted d-block text-center mt-2">
+                <i class="icon anm anm-envelope-l me-1"></i>
+                Encuentra tu número de orden y token en el email de confirmación
+              </small>
+            </form>
+
+            <!-- Info Section -->
+            <div class="tracking-info-section">
+              <h6 class="section-title">¿Dónde encuentro mi número de orden?</h6>
+              
+              <div class="info-grid">
+                <div class="info-item">
+                  <i class="icon anm anm-envelope-l"></i>
+                  <div class="info-content">
+                    <strong>Email de Confirmación</strong>
+                    <p>Revisa el correo que recibiste tras completar tu compra</p>
+                  </div>
+                </div>
+
+                <div class="info-item">
+                  <i class="icon anm anm-user-al"></i>
+                  <div class="info-content">
+                    <strong>Mi Cuenta</strong>
+                    <p>Inicia sesión y revisa el historial de tus pedidos</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Help Contact -->
+            <div class="tracking-help text-center">
+              <p class="help-text">¿Necesitas ayuda?</p>
+              <a href="mailto:support@tutienda.com" class="help-link">
+                <i class="icon anm anm-envelope-l me-2"></i>support@tutienda.com
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="tracking-tips">
+          <div class="tips-content">
+            <h6 class="tips-title">
+              <i class="icon anm anm-info me-2"></i>Información útil
+            </h6>
+            <ul class="tips-list">
+              <li>
+                <i class="icon anm anm-check me-2"></i>
+                Los pedidos se procesan en 2-7 días hábiles
+              </li>
+              <li>
+                <i class="icon anm anm-check me-2"></i>
+                Recibirás un email cuando tu pedido sea enviado
+              </li>
+              <li>
+                <i class="icon anm anm-check me-2"></i>
+                El número de tracking estará disponible tras el envío
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

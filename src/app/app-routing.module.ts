@@ -41,6 +41,11 @@ const routes: Routes = [
         path: 'auth',
         loadChildren: () => import("./modules/auth-profile/auth-profile.module").then(m => m.AuthProfileModule),
       },
+      {
+        path: 'tracking',
+        loadChildren: () => import("./modules/tracking/tracking.module").then(m => m.TrackingModule),
+        data: { preload: false } // ✅ Ruta pública de tracking
+      },
       // Redirección al home por defecto si solo ponen /:country/:locale
       {
         path: '',

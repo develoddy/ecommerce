@@ -42,7 +42,9 @@
             
             <!-- Botones de acción principales -->
             <div class="d-flex flex-column flex-md-row gap-3 justify-content-center mt-4">
-                <button class="btn btn-primary btn-lg px-4 py-3 d-flex align-items-center justify-content-center" style="background: #007bff; border: none; border-radius: 12px; font-weight: 600; letter-spacing: 0.5px; min-width: 200px; box-shadow: 0 4px 16px rgba(0, 123, 255, 0.2);">
+                <button class="btn btn-primary btn-lg px-4 py-3 d-flex align-items-center justify-content-center" 
+                        style="background: #007bff; border: none; border-radius: 12px; font-weight: 600; letter-spacing: 0.5px; min-width: 200px; box-shadow: 0 4px 16px rgba(0, 123, 255, 0.2);"
+                        (click)="navigateToTrackOrder()">
                     <i class="icon anm anm-search-plus-l me-2" style="font-size: 1.2rem;"></i>
                     <span>Seguir mi pedido</span>
                 </button>
@@ -384,7 +386,7 @@
                                                 <i class="icon anm anm-hashtag me-2" style="color: #6f42c1;"></i>
                                                 <div>
                                                     <small class="text-muted d-block" style="font-size: 0.75rem;">ID del pedido</small>
-                                                    <strong style="font-family: 'Courier New', monospace;">{{ sale.n_transaction }}</strong>
+                                                    <strong style="font-family: 'Courier New', monospace;">#PF{{ sale.printfulOrderId }}</strong>
                                                 </div>
                                             </div>
                                             <div class="mb-2 d-flex align-items-center">
