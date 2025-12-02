@@ -45,14 +45,16 @@
       <!--End Home Slideshow-->
     </ng-container>
 
-    <!-- Collection banner -->
-    <app-collection-banners 
-      [categories]="categories"
-      [locale]="locale"
-      [country]="country"
-      [isVisible]="true">
-    </app-collection-banners>
-    <!--End Collection banner-->
+    <ng-container *ngIf="categories && categories.length > 0">
+      <!-- Collection banner -->
+      <app-collection-banners 
+        [categories]="categories"
+        [locale]="locale"
+        [country]="country"
+        [isVisible]="true">
+      </app-collection-banners>
+      <!--End Collection banner-->
+    </ng-container>
 
     <!--Popular Categories-->
     <!-- <ng-container *ngIf="categories && categories.length > 0">
@@ -65,65 +67,85 @@
     <!--End Popular Categories-->
 
     <!--Toolbar d-none-->
-    <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5">
-      <div class="row align-items-center">
-        <div
-          class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-end"
-        >
-          <div class="filters-item d-flex align-items-center">
-            <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
-            <div class="grid-options view-mode d-flex">
-              <a class="icon-mode mode-list d-block" 
-                  data-col="1" 
-                  #grid1
-                  (click)="setGridView(1)"
-                  [class.active]="currentGridView.columns === 1"></a>
-              <a class="icon-mode mode-grid grid-2 d-block"
-                  data-col="2"
-                  #grid2
-                  (click)="setGridView(2)"
-                  [class.active]="currentGridView.columns === 2"></a>
-              <a class="icon-mode mode-grid grid-3 d-md-block"
-                  data-col="3"
-                  #grid3
-                  (click)="setGridView(3)"
-                  [class.active]="currentGridView.columns === 3"></a>
-              <a class="icon-mode mode-grid grid-4 d-lg-block"
-                  data-col="4"
-                  #grid4
-                  (click)="setGridView(4)"
-                  [class.active]="currentGridView.columns === 4"></a>
-              <a class="icon-mode mode-grid grid-5 d-xl-block"
-                  data-col="5"
-                  #grid5
-                  (click)="setGridView(5)"
-                  [class.active]="currentGridView.columns === 5"></a>
+    <ng-container *ngIf="ourProducts && ourProducts.length > 0">
+      <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5">
+        <div class="row align-items-center">
+          <div
+            class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-end"
+          >
+            <div class="filters-item d-flex align-items-center">
+              <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
+              <div class="grid-options view-mode d-flex">
+                <a class="icon-mode mode-list d-block" 
+                    data-col="1" 
+                    #grid1
+                    (click)="setGridView(1)"
+                    [class.active]="currentGridView.columns === 1"></a>
+                <a class="icon-mode mode-grid grid-2 d-block"
+                    data-col="2"
+                    #grid2
+                    (click)="setGridView(2)"
+                    [class.active]="currentGridView.columns === 2"></a>
+                <a class="icon-mode mode-grid grid-3 d-md-block"
+                    data-col="3"
+                    #grid3
+                    (click)="setGridView(3)"
+                    [class.active]="currentGridView.columns === 3"></a>
+                <a class="icon-mode mode-grid grid-4 d-lg-block"
+                    data-col="4"
+                    #grid4
+                    (click)="setGridView(4)"
+                    [class.active]="currentGridView.columns === 4"></a>
+                <a class="icon-mode mode-grid grid-5 d-xl-block"
+                    data-col="5"
+                    #grid5
+                    (click)="setGridView(5)"
+                    [class.active]="currentGridView.columns === 5"></a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </ng-container>
     <!--End Toolbar-->
 
     
     <!--Product Grid-->
-    <app-product-grid
-      [currentUser]="currentUser"
-      [ourProducts]="ourProducts"
-      [locale]="locale"
-      [country]="country"
-      [euro]="euro"
-      [currentUrl]="currentUrl"
-      [isMobile]="isMobile"
-      [getRouterDiscount]="getRouterDiscount"
-      [getPriceParts]="getPriceParts"
-      [openModalToCart]="openModalToCart"
-      [addWishlist]="addWishlist"
-      [changeProductImage]="changeProductImage"
-      [navigateToProduct]="navigateToProduct"
-      [FlashSale]="FlashSales"
-      [gridViewMode]="currentGridView"
-    ></app-product-grid>
+    <ng-container *ngIf="ourProducts && ourProducts.length > 0; else emptyState">
+      <app-product-grid
+        [currentUser]="currentUser"
+        [ourProducts]="ourProducts"
+        [locale]="locale"
+        [country]="country"
+        [euro]="euro"
+        [currentUrl]="currentUrl"
+        [isMobile]="isMobile"
+        [getRouterDiscount]="getRouterDiscount"
+        [getPriceParts]="getPriceParts"
+        [openModalToCart]="openModalToCart"
+        [addWishlist]="addWishlist"
+        [changeProductImage]="changeProductImage"
+        [navigateToProduct]="navigateToProduct"
+        [FlashSale]="FlashSales"
+        [gridViewMode]="currentGridView"
+      ></app-product-grid>
+    </ng-container>
+
+    <!-- Empty State -->
+    <ng-template #emptyState>
+      <div class="empty-state-container">
+        <div class="empty-state-content">
+          <div class="empty-icon-wrapper">
+            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.70711 15.2929C4.07714 15.9229 4.52331 17 5.41421 17H17M17 17C15.8954 17 15 17.8954 15 19C15 20.1046 15.8954 21 17 21C18.1046 21 19 20.1046 19 19C19 17.8954 18.1046 17 17 17ZM9 19C9 20.1046 8.10457 21 7 21C5.89543 21 5 20.1046 5 19C5 17.8954 5.89543 17 7 17C8.10457 17 9 17.8954 9 19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h2 class="empty-title">No hay productos disponibles</h2>
+          <p class="empty-description">Estamos preparando nuestro catálogo con los mejores productos.</p>
+          <p class="empty-subtitle">Vuelve pronto para descubrir nuestra colección</p>
+        </div>
+      </div>
+    </ng-template>
     <!--End Product Grid-->
 
     <ng-container *ngIf="ocultar">

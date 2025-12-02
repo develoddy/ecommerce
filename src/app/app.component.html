@@ -1,7 +1,7 @@
 
 <router-outlet></router-outlet>
 <!-- Chat widget (global) -->
-<app-chat-widget></app-chat-widget>
+<app-chat-widget *ngIf="hasProducts"></app-chat-widget>
 <!--Newsletter Modal-->
     <div class="newsletter-modal modal fade" id="cookie_modal" tabindex="-1" aria-hidden="true">           
         <div class="modal-dialog modal-lg modal-dialog-centered p-0" [ngClass]="{'ms-4': isMobile, 'me-4': isMobile}">

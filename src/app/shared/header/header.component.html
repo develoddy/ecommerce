@@ -78,7 +78,7 @@
                     [ngClass]="{'col-lg-4': isDesktop, 'col-lg-6': isMobile}">
                     <nav class="navigation" id="AccessibleNav">
                         <ul id="siteNav" class="site-nav medium center">
-                            <li class="lvl1 parent megamenu text-uppercase fw-bold">
+                            <li class="lvl1 parent megamenu text-uppercase fw-bold" *ngIf="ourProducts && ourProducts.length > 0">
                                 <a href="#" onclick="return false;">Camisetas <i class="icon anm anm-angle-down-l"></i></a>
                                 <div class="megamenu style1">
                                     <ul class="row grid--uniform mmWrapper">
@@ -96,7 +96,7 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li class="lvl-1 col-md-3 col-lg-6 product-col" *ngIf="ourProducts && ourProducts.length > 0">
+                                        <li class="lvl-1 col-md-3 col-lg-6 product-col">
                                             <a href="#;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
                                             <div class="grid-products weekly-product productSlider gp10 mt-1">
                                                 <ng-container *ngFor="let product of ourProducts?.slice(0, 6)">
@@ -127,7 +127,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="lvl1 parent megamenu text-uppercase fw-bold">
+                            <li class="lvl1 parent megamenu text-uppercase fw-bold" *ngIf="hoodiesProducts && hoodiesProducts.length > 0">
                                 <a href="#" onclick="return false;">Hoddies <i class="icon anm anm-angle-down-l"></i></a>
                                 <div class="megamenu style1">
                                     <ul class="row grid--uniform mmWrapper">
@@ -142,7 +142,7 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li class="lvl-1 col-md-3 col-lg-6 product-col" *ngIf="hoodiesProducts && hoodiesProducts.length > 0">
+                                        <li class="lvl-1 col-md-3 col-lg-6 product-col">
                                             <a href="#;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
                                             <div class="grid-products weekly-product productSlider gp10 mt-1">
                                                 <ng-container *ngFor="let product of hoodiesProducts?.slice(0, 6)">
@@ -173,7 +173,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="lvl1 parent megamenu text-uppercase fw-bold">
+                            <li class="lvl1 parent megamenu text-uppercase fw-bold" *ngIf="mugsProducts && mugsProducts.length > 0">
                                 <a href="#" onclick="return false;">Mug <i class="icon anm anm-angle-down-l"></i></a>
                                 <div class="megamenu style1">
                                     <ul class="row grid--uniform mmWrapper">
@@ -185,7 +185,7 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li class="lvl-1 col-md-3 col-lg-6 product-col" *ngIf="mugsProducts && mugsProducts.length > 0">
+                                        <li class="lvl-1 col-md-3 col-lg-6 product-col">
                                             <a href="#;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
                                             <div class="grid-products weekly-product productSlider gp10 mt-1">
                                                 <ng-container *ngFor="let product of mugsProducts?.slice(0, 6)">
@@ -216,7 +216,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="lvl1 parent megamenu text-uppercase fw-bold">
+                            <li class="lvl1 parent megamenu text-uppercase fw-bold" *ngIf="capsProducts && capsProducts.length > 0">
                                 <a href="#" onclick="return false;">Gorras <i class="icon anm anm-angle-down-l"></i></a>
                                 <div class="megamenu style1">
                                     <ul class="row grid--uniform mmWrapper">
@@ -547,7 +547,7 @@
                 <div class="col-8 col-sm-9 col-md-6 align-self-center icons-col d-flex justify-content-end"
                     [ngClass]="{'col-lg-4': isDesktop}">
                     <!--Search-->
-                    <div class="search-parent iconset" [ngClass]="{'px-2': isMobile}">
+                    <div class="search-parent iconset" [ngClass]="{'px-2': isMobile}" *ngIf="ourProducts && ourProducts.length > 0">
                         <div class="site-search" title="Search">
                             <a href="#;" class="search-icon clr-none" data-bs-toggle="offcanvas"
                                 data-bs-target="#search-drawer">
@@ -652,7 +652,7 @@
                     <!--End Search-->
 
                     <!--Account-->
-                    <div class="account-parent iconset" [ngClass]="{'px-2': isMobile}">
+                    <div class="account-parent iconset" [ngClass]="{'px-2': isMobile}" *ngIf="ourProducts && ourProducts.length > 0">
                         <div class="account-link" title="Cuenta">
                             <ng-container *ngIf="isMobile; else desktopLink">
                                 <a [routerLink]="currentUser && currentUser.email ? ['/', country, locale, 'account', 'my-account'] : ['/', country, locale, 'auth', 'login']"
@@ -750,7 +750,7 @@
                     <!--End Account-->
 
                     <!--Wishlist-->
-                    <div class="wishlist-link iconset" [ngClass]="{'px-2': isMobile}" title="Wishlist">
+                    <div class="wishlist-link iconset" [ngClass]="{'px-2': isMobile}" title="Wishlist" *ngIf="ourProducts && ourProducts.length > 0">
                         <a href="wishlist-style1.html" onclick="return false;"
                             [routerLink]="['/', this.country, this.locale, 'account', 'favorites']">
                             <!-- <i class="hdr-icon icon anm anm-heart-l"></i> -->
@@ -770,7 +770,7 @@
                     <!--End Wishlist-->
 
                     <!--Minicart-->
-                    <div class="header-cart iconset" [ngClass]="{'px-2': isMobile}" title="Carro">
+                    <div class="header-cart iconset" [ngClass]="{'px-2': isMobile}" title="Carro" *ngIf="ourProducts && ourProducts.length > 0">
                         <ng-container *ngIf="isMobile; else desktopLinkMiniCart">
                             <a href="cart-style1.html" onclick="return false;"
                                 [routerLink]="currentUser ? ['/', country, locale, 'shop', 'cart'] : ['/', country, locale, 'auth', 'login']"
