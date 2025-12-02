@@ -86,7 +86,7 @@ export class AppComponent implements AfterViewInit {
     // Check if products exist for chat widget visibility
     this.homeService.listHome().subscribe({
       next: (resp: any) => {
-        this.hasProducts = resp && resp.products && resp.products.length > 0;
+        this.hasProducts = resp && resp.our_products && resp.our_products.length > 0;
       },
       error: () => {
         this.hasProducts = false;
