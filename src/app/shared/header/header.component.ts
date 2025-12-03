@@ -523,30 +523,30 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         if (discountValue > 100) return originalPrice;
         priceAfterDiscount = originalPrice * (1 - discountValue / 100);
         priceAfterDiscount = Math.max(0, priceAfterDiscount);
-        return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+        return this.priceCalculationService.formatPrice(priceAfterDiscount);
       } else if (cart.code_discount && !cart.code_cupon) {
         // FLASH SALE con descuento porcentual - usar el descuento como porcentaje
         if (discountValue > 100) return originalPrice;
         priceAfterDiscount = originalPrice * (1 - discountValue / 100);
         priceAfterDiscount = Math.max(0, priceAfterDiscount);
-        return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+        return this.priceCalculationService.formatPrice(priceAfterDiscount);
       } else {
         // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
         if (discountValue > 0 && discountValue < originalPrice) {
           // Si discount parece ser un precio final válido, aplicar .95 rounding
-          return this.priceCalculationService.applyRoundingTo95(discountValue);
+          return this.priceCalculationService.formatPrice(discountValue);
         } else {
           // Si no, tratar como porcentaje (fallback) y aplicar .95 rounding
           if (discountValue > 100) return originalPrice;
           priceAfterDiscount = originalPrice * (1 - discountValue / 100);
           priceAfterDiscount = Math.max(0, priceAfterDiscount);
-          return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+          return this.priceCalculationService.formatPrice(priceAfterDiscount);
         }
       }
     } else if (cart.type_discount === 2) {
       // Descuento de monto fijo - Aplicar redondeo .95
       priceAfterDiscount = Math.max(0, originalPrice - discountValue);
-      return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+      return this.priceCalculationService.formatPrice(priceAfterDiscount);
     } else {
       // Tipo de descuento no reconocido
       return originalPrice;
@@ -576,6 +576,29 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getOriginalUnitPrice(cart: any): number {
     return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+  }
+
+  /**
+   * Obtiene el tipo de descuento aplicado al producto en el carrito
+   * @param cart Item del carrito
+   * @returns Tipo de descuento como string
+   */
+  getDiscountType(cart: any): string {
+    if (!cart || !this.hasCartItemDiscount(cart)) return '';
+    
+    // Detectar Cupón: tiene code_cupon
+    if (cart.code_cupon) {
+      return `Cupón ${cart.code_cupon}`;
+    }
+    
+    // Detectar Flash Sale: tiene code_discount sin code_cupon
+    if (cart.code_discount && !cart.code_cupon) {
+      return 'Flash Sale';
+    }
+    
+    // Por defecto: Campaign Discount
+    // (productos con discount pero sin code_cupon ni code_discount)
+    return 'Campaign Discount';
   }
 
   getFormattedPrice(price: any) {

@@ -24,7 +24,7 @@ export class PriceCalculationService {
    * Calcula el precio final de un producto aplicando descuentos de Flash Sale o campaña individual
    * @param product Producto a calcular
    * @param flashSales Array de Flash Sales activas
-   * @returns Precio final con redondeo .95
+   * @returns Precio final con 2 decimales estándar
    */
   calculateFinalPrice(product: any, flashSales: FlashSale[] = []): number {
     let discount = 0;
@@ -48,7 +48,7 @@ export class PriceCalculationService {
           }
           
           priceAfterDiscount = product.price_usd - discount;
-          return this.applyRoundingTo95(priceAfterDiscount);
+          return this.formatPrice(priceAfterDiscount);
         }
       }
     }
@@ -62,38 +62,24 @@ export class PriceCalculationService {
       }
       
       priceAfterDiscount = product.price_usd - discount;
-      return this.applyRoundingTo95(priceAfterDiscount);
+      return this.formatPrice(priceAfterDiscount);
     }
 
-    // Si no hay ningún descuento, devolver precio original
-    return product.price_usd;
+    // Si no hay ningún descuento, devolver precio original con formato estándar
+    return this.formatPrice(product.price_usd);
   }
 
   /**
-   * Aplica el algoritmo de redondeo hacia arriba al .95 más cercano
-   * @param price Precio a redondear
-   * @returns Precio redondeado terminado en .95
+   * Formatea precio a 2 decimales exactos usando redondeo estándar
+   * Mantiene consistencia con Printful, Stripe, PayPal y base de datos
+   * @param price Precio a formatear
+   * @returns Precio con 2 decimales exactos
    */
-  applyRoundingTo95(price: number): number {
-    if (price < 0.95) {
-      return 0.95; // Precio mínimo
+  formatPrice(price: number): number {
+    if (!price || price < 0) {
+      return 0.00;
     }
-
-    const integerPart = Math.floor(price);
-    const decimalPart = price - integerPart;
-
-    // Si ya termina en .95, mantenerlo
-    if (Math.abs(decimalPart - 0.95) < 0.001) {
-      return parseFloat(price.toFixed(2));
-    }
-
-    // Si el decimal es menor a .95, redondear al .95 del mismo entero
-    // Si es mayor o igual a .95, redondear al .95 del siguiente entero
-    if (decimalPart < 0.95) {
-      return parseFloat((integerPart + 0.95).toFixed(2));
-    } else {
-      return parseFloat(((integerPart + 1) + 0.95).toFixed(2));
-    }
+    return parseFloat(price.toFixed(2));
   }
 
   /**

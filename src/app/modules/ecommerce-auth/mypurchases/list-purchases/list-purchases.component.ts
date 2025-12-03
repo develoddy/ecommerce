@@ -266,22 +266,16 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   // 💰 ================ MÉTODOS PARA PRECIOS ================ 💰
 
   /**
-   * Obtiene el precio mostrado en la lista con redondeo .95
+   * Obtiene el precio unitario final a mostrar (con descuentos ya aplicados)
    * @param prodDetail Detalle del producto de la compra
-   * @returns Precio con redondeo .95 aplicado
+   * @returns Precio unitario final con 2 decimales
    */
   getDisplayPrice(prodDetail: any): number {
     if (!prodDetail) return 0;
 
-    // Obtener el precio base del producto
-    const basePrice = prodDetail.total || prodDetail.subtotal || prodDetail.price || 0;
-    
-    // Si el precio es 0 o negativo, devolverlo tal como está
-    if (basePrice <= 0) return basePrice;
-
-    // Aplicar redondeo .95 para consistencia con el resto de la plataforma
-    //return this.priceCalculationService.applyRoundingTo95(basePrice);
-     return parseFloat(basePrice.toFixed(2));
+    // ✅ USAR getFinalUnitPrice() que obtiene price_unitario correcto del backend
+    // Este método ya maneja correctamente descuentos aplicados
+    return this.getFinalUnitPrice(prodDetail);
   }
 
   /**
@@ -376,6 +370,8 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     
     if (originalPrice <= 0 || finalPrice >= originalPrice) return 0;
     
+    // ✅ Calcular ahorro exacto: originalPrice - finalPrice
+    // Ejemplo: 22.95 - 20.66 = 2.29 (no 2.95)
     return parseFloat((originalPrice - finalPrice).toFixed(2));
   }
 
@@ -429,7 +425,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
    */
   getOriginalPriceForDisplay(prodDetail: any): number {
     const originalPrice = this.getOriginalPrice(prodDetail);
-    return this.priceCalculationService.applyRoundingTo95(originalPrice);
+    return this.priceCalculationService.formatPrice(originalPrice);
   }
 
   /**

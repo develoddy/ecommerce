@@ -1195,30 +1195,30 @@ export class PaymentCheckoutComponent implements OnInit {
         if (discountValue > 100) return originalPrice;
         priceAfterDiscount = originalPrice * (1 - discountValue / 100);
         priceAfterDiscount = Math.max(0, priceAfterDiscount);
-        return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+        return this.priceCalculationService.formatPrice(priceAfterDiscount);
       } else if (cart.code_discount && !cart.code_cupon) {
         // FLASH SALE con descuento porcentual - usar el descuento como porcentaje
         if (discountValue > 100) return originalPrice;
         priceAfterDiscount = originalPrice * (1 - discountValue / 100);
         priceAfterDiscount = Math.max(0, priceAfterDiscount);
-        return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+        return this.priceCalculationService.formatPrice(priceAfterDiscount);
       } else {
         // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
         if (discountValue > 0 && discountValue < originalPrice) {
           // Si discount parece ser un precio final válido, aplicar .95 rounding
-          return this.priceCalculationService.applyRoundingTo95(discountValue);
+          return this.priceCalculationService.formatPrice(discountValue);
         } else {
           // Si no, tratar como porcentaje (fallback) y aplicar .95 rounding
           if (discountValue > 100) return originalPrice;
           priceAfterDiscount = originalPrice * (1 - discountValue / 100);
           priceAfterDiscount = Math.max(0, priceAfterDiscount);
-          return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+          return this.priceCalculationService.formatPrice(priceAfterDiscount);
         }
       }
     } else if (cart.type_discount === 2) {
       // Descuento de monto fijo - Aplicar redondeo .95
       priceAfterDiscount = Math.max(0, originalPrice - discountValue);
-      return this.priceCalculationService.applyRoundingTo95(priceAfterDiscount);
+      return this.priceCalculationService.formatPrice(priceAfterDiscount);
     } else {
       // Tipo de descuento no reconocido
       return originalPrice;

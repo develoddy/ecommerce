@@ -1077,23 +1077,39 @@
                                 <div class="d-flex w-100">
                                     <div class="product-details">
                                         <div class="priceRow mb-2">
-                                            <div class="product-price d-flex flex-row justify-content-between">
-                                                <a class="product-title text-uppercase fw-normal text-truncate d-inline-block product-title"
+                                            <div class="product-price d-flex flex-column">
+                                                <a class="product-title text-uppercase fw-normal text-truncate d-inline-block product-title mb-2"
                                                     href="#" onclick="return false;"
                                                     [routerLink]="['/', country, locale, 'shop', 'product', cart.product.slug]">{{
                                                     cart.product.title }}</a>
-                                                <span class="price-small fw-bold">
-                                                    <span class="price-main-small">{{
-                                                        getFormattedPrice((cart.variedad?.retail_price ||
-                                                        cart.product.price_usd) * cart.cantidad).integerPart }}</span>
-                                                    <span class="price-decimals-small" style="top: 0.2em !important;">
-                                                        <sup>{{ getFormattedPrice((cart.variedad?.retail_price ||
-                                                            cart.product.price_usd) * cart.cantidad).decimalPart
-                                                            }}</sup>
-                                                        <span class="currency-symbol-small">{{ euro }}</span>
+                                                
+                                                <!-- Precios -->
+                                                <div class="d-flex align-items-center">
+                                                    <!-- Precio original tachado si hay descuento -->
+                                                    <span class="money me-2" *ngIf="hasCartItemDiscount(cart)">
+                                                        <span class="price old-price text-decoration-line-through text-muted" style="font-size: 0.8rem;">
+                                                            {{ euro }} {{ getFormattedPrice(getOriginalUnitPrice(cart) * cart.cantidad).integerPart }}.{{ getFormattedPrice(getOriginalUnitPrice(cart) * cart.cantidad).decimalPart }}
+                                                        </span>
                                                     </span>
-                                                </span>
+
+                                                    <!-- Precio final (con descuento si aplica) -->
+                                                    <span class="price-small fw-bold" [class.text-danger]="hasCartItemDiscount(cart)">
+                                                        <span class="price-main-small">{{
+                                                            getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).integerPart }}</span>
+                                                        <span class="price-decimals-small" style="top: 0.2em !important;">
+                                                            <sup>{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).decimalPart
+                                                                }}</sup>
+                                                            <span class="currency-symbol-small">{{ euro }}</span>
+                                                        </span>
+                                                    </span>
+                                                </div>
                                             </div>
+                                        </div>
+                                        <!-- Badge de tipo de descuento -->
+                                        <div class="discount-badge mb-2" *ngIf="hasCartItemDiscount(cart)">
+                                            <span class="badge bg-success text-white fw-light" style="font-size: 0.75rem;">
+                                                {{ getDiscountType(cart) }}
+                                            </span>
                                         </div>
                                         <div class="d-flex flex-column">
                                             <div class="variant-cart fw-light d-flex" *ngIf="cart.variedad">
