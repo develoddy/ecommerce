@@ -604,14 +604,23 @@
                     <h4 class="text-center mb-4" style="color: #2c3e50; font-weight: 600;">¿Qué te gustaría hacer ahora?</h4>
                     
                     <div class="row g-3">
+
                         <!-- Seguir comprando -->
                         <div class="col-12 col-md-6">
-                            <a [href]="'/' + country + '/' + locale + '/home'" class="text-decoration-none d-block">
+                            <!-- <a [href]="'/' + country + '/' + locale + '/home'" class="text-decoration-none d-block">
+                                <button class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center" style="background: #007bff; border: none; border-radius: 12px; font-weight: 600; letter-spacing: 0.5px; box-shadow: 0 4px 16px rgba(0, 123, 255, 0.2);">
+                                    <i class="me-3 icon anm anm-bag-l" style="font-size: 1.3rem;"></i>
+                                    <span style="font-size: 1rem;">Seguir comprando</span>
+                                </button>
+                            </a> -->
+
+                             <a [routerLink]="['/', locale, country, 'shop', 'filter-products']"  class="text-decoration-none d-block">
                                 <button class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center" style="background: #007bff; border: none; border-radius: 12px; font-weight: 600; letter-spacing: 0.5px; box-shadow: 0 4px 16px rgba(0, 123, 255, 0.2);">
                                     <i class="me-3 icon anm anm-bag-l" style="font-size: 1.3rem;"></i>
                                     <span style="font-size: 1rem;">Seguir comprando</span>
                                 </button>
                             </a>
+                            
                         </div>
                         
                         <!-- Contactar soporte -->
