@@ -224,8 +224,13 @@
   box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
-.percentage-text {
+.percentage-text::before {
+  content: '0';
   animation: countUp 3s ease-out forwards;
+}
+
+.percentage-text::after {
+  content: '%';
 }
 
 /* ============================================
@@ -502,16 +507,16 @@
 
 @keyframes countUp {
   0% {
-    content: '0%';
+    content: '0';
   }
   33% {
-    content: '33%';
+    content: '33';
   }
   66% {
-    content: '66%';
+    content: '66';
   }
   100% {
-    content: '95%';
+    content: '95';
   }
 }
 
@@ -627,38 +632,236 @@
 
 @media (max-width: 768px) {
   .loading-container {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1rem;
+    max-width: 100%;
   }
 
   .icon-animation-wrapper {
-    height: 140px;
+    height: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Círculos más pequeños */
+  .pulse-circle-1 {
+    width: 70px;
+    height: 70px;
+  }
+
+  .pulse-circle-2 {
+    width: 85px;
+    height: 85px;
+  }
+
+  .pulse-circle-3 {
+    width: 100px;
+    height: 100px;
   }
 
   .main-icon {
-    font-size: 3rem;
+    font-size: 2.5rem;
+  }
+
+  .spinner-custom {
+    width: 100px;
+    height: 100px;
+    border-width: 2px;
+  }
+
+  /* Success checkmark más pequeño */
+  .check-icon {
+    width: 60px;
+    height: 60px;
+    border: 3px solid #28a745;
+  }
+
+  .icon-line.line-tip {
+    top: 33px;
+    left: 10px;
+    width: 18px;
+    height: 4px;
+  }
+
+  .icon-line.line-long {
+    top: 29px;
+    right: 6px;
+    width: 35px;
+    height: 4px;
+  }
+
+  .icon-circle {
+    width: 60px;
+    height: 60px;
   }
 
   .loading-title {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
   }
 
+  /* Progress bar */
+  .progress-bar-custom {
+    height: 4px;
+  }
+
+  .progress-percentage {
+    top: -28px;
+    padding: 3px 10px;
+    font-size: 0.7rem;
+  }
+
+  /* Status messages */
+  .status-messages {
+    min-height: 60px;
+    margin-bottom: 1.5rem;
+  }
+
+  .status-message {
+    font-size: 0.85rem;
+  }
+
+  .status-icon {
+    font-size: 1rem;
+  }
+
+  /* Security badges */
   .security-badges {
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
   }
 
   .badge-item {
     width: 100%;
     justify-content: flex-start;
+    padding: 0.75rem;
+  }
+
+  .badge-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .badge-label {
+    font-size: 0.65rem;
+  }
+
+  .badge-value {
+    font-size: 0.8rem;
+  }
+
+  /* Helper text */
+  .helper-text-wrapper {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .helper-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .helper-title {
+    font-size: 0.85rem;
+  }
+
+  .helper-description {
+    font-size: 0.75rem;
+  }
+
+  /* Estimated time */
+  .estimated-time {
+    padding: 0.75rem;
+  }
+
+  .time-icon-wrapper {
+    width: 28px;
+    height: 28px;
+  }
+
+  .time-icon {
+    font-size: 0.9rem;
+  }
+
+  .time-text {
+    font-size: 0.8rem;
+  }
+}
+
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 576px) {
+  .loading-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .icon-animation-wrapper {
+    height: 80px;
+    margin-bottom: 1rem;
+  }
+
+  .pulse-circle-1 {
+    width: 60px;
+    height: 60px;
+  }
+
+  .pulse-circle-2 {
+    width: 72px;
+    height: 72px;
+  }
+
+  .pulse-circle-3 {
+    width: 84px;
+    height: 84px;
+  }
+
+  .main-icon {
+    font-size: 2rem;
+  }
+
+  .spinner-custom {
+    width: 84px;
+    height: 84px;
+  }
+
+  .loading-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .progress-wrapper {
+    margin-bottom: 1.5rem;
+  }
+
+  .status-messages {
+    min-height: 50px;
+    margin-bottom: 1rem;
+  }
+
+  .status-message {
+    font-size: 0.8rem;
+    gap: 0.35rem;
+  }
+
+  .security-badges {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .badge-item {
+    padding: 0.65rem;
+    gap: 0.5rem;
   }
 
   .helper-text-wrapper {
-    flex-direction: column;
-    text-align: center;
+    padding: 0.85rem;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
   }
 
-  .helper-content {
-    text-align: center;
+  .estimated-time {
+    padding: 0.65rem;
+    gap: 0.5rem;
   }
 }
 
