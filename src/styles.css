@@ -1,5 +1,57 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* ============================================
+   📱 MOBILE UX FIX - Prevenir zoom y mantener viewport estable
+   ============================================ */
+
+/* Evitar zoom por accesibilidad en iOS/Android */
+html, body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+/* Forzar 16px en inputs para evitar zoom automático en móvil */
+@media (max-width: 768px) {
+  input, select, textarea, button {
+    font-size: 16px !important;
+  }
+  
+  /* Evitar que inputs tipo number muestren controles nativos molestos */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+/* Estructura base de cada página - evitar overscroll */
+.page-container {
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* iOS Safari - safe area para notch */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Evitar que transform en contenedores principales rompa viewport */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================
+   FIN MOBILE UX FIX
+   ============================================ */
+
 .notification-ecommerce-warning {
   position: fixed;
   left: 0%;
