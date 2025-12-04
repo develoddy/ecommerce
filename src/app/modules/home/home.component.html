@@ -45,25 +45,25 @@
       <!--End Home Slideshow-->
     </ng-container>
 
-    <ng-container *ngIf="categories && categories.length > 0">
-      <!-- Collection banner -->
+    <!-- Collection banner -->
+    <!-- <ng-container *ngIf="categories && categories.length > 0">
       <app-collection-banners 
         [categories]="categories"
         [locale]="locale"
         [country]="country"
         [isVisible]="true">
       </app-collection-banners>
-      <!--End Collection banner-->
-    </ng-container>
+    </ng-container> -->
+    <!--End Collection banner-->
 
     <!--Popular Categories-->
-    <!-- <ng-container *ngIf="categories && categories.length > 0">
+    <ng-container *ngIf="categories && categories.length > 0">
       <app-category-list
         [categories]="categories"
         [locale]="locale"
         [country]="country"
       ></app-category-list>
-    </ng-container> -->
+    </ng-container>
     <!--End Popular Categories-->
 
     <!--Toolbar d-none-->
