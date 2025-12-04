@@ -71,38 +71,29 @@
                         <!-- Address Book -->
                         <div class="tab-pane h-100" id="address">
                             <div class="address-card mt-0 h-100">
-                                <!-- <ng-container *ngIf="listAddresses.length == 0; else allShowListAddress">
-                                    <div class="d-flex justify-content-start align-items-center">
-                                       <div class="d-flex flex-column" [ngClass]="{ 'w-100': isMobile }">
-                                          <h3 class="header-title mb-0 text-uppercase">
-                                             Libreta de direcciones
-                                          </h3>
-                                          <small class="mb-3">Por favor, registre una dirección para continuar.</small>                                 
-                                          <a
-                                             href="#"
-                                             onclick="return false;"
-                                             (click)="goToRegisterAddress()">
-                                                <button
-                                                   type="button"
-                                                   class="btn-dark-ld text-uppercase">Añadir dirección
-                                                </button>
-                                          </a>
-                                       </div>
-                                    </div>
-                                 </ng-container> -->
-
-                                <!-- Register address (Probando) -->
-                                <ng-container *ngIf="listAddresses.length == 0; else allShowListAddress">
-                                    <div class="mb-4">
+                                <!-- Register address (Primera vez o modo edición/nuevo) -->
+                                <ng-container *ngIf="listAddresses.length == 0 || showAddressForm; else allShowListAddress">
+                                    <div class="mb-4" id="addressFormContainer">
                                         <div class="dashboard-content h-100" id="top-tabContent">
                                             <!-- Address Book -->
                                             <div class="tab-pane h-100" id="address">
                                                 <div class="address-card mt-0 h-100">
-                                                    <!-- Mostrar la lista de direcciones -->
+                                                    <!-- Header con botón de cancelar para modo edición -->
                                                     <div class="address-book-section">
-                                                        <h3 class="mb-4 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
-                                                            <i class="icon anm anm-map-marker-al me-2"></i>Datos de envío
-                                                        </h3>
+                                                        <div class="d-flex justify-content-between align-items-center mb-4" style="border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
+                                                            <h3 class="mb-0 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px;">
+                                                                <i class="icon anm anm-map-marker-al me-2"></i>
+                                                                {{ isEditMode ? 'Editar dirección' : 'Datos de envío' }}
+                                                            </h3>
+                                                            <!-- Botón cancelar en modo edición o cuando hay direcciones y se muestra formulario -->
+                                                            <button 
+                                                                *ngIf="isEditMode || (showAddressForm && listAddresses.length > 0)" 
+                                                                type="button" 
+                                                                class="btn btn-outline-secondary btn-sm"
+                                                                (click)="cancelAddressForm()">
+                                                                <i class="icon anm anm-times-l me-1"></i>Cancelar
+                                                            </button>
+                                                        </div>
                                                         <form #addressForm="ngForm" novalidate (ngSubmit)="storeAddress()">
                                                             <fieldset>
                                                                 <!-- Nombre -->
@@ -345,7 +336,7 @@
                                                                                 style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
                                                                             <ng-container *ngIf="!isValidating">
                                                                                 <i class="icon anm anm-check-cil me-2" style="font-size: 1.2rem;"></i>
-                                                                                <span>Guardar dirección</span>
+                                                                                <span>{{ isEditMode ? 'Actualizar dirección' : 'Guardar dirección' }}</span>
                                                                             </ng-container>
                                                                             <ng-container *ngIf="isValidating">
                                                                                 <div class="spinner-border spinner-border-sm text-white me-2" role="status">
@@ -392,13 +383,16 @@
 
                                     <!-- Mostrar la lista de direcciones & ShippingRates -->
                                     <div class="address-book-section" [class.d-none]="loading">
-                                        <div class="top-sec d-flex mb-2 d-flex justify-content-between" [class.d-none]="loading">
+                                        <div class="top-sec d-flex mb-3 d-flex justify-content-between align-items-center" [class.d-none]="loading">
                                             <h3 class="mb-0 text-uppercase">Datos de envío</h3>
-                                            <a href="#" class="text-decoration-underline" onclick="return false;" (click)="openAddressModal()">
-                                                <button type="button" class="border-0 fw-bold text-decoration-underline">
-                                                    Editar
+                                            <div class="d-flex gap-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm" (click)="showNewAddressForm()">
+                                                    <i class="icon anm anm-plus-l me-1"></i>Nueva dirección
                                                 </button>
-                                            </a>
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" (click)="openAddressModal()">
+                                                    <i class="icon anm anm-edit-l me-1"></i>Cambiar
+                                                </button>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <ng-container *ngIf="selectedAddress">
@@ -467,11 +461,20 @@
                                                    }}</span><br />
                                                                 </p>
                                                             </div>
-                                                            <div class="form-text p-1 px-3 mt-3 text-dark" style="
-                                                width: fit-content !important;
-                                                background-color: #f3f3f3;
-                                                " *ngIf="selectedAddress.usual_shipping_address">
-                                                                Dirección de envío habitual
+                                                            <div class="badge px-3 py-2 mt-3 d-inline-flex align-items-center" 
+                                                                 style="
+                                                                     width: fit-content !important;
+                                                                     background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                                                                     color: white;
+                                                                     font-weight: 600;
+                                                                     font-size: 0.65rem;
+                                                                     letter-spacing: 0.5px;
+                                                                     border: 1px solid rgba(40, 167, 69, 0.2);
+                                                                     box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15);
+                                                                 " 
+                                                                 *ngIf="selectedAddress.usual_shipping_address">
+                                                                <i class="icon anm anm-check-cil me-2" style="font-size: 0.9rem;"></i>
+                                                                <span class="text-uppercase">Dirección habitual</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -480,340 +483,6 @@
                                         </div>
                                     </div>
                                 </ng-template>
-
-                                <!-- Edit Address Modal -->
-                                <div class="modal fade" id="addEditModal" tabindex="-1" aria-labelledby="addEditModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header justify-content-center border-0">
-                                                <h3 class="modal-title text-uppercase" id="addNewModalLabel">
-                                                    Editar dirección de envío
-                                                </h3>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body border-0">
-                                                <form #addressForm="ngForm" novalidate (ngSubmit)="storeAddress()">
-                                                    <fieldset>
-                                                        <!-- Nombre -->
-                                                        <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_firstname" class="form-label d-none">Nombre <span class="required">*</span></label>
-                                                                <input name="firstname" 
-                                                                       id="edit_firstname" 
-                                                                       type="text" 
-                                                                       required
-                                                                       [(ngModel)]="name" 
-                                                                       #firstnameEditRef="ngModel"
-                                                                       placeholder="Nombre" 
-                                                                       class="form-control"
-                                                                       [ngClass]="{'is-invalid': firstnameEditRef.invalid && (firstnameEditRef.touched || addressForm.submitted)}" />
-                                                                <div *ngIf="firstnameEditRef.invalid && (firstnameEditRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                    Completa este campo para continuar
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Apellidos -->
-                                                        <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_lastname" class="form-label d-none">Apellidos <span class="required">*</span></label>
-                                                                <input name="lastname" 
-                                                                       id="edit_lastname" 
-                                                                       type="text" 
-                                                                       required
-                                                                       [(ngModel)]="surname" 
-                                                                       #lastnameEditRef="ngModel"
-                                                                       placeholder="Apellidos" 
-                                                                       class="form-control"
-                                                                       [ngClass]="{'is-invalid': lastnameEditRef.invalid && (lastnameEditRef.touched || addressForm.submitted)}" />
-                                                                <div *ngIf="lastnameEditRef.invalid && (lastnameEditRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                    Completa este campo para continuar
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- País -->
-                                                        <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_country" class="form-label d-none">País <span class="required">*</span></label>
-                                                                <select id="edit_country" 
-                                                                        name="address[country]" 
-                                                                        [(ngModel)]="pais" 
-                                                                        #paisEditSelect="ngModel"
-                                                                        required 
-                                                                        class="form-control" 
-                                                                        [ngClass]="{'is-invalid': paisEditSelect.invalid && (paisEditSelect.touched || addressForm.submitted)}">
-                                                                    <option value="" disabled>País</option>
-                                                                    <optgroup label="🇪🇺 Unión Europea">
-                                                                        <option *ngFor="let country of supportedCountries" 
-                                                                                [value]="country.code" 
-                                                                                [label]="country.name">
-                                                                            {{ country.name }}
-                                                                        </option>
-                                                                    </optgroup>
-                                                                </select>
-                                                                <div *ngIf="paisEditSelect.invalid && (paisEditSelect.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                    Selecciona un país
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Calle -->
-                                                        <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_calle" class="form-label d-none">Calle <span class="required">*</span></label>
-                                                                <input name="calle" 
-                                                                       id="edit_calle" 
-                                                                       type="text" 
-                                                                       required 
-                                                                       [(ngModel)]="calle" 
-                                                                       #calleEditRef="ngModel" 
-                                                                       placeholder="Calle (ej: Calle Gran Vía)" 
-                                                                       class="form-control" 
-                                                                       [ngClass]="{'is-invalid': calleEditRef.invalid && (calleEditRef.touched || addressForm.submitted)}" />
-                                                                <div *ngIf="calleEditRef.invalid && (calleEditRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                    Completa este campo para continuar
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Número -->
-                                                        <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_numero" class="form-label d-none">Número <span class="required">*</span></label>
-                                                                <input name="numero" 
-                                                                       id="edit_numero" 
-                                                                       type="text" 
-                                                                       required 
-                                                                       [(ngModel)]="numero" 
-                                                                       #numeroEditRef="ngModel" 
-                                                                       placeholder="Número (ej: 123)" 
-                                                                       class="form-control" 
-                                                                       [ngClass]="{'is-invalid': numeroEditRef.invalid && (numeroEditRef.touched || addressForm.submitted)}" />
-                                                                <div *ngIf="numeroEditRef.invalid && (numeroEditRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                    Debes incluir el número de la calle para el envío
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Apartamento/Piso (Opcional) -->
-                                                        <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_apartamento" class="form-label d-none">Apartamento/Piso</label>
-                                                                <input name="apartamento" 
-                                                                       id="edit_apartamento" 
-                                                                       type="text" 
-                                                                       [(ngModel)]="apartamento" 
-                                                                       placeholder="Apartamento/Piso (opcional, ej: 3º B)" 
-                                                                       class="form-control" />
-                                                                <small class="form-text text-muted">Opcional: piso, puerta, escalera, etc.</small>
-                                                            </div>
-                                                        </div>
-                                                        <!-- 🎯 Código postal (MODAL EDIT) -->
-                                                        <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_postcode" class="form-label d-none">Código postal <span class="required">*</span></label>
-                                                                <div class="position-relative">
-                                                                    <input name="postcode" 
-                                                                           id="edit_postcode" 
-                                                                           type="text" 
-                                                                           required
-                                                                           [(ngModel)]="zipcode" 
-                                                                           #zipcodeEditRef="ngModel"
-                                                                           (blur)="onZipCodeChange(zipcode)"
-                                                                           (change)="onZipCodeChange(zipcode)"
-                                                                           placeholder="Código postal (ej: 28013)" 
-                                                                           class="form-control"
-                                                                           [ngClass]="{
-                                                                               'is-invalid': (zipcodeEditRef.invalid && (zipcodeEditRef.touched || addressForm.submitted)) || postalCodeError
-                                                                           }" />
-                                                                    <!-- Spinner de carga -->
-                                                                    <div *ngIf="isLoadingPostalCode" 
-                                                                         class="position-absolute" 
-                                                                         style="right: 10px; top: 50%; transform: translateY(-50%);">
-                                                                        <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                                                            <span class="visually-hidden">Buscando...</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- Error de validación estándar -->
-                                                                <div *ngIf="zipcodeEditRef.invalid && (zipcodeEditRef.touched || addressForm.submitted) && !postalCodeError" class="invalid-feedback d-block">
-                                                                    Completa este campo para continuar
-                                                                </div>
-                                                                <!-- Error de código postal no encontrado -->
-                                                                <div *ngIf="postalCodeError" class="invalid-feedback d-block">
-                                                                    <i class="icon anm anm-times-r me-1"></i>{{ postalCodeError }}
-                                                                </div>
-                                                                <!-- Mensaje de éxito -->
-                                                                <div *ngIf="zipcode && !postalCodeError && !isLoadingPostalCode && ciudad" class="text-success small mt-1">
-                                                                    <i class="icon anm anm-check me-1"></i>Código postal válido
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- 🎯 Ciudad/Población (DROPDOWN SI HAY MÚLTIPLES OPCIONES - MODAL) -->
-                                                        <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_city" class="form-label d-none">Ciudad <span class="required">*</span></label>
-                                                                
-                                                                <!-- Dropdown si hay múltiples ciudades -->
-                                                                <ng-container *ngIf="availableCities.length > 1; else singleCityEdit">
-                                                                    <select name="city" 
-                                                                            id="edit_city_select"
-                                                                            required 
-                                                                            [(ngModel)]="poblacion" 
-                                                                            #poblacionEditSelect="ngModel" 
-                                                                            class="form-control"
-                                                                            [ngClass]="{'is-invalid': poblacionEditSelect.invalid && (poblacionEditSelect.touched || addressForm.submitted)}">
-                                                                        <option value="" disabled>Selecciona tu ciudad</option>
-                                                                        <option *ngFor="let cityObj of availableCities" 
-                                                                                [value]="cityObj.city">
-                                                                            {{ cityObj.city }}
-                                                                            <span *ngIf="cityObj.isPrimary"> (Principal)</span>
-                                                                        </option>
-                                                                    </select>
-                                                                    
-                                                                    <small class="form-text text-success mt-1">
-                                                                        <i class="icon anm anm-check me-1"></i>{{ availableCities.length }} ciudades disponibles
-                                                                    </small>
-                                                                    
-                                                                    <div *ngIf="poblacionEditSelect.invalid && (poblacionEditSelect.touched || addressForm.submitted)" class="invalid-feedback d-block">
-                                                                        Por favor selecciona una ciudad
-                                                                    </div>
-                                                                </ng-container>
-                                                                
-                                                                <!-- Input si hay una sola ciudad o aún no se ha buscado -->
-                                                                <ng-template #singleCityEdit>
-                                                                    <input name="city" 
-                                                                           placeholder="Ciudad (se autocompleta con el CP)" 
-                                                                           required 
-                                                                           [(ngModel)]="poblacion" 
-                                                                           #poblacionEditInput="ngModel"
-                                                                           [readonly]="availableCities.length === 1"
-                                                                           id="edit_city" 
-                                                                           type="text" 
-                                                                           class="form-control bg-light"
-                                                                           [ngClass]="{'is-invalid': poblacionEditInput.invalid && (poblacionEditInput.touched || addressForm.submitted)}" />
-                                                                    
-                                                                    <small class="form-text text-muted" *ngIf="availableCities.length === 0 && !poblacion">
-                                                                        <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
-                                                                    </small>
-                                                                    
-                                                                    <div *ngIf="poblacionEditInput.invalid && (poblacionEditInput.touched || addressForm.submitted)" class="invalid-feedback d-block">
-                                                                        Ingresa primero el código postal
-                                                                    </div>
-                                                                </ng-template>
-                                                                
-                                                                <!-- Error de validación de ciudad -->
-                                                                <div *ngIf="cityError" class="invalid-feedback d-block">
-                                                                    <i class="icon anm anm-times-r me-1"></i>{{ cityError }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- 🎯 Provincia/Estado (AUTOCOMPLETADA - READONLY - MODAL) -->
-                                                        <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_state" class="form-label d-none">Provincia/Estado <span class="required">*</span></label>
-                                                                <input name="state" 
-                                                                       placeholder="Provincia (se autocompleta con el CP)" 
-                                                                       required 
-                                                                       [(ngModel)]="ciudad" 
-                                                                       #ciudadEditRef="ngModel"
-                                                                       [readonly]="isProvinceReadonly"
-                                                                       id="edit_state" 
-                                                                       type="text" 
-                                                                       class="form-control bg-light"
-                                                                       [ngClass]="{'is-invalid': ciudadEditRef.invalid && (ciudadEditRef.touched || addressForm.submitted)}" />
-                                                                <small class="form-text text-muted" *ngIf="!ciudad">
-                                                                    <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
-                                                                </small>
-                                                                <div *ngIf="ciudadEditRef.invalid && (ciudadEditRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                    Ingresa primero el código postal
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Email -->
-                                                        <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_email" class="form-label d-none">E-Mail <span class="required">*</span></label>
-                                                                <input name="email" 
-                                                                       id="edit_email" 
-                                                                       type="email" 
-                                                                       required 
-                                                                       [(ngModel)]="email" 
-                                                                       #emailEditRef="ngModel"
-                                                                       placeholder="E-mail" 
-                                                                       class="form-control"
-                                                                       [ngClass]="{'is-invalid': emailEditRef.invalid && (emailEditRef.touched || addressForm.submitted)}" />
-                                                                <div *ngIf="emailEditRef.invalid && (emailEditRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                    Introduce un email válido
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Telefono -->
-                                                        <div class="row justify-content-center">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <label for="edit_phone" class="form-label d-none">Móvil <span class="required">*</span></label>
-                                                                <input name="phone" 
-                                                                       id="edit_phone" 
-                                                                       type="tel" 
-                                                                       required 
-                                                                       [(ngModel)]="phone" 
-                                                                       #phoneEditRef="ngModel"
-                                                                       placeholder="Móvil" 
-                                                                       class="form-control"
-                                                                       [ngClass]="{'is-invalid': phoneEditRef.invalid && (phoneEditRef.touched || addressForm.submitted)}" />
-                                                                <div *ngIf="phoneEditRef.invalid && (phoneEditRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                    Completa este campo para continuar
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row justify-content-center mt-0 mb-5 d-none">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <p class="mt-3">Dirección de envío habitual</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row justify-content-center mt-0 mb-3">
-                                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-10">
-                                                                <button type="submit" class="btn btn-primary w-100 text-uppercase fw-normal btn-lg" (click)="storeAddress()" [disabled]="isValidating">
-                                                                    <span *ngIf="!isValidating">Guardar cambios</span>
-                                                                    <span *ngIf="isValidating">Validando...</span>
-                                                                </button>
-                                                                
-                                                                <!-- Mensaje de validación -->
-                                                                <div *ngIf="validationMessage" class="alert alert-info mt-3 mb-0">
-                                                                    {{ validationMessage }}
-                                                                </div>
-                                                                
-                                                                <!-- Mensaje de error -->
-                                                                <p class="mt-3 fw-normal text-danger" *ngIf="validMessage && !status">
-                                                                    {{ errorOrSuccessMessage }}
-                                                                </p>
-                                                                
-                                                                <p class="fs-12">
-                                                                    <small class="text-muted">Al continuar, confirmas que has leído la
-                                                                        <a href="#" class="text-decoration-underline">Política de privacidad</a></small>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </fieldset>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer border-0 justify-content-center d-none">
-                                                <div class="form-row row-cols-lg-1 row-cols-md-2 row-cols-sm-1 row-cols-1 text-center">
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn btn-primary text-uppercase fw-normal btn-lg" (click)="storeAddress()">
-                                                            <span>Guardar cambios</span>
-                                                        </button>
-                                                        <!-- <p class="mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p>  -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- End Edit Address Modal -->
                             </div>
                         </div>
                         <!-- End Address Book -->
@@ -881,7 +550,7 @@
                 <!-- END CART SUMMARY VERSION MÓVIL -->
 
                 <!-- BOTON CONTINUAR A PAGO -->
-                <ng-container *ngIf="listAddresses.length != 0">
+                <ng-container *ngIf="listAddresses.length != 0 && !showAddressForm">
                     <div class="d-flex flex-column mb-4">
                         <button type="button" 
                                 class="btn btn-dark w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center mb-3" 
@@ -1289,7 +958,9 @@
                     <button class="cart-btn btn-dark-ld me-1 py-3 mb-3" (click)="confirmarDireccion()">
                         Confirmar dirección
                     </button>
-                    <a *ngIf="CURRENT_USER_AUTHENTICATED" href="#" onclick="return false;" (click)="goToRegisterAddress()" class="cart-btn btn-outline-white-ld text-black me-1 py-3 mb-3">Añadir otra dirección</a>
+                    <a *ngIf="CURRENT_USER_AUTHENTICATED" href="#" onclick="return false;" (click)="showNewAddressForm(); closeMiniAdress()" class="cart-btn btn-outline-white-ld text-black me-1 py-3 mb-3">
+                        <i class="icon anm anm-plus-l me-2"></i>Añadir otra dirección
+                    </a>
                     <!-- <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-white text-black bg-white w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3">Añadir otra dirección</a> -->
                     <!-- <a href="#" onclick="return false;" (click)="goToRegisterAddress()"> 
                <button type="button" class="btn btn-primary px-5 text-uppercase fw-normal">Añadir otra dirección</button>

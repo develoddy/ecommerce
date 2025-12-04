@@ -35,7 +35,7 @@
                                  <i class="icon anm anm-map-marker-al me-2"></i>Dirección de envío
                               </h3>
                               <div>
-                                 <a href="#" 
+                                 <!-- <a href="#" 
                                     onclick="return false;" 
                                     class="text-decoration-none fw-semibold d-inline-flex align-items-center" 
                                     (click)="gotoResumen()"
@@ -43,7 +43,10 @@
                                     onmouseover="this.style.color='#222'"
                                     onmouseout="this.style.color='#6c757d'">
                                     <i class="icon anm anm-edit me-1"></i>Editar
-                                 </a>
+                                 </a> -->
+                                 <button type="button" class="btn btn-outline-secondary btn-sm" (click)="gotoResumen()">
+                                       <i class="icon anm anm-edit-l me-1"></i>Cambiar
+                                 </button>
                               </div>
                         </div>
                         <div class="row">
@@ -117,8 +120,23 @@
                                              }}</span><br />
                                              </p>
                                           </div>
-                                          <div class="form-text p-1 px-3 mt-3 text-dark" style="width: fit-content !important;background-color: #f3f3f3;" *ngIf="selectedAddress.usual_shipping_address">
+                                          <!-- <div class="form-text p-1 px-3 mt-3 text-dark" style="width: fit-content !important;background-color: #f3f3f3;" *ngIf="selectedAddress.usual_shipping_address">
                                              Dirección de envío habitual
+                                          </div> -->
+                                          <div class="badge px-3 py-2 mt-3 d-inline-flex align-items-center" 
+                                                style="
+                                                   width: fit-content !important;
+                                                   background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                                                   color: white;
+                                                   font-weight: 600;
+                                                   font-size: 0.65rem;
+                                                   letter-spacing: 0.5px;
+                                                   border: 1px solid rgba(40, 167, 69, 0.2);
+                                                   box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15);
+                                                " 
+                                                *ngIf="selectedAddress.usual_shipping_address">
+                                                <i class="icon anm anm-check-cil me-2" style="font-size: 0.9rem;"></i>
+                                                <span class="text-uppercase">Dirección habitual</span>
                                           </div>
                                     </div>
                                     <!-- / End Informacion address -->
@@ -252,17 +270,18 @@
                         <div class="accordion" id="accordionExample">
                               <!-- TARJETA -->
                               <div class="accordion-item card mb-2 p-4 border border-muted">
-                                 <div class="card-header" id="headingOne">
-                                    <div class="d-flex flex-row justify-content-between">
-                                          <div class="d-flex">
-                                             <button class="card-link align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                                <span class="customRadio clearfix mb-0">
-                                                      <input id="paymentRadio1" value="card" name="paymentMethod" type="radio" class="radio" checked="checked" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange()" checked />
-                                                      <label for="paymentRadio1" class="mb-0 fs-14 text-uppercase fw-normal">Tarjeta</label>
-                                                </span>
-                                             </button>
-                                          </div>
-                                          <div class="d-flex flex-row">
+                                 <label for="paymentRadio1" class="w-100 mb-0 cursor-pointer">
+                                    <div class="card-header" id="headingOne">
+                                       <div class="d-flex flex-row justify-content-between">
+                                             <div class="d-flex">
+                                                <div class="card-link align-items-center d-flex">
+                                                   <span class="customRadio clearfix mb-0">
+                                                         <input id="paymentRadio1" value="card" name="paymentMethod" type="radio" class="radio" checked="checked" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange()" checked />
+                                                         <label for="paymentRadio1" class="mb-0 fs-14 text-uppercase fw-normal ms-2">Tarjeta</label>
+                                                   </span>
+                                                </div>
+                                             </div>
+                                             <div class="d-flex flex-row">
                                              <div>
                                                 <svg width="44" height="28" class="Icon_icon-content-1__kPDLF" xmlns="http://www.w3.org/2000/svg">
                                                       <title lang="en">Visa</title>
@@ -278,9 +297,10 @@
                                                       <path fill="#F79E1B" d="M37.903 11.557a9.55 9.55 0 0 1-9.557 9.556c-2.23 0-4.274-.77-5.895-2.044a9.5 9.5 0 0 0 3.638-7.512 9.58 9.58 0 0 0-3.637-7.513A9.5 9.5 0 0 1 28.343 2c5.286 0 9.56 4.302 9.56 9.557"></path>
                                                 </svg>
                                              </div>
-                                          </div>
+                                             </div>
+                                       </div>
                                     </div>
-                                 </div>
+                                 </label>
                                  <div id="collapseOne" class="accordion-collapse collapse d-none" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                     <div class="card-body px-0">
                                           <fieldset>
@@ -404,17 +424,18 @@
                               <!-- END BIZUM -->
                               <!-- PAYPAL -->
                               <div class="accordion-item card mb-0 p-4 border border-muted" [ngClass]="{ 'd-none': isMobile }">
-                                 <div class="card-header" id="headingFour">
-                                    <div class="d-flex flex-row">
-                                          <div class="d-flex flex-grow-1">
-                                             <button class="card-link align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour" (change)="onPaymentMethodChange()">
-                                                <span class="customRadio clearfix mb-0">
-                                                      <input id="paymentRadio5" value="paypal" name="paymentMethod" type="radio" class="radio" checked="checked" [(ngModel)]="selectedPaymentMethod" />
-                                                      <label for="paymentRadio5" class="mb-0 fs-14 text-uppercase fw-normal">Paypal</label>
-                                                </span>
-                                             </button>
-                                          </div>
-                                          <div>
+                                 <label for="paymentRadio5" class="w-100 mb-0 cursor-pointer">
+                                    <div class="card-header" id="headingFour">
+                                       <div class="d-flex flex-row">
+                                             <div class="d-flex flex-grow-1">
+                                                <div class="card-link align-items-center d-flex">
+                                                   <span class="customRadio clearfix mb-0">
+                                                         <input id="paymentRadio5" value="paypal" name="paymentMethod" type="radio" class="radio" checked="checked" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange()" />
+                                                         <label for="paymentRadio5" class="mb-0 fs-14 text-uppercase fw-normal ms-2">Paypal</label>
+                                                   </span>
+                                                </div>
+                                             </div>
+                                             <div>
                                              <svg width="64" height="32" aria-hidden="true" class="Icon_icon-content-1__kPDLF" xmlns="http://www.w3.org/2000/svg">
                                                 <g fill-rule="evenodd" clip-rule="evenodd">
                                                       <path fill="#009EE3" d="M7.236 12.422h4.1c2.2 0 3.03 1.114 2.902 2.751-.212 2.703-1.846 4.199-4.014 4.199H9.13c-.297 0-.497.197-.578.73l-.464 3.1c-.031.202-.137.318-.296.334H5.216c-.242 0-.328-.185-.264-.586l1.57-9.941c.062-.398.28-.587.714-.587"></path>
@@ -424,9 +445,10 @@
                                                       <path fill="#172C70" d="m5.805 17.546.716-4.537c.063-.398.28-.588.715-.588h4.1c.678 0 1.227.105 1.657.301-.412 2.79-2.216 4.34-4.578 4.34h-2.02c-.272 0-.47.136-.59.484"></path>
                                                 </g>
                                              </svg>
-                                          </div>
+                                             </div>
+                                       </div>
                                     </div>
-                                 </div>
+                                 </label>
                                  <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                                     <div class="px-0">
                                           <p class="lh-1 fw-light">

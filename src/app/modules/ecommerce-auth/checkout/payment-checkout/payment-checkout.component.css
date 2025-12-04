@@ -34,3 +34,60 @@
 .w-60 {
     width: 60% !important;
 }
+
+/* Estilos para métodos de pago clicables */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Mejorar la experiencia visual al hacer hover */
+.accordion-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+/* Evitar que el texto se seleccione al hacer clic solo en el label principal */
+.accordion-item > label {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Permitir que los labels internos funcionen normalmente */
+.accordion-item .customRadio label {
+    user-select: auto;
+    cursor: pointer;
+}
+
+/* Asegurar que los iconos de pago no sean clicables por separado */
+.accordion-item svg {
+    pointer-events: none;
+}
+
+/* Mejorar el estilo del radio button seleccionado */
+input[type="radio"]:checked + span,
+input[type="radio"]:checked + label {
+    color: #007bff;
+    font-weight: 600;
+}
+
+/* Estilos para el botón del acordeón */
+.accordion-item .btn-link {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.accordion-item .btn-link:hover i {
+    color: #007bff !important;
+}
+
+/* Animación suave para el icono del acordeón */
+.accordion-item i {
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.accordion-item .collapsed i {
+    transform: rotate(180deg);
+}

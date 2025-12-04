@@ -49,6 +49,10 @@ export class ResumenCheckoutComponent implements OnInit {
   listCarts:any = [];
   totalCarts:any=null;
   show = false;
+  // Estado del formulario de dirección
+  showAddressForm = false;
+  isEditMode = false;
+  editingAddressId: number | null = null;
   user:any;
   code_cupon:any=null;
   sale: any;
@@ -581,7 +585,12 @@ getVarietyImage(cart: any): string {
   }*/
 
   storeAddress() {
-    this.address_client_selected ? this.storeUpdateAddress(): this.registerAddress();
+    // Decidir si es actualización o registro basado en el modo de edición
+    if (this.isEditMode && this.editingAddressId) {
+      this.storeUpdateAddress();
+    } else {
+      this.registerAddress();
+    }
   }
 
   private registerAddress() {
@@ -719,7 +728,12 @@ getVarietyImage(cart: any): string {
         this.hideMessageAfterDelay();
         alertSuccess(resp.message);
         this.resetForm();
-        $('#addNewModal').modal('hide');
+        
+        // Cerrar formulario y volver a mostrar lista
+        this.showAddressForm = false;
+        this.isEditMode = false;
+        this.editingAddressId = null;
+        
         // Recargar direcciones para mostrar la lista actualizada
         this.loadAddresses();
       } else {
@@ -754,12 +768,89 @@ getVarietyImage(cart: any): string {
     this.email = '';
     this.phone = '';
     this.usual_shipping_address = false;
+    
+    // Limpiar estados de edición
+    this.address_client_selected = null;
+    this.availableCities = [];
+    this.postalCodeError = '';
+    this.cityError = '';
   }
 
   newAddress() {
     this.show = true;
     this.resetForm();
     this.address_client_selected = null;
+  }
+
+  /**
+   * Activa el formulario principal para registrar nueva dirección
+   */
+  showNewAddressForm() {
+    this.showAddressForm = true;
+    this.isEditMode = false;
+    this.editingAddressId = null;
+    this.resetForm();
+    
+    // Scroll al formulario
+    setTimeout(() => {
+      const formElement = document.querySelector('#addressFormContainer');
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
+
+  /**
+   * Cancela la edición/registro y vuelve a mostrar la lista
+   */
+  cancelAddressForm() {
+    this.showAddressForm = false;
+    this.isEditMode = false;
+    this.editingAddressId = null;
+    this.resetForm();
+  }
+
+  /**
+   * Carga los datos de una dirección en el formulario principal (para edición)
+   */
+  loadAddressDataToForm(address: any) {
+    this.address_client_selected = address;
+    this.name = address.name;
+    this.surname = address.surname;
+    this.pais = address.pais;
+    
+    // Manejar campos separados o dirección completa
+    if (address.calle) {
+      this.calle = address.calle;
+      this.numero = address.numero || '';
+      this.apartamento = address.apartamento || '';
+    } else {
+      // Backward compatibility: extraer de address completa
+      const fullAddress = address.address || '';
+      const parts = fullAddress.split(',').map((p: string) => p.trim());
+      
+      if (parts.length > 0) {
+        const calleYNumero = parts[0];
+        const match = calleYNumero.match(/^(.+?)\s+(\d+[A-Za-z]?)\s*$/);
+        
+        if (match) {
+          this.calle = match[1].trim();
+          this.numero = match[2].trim();
+        } else {
+          this.calle = calleYNumero;
+          this.numero = '';
+        }
+        
+        this.apartamento = parts.length > 1 ? parts[1] : '';
+      }
+    }
+    
+    this.ciudad = address.ciudad;
+    this.phone = address.telefono || address.phone;
+    this.email = address.email;
+    this.zipcode = address.zipcode;
+    this.poblacion = address.poblacion;
+    this.usual_shipping_address = address.usual_shipping_address;
   }
 
   addressClienteSelected(list_address:any) {
@@ -917,12 +1008,24 @@ getVarietyImage(cart: any): string {
   }
   
   editAddressFromSidebar(address: any) {
-    // Cargar datos de la dirección en el modal
-    this.addressClienteSelected(address);
-    // Cerrar sidebar
+    // 1. Cerrar sidebar
     this.minicartService.closeMiniAddress();
-    // Abrir el modal de edición
-    $('#addEditModal').modal('show');
+    
+    // 2. Activar modo edición
+    this.isEditMode = true;
+    this.showAddressForm = true;
+    this.editingAddressId = address.id;
+    
+    // 3. Cargar datos de la dirección en el formulario principal
+    this.loadAddressDataToForm(address);
+    
+    // 4. Scroll al formulario para mejor UX
+    setTimeout(() => {
+      const formElement = document.querySelector('#addressFormContainer');
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   }
   
   removeAddressSelected(list_address:any) {
@@ -1084,8 +1187,11 @@ getVarietyImage(cart: any): string {
   }
 
   private proceedWithUpdate() {
+    // Usar editingAddressId en lugar de address_client_selected.id
+    const addressId = this.editingAddressId || this.address_client_selected?.id;
+    
     let data = {
-      _id       : this.address_client_selected.id,
+      _id       : addressId,
       user      : this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : this.CURRENT_USER_GUEST,
       name      : this.name,
       surname   : this.surname,
@@ -1179,8 +1285,10 @@ getVarietyImage(cart: any): string {
   }
   
   private closeModal(): void {
-    // Usar Angular para manejar la visibilidad del modal o un servicio
-    $('#addEditModal').modal('hide');
+    // Cerrar formulario en lugar del modal
+    this.showAddressForm = false;
+    this.isEditMode = false;
+    this.editingAddressId = null;
   }
   /* -------------------------------------------------------- FIN ACTUALIZACION DE DIRECCIONES --------------------------------------------------- */
 
