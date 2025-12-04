@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { CompanyInfoService } from 'src/app/services/company-info.service';
 
 @Component({
   selector: 'app-footer',
@@ -21,7 +22,8 @@ export class FooterComponent implements OnInit {
     public _router: Router,
     public _cartService: CartService,
     private subscriptionService: SubscriptionService,
-     private localizationService: LocalizationService,
+    private localizationService: LocalizationService,
+    public company: CompanyInfoService
   ) {}
 
   ngOnInit(): void {

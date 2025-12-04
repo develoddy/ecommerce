@@ -1,0 +1,709 @@
+<div class="legal-document">
+  <div class="legal-header">
+    <h1>CONDICIONES GENERALES DE VENTA</h1>
+    <p class="last-update"><strong>Última actualización</strong>: 4 de diciembre de 2025</p>
+  </div>
+
+  <div class="legal-section">
+    <h2>1. IDENTIFICACIÓN DE LAS PARTES</h2>
+    
+    <h3>1.1. Datos del Vendedor</h3>
+    <p>
+      De conformidad con el artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI), 
+      los datos identificativos del prestador del servicio son:
+    </p>
+
+    <dl>
+      <dt>Razón social:</dt>
+      <dd><strong>{{ company.companyName }}</strong></dd>
+
+      <!-- <dt>NIF/CIF:</dt>
+      <dd><span >[COMPLETAR_CON_TU_NIF]</span></dd> -->
+
+      <dt>Domicilio social:</dt>
+      <dd><span > {{ company.companyAddress }}</span></dd>
+
+      <dt>Email:</dt>
+      <dd><a href="mailto:{{ company.companyEmail }}"> {{ company.companyEmail }}</a></dd>
+
+      <dt>Sitio web:</dt>
+      <dd><a href="{{ company.companyWebsite }}" target="_blank" rel="noopener noreferrer"> {{ company.companyWebsite }}</a></dd>
+
+      <dt>Teléfono:</dt>
+      <dd><span > {{ company.companyPhone }}</span></dd>
+    </dl>
+
+    <div class="legal-alert info">
+      <p>
+        <strong>Nota</strong>: En caso de ser persona física no es necesario estar inscrito en el Registro Mercantil. Si eres persona jurídica (SL, SA, etc.), añadir:
+        Registro Mercantil [Tomo, Libro, Folio, Sección, Hoja e Inscripción], Forma jurídica: Sociedad Limitada / Sociedad Anónima / [Otra]
+      </p>
+    </div>
+
+    <h3>1.2. Datos del Comprador (Usuario)</h3>
+    <p>
+      El Usuario que realice una compra a través de <strong>tienda.lujandev.com</strong> se compromete a proporcionar información veraz, completa y actualizada 
+      sobre su identidad, dirección de envío y datos de contacto necesarios para completar el pedido.
+    </p>
+  </div>
+
+  <div class="legal-section">
+    <h2>2. OBJETO Y ÁMBITO DE APLICACIÓN</h2>
+    
+    <h3>2.1. Objeto del contrato</h3>
+    <p>
+      Las presentes Condiciones Generales de Venta regulan la compra-venta de productos personalizados (textil, accesorios, decoración, etc.) a través de la 
+      plataforma <strong>tienda.lujandev.com</strong>, así como los derechos y obligaciones derivados de dicha relación contractual.
+    </p>
+
+    <h3>2.2. Modelo de negocio: Dropshipping</h3>
+    <p>LUJANDEV opera bajo el modelo <strong>dropshipping</strong>, lo que significa que:</p>
+    <ul>
+      <li>LUJANDEV actúa como <strong>intermediario entre el Usuario y el fabricante/proveedor</strong> (Printful, Inc.).</li>
+      <li>Los productos se fabrican <strong>bajo demanda</strong> (print-on-demand) tras la confirmación del pedido.</li>
+      <li>El envío se realiza directamente desde las instalaciones del proveedor (ubicadas en distintos países según disponibilidad) al domicilio del Usuario.</li>
+      <li>LUJANDEV <strong>no mantiene stock físico</strong> de productos, sino que coordina la producción y envío a través de terceros especializados.</li>
+      <li>LUJANDEV <strong>garantiza la calidad de los productos</strong> y actúa como responsable ante el Usuario en caso de incidencias.</li>
+    </ul>
+    <p><strong>Proveedor de fabricación y logística</strong>: Printful, Inc. (domicilio en EE.UU. con centros de producción en EE.UU., Europa, Canadá, México).</p>
+
+    <h3>2.3. Ámbito territorial</h3>
+    <p>Estas condiciones se aplican a todas las compras realizadas a través de <strong>tienda.lujandev.com</strong>, con entrega en los siguientes territorios:</p>
+    <ul>
+      <li><strong>Territorio principal</strong>: España (Península, Islas Baleares, Islas Canarias, Ceuta y Melilla).</li>
+      <li><strong>Unión Europea</strong>: Todos los países miembros de la UE.</li>
+      <li><strong>Otros países</strong>: [Completar si aplica] (pueden aplicarse gastos de envío y aduanas adicionales).</li>
+    </ul>
+    <p>Las condiciones de envío, tiempos de entrega y costes pueden variar según el país de destino.</p>
+
+    <h3>2.4. Aceptación de las condiciones</h3>
+    <p>Al realizar un pedido a través de <strong>tienda.lujandev.com</strong>, el Usuario:</p>
+    <ol>
+      <li><strong>Declara ser mayor de 18 años</strong> (o tener capacidad legal para contratar según la legislación española).</li>
+      <li><strong>Ha leído, comprende y acepta íntegramente</strong> las presentes Condiciones Generales de Venta.</li>
+      <li><strong>Acepta el tratamiento de sus datos personales</strong> según la <a [routerLink]="['/', locale, country, 'shop', 'privacy-policy'] ">Política de Privacidad</a>.</li>
+      <li><strong>Acepta el uso de cookies</strong> según la <a [routerLink]="['/', locale, country, 'shop', 'politica-cookies'] ">Política de Cookies</a>.</li>
+    </ol>
+  </div>
+
+  <div class="legal-section">
+    <h2>3. PROCESO DE COMPRA</h2>
+    
+    <h3>3.1. Selección de productos</h3>
+    <p>El Usuario puede navegar libremente por el catálogo de productos disponibles en <strong>tienda.lujandev.com</strong>. Cada producto incluye:</p>
+    <ul>
+      <li><strong>Descripción detallada</strong>: Características, materiales, tamaño, colores disponibles.</li>
+      <li><strong>Imágenes de referencia</strong>: Renders o fotos reales del producto (pueden existir ligeras variaciones debido a la naturaleza del print-on-demand).</li>
+      <li><strong>Precio final</strong>: Precio con IVA incluido (desglose visible al finalizar compra).</li>
+      <li><strong>Plazo estimado de producción y envío</strong>: Indicado en la ficha de cada producto.</li>
+      <li><strong>Disponibilidad</strong>: Los productos se fabrican bajo demanda, por lo que no existe "agotamiento de stock" en el sentido tradicional.</li>
+    </ul>
+
+    <h3>3.2. Personalización de productos</h3>
+    <p>Algunos productos permiten personalización (texto, imágenes subidas por el Usuario, selección de diseños). El Usuario es responsable de:</p>
+    <ul>
+      <li><strong>Verificar que el contenido personalizado no infringe derechos de terceros</strong> (marcas registradas, derechos de autor, derechos de imagen).</li>
+      <li><strong>Revisar la vista previa</strong> del producto antes de añadir al carrito.</li>
+      <li><strong>Aceptar que los productos personalizados están excluidos del derecho de desistimiento</strong> (salvo defectos de fabricación), según el artículo 103.c) del Real Decreto Legislativo 1/2007.</li>
+    </ul>
+
+    <div class="legal-alert warning">
+      <p><strong>Importante</strong>: LUJANDEV se reserva el derecho de <strong>rechazar pedidos con contenido ilegal, ofensivo o que infrinja derechos de terceros</strong>.</p>
+    </div>
+
+    <h3>3.3. Carrito de compra</h3>
+    <p>
+      El Usuario puede añadir productos al carrito, modificar cantidades o eliminar artículos antes de finalizar la compra. El carrito se conserva durante 
+      <strong>7 días</strong> (cookie temporal) o hasta que se elimine manualmente.
+    </p>
+
+    <h3>3.4. Proceso de checkout (finalización de compra)</h3>
+    <p>Para completar el pedido, el Usuario deberá:</p>
+    <ol>
+      <li><strong>Revisar el carrito</strong>: Verificar productos, cantidades, personalizaciones y precio total.</li>
+      <li><strong>Facilitar datos de envío</strong>: Nombre completo, dirección completa (calle, número, piso, código postal, ciudad, país), teléfono de contacto, email.</li>
+      <li><strong>Seleccionar método de envío</strong>: Según disponibilidad y destino (envío estándar, exprés, etc.).</li>
+      <li><strong>Elegir método de pago</strong>: Tarjeta de crédito/débito (Stripe), PayPal o [otros métodos si aplica].</li>
+      <li><strong>Aceptar las Condiciones Generales de Venta</strong>: Checkbox obligatorio antes de confirmar.</li>
+      <li><strong>Confirmar el pedido</strong>: Click en "Realizar pedido" o botón equivalente.</li>
+    </ol>
+
+    <h3>3.5. Confirmación del pedido</h3>
+    <p>Una vez procesado el pago, el Usuario recibirá:</p>
+    <ol>
+      <li><strong>Email de confirmación inmediato</strong>: Resumen del pedido con número de referencia, productos, precio total, datos de envío.</li>
+      <li><strong>Email de producción iniciada</strong>: Cuando el proveedor comience a fabricar el pedido (1-2 días laborables tras la confirmación).</li>
+      <li><strong>Email de envío</strong>: Con número de seguimiento cuando el pedido sea despachado.</li>
+      <li><strong>Email de entrega</strong>: Confirmación de que el pedido ha sido entregado (si el servicio de mensajería lo permite).</li>
+    </ol>
+
+    <div class="legal-alert info">
+      <p>
+        <strong>Importante</strong>: La confirmación de recepción del pedido por parte de LUJANDEV no implica aceptación de la compra. El contrato se perfecciona 
+        cuando LUJANDEV confirma la disponibilidad del producto y envía el email de confirmación del pedido.
+      </p>
+    </div>
+  </div>
+
+  <div class="legal-section">
+    <h2>4. PRECIOS Y CONDICIONES DE PAGO</h2>
+    
+    <h3>4.1. Precio de los productos</h3>
+    <p>
+      Todos los precios mostrados en <strong>tienda.lujandev.com</strong> se expresan en <strong>euros (EUR)</strong> e incluyen el 
+      <strong>Impuesto sobre el Valor Añadido (IVA)</strong> aplicable en España (21% general, 10% para ciertos productos textiles según normativa vigente).
+    </p>
+    <p><strong>Desglose del precio final al checkout</strong>:</p>
+    <ul>
+      <li><strong>Precio del producto</strong>: Incluye coste base + personalización (si aplica) + IVA.</li>
+      <li><strong>Gastos de envío</strong>: Calculados según destino, peso y método seleccionado.</li>
+      <li><strong>Total a pagar</strong>: Precio producto(s) + gastos de envío.</li>
+    </ul>
+    <p><strong>No existen gastos adicionales ocultos</strong>. El precio mostrado al finalizar la compra es el precio final que se cobrará al Usuario.</p>
+
+    <h3>4.2. IVA e impuestos según destino</h3>
+    <ul>
+      <li><strong>España (Península, Baleares)</strong>: IVA español aplicable (21% o 10%).</li>
+      <li><strong>Islas Canarias, Ceuta y Melilla</strong>: Exentos de IVA peninsular (aplica IGIC/IPSI local). El Usuario es responsable del pago de impuestos locales si los hubiera.</li>
+      <li><strong>Unión Europea</strong>: IVA español aplicable para ventas a consumidores finales (según normativa vigente y umbrales).</li>
+      <li><strong>Fuera de la UE</strong>: Sin IVA europeo. El Usuario es responsable de pagar aranceles aduaneros, IVA de importación y otros impuestos del país de destino.</li>
+    </ul>
+
+    <h3>4.3. Modificación de precios</h3>
+    <p>
+      LUJANDEV se reserva el derecho de modificar los precios de los productos sin previo aviso, <strong>sin que ello afecte a pedidos ya confirmados y pagados</strong>.
+      Los precios vigentes en el momento de la confirmación del pedido serán los aplicables a dicha compra.
+    </p>
+
+    <h3>4.4. Métodos de pago</h3>
+    
+    <h4>4.4.1. Tarjeta de crédito/débito (Stripe)</h4>
+    <ul>
+      <li><strong>Tarjetas aceptadas</strong>: Visa, Mastercard, American Express.</li>
+      <li><strong>Procesamiento seguro</strong>: Pagos gestionados por <strong>Stripe, Inc.</strong> (certificado PCI-DSS nivel 1).</li>
+      <li><strong>Datos de tarjeta</strong>: LUJANDEV <strong>no almacena ni tiene acceso a los datos completos de tu tarjeta</strong> (solo token de pago).</li>
+      <li><strong>Autorización inmediata</strong>: El cargo se realiza en el momento de confirmar el pedido.</li>
+    </ul>
+    <p>Consulta la política de privacidad de Stripe: <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">https://stripe.com/privacy</a></p>
+
+    <h4>4.4.2. PayPal</h4>
+    <ul>
+      <li><strong>Pago con cuenta PayPal</strong>: El Usuario será redirigido a la plataforma de PayPal para autorizar el pago.</li>
+      <li><strong>Protección al comprador</strong>: Sujeto a las condiciones de PayPal.</li>
+      <li><strong>Autorización inmediata</strong>: El cargo se realiza en el momento de confirmar el pedido.</li>
+    </ul>
+    <p>Consulta la política de privacidad de PayPal: <a href="https://www.paypal.com/es/webapps/mpp/ua/privacy-full" target="_blank" rel="noopener noreferrer">https://www.paypal.com/es/webapps/mpp/ua/privacy-full</a></p>
+
+    <h3>4.5. Seguridad de los pagos</h3>
+    <p>
+      Todos los pagos realizados en <strong>{{ company.companyWebsite }}</strong> se procesan a través de pasarelas de pago seguras con cifrado SSL/TLS. 
+      LUJANDEV <strong>no almacena datos de tarjetas de crédito</strong> en sus servidores.
+    </p>
+
+    <h3>4.6. Factura</h3>
+    <p>
+      Tras la confirmación del pedido, el Usuario recibirá una <strong>factura simplificada</strong> por email (salvo que solicite factura completa con datos 
+      fiscales durante el proceso de compra).
+    </p>
+    <p>
+      Para solicitar una factura completa con NIF/CIF empresarial, contactar con <a href="mailto:{{ company.supportEmail }}">{{ company.supportEmail }}</a> indicando: 
+      Número de pedido, Razón social, NIF/CIF, dirección fiscal.
+    </p>
+  </div>
+
+  <div class="legal-section">
+    <h2>5. ENVÍO Y ENTREGA</h2>
+    
+    <h3>5.1. Modelo de fabricación bajo demanda (print-on-demand)</h3>
+    <p>Dado que los productos se fabrican <strong>bajo demanda tras la confirmación del pedido</strong>, es importante tener en cuenta los siguientes plazos:</p>
+    
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Fase</th>
+            <th>Descripción</th>
+            <th>Tiempo estimado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Producción</strong></td>
+            <td>El proveedor (Printful) fabrica el producto personalizado.</td>
+            <td>2-5 días laborables</td>
+          </tr>
+          <tr>
+            <td><strong>2. Envío</strong></td>
+            <td>El producto se envía desde el centro de producción más cercano al destino.</td>
+            <td>3-7 días laborables (España/UE)</td>
+          </tr>
+          <tr>
+            <td><strong>Total estimado</strong></td>
+            <td>Desde la confirmación del pedido hasta la entrega.</td>
+            <td><strong>5-12 días laborables</strong> (puede variar)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="legal-alert warning">
+      <p>
+        <strong>Nota importante</strong>: Los plazos son orientativos y pueden verse afectados por: Volumen de pedidos (temporadas altas: Navidad, Black Friday, etc.), 
+        Disponibilidad de productos en el proveedor, Incidencias en el transporte (huelgas, festivos, condiciones meteorológicas), Aduanas (para envíos fuera de la UE).
+      </p>
+      <p>
+        LUJANDEV no se hace responsable de retrasos causados por terceros (proveedor, empresa de transporte, aduanas), aunque se compromete a informar al Usuario 
+        y buscar soluciones.
+      </p>
+    </div>
+
+    <h3>5.2. Costes de envío</h3>
+    <p>Los gastos de envío se calculan automáticamente al finalizar la compra según: Destino (país, provincia, ciudad), Peso y volumen del pedido, Método de envío seleccionado (estándar, exprés).</p>
+    
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Destino</th>
+            <th>Envío estándar</th>
+            <th>Envío exprés</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>España (Península)</strong></td>
+            <td>3,99€ - 5,99€</td>
+            <td>9,99€ - 14,99€</td>
+          </tr>
+          <tr>
+            <td><strong>Islas Baleares</strong></td>
+            <td>5,99€ - 8,99€</td>
+            <td>14,99€ - 19,99€</td>
+          </tr>
+          <tr>
+            <td><strong>Islas Canarias, Ceuta, Melilla</strong></td>
+            <td>8,99€ - 12,99€</td>
+            <td>No disponible</td>
+          </tr>
+          <tr>
+            <td><strong>Unión Europea</strong></td>
+            <td>7,99€ - 14,99€</td>
+            <td>19,99€ - 29,99€</td>
+          </tr>
+          <tr>
+            <td><strong>Resto del mundo</strong></td>
+            <td>14,99€ - 29,99€</td>
+            <td>Consultar</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Envío gratuito</strong>: [Si aplica promoción, indicar condiciones: ej. "Pedidos superiores a 50€ en España Península"]</p>
+
+    <h3>5.3. Seguimiento del pedido</h3>
+    <p>Una vez enviado el pedido, el Usuario recibirá:</p>
+    <ul>
+      <li><strong>Número de seguimiento</strong> (tracking) por email.</li>
+      <li><strong>Enlace a la web de la empresa de transporte</strong> (Correos, SEUR, DHL, etc.) para consultar el estado del envío.</li>
+    </ul>
+    <p>El Usuario puede consultar el estado de su pedido en la sección "Mis pedidos" de su cuenta en <strong>tienda.lujandev.com</strong> (si dispone de registro).</p>
+
+    <h3>5.4. Dirección de entrega</h3>
+    <p>Es responsabilidad del Usuario proporcionar una <strong>dirección de entrega completa y correcta</strong>:</p>
+    <ul>
+      <li>Nombre completo del destinatario.</li>
+      <li>Calle, número, piso, puerta, escalera (si aplica).</li>
+      <li>Código postal, ciudad, provincia, país.</li>
+      <li>Teléfono de contacto (recomendado para avisos de la empresa de transporte).</li>
+    </ul>
+
+    <div class="legal-alert danger">
+      <p>
+        <strong>Importante</strong>: Si la dirección facilitada es incorrecta o incompleta y el pedido no puede ser entregado, el Usuario deberá asumir los costes de reenvío.
+      </p>
+    </div>
+
+    <h3>5.5. Recepción del pedido</h3>
+    <p>El pedido se considerará entregado cuando:</p>
+    <ul>
+      <li>El Usuario (o persona autorizada) firme el albarán de entrega.</li>
+      <li>La empresa de transporte confirme la entrega en buzón o punto de recogida.</li>
+      <li>Transcurran 30 días desde el envío sin que el Usuario haya reclamado la no recepción.</li>
+    </ul>
+
+    <p><strong>Revisión del paquete</strong>:</p>
+    <ul>
+      <li>Se recomienda al Usuario <strong>revisar el paquete en presencia del repartidor</strong> y hacer constar cualquier anomalía visible (paquete dañado, abierto, etc.).</li>
+      <li>En caso de daños evidentes, el Usuario puede <strong>rechazar el paquete</strong> y contactar inmediatamente con <a href="mailto:{{ company.supportEmail }}">{{ company.supportEmail }}</a> para gestionar el incidente.</li>
+    </ul>
+  </div>
+
+  <div class="legal-section">
+    <h2>6. DERECHO DE DESISTIMIENTO (14 DÍAS)</h2>
+    
+    <h3>6.1. Plazo de desistimiento</h3>
+    <p>
+      De conformidad con el artículo 102 del Real Decreto Legislativo 1/2007, de 16 de noviembre, por el que se aprueba el texto refundido de la Ley General 
+      para la Defensa de los Consumidores y Usuarios (TRLGDCU), el Usuario tiene derecho a desistir del contrato <strong>en un plazo de 14 días naturales sin necesidad de justificación</strong>.
+    </p>
+
+    <p><strong>Inicio del cómputo del plazo</strong>: El plazo de 14 días comienza:</p>
+    <ul>
+      <li><strong>Desde el día de recepción del producto</strong> por el Usuario.</li>
+      <li>Si el pedido incluye varios productos con entregas separadas, desde la recepción del último producto.</li>
+    </ul>
+
+    <p>
+      <strong>Ejercicio del derecho</strong>: Para ejercer el derecho de desistimiento, el Usuario deberá notificarlo a LUJANDEV de forma clara e inequívoca 
+      antes de que finalice el plazo, a través de:
+    </p>
+    <ul>
+      <li><strong>Email</strong>: <a href="mailto:{{ company.supportEmail }}">{{ company.supportEmail }}</a> (indicando número de pedido, nombre completo y productos a devolver).</li>
+      <li><strong>Formulario de desistimiento</strong>: Disponible al final de este documento (Anexo I).</li>
+    </ul>
+
+    <h3>6.2. Excepciones al derecho de desistimiento</h3>
+    <p>De conformidad con el artículo 103 del TRLGDCU, <strong>NO se aplicará el derecho de desistimiento</strong> en los siguientes casos:</p>
+
+    <h4>a) Productos personalizados o confeccionados según especificaciones del Usuario</h4>
+    <ul>
+      <li><strong>Productos con diseños subidos por el Usuario</strong> (fotos, textos, logos personalizados).</li>
+      <li><strong>Productos con texto personalizado</strong> (nombre, fecha, dedicatoria).</li>
+      <li><strong>Productos fabricados específicamente para el Usuario</strong> bajo el modelo print-on-demand.</li>
+    </ul>
+    <p><strong>Motivo</strong>: Estos productos no pueden ser revendidos a otros consumidores debido a su naturaleza personalizada.</p>
+
+    <div class="legal-alert danger">
+      <p>
+        <strong>Importante</strong>: Si el Usuario ejerce el derecho de desistimiento sobre un producto excluido (personalizado), LUJANDEV podrá rechazar la devolución 
+        salvo que exista <strong>defecto de fabricación o error en el pedido</strong>.
+      </p>
+    </div>
+
+    <h3>6.3. Condiciones de devolución</h3>
+    <p>Para que la devolución sea aceptada, el producto debe cumplir las siguientes condiciones:</p>
+    <ol>
+      <li><strong>Estado</strong>: El producto debe estar <strong>sin usar, sin lavar, en perfecto estado</strong> (etiquetas originales, embalaje original si es posible).</li>
+      <li><strong>Plazo</strong>: La devolución debe realizarse en un plazo máximo de <strong>14 días desde la notificación de desistimiento</strong>.</li>
+      <li><strong>Embalaje</strong>: El producto debe estar correctamente embalado para evitar daños durante el transporte de devolución.</li>
+      <li><strong>Justificante de compra</strong>: Incluir copia de la factura o número de pedido.</li>
+    </ol>
+
+    <p><strong>Productos excluidos de devolución</strong>:</p>
+    <ul>
+      <li>Productos con signos de uso (lavados, manchados, rotos, modificados).</li>
+      <li>Productos sin etiqueta original.</li>
+      <li>Productos personalizados (salvo defecto).</li>
+    </ul>
+
+    <h3>6.4. Costes de devolución</h3>
+    <ul>
+      <li><strong>Costes de envío de devolución</strong>: A cargo del Usuario (salvo que la devolución se deba a un error de LUJANDEV o defecto del producto).</li>
+      <li><strong>Reembolso</strong>: LUJANDEV devolverá el importe del producto + gastos de envío originales (en caso de devolución completa del pedido).</li>
+    </ul>
+        <!-- <p><strong>Dirección de devolución</strong>: <span >{{ company.returnAddress }}</span></p> -->
+
+    <h3>6.5. Reembolso</h3>
+    <p>
+      Una vez recibida y verificada la devolución, LUJANDEV procederá al reembolso en un plazo máximo de <strong>14 días naturales desde la recepción del producto devuelto</strong>.
+    </p>
+    <p><strong>Método de reembolso</strong>:</p>
+    <ul>
+      <li><strong>Mismo método de pago utilizado</strong> en la compra (tarjeta, PayPal, etc.).</li>
+      <li>Si no es posible, se contactará con el Usuario para acordar otro método (transferencia bancaria).</li>
+    </ul>
+
+    <div class="legal-alert warning">
+      <p>
+        <strong>Importante</strong>: LUJANDEV podrá retener el reembolso hasta recibir y verificar que el producto cumple las condiciones de devolución.
+        Si el producto presenta signos de uso o deterioro imputable al Usuario, LUJANDEV podrá reducir el importe del reembolso proporcionalmente al valor 
+        perdido del producto (según artículo 110 TRLGDCU).
+      </p>
+    </div>
+  </div>
+
+  <div class="legal-section">
+    <h2>7. GARANTÍAS</h2>
+    
+    <h3>7.1. Garantía legal de conformidad (2-3 años)</h3>
+    <p>
+      Según el Real Decreto Legislativo 1/2007 (TRLGDCU) modificado por la Ley 3/2014, los productos vendidos a través de <strong>tienda.lujandev.com</strong> cuentan con:
+    </p>
+    <ul>
+      <li><strong>Garantía legal de 2 años</strong> para productos nuevos (consumidores).</li>
+      <li><strong>Garantía de 3 años</strong> si así se especifica en el producto o si el vendedor lo ofrece voluntariamente.</li>
+      <li><strong>Presunción de falta de conformidad</strong>: Si el defecto aparece en los primeros <strong>6 meses desde la entrega</strong>, se presume que existía desde el origen (salvo prueba en contrario).</li>
+    </ul>
+
+    <p><strong>La garantía cubre</strong>:</p>
+    <ul>
+      <li><strong>Falta de conformidad con el contrato</strong>: El producto no coincide con la descripción, presenta defectos de fabricación, calidad inferior a la ofrecida.</li>
+      <li><strong>Errores en el pedido</strong>: El producto recibido no es el solicitado (talla, color, diseño, personalización).</li>
+    </ul>
+
+    <p><strong>La garantía NO cubre</strong>:</p>
+    <ul>
+      <li><strong>Uso inadecuado</strong>: Deterioro por lavado incorrecto, mal uso, modificaciones realizadas por el Usuario.</li>
+      <li><strong>Desgaste natural</strong>: Uso normal del producto con el paso del tiempo.</li>
+      <li><strong>Daños accidentales</strong>: Roturas, manchas, etc. causados por el Usuario.</li>
+    </ul>
+
+    <h3>7.2. Cómo hacer efectiva la garantía</h3>
+    <p>Para solicitar la garantía, el Usuario debe:</p>
+    <ol>
+      <li><strong>Contactar con <a href="mailto:{{ company.supportEmail }}">{{ company.supportEmail }}</a></strong> en un plazo razonable desde la detección del defecto.</li>
+      <li><strong>Facilitar</strong>: Número de pedido, descripción del defecto, fotografías del producto defectuoso.</li>
+      <li><strong>Conservar justificante de compra</strong> (factura, email de confirmación).</li>
+    </ol>
+
+    <p><strong>Soluciones ofrecidas</strong> (a elección del Usuario, salvo que sean imposibles o desproporcionadas):</p>
+    <ol>
+      <li><strong>Reparación del producto</strong> (si es viable).</li>
+      <li><strong>Sustitución del producto</strong> por uno nuevo sin defectos.</li>
+      <li><strong>Rebaja del precio</strong> (si reparación/sustitución son desproporcionadas).</li>
+      <li><strong>Resolución del contrato</strong> (devolución del importe) si las opciones anteriores no son viables.</li>
+    </ol>
+
+    <h3>7.3. Productos defectuosos o erróneos</h3>
+    <p>Si el Usuario recibe un producto:</p>
+    <ul>
+      <li><strong>Defectuoso</strong> (manchas, impresión incorrecta, roturas).</li>
+      <li><strong>Erróneo</strong> (diferente al pedido realizado: talla, color, diseño).</li>
+      <li><strong>Dañado durante el transporte</strong> (paquete visiblemente dañado).</li>
+    </ul>
+
+    <p>
+      Deberá contactar con <strong><a href="mailto:{{ company.supportEmail }}">{{ company.supportEmail }}</a></strong> en un plazo máximo de <strong>48 horas desde la recepción</strong> 
+      del pedido, adjuntando: Número de pedido, Fotografías del producto defectuoso o erróneo (vista frontal, detalle del defecto, etiqueta, embalaje si está dañado).
+    </p>
+
+    <p><strong>LUJANDEV se compromete a</strong>:</p>
+    <ul>
+      <li>Gestionar un <strong>nuevo envío gratuito</strong> del producto correcto (sin coste adicional para el Usuario).</li>
+      <li>Asumir los <strong>costes de devolución</strong> del producto defectuoso/erróneo (proporcionando etiqueta de devolución prepagada si es posible).</li>
+      <li>Ofrecer <strong>reembolso completo</strong> si el Usuario prefiere no recibir un reemplazo.</li>
+    </ul>
+
+    <p><strong>Plazo de resolución</strong>: LUJANDEV responderá en un plazo máximo de <strong>48 horas laborables</strong> y gestionará el reemplazo/reembolso en un plazo máximo de <strong>14 días naturales</strong>.</p>
+  </div>
+
+  <div class="legal-section">
+    <h2>8. RESPONSABILIDAD Y LIMITACIONES</h2>
+    
+    <h3>8.1. Responsabilidad de LUJANDEV</h3>
+    <p>LUJANDEV se compromete a:</p>
+    <ul>
+      <li>Ofrecer productos de calidad conforme a la descripción publicada.</li>
+      <li>Garantizar la seguridad de los pagos a través de pasarelas certificadas.</li>
+      <li>Proteger los datos personales según RGPD y LOPDGDD.</li>
+      <li>Gestionar incidencias, devoluciones y garantías según la legislación vigente.</li>
+    </ul>
+
+    <h3>8.2. Limitaciones de responsabilidad</h3>
+    <p>LUJANDEV <strong>NO se hace responsable de</strong>:</p>
+    <ul>
+      <li><strong>Retrasos en la entrega</strong> causados por terceros (proveedor, empresa de transporte, aduanas, causas de fuerza mayor).</li>
+      <li><strong>Daños indirectos o lucro cesante</strong> derivados del uso o imposibilidad de uso de los productos.</li>
+      <li><strong>Información incorrecta facilitada por el Usuario</strong> (dirección de envío, email, teléfono) que impida la correcta entrega del pedido.</li>
+      <li><strong>Incidencias aduaneras</strong> en envíos fuera de la UE (impuestos, retenciones, devoluciones).</li>
+      <li><strong>Contenido ilegal subido por el Usuario</strong> en productos personalizados (el Usuario es el único responsable de verificar que no infringe derechos de terceros).</li>
+    </ul>
+
+    <h3>8.3. Cancelación de pedidos por parte de LUJANDEV</h3>
+    <p>LUJANDEV se reserva el derecho de <strong>cancelar un pedido</strong> y reembolsar el importe en los siguientes casos:</p>
+    <ul>
+      <li><strong>Indisponibilidad del producto</strong> en el proveedor (descatalogación, rotura de stock temporal).</li>
+      <li><strong>Error en el precio</strong> publicado (error tipográfico evidente).</li>
+      <li><strong>Contenido ilegal o infractor</strong> en productos personalizados (vulneración de derechos de autor, marcas, contenido ofensivo).</li>
+      <li><strong>Sospecha de fraude</strong> en el pago (LUJANDEV podrá solicitar verificación de identidad o datos adicionales).</li>
+    </ul>
+    <p>En caso de cancelación, el Usuario será notificado por email y se procederá al reembolso completo en un plazo máximo de <strong>14 días naturales</strong>.</p>
+  </div>
+
+  <div class="legal-section">
+    <h2>9. RESOLUCIÓN DE CONFLICTOS</h2>
+    
+    <h3>9.1. Contacto con LUJANDEV</h3>
+    <p>Ante cualquier incidencia, duda o reclamación, el Usuario puede contactar con:</p>
+    <dl>
+      <dt>Email:</dt>
+      <dd><a href="mailto:{{ company.supportEmail }}">{{ company.supportEmail }}</a></dd>
+
+      <dt>Dirección postal:</dt>
+      <dd><span > {{ company.companyAddress }}</span></dd>
+
+      <dt>Teléfono:</dt>
+      <dd><span > {{ company.companyPhone }}</span></dd>
+    </dl>
+    <p>LUJANDEV se compromete a responder en un plazo máximo de <strong>48 horas laborables</strong> y a buscar una solución amistosa.</p>
+
+    <h3>9.2. Hoja de reclamaciones</h3>
+    <p>
+      Según la legislación de consumidores, el Usuario tiene derecho a solicitar una <strong>Hoja de Reclamaciones</strong> (si la legislación local lo exige). 
+      Contactar con <a href="mailto:{{ company.supportEmail }}">{{ company.supportEmail }}</a> para tramitarla.
+    </p>
+
+    <h3>9.3. Plataforma de resolución de litigios en línea (ODR)</h3>
+    <p>
+      Conforme al Reglamento (UE) 524/2013, la Comisión Europea pone a disposición de consumidores y empresas una plataforma para la resolución extrajudicial 
+      de conflictos derivados de compras en línea:
+    </p>
+    <p style="text-align: center; margin: 1.5rem 0;">
+      <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" class="legal-alert info" style="display: inline-block; text-decoration: none;">
+        <strong>Plataforma ODR</strong>: https://ec.europa.eu/consumers/odr
+      </a>
+    </p>
+    <p>El Usuario puede acceder a esta plataforma para presentar una reclamación si no se ha alcanzado un acuerdo amistoso con LUJANDEV.</p>
+
+    <h3>9.4. Arbitraje de consumo</h3>
+    <p>
+      El Usuario puede acudir a las <strong>Juntas Arbitrales de Consumo</strong> (sistema extrajudicial gratuito y vinculante). 
+      Más información: <a href="https://www.consumo.gob.es" target="_blank" rel="noopener noreferrer">Ministerio de Consumo</a>.
+    </p>
+
+    <h3>9.5. Legislación aplicable y jurisdicción</h3>
+    <p>Las presentes Condiciones Generales de Venta se rigen por la <strong>legislación española</strong>.</p>
+    <p>Para la resolución de controversias, las partes se someterán, a elección del Usuario:</p>
+    <ul>
+      <li><strong>Jurisdicción del domicilio del Usuario</strong> (consumidor).</li>
+      <li><strong>Jurisdicción del domicilio de LUJANDEV</strong> (si el Usuario es profesional o renuncia expresamente a su fuero).</li>
+    </ul>
+  </div>
+
+  <div class="legal-section">
+    <h2>10. MODIFICACIÓN DE LAS CONDICIONES</h2>
+    <p>
+      LUJANDEV se reserva el derecho de modificar las presentes Condiciones Generales de Venta en cualquier momento para adaptarlas a cambios legislativos, 
+      operativos o de funcionamiento de la plataforma.
+    </p>
+    <p>Las condiciones aplicables a cada compra serán <strong>las vigentes en el momento de la confirmación del pedido</strong>.</p>
+    <p>Se recomienda al Usuario revisar periódicamente este documento. La fecha de la última actualización se indica al inicio.</p>
+  </div>
+
+  <div class="legal-section">
+    <h2>11. CONTACTO</h2>
+    <p>Para cualquier consulta sobre estas Condiciones Generales de Venta o sobre tu pedido:</p>
+    
+    <dl>
+      <dt>Email:</dt>
+      <dd><a href="mailto:{{ company.supportEmail }}"> {{ company.supportEmail }}</a></dd>
+
+      <dt>Dirección:</dt>
+      <dd><span > {{ company.companyAddress }}</span></dd>
+
+      <dt>Teléfono:</dt>
+      <dd><span > {{ company.companyPhone }}</span></dd>
+
+      <dt>Horario de atención:</dt>
+      <dd>[Lunes a viernes, 9:00 - 18:00 h] (indicar si aplica)</dd>
+    </dl>
+  </div>
+
+  <hr style="margin: 3rem 0;">
+
+  <div class="legal-section">
+    <h2>ANEXO I: FORMULARIO DE DESISTIMIENTO</h2>
+    <p><em>(El Usuario puede utilizar este modelo para ejercer su derecho de desistimiento)</em></p>
+
+    <div class="legal-form">
+      <h3>FORMULARIO DE DESISTIMIENTO</h3>
+      
+      <p style="text-align: center; margin-bottom: 1.5rem;">
+        <strong>A la atención de LUJANDEV</strong><br>
+        Email: {{ company.supportEmail }}<br>
+        Dirección: <span > {{ company.companyAddress }}</span>
+      </p>
+
+      <div class="form-field">
+        <label>Fecha:</label>
+        <div class="field-placeholder">[Día / Mes / Año]</div>
+      </div>
+
+      <div class="form-field">
+        <label>Yo, Don/Doña:</label>
+        <div class="field-placeholder">[Nombre completo]</div>
+      </div>
+
+      <div class="form-field">
+        <label>DNI/NIE:</label>
+        <div class="field-placeholder">[Número de identificación]</div>
+      </div>
+
+      <div class="form-field">
+        <label>Domicilio:</label>
+        <div class="field-placeholder">[Dirección completa]</div>
+      </div>
+
+      <div class="form-field">
+        <label>Teléfono:</label>
+        <div class="field-placeholder">[Número de contacto]</div>
+      </div>
+
+      <div class="form-field">
+        <label>Email:</label>
+        <div class="field-placeholder">[Correo electrónico]</div>
+      </div>
+
+      <p style="margin: 1.5rem 0;">
+        Por la presente, le notifico que <strong>desisto del contrato de compra</strong> del siguiente pedido:
+      </p>
+
+      <div class="form-field">
+        <label>Número de pedido:</label>
+        <div class="field-placeholder">[Número de referencia]</div>
+      </div>
+
+      <div class="form-field">
+        <label>Fecha de pedido:</label>
+        <div class="field-placeholder">[Día / Mes / Año]</div>
+      </div>
+
+      <div class="form-field">
+        <label>Fecha de recepción del producto:</label>
+        <div class="field-placeholder">[Día / Mes / Año]</div>
+      </div>
+
+      <div class="form-field">
+        <label>Producto(s):</label>
+        <div class="field-placeholder">[Descripción, talla, color, cantidad]</div>
+      </div>
+
+      <div class="form-field">
+        <label>Motivo de la devolución (opcional):</label>
+        <div class="field-placeholder">[Breve explicación]</div>
+      </div>
+
+      <div class="form-field">
+        <label>Solicito el reembolso de:</label>
+        <div class="field-placeholder">[Importe total pagado] €</div>
+      </div>
+
+      <div class="form-field">
+        <label>Método de reembolso preferido:</label>
+        <div class="field-placeholder">[Mismo método de pago / Transferencia bancaria]</div>
+      </div>
+
+      <div class="form-field">
+        <label>Si transferencia, indicar IBAN:</label>
+        <div class="field-placeholder">[ES00 0000 0000 0000 0000 0000]</div>
+      </div>
+
+      <p style="margin: 1.5rem 0;">
+        Declaro que el producto se encuentra en perfecto estado, sin usar, con etiquetas originales, y procederé a su devolución en un plazo máximo de 14 días.
+      </p>
+
+      <div class="form-field">
+        <label>Firma:</label>
+        <div class="field-placeholder" style="min-height: 60px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="legal-section" style="text-align: center; color: #6b7280; font-size: 0.875rem; margin-top: 3rem;">
+    <p><strong>Fecha de última actualización</strong>: 4 de diciembre de 2025</p>
+    <p><strong>LUJANDEV</strong> - Todos los derechos reservados</p>
+  </div>
+</div>

@@ -1,344 +1,763 @@
-<!--  PAGE WRAPPER  -->
-<div class="page-wrapper">
+<div class="legal-document">
+  <header class="legal-header">
+    <h1>POLÍTICA DE PRIVACIDAD Y PROTECCIÓN DE DATOS</h1>
+    <p class="legal-date"><strong>Última actualización:</strong> 4 de diciembre de 2025</p>
+  </header>
 
+  <!-- 1. IDENTIFICACIÓN DEL RESPONSABLE DEL TRATAMIENTO -->
+  <section id="identificacion-responsable" class="legal-section">
+    <h2>1. IDENTIFICACIÓN DEL RESPONSABLE DEL TRATAMIENTO</h2>
+    <p>De conformidad con el <strong>Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo de 27 de abril de 2016</strong> (RGPD) y la <strong>Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales</strong> (LOPDGDD), le informamos de que:</p>
+    
+    <dl class="legal-info">
+      <dt>Responsable del tratamiento:</dt>
+      <dd>
+        <ul>
+          <li><strong>Razón social / Nombre:</strong> {{ company.companyName }}</li>
+          <!-- <li><strong>NIF/CIF:</strong> <span > [COMPLETAR_CON_TU_NIF]</span></li> -->
+          <li><strong>Domicilio social:</strong> <span > {{ company.companyAddress }}</span></li>
+          <li><strong>Correo electrónico:</strong> {{ company.supportEmail }}</li>
+          <li><strong>Teléfono:</strong> <span > {{ company.companyPhone }}</span></li>
+          <li><strong>Sitio web:</strong> <a href="{{ company.companyWebsite }}" target="_blank" rel="noopener noreferrer"> {{ company.companyWebsite }}</a></li>
+        </ul>
+      </dd>
+      
+      <dt>Delegado de Protección de Datos (DPO):</dt>
+      <dd>[Si aplica, completar datos del DPO o indicar "No es obligatorio por el tamaño de la empresa"]</dd>
+    </dl>
+  </section>
 
-    <!-- BODY CONTAINER -->
-    <div id="page-content">
+  <!-- 2. PRINCIPIOS APLICABLES -->
+  <section id="principios" class="legal-section">
+    <h2>2. PRINCIPIOS APLICABLES AL TRATAMIENTO DE DATOS PERSONALES</h2>
+    <p>{{ company.companyName }} se compromete a tratar tus datos personales con absoluta confidencialidad y respetando los siguientes principios del RGPD:</p>
+    <ol>
+      <li><strong>Licitud, lealtad y transparencia:</strong> Los datos se tratan de manera lícita, leal y transparente.</li>
+      <li><strong>Limitación de la finalidad:</strong> Los datos se recogen con fines determinados, explícitos y legítimos.</li>
+      <li><strong>Minimización de datos:</strong> Solo se recogen los datos estrictamente necesarios.</li>
+      <li><strong>Exactitud:</strong> Los datos son exactos y se mantienen actualizados.</li>
+      <li><strong>Limitación del plazo de conservación:</strong> Los datos se conservan durante el tiempo necesario.</li>
+      <li><strong>Integridad y confidencialidad:</strong> Los datos se tratan con medidas de seguridad adecuadas.</li>
+      <li><strong>Responsabilidad proactiva:</strong> {{ company.companyName }} es responsable de cumplir y demostrar el cumplimiento de estos principios.</li>
+    </ol>
+  </section>
 
-        <!-- PAGE HEADER -->
-        <div class="page-header text-center bg-transparent mb-0 p-3">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-start">
-                        <div class="page-title ">
-                            <h2 class="fw-bold text-uppercase mb-0">Política de Privacidad y Cookies</h2>
-                            <p class="text-start text-muted fw-normal"><small>Última versión: 16/07/2025</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END PAGE HEADER -->
+  <!-- 3. DATOS PERSONALES RECOPILADOS -->
+  <section id="datos-recopilados" class="legal-section">
+    <h2>3. ¿QUÉ DATOS PERSONALES RECOPILAMOS?</h2>
+    <p>Recopilamos únicamente los datos personales <strong>estrictamente necesarios</strong> para gestionar tu pedido, comunicarnos contigo y cumplir con nuestras obligaciones legales. Según la actividad que realices en nuestra web, los datos que podemos recopilar son:</p>
 
-        <!-- MAIN CONTENT -->
-        <div class="container px-4">
-            <h3 class="text-uppercase fw-bold">Información sobre el tratamiento de datos personales</h3>
-            <div class="d-flex flex-column">
-                <article class="">
-                    <h4 class="text-uppercase">¿Quién es el responsable del tratamiento de tus datos?</h4>
-                    <div>
-                        <p class="GenericStyles_paragraph__0VrMJ">
-                            El responsable del tratamiento de los datos personales recogidos a través de esta plataforma
-                            es
-                            <span class="GenericStyles_bold__MKMWe">LUJANDEV</span>, con sitio web <a
-                                href="https://tienda.lujandev.com/" target="_blank">https://tienda.lujandev.com/</a>.
-                            Actualmente, nuestra tienda opera exclusivamente de forma online.
-                        </p>
-
-                        <ul>
-                            <li>
-                                <span class="GenericStyles_bold__MKMWe">Correo electrónico de contacto: </span>
-                                <a href="mailto:soporte@lujandev.com">soportelujandev.com</a>
-                            </li>
-                        </ul>
-
-                        <p class="GenericStyles_paragraph__0VrMJ">
-                            LUJANDEV ha designado un punto de contacto para cualquier cuestión relacionada con la
-                            protección de datos.
-                            Puedes escribirnos a través del correo mencionado anteriormente para ejercer tus derechos o
-                            realizar cualquier consulta sobre el tratamiento de tus datos personales.
-                        </p>
-                    </div>
-                </article>
-
-                <article class=" mt-5">
-                    <h4 class="text-uppercase">¿Con qué finalidad tratamos tus datos personales?</h4>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        En LUJANDEV tratamos los datos personales con las siguientes finalidades:
-                    </p>
-                    <ul>
-                        <li>Gestionar tu compra y entrega de productos adquiridos en nuestra tienda online.</li>
-                        <li>Atender tus consultas o solicitudes enviadas a través de los formularios de contacto.</li>
-                        <li>Enviar comunicaciones comerciales sobre productos o promociones (si lo consientes).</li>
-                        <li>Mejorar tu experiencia de usuario y realizar análisis estadísticos de navegación.</li>
-                    </ul>
-                </article>
-
-                <article class=" mt-5">
-                    <h4 class="text-uppercase">¿Qué base legal nos permite tratar tus datos?</h4>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        El tratamiento de tus datos se basa en:
-                    </p>
-                    <ul>
-                        <li>La ejecución del contrato de compraventa (cuando compras un producto).</li>
-                        <li>Tu consentimiento (por ejemplo, cuando aceptas recibir nuestras newsletters o cookies).</li>
-                        <li>El cumplimiento de nuestras obligaciones legales.</li>
-                        <li>Nuestro interés legítimo en mejorar el servicio y prevenir fraudes.</li>
-                    </ul>
-                </article>
-
-                <article class=" mt-5">
-                    <h4 class="text-uppercase">¿Durante cuánto tiempo conservamos tus datos?</h4>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        Conservaremos tus datos personales solo durante el tiempo necesario para cumplir con las
-                        finalidades para las que fueron recogidos, o mientras exista una obligación legal que lo
-                        requiera.
-                    </p>
-                </article>
-
-                <article class=" mt-5">
-                    <h4 class="text-uppercase">¿Se comunican tus datos a terceros?</h4>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        No cederemos tus datos personales a terceros, salvo obligación legal o en los casos en que sea
-                        necesario para la prestación del servicio (por ejemplo, proveedores de servicios de pago,
-                        logística o alojamiento web), quienes tratarán tus datos como encargados del tratamiento bajo
-                        nuestras instrucciones.
-                    </p>
-                </article>
-
-                <article class=" mt-5">
-                    <h4 class="text-uppercase">¿Cuáles son tus derechos sobre tus datos?</h4>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        Tienes derecho a:
-                    </p>
-                    <ul>
-                        <li>Acceder a tus datos personales.</li>
-                        <li>Solicitar la rectificación de datos inexactos.</li>
-                        <li>Solicitar la supresión de tus datos cuando ya no sean necesarios.</li>
-                        <li>Oponerte al tratamiento de tus datos.</li>
-                        <li>Solicitar la portabilidad de tus datos.</li>
-                        <li>Retirar el consentimiento en cualquier momento.</li>
-                    </ul>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        Para ejercer estos derechos, puedes escribirnos a <a
-                            href="mailto:soporte@lujandev.com">soportelujandev.com</a>. También puedes presentar una
-                        reclamación ante la Agencia Española de Protección de Datos (<a href="https://www.aepd.es/"
-                            target="_blank">www.aepd.es</a>).
-                    </p>
-                </article>
-
-                <!-- Politica de cookie -->
-                <article class=" mt-5">
-                    <h4 class="text-uppercase">Política de cookies</h4>
-
-                    <h4 class="fw-bold mt-4">¿Qué son las cookies y cómo se utilizan?</h4>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        Las cookies son archivos que se instalan en tu dispositivo (ordenador, móvil, tablet u otro) con
-                        el objetivo de registrar y recuperar información sobre tu actividad de navegación en nuestro
-                        sitio web (<a href="https://tienda.lujandev.com"
-                            target="_blank">https://tienda.lujandev.com</a>).
-                    </p>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        Gracias al uso de cookies, nuestro servidor puede reconocer el navegador que utilizas y
-                        facilitarte el acceso a zonas privadas, recordar tus preferencias (como idioma o país), analizar
-                        el tráfico del sitio, medir la audiencia y mostrar contenido personalizado.
-                    </p>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        Además del término “cookies”, también nos referimos a tecnologías similares que cumplen
-                        funciones equivalentes, como píxeles de seguimiento, web beacons, almacenamiento local (HTML5),
-                        SDKs o técnicas de fingerprinting, las cuales pueden utilizarse en conjunto para mejorar la
-                        experiencia del usuario.
-                    </p>
-
-                    <h4 class="fw-bold mt-4">¿Para qué utiliza las cookies LUJANDEV?</h4>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        En LUJANDEV utilizamos cookies con las siguientes finalidades:
-                    </p>
-                    <ul>
-                        <li>Elaborar estadísticas sobre visitas y uso del sitio web.</li>
-                        <li>Ofrecer una experiencia de navegación más personalizada.</li>
-                        <li>Recordar datos de acceso cuando inicias sesión (si procede).</li>
-                        <li>Mostrar publicidad personalizada basada en tus hábitos de navegación, tanto en esta web como
-                            en otras plataformas.</li>
-                    </ul>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        En ningún caso almacenamos información sensible como contraseñas, direcciones exactas u otros
-                        datos personales directamente en las cookies.
-                    </p>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        LUJANDEV no vende tus datos personales a terceros bajo ninguna circunstancia.
-                    </p>
-                </article>
-
-
-                <article class=" mt-5">
-                    <h4 class="text-uppercase">¿Qué tipos de cookies utiliza LUJANDEV?</h4>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        A continuación, te explicamos los tipos de cookies que se pueden utilizar en esta tienda online
-                        según su
-                        finalidad y según la entidad que las gestione (propias o de terceros).
-                    </p>
-
-                    <h4 class="fw-bold mt-4">Según la entidad que las gestiona</h4>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
-                            <thead class="table-light text-center">
-                                <tr>
-                                    <th>Gestión</th>
-                                    <th>Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Cookies de gestión propia</td>
-                                    <td>Son aquellas creadas o gestionadas por LUJANDEV, como responsable del sitio web.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Cookies de terceros</td>
-                                    <td>Son aquellas administradas por servicios ajenos a LUJANDEV, como Google o Meta
-                                        (Facebook). Estas se detallan en el panel de configuración de cookies.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <h4 class="fw-bold mt-4">Según su finalidad</h4>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
-                            <thead class="table-light text-center">
-                                <tr>
-                                    <th>Finalidad</th>
-                                    <th>Descripción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Cookies estrictamente necesarias</td>
-                                    <td>
-                                        Son esenciales para que el sitio web funcione correctamente. Incluyen, por
-                                        ejemplo, las que permiten
-                                        el acceso a áreas seguras, mantener la sesión activa, o recordar tu
-                                        consentimiento sobre el uso de cookies.
-                                        No almacenan información personal identificable.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Cookies de preferencias o personalización</td>
-                                    <td>
-                                        Permiten recordar tus preferencias, como el idioma o la configuración regional.
-                                        Su no aceptación
-                                        puede afectar al rendimiento o mostrar contenido no adaptado.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Cookies de análisis</td>
-                                    <td>
-                                        Ayudan a LUJANDEV o a terceros (como Google Analytics) a medir y analizar el uso
-                                        del sitio web
-                                        para mejorar la experiencia del usuario y los servicios ofrecidos.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Cookies publicitarias comportamentales</td>
-                                    <td>
-                                        Permiten mostrar publicidad personalizada basada en tu comportamiento de
-                                        navegación. Son gestionadas
-                                        generalmente por terceros como Meta o Google Ads.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Cookies de redes sociales</td>
-                                    <td>
-                                        Permiten compartir contenido de LUJANDEV en redes sociales como Facebook,
-                                        Instagram o WhatsApp.
-                                        Estas cookies son establecidas por las propias plataformas.
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </article>
-
-                <article class=" mt-5">
-                    <h4 class="text-uppercase">¿Cómo deshabilitar las cookies en los principales navegadores?</h4>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        Puedes permitir, bloquear o eliminar las cookies instaladas en tu dispositivo a través de la
-                        configuración del navegador que utilices. Ten en cuenta que, si deshabilitas ciertas cookies, es
-                        posible que algunas funcionalidades del sitio no estén disponibles o no funcionen correctamente.
-                    </p>
-
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        A continuación, te ofrecemos enlaces con instrucciones para gestionar las cookies en los
-                        principales navegadores:
-                    </p>
-
-                    <ul>
-                        <li><a href="https://support.google.com/chrome/answer/95647?hl=es" target="_blank">Google
-                                Chrome</a></li>
-                        <li><a href="https://support.mozilla.org/es/kb/administrar-cookies-y-datos-de-sitios-web"
-                                target="_blank">Mozilla Firefox</a></li>
-                        <li><a href="https://support.microsoft.com/es-es/help/17442/windows-internet-explorer-delete-manage-cookies"
-                                target="_blank">Internet Explorer</a></li>
-                        <li><a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac"
-                                target="_blank">Safari</a></li>
-                        <li><a href="https://help.opera.com/en/latest/web-preferences/#cookies"
-                                target="_blank">Opera</a></li>
-                    </ul>
-
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        Si has aceptado cookies de terceros, también puedes eliminarlas desde las opciones del navegador
-                        o directamente desde los sistemas que proporcionan esos terceros.
-                    </p>
-
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        Te recomendamos consultar cómo gestionan tus datos dichos terceros en sus respectivas políticas
-                        de privacidad. Por ejemplo, puedes revisar cómo lo hace Google en su <a
-                            href="https://safety.google/business/privacy/" target="_blank">Centro de Seguridad para
-                            Empresas</a>.
-                    </p>
-                </article>
-
-                <article class=" mt-5">
-                    <h4 class="text-uppercase">Plazos de conservación</h4>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        En LUJANDEV conservaremos tus datos personales únicamente durante el tiempo necesario para
-                        cumplir con las finalidades para las que fueron recogidos, y mientras puedan derivarse
-                        responsabilidades legales. Una vez cumplido ese plazo, los datos serán bloqueados o eliminados
-                        de forma segura.
-                    </p>
-
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        Las cookies aceptadas por el usuario serán conservadas durante un período máximo de <strong>13
-                            meses</strong>. Transcurrido ese tiempo, se te solicitará nuevamente el consentimiento
-                        cuando vuelvas a visitar nuestro sitio web.
-                    </p>
-
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        En el caso de cookies de terceros, puedes consultar los plazos de conservación concretos en sus
-                        políticas de privacidad y cookies respectivas.
-                    </p>
-                </article>
-
-                <article class=" mt-5">
-                    <h4 class="text-uppercase">Transferencias de datos a terceros países</h4>
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        En general, el tratamiento de datos se realiza por proveedores ubicados dentro del Espacio
-                        Económico Europeo (EEE). En caso de que se produzcan transferencias internacionales de datos
-                        fuera del EEE (por ejemplo, con servicios de análisis o publicidad de terceros como Google o
-                        Meta), estas se realizarán de conformidad con las garantías legales adecuadas, tales como las
-                        cláusulas contractuales tipo aprobadas por la Comisión Europea.
-                    </p>
-
-                    <p class="GenericStyles_paragraph__0VrMJ">
-                        Para más información sobre las transferencias internacionales realizadas por terceros que
-                        gestionan cookies en este sitio, puedes consultar sus respectivas políticas de privacidad.
-                    </p>
-                </article>
-            </div>
-        </div>
-        <!-- END MAIN CONTENT -->
-
-
+    <h3>3.1. Datos de registro y compra</h3>
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Categoría de datos</th>
+            <th>Datos específicos</th>
+            <th>Obligatoriedad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Identificación</strong></td>
+            <td>Nombre completo, apellidos, DNI/NIE/Pasaporte (si es necesario para facturación o aduanas)</td>
+            <td>Obligatorio</td>
+          </tr>
+          <tr>
+            <td><strong>Contacto</strong></td>
+            <td>Email, teléfono móvil</td>
+            <td>Obligatorio</td>
+          </tr>
+          <tr>
+            <td><strong>Dirección de envío</strong></td>
+            <td>Calle, número, piso, código postal, ciudad, provincia, país</td>
+            <td>Obligatorio</td>
+          </tr>
+          <tr>
+            <td><strong>Datos de facturación</strong></td>
+            <td>Razón social, NIF/CIF (si solicitas factura), dirección fiscal</td>
+            <td>Opcional (obligatorio para factura completa)</td>
+          </tr>
+          <tr>
+            <td><strong>Datos de pago</strong></td>
+            <td>Últimos 4 dígitos de la tarjeta (solo para identificar transacciones), método de pago utilizado (Stripe, PayPal)</td>
+            <td>Obligatorio (pero no almacenamos datos completos de tarjeta)</td>
+          </tr>
+          <tr>
+            <td><strong>Datos del pedido</strong></td>
+            <td>Productos adquiridos, cantidad, precio, fecha, número de pedido, preferencias (talla, color, personalización)</td>
+            <td>Obligatorio</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <!-- END BODY CONTAINER -->
 
+    <div class="legal-alert alert-warning">
+      <strong>Importante:</strong> {{ company.companyName }} <strong>NO almacena datos completos de tarjetas de crédito</strong>. Los pagos se procesan a través de pasarelas seguras (Stripe, PayPal) que cumplen con el estándar PCI-DSS.
+    </div>
 
+    <h3>3.2. Datos de navegación (cookies)</h3>
+    <p>Al navegar por <strong>{{ company.companyWebsite }}</strong>, se recopilan automáticamente ciertos datos técnicos:</p>
+    <ul>
+      <li><strong>Datos técnicos:</strong> Dirección IP, tipo de navegador, sistema operativo, idioma, resolución de pantalla.</li>
+      <li><strong>Datos de navegación:</strong> Páginas visitadas, tiempo de permanencia, productos consultados, origen de la visita (referrer).</li>
+      <li><strong>Cookies y tecnologías similares:</strong> Ver <a [routerLink]="['/', locale, country, 'shop', 'politica-cookies'] ">Política de Cookies</a> para más detalles.</li>
+    </ul>
 
-    <!-- SCROLL TOP-->
-    <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
-    <!-- END SCROLL TOP-->
+    <h3>3.3. Datos de newsletter y comunicaciones comerciales</h3>
+    <p>Si te suscribes a nuestra newsletter:</p>
+    <ul>
+      <li><strong>Email</strong> (obligatorio)</li>
+      <li><strong>Nombre</strong> (opcional, para personalizar emails)</li>
+      <li><strong>Preferencias de suscripción</strong> (opcional: categorías de productos, frecuencia de emails)</li>
+    </ul>
 
+    <h3>3.4. Datos de consultas y atención al cliente</h3>
+    <p>Si contactas con nosotros a través de formularios, email o chat:</p>
+    <ul>
+      <li><strong>Nombre</strong>, <strong>email</strong>, <strong>teléfono</strong> (opcional)</li>
+      <li><strong>Contenido de la consulta</strong> (mensaje, capturas de pantalla, archivos adjuntos)</li>
+      <li><strong>Historial de comunicaciones</strong> con {{ company.companyName }}</li>
+    </ul>
 
+    <h3>3.5. Datos de productos personalizados</h3>
+    <p>Si solicitas productos con personalización (texto, imágenes, diseños):</p>
+    <ul>
+      <li><strong>Contenido subido por el Usuario:</strong> Imágenes, textos, logos, diseños gráficos.</li>
+      <li><strong>Preferencias de personalización:</strong> Colores, tipografías, tamaño, posición.</li>
+    </ul>
+
+    <div class="legal-alert alert-warning">
+      <strong>Importante:</strong> El Usuario es responsable de garantizar que dispone de los derechos necesarios sobre el contenido subido (derechos de autor, derechos de imagen, licencias de uso). {{ company.companyName }} no se hace responsable del contenido ilegal o infractor subido por el Usuario.
+    </div>
+
+    <h3>3.6. Datos de menores de edad</h3>
+    <div class="legal-alert alert-danger">
+      <strong>{{ company.companyWebsite }} NO está dirigida a menores de 18 años.</strong> Si detectamos que se han recogido datos de menores sin consentimiento parental, procederemos a su eliminación inmediata. Si eres padre/madre o tutor legal y crees que tu hijo/a ha facilitado datos personales, contacta con {{ company.supportEmail }}.
+    </div>
+  </section>
+
+  <!-- 4. FINALIDADES Y BASE LEGAL -->
+  <section id="finalidades" class="legal-section">
+    <h2>4. FINALIDADES DEL TRATAMIENTO Y BASE LEGAL</h2>
+    <p>Tratamos tus datos personales con las siguientes finalidades y bases legales:</p>
+
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Finalidad</th>
+            <th>Descripción</th>
+            <th>Base legal (RGPD)</th>
+            <th>Datos tratados</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Gestión de pedidos y entrega</strong></td>
+            <td>Procesar tu compra, coordinar la fabricación (Printful), gestionar el envío y entrega de productos.</td>
+            <td><strong>Ejecución del contrato</strong> (Art. 6.1.b RGPD)</td>
+            <td>Identificación, contacto, dirección de envío, datos del pedido, método de pago</td>
+          </tr>
+          <tr>
+            <td><strong>2. Facturación y contabilidad</strong></td>
+            <td>Emitir facturas, cumplir con obligaciones fiscales y contables (conservación durante 6 años según legislación española).</td>
+            <td><strong>Obligación legal</strong> (Art. 6.1.c RGPD) - Ley General Tributaria</td>
+            <td>Identificación, NIF/CIF, dirección fiscal, datos del pedido</td>
+          </tr>
+          <tr>
+            <td><strong>3. Atención al cliente y soporte</strong></td>
+            <td>Responder a consultas, gestionar incidencias, reclamaciones, devoluciones, garantías.</td>
+            <td><strong>Ejecución del contrato</strong> (Art. 6.1.b RGPD) e <strong>interés legítimo</strong> (Art. 6.1.f RGPD)</td>
+            <td>Identificación, contacto, historial de comunicaciones, datos del pedido</td>
+          </tr>
+          <tr>
+            <td><strong>4. Prevención de fraude</strong></td>
+            <td>Verificar la legitimidad de pagos, prevenir transacciones fraudulentas.</td>
+            <td><strong>Interés legítimo</strong> (Art. 6.1.f RGPD)</td>
+            <td>Dirección IP, datos de pago (sin datos completos de tarjeta), historial de pedidos</td>
+          </tr>
+          <tr>
+            <td><strong>5. Newsletter y comunicaciones comerciales</strong></td>
+            <td>Enviarte ofertas, novedades, promociones, contenido de interés (solo si has dado tu consentimiento).</td>
+            <td><strong>Consentimiento</strong> (Art. 6.1.a RGPD)</td>
+            <td>Email, nombre (opcional), preferencias de suscripción</td>
+          </tr>
+          <tr>
+            <td><strong>6. Publicidad personalizada</strong></td>
+            <td>Mostrarte anuncios relevantes en Google Ads, Facebook, Instagram (solo si has aceptado cookies de marketing).</td>
+            <td><strong>Consentimiento</strong> (Art. 6.1.a RGPD)</td>
+            <td>Datos de navegación, cookies de terceros (ver Política de Cookies)</td>
+          </tr>
+          <tr>
+            <td><strong>7. Análisis y mejora del sitio web</strong></td>
+            <td>Analizar el uso de la web para mejorar la experiencia de usuario (Google Analytics).</td>
+            <td><strong>Consentimiento</strong> (Art. 6.1.a RGPD) para cookies analíticas</td>
+            <td>Datos de navegación, cookies (ver Política de Cookies)</td>
+          </tr>
+          <tr>
+            <td><strong>8. Cumplimiento legal y defensa judicial</strong></td>
+            <td>Cumplir con obligaciones legales (ej: responder a requerimientos judiciales o administrativos), ejercer o defender derechos.</td>
+            <td><strong>Obligación legal</strong> (Art. 6.1.c RGPD) e <strong>interés legítimo</strong> (Art. 6.1.f RGPD)</td>
+            <td>Todos los datos necesarios según el caso</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="legal-alert alert-info">
+      <strong>Importante sobre el consentimiento:</strong>
+      <ul>
+        <li><strong>No es necesario el consentimiento</strong> para gestionar tu pedido (base: ejecución del contrato).</li>
+        <li><strong>SÍ es necesario el consentimiento</strong> para enviarte newsletter, cookies analíticas y de marketing.</li>
+        <li>Puedes <strong>retirar tu consentimiento en cualquier momento</strong> sin que ello afecte a la licitud del tratamiento anterior.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. DESTINATARIOS (CON QUIÉN COMPARTIMOS TUS DATOS) -->
+  <section id="destinatarios" class="legal-section">
+    <h2>5. ¿CON QUIÉN COMPARTIMOS TUS DATOS? (DESTINATARIOS)</h2>
+    <p>{{ company.companyName }} <strong>NO vende, alquila ni comparte</strong> tus datos personales con terceros con fines comerciales. Sin embargo, es necesario compartir ciertos datos con <strong>proveedores de servicios esenciales</strong> (encargados del tratamiento) para que puedas recibir tu pedido y disfrutar de nuestros servicios:</p>
+
+    <h3>5.1. Proveedores de fabricación y logística (Dropshipping)</h3>
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>Finalidad</th>
+            <th>Datos compartidos</th>
+            <th>Ubicación</th>
+            <th>Garantías</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Printful, Inc.</strong></td>
+            <td>Fabricación bajo demanda (print-on-demand) y envío de productos</td>
+            <td>Nombre, dirección de envío, teléfono, email, datos del pedido (producto, personalización)</td>
+            <td><strong>EE.UU. y centros en UE</strong> (según disponibilidad)</td>
+            <td>Contrato de encargado del tratamiento, Cláusulas Contractuales Tipo (SCCs) aprobadas por la Comisión Europea</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Más información:</strong> <a href="https://www.printful.com/policies/privacy" target="_blank" rel="noopener noreferrer">Printful Privacy Policy</a></p>
+
+    <h3>5.2. Pasarelas de pago</h3>
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>Finalidad</th>
+            <th>Datos compartidos</th>
+            <th>Ubicación</th>
+            <th>Garantías</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Stripe, Inc.</strong></td>
+            <td>Procesamiento de pagos con tarjeta de crédito/débito</td>
+            <td>Datos de la transacción, email, nombre (NO se comparten datos completos de tarjeta)</td>
+            <td><strong>EE.UU. y UE</strong></td>
+            <td>Certificación PCI-DSS nivel 1, Cláusulas Contractuales Tipo (SCCs)</td>
+          </tr>
+          <tr>
+            <td><strong>PayPal (Europe) S.à r.l. et Cie, S.C.A.</strong></td>
+            <td>Procesamiento de pagos con cuenta PayPal</td>
+            <td>Email, nombre, datos de la transacción</td>
+            <td><strong>Luxemburgo (UE)</strong></td>
+            <td>Certificación PCI-DSS nivel 1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Más información:</strong></p>
+    <ul>
+      <li>Stripe: <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">https://stripe.com/privacy</a></li>
+      <li>PayPal: <a href="https://www.paypal.com/es/webapps/mpp/ua/privacy-full" target="_blank" rel="noopener noreferrer">https://www.paypal.com/es/webapps/mpp/ua/privacy-full</a></li>
+    </ul>
+
+    <h3>5.3. Empresas de transporte y mensajería</h3>
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>Finalidad</th>
+            <th>Datos compartidos</th>
+            <th>Ubicación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Correos, SEUR, DHL, UPS, etc.</strong> (según disponibilidad)</td>
+            <td>Entrega de pedidos</td>
+            <td>Nombre, dirección de envío, teléfono, número de seguimiento</td>
+            <td><strong>España/UE/Internacional</strong> (según destino)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.4. Servicios de análisis y marketing</h3>
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>Finalidad</th>
+            <th>Datos compartidos</th>
+            <th>Ubicación</th>
+            <th>Consentimiento necesario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Google Analytics</strong> (Google LLC)</td>
+            <td>Análisis del tráfico web, mejora de la experiencia de usuario</td>
+            <td>Dirección IP anonimizada, datos de navegación, cookies</td>
+            <td><strong>EE.UU.</strong></td>
+            <td>✅ SÍ (cookies analíticas)</td>
+          </tr>
+          <tr>
+            <td><strong>Google Ads</strong> (Google LLC)</td>
+            <td>Publicidad en buscador y remarketing</td>
+            <td>Cookies publicitarias, datos de navegación</td>
+            <td><strong>EE.UU.</strong></td>
+            <td>✅ SÍ (cookies de marketing)</td>
+          </tr>
+          <tr>
+            <td><strong>Meta Pixel</strong> (Meta Platforms, Inc. - Facebook/Instagram)</td>
+            <td>Publicidad personalizada en redes sociales, medición de conversiones</td>
+            <td>Cookies publicitarias, datos de navegación, email (hash cifrado para audiencias)</td>
+            <td><strong>EE.UU.</strong></td>
+            <td>✅ SÍ (cookies de marketing)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Garantías para transferencias internacionales:</strong> Cláusulas Contractuales Tipo (SCCs), Data Privacy Framework (DPF) UE-EE.UU. (cuando aplica).</p>
+    <p><strong>Más información:</strong></p>
+    <ul>
+      <li>Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">https://policies.google.com/privacy</a></li>
+      <li>Meta: <a href="https://www.facebook.com/privacy/explanation" target="_blank" rel="noopener noreferrer">https://www.facebook.com/privacy/explanation</a></li>
+    </ul>
+
+    <h3>5.5. Servicios de hosting y almacenamiento</h3>
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>Finalidad</th>
+            <th>Datos compartidos</th>
+            <th>Ubicación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span > {{ company.hostingProvider }}</span></td>
+            <td>Alojamiento de la web, base de datos, archivos</td>
+            <td>Todos los datos almacenados en la plataforma</td>
+            <td><span > {{ company.hostingLocation }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Garantías:</strong> Contrato de encargado del tratamiento, medidas de seguridad certificadas (ISO 27001, SOC 2, etc.).</p>
+
+    <h3>5.6. Servicios de email y comunicaciones</h3>
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>Finalidad</th>
+            <th>Datos compartidos</th>
+            <th>Ubicación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ company.emailProvider }}</td>
+            <td>{{ company.emailProviderPurpose }}</td>
+            <td>{{ company.emailProviderSharedData }}</td>
+            <td>{{ company.emailProviderLocation }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Garantías:</strong> Contrato de encargado del tratamiento, cumplimiento RGPD.</p>
+
+    <h3>5.7. Otros destinatarios</h3>
+    <p>En cumplimiento de obligaciones legales, tus datos pueden ser comunicados a:</p>
+    <ul>
+      <li><strong>Administraciones públicas:</strong> Agencia Tributaria, Seguridad Social, Juzgados (solo en caso de requerimiento legal).</li>
+      <li><strong>Asesores legales y fiscales:</strong> Para cumplir obligaciones contables y fiscales.</li>
+    </ul>
+  </section>
+
+  <!-- 6. TRANSFERENCIAS INTERNACIONALES -->
+  <section id="transferencias-internacionales" class="legal-section">
+    <h2>6. TRANSFERENCIAS INTERNACIONALES DE DATOS</h2>
+    <p>Algunos de los proveedores mencionados tienen servidores ubicados <strong>fuera del Espacio Económico Europeo (EEE)</strong>, principalmente en <strong>Estados Unidos</strong>. Estas transferencias se realizan con las siguientes garantías legales:</p>
+
+    <h3>6.1. Garantías aplicadas</h3>
+    <ol>
+      <li><strong>Cláusulas Contractuales Tipo (SCCs):</strong> Aprobadas por la Comisión Europea (Decisión 2021/914).</li>
+      <li><strong>Data Privacy Framework (DPF) UE-EE.UU.:</strong> Para empresas certificadas en el marco de protección de datos UE-EE.UU. (sucesor del Privacy Shield).</li>
+      <li><strong>Decisiones de adecuación:</strong> En caso de transferencias a países con nivel adecuado de protección reconocido por la Comisión Europea.</li>
+      <li><strong>Evaluación de impacto:</strong> {{ company.companyName }} ha evaluado los riesgos de las transferencias y ha implementado medidas adicionales cuando es necesario.</li>
+    </ol>
+
+    <h3>6.2. Proveedores con transferencias internacionales</h3>
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>País de destino</th>
+            <th>Garantía aplicada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Printful, Inc.</strong></td>
+            <td>EE.UU. (también tiene centros en UE)</td>
+            <td>Cláusulas Contractuales Tipo (SCCs)</td>
+          </tr>
+          <tr>
+            <td><strong>Stripe, Inc.</strong></td>
+            <td>EE.UU.</td>
+            <td>Cláusulas Contractuales Tipo (SCCs), certificación DPF</td>
+          </tr>
+          <tr>
+            <td><strong>Google LLC</strong> (Analytics, Ads)</td>
+            <td>EE.UU.</td>
+            <td>Cláusulas Contractuales Tipo (SCCs), certificación DPF</td>
+          </tr>
+          <tr>
+            <td><strong>Meta Platforms, Inc.</strong> (Facebook, Instagram)</td>
+            <td>EE.UU.</td>
+            <td>Cláusulas Contractuales Tipo (SCCs), certificación DPF</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Puedes solicitar más información sobre las garantías aplicadas a cada transferencia internacional contactando con soporte@lujandev.com.</p>
+  </section>
+
+  <!-- 7. PLAZO DE CONSERVACIÓN -->
+  <section id="plazo-conservacion" class="legal-section">
+    <h2>7. ¿CUÁNTO TIEMPO CONSERVAMOS TUS DATOS?</h2>
+    <p>{{ company.companyName }} conserva tus datos personales durante el tiempo <strong>estrictamente necesario</strong> para cumplir con las finalidades descritas y las obligaciones legales. A continuación, se detallan los plazos de conservación:</p>
+
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Finalidad</th>
+            <th>Plazo de conservación</th>
+            <th>Base legal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Gestión de pedidos</strong></td>
+            <td><strong>6 años</strong> desde la fecha de la compra (obligación fiscal y contable según la Ley General Tributaria)</td>
+            <td>Obligación legal (Art. 30 Ley General Tributaria)</td>
+          </tr>
+          <tr>
+            <td><strong>Facturación y contabilidad</strong></td>
+            <td><strong>6 años</strong> desde el ejercicio fiscal correspondiente</td>
+            <td>Obligación legal (Art. 30 Código de Comercio)</td>
+          </tr>
+          <tr>
+            <td><strong>Garantías de productos</strong></td>
+            <td><strong>2-3 años</strong> desde la entrega del producto (plazo de garantía legal según TRLGDCU)</td>
+            <td>Ejecución del contrato + obligación legal</td>
+          </tr>
+          <tr>
+            <td><strong>Newsletter</strong></td>
+            <td>Hasta que el Usuario <strong>cancele la suscripción</strong> (baja voluntaria) o transcurran <strong>3 años sin interacción</strong> (apertura de emails, clicks)</td>
+            <td>Consentimiento (se eliminan datos al retirar el consentimiento)</td>
+          </tr>
+          <tr>
+            <td><strong>Cookies analíticas y de marketing</strong></td>
+            <td><strong>13 meses</strong> desde la última actualización de la cookie (máximo legal según LSSI)</td>
+            <td>Consentimiento (renovación anual del consentimiento)</td>
+          </tr>
+          <tr>
+            <td><strong>Datos de navegación (logs del servidor)</strong></td>
+            <td><strong>90 días</strong> (salvo obligación legal de conservación mayor)</td>
+            <td>Interés legítimo (seguridad, prevención de fraude)</td>
+          </tr>
+          <tr>
+            <td><strong>Atención al cliente (consultas, reclamaciones)</strong></td>
+            <td><strong>3 años</strong> desde la última comunicación (prescripción de acciones según Código Civil)</td>
+            <td>Interés legítimo (defensa de derechos)</td>
+          </tr>
+          <tr>
+            <td><strong>Prevención de fraude (listas negras)</strong></td>
+            <td><strong>5 años</strong> desde la detección del fraude (prescripción penal)</td>
+            <td>Interés legítimo (protección frente a actividades ilícitas)</td>
+          </tr>
+          <tr>
+            <td><strong>Defensa judicial</strong></td>
+            <td>Hasta la <strong>finalización del procedimiento</strong> (sentencia firme) + <strong>plazo de prescripción</strong> de acciones (generalmente 5 años)</td>
+            <td>Interés legítimo (defensa de derechos)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Transcurridos estos plazos</strong>, los datos se <strong>eliminarán de forma segura</strong> o se <strong>anonimizarán</strong> (de manera que no puedan ser asociados a una persona identificable).</p>
+  </section>
+
+  <!-- 8. DERECHOS ARCO -->
+  <section id="derechos-arco" class="legal-section">
+    <h2>8. ¿CUÁLES SON TUS DERECHOS? (DERECHOS ARCO + ADICIONALES)</h2>
+    <p>Según el RGPD y la LOPDGDD, tienes los siguientes derechos sobre tus datos personales:</p>
+
+    <h3>8.1. Derechos reconocidos</h3>
+    <div class="legal-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Derecho</th>
+            <th>Descripción</th>
+            <th>Cómo ejercerlo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Acceso</strong> (Art. 15 RGPD)</td>
+            <td>Obtener confirmación de si {{ company.companyName }} trata tus datos y, en su caso, acceder a ellos.</td>
+            <td>Solicitar copia de tus datos personales</td>
+          </tr>
+          <tr>
+            <td><strong>Rectificación</strong> (Art. 16 RGPD)</td>
+            <td>Corregir datos inexactos o incompletos.</td>
+            <td>Actualizar tus datos en tu cuenta o contactar con soporte</td>
+          </tr>
+          <tr>
+            <td><strong>Supresión ("derecho al olvido")</strong> (Art. 17 RGPD)</td>
+            <td>Solicitar la eliminación de tus datos cuando ya no sean necesarios, retires el consentimiento o te opongas al tratamiento.</td>
+            <td>Solicitar eliminación de la cuenta y datos</td>
+          </tr>
+          <tr>
+            <td><strong>Oposición</strong> (Art. 21 RGPD)</td>
+            <td>Oponerte al tratamiento de tus datos basado en interés legítimo (ej: marketing directo, análisis).</td>
+            <td>Oponerte a recibir comunicaciones comerciales o análisis de perfiles</td>
+          </tr>
+          <tr>
+            <td><strong>Limitación del tratamiento</strong> (Art. 18 RGPD)</td>
+            <td>Solicitar que se suspendan ciertos tratamientos (ej: durante una reclamación).</td>
+            <td>Solicitar bloqueo temporal de tus datos</td>
+          </tr>
+          <tr>
+            <td><strong>Portabilidad</strong> (Art. 20 RGPD)</td>
+            <td>Recibir tus datos en formato estructurado, de uso común y lectura mecánica (CSV, JSON) y transmitirlos a otro responsable.</td>
+            <td>Solicitar exportación de tus datos</td>
+          </tr>
+          <tr>
+            <td><strong>Retirada del consentimiento</strong> (Art. 7.3 RGPD)</td>
+            <td>Retirar el consentimiento en cualquier momento (newsletter, cookies de marketing).</td>
+            <td>Darse de baja de la newsletter, rechazar cookies de marketing</td>
+          </tr>
+          <tr>
+            <td><strong>No ser objeto de decisiones automatizadas</strong> (Art. 22 RGPD)</td>
+            <td>No ser objeto de decisiones basadas únicamente en el tratamiento automatizado (incluida la elaboración de perfiles) que produzcan efectos jurídicos o te afecten significativamente.</td>
+            <td>Solicitar intervención humana en decisiones automatizadas (si aplica)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>8.2. Cómo ejercer tus derechos</h3>
+    <p>Para ejercer cualquiera de estos derechos, puedes:</p>
+
+    <ol>
+      <li>
+        <strong>Enviar un email</strong> a: soporte@lujandev.com
+        <ul>
+          <li><strong>Asunto:</strong> "Ejercicio de derechos ARCO" (o indicar el derecho específico: "Derecho de acceso", "Derecho de supresión", etc.)</li>
+          <li><strong>Contenido del email:</strong>
+            <ul>
+              <li>Nombre completo y apellidos</li>
+              <li>Email asociado a tu cuenta en {{ company.companyName }}</li>
+              <li>Descripción del derecho que deseas ejercer (ej: "Solicito acceso a todos mis datos personales")</li>
+              <li>Copia de tu DNI/NIE/Pasaporte (para verificar tu identidad)</li>
+              <li>Firma (si envías documento adjunto)</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>Carta postal</strong> a: <span > {{ company.companyAddress }}</span></li>
+      <li>
+        <strong>Acceder a tu cuenta</strong> en <strong>{{ company.companyWebsite }}</strong> (si dispones de registro):
+        <ul>
+          <li>Sección "Mi cuenta" > "Privacidad y datos" > "Descargar mis datos" / "Eliminar mi cuenta"</li>
+        </ul>
+      </li>
+    </ol>
+
+    <p><strong>Plazo de respuesta:</strong> {{ company.companyName }} responderá a tu solicitud en un plazo máximo de <strong>1 mes desde la recepción</strong> (prorrogable 2 meses más en caso de solicitudes complejas, notificándote del motivo del retraso).</p>
+
+    <p><strong>Gratuidad:</strong> El ejercicio de estos derechos es <strong>gratuito</strong>. Solo se cobrará una tasa razonable si las solicitudes son manifiestamente infundadas o excesivas (especialmente por su carácter repetitivo).</p>
+
+    <h3>8.3. Limitaciones al ejercicio de derechos</h3>
+    <p>En ciertos casos, {{ company.companyName }} puede <strong>denegar o limitar</strong> el ejercicio de algunos derechos si:</p>
+    <ul>
+      <li>Existe una <strong>obligación legal</strong> de conservar los datos (ej: facturación durante 6 años).</li>
+      <li>Los datos son necesarios para la <strong>formulación, ejercicio o defensa de reclamaciones</strong> (ej: durante un procedimiento judicial).</li>
+      <li>El ejercicio del derecho afecta a los <strong>derechos y libertades de otros</strong> (ej: derecho de supresión vs. libertad de expresión).</li>
+    </ul>
+
+    <p>En estos casos, {{ company.companyName }} informará al interesado de las razones de la denegación y de la posibilidad de presentar una reclamación ante la Agencia Española de Protección de Datos (AEPD).</p>
+  </section>
+
+  <!-- 9. MEDIDAS DE SEGURIDAD -->
+  <section id="medidas-seguridad" class="legal-section">
+    <h2>9. MEDIDAS DE SEGURIDAD</h2>
+    <p>{{ company.companyName }} se toma muy en serio la seguridad de tus datos personales y ha implementado medidas técnicas y organizativas apropiadas para protegerlos frente a accesos no autorizados, pérdida, destrucción, alteración o divulgación:</p>
+
+    <h3>9.1. Medidas técnicas</h3>
+    <ul>
+      <li><strong>Cifrado SSL/TLS:</strong> Todas las comunicaciones entre tu navegador y el servidor están cifradas (HTTPS).</li>
+      <li><strong>Cifrado de base de datos:</strong> Los datos sensibles almacenados en la base de datos están cifrados.</li>
+      <li><strong>Tokenización de pagos:</strong> Los datos de tarjetas se procesan mediante tokens seguros (Stripe, PayPal), sin almacenar datos completos de tarjeta.</li>
+      <li><strong>Firewalls y sistemas de detección de intrusiones:</strong> Protección perimetral de la infraestructura.</li>
+      <li><strong>Copias de seguridad (backups):</strong> Realizadas periódicamente y almacenadas en ubicaciones seguras.</li>
+      <li><strong>Control de acceso:</strong> Solo personal autorizado tiene acceso a los datos personales (principio de menor privilegio).</li>
+      <li><strong>Actualizaciones de seguridad:</strong> Parches y actualizaciones aplicadas regularmente.</li>
+    </ul>
+
+    <h3>9.2. Medidas organizativas</h3>
+    <ul>
+      <li><strong>Política de privacidad interna:</strong> Protocolos internos para el tratamiento de datos personales.</li>
+      <li><strong>Formación del personal:</strong> Empleados y colaboradores formados en protección de datos.</li>
+      <li><strong>Contratos de confidencialidad:</strong> Todos los empleados y proveedores firman cláusulas de confidencialidad.</li>
+      <li><strong>Auditorías de seguridad:</strong> Revisiones periódicas de las medidas de seguridad implementadas.</li>
+      <li><strong>Registro de actividades de tratamiento:</strong> Documentación de todos los tratamientos de datos (Art. 30 RGPD).</li>
+    </ul>
+
+    <h3>9.3. Notificación de brechas de seguridad</h3>
+    <p>En caso de <strong>violación de seguridad</strong> que suponga un riesgo para tus derechos y libertades, {{ company.companyName }}:</p>
+    <ul>
+      <li>Notificará a la <strong>Agencia Española de Protección de Datos (AEPD)</strong> en un plazo máximo de <strong>72 horas</strong> (Art. 33 RGPD).</li>
+      <li>Te informará <strong>sin dilación indebida</strong> si el riesgo es alto (Art. 34 RGPD), indicando:
+        <ul>
+          <li>Naturaleza de la violación.</li>
+          <li>Datos afectados.</li>
+          <li>Consecuencias probables.</li>
+          <li>Medidas adoptadas o propuestas para subsanar la violación.</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 10. COOKIES Y TECNOLOGÍAS DE SEGUIMIENTO -->
+  <section id="cookies" class="legal-section">
+    <h2>10. COOKIES Y TECNOLOGÍAS DE SEGUIMIENTO</h2>
+    <p><strong>{{ company.companyWebsite }}</strong> utiliza <strong>cookies y tecnologías similares</strong> (píxeles de seguimiento, almacenamiento local, etc.) para mejorar tu experiencia de navegación, analizar el tráfico y mostrar publicidad personalizada.</p>
+
+    <p><strong>Para más información sobre las cookies que utilizamos, su finalidad, duración y cómo gestionarlas</strong>, consulta nuestra <a [routerLink]="['/', locale, country, 'shop', 'politica-cookies'] ">Política de Cookies</a>.</p>
+
+    <p><strong>Gestión de cookies:</strong></p>
+    <ul>
+      <li>Puedes <strong>aceptar o rechazar cookies no esenciales</strong> a través del banner que aparece al acceder a la web.</li>
+      <li>Puedes <strong>modificar tus preferencias</strong> en cualquier momento desde el pie de página ("Configurar cookies").</li>
+      <li>Puedes <strong>gestionar cookies desde tu navegador</strong> (ver instrucciones en la Política de Cookies).</li>
+    </ul>
+  </section>
+
+  <!-- 11. ENLACES A SITIOS WEB DE TERCEROS -->
+  <section id="enlaces-terceros" class="legal-section">
+    <h2>11. ENLACES A SITIOS WEB DE TERCEROS</h2>
+    <p><strong>{{ company.companyWebsite }}</strong> puede contener enlaces a sitios web de terceros (redes sociales, pasarelas de pago, blogs, etc.). {{ company.companyName }} <strong>no se hace responsable</strong> de las políticas de privacidad de estos sitios web externos.</p>
+    <p>Te recomendamos leer las políticas de privacidad de cada sitio web de terceros antes de facilitar tus datos personales.</p>
+  </section>
+
+  <!-- 12. MODIFICACIONES DE LA POLÍTICA -->
+  <section id="modificaciones" class="legal-section">
+    <h2>12. MODIFICACIONES DE LA POLÍTICA DE PRIVACIDAD</h2>
+    <p>{{ company.companyName }} se reserva el derecho de <strong>modificar esta Política de Privacidad</strong> en cualquier momento para adaptarla a cambios legislativos, jurisprudenciales, tecnológicos o de funcionamiento de la plataforma.</p>
+
+    <p><strong>Notificación de cambios:</strong></p>
+    <ul>
+      <li>Los cambios se publicarán en esta página con la <strong>fecha de última actualización</strong> al inicio del documento.</li>
+      <li>Si los cambios son <strong>sustanciales</strong> (afectan a tus derechos), se notificarán mediante:
+        <ul>
+          <li><strong>Aviso destacado</strong> en la web.</li>
+          <li><strong>Email</strong> a los usuarios registrados.</li>
+          <li><strong>Solicitud de nuevo consentimiento</strong> (si aplica).</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p>Te recomendamos revisar periódicamente esta Política de Privacidad para estar informado de cómo protegemos tus datos.</p>
+  </section>
+
+  <!-- 13. CONTACTO -->
+  <section id="contacto" class="legal-section">
+    <h2>13. CONTACTO Y EJERCICIO DE DERECHOS</h2>
+    <p>Para cualquier consulta, duda o ejercicio de derechos relacionados con el tratamiento de tus datos personales, puedes contactar con:</p>
+
+    <dl class="legal-info">
+      <dt>{{ company.companyName }}</dt>
+      <dd>
+        <ul>
+          <li><strong>Email:</strong> {{ company.supportEmail }}</li>
+          <li><strong>Dirección postal:</strong> <span > {{ company.companyAddress }}</span></li>
+          <li><strong>Teléfono:</strong> <span > {{ company.getFormattedPhone() }}</span></li>
+        </ul>
+      </dd>
+    </dl>
+
+    <p><strong>Plazo de respuesta:</strong> Máximo <strong>1 mes</strong> desde la recepción de tu solicitud (prorrogable 2 meses si es compleja).</p>
+  </section>
+
+  <!-- 14. AUTORIDAD DE CONTROL (RECLAMACIONES) -->
+  <section id="autoridad-control" class="legal-section">
+    <h2>14. AUTORIDAD DE CONTROL (RECLAMACIONES)</h2>
+    <p>Si consideras que {{ company.companyName }} no ha atendido correctamente el ejercicio de tus derechos o que el tratamiento de tus datos personales vulnera la normativa de protección de datos, tienes derecho a <strong>presentar una reclamación</strong> ante la autoridad de control competente:</p>
+
+    <dl class="legal-info">
+      <dt>Agencia Española de Protección de Datos (AEPD)</dt>
+      <dd>
+        <ul>
+          <li><strong>Sitio web:</strong> <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">https://www.aepd.es</a></li>
+          <li><strong>Sede electrónica:</strong> <a href="https://sedeagpd.gob.es" target="_blank" rel="noopener noreferrer">https://sedeagpd.gob.es</a></li>
+          <li><strong>Dirección postal:</strong> C/ Jorge Juan, 6, 28001 Madrid, España</li>
+          <li><strong>Teléfono:</strong> 901 100 099 / 912 663 517</li>
+        </ul>
+      </dd>
+    </dl>
+
+    <p>También puedes acudir a la autoridad de control del país de la UE donde residas habitualmente, trabajes o donde se haya producido la presunta infracción.</p>
+  </section>
+
+  <!-- 15. LEGISLACIÓN APLICABLE -->
+  <section id="legislacion" class="legal-section">
+    <h2>15. LEGISLACIÓN APLICABLE</h2>
+    <p>Esta Política de Privacidad se rige por:</p>
+    <ul>
+      <li><strong>Reglamento (UE) 2016/679</strong> (RGPD) - Reglamento General de Protección de Datos.</li>
+      <li><strong>Ley Orgánica 3/2018, de 5 de diciembre</strong> (LOPDGDD) - Protección de Datos Personales y garantía de los derechos digitales.</li>
+      <li><strong>Ley 34/2002, de 11 de julio</strong> (LSSI) - Servicios de la Sociedad de la Información y de Comercio Electrónico.</li>
+      <li><strong>Real Decreto Legislativo 1/2007</strong> (TRLGDCU) - Ley General para la Defensa de los Consumidores y Usuarios.</li>
+    </ul>
+  </section>
+
+  <footer class="legal-footer">
+    <p><strong>Fecha de última actualización:</strong> 4 de diciembre de 2025</p>
+    <p><strong>{{ company.companyName }} - Todos los derechos reservados</strong></p>
+  </footer>
 </div>
-<!-- END PAGE WRAPPER  -->

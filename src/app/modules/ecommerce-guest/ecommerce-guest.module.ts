@@ -14,6 +14,9 @@ import { ToolbarComponent } from './filter-products/toolbar/toolbar.component';
 import { SidebarFilterComponent } from './filter-products/sidebar-filter/sidebar-filter.component';
 import { ProductsListComponent } from './filter-products/products-list/products-list.component';
 import { PrivacyPolicyComponent } from './legales/privacy-policy/privacy-policy.component';
+import { AvisoLegalComponent } from './legales/aviso-legal/aviso-legal.component';
+import { PoliticaCookiesComponent } from './legales/politica-cookies/politica-cookies.component';
+import { CondicionesVentaComponent } from './legales/condiciones-venta/condiciones-venta.component';
 
 
 @NgModule({
@@ -22,6 +25,9 @@ import { PrivacyPolicyComponent } from './legales/privacy-policy/privacy-policy.
     LandingProductComponent,
     FilterProductsComponent,
     PrivacyPolicyComponent,
+    AvisoLegalComponent,
+    PoliticaCookiesComponent,
+    CondicionesVentaComponent,
     CategorySliderComponent,
     ToolbarComponent,
     SidebarFilterComponent,

@@ -122,11 +122,27 @@
     <div class="footer-bottom">
         <div class="container">
             <div class="footer-bottom-content">
-                <p class="copyright">© 2025 LUJANDEV. Todos los derechos reservados</p>
+                <!-- Información Legal de la Empresa -->
+                <div class="footer-legal-info">
+                    <p class="company-name"><strong>{{ company.companyName }}</strong></p>
+                    <p class="company-details">
+                        <!-- NIF/CIF: <span class="placeholder">{{ company.getFormattedNIF() }}</span> |  -->
+                        <span class="placeholder">{{ company.companyAddress }}</span> | 
+                        Email: {{ company.companyEmail }}
+                        <span *ngIf="company.companyPhone"> | Tel: {{ company.companyPhone }}</span>
+                    </p>
+                </div>
+
+                <p class="copyright">© 2025 {{ company.companyName }}. Todos los derechos reservados</p>
+                
+                <!-- Enlaces Legales -->
                 <ul class="legal-links">
-                    <li><a href="/es/es/privacy-policy" [routerLink]="['/', locale, country, 'shop', 'privacy-policy']">Privacidad</a></li>
-                    <li><a href="/es/es/terms-and-conditions">Condiciones de venta</a></li>
-                    <li><a href="#" onclick="return false">Canal ético</a></li>
+                    <li><a [routerLink]="['/', locale, country, 'shop', 'aviso-legal']" title="Aviso Legal">Aviso Legal</a></li>
+                    <li><a [routerLink]="['/', locale, country, 'shop', 'privacy-policy']" title="Política de Privacidad">Privacidad</a></li>
+                    <li><a [routerLink]="['/', locale, country, 'shop', 'politica-cookies']" title="Política de Cookies">Cookies</a></li>
+                    <li><a [routerLink]="['/', locale, country, 'shop', 'condiciones-venta']" title="Condiciones Generales de Venta">Condiciones de Venta</a></li>
+                    <!-- <li><a href="#" onclick="return false" title="Canal Ético">Canal Ético</a></li> -->
+                    <li><a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" title="Plataforma de Resolución de Litigios en Línea de la UE">ODR</a></li>
                 </ul>
             </div>
         </div>

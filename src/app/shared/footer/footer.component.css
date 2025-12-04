@@ -455,3 +455,63 @@
     gap: 0.5rem;
   }
 }
+
+/* ============================================
+   LEGAL INFO & PLACEHOLDERS
+   ============================================ */
+
+.footer-legal-info {
+  flex: 1 1 100%;
+  text-align: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+}
+
+.company-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 0.5rem 0;
+}
+
+.company-details {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.placeholder {
+  background: #fff3cd;
+  color: #856404;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  border: 1px dashed #ffc107;
+  display: inline-block;
+  margin: 0 0.25rem;
+}
+
+/* Responsive para legal info */
+@media (max-width: 768px) {
+  .footer-legal-info {
+    padding: 0.875rem;
+  }
+
+  .company-name {
+    font-size: 0.9rem;
+  }
+
+  .company-details {
+    font-size: 0.8rem;
+  }
+
+  .placeholder {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.3rem;
+  }
+}

@@ -5,6 +5,9 @@ import { LandingProductComponent } from './landing-product/landing-product.compo
 import { FilterProductsComponent } from './filter-products/filter-products.component';
 import { ListCartsComponent } from './list-carts/list-carts.component';
 import { PrivacyPolicyComponent } from './legales/privacy-policy/privacy-policy.component';
+import { AvisoLegalComponent } from './legales/aviso-legal/aviso-legal.component';
+import { PoliticaCookiesComponent } from './legales/politica-cookies/politica-cookies.component';
+import { CondicionesVentaComponent } from './legales/condiciones-venta/condiciones-venta.component';
 
 
 const routes: Routes = [
@@ -39,6 +42,18 @@ const routes: Routes = [
       { 
         path: 'privacy-policy', 
         component: PrivacyPolicyComponent 
+      },
+      { 
+        path: 'aviso-legal', 
+        component: AvisoLegalComponent 
+      },
+      { 
+        path: 'politica-cookies', 
+        component: PoliticaCookiesComponent 
+      },
+      { 
+        path: 'condiciones-venta', 
+        component: CondicionesVentaComponent 
       },
     ]
   }
