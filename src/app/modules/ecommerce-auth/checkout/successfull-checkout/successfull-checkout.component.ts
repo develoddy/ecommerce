@@ -61,6 +61,8 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   isAddressSameAsShipping: boolean = false;
   isSuccessRegisteredAddredd: boolean = false;
   public loading: boolean = false;
+  private loadingStartTime: number | null = null;
+  private minLoadingDuration: number = 4500; // Minimum 4.5 seconds for optimal payment UX
   isLastStepActive_1: boolean = false;
   isLastStepActive_2: boolean = false;
   isLastStepActive_3: boolean = false;
@@ -182,7 +184,26 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     this.subscriptionService.setShowSubscriptionSection(false);
 
     this._authEcommerce.loading$.subscribe((isLoading) => {
-      this.loading = isLoading;
+      if (isLoading) {
+        // Record when loading starts
+        this.loadingStartTime = Date.now();
+        this.loading = true;
+      } else {
+        // Calculate elapsed time and ensure minimum duration
+        if (this.loadingStartTime) {
+          const elapsed = Date.now() - this.loadingStartTime;
+          const remainingTime = Math.max(0, this.minLoadingDuration - elapsed);
+          
+          // Hide loading after remaining time to ensure minimum duration
+          setTimeout(() => {
+            this.loading = false;
+            this.loadingStartTime = null;
+          }, remainingTime);
+        } else {
+          // If no start time recorded, hide immediately (shouldn't happen normally)
+          this.loading = false;
+        }
+      }
     });
 
     this.verifyAuthenticatedUser();

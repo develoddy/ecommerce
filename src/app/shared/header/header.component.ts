@@ -152,12 +152,21 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.checkUserAuthenticationStatus();
       // Initial header visibility based on current route
       this.showSubscriptionSection = !this.router.url.includes('/checkout');
-      // Update header visibility on route changes
+      
+      // 🔥 LISTENER GLOBAL: Restaurar megamenu después de navegación
       this.subscriptions.add(
         this.router.events.pipe(
           filter(event => event instanceof NavigationEnd)
         ).subscribe((event: any) => {
           this.showSubscriptionSection = !event.urlAfterRedirects.includes('/checkout');
+          
+          // Restaurar display del megamenu después de navegación
+          setTimeout(() => {
+            const megamenus = document.querySelectorAll('.megamenu.style1');
+            megamenus.forEach((menu: any) => {
+              menu.style.display = '';
+            });
+          }, 100);
         })
       );
 
@@ -586,18 +595,27 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   getDiscountType(cart: any): string {
     if (!cart || !this.hasCartItemDiscount(cart)) return '';
     
-    // Detectar Cupón: tiene code_cupon
+    // PRIORIDAD 1: Cupón - siempre tiene prioridad sobre cualquier otro descuento
     if (cart.code_cupon) {
       return `Cupón ${cart.code_cupon}`;
     }
     
-    // Detectar Flash Sale: tiene code_discount sin code_cupon
+    // PRIORIDAD 2: Usar type_campaign validado en backend
+    // type_campaign: 1=Campaign Discount, 2=Flash Sale, 3=Cupón
+    if (cart.type_campaign === 3) {
+      return `Cupón ${cart.code_cupon || ''}`;
+    } else if (cart.type_campaign === 2) {
+      return 'Flash Sale';
+    } else if (cart.type_campaign === 1) {
+      return 'Campaign Discount';
+    }
+    
+    // PRIORIDAD 3: Detectar Flash Sale por code_discount
     if (cart.code_discount && !cart.code_cupon) {
       return 'Flash Sale';
     }
     
     // Por defecto: Campaign Discount
-    // (productos con discount pero sin code_cupon ni code_discount)
     return 'Campaign Discount';
   }
 
@@ -725,6 +743,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   navigateToProduct(slug: string, discountId?: string) {
+    // 🔥 SOLUCIÓN SIMPLE: Ocultar megamenu con display:none antes de navegar
+    const megamenus = document.querySelectorAll('.megamenu.style1');
+    megamenus.forEach((menu: any) => {
+      menu.style.display = 'none';
+    });
+    
     // Cerrar el offcanvas del buscador
     const searchDrawer = document.getElementById('search-drawer');
     const bsOffcanvas = (window as any).bootstrap?.Offcanvas?.getInstance(searchDrawer);
@@ -739,6 +763,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     // Navegación SPA-friendly sin reload
     this.router.navigate(['/', this.country, this.locale, 'shop', 'product', slug], { queryParams: { _id: discountId } });
   }
+
+
 
   private checkDeviceType(): void {
     const width = window.innerWidth;

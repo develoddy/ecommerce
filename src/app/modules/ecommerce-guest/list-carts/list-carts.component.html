@@ -102,7 +102,14 @@
                                                 {{ cart.product.title }}
                                             </a>
                                         </div>
-                                        <div class="mb-3 d-flex align-items-center">
+                                        <!-- Badge de tipo de descuento -->
+                                        <div class="mb-2" *ngIf="hasCartItemDiscount(cart)">
+                                            <span class="badge bg-success text-white fw-light" style="font-size: 0.75rem;">
+                                                {{ getDiscountType(cart) }}
+                                            </span>
+                                        </div>
+
+                                        <div class="d-flex align-items-center">
                                             <!-- Precio original tachado si hay descuento -->
                                             <span class="money me-2" *ngIf="hasCartItemDiscount(cart)">
                                                 <span class="price old-price text-decoration-line-through text-muted" style="font-size: 0.95rem;">
@@ -406,6 +413,7 @@
                                                        name="coupon" 
                                                        placeholder="Código de cupón" 
                                                        [(ngModel)]="codeCupon" 
+                                                       (keyup.enter)="applyCupon()"
                                                        maxlength="20" 
                                                        autocomplete="off" 
                                                        required 

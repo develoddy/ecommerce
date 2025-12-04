@@ -1,11 +1,121 @@
-<!-- Loading Spinner -->
-<div *ngIf="loading" class="loading-spinner d-flex justify-content-center align-items-center" style="min-height: 400px;">
-    <div class="text-center">
-        <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
-            <span class="sr-only"></span>
+<!-- 🎨 LOADING PREMIUM - Procesando pago con seguridad -->
+<div *ngIf="loading" class="payment-loading-overlay">
+    <div class="loading-container">
+        <!-- Animated Icon Container -->
+        <div class="icon-animation-wrapper">
+            <!-- Pulsating background circles (múltiples capas) -->
+            <div class="pulse-circle pulse-circle-1"></div>
+            <div class="pulse-circle pulse-circle-2"></div>
+            <div class="pulse-circle pulse-circle-3"></div>
+            
+            <!-- Main Icon -->
+            <div class="main-icon">💳</div>
+            
+            <!-- Rotating border -->
+            <div class="spinner-border spinner-custom" role="status">
+                <span class="visually-hidden">Procesando pago seguro...</span>
+            </div>
+            
+            <!-- Success checkmark (aparece al final) -->
+            <div class="success-checkmark">
+                <div class="check-icon">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                    <div class="icon-circle"></div>
+                    <div class="icon-fix"></div>
+                </div>
+            </div>
         </div>
-        <h4 class="text-muted mt-3">Procesando tu pago...</h4>
-        <p class="text-muted">Por favor espera, estamos confirmando tu pedido</p>
+        
+        <!-- Loading Progress Steps -->
+        <div class="loading-steps">
+            <h3 class="loading-title">
+                Procesando tu pago de forma segura
+            </h3>
+            
+            <!-- Progress Bar Mejorada -->
+            <div class="progress-wrapper">
+                <div class="progress-bar-custom">
+                    <div class="progress-fill"></div>
+                    <div class="progress-glow"></div>
+                </div>
+                <div class="progress-percentage">
+                    <span class="percentage-text">0%</span>
+                </div>
+            </div>
+            
+            <!-- Status Messages con rotación -->
+            <div class="status-messages">
+                <p class="status-message status-active">
+                    <i class="icon anm anm-lock status-icon"></i>
+                    Verificando datos de pago...
+                </p>
+                <p class="status-message">
+                    <i class="icon anm anm-shield status-icon"></i>
+                    Conectando con pasarela segura...
+                </p>
+                <p class="status-message">
+                    <i class="icon anm anm-check-circle-o status-icon"></i>
+                    Confirmando transacción...
+                </p>
+                <p class="status-message">
+                    <i class="icon anm anm-envelope-l status-icon"></i>
+                    Enviando confirmación por email...
+                </p>
+            </div>
+        </div>
+        
+        <!-- Security Badges Mejorados -->
+        <div class="security-badges">
+            <div class="badge-item badge-animate">
+                <div class="badge-icon badge-icon-success">
+                    <i class="icon anm anm-lock"></i>
+                </div>
+                <div class="badge-content">
+                    <small class="badge-label">Conexión segura</small>
+                    <strong class="badge-value">SSL 256-bit</strong>
+                </div>
+            </div>
+            <div class="badge-item badge-animate" style="animation-delay: 0.2s;">
+                <div class="badge-icon badge-icon-primary">
+                    <i class="icon anm anm-shield"></i>
+                </div>
+                <div class="badge-content">
+                    <small class="badge-label">Cifrado</small>
+                    <strong class="badge-value">Stripe & PayPal</strong>
+                </div>
+            </div>
+            <div class="badge-item badge-animate" style="animation-delay: 0.4s;">
+                <div class="badge-icon badge-icon-warning">
+                    <i class="icon anm anm-check-circle-o"></i>
+                </div>
+                <div class="badge-content">
+                    <small class="badge-label">Verificado</small>
+                    <strong class="badge-value">PCI DSS</strong>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Helper Text Mejorado -->
+        <div class="helper-text-wrapper">
+            <div class="helper-icon">
+                <i class="icon anm anm-info-circle"></i>
+            </div>
+            <div class="helper-content">
+                <p class="helper-title">Por favor, mantén esta ventana abierta</p>
+                <p class="helper-description">
+                    Tu pago se está procesando de forma segura. Recibirás un email de confirmación en unos segundos.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Estimated Time -->
+        <div class="estimated-time">
+            <div class="time-icon-wrapper">
+                <i class="icon anm anm-clock-o time-icon"></i>
+            </div>
+            <span class="time-text">Tiempo estimado: <strong>10-30 segundos</strong></span>
+        </div>
     </div>
 </div>
 
@@ -400,7 +510,7 @@
                                                 <i class="icon anm anm-dollar me-2" style="color: #6f42c1;"></i>
                                                 <div>
                                                     <small class="text-muted d-block" style="font-size: 0.75rem;">Total pagado</small>
-                                                    <strong class="text-success" style="font-size: 1.1rem;">{{ sale.total }}{{ euro }}</strong>
+                                                    <strong class="text-success" style="font-size: 1.1rem;">{{ (sale.total | number: '1.2-2') }}{{ euro }}</strong>
                                                 </div>
                                             </div>
                                         </div>

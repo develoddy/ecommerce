@@ -33,6 +33,11 @@ export class PriceCalculationService {
     // Verificar si el producto está en Flash Sale
     if (flashSales && flashSales.length) {
       for (const flash of flashSales) {
+        // Validación defensiva: verificar que discounts_products existe y es un array
+        if (!flash.discounts_products || !Array.isArray(flash.discounts_products)) {
+          continue;
+        }
+        
         const isInFlash = flash.discounts_products.some((fp: any) => {
           const flashProductId = fp.product?.id || fp.product?._id || fp.productId;
           const currentProductId = product.id || product._id;

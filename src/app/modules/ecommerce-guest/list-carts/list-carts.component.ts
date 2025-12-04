@@ -262,6 +262,9 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Cupones reales tienen código
     if (cart.code_cupon) return true;
     
+    // Flash Sales tienen code_discount sin code_cupon
+    if (cart.code_discount && !cart.code_cupon) return true;
+    
     // Para campaign discounts, verificar si hay descuento real
     if (cart.type_discount === 1) {
       const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
@@ -276,6 +279,38 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   getOriginalUnitPrice(cart: any): number {
     return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+  }
+
+  /**
+   * Obtiene el tipo de descuento aplicado al producto en el carrito
+   * @param cart Item del carrito
+   * @returns Tipo de descuento como string
+   */
+  getDiscountType(cart: any): string {
+    if (!cart || !this.hasCartItemDiscount(cart)) return '';
+    
+    // PRIORIDAD 1: Cupón - siempre tiene prioridad sobre cualquier otro descuento
+    if (cart.code_cupon) {
+      return `Cupón ${cart.code_cupon}`;
+    }
+    
+    // PRIORIDAD 2: Usar type_campaign validado en backend
+    // type_campaign: 1=Campaign Discount, 2=Flash Sale, 3=Cupón
+    if (cart.type_campaign === 3) {
+      return `Cupón ${cart.code_cupon || ''}`;
+    } else if (cart.type_campaign === 2) {
+      return 'Flash Sale';
+    } else if (cart.type_campaign === 1) {
+      return 'Campaign Discount';
+    }
+    
+    // PRIORIDAD 3: Detectar Flash Sale por code_discount
+    if (cart.code_discount && !cart.code_cupon) {
+      return 'Flash Sale';
+    }
+    
+    // Por defecto: Campaign Discount
+    return 'Campaign Discount';
   }
 
   /**
@@ -765,16 +800,19 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
+    // Normalizar cupón a mayúsculas para consistencia en mensajes
+    const normalizedCoupon = this.codeCupon.toUpperCase();
+
     // Validar si el mismo cupón ya está aplicado
     if (this.isSameCouponAlreadyApplied(this.codeCupon)) {
-      alertDanger(`El cupón "${this.codeCupon}" ya está aplicado en tu carrito.`);
+      alertDanger(`El cupón "${normalizedCoupon}" ya está aplicado en tu carrito.`);
       return;
     }
 
     // Validar si hay otro cupón aplicado
     if (this.hasActiveCoupon()) {
       const activeCoupon = this.getActiveCouponCode();
-      alertDanger(`Ya tienes el cupón "${activeCoupon}" aplicado. Quítalo primero para aplicar uno nuevo.`);
+      alertDanger(`Ya tienes el cupón "${activeCoupon?.toUpperCase()}" aplicado. Quítalo primero para aplicar uno nuevo.`);
       return;
     }
 
@@ -827,11 +865,13 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
             finalPrice: this.getFinalUnitPrice(cart)
           }));
 
-          // Verificar si ALGÚN producto recibió el cupón
+          // Verificar si ALGÚN producto recibió el cupón (comparación case-insensitive)
           const productsWithNewCoupon = cartStateAfterCoupon.filter(afterCart => {
             const beforeCart = cartStateBeforeCoupon.find(b => b.id === afterCart.id);
-            return afterCart.code_cupon && afterCart.code_cupon === this.codeCupon && 
-                   (!beforeCart?.code_cupon || beforeCart.code_cupon !== this.codeCupon);
+            return afterCart.code_cupon && 
+                   this.codeCupon &&
+                   afterCart.code_cupon.toLowerCase() === this.codeCupon.toLowerCase() && 
+                   (!beforeCart?.code_cupon || (this.codeCupon && beforeCart.code_cupon.toLowerCase() !== this.codeCupon.toLowerCase()));
           });
 
           if (productsWithNewCoupon.length === 0) {
@@ -840,9 +880,9 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
           } else {
             // ✅ EL CUPÓN SE APLICÓ EXITOSAMENTE
             if (campaignCount > 0 && eligibleCount > 0) {
-              alertSuccess(`Cupón aplicado correctamente a ${productsWithNewCoupon.length} producto(s). Los productos con descuentos previos mantienen sus precios especiales.`);
+              alertSuccess(`Cupón ${normalizedCoupon} aplicado correctamente a ${productsWithNewCoupon.length} producto(s). Los productos con descuentos previos mantienen sus precios especiales.`);
             } else {
-              alertSuccess(`Cupón aplicado correctamente a ${productsWithNewCoupon.length} producto(s).`);
+              alertSuccess(`Cupón ${normalizedCoupon} aplicado correctamente a ${productsWithNewCoupon.length} producto(s).`);
             }
           }
 

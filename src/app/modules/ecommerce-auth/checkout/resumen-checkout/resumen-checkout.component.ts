@@ -1145,6 +1145,16 @@ getVarietyImage(cart: any): string {
     if (index !== -1) {
       list[index] = addressClient;
     }
+    
+    // Recargar direcciones para actualizar selectedAddress y la vista
+    this.loadAddresses();
+    
+    // Si la dirección editada es la actualmente seleccionada, actualizarla
+    if (this.selectedAddress && this.selectedAddress.id === addressClient.id) {
+      this.selectedAddress = addressClient;
+      this.cdr.detectChanges(); // Forzar detección de cambios
+    }
+    
     this.hideMessageAfterDelay();
     this.resetForm();
   }

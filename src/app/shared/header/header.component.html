@@ -583,7 +583,10 @@
                                             </div>
                                             <div class="input-box d-flex fl-1">
                                                 <input type="text" class="input-text border-end-0"
-                                                    [(ngModel)]="search_product" (keyup.enter)="searchProduct()" #filter
+                                                    [(ngModel)]="search_product" 
+                                                    (ngModelChange)="searchProduct()" 
+                                                    (keyup.enter)="searchProduct()" 
+                                                    #filter
                                                     name="prod-search" id="prod-search" placeholder="Buscar en Lujandev." value="" 
                                                     style="border-bottom-left-radius: 8px; border-top-left-radius: 8px;"/>
                                                 <button type="submit"
@@ -1087,20 +1090,14 @@
                                                 <div class="d-flex align-items-center">
                                                     <!-- Precio original tachado si hay descuento -->
                                                     <span class="money me-2" *ngIf="hasCartItemDiscount(cart)">
-                                                        <span class="price old-price text-decoration-line-through text-muted" style="font-size: 0.8rem;">
+                                                        <span class="price old-price text-decoration-line-through">
                                                             {{ euro }} {{ getFormattedPrice(getOriginalUnitPrice(cart) * cart.cantidad).integerPart }}.{{ getFormattedPrice(getOriginalUnitPrice(cart) * cart.cantidad).decimalPart }}
                                                         </span>
                                                     </span>
 
                                                     <!-- Precio final (con descuento si aplica) -->
-                                                    <span class="price-small fw-bold" [class.text-danger]="hasCartItemDiscount(cart)">
-                                                        <span class="price-main-small">{{
-                                                            getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).integerPart }}</span>
-                                                        <span class="price-decimals-small" style="top: 0.2em !important;">
-                                                            <sup>{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).decimalPart
-                                                                }}</sup>
-                                                            <span class="currency-symbol-small">{{ euro }}</span>
-                                                        </span>
+                                                    <span class="price-small" [class.text-danger]="hasCartItemDiscount(cart)">
+                                                        <span>{{ euro }} {{getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).integerPart }}.{{ getFormattedPrice(getFinalUnitPrice(cart) * cart.cantidad).decimalPart}}</span>
                                                     </span>
                                                 </div>
                                             </div>

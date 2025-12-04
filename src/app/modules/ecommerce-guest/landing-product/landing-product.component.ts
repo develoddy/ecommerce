@@ -512,10 +512,15 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       };
     }
 
-    // Usar el servicio de cálculo de precios que ya aplica el redondeo a .95
+    // Validar que SALE_FLASH tenga la estructura correcta antes de pasar al servicio
+    const flashSales = (this.SALE_FLASH && this.SALE_FLASH.discounts_products) 
+      ? [this.SALE_FLASH] 
+      : [];
+
+    // Usar el servicio de cálculo de precios
     return this.priceCalculationService.calculateFinalPrice(
       productForCalculation, 
-      this.SALE_FLASH ? [this.SALE_FLASH] : []
+      flashSales
     );
   }
 
