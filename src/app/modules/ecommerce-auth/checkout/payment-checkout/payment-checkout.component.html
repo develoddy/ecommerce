@@ -423,15 +423,15 @@
                               </div>
                               <!-- END BIZUM -->
                               <!-- PAYPAL -->
-                              <div class="accordion-item card mb-0 p-4 border border-muted" [ngClass]="{ 'd-none': isMobile }">
-                                 <label for="paymentRadio5" class="w-100 mb-0 cursor-pointer">
+                              <div class="accordion-item card mb-0 p-4 border border-muted">
+                                 <label for="paymentRadio5" class="w-100 mb-0 cursor-pointer" (click)="onPaypalLabelClick($event)">
                                     <div class="card-header" id="headingFour">
                                        <div class="d-flex flex-row">
                                              <div class="d-flex flex-grow-1">
                                                 <div class="card-link align-items-center d-flex">
                                                    <span class="customRadio clearfix mb-0">
-                                                         <input id="paymentRadio5" value="paypal" name="paymentMethod" type="radio" class="radio" checked="checked" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange()" />
-                                                         <label for="paymentRadio5" class="mb-0 fs-14 text-uppercase fw-normal ms-2">Paypal</label>
+                                                         <input id="paymentRadio5" value="paypal" name="paymentMethod" type="radio" class="radio" checked="checked" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange()" (click)="onPaypalRadioClick($event)" />
+                                                         <label for="paymentRadio5" class="mb-0 fs-14 text-uppercase fw-normal ms-2" (click)="onPaypalRadioChange($event)">Paypal</label>
                                                    </span>
                                                 </div>
                                              </div>
@@ -644,9 +644,9 @@
                            </div>
                         </div>
 
-                        <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4" #paypal [class.disabled]="disablePayments">
-                        </div>
-                        <!-- Color button #2C2E2F -->
+
+                        <!-- BOTONES DE PAGO MÓVIL - STRIPE Y PAYPAL -->
+                        <!-- Botón Stripe (Tarjeta) - Móvil -->
                         <button *ngIf="selectedPaymentMethod === 'card'" (click)="payWithStripe()" class="btn-dark-ld mt-3 mb-2 text-uppercase">
                               <ng-container *ngIf="!isLoadingStripe; else loadingStripe">
                                  Pagar con tarjeta
@@ -657,6 +657,14 @@
                                  </span>
                               </ng-template>
                         </button>
+                        
+                        <!-- Contenedor PayPal - Móvil -->
+                        <div *ngIf="selectedPaymentMethod === 'paypal'" 
+                             class="paypal-container-mobile mt-3 mb-2" 
+                             #paypalMobile 
+                             [class.disabled]="disablePayments" 
+                             data-paypal-container>
+                        </div>
                         <div class="d-flex mb-3">
                               <ul class="d-flex flex-row">
                                  <li class="ms-0">
@@ -838,22 +846,28 @@
                         </div>
                      </div>
 
-                     <!-- Este div solo se muestra si eligió PayPal -->
-                     <div *ngIf="selectedPaymentMethod === 'paypal'" class="mt-4 mb-4" #paypal [class.disabled]="disablePayments">
-                     </div>
-                     <!-- Color button #2C2E2F -->
+                     <!-- BOTONES DE PAGO - STRIPE Y PAYPAL -->
+                     <!-- Botón Stripe (Tarjeta) -->
                      <button *ngIf="selectedPaymentMethod === 'card'" (click)="payWithStripe()" class="btn-dark-ld mt-3 mb-2">
                            <ng-container *ngIf="!isLoadingStripe; else loadingStripe">
                               Pagar con tarjeta
                            </ng-container>
                            <ng-template #loadingStripe>
-                              <!-- <span class="spinner-border spinner-border-sm" role="status"></span>
-               Procesando... -->
                               <span class="loading-spinner">
                                  <div class="sp sp-bars"></div>
                               </span>
                            </ng-template>
                      </button>
+                     
+                     <!-- Contenedor PayPal - Mismo nivel que Stripe -->
+                     <div *ngIf="selectedPaymentMethod === 'paypal'" 
+                          class="paypal-container mt-3 mb-2" 
+                          #paypal 
+                          [class.disabled]="disablePayments" 
+                          data-paypal-container>
+                     </div>
+                     
+
                      <div class="d-flex mb-3">
                            <ul class="d-flex flex-row">
                               <li class="ms-0">

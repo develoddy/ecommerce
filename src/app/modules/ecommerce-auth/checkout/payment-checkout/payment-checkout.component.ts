@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  AfterViewChecked,
   Component,
   ElementRef,
   OnInit,
@@ -33,8 +34,9 @@ declare var paypal: any;
   templateUrl: './payment-checkout.component.html',
   styleUrls: ['./payment-checkout.component.css'],
 })
-export class PaymentCheckoutComponent implements OnInit {
+export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   @ViewChild('paypal', { static: false }) paypalElement!: ElementRef;
+  @ViewChild('paypalMobile', { static: false }) paypalMobileElement!: ElementRef;
   euro = '€';
   selectedAddress: Address | null = null;
   selectedAddressId: number = 0;
@@ -94,6 +96,7 @@ export class PaymentCheckoutComponent implements OnInit {
   selectedPaymentMethod: 'card' | 'paypal' = 'card';
   paypalRendered: boolean = false;
   disablePayments: boolean = false;
+  paypalPendingRender: boolean = false;
 
   shippingRate: number = 0;
   fechaEntregaMin: string = '';
@@ -107,6 +110,8 @@ export class PaymentCheckoutComponent implements OnInit {
   entregaUnica: boolean = false;
 
   usandoFallback: boolean = false;
+  private previousPaymentMethod: 'card' | 'paypal' = 'card';
+  private paymentMethodCheckInterval: any;
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
@@ -130,10 +135,37 @@ export class PaymentCheckoutComponent implements OnInit {
     this.verifyAuthenticatedUser();
     this.loadCurrentDataCart();
     this.checkDeviceType();
+    
+    // Sistema de monitoreo continuo para selectedPaymentMethod
+    this.paymentMethodCheckInterval = setInterval(() => {
+      if (this.previousPaymentMethod !== this.selectedPaymentMethod) {
+        this.previousPaymentMethod = this.selectedPaymentMethod;
+        
+        // Si cambió a PayPal, forzar el proceso
+        if (this.selectedPaymentMethod === 'paypal') {
+          this.onPaymentMethodChange();
+        }
+      }
+    }, 500); // Verificar cada 500ms
+    
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
     }, 150);
+  }
+
+  ngAfterViewChecked(): void {
+    // Si PayPal está seleccionado, el elemento existe, y está pendiente de render
+    const currentPaypalElement = this.getPaypalElement();
+    if (this.selectedPaymentMethod === 'paypal' && 
+        this.paypalPendingRender && 
+        currentPaypalElement?.nativeElement && 
+        !this.paypalRendered) {
+      // Asignar el elemento correcto
+      this.paypalElement = currentPaypalElement;
+      this.paypalPendingRender = false;
+      this.payWithPaypal();
+    }
   }
 
   /**
@@ -142,24 +174,32 @@ export class PaymentCheckoutComponent implements OnInit {
    * @returns 
    */
   loadPayPalSdk(clientId: string): Promise<any> {
-    console.log('ClientID cargado:', clientId);
+    console.log('[PayPal SDK] Iniciando carga con ClientID:', clientId);
+    console.log('[PayPal SDK] Dispositivo:', { isMobile: this.isMobile, isTablet: this.isTablet, isDesktop: this.isDesktop });
+    
     return new Promise((resolve, reject) => {
       // Evita cargar dos veces el script
       if ((window as any).paypal) {
-        console.log('[PayPal SDK] Ya cargado.');
+        console.log('[PayPal SDK] Ya cargado previamente');
         return resolve((window as any).paypal);
       }
 
+      console.log('[PayPal SDK] Creando script element...');
       const script = document.createElement('script');
       script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=EUR&vault=true`;
       script.async = true;
       script.defer = true;
       script.onload = () => {
-        console.log('[PayPal SDK] Cargado correctamente.');
+        console.log('[PayPal SDK] ✅ Cargado correctamente en', this.isMobile ? 'MÓVIL' : 'DESKTOP');
+        console.log('[PayPal SDK] Window.paypal disponible:', !!(window as any).paypal);
         resolve((window as any).paypal);
       };
-      script.onerror = (err) => reject(err);
+      script.onerror = (err) => {
+        console.error('[PayPal SDK] ❌ Error al cargar:', err);
+        reject(err);
+      };
 
+      console.log('[PayPal SDK] Agregando script al head...');
       document.head.appendChild(script);
     });
   }
@@ -331,11 +371,184 @@ export class PaymentCheckoutComponent implements OnInit {
 
   onPaymentMethodChange() {
     if (this.selectedPaymentMethod === 'paypal') {
-      // Esperar que Angular cree el div y luego renderizar
-      setTimeout(() => this.payWithPaypal(), 0);
+      // Marcar como pendiente de render
+      this.paypalPendingRender = true;
+      
+      // Intentar renderizar PayPal
+      this.tryRenderPaypal();
+      
     } else {
       // Si cambia a tarjeta, eliminar botón PayPal para evitar duplicados
+      this.paypalPendingRender = false;
       this.destroyPaypalButtons();
+    }
+  }
+  
+  // Método para intentar renderizar PayPal con múltiples estrategias
+  private tryRenderPaypal() {
+    // Estrategia 1: Usar elemento PayPal correcto según dispositivo
+    setTimeout(() => {
+      const currentPaypalElement = this.getPaypalElement();
+      if (currentPaypalElement?.nativeElement && this.paypalPendingRender && !this.paypalRendered) {
+        // Asignar el elemento correcto y renderizar
+        this.paypalElement = currentPaypalElement;
+        this.paypalPendingRender = false;
+        this.payWithPaypal();
+        return;
+      }
+    }, 50);
+    
+    // Estrategia 2: Buscar elemento manualmente
+    setTimeout(() => {
+      const manualElement = document.querySelector('[data-paypal-container]') as HTMLElement;
+      
+      if (manualElement && this.paypalPendingRender && !this.paypalRendered) {
+        // Forzar que sea visible antes de usar
+        if (manualElement.style.display === 'none') {
+          manualElement.style.display = 'block';
+        }
+        
+        // Asignar temporalmente el elemento al ViewChild
+        this.paypalElement = { nativeElement: manualElement } as ElementRef;
+        this.paypalPendingRender = false;
+        this.payWithPaypal();
+        return;
+      }
+    }, 150);
+    
+    // Estrategia 3: Fallback después de 300ms
+    setTimeout(() => {
+      if (this.paypalPendingRender && !this.paypalRendered) {
+        const fallbackElement = document.querySelector('[data-paypal-container], .paypal-container') as HTMLElement;
+        if (fallbackElement) {
+          this.paypalElement = { nativeElement: fallbackElement } as ElementRef;
+          this.paypalPendingRender = false;
+          this.payWithPaypal();
+        }
+      }
+    }, 300);
+  }
+
+  // Método para capturar clics específicos en móvil
+  onPaypalLabelClick(event: Event) {
+    // Forzar la selección de PayPal
+    this.selectedPaymentMethod = 'paypal';
+    
+    // Ejecutar el cambio de método de pago
+    this.onPaymentMethodChange();
+  }
+  
+  onPaypalRadioClick(event: Event) {
+    // Radio click manejado por ngModel
+  }
+  
+  onPaypalRadioChange(event: Event) {
+    // Radio change manejado por ngModel
+  }
+  
+  // Método de fallback manual para forzar PayPal en móvil
+  forcePaypalActivation() {
+    console.log('🔥 forcePaypalActivation() EJECUTÁNDOSE - Fallback manual');
+    console.log('🔥 Estado antes de forzar:', {
+      selectedPaymentMethod: this.selectedPaymentMethod,
+      paypalPendingRender: this.paypalPendingRender,
+      paypalRendered: this.paypalRendered,
+      paypalElement: !!this.paypalElement,
+      paypalElementNative: !!this.paypalElement?.nativeElement,
+      isMobile: this.isMobile
+    });
+    
+    // Forzar selección de PayPal y resetear estado
+    this.selectedPaymentMethod = 'paypal';
+    this.paypalPendingRender = true;
+    this.paypalRendered = false;
+    
+    console.log('🔥 Estado después de forzar valores:', {
+      selectedPaymentMethod: this.selectedPaymentMethod,
+      paypalPendingRender: this.paypalPendingRender,
+      paypalRendered: this.paypalRendered
+    });
+    
+    // Usar el nuevo sistema de múltiples estrategias
+    this.tryRenderPaypal();
+  }
+  
+  // Crear contenedor PayPal temporal si no existe (especialmente para móvil)
+  private createTemporaryPaypalContainer() {
+    console.log('🔥 createTemporaryPaypalContainer() - Creando contenedor dinámico');
+    
+    // Verificar si ya existe un contenedor temporal
+    let existingContainer = document.querySelector('#paypal-temporary-container') as HTMLElement;
+    if (existingContainer) {
+      console.log('🔥 Reutilizando contenedor temporal existente');
+      this.paypalElement = { nativeElement: existingContainer } as ElementRef;
+      this.paypalPendingRender = false;
+      this.payWithPaypal();
+      return;
+    }
+    
+    // Buscar un lugar donde insertar el contenedor - ser más agresivo
+    const targetParent = document.querySelector('.checkout-grid, .cart-info, .payment-methods, main, body');
+    if (!targetParent) {
+      console.log('🔥 ❌ No se encontró padre para contenedor temporal');
+      return;
+    }
+    
+    console.log('🔥 Padre encontrado:', targetParent.className || targetParent.tagName);
+    
+    // Crear el div contenedor PayPal con estilos fijos
+    const paypalContainer = document.createElement('div');
+    paypalContainer.id = 'paypal-temporary-container';
+    paypalContainer.setAttribute('data-paypal-container', 'true');
+    paypalContainer.className = 'paypal-universal-container mt-4 mb-4';
+    paypalContainer.style.cssText = `
+      display: block !important;
+      min-height: 50px;
+      width: 100%;
+      max-width: 100%;
+      padding: 15px;
+      margin: 20px 0;
+      background: #f8f9fa;
+      border: 2px solid #28a745;
+      border-radius: 8px;
+      position: relative;
+      z-index: 999;
+    `;
+    
+    // Añadir un mensaje de debug más visible
+    paypalContainer.innerHTML = `
+      <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 12px; margin-bottom: 15px; border-radius: 6px; color: #155724;">
+        <strong>✅ Contenedor PayPal creado dinámicamente para móvil</strong><br>
+        <small>El botón PayPal debería aparecer aquí momentáneamente...</small>
+      </div>
+    `;
+    
+    // Insertar el contenedor al principio del padre para máxima visibilidad
+    targetParent.insertBefore(paypalContainer, targetParent.firstChild);
+    
+    console.log('🔥 ✅ Contenedor temporal creado e insertado:', {
+      container: paypalContainer,
+      parent: targetParent.tagName,
+      visible: paypalContainer.offsetHeight > 0
+    });
+    
+    // Asignar al ViewChild y renderizar
+    this.paypalElement = { nativeElement: paypalContainer } as ElementRef;
+    this.paypalPendingRender = false;
+    
+    console.log('🔥 Ejecutando payWithPaypal() con contenedor temporal');
+    this.payWithPaypal();
+  }
+
+  // Método para obtener el elemento PayPal correcto según el dispositivo
+  private getPaypalElement(): ElementRef | null {
+    if (this.isMobile && this.paypalMobileElement?.nativeElement) {
+      return this.paypalMobileElement;
+    } else if (!this.isMobile && this.paypalElement?.nativeElement) {
+      return this.paypalElement;
+    } else {
+      // Fallback: buscar cualquier contenedor disponible
+      return this.paypalMobileElement?.nativeElement ? this.paypalMobileElement : this.paypalElement;
     }
   }
 
@@ -427,11 +640,19 @@ export class PaymentCheckoutComponent implements OnInit {
   }
 
   async payWithPaypal() {
-    //if (this.paypalRendered || !this.paypalElement?.nativeElement) return;
-    //this.paypalRendered = true;
+    console.log('[PayPal Debug] Iniciando payWithPaypal()', {
+      paypalRendered: this.paypalRendered,
+      elementExists: !!this.paypalElement?.nativeElement,
+      isMobile: this.isMobile,
+      isTablet: this.isTablet,
+      isDesktop: this.isDesktop
+    });
 
     // SOLO una verificación, y SOLO al iniciar
-    if (this.paypalRendered) return;
+    if (this.paypalRendered) {
+      console.log('[PayPal Debug] PayPal ya renderizado, saliendo');
+      return;
+    }
 
     // Se marca aquí, PERO después se verifica el elemento
     this.paypalRendered = true;
@@ -441,8 +662,24 @@ export class PaymentCheckoutComponent implements OnInit {
     // NO repitas la condición, solo verifica el elemento
     if (!this.paypalElement?.nativeElement) {
       console.error("PayPal element no existe");
+      this.paypalRendered = false; // Reset para reintentar
       return;
     }
+
+    console.log('[PayPal Debug] Element encontrado, continuando...');
+
+    // Verificar estado del elemento
+    const element = this.paypalElement.nativeElement;
+    console.log('[PayPal Debug] Estado del elemento:', {
+      offsetWidth: element.offsetWidth,
+      offsetHeight: element.offsetHeight,
+      clientWidth: element.clientWidth,
+      clientHeight: element.clientHeight,
+      display: window.getComputedStyle(element).display,
+      visibility: window.getComputedStyle(element).visibility,
+      hidden: element.hidden,
+      innerHTML: element.innerHTML
+    });
 
     const isGuest = !this.CURRENT_USER_AUTHENTICATED;
 
@@ -672,15 +909,46 @@ export class PaymentCheckoutComponent implements OnInit {
           );
         },
       }).render(this.paypalElement?.nativeElement);
+      
+      // Marcar como renderizado exitosamente
+      this.paypalRendered = true;
+      console.log('🎉 [PayPal Success] Botón PayPal renderizado exitosamente!', {
+        elementContainer: this.paypalElement?.nativeElement?.tagName,
+        elementId: this.paypalElement?.nativeElement?.id,
+        elementClass: this.paypalElement?.nativeElement?.className,
+        isMobile: this.isMobile,
+        paypalRendered: this.paypalRendered
+      });
+      
+      // Verificar que el botón sea visible en el DOM
+      setTimeout(() => {
+        const paypalButton = this.paypalElement?.nativeElement?.querySelector('[data-testid="button"], .paypal-button, iframe');
+        console.log('🎉 [PayPal Verification] Botón en DOM:', {
+          buttonExists: !!paypalButton,
+          buttonTag: paypalButton?.tagName,
+          buttonVisible: paypalButton ? paypalButton.offsetHeight > 0 : false,
+          containerContent: this.paypalElement?.nativeElement?.innerHTML?.slice(0, 200) + '...'
+        });
+      }, 1000);
+      
     } catch (error) {
-      console.error('Error al cargar PayPal SDK:', error);
+      console.error('💥 [PayPal Error] Error al cargar PayPal SDK:', error);
+      this.paypalRendered = false; // Reset para reintentar
     }
   }
 
   destroyPaypalButtons() {
     this.paypalRendered = false;
+    this.paypalPendingRender = false;
+    
+    // Limpiar contenedor desktop
     if (this.paypalElement?.nativeElement) {
-      this.paypalElement.nativeElement.innerHTML = ''; // limpia el contenedor
+      this.paypalElement.nativeElement.innerHTML = '';
+    }
+    
+    // Limpiar contenedor móvil
+    if (this.paypalMobileElement?.nativeElement) {
+      this.paypalMobileElement.nativeElement.innerHTML = '';
     }
   }
 
@@ -1273,6 +1541,9 @@ export class PaymentCheckoutComponent implements OnInit {
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
+    }
+    if (this.paymentMethodCheckInterval) {
+      clearInterval(this.paymentMethodCheckInterval);
     }
     this.destroyPaypalButtons();
   }
