@@ -7,6 +7,7 @@ import {
   Output,
   HostListener,
   EventEmitter,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { OnDestroy } from '@angular/core';
@@ -100,7 +101,8 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     public routerActived: ActivatedRoute,
     private checkoutService: CheckoutService,
     private localizationService: LocalizationService,
-    private priceCalculationService: PriceCalculationService
+    private priceCalculationService: PriceCalculationService,
+    private cdr: ChangeDetectorRef
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -112,6 +114,10 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     if (sessionId) {
       this.fetchSaleWithRetry(sessionId, 20, 2000);
     } else {
+      // 🔥 PayPal flow: Activar loading manualmente
+      this.loading = true;
+      this.loadingStartTime = Date.now();
+      
       // 1) Try CheckoutService (synchronous)
       try {
         const svcData = this.checkoutService.getSaleData();
@@ -124,11 +130,25 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
           this.maxDeliveryDate = svcData?.deliveryEstimate?.max || null;
           // Ensure CheckoutService is populated for other components
           try { this.checkoutService.setSaleData(this.saleData); this.checkoutService.setSaleSuccess(true); } catch(e){/* ignore */}
-          this.successPayStripe();
+          
+          // 🔥 Simular loading mínimo para mejor UX (igual que Stripe)
+          setTimeout(() => {
+            this.successPayStripe();
+            
+            // Desactivar loading después del tiempo mínimo
+            const elapsed = Date.now() - (this.loadingStartTime || 0);
+            const remainingTime = Math.max(0, this.minLoadingDuration - elapsed);
+            setTimeout(() => {
+              this.loading = false;
+              this.loadingStartTime = null;
+            }, remainingTime);
+          }, 500); // Pequeño delay para mostrar el loading
+          
           return;
         }
       } catch (e) {
         console.warn('[Checkout Success] Error reading CheckoutService saleData fallback', e);
+        this.loading = false; // Desactivar loading en caso de error
       }
 
       // 2) Try navigation state (history.state or router extras)
@@ -143,11 +163,24 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
           this.minDeliveryDate = navState?.deliveryEstimate?.min || null;
           this.maxDeliveryDate = navState?.deliveryEstimate?.max || null;
           try { this.checkoutService.setSaleData(this.saleData); this.checkoutService.setSaleSuccess(true); } catch(e){/* ignore */}
-          this.successPayStripe();
+          
+          // 🔥 Aplicar loading mínimo
+          setTimeout(() => {
+            this.successPayStripe();
+            
+            const elapsed = Date.now() - (this.loadingStartTime || 0);
+            const remainingTime = Math.max(0, this.minLoadingDuration - elapsed);
+            setTimeout(() => {
+              this.loading = false;
+              this.loadingStartTime = null;
+            }, remainingTime);
+          }, 500);
+          
           return;
         }
       } catch (e) {
         console.warn('[Checkout Success] Error reading navigation state fallback', e);
+        this.loading = false;
       }
 
       // 3) Try sessionStorage as a last resort (if PayPal flow stored it there)
@@ -164,13 +197,29 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
             this.minDeliveryDate = parsed?.deliveryEstimate?.min || null;
             this.maxDeliveryDate = parsed?.deliveryEstimate?.max || null;
             try { this.checkoutService.setSaleData(this.saleData); this.checkoutService.setSaleSuccess(true); } catch(e){/* ignore */}
-            this.successPayStripe();
+            
+            // 🔥 Aplicar loading mínimo
+            setTimeout(() => {
+              this.successPayStripe();
+              
+              const elapsed = Date.now() - (this.loadingStartTime || 0);
+              const remainingTime = Math.max(0, this.minLoadingDuration - elapsed);
+              setTimeout(() => {
+                this.loading = false;
+                this.loadingStartTime = null;
+              }, remainingTime);
+            }, 500);
+            
             return;
           }
         }
       } catch (e) {
         console.warn('[Checkout Success] Error reading sessionStorage fallback', e);
+        this.loading = false;
       }
+      
+      // 🔥 Si no se encontró data en ningún fallback, desactivar loading
+      this.loading = false;
     }
 
     // Limpiar parámetros de URL para evitar re-procesar en recarga
@@ -291,6 +340,38 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       
       this.sale = saleInfo;
       
+      // 🔥 FIX: Cargar dirección de envío desde sale_addresses (snake_case por Sequelize) si no está en shippingAddress (PayPal fallback)
+      console.log('📦 [Successfull] Checking shipping address:', {
+        hasShippingAddress: !!this.shippingAddress,
+        hasSaleAddresses: !!(saleInfo.SaleAddresses || saleInfo.sale_addresses),
+        saleAddressesLength: (saleInfo.SaleAddresses || saleInfo.sale_addresses)?.length,
+        saleKeys: Object.keys(saleInfo)
+      });
+      
+      if (!this.shippingAddress) {
+        // Buscar en SaleAddresses (PascalCase) o sale_addresses (snake_case por Sequelize)
+        const addresses = saleInfo.SaleAddresses || saleInfo.sale_addresses;
+        if (addresses && addresses.length > 0) {
+          const saleAddress = addresses[0];
+          console.log('✅ [Successfull] Loading shipping address from sale_addresses:', saleAddress);
+          this.shippingAddress = {
+            name: saleAddress.name,
+            surname: saleAddress.surname,
+            address: saleAddress.address,
+            zipcode: saleAddress.zipcode,
+            poblacion: saleAddress.region || saleAddress.poblacion, // region es el campo correcto en la BD
+            ciudad: saleAddress.ciudad,
+            phone: saleAddress.telefono || saleAddress.phone, // telefono es el campo correcto
+            email: saleAddress.email,
+            pais: saleAddress.pais
+          };
+          // Force Angular to detect the change immediately
+          this.cdr.detectChanges();
+        } else {
+          console.warn('⚠️ [Successfull] No sale_addresses available in sale object');
+        }
+      }
+      
       // Calculate total immediately using final prices (with discounts)
       if (saleDetails.length > 0) {
         this.totalCarts = saleDetails.reduce((sum: number, item: any) => {
@@ -335,6 +416,28 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       const saleDetails = saleDataPayload?.saleDetails || [];
       if (saleInfo) {
         this.sale = saleInfo;
+        
+        // 🔥 También cargar dirección aquí en el subscriber
+        if (!this.shippingAddress) {
+          const addresses = saleInfo.SaleAddresses || saleInfo.sale_addresses;
+          if (addresses && addresses.length > 0) {
+            const saleAddress = addresses[0];
+            console.log('✅ [Successfull-Subscriber] Loading shipping address from sale_addresses:', saleAddress);
+            this.shippingAddress = {
+              name: saleAddress.name,
+              surname: saleAddress.surname,
+              address: saleAddress.address,
+              zipcode: saleAddress.zipcode,
+              poblacion: saleAddress.region || saleAddress.poblacion,
+              ciudad: saleAddress.ciudad,
+              phone: saleAddress.telefono || saleAddress.phone,
+              email: saleAddress.email,
+              pais: saleAddress.pais
+            };
+            // Force Angular to detect the change immediately
+            this.cdr.detectChanges();
+          }
+        }
         
         if (saleDetails.length > 0) {
           this.totalCarts = saleDetails.reduce((sum: number, item: any) => {
