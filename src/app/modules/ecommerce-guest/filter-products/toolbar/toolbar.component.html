@@ -75,8 +75,9 @@
 
 			<div class="filters-item d-flex align-items-center ms-2 ms-lg-3" [ngClass]="{'d-none': isMobile}">
 				<label for="SortBy" class="mb-0 me-2 text-nowrap text-uppercase fw-light">Ordenar por:</label>
-				<select name="SortBy" id="SortBy" class="filters-toolbar-sort rounded border border-muted fw-light">
-					<option value="featured" selected="selected">Los más vendidos</option>
+				<select name="SortBy" id="SortBy" class="filters-toolbar-sort rounded border border-muted fw-light" 
+				        (change)="onSortChange($event)">
+					<option value="featured" selected>Los más vendidos</option>
 					<option value="title-ascending">Alfabéticamente, A-Z</option>
 					<option value="title-descending">Alfabéticamente, Z-A</option>
 					<option value="price-ascending">Precio, de menor a mayor</option>

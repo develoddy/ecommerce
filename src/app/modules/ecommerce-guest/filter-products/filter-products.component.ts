@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostListener, ViewEncapsulation, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -88,6 +88,7 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
     public loader: LoaderService,
     public productDisplayService: ProductDisplayService,
      public _authService: AuthService,
+     private cdr: ChangeDetectorRef,
   ) {
     
     this._routerActived.paramMap.subscribe(params => {
@@ -451,6 +452,71 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
   onSearchProducts(searchQuery: string) {
     this.searchQuery = searchQuery;
     this.filterProduct();
+  }
+
+  onSortProducts(sortBy: string) {
+    if (!this.products || this.products.length === 0) return;
+
+    const sortedProducts = [...this.products].sort((a, b) => {
+      switch (sortBy) {
+        case 'title-ascending':
+          const titleA = (a.title || '').toLowerCase();
+          const titleB = (b.title || '').toLowerCase();
+          return titleA.localeCompare(titleB);
+        
+        case 'title-descending':
+          const titleDescA = (a.title || '').toLowerCase();
+          const titleDescB = (b.title || '').toLowerCase();
+          return titleDescB.localeCompare(titleDescA);
+        
+        case 'price-ascending':
+          const priceA = this.getProductPrice(a);
+          const priceB = this.getProductPrice(b);
+          return priceA - priceB;
+        
+        case 'price-descending':
+          const priceDescA = this.getProductPrice(a);
+          const priceDescB = this.getProductPrice(b);
+          return priceDescB - priceDescA;
+        
+        case 'created-ascending':
+          const dateA = new Date(a.created_at || 0).getTime();
+          const dateB = new Date(b.created_at || 0).getTime();
+          return dateA - dateB;
+        
+        case 'created-descending':
+          const dateDescA = new Date(a.created_at || 0).getTime();
+          const dateDescB = new Date(b.created_at || 0).getTime();
+          return dateDescB - dateDescA;
+        
+        case 'featured':
+        default:
+          // Default order (as received from backend)
+          return 0;
+      }
+    });
+
+    this.products = sortedProducts;
+    // Force change detection to update the view
+    this.cdr.detectChanges();
+  }
+
+  // Helper method to get product price considering discounts
+  private getProductPrice(product: any): number {
+    if (product.campaing_discount && product.campaing_discount.discount) {
+      const discount = product.campaing_discount.discount;
+      const originalPrice = parseFloat(product.price_eur) || 0;
+      
+      if (product.campaing_discount.type_discount === 1) {
+        // Percentage discount
+        return originalPrice * (1 - discount / 100);
+      } else {
+        // Fixed amount discount
+        return originalPrice - discount;
+      }
+    }
+    
+    return parseFloat(product.price_eur) || 0;
   }
 
   // Frontend filtering methods

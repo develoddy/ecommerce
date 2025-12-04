@@ -10,4 +10,12 @@ export class ToolbarComponent {
   @Input() isMobile: boolean = false;
   @Input() products: any[] = [];
   @Output() openSidebar = new EventEmitter<void>();
+  @Output() sortProducts = new EventEmitter<string>();
+
+  currentSortBy: string = 'featured';
+
+  onSortChange(event: any) {
+    this.currentSortBy = event.target.value;
+    this.sortProducts.emit(this.currentSortBy);
+  }
 }

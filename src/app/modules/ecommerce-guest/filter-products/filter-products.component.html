@@ -27,7 +27,7 @@
         <div class="container-fluid" [ngClass]="{ 'px-0': isMobile }">
             <app-category-slider [categories]="categories" [locale]="locale" [country]="country"></app-category-slider>
             
-            <app-toolbar [isDesktop]="isDesktop" [isMobile]="isMobile" [products]="products" (openSidebar)="openSidebar()"></app-toolbar>
+            <app-toolbar [isDesktop]="isDesktop" [isMobile]="isMobile" [products]="products" (openSidebar)="openSidebar()" (sortProducts)="onSortProducts($event)"></app-toolbar>
 
             <app-sidebar-filter
                 [noneSidebar]="noneSidebar"
