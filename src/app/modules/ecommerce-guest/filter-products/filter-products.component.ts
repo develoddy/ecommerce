@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewEncapsulation, ChangeDetectorRef, AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, HostListener, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,7 +31,7 @@ declare function sliderRefresh(): any;
   styleUrls: ['./filter-products.component.css'],
   encapsulation: ViewEncapsulation.None // Desactiva la encapsulación
 })
-export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy {
+export class FilterProductsComponent implements OnInit, OnDestroy {
 
   /* ------------------ PROPERTIES  ------------------ */
   // @ViewChild('grid1') grid1!: ElementRef;
@@ -75,9 +75,12 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   CURRENT_USER_GUEST: any = null;
   currentUser: any = null;
   
+  // Properties for additional filtering
+  showOnlyDiscounted: boolean = false;
+  searchQuery: string = '';
+  
   /* ------------------ CONSTRUCTOR ------------------ */
   constructor(
-    private cdRef: ChangeDetectorRef,
     public _ecommerceGuestService: EcommerceGuestService,
     public _cartService: CartService,
     public _router: Router,
@@ -95,13 +98,7 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      HOMEINITTEMPLATE($);
-      // Lógica de gridX eliminada porque los elementos ya no existen en el padre
-    }, 150);
 
-  }
   
   /* ------------------ CYCLE INIT ------------------ */
   ngOnInit(): void {
@@ -139,21 +136,8 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
 
     // Slider initialization handled by loader subscription
 
-    // Subscribe to loader to initialize and cleanup sliders
-    this.subscriptions.add(
-      this.loader.loading$.subscribe(isLoading => {
-        if (!isLoading) {
-          setTimeout(() => {
-            productSlider5items($);
-            productSlider8items($);
-            (window as any).sliderRefresh($);
-          }, 150);
-        } else {
-          cleanupHOMEINITTEMPLATE($);
-          cleanupSliders($);
-        }
-      })
-    );
+    // Initialize UI components after loading completes
+    this.initializePostLoadTasks();
   }
 
 
@@ -318,6 +302,15 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
       this._ecommerceGuestService.filterProduct(data).subscribe((resp: any) => {
         this.products = resp.products;
         
+        // Apply frontend filters after backend response
+        if (this.showOnlyDiscounted && this.products) {
+          this.products = this.filterProductsWithDiscounts(this.products);
+        }
+        
+        if (this.searchQuery && this.searchQuery.trim() && this.products) {
+          this.products = this.filterProductsBySearch(this.products, this.searchQuery);
+        }
+        
         if (this.products) {
           this.setColoresDisponibles();
         }
@@ -326,6 +319,13 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   onFilterByPrice(priceRange: string) {
+    // Clear other filters when applying price filter for independent exploration
+    this.categories_selecteds = [];
+    this.selectedColors = [];
+    this.variedad_selected = {id: null};
+    this.searchQuery = '';
+    this.showOnlyDiscounted = false;
+    
     this.filterProduct('', priceRange);
   }
 
@@ -415,9 +415,100 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   toggleColor(colorName: string) {
+    // Clear other filters when applying color filter for independent exploration
+    this.categories_selecteds = [];
+    this.variedad_selected = {id: null};
+    this.searchQuery = '';
+    this.showOnlyDiscounted = false;
+    
     this.selectedColors = [colorName];
     this.filterProduct();
   }
+
+  // Methods for sidebar filters
+  onDiscountFilter(showOnlyDiscounted: boolean) {
+    // Clear other filters when applying discount filter for independent exploration
+    this.categories_selecteds = [];
+    this.selectedColors = [];
+    this.variedad_selected = {id: null};
+    this.searchQuery = '';
+    
+    this.showOnlyDiscounted = showOnlyDiscounted;
+    this.filterProduct();
+  }
+
+  onCategoryFilter(categoryIds: number[]) {
+    // Clear other filters when applying category filter for independent exploration
+    this.selectedColors = [];
+    this.variedad_selected = {id: null};
+    this.searchQuery = '';
+    this.showOnlyDiscounted = false;
+    
+    this.categories_selecteds = categoryIds;
+    this.filterProduct();
+  }
+
+  onSearchProducts(searchQuery: string) {
+    this.searchQuery = searchQuery;
+    this.filterProduct();
+  }
+
+  // Frontend filtering methods
+  filterProductsWithDiscounts(products: any[]): any[] {
+    const currentTime = new Date().getTime();
+    
+    return products.filter(product => {
+      // Check for active campaign discount
+      if (product.campaing_discount && (product.campaing_discount.id || product.campaing_discount._id)) {
+        // Verify campaign is currently active
+        if (product.campaing_discount.start_date_num && product.campaing_discount.end_date_num) {
+          const isActive = currentTime >= product.campaing_discount.start_date_num && 
+                          currentTime <= product.campaing_discount.end_date_num;
+          if (isActive && product.campaing_discount.state === 1) {
+            return true;
+          }
+        }
+      }
+      
+      // Check for flash sales
+      if (product.code_discount) {
+        return true;
+      }
+      
+      // Check if product has any discount fields
+      if (product.discount && product.discount > 0) {
+        return true;
+      }
+      
+      return false;
+    });
+  }
+
+  filterProductsBySearch(products: any[], searchQuery: string): any[] {
+    const query = searchQuery.toLowerCase().trim();
+    
+    return products.filter(product => {
+      // Search in product title
+      if (product.title && product.title.toLowerCase().includes(query)) {
+        return true;
+      }
+      
+      // Search in product description
+      if (product.descripcion && product.descripcion.toLowerCase().includes(query)) {
+        return true;
+      }
+      
+      // Search in category title
+      if (product.categorie && product.categorie.title && 
+          product.categorie.title.toLowerCase().includes(query)) {
+        return true;
+      }
+      
+      return false;
+    });
+  }
+
+
   
   updateCategoryTitle() {
     const category = this.categories.find((cat:any) => cat._id === Number(this.idCategorie));
@@ -434,6 +525,12 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   selectedVariedad(variedad:any) {
+    // Clear other filters when applying size filter for independent exploration
+    this.categories_selecteds = [];
+    this.selectedColors = [];
+    this.searchQuery = '';
+    this.showOnlyDiscounted = false;
+    
     this.variedad_selected = variedad;
     this.filterProduct();
   }
@@ -556,6 +653,10 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
     this.variedad_selected = { _id: null };
     this.is_discount = 1;
     this.selectedColors = [];
+    this.categories_selecteds = [];
+    // Clear additional filters
+    this.showOnlyDiscounted = false;
+    this.searchQuery = '';
     // Si tienes lógica de UI para el slider de precio, deberías moverla a un Output del sidebar si el control está ahí
     this.filtersApplied = false;
     this.filterProduct();
@@ -576,7 +677,37 @@ export class FilterProductsComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   @HostListener('window:resize', ['$event'])
-    onResize(event: Event): void {
-      this.checkDeviceType(); // Verifica el tamaño de la pantalla
-    } 
+  onResize(event: Event): void {
+    this.checkDeviceType(); // Verifica el tamaño de la pantalla
+  }
+
+  /**
+   * Initialize tasks after page loading completes
+   */
+  private initializePostLoadTasks(): void {
+    this.subscriptions.add(
+      this.loader.loading$.subscribe((isLoading) => {
+        if (!isLoading) {
+          setTimeout(() => {
+            this.initializeUIComponents();
+          }, 500);
+        }
+      })
+    );
+  }
+
+  /**
+   * Initialize UI components like templates and sliders
+   */
+  private initializeUIComponents(): void {
+    if (typeof HOMEINITTEMPLATE !== "undefined") {
+      HOMEINITTEMPLATE($);
+    }
+    if (typeof productSlider5items !== "undefined") {
+      productSlider5items($);
+    }
+    if (typeof productSlider8items !== "undefined") {
+      productSlider8items($);
+    }
+  }
 }

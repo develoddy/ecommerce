@@ -744,10 +744,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   navigateToProduct(slug: string, discountId?: string) {
     // 🔥 SOLUCIÓN SIMPLE: Ocultar megamenu con display:none antes de navegar
-    const megamenus = document.querySelectorAll('.megamenu.style1');
-    megamenus.forEach((menu: any) => {
-      menu.style.display = 'none';
-    });
+    this.closeMegamenu();
     
     // Cerrar el offcanvas del buscador
     const searchDrawer = document.getElementById('search-drawer');
@@ -762,6 +759,16 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     
     // Navegación SPA-friendly sin reload
     this.router.navigate(['/', this.country, this.locale, 'shop', 'product', slug], { queryParams: { _id: discountId } });
+  }
+
+  /**
+   * Cierra el megamenu
+   */
+  closeMegamenu(): void {
+    const megamenus = document.querySelectorAll('.megamenu.style1');
+    megamenus.forEach((menu: any) => {
+      menu.style.display = 'none';
+    });
   }
 
 

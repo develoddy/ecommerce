@@ -86,13 +86,13 @@
                                             <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Camisetas</a>
                                             <ul class="subLinks">
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central']" class="site-nav lvl-2 text-small">Camisetas Logo Central</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central', categorieOurProducts?._id, 'logo-central']" class="site-nav lvl-2 text-small">Camisetas Logo Central</a>
                                                 </li>
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral']" class="site-nav lvl-2 text-small">Camisetas Logo Lateral</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral', categorieOurProducts?._id, 'logo-lateral']" class="site-nav lvl-2 text-small">Camisetas Logo Lateral</a>
                                                 </li>
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas']" class="site-nav lvl-2 text-small">Todas las Camisetas</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas', categorieOurProducts?._id]" class="site-nav lvl-2 text-small">Todas las Camisetas</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -135,10 +135,10 @@
                                             <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Hoddies</a>
                                             <ul class="subLinks">
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies']" class="site-nav lvl-2 text-small">Todas las Hoddies</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies', categorieHoodies?._id]" class="site-nav lvl-2 text-small">Todas las Hoddies</a>
                                                 </li>
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies-con-capucha']" class="site-nav lvl-2 text-small">Hoddies con Capucha</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies-con-capucha', categorieHoodies?._id]" class="site-nav lvl-2 text-small">Hoddies con Capucha</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -181,7 +181,7 @@
                                             <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Mugs</a>
                                             <ul class="subLinks">
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'mugs']" class="site-nav lvl-2 text-small">Todos los Mugs</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'mugs', categorieMugs?._id]" class="site-nav lvl-2 text-small">Todos los Mugs</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -224,7 +224,7 @@
                                             <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Gorras</a>
                                             <ul class="subLinks">
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'gorras']" class="site-nav lvl-2 text-small">Todas las Gorras</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'gorras', categorieCaps?._id]" class="site-nav lvl-2 text-small">Todas las Gorras</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -268,12 +268,12 @@
                                             <ul class="subLinks">
                                                 <li class="lvl-2">
                                                     <a href="#" onclick="return false;"
-                                                        [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central']"
+                                                        [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central', categorieOurProducts?._id, 'logo-central']"
                                                         class="site-nav lvl-2 text-small">Camisetas logo Central</a>
                                                 </li>
                                                 <li class="lvl-2">
                                                     <a href="#" onclick="return false;"
-                                                        [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral']"
+                                                        [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral', categorieOurProducts?._id, 'logo-lateral']"
                                                         class="site-nav lvl-2 text-small">Camisetas Logo Lateral</a>
                                                 </li>
                                             </ul>
@@ -816,9 +816,9 @@
                 Camisetas <i class="icon anm anm-angle-down-l"></i>
             </a>
             <ul class="lvl-2">
-                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Camisetas Logo Central</a></li>
-                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Camisetas Logo Lateral</a></li>
-                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Todas las Camisetas</a></li>
+                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central', categorieOurProducts?._id, 'logo-central']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Camisetas Logo Central</a></li>
+                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral', categorieOurProducts?._id, 'logo-lateral']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Camisetas Logo Lateral</a></li>
+                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas', categorieOurProducts?._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Todas las Camisetas</a></li>
             </ul>
         </li>
         <!-- Hoddies Category -->
@@ -827,17 +827,17 @@
                 Hoddies <i class="icon anm anm-angle-down-l"></i>
             </a>
             <ul class="lvl-2">
-                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Todas las Hoddies</a></li>
-                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies-con-capucha']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Hoddies con Capucha</a></li>
+                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies', categorieHoodies?._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Todas las Hoddies</a></li>
+                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies-con-capucha', categorieHoodies?._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Hoddies con Capucha</a></li>
             </ul>
         </li>
         <!-- Mug Category -->
         <li class="lvl1">
-            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'mugs']" (click)="closeMobileMenuAndOverlay()">Mug</a>
+            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'mugs', categorieMugs?._id]" (click)="closeMobileMenuAndOverlay()">Mug</a>
         </li>
         <!-- Gorras Category -->
         <li class="lvl1">
-            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'gorras']" (click)="closeMobileMenuAndOverlay()">Gorras</a>
+            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'gorras', categorieCaps?._id]" (click)="closeMobileMenuAndOverlay()">Gorras</a>
         </li>
         <li class="lvl1 parent megamenu d-none"><a href="#">Shop OLD<i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">

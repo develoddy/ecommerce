@@ -41,11 +41,15 @@
                 [categoryTitle]="categoryTitle"
                 [locale]="locale"
                 [country]="country"
+                [products]="products"
                 (closeSidebar)="closeSidebar()"
                 (clearFilters)="clearFilters()"
                 (selectedVariedad)="selectedVariedad($event)"
                 (toggleColor)="toggleColor($event)"
                 (filterByPrice)="onFilterByPrice($event)"
+                (discountFilter)="onDiscountFilter($event)"
+                (categoryFilter)="onCategoryFilter($event)"
+                (searchProducts)="onSearchProducts($event)"
             ></app-sidebar-filter>
 
             <app-products-list

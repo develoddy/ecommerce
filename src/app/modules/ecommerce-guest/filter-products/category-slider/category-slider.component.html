@@ -1,15 +1,30 @@
-<div class="collection-slider-8items gp10 slick-arrow-dots sub-collection section">
-    <ng-container *ngFor="let categorie of categories">
-        <div class="category-item zoomscal-hov">
-            <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" class="category-link clr-none">
-                <div class="zoom-scal zoom-scal-nopb rounded-0">
-                    <img class="rounded-0 blur-up lazyload" [attr.data-src]="categorie.imagen_home" [src]="categorie.imagen_home" alt="{{ categorie.title }}" title="{{ categorie.title }}" width="365" height="365" />
-                </div>
-                <div class="details text-center">
-                    <h4 class="category-title mb-0">{{ categorie.title }}</h4>
-                    <p class="counts text-uppercase fw-normal">{{ categorie.total_products }} {{ categorie.total_products == 1 ? 'Producto' : 'Productos' }}</p>
-                </div>
-            </a>
-        </div>
-    </ng-container>
-</div>
+<section class="section collection-categories pb-3" *ngIf="categories.length != 0">
+  <div class="container">
+    <div class="categories-grid">
+      <ng-container *ngFor="let categorie of categories; let i = index">
+        <article class="category-item" 
+                 [style.animation-delay]="(i * 0.1) + 's'"
+                 [attr.aria-label]="'Categoría ' + categorie.title">
+          <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" 
+             class="category-link clr-none"
+             [attr.title]="'Explorar ' + categorie.title">
+            <div class="zoom-scal zoom-scal-nopb rounded-3">
+              <img class="blur-up lazyload" 
+                   [attr.data-src]="categorie.imagen_home" 
+                   [src]="categorie.imagen_home" 
+                   [alt]="'Imagen de la categoría ' + categorie.title" 
+                   [title]="categorie.title" 
+                   width="365" 
+                   height="365" 
+                   loading="lazy" />
+            </div>
+            <div class="details mt-3 text-center">
+              <h4 class="category-title mb-0 text-uppercase">{{ categorie.title }}</h4>
+              <p class="counts text-muted">{{ categorie.total_products }} {{ categorie.total_products == 1 ? 'Producto' : 'Productos' }}</p>
+            </div>
+          </a>
+        </article>
+      </ng-container>
+    </div>
+  </div>
+</section>

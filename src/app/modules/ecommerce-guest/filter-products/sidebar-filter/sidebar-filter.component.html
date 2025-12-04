@@ -1,54 +1,221 @@
-<div class="sidebar sidebar-bg filterbar" [class.active]="!noneSidebar">
-    <div class="closeFilter" (click)="closeSidebar.emit()"><i class="icon anm anm-times-r"></i></div>
-    <div class="sidebar-tags clearfix">
-        <!-- Talla -->
-        <div class="sidebar-widget filterBox filter-widget pt-5">
-            <div class="widget-title active"><h2>Talla</h2></div>
-            <div class="widget-content filter-size filterDD" style="display: none;">
-                <ul class="swacth-list size-swatches d-flex-center clearfix">
-                    <ng-container *ngFor="let variedad of variedades">
-                        <li [ngClass]="{'chosen': variedad_selected.id == variedad.id}" class="chosen">
-                            <a href="#" onclick="return false;" (click)="onSelectVariedad(variedad)"> {{variedad.valor}} </a>
-                        </li>
-                    </ng-container>
-                </ul>
-            </div>
+<div class="sidebar sidebar-bg filterbar enterprise-sidebar" [class.active]="!noneSidebar">
+    <!-- Header del Sidebar -->
+    <div class="sidebar-header d-flex align-items-center justify-content-between p-3 border-bottom">
+        <h3 class="sidebar-title mb-0">
+            <i class="icon anm anm-search-plus me-2"></i>Filtros
+        </h3>
+        <div class="d-flex align-items-center gap-2">
+            <span class="filter-count badge bg-primary" *ngIf="activeFiltersCount > 0">
+                {{activeFiltersCount}} activos
+            </span>
+            <button class="btn btn-sm btn-outline-secondary" (click)="closeSidebar.emit()">
+                <i class="icon anm anm-times-r"></i>
+            </button>
         </div>
-        <!-- Color -->
-        <div class="sidebar-widget filterBox filter-widget">
-            <div class="widget-title active"><h2>Color</h2></div>
-            <div class="widget-content filter-color filterDD" style="display: none;">
-                <ul class="swacth-list swatches d-flex-center clearfix pt-0">
-                    <li *ngFor="let color of coloresDisponibles"
-                        class="swatch large radius available"
-                        [ngStyle]="{'background-color': color.hex}"
-                        [attr.title]="color.name"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        (click)="onToggleColor(color.name)"
+    </div>
+
+    <div class="sidebar-body">
+        <!-- Búsqueda Rápida -->
+        <div class="filter-section border-bottom">
+            <div class="filter-header" (click)="toggleSection('search')">
+                <h4 class="filter-title">
+                    <i class="icon anm anm-search-l me-2"></i>Búsqueda Rápida
+                </h4>
+                <i class="icon anm" [ngClass]="expandedSections['search'] ? 'anm-angle-up-l' : 'anm-angle-down-l'"></i>
+            </div>
+            <div class="filter-content" [class.expanded]="expandedSections['search']">
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        class="form-control search-input"
+                        placeholder="Buscar productos..."
+                        [(ngModel)]="searchQuery"
+                        (input)="onSearchChange($event)"
                     >
-                    <span class="swatchLbl"></span>
-                </ul>
+                    <i class="icon anm anm-search-l search-icon"></i>
+                </div>
             </div>
         </div>
 
-        <!--Price Filter-->
-        <div class="sidebar-widget filterBox filter-widget">
-            <div class="widget-title active"><h2>Precio</h2></div>
-            <form class="widget-content price-filter filterDD" style="display: none;" action="#" method="post">
-                <div id="slider-range" class="mt-2"></div>
-                <div class="row">
-                    <div class="col-6"><input id="amount" class="w-100" type="text" /></div>
-                    <div class="col-6 text-right"><button class="btn btn-sm text-uppercase fw-normal" type="button" (click)="filterProduct($event)">filtrar</button></div>
+        <!-- Categorías -->
+        <div class="filter-section border-bottom" *ngIf="categories && categories.length > 0">
+            <div class="filter-header" (click)="toggleSection('categories')">
+                <h4 class="filter-title">
+                    <i class="icon anm anm-list-l me-2"></i>Categorías
+                </h4>
+                <i class="icon anm" [ngClass]="expandedSections['categories'] ? 'anm-angle-up-l' : 'anm-angle-down-l'"></i>
+            </div>
+            <div class="filter-content" [class.expanded]="expandedSections['categories']">
+                <div class="filter-options">
+                    <div class="form-check" *ngFor="let category of categories">
+                        <input 
+                            class="form-check-input"
+                            type="checkbox"
+                            [id]="'cat-' + category._id"
+                            [checked]="selectedCategories.includes(category._id)"
+                            (change)="onCategoryChange(category._id)"
+                        >
+                        <label class="form-check-label" [for]="'cat-' + category._id">
+                            {{category.title}}
+                            <span class="product-count" *ngIf="getCategoryProductCount(category._id) > 0">
+                                ({{getCategoryProductCount(category._id)}})
+                            </span>
+                        </label>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
-        <!--End Price Filter-->
 
+        <!-- Tallas -->
+        <div class="filter-section border-bottom" *ngIf="variedades && variedades.length > 0">
+            <div class="filter-header" (click)="toggleSection('sizes')">
+                <h4 class="filter-title">
+                    <i class="icon anm anm-angle-right-l me-2"></i>Tallas
+                </h4>
+                <i class="icon anm" [ngClass]="expandedSections['sizes'] ? 'anm-angle-up-l' : 'anm-angle-down-l'"></i>
+            </div>
+            <div class="filter-content" [class.expanded]="expandedSections['sizes']">
+                <div class="size-options">
+                    <div class="size-grid">
+                        <button 
+                            *ngFor="let variedad of variedades"
+                            class="size-button"
+                            [class.active]="variedad_selected.id == variedad.id"
+                            (click)="onSelectVariedad(variedad)"
+                        >
+                            {{variedad.valor}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <!-- Borrar filtros -->
-        <div class="sidebar-widget filterBox filter-widget brand-filter pt-3">
-            <a href="#;" onclick="return false;" (click)="onClearFilters()" [ngClass]="{'disabled-link': !filtersApplied}" class="cart-btn btn-dark-ld w-100 btn-lg me-1 text-uppercase fw-normal">Borrar filtros</a>
+        <!-- Colores -->
+        <div class="filter-section border-bottom" *ngIf="coloresDisponibles && coloresDisponibles.length > 0">
+            <div class="filter-header" (click)="toggleSection('colors')">
+                <h4 class="filter-title">
+                    <i class="icon anm anm-times-circle me-2"></i>Colores
+                </h4>
+                <i class="icon anm" [ngClass]="expandedSections['colors'] ? 'anm-angle-up-l' : 'anm-angle-down-l'"></i>
+            </div>
+            <div class="filter-content" [class.expanded]="expandedSections['colors']">
+                <div class="color-options">
+                    <div class="color-grid">
+                        <div 
+                            *ngFor="let color of coloresDisponibles"
+                            class="color-swatch"
+                            [class.selected]="selectedColors.includes(color.name)"
+                            [ngStyle]="{'background-color': color.hex}"
+                            [attr.title]="color.name"
+                            (click)="onToggleColor(color.name)"
+                        >
+                            <i class="icon anm anm-check color-check" *ngIf="selectedColors.includes(color.name)"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rango de Precio -->
+        <div class="filter-section border-bottom">
+            <div class="filter-header" (click)="toggleSection('price')">
+                <h4 class="filter-title">
+                    <i class="icon anm anm-dollar me-2"></i>Precio
+                </h4>
+                <i class="icon anm" [ngClass]="expandedSections['price'] ? 'anm-angle-up-l' : 'anm-angle-down-l'"></i>
+            </div>
+            <div class="filter-content" [class.expanded]="expandedSections['price']">
+                <div class="price-filter-container">
+                    <div class="price-range-display mb-3">
+                        <span class="price-value">{{priceRange.min}}€</span>
+                        <span class="price-separator">-</span>
+                        <span class="price-value">{{priceRange.max}}€</span>
+                    </div>
+                    <div class="price-inputs row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small">Mínimo</label>
+                            <input 
+                                type="number" 
+                                class="form-control form-control-sm"
+                                [(ngModel)]="priceRange.min"
+                                (input)="onPriceChange()"
+                                min="0"
+                            >
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small">Máximo</label>
+                            <input 
+                                type="number" 
+                                class="form-control form-control-sm"
+                                [(ngModel)]="priceRange.max"
+                                (input)="onPriceChange()"
+                                min="0"
+                            >
+                        </div>
+                    </div>
+                    <button 
+                        class="btn btn-outline-primary btn-sm w-100"
+                        (click)="applyPriceFilter()"
+                        [disabled]="!priceRange.min || !priceRange.max"
+                    >
+                        <i class="icon anm anm-search-l me-1"></i>Aplicar Filtro
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ofertas y Descuentos -->
+        <div class="filter-section border-bottom">
+            <div class="filter-header" (click)="toggleSection('offers')">
+                <h4 class="filter-title">
+                    <i class="icon anm anm-tag me-2"></i>Ofertas
+                </h4>
+                <i class="icon anm" [ngClass]="expandedSections['offers'] ? 'anm-angle-up-l' : 'anm-angle-down-l'"></i>
+            </div>
+            <div class="filter-content" [class.expanded]="expandedSections['offers']">
+                <div class="filter-options">
+                    <div class="form-check">
+                        <input 
+                            class="form-check-input"
+                            type="checkbox"
+                            id="filter-discount"
+                            [checked]="showOnlyDiscounted"
+                            (change)="onDiscountFilterChange($event)"
+                        >
+                        <label class="form-check-label" for="filter-discount">
+                            <i class="icon anm anm-tag text-danger me-1"></i>Solo productos con descuento
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input 
+                            class="form-check-input"
+                            type="checkbox"
+                            id="filter-new"
+                            [checked]="showOnlyNew"
+                            (change)="onNewFilterChange($event)"
+                        >
+                        <label class="form-check-label" for="filter-new">
+                            <i class="icon anm anm-star text-warning me-1"></i>Productos nuevos
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer del Sidebar -->
+    <div class="sidebar-footer border-top p-3">
+        <div class="d-grid gap-2">
+            <button 
+                class="btn btn-outline-secondary btn-sm"
+                (click)="onClearFilters()"
+                [disabled]="!filtersApplied"
+            >
+                <i class="icon anm anm-times-l me-1"></i>Limpiar Filtros
+            </button>
+            <div class="filter-summary text-muted small text-center" *ngIf="filteredProductsCount >= 0">
+                <i class="icon anm anm-info me-1"></i>{{filteredProductsCount}} productos encontrados
+            </div>
         </div>
     </div>
 </div>
