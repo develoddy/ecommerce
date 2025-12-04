@@ -660,10 +660,11 @@
                         
                         <!-- Contenedor PayPal - Móvil -->
                         <div *ngIf="selectedPaymentMethod === 'paypal'" 
-                             class="paypal-container-mobile mt-3 mb-2" 
+                             class="paypal-container-mobile mt-3 mb-2 w-100" 
                              #paypalMobile 
                              [class.disabled]="disablePayments" 
-                             data-paypal-container>
+                             data-paypal-container
+                             style="min-height: 50px;">
                         </div>
                         <div class="d-flex mb-3">
                               <ul class="d-flex flex-row">
@@ -861,10 +862,11 @@
                      
                      <!-- Contenedor PayPal - Mismo nivel que Stripe -->
                      <div *ngIf="selectedPaymentMethod === 'paypal'" 
-                          class="paypal-container mt-3 mb-2" 
+                          class="paypal-container-desktop mt-3 mb-2 w-100" 
                           #paypal 
                           [class.disabled]="disablePayments" 
-                          data-paypal-container>
+                          data-paypal-container
+                          style="min-height: 50px;">
                      </div>
                      
 

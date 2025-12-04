@@ -91,3 +91,47 @@ input[type="radio"]:checked + label {
 .accordion-item .collapsed i {
     transform: rotate(180deg);
 }
+
+/* Estilos para contenedores PayPal - Asegurar ancho completo */
+.paypal-container-desktop,
+.paypal-container-mobile {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    min-height: 50px !important;
+    box-sizing: border-box !important;
+}
+
+/* Asegurar que los botones PayPal ocupen todo el ancho */
+.paypal-container-desktop > div,
+.paypal-container-mobile > div,
+.paypal-container-desktop iframe,
+.paypal-container-mobile iframe {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Estilos específicos para botones PayPal dentro del contenedor */
+.paypal-container-desktop [data-testid="button"],
+.paypal-container-mobile [data-testid="button"],
+.paypal-container-desktop .paypal-button,
+.paypal-container-mobile .paypal-button {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+}
+
+/* Forzar ancho completo en todos los elementos PayPal */
+[data-paypal-container],
+[data-paypal-container] *,
+[id^="paypal"] *,
+.paypal-buttons,
+.paypal-button,
+[data-paypal-checkout],
+[data-paypal-checkout] iframe,
+.paypal-checkout-iframe {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}

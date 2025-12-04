@@ -699,7 +699,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         shape: 'rect', // rect or pill
         label: 'paypal',
         tagline: false,
-        height: 45,
+        height: 50,
       };
     } else if (this.isTablet) {
       buttonStyle = {
@@ -708,7 +708,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         shape: 'rect', // rect // pill
         label: 'paypal', // Alternativa que suele respetar tagline
         tagline: false,
-        height: 45,
+        height: 50,
       };
     } // isDesktop usa el default
 
