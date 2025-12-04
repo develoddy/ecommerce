@@ -2,16 +2,28 @@
 <div class="page-wrapper">
 
     <!-- Body Container -->
-    <div id="page-content"> 
+    <div id="page-content">
 
         <!--Page Header-->
-        <div class="page-header text-center d-none">
-            <div class="container">
+        <div class="page-header text-center bg-transparent mb-0 py-5">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-center">
-                        <div class="page-title"><h1>Mi cuenta</h1></div>
+                        <div class="page-title text-uppercase"><h2>Editar dirección</h2></div>
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Mi cuenta</span></div>
+                        <div class="breadcrumbs">
+                            <a  href="index.html" 
+                                onclick="return false;" 
+                                class="text-decoration-underline" 
+                                routerLink="/" title="Back to the home page">Lujandev.com
+                            </a>
+                            <a  [routerLink]="['/', this.country, this.locale, 'account', 'myaddresses']"
+                                class="text-decoration-underline">
+                                <span class="main-title"><i class="icon anm anm-angle-right-l"></i>Mis direcciones</span>
+                            </a>
+                            
+                            <span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Editar dirección</span>
+                        </div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -20,7 +32,7 @@
         <!--End Page Header-->
 
         <!--Main Content-->
-        <div class="container py-5">
+        <div class="container">
             <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="dashboard-content h-100" id="top-tabContent">
@@ -28,113 +40,371 @@
                         <div class="tab-pane h-100" id="address">
                             <div class="address-card mt-0 h-100">
                                 <!-- Mostrar la lista de direcciones -->
-                                <div class="address-book-section" >
-                                    <h3 class="title mb-5 text-center">Editar dirección</h3>
-                                    <fieldset>
-                                        <!-- Nombre -->
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="firstname" class="form-label d-none">Nombre <span class="required">*</span></label>
-                                                <input name="firstname" value="" id="firstname" type="text" [(ngModel)]="name" required="" placeholder="Nombre" class="form-control">
-                                            </div>
-                                        </div>
-                                        <!-- Apellidos -->
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="lastname" class="form-label d-none">Apellidos <span class="required">*</span></label>
-                                                <input name="lastname" value="" id="lastname" type="text" [(ngModel)]="surname" required="" placeholder="Aellidos" class="form-control">
-                                            </div>
-                                        </div>
-                                        <!-- Pais -->
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
-                                                <select id="address_country1" name="address[country]" [(ngModel)]="pais" data-default="United States" disabled class="form-control text-muted">
-                                                    <option value="0" label="Seleccione un país" selected="selected">Seleccione un país</option>
-                                                    <optgroup id="country-optgroup-Eu" label="Europe">
-                                                        <option value="IT" label="Italy">Italy</option>
-                                                        <option value="PT" label="Portugal">Portugal</option>
-                                                        <option value="RO" label="Romania">Romania</option>
-                                                        <option value="SPAIN" label="Spain">Spain</option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <!-- Direccion -->
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="address-1" class="form-label d-none">Dirección <span class="required">*</span></label>
-                                                <input name="address_1" value="" id="address-1" type="text" required="" [(ngModel)]="address" placeholder="Dirección" class="form-control">
-                                            </div>
-                                        </div>
-                                        <!-- Codigo postal -->
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="postcode" class="form-label d-none">Código postal <span class="required">*</span></label>
-                                                <input name="postcode" value="" id="postcode" type="text" class="form-control" [(ngModel)]="zipcode" placeholder="Código postal">
-                                            </div>
-                                        </div>
-                                        <!-- Población -->
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="new-city" class="form-label d-none">Población <span class="required">*</span></label>
-                                                <input name="city" placeholder="Población" value="" required="" [(ngModel)]="poblacion" id="new-city" type="text" />
-                                            </div>
-                                        </div>  
-                                        <!-- Ciudad -->
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="address_State" class="form-label d-none">Ciudad <span class="required">*</span></label>
-                                                <select id="address_State" name="address[State]" data-default="" [(ngModel)]="ciudad" class="form-control">
-                                                    <option value="0" label="Select a state" selected="selected">Provincia/Estado</option>
-                                                    <option value="Madrid">Madrid</option>
-                                                    <option value="New York">New York</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Email -->
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="email" class="form-label d-none">E-Mail <span class="required">*</span></label>
-                                                <input name="email" value="" id="email" type="email" required="" [(ngModel)]="email"  placeholder="E-mail" disabled class="form-control text-muted">
-                                            </div>
-                                        </div>
-                                        <!-- Telefono -->
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <label for="phone" class="form-label d-none">Móvil <span class="required">*</span></label>
-                                                <input name="phone" value="" id="phone" type="tel" required="" [(ngModel)]="phone"  placeholder="Móvil" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <!-- CheckBook-->
-                                        <div class="row justify-content-center pt-2 pb-4">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <div class="checkout-tearm customCheckbox">
-                                                    <input id="checkout_usual_shipping_address" name="checkout_usual_shipping_address" [(ngModel)]="usual_shipping_address" type="checkbox" value="checkout shipping address" required />
-                                                    <label for="checkout_usual_shipping_address"> Elegir como dirección de envío habitual</label>
+                                <div class="address-book-section">
+                                    <p class="text-center mb-4 lh-1">Actualiza tu dirección de envío para garantizar <br> la correcta entrega de tus pedidos.</p>
+                                    <form #addressForm="ngForm" novalidate (ngSubmit)="store()">
+                                        <fieldset>
+                                            <!-- Nombre -->
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="firstname" class="form-label d-none">Nombre <span class="required">*</span></label>
+                                                    <input name="firstname" 
+                                                            [(ngModel)]="name" 
+                                                            #firstname="ngModel" 
+                                                            id="firstname" 
+                                                            type="text" 
+                                                            required 
+                                                            placeholder="Nombre" 
+                                                            class="form-control py-4" 
+                                                            [ngClass]="{'is-invalid': firstname.invalid && (firstname.touched || addressForm.submitted)}" />
+                                                    <div *ngIf="firstname.invalid && (firstname.touched || addressForm.submitted)" class="invalid-feedback">
+                                                        Completa este campo para continuar
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        
 
-                                        <!-- Button register o update -->
-                                        <div class="row justify-content-center">
-                                            <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                <button type="submit" class="btn-dark-ld text-uppercase me-1" (click)="store()">
-                                                    <ng-container *ngIf="!loading">Guardar dirección</ng-container>
-                                                </button>
-                                                <p class="mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage && !status">{{ this.errorOrSuccessMessage }}</p> 
+                                            <!-- Apellidos -->
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="lastname" class="form-label d-none">Apellidos <span class="required">*</span></label>
+                                                    <input name="lastname" 
+                                                        [(ngModel)]="surname" 
+                                                        #lastname="ngModel" 
+                                                        id="lastname" 
+                                                        type="text" 
+                                                        required 
+                                                        placeholder="Apellidos" 
+                                                        class="form-control py-4" 
+                                                        [ngClass]="{'is-invalid': lastname.invalid && (lastname.touched || addressForm.submitted)}" 
+                                                    />
+                                                    <div *ngIf="lastname.invalid && (lastname.touched || addressForm.submitted)" class="invalid-feedback">
+                                                        Completa este campo para continuar
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </fieldset>
+
+                                            <!-- Email -->
+                                            <div class="row justify-content-center">
+                                                <div class="form-group  col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="email" class="form-label d-none">E-Mail <span class="required">*</span></label>
+                                                    <input  name="email" 
+                                                            [(ngModel)]="email" 
+                                                            #emailRef="ngModel" 
+                                                            id="email" 
+                                                            type="email" 
+                                                            required 
+                                                            placeholder="E-mail" 
+                                                            class="form-control py-4" 
+                                                            disabled
+                                                            [ngClass]="{'is-invalid': emailRef.invalid && (emailRef.touched || addressForm.submitted)}" 
+                                                    />
+                                                    <div *ngIf="emailRef.invalid && (emailRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                        Completa este campo para continuar
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- País -->
+                                            <!-- <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
+                                                    <select id="address_country1" 
+                                                            name="address[country]" 
+                                                            [(ngModel)]="pais" 
+                                                            #paisSelect="ngModel" 
+                                                            required 
+                                                            class="form-control py-4 fw-light" 
+                                                            [ngClass]="{'is-invalid': paisSelect.invalid && (paisSelect.touched || addressForm.submitted)}">
+
+                                                        <option value="" disabled>País</option>
+                                                        <optgroup label="🇪🇺 Unión Europea">
+                                                            <option *ngFor="let country of supportedCountries" 
+                                                                    [value]="country.code">
+                                                                {{ country.name }}
+                                                            </option>
+                                                        </optgroup>
+                                                    </select>
+                                                    <div *ngIf="paisSelect.invalid && (paisSelect.touched || addressForm.submitted)" class="invalid-feedback">
+                                                        Selecciona un país
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
+                                                    <select id="address_country1" 
+                                                            name="pais" 
+                                                            [(ngModel)]="pais" 
+                                                            #paisSelect="ngModel" 
+                                                            required 
+                                                            class="form-control fw-light" 
+                                                            style="padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; height: auto;"
+                                                            [ngClass]="{'is-invalid': paisSelect.invalid && (paisSelect.touched || addressForm.submitted)}"
+                                                            (change)="onCountryChange()">
+
+                                                        <option value="" disabled>País</option>
+                                                        <optgroup label="🇪🇺 Unión Europea">
+                                                            <option *ngFor="let country of supportedCountries" 
+                                                                    [value]="country.code">
+                                                                {{ country.name }}
+                                                            </option>
+                                                        </optgroup>
+                                                    </select>
+                                                    <div *ngIf="paisSelect.invalid && (paisSelect.touched || addressForm.submitted)" class="invalid-feedback">
+                                                        Selecciona un país
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Calle -->
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="calle" class="form-label d-none">Calle <span class="required">*</span></label>
+                                                    <input  name="calle" 
+                                                            id="calle" 
+                                                            type="text" 
+                                                            required 
+                                                            [(ngModel)]="calle" 
+                                                            #calleRef="ngModel" 
+                                                            placeholder="Calle (ej: Calle Gran Vía)" 
+                                                            class="form-control py-4 fw-light" 
+                                                            [ngClass]="{'is-invalid': calleRef.invalid && (calleRef.touched || addressForm.submitted)}" />
+                                                    <div *ngIf="calleRef.invalid && (calleRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                        Completa este campo para continuar
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Número -->
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="numero" class="form-label d-none">Número <span class="required">*</span></label>
+                                                    <input  name="numero" 
+                                                            id="numero" 
+                                                            type="text" 
+                                                            required 
+                                                            [(ngModel)]="numero" 
+                                                            #numeroRef="ngModel" 
+                                                            placeholder="Número (ej: 123)" 
+                                                            class="form-control py-4 fw-light" 
+                                                            [ngClass]="{'is-invalid': numeroRef.invalid && (numeroRef.touched || addressForm.submitted)}" />
+                                                    <div *ngIf="numeroRef.invalid && (numeroRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                        Debes incluir el número de la calle para el envío
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Apartamento/Piso (Opcional) -->
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="apartamento" class="form-label d-none">Apartamento/Piso</label>
+                                                    <input  name="apartamento" 
+                                                            id="apartamento" 
+                                                            type="text" 
+                                                            [(ngModel)]="apartamento" 
+                                                            placeholder="Apartamento/Piso (opcional, ej: 3º B)" 
+                                                            class="form-control py-4 fw-light" />
+                                                    <small class="form-text text-muted">Opcional: piso, puerta, escalera, etc.</small>
+                                                </div>
+                                            </div>
+
+                                            <!-- 🎯 Código postal (MANGO.ES STYLE) -->
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="postcode" class="form-label d-none">Código postal <span class="required">*</span></label>
+                                                    <div class="position-relative">
+                                                        <input  name="postcode" 
+                                                                id="postcode" 
+                                                                type="text" 
+                                                                required 
+                                                                [(ngModel)]="zipcode" 
+                                                                #zipcodeRef="ngModel"
+                                                                (blur)="onZipCodeChange(zipcode)"
+                                                                (change)="onZipCodeChange(zipcode)"
+                                                                placeholder="Código postal (ej: 28013)"
+                                                                class="form-control py-4 fw-light" 
+                                                                [ngClass]="{
+                                                                    'is-invalid': (zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted)) || postalCodeError
+                                                                }" 
+                                                        />
+                                                        <!-- Spinner de carga -->
+                                                        <div *ngIf="isLoadingPostalCode" 
+                                                             class="position-absolute" 
+                                                             style="right: 10px; top: 50%; transform: translateY(-50%);">
+                                                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                                <span class="visually-hidden">Buscando...</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Error de validación estándar -->
+                                                    <div *ngIf="zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted) && !postalCodeError" class="invalid-feedback d-block">
+                                                        Completa este campo para continuar
+                                                    </div>
+                                                    <!-- Error de código postal no encontrado -->
+                                                    <div *ngIf="postalCodeError" class="invalid-feedback d-block">
+                                                        <i class="icon anm anm-times-r me-1"></i>{{ postalCodeError }}
+                                                    </div>
+                                                    <!-- Mensaje de éxito -->
+                                                    <div *ngIf="zipcode && !postalCodeError && !isLoadingPostalCode && ciudad" class="text-success small mt-1">
+                                                        <i class="icon anm anm-check me-1"></i>Código postal válido
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 🎯 Provincia/Estado (AUTOCOMPLETADA - READONLY) -->
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="address_State" class="form-label d-none">Provincia/Estado <span class="required">*</span></label>
+                                                    <input  name="state" 
+                                                            placeholder="Provincia (se autocompleta con el CP)" 
+                                                            class="form-control  fw-light bg-light" 
+                                                            required 
+                                                            [(ngModel)]="ciudad" 
+                                                            #ciudadRef="ngModel" 
+                                                            [readonly]="isProvinceReadonly"
+                                                            [ngClass]="{'is-invalid': ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)}" 
+                                                            id="address_State" 
+                                                            type="text" />
+                                                    <small class="form-text text-muted" *ngIf="!ciudad">
+                                                        <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
+                                                    </small>
+                                                    <div *ngIf="ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                        Ingresa primero el código postal
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 🎯 Ciudad/Población (DROPDOWN SI HAY MÚLTIPLES OPCIONES) -->
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="new-city" class="form-label d-none">Ciudad <span class="required">*</span></label>
+                                                    
+                                                    <!-- Dropdown si hay múltiples ciudades -->
+                                                    <ng-container *ngIf="availableCities.length > 1; else singleCity">
+                                                        <select name="poblacion" 
+                                                                id="new-city-select"
+                                                                required 
+                                                                [(ngModel)]="poblacion" 
+                                                                #poblacionSelect="ngModel" 
+                                                                class="form-control fw-light"
+                                                                style="padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; height: auto;"
+                                                                [ngClass]="{'is-invalid': poblacionSelect.invalid && (poblacionSelect.touched || addressForm.submitted)}">
+                                                            <option value="" disabled>Selecciona tu ciudad</option>
+                                                            <option *ngFor="let cityObj of availableCities" 
+                                                                    [value]="cityObj.city">
+                                                                {{ cityObj.city }}
+                                                                <span *ngIf="cityObj.isPrimary"> (Principal)</span>
+                                                            </option>
+                                                        </select>
+                                                        
+                                                        <small class="form-text text-success mt-1">
+                                                            <i class="icon anm anm-check me-1"></i>{{ availableCities.length }} ciudades disponibles para este código postal
+                                                        </small>
+                                                        
+                                                        <div *ngIf="poblacionSelect.invalid && (poblacionSelect.touched || addressForm.submitted)" class="invalid-feedback d-block">
+                                                            Por favor selecciona una ciudad
+                                                        </div>
+                                                    </ng-container>
+                                                    
+                                                    <!-- Input si hay una sola ciudad o aún no se ha buscado -->
+                                                    <ng-template #singleCity>
+                                                        <input  name="poblacion" 
+                                                                placeholder="Ciudad (se autocompleta con el CP)" 
+                                                                class="form-control  fw-light bg-light" 
+                                                                required 
+                                                                [(ngModel)]="poblacion" 
+                                                                #poblacionInput="ngModel" 
+                                                                [readonly]="availableCities.length === 1"
+                                                                [ngClass]="{'is-invalid': poblacionInput.invalid && (poblacionInput.touched || addressForm.submitted)}" 
+                                                                id="new-city" 
+                                                                type="text" />
+                                                        
+                                                        <small class="form-text text-muted" *ngIf="availableCities.length === 0 && !poblacion">
+                                                            <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
+                                                        </small>
+                                                        
+                                                        <div *ngIf="poblacionInput.invalid && (poblacionInput.touched || addressForm.submitted)" class="invalid-feedback d-block">
+                                                            Ingresa primero el código postal
+                                                        </div>
+                                                    </ng-template>
+                                                    
+                                                    <!-- Error de validación de ciudad -->
+                                                    <div *ngIf="cityError" class="invalid-feedback d-block">
+                                                        <i class="icon anm anm-times-r me-1"></i>{{ cityError }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Telefono -->
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <label for="phone" class="form-label d-none">Móvil <span class="required">*</span></label>
+                                                    <input  name="phone" 
+                                                            id="phone" 
+                                                            type="tel" 
+                                                            required 
+                                                            [(ngModel)]="phone" 
+                                                            #phoneRef="ngModel" 
+                                                            placeholder="Móvil" 
+                                                            class="form-control py-4 fw-light" 
+                                                            [ngClass]="{'is-invalid': phoneRef.invalid && (phoneRef.touched || addressForm.submitted)}" 
+                                                    />
+                                                    <div *ngIf="phoneRef.invalid && (phoneRef.touched || addressForm.submitted)" class="invalid-feedback">
+                                                        Completa este campo para continuar
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- CheckBook-->
+                                            <div class="row justify-content-center pt-2 pb-4">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <div class="checkout-tearm customCheckbox">
+                                                        <input id="checkout_usual_shipping_address" name="checkout_usual_shipping_address" [(ngModel)]="usual_shipping_address" type="checkbox" value="checkout tearm" required />
+                                                        <label for="checkout_usual_shipping_address"> Elegir como dirección de envío habitual</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Mensaje de validación -->
+                                            <div class="row justify-content-center" *ngIf="isValidating">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <div class="alert alert-info d-flex align-items-center">
+                                                        <div class="spinner-border spinner-border-sm me-2" role="status">
+                                                            <span class="visually-hidden">Validando...</span>
+                                                        </div>
+                                                        <span>{{ validationMessage }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Button register o update -->
+                                            <div class="row justify-content-center">
+                                                <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
+                                                    <button type="submit" 
+                                                            class="btn-dark-ld me-1 text-uppercase" 
+                                                            [disabled]="loading || isValidating">
+                                                        <ng-container *ngIf="!loading && !isValidating">Actualizar dirección</ng-container>
+                                                        <ng-container *ngIf="isValidating">
+                                                            <span class="spinner-border spinner-border-sm me-2"></span>
+                                                            Validando...
+                                                        </ng-container>
+                                                        <ng-container *ngIf="loading && !isValidating">
+                                                            <span class="spinner-border spinner-border-sm me-2"></span>
+                                                            Guardando...
+                                                        </ng-container>
+                                                    </button>
+                                                    <p class="mt-3" [ngClass]="status ? 'text-success' : 'text-danger'" *ngIf="this.validMessage">{{ this.errorOrSuccessMessage }}</p>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                         <!-- End Address Book -->
                     </div>
-                <!-- </div> -->
+                </div>
             </div>
         </div>
         <!--End Main Content-->
@@ -144,6 +414,6 @@
     <!--Scoll Top-->
     <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
     <!--End Scoll Top-->
-    
+
 </div>
 <!--End Page Wrapper-->

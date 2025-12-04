@@ -814,7 +814,10 @@ getVarietyImage(cart: any): string {
    * Carga los datos de una dirección en el formulario principal (para edición)
    */
   loadAddressDataToForm(address: any) {
+    console.log("address: ", address);
+    
     this.address_client_selected = address;
+     console.log("address_client_selected: ", this.address_client_selected);
     this.name = address.name;
     this.surname = address.surname;
     this.pais = address.pais;

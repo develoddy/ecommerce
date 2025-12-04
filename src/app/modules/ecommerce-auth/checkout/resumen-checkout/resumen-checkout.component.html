@@ -138,7 +138,14 @@
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
                                                                         <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
-                                                                        <select id="address_country1" name="address[country]" [(ngModel)]="pais" #paisSelect="ngModel" required class="form-control py-4 fw-light" [ngClass]="{'is-invalid': paisSelect.invalid && (paisSelect.touched || addressForm.submitted)}">
+                                                                        <select 
+                                                                        id="address_country1" 
+                                                                        name="address[country]" 
+                                                                        [(ngModel)]="pais" 
+                                                                        #paisSelect="ngModel" 
+                                                                        required 
+                                                                        class="form-control py-4 fw-light" 
+                                                                        [ngClass]="{'is-invalid': paisSelect.invalid && (paisSelect.touched || addressForm.submitted)}">
                                                                             <option value="" disabled>País</option>
                                                                             <optgroup label="🇪🇺 Unión Europea">
                                                                                 <option *ngFor="let country of supportedCountries" 
