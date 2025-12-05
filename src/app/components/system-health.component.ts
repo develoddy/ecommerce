@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AnalyticsService } from '../services/analytics.service';
 import { CookieConsentService } from '../services/cookie-consent.service';
+import { SentryService } from '../services/sentry.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { timeout, catchError } from 'rxjs/operators';
@@ -113,6 +114,12 @@ interface SystemStatus {
             <button class="btn btn-sm btn-outline-warning" (click)="simulatePurchase()">
               🛒 Test Purchase Event
             </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="testSentry()">
+              🚨 Test Sentry Frontend
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="testSentryBackend()">
+              🚨 Test Sentry Backend
+            </button>
           </div>
 
           <!-- Environment Info -->
@@ -186,6 +193,7 @@ export class SystemHealthComponent implements OnInit {
   constructor(
     private analyticsService: AnalyticsService,
     private cookieConsentService: CookieConsentService,
+    private sentryService: SentryService,
     private http: HttpClient
   ) {}
 
@@ -383,6 +391,54 @@ export class SystemHealthComponent implements OnInit {
     });
     
     alert(`🛒 Test purchase event sent!\nOrder ID: ${testOrderId}\nValue: €${testValue}`);
+  }
+
+  /**
+   * 🚨 Test Sentry integration
+   */
+  testSentry(): void {
+    console.log('🚨 Testing Sentry integration...');
+    
+    // Test Sentry service
+    this.sentryService.testSentry();
+    
+    // Track test event
+    this.sentryService.trackEcommerceEvent('sentry_test_triggered', {
+      source: 'health_dashboard',
+      timestamp: new Date().toISOString(),
+      environment: environment.production ? 'production' : 'development'
+    });
+    
+    alert('🚨 Sentry Frontend test executed!\nCheck browser console and Sentry dashboard for results.');
+  }
+
+  /**
+   * 🚨 Test Sentry Backend integration
+   */
+  async testSentryBackend(): Promise<void> {
+    console.log('🚨 Testing Sentry Backend integration...');
+    
+    try {
+      const response = await this.http.get(`${environment.URL_BACKEND}sentry-test`)
+        .pipe(
+          timeout(10000),
+          catchError(err => {
+            console.error('❌ Sentry Backend test failed:', err);
+            return of(null);
+          })
+        ).toPromise();
+      
+      if (response) {
+        console.log('✅ Sentry Backend test response:', response);
+        alert('🚨 Sentry Backend test executed!\nCheck backend logs and Sentry dashboard for results.');
+      } else {
+        alert('❌ Sentry Backend test failed!\nCheck backend status and try again.');
+      }
+      
+    } catch (error) {
+      console.error('❌ Error testing Sentry Backend:', error);
+      alert('❌ Error testing Sentry Backend!\nSee console for details.');
+    }
   }
 }
 

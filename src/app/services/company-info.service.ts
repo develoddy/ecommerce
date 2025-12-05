@@ -22,10 +22,32 @@ export class CompanyInfoService {
    */
   readonly companyName: string = 'LUJANDEV';
   readonly companyEmail: string = 'lujandev@lujandev.com';
-  readonly companyPhone: string = '+34 605 97 44 36'; // opcional
-  readonly companyAddress: string = 'Madrid, España'; // dejar vacío hasta regularizar
-  readonly companyNIF: string = ''; // dejar vacío hasta regularizar
+  readonly companyPhone: string = '+34 605 97 44 36';
   readonly companyWebsite: string = 'https://tienda.lujandev.com';
+
+  /**
+   * ⚠️ DATOS FISCALES - COMPLETAR ANTES DEL LANZAMIENTO
+   * Estos datos son obligatorios para el cumplimiento legal (LSSI, RGPD) y facturación
+   */
+  readonly companyNIF: string = 'B12345678'; // CIF de prueba de sociedad futura // ⚠️ COMPLETAR: NIF/CIF de la empresa
+  readonly companyAddress: string = 'Calle Falsa 123, 1º A'; // ⚠️ COMPLETAR: Dirección fiscal completa
+  readonly companyCity: string = 'Madrid'; // ⚠️ COMPLETAR: Ciudad
+  readonly companyPostalCode: string = '28080'; // ⚠️ COMPLETAR: Código postal
+  readonly companyCountry: string = 'España';
+  readonly companyLegalForm: string = 'Sociedad Limitada (SL)';  // ⚠️ COMPLETAR: Persona Física / SL / SA / etc.
+
+  
+  /**
+   * Datos del Registro Mercantil (solo si aplica - sociedades)
+   */
+  readonly mercantileRegister: {
+    tomo?: string;
+    libro?: string;
+    folio?: string;
+    seccion?: string;
+    hoja?: string;
+    inscripcion?: string;
+  } = {};
 
   /**
    * Datos de contacto para ejercicio de derechos ARCO
@@ -33,9 +55,10 @@ export class CompanyInfoService {
   readonly supportEmail: string = 'lujandev@lujandev.com';
 
   /**
-   * Dirección completa para devoluciones (opcional, usar cuando esté disponible)
+   * Dirección completa para devoluciones (opcional)
    */
-  readonly returnAddress: string = ''; // [COMPLETAR_CON_DIRECCIÓN_DEVOLUCIONES]
+  readonly returnAddress: string = ''; // ⚠️ COMPLETAR: Si difiere de la dirección fiscal
+  readonly returnContact: string = ''; // ⚠️ COMPLETAR: Persona de contacto para devoluciones
 
   /**
    * Información del Delegado de Protección de Datos (DPO)
@@ -65,7 +88,88 @@ export class CompanyInfoService {
    * Útil para validaciones o mostrar advertencias en el admin panel
    */
   hasCompleteFiscalData(): boolean {
-    return !!(this.companyNIF && this.companyAddress && this.companyAddress !== 'Madrid, España');
+    return !!(
+      this.companyNIF && 
+      this.companyAddress && 
+      this.companyCity && 
+      this.companyPostalCode &&
+      this.companyLegalForm
+    );
+  }
+
+  /**
+   * Obtiene la dirección fiscal completa formateada
+   */
+  getFullFiscalAddress(): string {
+    if (!this.hasCompleteFiscalData()) {
+      return this.getPlaceholder('address');
+    }
+    
+    return `${this.companyAddress}, ${this.companyPostalCode} ${this.companyCity}, ${this.companyCountry}`;
+  }
+
+  /**
+   * Verifica si necesita datos del Registro Mercantil (sociedades)
+   */
+  needsMercantileRegister(): boolean {
+    return this.companyLegalForm.includes('SL') || 
+           this.companyLegalForm.includes('SA') ||
+           this.companyLegalForm.includes('Sociedad');
+  }
+
+  /**
+   * Obtiene la información del Registro Mercantil formateada
+   */
+  getMercantileRegisterInfo(): string {
+    if (!this.needsMercantileRegister()) {
+      return 'No aplica (persona física)';
+    }
+
+    const reg = this.mercantileRegister;
+    if (!reg.tomo || !reg.libro || !reg.folio) {
+      return '[COMPLETAR DATOS DEL REGISTRO MERCANTIL]';
+    }
+
+    return `Tomo ${reg.tomo}, Libro ${reg.libro}, Folio ${reg.folio}, Sección ${reg.seccion}, Hoja ${reg.hoja}, Inscripción ${reg.inscripcion}`;
+  }
+
+  /**
+   * Obtiene el estado de completitud de los datos fiscales
+   */
+  getFiscalDataCompleteness(): {
+    isComplete: boolean;
+    missingFields: string[];
+    completionPercentage: number;
+  } {
+    const requiredFields = [
+      { field: 'companyNIF', label: 'NIF/CIF', value: this.companyNIF },
+      { field: 'companyAddress', label: 'Dirección fiscal', value: this.companyAddress },
+      { field: 'companyCity', label: 'Ciudad', value: this.companyCity },
+      { field: 'companyPostalCode', label: 'Código postal', value: this.companyPostalCode },
+      { field: 'companyLegalForm', label: 'Forma jurídica', value: this.companyLegalForm }
+    ];
+
+    if (this.needsMercantileRegister()) {
+      requiredFields.push(
+        { field: 'mercantileRegister.tomo', label: 'Registro Mercantil - Tomo', value: this.mercantileRegister.tomo || '' },
+        { field: 'mercantileRegister.libro', label: 'Registro Mercantil - Libro', value: this.mercantileRegister.libro || '' },
+        { field: 'mercantileRegister.folio', label: 'Registro Mercantil - Folio', value: this.mercantileRegister.folio || '' }
+      );
+    }
+
+    const missingFields = requiredFields
+      .filter(item => !item.value)
+      .map(item => item.label);
+
+    const completionPercentage = Math.round(
+      ((requiredFields.length - missingFields.length) / requiredFields.length) * 100
+    );
+
+    return {
+      isComplete: missingFields.length === 0,
+      missingFields,
+      completionPercentage
+    };
   }
 
   /**
@@ -92,10 +196,10 @@ export class CompanyInfoService {
    * Obtiene la dirección formateada o el placeholder si está vacío/temporal
    */
   getFormattedAddress(): string {
-    if (!this.companyAddress || this.companyAddress === 'Madrid, España') {
+    if (!this.companyAddress) {
       return this.getPlaceholder('address');
     }
-    return this.companyAddress;
+    return this.getFullFiscalAddress();
   }
 
   /**

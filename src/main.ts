@@ -1,6 +1,38 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import * as Sentry from '@sentry/angular';
+import { Integrations } from '@sentry/tracing';
+
+// 🔒 Sentry optimizado - Solo captura de errores sin interferir con Angular HttpClient
+Sentry.init({
+  dsn: environment.sentryDsn,
+  environment: environment.production ? 'production' : 'development',
+  debug: false,
+  
+  // ❌ SIN BrowserTracing para evitar conflictos con Angular HttpClient
+  integrations: [], 
+  
+  // 🎯 Solo captura de errores, sin performance tracking
+  tracesSampleRate: 0,
+  
+  // 📊 Filtrar errores irrelevantes 
+  beforeSend(event: any) {
+    // Filtrar errores de HMR y desarrollo
+    if (event.exception?.values?.[0]?.value?.includes('sockjs-node') ||
+        event.exception?.values?.[0]?.value?.includes('webpack')) {
+      return null; // No enviar errores de desarrollo
+    }
+    
+    if (environment.production) {
+      return event;
+    }
+    
+    // En desarrollo, loggear errores reales
+    console.error('🚨 Sentry Error (DEV):', event);
+    return event;
+  }
+});
 
 // ================================================================
 // 🔒 DESACTIVACIÓN DE LOGS EN PRODUCCIÓN (SEGURIDAD)

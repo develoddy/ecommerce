@@ -14,6 +14,8 @@ import { ChatModule } from './modules/chat/chat.module';
 import { RecaptchaModule, RecaptchaFormsModule, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 import { FormsModule } from '@angular/forms';
 import { SystemHealthComponent } from './components/system-health.component';
+import { ErrorHandler } from '@angular/core';
+import * as Sentry from '@sentry/angular';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -57,6 +59,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     }, {
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: '6LfPI4UrAAAAAMdaK_k27wzNgVWAxkogIs_5MNda',
+    },
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: false, // No mostrar dialog de error al usuario
+        logErrors: true,   // Loggear errores además de enviarlos a Sentry
+      }),
     }
   ],
   bootstrap: [AppComponent]

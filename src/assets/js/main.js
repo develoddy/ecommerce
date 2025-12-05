@@ -1976,16 +1976,22 @@ function productSlider5items($) {
 }
 
 function menuProductSlider($) {
-    console.log("$('.weekly-product').length: ", $('.weekly-product').length);
-    if ($('.weekly-product').length) {
-        $('.weekly-product').slick({
-            dots: false,
-            slidesToShow: 2,
-            slidesToScroll: 2,
-            arrows: true,
-            autoplay: true,
-            autoplaySpeed: 2500
-        });
+    try {
+        const weeklyProduct = $('.weekly-product');
+        console.log("$('.weekly-product').length: ", weeklyProduct ? weeklyProduct.length : 0);
+        
+        if (weeklyProduct && weeklyProduct.length > 0) {
+            weeklyProduct.slick({
+                dots: false,
+                slidesToShow: 2,
+                slidesToScroll: 2,
+                arrows: true,
+                autoplay: true,
+                autoplaySpeed: 2500
+            });
+        }
+    } catch (error) {
+        console.error('Error initializing menuProductSlider:', error);
     }
 }
 

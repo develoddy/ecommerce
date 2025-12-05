@@ -196,10 +196,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializeHomeData(): void {
     const TIME_NOW = new Date().getTime();
 
-    const listHomeSubscription = this.homeService.listHome(TIME_NOW).subscribe((resp: any) => {
-      this.processBasicData(resp);
-      this.processProductPrices(resp);
-      this.finalizeDataProcessing();
+    const listHomeSubscription = this.homeService.listHome(TIME_NOW).subscribe({
+      next: (resp: any) => {
+        console.log('✅ Home data received:', resp);
+        this.processBasicData(resp);
+        this.processProductPrices(resp);
+        this.finalizeDataProcessing();
+      },
+      error: (error: any) => {
+        console.error('❌ Error loading home data:', error);
+        console.error('📊 Status:', error.status);
+        console.error('📊 StatusText:', error.statusText);
+        console.error('🔍 URL:', error.url);
+        console.error('🔍 Full error object:', error);
+      }
     });
 
     this.subscriptions.add(listHomeSubscription);
