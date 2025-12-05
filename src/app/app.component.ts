@@ -8,9 +8,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizationService } from './services/localization.service';
 import { GuestCleanupService } from './modules/ecommerce-guest/_service/guestCleanup.service';
 import { HeaderEventsService } from './services/headerEvents.service';
-import { CookieConsentService } from './services/cookie-consent.service';
+import { CookieConsentService, CookiePreferences } from './services/cookie-consent.service';
 import { SeoService } from './services/seo.service';
 import { HomeService } from './modules/home/_services/home.service';
+import { AnalyticsService } from './services/analytics.service';
 // import { LoaderService } from './modules/home/_services/product/loader.service';
 declare var bootstrap: any;
 
@@ -37,7 +38,14 @@ export class AppComponent implements AfterViewInit {
   isDesktop: boolean = true;
   hasProducts: boolean = false;
   width: number = 100; 
-  height: number = 100; 
+  height: number = 100;
+  showPreferences: boolean = false;
+  cookiePreferences: CookiePreferences = {
+    necessary: true,
+    analytics: false,
+    marketing: false,
+    functional: false
+  }; 
 
   constructor(
     // public loader: LoaderService,
@@ -50,7 +58,8 @@ export class AppComponent implements AfterViewInit {
     private cookieConsentService: CookieConsentService,
     private authService: AuthService,
     private tokenService: TokenService,
-    private homeService: HomeService
+    private homeService: HomeService,
+    private analyticsService: AnalyticsService
   ) {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translate.get('app.title').subscribe((res: string) => {
@@ -64,12 +73,25 @@ export class AppComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     const consentGiven = this.cookieConsentService.hasUserConsented();
+    
     if (!consentGiven) {
+      // Mostrar modal de consentimiento
       const modalElement = document.getElementById('cookie_modal');
       if (modalElement) {
-        this.modalInstance = new bootstrap.Modal(modalElement);
+        this.modalInstance = new bootstrap.Modal(modalElement, {
+          backdrop: 'static', // Evitar cerrar haciendo click fuera
+          keyboard: false     // Evitar cerrar con ESC
+        });
         this.modalInstance.show();
       }
+    } else {
+      // Si ya hay consentimiento, inicializar analytics
+      this.initializeAnalytics();
+      
+      // Debug info en desarrollo
+      setTimeout(() => {
+        this.analyticsService.debugInfo();
+      }, 2000);
     }
   }
 
@@ -128,18 +150,81 @@ export class AppComponent implements AfterViewInit {
   }
 
   acceptCookies() {
+    // Aceptar todas las cookies
+    const allAccepted: CookiePreferences = {
+      necessary: true,
+      analytics: true,
+      marketing: true,
+      functional: true
+    };
+    
+    this.cookieConsentService.setPreferences(allAccepted);
     this.cookieConsentService.setConsent('accepted');
+    
+    // Inicializar analytics inmediatamente
+    this.initializeAnalytics();
+    
+    // Cerrar modal
     this.modalInstance?.hide();
+    
+    console.log('✅ Usuario aceptó todas las cookies - Analytics inicializados');
   }
 
   rejectCookies() {
+    // Solo cookies necesarias
+    const onlyNecessary: CookiePreferences = {
+      necessary: true,
+      analytics: false,
+      marketing: false,
+      functional: false
+    };
+    
+    this.cookieConsentService.setPreferences(onlyNecessary);
     this.cookieConsentService.setConsent('rejected');
+    
+    // Desactivar analytics si estaban activos
+    this.analyticsService.disableAnalytics();
+    
+    // Cerrar modal
     this.modalInstance?.hide();
+    
+    console.log('🔒 Usuario rechazó cookies opcionales - Solo cookies necesarias activas');
+  }
+
+  saveCustomPreferences() {
+    this.cookieConsentService.setPreferences(this.cookiePreferences);
+    this.cookieConsentService.setConsent('custom');
+    
+    // Gestionar analytics según preferencias personalizadas
+    if (this.cookiePreferences.analytics || this.cookiePreferences.marketing) {
+      this.initializeAnalytics();
+    } else {
+      this.analyticsService.disableAnalytics();
+    }
+    
+    // Reset vista y cerrar modal
+    this.showPreferences = false;
+    this.modalInstance?.hide();
+    
+    console.log('⚙️ Usuario configuró preferencias personalizadas:', this.cookiePreferences);
+  }
+
+  togglePreferences() {
+    this.showPreferences = !this.showPreferences;
+    if (this.showPreferences) {
+      // Cargar preferencias actuales si existen
+      this.cookiePreferences = this.cookieConsentService.getPreferences();
+    }
   }
 
   gotoPoliticaCookie() {
     this.router.navigate(['/', this.locale, this.country, 'shop', 'privacy-policy']);
     this.modalInstance?.hide();
+  }
+
+  private initializeAnalytics() {
+    // Inicializar analytics basado en consentimiento del usuario
+    this.analyticsService.initializeAnalytics();
   }
 
   private checkDeviceType(): void {

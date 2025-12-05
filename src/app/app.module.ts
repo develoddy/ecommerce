@@ -12,6 +12,7 @@ import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { RecaptchaModule, RecaptchaFormsModule, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
+import { FormsModule } from '@angular/forms';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -25,6 +26,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     RecaptchaModule,
     RecaptchaFormsModule,
+    FormsModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     TranslateModule.forRoot(),
     HttpClientModule,

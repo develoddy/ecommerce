@@ -2,41 +2,153 @@
 <router-outlet></router-outlet>
 <!-- Chat widget (global) -->
 <app-chat-widget *ngIf="hasProducts"></app-chat-widget>
-<!--Newsletter Modal-->
-    <div class="newsletter-modal modal fade" id="cookie_modal" tabindex="-1" aria-hidden="true">           
+<!--Cookie Consent Modal RGPD Compliant-->
+    <div class="newsletter-modal modal fade" id="cookie_modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">           
         <div class="modal-dialog modal-lg modal-dialog-centered p-0" [ngClass]="{'ms-4': isMobile, 'me-4': isMobile}">
             <div class="modal-content border-0 py-4">
                 <div class="modal-header border-0" [ngClass]="{ 'px-5': isDesktop }">
-                    <h5 class="modal-title text-uppercase">Tu privacidad es importante para nosotros</h5>
+                    <h5 class="modal-title text-uppercase">
+                        <i class="fas fa-cookie-bite me-2"></i>
+                        Tu privacidad es importante para nosotros
+                    </h5>
                     <button type="button" class="btn-close d-none" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" [ngClass]="{'p-0': isMobile, 'px-2': isDesktop, 'py-0': isDesktop}">    
+                
+                <!-- Contenido principal del modal -->
+                <div class="modal-body" [ngClass]="{'p-0': isMobile, 'px-2': isDesktop, 'py-0': isDesktop}" *ngIf="!showPreferences">    
                     <div class="newsletter-wrap d-flex flex-column">
                         <div class="newsltr-text text-start" [ngClass]="{'py-2': isMobile, 'py-0': isDesktop}">
                             <div class="wraptext mw-100">
-                                <p class="text fw-light" style="line-height: 1.3 !important;">
-                                    Utilizamos cookies propias y de terceros para fines analíticos y para mostrarte publicidad y contenido personalizado en base a un perfil elaborado a partir de tus hábitos de navegación. Puedes aceptar todas las cookies o gestionar tus preferencias en el panel de configuración. Consulta más información en <a class="fw-bold text-decoration-underline" href="#" onclick="return false;" (click)="gotoPoliticaCookie()" >Política de cookies</a>.
+                                <p class="text fw-light mb-3" style="line-height: 1.4 !important;">
+                                    Utilizamos cookies <strong>propias y de terceros</strong> para mejorar tu experiencia de navegación, analizar el tráfico del sitio y mostrarte contenido personalizado. 
+                                </p>
+                                <p class="text fw-light mb-3" style="line-height: 1.4 !important; font-size: 0.9em;">
+                                    <strong>Cookies necesarias:</strong> Imprescindibles para el funcionamiento básico del sitio (carrito, sesión).<br>
+                                    <strong>Cookies analíticas:</strong> Google Analytics para medir el rendimiento del sitio.<br>
+                                    <strong>Cookies de marketing:</strong> Meta Pixel para personalizar anuncios y medir campañas.<br>
+                                    <strong>Cookies funcionales:</strong> Preferencias de idioma y configuración del usuario.
+                                </p>
+                                <p class="text fw-light mb-0" style="line-height: 1.4 !important;">
+                                    Puedes aceptar todas, rechazar las no esenciales o personalizar tus preferencias. 
+                                    Para más información, consulta nuestra <a class="fw-bold text-decoration-underline text-primary" href="#" onclick="return false;" (click)="gotoPoliticaCookie()">Política de cookies</a>.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer border-top-0" [ngClass]="{'px-5':isDesktop}">
-                    <div class="d-flex justify-content-end" [ngClass]="{'flex-column' : isMobile , 'w-100' : isMobile}">
-                        <div class="d-flex" [ngClass]="{'flex-column' : isMobile, 'me-3' : isDesktop, 'flex-row' : isDesktop, 'align-self-center':isDesktop}">
-                            <a href="#" onclick="return false;" class="fw-normal text-decoration-underline" [ngClass]="{'text-center': isMobile, 'mb-3': isMobile}">Configurar preferencias</a>
+
+                <!-- Panel de preferencias detalladas -->
+                <div class="modal-body" [ngClass]="{'p-0': isMobile, 'px-2': isDesktop, 'py-0': isDesktop}" *ngIf="showPreferences">
+                    <div class="preferences-panel">
+                        <h6 class="fw-bold mb-3">Personalizar preferencias de cookies</h6>
+                        
+                        <!-- Cookies Necesarias -->
+                        <div class="cookie-category mb-3 p-3 border rounded">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Cookies Necesarias</strong>
+                                    <p class="mb-0 text-muted small">Imprescindibles para el funcionamiento básico del sitio web.</p>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" [checked]="true" disabled>
+                                    <label class="form-check-label text-muted">Siempre activas</label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="d-flex" [ngClass]="{'flex-column' : isMobile , 'flex-row' : isDesktop}">
-                            <button type="button" class="btn-outline-white-ld text-uppercase me-2" [ngClass]="{'mb-3' : isMobile}" data-bs-dismiss="modal" (click)="rejectCookies()">Rechazar</button>
-                            <button type="button" class="btn-dark-ld text-uppercase" (click)="acceptCookies()">Aceptar</button>
+
+                        <!-- Cookies Analíticas -->
+                        <div class="cookie-category mb-3 p-3 border rounded">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Cookies Analíticas</strong>
+                                    <p class="mb-0 text-muted small">Google Analytics para entender cómo interactúas con nuestro sitio.</p>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="cookiePreferences.analytics">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cookies de Marketing -->
+                        <div class="cookie-category mb-3 p-3 border rounded">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Cookies de Marketing</strong>
+                                    <p class="mb-0 text-muted small">Meta Pixel para personalizar anuncios y medir campañas publicitarias.</p>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="cookiePreferences.marketing">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cookies Funcionales -->
+                        <div class="cookie-category mb-3 p-3 border rounded">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>Cookies Funcionales</strong>
+                                    <p class="mb-0 text-muted small">Preferencias de idioma, moneda y configuración personalizada.</p>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="cookiePreferences.functional">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Botones de acción -->
+                <div class="modal-footer border-top-0" [ngClass]="{'px-5':isDesktop}">
+                    <div class="d-flex justify-content-between w-100" [ngClass]="{'flex-column' : isMobile}">
+                        
+                        <!-- Botón configurar preferencias (solo cuando no están mostradas) -->
+                        <div class="d-flex align-items-center" *ngIf="!showPreferences">
+                            <button type="button" class="btn btn-link text-decoration-underline p-0" (click)="togglePreferences()">
+                                <i class="fas fa-cog me-1"></i> Personalizar
+                            </button>
+                        </div>
+
+                        <!-- Botón volver (solo cuando están mostradas las preferencias) -->
+                        <div class="d-flex align-items-center" *ngIf="showPreferences">
+                            <button type="button" class="btn btn-link text-decoration-underline p-0" (click)="togglePreferences()">
+                                <i class="fas fa-arrow-left me-1"></i> Volver
+                            </button>
                         </div>
                         
+                        <!-- Botones principales -->
+                        <div class="d-flex" [ngClass]="{'flex-column mt-3' : isMobile, 'flex-row' : isDesktop}">
+                            <!-- Botones para vista principal -->
+                            <ng-container *ngIf="!showPreferences">
+                                <button type="button" class="btn btn-outline-secondary text-uppercase me-2" 
+                                        [ngClass]="{'mb-2' : isMobile}" 
+                                        (click)="rejectCookies()">
+                                    Solo necesarias
+                                </button>
+                                <button type="button" class="btn btn-primary text-uppercase" 
+                                        (click)="acceptCookies()">
+                                    Aceptar todas
+                                </button>
+                            </ng-container>
+                            
+                            <!-- Botones para vista de preferencias -->
+                            <ng-container *ngIf="showPreferences">
+                                <button type="button" class="btn btn-outline-secondary text-uppercase me-2" 
+                                        [ngClass]="{'mb-2' : isMobile}" 
+                                        (click)="rejectCookies()">
+                                    Solo necesarias
+                                </button>
+                                <button type="button" class="btn btn-success text-uppercase" 
+                                        (click)="saveCustomPreferences()">
+                                    Guardar preferencias
+                                </button>
+                            </ng-container>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div> 
-<!--End Newsletter Modal-->    
+<!--End Cookie Consent Modal-->    
 
 <!-- Loader Global -->
 <!-- <div *ngIf="loader.loading$ | async" 
