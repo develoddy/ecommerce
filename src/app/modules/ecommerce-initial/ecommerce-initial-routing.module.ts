@@ -10,8 +10,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: PreHomeComponent // ✅ ACTIVAR: Tienda completa en lanzamiento
-        //component: PreLaunchLandingComponent // ❌ DESACTIVAR: Landing pre-lanzamiento
+        //component: PreHomeComponent // ✅ ACTIVAR: Tienda completa en lanzamiento
+        component: PreLaunchLandingComponent // ❌ DESACTIVAR: Landing pre-lanzamiento
       },
       {
         path: 'config',
