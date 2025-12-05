@@ -12,6 +12,7 @@ import { CookieConsentService, CookiePreferences } from './services/cookie-conse
 import { SeoService } from './services/seo.service';
 import { HomeService } from './modules/home/_services/home.service';
 import { AnalyticsService } from './services/analytics.service';
+import { environment } from 'src/environments/environment';
 // import { LoaderService } from './modules/home/_services/product/loader.service';
 declare var bootstrap: any;
 
@@ -41,6 +42,7 @@ export class AppComponent implements AfterViewInit {
   height: number = 100;
   showPreferences: boolean = false;
   loadingAnalytics: boolean = false;
+  isProduction: boolean = environment.production;
   cookiePreferences: CookiePreferences = {
     necessary: true,
     analytics: false,

@@ -13,6 +13,7 @@ import { SharedModule } from './shared/shared.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { RecaptchaModule, RecaptchaFormsModule, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
 import { FormsModule } from '@angular/forms';
+import { SystemHealthComponent } from './components/system-health.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -22,6 +23,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
+    SystemHealthComponent,
   ],
   imports: [
     RecaptchaModule,
