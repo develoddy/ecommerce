@@ -40,6 +40,7 @@ export class AppComponent implements AfterViewInit {
   width: number = 100; 
   height: number = 100;
   showPreferences: boolean = false;
+  loadingAnalytics: boolean = false;
   cookiePreferences: CookiePreferences = {
     necessary: true,
     analytics: false,
@@ -71,7 +72,7 @@ export class AppComponent implements AfterViewInit {
     this.locale = this.localizationService.locale;
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
     const consentGiven = this.cookieConsentService.hasUserConsented();
     
     if (!consentGiven) {
@@ -86,12 +87,16 @@ export class AppComponent implements AfterViewInit {
       }
     } else {
       // Si ya hay consentimiento, inicializar analytics
-      this.initializeAnalytics();
-      
-      // Debug info en desarrollo
-      setTimeout(() => {
-        this.analyticsService.debugInfo();
-      }, 2000);
+      try {
+        await this.initializeAnalytics();
+        
+        // Debug info en desarrollo
+        setTimeout(() => {
+          this.analyticsService.debugInfo();
+        }, 3000); // Más tiempo para que se carguen los scripts
+      } catch (error) {
+        console.error('❌ Error inicializando analytics en ngAfterViewInit:', error);
+      }
     }
   }
 
@@ -149,7 +154,7 @@ export class AppComponent implements AfterViewInit {
     this.router.navigate(['/', this.country, this.locale, 'auth', 'login']);
   }
 
-  acceptCookies() {
+  async acceptCookies() {
     // Aceptar todas las cookies
     const allAccepted: CookiePreferences = {
       necessary: true,
@@ -161,13 +166,22 @@ export class AppComponent implements AfterViewInit {
     this.cookieConsentService.setPreferences(allAccepted);
     this.cookieConsentService.setConsent('accepted');
     
-    // Inicializar analytics inmediatamente
-    this.initializeAnalytics();
-    
-    // Cerrar modal
+    // Cerrar modal primero para mejor UX
     this.modalInstance?.hide();
     
-    console.log('✅ Usuario aceptó todas las cookies - Analytics inicializados');
+    // Mostrar indicador de carga
+    this.loadingAnalytics = true;
+    
+    // Inicializar analytics de forma asíncrona
+    try {
+      console.log('🔄 Inicializando analytics tras aceptar cookies...');
+      await this.initializeAnalytics();
+      console.log('✅ Usuario aceptó todas las cookies - Analytics inicializados correctamente');
+    } catch (error) {
+      console.error('❌ Error inicializando analytics tras aceptar cookies:', error);
+    } finally {
+      this.loadingAnalytics = false;
+    }
   }
 
   rejectCookies() {
@@ -191,20 +205,34 @@ export class AppComponent implements AfterViewInit {
     console.log('🔒 Usuario rechazó cookies opcionales - Solo cookies necesarias activas');
   }
 
-  saveCustomPreferences() {
+  async saveCustomPreferences() {
     this.cookieConsentService.setPreferences(this.cookiePreferences);
     this.cookieConsentService.setConsent('custom');
     
-    // Gestionar analytics según preferencias personalizadas
-    if (this.cookiePreferences.analytics || this.cookiePreferences.marketing) {
-      this.initializeAnalytics();
-    } else {
-      this.analyticsService.disableAnalytics();
-    }
-    
-    // Reset vista y cerrar modal
+    // Reset vista y cerrar modal primero
     this.showPreferences = false;
     this.modalInstance?.hide();
+    
+    // Mostrar indicador de carga si es necesario
+    if (this.cookiePreferences.analytics || this.cookiePreferences.marketing) {
+      this.loadingAnalytics = true;
+    }
+    
+    // Gestionar analytics según preferencias personalizadas
+    try {
+      if (this.cookiePreferences.analytics || this.cookiePreferences.marketing) {
+        console.log('🔄 Inicializando analytics con preferencias personalizadas...');
+        await this.initializeAnalytics();
+        console.log('✅ Analytics inicializados con preferencias personalizadas');
+      } else {
+        this.analyticsService.disableAnalytics();
+        console.log('🔒 Analytics desactivados según preferencias personalizadas');
+      }
+    } catch (error) {
+      console.error('❌ Error aplicando preferencias personalizadas:', error);
+    } finally {
+      this.loadingAnalytics = false;
+    }
     
     console.log('⚙️ Usuario configuró preferencias personalizadas:', this.cookiePreferences);
   }
@@ -222,9 +250,9 @@ export class AppComponent implements AfterViewInit {
     this.modalInstance?.hide();
   }
 
-  private initializeAnalytics() {
+  private async initializeAnalytics(): Promise<void> {
     // Inicializar analytics basado en consentimiento del usuario
-    this.analyticsService.initializeAnalytics();
+    return await this.analyticsService.initializeAnalytics();
   }
 
   private checkDeviceType(): void {

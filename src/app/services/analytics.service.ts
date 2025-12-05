@@ -40,102 +40,200 @@ export class AnalyticsService {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  initializeAnalytics() {
+  async initializeAnalytics(): Promise<void> {
     // Solo ejecutar en el navegador (SSR-safe)
     if (!this.isBrowser) {
       console.log('🔄 Analytics initialization skipped (SSR mode)');
       return;
     }
 
+    console.log('🎯 Iniciando carga de analytics con consentimiento del usuario...');
+
+    const promises: Promise<void>[] = [];
+
     // Solo inicializar si el usuario ha dado consentimiento
     if (this.cookieConsentService.canUseAnalytics()) {
-      this.initGA4();
+      console.log('📊 Iniciando carga de Google Analytics 4...');
+      promises.push(this.initGA4());
     }
     
     if (this.cookieConsentService.canUseMarketing()) {
-      this.initMetaPixel();
+      console.log('📱 Iniciando carga de Meta Pixel...');
+      promises.push(this.initMetaPixel());
     }
 
-    console.log('🎯 Analytics initialization completed with user consent');
+    // Esperar a que todas las inicializaciones terminen (compatible con ES2019)
+    if (promises.length > 0) {
+      try {
+        await Promise.all(promises.map(p => p.catch(err => console.error('Analytics init error:', err))));
+        console.log('🎯 Analytics initialization completed with user consent');
+      } catch (error) {
+        console.error('❌ Error durante la inicialización de analytics:', error);
+      }
+    } else {
+      console.log('🔒 Analytics no inicializado - sin consentimiento del usuario');
+    }
   }
 
-  private initGA4() {
+  private async initGA4(): Promise<void> {
     if (this.ga4Initialized || !this.isBrowser) return;
 
     try {
-      // Inicializar dataLayer inmediatamente para evitar errores
-      (window as any).dataLayer = (window as any).dataLayer || [];
+      // 🔄 Cargar script de GA4 de forma asíncrona y esperar a que esté listo
+      await this.loadGA4Script();
       
-      // Definir gtag function
-      gtag = function() {
-        (window as any).dataLayer.push(arguments);
-      };
-
-      // Configuración inicial con timestamp
-      gtag('js', new Date());
-
-      // Crear script tag para Google Analytics de forma optimizada
-      const script = document.createElement('script');
-      script.async = true;
-      script.defer = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${this.GA4_MEASUREMENT_ID}`;
+      // 🔧 Configurar GA4 solo después de que el script esté cargado
+      this.configureGA4();
       
-      // Optimización: añadir al final del body para no bloquear render
-      const targetElement = document.body || document.head;
-      targetElement.appendChild(script);
-
-      // Configurar GA4 con settings RGPD-compliant
-      script.onload = () => {
-        gtag('config', this.GA4_MEASUREMENT_ID, {
-          // 🔒 RGPD Compliance Settings
-          anonymize_ip: true,
-          cookie_flags: 'SameSite=Lax;Secure',
-          cookie_expires: 63072000, // 2 años máximo RGPD
-          allow_google_signals: false, // No compartir datos con Google
-          allow_ad_personalization_signals: false, // No personalización ads
-          
-          // 🚀 Performance Settings
-          send_page_view: true,
-          page_title: document.title,
-          page_location: window.location.href,
-          
-          // 🎯 Custom Settings
-          custom_map: {
-            'custom_parameter_1': 'ecommerce_type'
-          }
-        });
-
-        // Evento inicial de configuración
-        gtag('event', 'analytics_initialized', {
-          event_category: 'system',
-          event_label: 'GA4_ready',
-          custom_parameters: {
-            consent_method: this.cookieConsentService.getConsent(),
-            initialization_timestamp: new Date().toISOString()
-          }
-        });
-        
-        this.ga4Initialized = true;
-        console.log('✅ Google Analytics 4 inicializado correctamente con RGPD compliance');
-      };
-
-      script.onerror = () => {
-        console.error('❌ Error cargando script de GA4');
-      };
-
     } catch (error) {
       console.error('❌ Error inicializando GA4:', error);
     }
   }
 
-  private initMetaPixel() {
+  /**
+   * Cargar script de GA4 y esperar a que esté completamente disponible
+   */
+  private loadGA4Script(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // Verificar si ya existe el script
+      const existingScript = document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${this.GA4_MEASUREMENT_ID}"]`);
+      if (existingScript) {
+        // Si ya existe, verificar si gtag está disponible
+        if (typeof (window as any).gtag === 'function') {
+          resolve();
+          return;
+        }
+      }
+
+      // Inicializar dataLayer inmediatamente
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      
+      // Definir función gtag antes de cargar el script
+      (window as any).gtag = function() {
+        (window as any).dataLayer.push(arguments);
+      };
+
+      // Crear y configurar script
+      const script = document.createElement('script');
+      script.async = true;
+      script.defer = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${this.GA4_MEASUREMENT_ID}`;
+      
+      // Manejar carga exitosa
+      script.onload = () => {
+        // Esperar un momento adicional para asegurar que gtag esté completamente disponible
+        setTimeout(() => {
+          if (typeof (window as any).gtag === 'function') {
+            console.log('📦 Script GA4 cargado correctamente');
+            resolve();
+          } else {
+            reject(new Error('gtag function no disponible después de cargar script'));
+          }
+        }, 100);
+      };
+
+      // Manejar errores de carga
+      script.onerror = () => {
+        reject(new Error('Error cargando script de GA4'));
+      };
+
+      // Timeout de seguridad (10 segundos)
+      setTimeout(() => {
+        reject(new Error('Timeout cargando script de GA4'));
+      }, 10000);
+
+      // Añadir script al DOM
+      const targetElement = document.body || document.head;
+      targetElement.appendChild(script);
+    });
+  }
+
+  /**
+   * Configurar GA4 después de que el script esté cargado
+   */
+  private configureGA4(): void {
+    try {
+      const gtag = (window as any).gtag;
+      
+      if (typeof gtag !== 'function') {
+        throw new Error('gtag function no está disponible');
+      }
+
+      // Configuración inicial con timestamp
+      gtag('js', new Date());
+
+      // Configurar GA4 con settings RGPD-compliant
+      gtag('config', this.GA4_MEASUREMENT_ID, {
+        // 🔒 RGPD Compliance Settings
+        anonymize_ip: true,
+        cookie_flags: 'SameSite=Lax;Secure',
+        cookie_expires: 63072000, // 2 años máximo RGPD
+        allow_google_signals: false, // No compartir datos con Google
+        allow_ad_personalization_signals: false, // No personalización ads
+        
+        // 🚀 Performance Settings
+        send_page_view: true,
+        page_title: document.title,
+        page_location: window.location.href,
+        
+        // 🎯 Custom Settings
+        custom_map: {
+          'custom_parameter_1': 'ecommerce_type'
+        }
+      });
+
+      // Evento inicial de configuración
+      gtag('event', 'analytics_initialized', {
+        event_category: 'system',
+        event_label: 'GA4_ready',
+        custom_parameters: {
+          consent_method: this.cookieConsentService.getConsent(),
+          initialization_timestamp: new Date().toISOString()
+        }
+      });
+      
+      this.ga4Initialized = true;
+      console.log('✅ Google Analytics 4 inicializado correctamente con RGPD compliance');
+      
+    } catch (error) {
+      console.error('❌ Error configurando GA4:', error);
+      throw error;
+    }
+  }
+
+  private async initMetaPixel(): Promise<void> {
     if (this.metaPixelInitialized || !this.isBrowser) return;
 
     try {
-      // Meta Pixel Code optimizado y SSR-safe
+      // 🔄 Cargar script de Meta Pixel de forma asíncrona
+      await this.loadMetaPixelScript();
+      
+      // 🔧 Configurar Meta Pixel después de que esté cargado
+      this.configureMetaPixel();
+      
+    } catch (error) {
+      console.error('❌ Error inicializando Meta Pixel:', error);
+    }
+  }
+
+  /**
+   * Cargar script de Meta Pixel y esperar a que esté disponible
+   */
+  private loadMetaPixelScript(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // Verificar si ya existe
+      if ((window as any).fbq && typeof (window as any).fbq === 'function') {
+        resolve();
+        return;
+      }
+
+      // Meta Pixel Code optimizado con Promise
       (function(f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) {
         // Verificar si ya existe para evitar doble inicialización
-        if (f.fbq) return;
+        if (f.fbq) {
+          resolve();
+          return;
+        }
         
         // Inicializar función fbq
         n = f.fbq = function() {
@@ -151,14 +249,51 @@ export class AnalyticsService {
         // Crear script de forma optimizada
         t = b.createElement(e);
         t.async = !0;
-        t.defer = !0; // Añadir defer para mejor performance
+        t.defer = !0;
         t.src = v;
         
-        // Insertar al final del body si es posible
+        // Manejar carga exitosa
+        t.onload = () => {
+          setTimeout(() => {
+            if (typeof f.fbq === 'function') {
+              console.log('📦 Script Meta Pixel cargado correctamente');
+              resolve();
+            } else {
+              reject(new Error('fbq function no disponible después de cargar script'));
+            }
+          }, 100);
+        };
+
+        // Manejar errores
+        t.onerror = () => {
+          reject(new Error('Error cargando script de Meta Pixel'));
+        };
+
+        // Timeout de seguridad
+        setTimeout(() => {
+          if (typeof f.fbq !== 'function') {
+            reject(new Error('Timeout cargando script de Meta Pixel'));
+          }
+        }, 10000);
+        
+        // Insertar script
         s = b.getElementsByTagName('body')[0] || b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t, s);
         
       })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    });
+  }
+
+  /**
+   * Configurar Meta Pixel después de que el script esté cargado
+   */
+  private configureMetaPixel(): void {
+    try {
+      const fbq = (window as any).fbq;
+      
+      if (typeof fbq !== 'function') {
+        throw new Error('fbq function no está disponible');
+      }
 
       // Configurar Meta Pixel con RGPD compliance
       fbq('init', this.META_PIXEL_ID, {
@@ -189,7 +324,8 @@ export class AnalyticsService {
       console.log('✅ Meta Pixel inicializado correctamente con RGPD compliance');
       
     } catch (error) {
-      console.error('❌ Error inicializando Meta Pixel:', error);
+      console.error('❌ Error configurando Meta Pixel:', error);
+      throw error;
     }
   }
 
@@ -503,21 +639,30 @@ export class AnalyticsService {
   /**
    * Reactivar analytics cuando el usuario acepta cookies
    */
-  reactivateAnalytics() {
+  async reactivateAnalytics(): Promise<void> {
     if (!this.isBrowser) return;
 
     const canUseAnalytics = this.cookieConsentService.canUseAnalytics();
     const canUseMarketing = this.cookieConsentService.canUseMarketing();
 
+    const promises: Promise<void>[] = [];
+
     if (canUseAnalytics && !this.ga4Initialized) {
-      this.initGA4();
+      promises.push(this.initGA4());
     }
 
     if (canUseMarketing && !this.metaPixelInitialized) {
-      this.initMetaPixel();
+      promises.push(this.initMetaPixel());
     }
 
-    console.log('🔄 Analytics reactivados según preferencias del usuario');
+    if (promises.length > 0) {
+      try {
+        await Promise.all(promises.map(p => p.catch(err => console.error('Analytics reactivation error:', err))));
+        console.log('🔄 Analytics reactivados según preferencias del usuario');
+      } catch (error) {
+        console.error('❌ Error reactivando analytics:', error);
+      }
+    }
   }
 
   /**

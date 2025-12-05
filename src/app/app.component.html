@@ -2,6 +2,14 @@
 <router-outlet></router-outlet>
 <!-- Chat widget (global) -->
 <app-chat-widget *ngIf="hasProducts"></app-chat-widget>
+
+<!-- Loading Analytics Indicator -->
+<div *ngIf="loadingAnalytics" class="analytics-loading-toast position-fixed bottom-0 end-0 m-3 p-3 bg-primary text-white rounded shadow" style="z-index: 1050;">
+  <div class="d-flex align-items-center">
+    <div class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></div>
+    <small>Configurando analytics...</small>
+  </div>
+</div>
 <!--Cookie Consent Modal RGPD Compliant-->
     <div class="newsletter-modal modal fade" id="cookie_modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">           
         <div class="modal-dialog modal-lg modal-dialog-centered p-0" [ngClass]="{'ms-4': isMobile, 'me-4': isMobile}">
