@@ -23,6 +23,9 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
   showDuplicateMessage = false;
   showResubscribedMessage = false;
   
+  // Counter dinámico para validación
+  subscriberCount = 0;
+  
   // Formulario de captura
   email = '';
   emailError = '';
@@ -42,10 +45,9 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
     private homeService: HomeService,
     private prelaunchService: PrelaunchService
   ) {
-    // Configurar fecha de lanzamiento (7 días desde ahora)
-    this.launchDate = new Date();
-    this.launchDate.setDate(this.launchDate.getDate() + 7);
-    this.launchDate.setHours(12, 0, 0, 0); // Mediodía
+    // 🎯 VALIDACIÓN: Countdown hasta 13 diciembre 2025 (7 días de test)
+    this.launchDate = new Date('2025-12-13T12:00:00');
+    console.log('🚀 Countdown configurado para:', this.launchDate.toLocaleString());
   }
 
   /**
