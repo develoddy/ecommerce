@@ -13,8 +13,8 @@ export class CheckFirstVisitGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    // 🚀 PRE-LAUNCH MODE: Siempre redirigir a preHome hasta el lanzamiento
-    const PRE_LAUNCH_MODE = true; // ✅ Cambiar a false el día del lanzamiento
+    // 🛒 TESTING COMPRA REAL: Temporalmente desactivado para test completo
+    const PRE_LAUNCH_MODE = false; // 🔄 RECORDAR: Cambiar a true después del test
 
     if (PRE_LAUNCH_MODE) {
       console.warn('🚀 PRE-LAUNCH: Redirigiendo a landing page...');
