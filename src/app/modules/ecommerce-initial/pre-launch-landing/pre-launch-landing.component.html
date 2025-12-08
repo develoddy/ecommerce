@@ -117,7 +117,7 @@
 
                     <div class="email-form">
                         <div class="input-group">
-                            <input type="email" [(ngModel)]="email" placeholder="Tu email profesional" class="email-input" [class.error]="emailError" (keyup.enter)="captureEmail()" />
+                            <input type="email" [(ngModel)]="email" placeholder="Introduce tu email" class="email-input form-control form-control-solid h-auto py-7 px-6 rounded-lg" [class.error]="emailError" (keyup.enter)="captureEmail()" />
                             <button class="cta-button primary" [disabled]="isSubmitting" (click)="captureEmail()">
                                 <span *ngIf="!isSubmitting">Notificarme</span>
                                 <span *ngIf="isSubmitting" class="loading">
@@ -249,7 +249,7 @@
                 <div class="email-capture-final">
                     <div class="capture-form" *ngIf="!emailCaptured">
                         <div class="email-form-inline">
-                            <input type="email" [(ngModel)]="email" placeholder="tu@email.com" class="email-input-final" [class.error]="emailError" (keyup.enter)="captureEmail()" />
+                            <input type="email" [(ngModel)]="email" placeholder="Introduce tu email" class="email-input-final form-control form-control-solid h-auto py-7 px-6 rounded-lg" [class.error]="emailError" (keyup.enter)="captureEmail()" />
                             <button class="cta-button primary large" [disabled]="isSubmitting" (click)="captureEmail()">
                                 <span *ngIf="!isSubmitting">Quiero Acceso VIP</span>
                                 <span *ngIf="isSubmitting">
