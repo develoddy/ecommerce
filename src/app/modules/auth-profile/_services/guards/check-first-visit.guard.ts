@@ -1,23 +1,27 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+import { PrelaunchConfigService } from '../../../../services/prelaunch-config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CheckFirstVisitGuard implements CanActivate {
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private prelaunchConfigService: PrelaunchConfigService
+  ) {}
   
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    // 🛒 TESTING COMPRA REAL: Temporalmente desactivado para test completo
-    const PRE_LAUNCH_MODE = false; // 🔄 RECORDAR: Cambiar a true después del test
+    // 🚀 MODO PRE-LAUNCH: Leer dinámicamente desde backend
+    const isPrelaunchEnabled = this.prelaunchConfigService.getCurrentStatus();
 
-    if (PRE_LAUNCH_MODE) {
-      console.warn('🚀 PRE-LAUNCH: Redirigiendo a landing page...');
+    if (isPrelaunchEnabled) {
+      console.warn('🚀 PRE-LAUNCH ACTIVADO: Redirigiendo a landing page...');
       this.router.navigate(['/preHome']); 
       return false;
     }

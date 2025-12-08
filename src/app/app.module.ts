@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,9 +16,15 @@ import { FormsModule } from '@angular/forms';
 import { SystemHealthComponent } from './components/system-health.component';
 import { ErrorHandler } from '@angular/core';
 import * as Sentry from '@sentry/angular';
+import { PrelaunchConfigService } from './services/prelaunch-config.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
+}
+
+// Factory function para cargar configuración inicial de pre-launch
+export function initializePrelaunchConfig(prelaunchService: PrelaunchConfigService) {
+  return () => prelaunchService.loadInitialConfig();
 }
 
 
@@ -66,6 +72,12 @@ export function HttpLoaderFactory(http: HttpClient) {
         showDialog: false, // No mostrar dialog de error al usuario
         logErrors: true,   // Loggear errores además de enviarlos a Sentry
       }),
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializePrelaunchConfig,
+      deps: [PrelaunchConfigService],
+      multi: true
     }
   ],
   bootstrap: [AppComponent]

@@ -1,2 +1,10 @@
-<!-- <p>ecommerce-initial works!</p> -->
-<router-outlet></router-outlet>
+<!-- Renderizado dinámico basado en configuración de pre-launch -->
+<ng-container *ngIf="isPrelaunchMode; else showFullStore">
+  <!-- 🚀 MODO PRE-LAUNCH: Mostrar landing de pre-lanzamiento -->
+  <app-pre-launch-landing></app-pre-launch-landing>
+</ng-container>
+
+<ng-template #showFullStore>
+  <!-- 🏪 MODO TIENDA COMPLETA: Mostrar tienda normal -->
+  <router-outlet></router-outlet>
+</ng-template>
