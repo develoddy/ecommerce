@@ -135,7 +135,7 @@
   z-index: 2;
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 12px;
   display: flex;
   flex-direction: column;
   gap: 60px;
@@ -945,12 +945,14 @@
   }
   
   .urgency-section {
-    margin: 0 16px;
+    margin: 0 0px;
     padding: 32px 20px;
   }
   
   .countdown-container {
     padding: 20px 16px;
+    border: 0px solid;
+    background: #ffffff;
   }
   
   .email-capture-section {
@@ -958,15 +960,16 @@
   }
   
   .email-capture-hero {
-    margin: 0 16px;
+    margin: 0 0px;
   }
   
   .capture-form {
-    padding: 32px 24px;
+    padding: 32px 12px;
   }
   
   .countdown-display {
     gap: 8px;
+    flex-wrap: initial !important;
   }
   
   .countdown-item {
@@ -1024,6 +1027,35 @@
     flex-direction: column;
     text-align: center;
   }
+}
+
+@media (max-width: 640px) {
+  /* Reset border radius for mobile stacked layout */
+  .cta-button.large {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+  
+  .email-input-final {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
+
+  .email-input{
+     border-top-right-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+    width: 100%;
+    margin-bottom: 1rem;
+  } 
+
+  .cta-button {
+    width: 100%;
+    border-top-left-radius: 12px !important;
+    border-bottom-left-radius: 12px !important;
+  }
+
+  
+  
 }
 
 @media (max-width: 480px) {
