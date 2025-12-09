@@ -37,7 +37,7 @@
                 <!-- Urgencia + Countdown -->
                 <div class="urgency-section">
                     <div class="countdown-container">
-                        <h3 class="countdown-title">¡Lanzamos en:</h3>
+                        <h3 class="countdown-title">Lanzamos en:</h3>
                         <div class="countdown-display">
                             <div class="countdown-item">
                                 <span class="countdown-number">{{countdown.days}}</span>
@@ -70,7 +70,7 @@
     <section class="products-teaser" id="products">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Un Vistazo a lo que Viene</h2>
+                <h2 class="section-title">Un vistazo a lo que viene</h2>
                 <p class="section-subtitle">
                     Diseños únicos, calidad premium y estilo que define tu pasión por el código.
                 </p>
@@ -116,7 +116,7 @@
         <div class="container">
             <div class="email-capture-hero">
                 <div class="capture-form capture-form-primary" *ngIf="!emailCaptured">
-                    <h3 class="form-title">Acceso Anticipado Solo para Pre-registrados</h3>
+                    <h3 class="form-title">Acceso anticipado dolo para pre-registrados</h3>
 
                     <div class="email-form">
                         <div class="input-group">
@@ -186,7 +186,7 @@
     <section class="benefits-section" id="benefits">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">¿Por Qué Registrarte Ahora?</h2>
+                <h2 class="section-title">¿Por qué registrarte ahora?</h2>
                 <p class="section-subtitle">
                     No es solo una tienda más. Es la comunidad de desarrolladores que estabas esperando.
                 </p>
@@ -195,7 +195,7 @@
             <div class="benefits-grid">
                 <div class="benefit-item">
                     <div class="benefit-icon">🎁</div>
-                    <h4 class="benefit-title">Cupón Exclusivo de Lanzamiento</h4>
+                    <h4 class="benefit-title">Cupón exclusivo de lanzamiento</h4>
                     <p class="benefit-description">
                         Acceso a descuentos especiales que solo los pre-registrados recibirán.
                     </p>
@@ -203,7 +203,7 @@
 
                 <div class="benefit-item">
                     <div class="benefit-icon">⚡</div>
-                    <h4 class="benefit-title">Acceso Prioritario</h4>
+                    <h4 class="benefit-title">Acceso prioritario</h4>
                     <p class="benefit-description">
                         Sé el primero en comprar antes que se agoten los diseños más populares.
                     </p>
@@ -211,7 +211,7 @@
 
                 <div class="benefit-item">
                     <div class="benefit-icon">🚀</div>
-                    <h4 class="benefit-title">Productos Únicos</h4>
+                    <h4 class="benefit-title">Productos únicos</h4>
                     <p class="benefit-description">
                         Diseños exclusivos creados por y para la comunidad de programadores.
                     </p>
@@ -219,7 +219,7 @@
 
                 <div class="benefit-item">
                     <div class="benefit-icon">💎</div>
-                    <h4 class="benefit-title">Calidad Premium</h4>
+                    <h4 class="benefit-title">Calidad premium</h4>
                     <p class="benefit-description">
                         Materiales de alta calidad que soportan las largas jornadas de código.
                     </p>
@@ -227,7 +227,7 @@
 
                 <div class="benefit-item">
                     <div class="benefit-icon">🌟</div>
-                    <h4 class="benefit-title">Comunidad Exclusiva</h4>
+                    <h4 class="benefit-title">Comunidad exclusiva</h4>
                     <p class="benefit-description">
                         Únete a una red de desarrolladores que comparten tu pasión por el código.
                     </p>
@@ -241,7 +241,7 @@
         <div class="container-cat-final">
             <div class="cta-content">
                 <div class="cta-text">
-                    <h2 class="cta-title">No Te Pierdas el Lanzamiento</h2>
+                    <h2 class="cta-title">No te pierdas el lanzamiento</h2>
                     <p class="cta-description">
                         Únete a los desarrolladores que ya están esperando.
                         <br>Solo <span class="highlight">7 días para validar</span> la demanda.
@@ -254,7 +254,7 @@
                         <div class="email-form-inline">
                             <input type="email" [(ngModel)]="email" placeholder="Introduce tu email" class="email-input-final form-control form-control-solid h-auto py-7 px-6 rounded-lg" [class.error]="emailError" (keyup.enter)="captureEmail()" />
                             <button class="cta-button primary large" [disabled]="isSubmitting" (click)="captureEmail()">
-                                <span *ngIf="!isSubmitting">Quiero Acceso VIP</span>
+                                <span *ngIf="!isSubmitting">Quiero acceso VIP</span>
                                 <span *ngIf="isSubmitting">
                                     <i class="spinner"></i> Registrando...
                                 </span>
@@ -269,7 +269,7 @@
                     <!-- Success State Final - Registro Nuevo -->
                     <div class="success-state-final" *ngIf="emailCaptured && !showDuplicateMessage && !showResubscribedMessage">
                         <div class="success-content">
-                            <h3>🎉 ¡Bienvenido a la Lista VIP!</h3>
+                            <h3>🎉 ¡Bienvenido a la lista VIP!</h3>
                             <p>Recibirás todas las novedades y tu cupón exclusivo muy pronto.</p>
                         </div>
                     </div>
@@ -285,7 +285,7 @@
                     <!-- Success State Final - Resubscrito -->
                     <div class="success-state-final resubscribed" *ngIf="emailCaptured && showResubscribedMessage">
                         <div class="success-content">
-                            <h3>🎉 ¡Bienvenido de nuevo a la Lista VIP!</h3>
+                            <h3>🎉 ¡Bienvenido de nuevo a la lista VIP!</h3>
                             <p>Te has reactivado exitosamente. ¡Gracias por volver!</p>
                         </div>
                     </div>
@@ -306,7 +306,7 @@
         <div class="container">
             <div class="footer-content">
                 <p class="footer-text">
-                    &copy; 2025 Lujandev Store - La tienda técnica para programadores
+                    &copy; 2025 Lujandev | Donde el código se viste con elegancia
                 </p>
                 <div class="footer-links">
                     <a href="#" class="footer-link">Política de Privacidad</a>
