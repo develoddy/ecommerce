@@ -4,6 +4,7 @@ import { Subscription, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
+import { PrelaunchConfigService } from 'src/app/services/prelaunch-config.service';
 
 @Component({
   selector: 'app-chat-widget',
@@ -21,6 +22,8 @@ export class ChatWidgetComponent implements OnInit, OnDestroy, AfterViewChecked 
   unreadCount = 0;
   // Local flag to control showing the close-confirm popup
   showCloseConfirm = false;
+  // Control visibility based on prelaunch status
+  isChatEnabled = true;
   
   // Para gestionar el estado de "está escribiendo"
   private typingSubject = new Subject<string>();
@@ -29,7 +32,8 @@ export class ChatWidgetComponent implements OnInit, OnDestroy, AfterViewChecked 
   constructor(
     private chatService: ChatService,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private prelaunchConfigService: PrelaunchConfigService
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +78,20 @@ export class ChatWidgetComponent implements OnInit, OnDestroy, AfterViewChecked 
     
     // Configurar detección de escritura
     this.setupTypingDetection();
+    
+    // Suscribirse al estado de pre-launch para deshabilitar chat cuando esté activo
+    this.subscriptions.add(
+      this.prelaunchConfigService.isPrelaunchEnabled$.subscribe(isPrelaunchEnabled => {
+        this.isChatEnabled = !isPrelaunchEnabled;
+        
+        // Si el prelaunch se activa mientras el chat está abierto, cerrarlo
+        if (isPrelaunchEnabled && this.isChatOpen) {
+          this.closeChat();
+        }
+        
+        this.cdr.detectChanges();
+      })
+    );
   }
   
   ngAfterViewChecked() {

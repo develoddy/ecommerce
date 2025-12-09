@@ -1,4 +1,4 @@
-<div class="chat-widget-container">
+<div class="chat-widget-container" *ngIf="isChatEnabled">
   <!-- Floating toggle (keeps original bindings/directives) -->
   <div class="chat-button" [class.has-unread]="unreadCount > 0" (click)="openChat()" *ngIf="!isChatOpen" role="button" aria-label="Lujandev Assistant">
     <span class="chat-button__icon chat-icon" aria-hidden="true">

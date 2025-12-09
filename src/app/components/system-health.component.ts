@@ -146,7 +146,7 @@ interface SystemStatus {
       position: fixed;
       bottom: 20px;
       left: 20px;
-      width: 400px;
+      width: 800px;
       z-index: 1050;
       max-height: 80vh;
       overflow-y: auto;
