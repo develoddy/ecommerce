@@ -678,8 +678,7 @@
                                     </path>
                                 </svg>
                             </ng-template>
-                            <span class="menubar-label text-uppercase fw-bold"
-                                *ngIf="currentUser && currentUser.email; else notAuthenticated">Mi cuenta</span>
+                            <span class="menubar-label text-uppercase fw-bold" *ngIf="currentUser && currentUser.email; else notAuthenticated">Mi cuenta</span>
                             <ng-template #notAuthenticated>
                                 <span class="menubar-label text-uppercase fw-bold"
                                     [routerLink]="['/', country, locale, 'auth', 'login']">Iniciar sesión</span>
@@ -807,7 +806,7 @@
 </ng-template>
 
 <!--Mobile Menu-->
-<div class="mobile-nav-wrapper" role="navigation">
+<div class="mobile-nav-wrapper" role="navigation" *ngIf="currentUser && currentUser.email">
     <div class="closemobileMenu" (click)="toggleMobileMenu()">Menu <i class="icon anm anm-times-l"></i></div>
     <ul id="MobileNav" class="mobile-nav">
         <!-- Camisetas Category -->
@@ -965,7 +964,6 @@
                 <li><a href="blog-details.html" class="site-nav">Blog Details</a></li>
             </ul>
         </li>
-
         <li class="mobile-menu-bottom">
             <div class="mobile-links">
                 <ul class="list-inline d-inline-flex flex-column w-100">
