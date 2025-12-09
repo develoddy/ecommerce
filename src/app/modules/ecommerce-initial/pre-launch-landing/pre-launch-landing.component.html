@@ -120,7 +120,7 @@
 
                     <div class="email-form">
                         <div class="input-group">
-                            <input type="email" [(ngModel)]="email" placeholder="Introduce tu email" class="email-input form-control form-control-solid h-auto py-7 px-6 rounded-lg" [class.error]="emailError" (keyup.enter)="captureEmail()" />
+                            <input type="email" [(ngModel)]="email" placeholder="Introduce tu e-mail" class="email-input form-control form-control-solid h-auto py-7 px-6 rounded-lg" [class.error]="emailError" (keyup.enter)="captureEmail()" />
                             <button class="cta-button primary" [disabled]="isSubmitting" (click)="captureEmail()">
                                 <span *ngIf="!isSubmitting">Notificarme</span>
                                 <span *ngIf="isSubmitting" class="loading">
@@ -188,7 +188,7 @@
             <div class="section-header">
                 <h2 class="section-title">¿Por qué registrarte ahora?</h2>
                 <p class="section-subtitle">
-                    No es solo una tienda más. Es la comunidad de desarrolladores que estabas esperando.
+                    No es solo una tienda más. Es la comunidad de developers que estabas esperando.
                 </p>
             </div>
 
@@ -213,7 +213,7 @@
                     <div class="benefit-icon">🚀</div>
                     <h4 class="benefit-title">Productos únicos</h4>
                     <p class="benefit-description">
-                        Diseños exclusivos creados por y para la comunidad de programadores.
+                        Diseños exclusivos creados por y para la comunidad de developers.
                     </p>
                 </div>
 
@@ -229,7 +229,7 @@
                     <div class="benefit-icon">🌟</div>
                     <h4 class="benefit-title">Comunidad exclusiva</h4>
                     <p class="benefit-description">
-                        Únete a una red de desarrolladores que comparten tu pasión por el código.
+                        Únete a una red de developers que comparten tu pasión por el código.
                     </p>
                 </div>
             </div>
@@ -243,7 +243,7 @@
                 <div class="cta-text">
                     <h2 class="cta-title">No te pierdas el lanzamiento</h2>
                     <p class="cta-description">
-                        Únete a los desarrolladores que ya están esperando.
+                        Únete a los developers que ya están esperando.
                         <br>Solo <span class="highlight">7 días para validar</span> la demanda.
                     </p>
                 </div>
@@ -293,8 +293,22 @@
 
                 <div class="social-proof">
                     <p class="proof-text">
-                        <!-- <i class="icon-users"></i> -->
-                        <strong id="subscriber-count">{{subscriberCount}}+ desarrolladores</strong> ya se registraron
+                        <!-- <i class="fas fa-users me-2"></i>  -->
+                        <ng-container *ngIf="subscriberCount === 0">
+                        Sé el primero en registrarte 🚀
+                        </ng-container>
+
+                        <ng-container *ngIf="subscriberCount === 1">
+                        <strong id="subscriber-count">1 developer</strong> ya se registró
+                        </ng-container>
+
+                        <ng-container *ngIf="subscriberCount > 1">
+                        <strong id="subscriber-count">
+                            {{ subscriberCount }}+
+                            developers
+                        </strong>
+                        ya se registraron
+                        </ng-container>
                     </p>
                 </div>
             </div>
@@ -309,9 +323,11 @@
                     &copy; 2025 Lujandev | Donde el código se viste con elegancia
                 </p>
                 <div class="footer-links">
-                    <a href="#" class="footer-link">Política de Privacidad</a>
-                    <a href="#" class="footer-link">Términos</a>
-                    <a href="mailto:hola@lujandev.com" class="footer-link">Contacto</a>
+                    <!-- <a href="#" class="footer-link">Política de Privacidad</a> -->
+                    <a class="footer-link" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'privacy-policy']" title="Política de Privacidad">Privacidad</a>
+                    <a class="footer-link" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'aviso-legal']" title="Aviso Legal">Aviso Legal</a>
+                    <!-- <a href="#" class="footer-link">Términos</a> -->
+                    <a href="mailto:lujandev@lujandev.com" class="footer-link">Contacto</a>
                 </div>
             </div>
         </div>

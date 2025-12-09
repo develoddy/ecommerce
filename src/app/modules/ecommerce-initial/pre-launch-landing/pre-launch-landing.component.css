@@ -420,7 +420,7 @@
 
 .form-note {
   font-size: 0.875rem;
-  color: #64748b;
+  color: #92400e;
   text-align: center;
   /* display: flex;
   align-items: center;
@@ -904,7 +904,8 @@
 }
 
 .footer-link:hover {
-  color: white;
+  color: #131313;
+  text-decoration: underline;
 }
 
 /* ================================ */

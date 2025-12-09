@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HomeService } from '../../home/_services/home.service';
 import { PrelaunchService } from './_services/prelaunch.service';
 import { Subscription } from 'rxjs';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 @Component({
   selector: 'app-pre-launch-landing',
@@ -9,6 +10,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./pre-launch-landing.component.css']
 })
 export class PreLaunchLandingComponent implements OnInit, OnDestroy {
+
+  locale: string = "";
+  country: string = "";
 
   // Propiedades del componente
   countdown = {
@@ -43,8 +47,13 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
 
   constructor(
     private homeService: HomeService,
-    private prelaunchService: PrelaunchService
+    private prelaunchService: PrelaunchService,
+    private localizationService: LocalizationService,
   ) {
+
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
+
     // 🎯 VALIDACIÓN: Countdown hasta 13 diciembre 2025 (7 días de test)
     this.launchDate = new Date('2025-12-13T12:00:00');
     console.log('🚀 Countdown configurado para:', this.launchDate.toLocaleString());
