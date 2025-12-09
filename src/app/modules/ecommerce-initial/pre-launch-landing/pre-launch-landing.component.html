@@ -94,9 +94,9 @@
                     <div class="product-info">
                         <div class="product-category">{{product.categoryName}}</div>
                         <h4 class="product-title">{{product.title}}</h4>
-                        <p class="product-description" *ngIf="product.resumen">
+                        <!-- <p class="product-description" *ngIf="product.resumen">
                             {{product.resumen.length > 60 ? (product.resumen | slice:0:60) + '...' : product.resumen}}
-                        </p>
+                        </p> -->
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@
     <section class="email-capture-section" id="signup-main">
         <div class="container">
             <div class="email-capture-hero">
-                <div class="capture-form" *ngIf="!emailCaptured">
+                <div class="capture-form capture-form-primary" *ngIf="!emailCaptured">
                     <h3 class="form-title">Acceso Anticipado Solo para Pre-registrados</h3>
 
                     <div class="email-form">
@@ -132,7 +132,7 @@
                     </div>
 
                     <p class="form-note">
-                        <i class="icon-gift"></i>
+                        <!-- <i class="icon-gift"></i> -->
                         Solo los pre-registrados recibirán el <strong>cupón exclusivo</strong> de lanzamiento.
                     </p>
                 </div>
@@ -235,7 +235,7 @@
 
     <!-- 4️⃣ CTA FINAL -->
     <section class="final-cta" id="signup">
-        <div class="container">
+        <div class="container-cat-final">
             <div class="cta-content">
                 <div class="cta-text">
                     <h2 class="cta-title">No Te Pierdas el Lanzamiento</h2>
@@ -290,7 +290,7 @@
 
                 <div class="social-proof">
                     <p class="proof-text">
-                        <i class="icon-users"></i>
+                        <!-- <i class="icon-users"></i> -->
                         <strong id="subscriber-count">{{subscriberCount}}+ desarrolladores</strong> ya se registraron
                     </p>
                 </div>

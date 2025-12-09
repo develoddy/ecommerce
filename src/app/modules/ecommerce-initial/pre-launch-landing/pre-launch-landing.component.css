@@ -48,7 +48,7 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 12px;
 }
 
 /* ================================ */
@@ -420,10 +420,10 @@
   font-size: 0.875rem;
   color: #64748b;
   text-align: center;
-  display: flex;
+  /* display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 8px; */
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
   padding: 16px 20px;
   border-radius: 12px;
@@ -852,10 +852,10 @@
 }
 
 .proof-text {
-  display: flex;
+  /* display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 8px; */
   font-size: 0.9rem;
   color: #92400e;
   margin: 0;
@@ -925,11 +925,12 @@
   
   .cta-content {
     margin: 0 16px;
-    padding: 32px 24px;
+    padding: 32px 16px;
+    margin-bottom: 3px;
   }
   
   .email-capture-final {
-    padding: 20px;
+    padding: 0px;
   }
   
   .cta-title {
@@ -940,8 +941,8 @@
     font-size: 1rem;
   }
   
-  .container {
-    padding: 0 16px;
+  .container-cat-final {
+    padding: 0 0px;
   }
   
   .urgency-section {
@@ -964,7 +965,13 @@
   }
   
   .capture-form {
-    padding: 32px 12px;
+    padding: 8px 0px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.0);
+  }
+
+  .capture-form-primary {
+    padding: 32px 16px !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.0);
   }
   
   .countdown-display {
@@ -1003,7 +1010,7 @@
   }
   
   .header-content {
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
     text-align: center;
   }
@@ -1039,6 +1046,7 @@
   .email-input-final {
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
+    margin-bottom: 1rem;
   }
 
   .email-input{
