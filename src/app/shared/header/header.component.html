@@ -525,7 +525,8 @@
 
                 <!--Logo-->
                 <div class="logo col-4 col-sm-3 col-md-3 d-flex  align-self-center"
-                    [ngClass]="{'col-lg-4 justify-content-center': isDesktop, 'col-lg-3 justify-content-start': isMobile}">
+                    [ngClass]="{'col-lg-4 justify-content-center': isDesktop, 'col-lg-3 justify-content-start': isMobile}"
+                    *ngIf="ourProducts && ourProducts.length > 0">
                     <!--Mobile Toggle-->
                     <button type="button" (click)="toggleMobileMenu()" class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none px-0"
                         title="Menu">
@@ -806,7 +807,7 @@
 </ng-template>
 
 <!--Mobile Menu-->
-<div class="mobile-nav-wrapper" role="navigation" *ngIf="ourProducts && ourProducts.length > 0">
+<div class="mobile-nav-wrapper" role="navigation" >
     <div class="closemobileMenu" (click)="toggleMobileMenu()">Menu <i class="icon anm anm-times-l"></i></div>
     <ul id="MobileNav" class="mobile-nav">
         <!-- Camisetas Category -->
