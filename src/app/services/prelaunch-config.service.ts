@@ -27,7 +27,7 @@ export class PrelaunchConfigService {
    * @returns Observable<boolean>
    */
   getPrelaunchStatus(): Observable<boolean> {
-    return this.http.get<PrelaunchStatusResponse>(`${this.API_URL}/prelaunch/status`).pipe(
+    return this.http.get<PrelaunchStatusResponse>(`${this.API_URL}prelaunch/status`).pipe(
       map(response => {
         const enabled = response.enabled || false;
         this.configSubject.next(enabled);

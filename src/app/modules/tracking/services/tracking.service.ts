@@ -45,7 +45,7 @@ export class TrackingService {
   getTrackingStatus(orderId: string, token: string): Observable<TrackingStatus> {
     this.isLoadingSubject.next(true);
     
-    const url = `${URL_SERVICE}/orders/tracking/${orderId}/${token}`;
+    const url = `${URL_SERVICE}orders/tracking/${orderId}/${token}`;
 
 
     return this._http.get<TrackingResponse>(url).pipe(
