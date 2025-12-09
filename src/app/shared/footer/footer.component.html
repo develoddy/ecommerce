@@ -127,7 +127,7 @@
                     <p class="company-name"><strong>{{ company.companyName }}</strong></p>
                     <p class="company-details">
                         <!-- NIF/CIF: <span class="placeholder">{{ company.getFormattedNIF() }}</span> |  -->
-                        <span class="placeholder">{{ company.companyAddress }}</span> | 
+                        <span>{{ company.companyAddress }}</span> | 
                         Email: {{ company.companyEmail }}
                         <span *ngIf="company.companyPhone"> | Tel: {{ company.companyPhone }}</span>
                     </p>

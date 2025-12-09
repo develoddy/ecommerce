@@ -525,11 +525,13 @@
 
                 <!--Logo-->
                 <div class="logo col-4 col-sm-3 col-md-3 d-flex  align-self-center"
-                    [ngClass]="{'col-lg-4 justify-content-center': isDesktop, 'col-lg-3 justify-content-start': isMobile}"
-                    *ngIf="ourProducts && ourProducts.length > 0">
+                    [ngClass]="{'col-lg-4 justify-content-center': isDesktop, 'col-lg-3 justify-content-start': isMobile}">
                     <!--Mobile Toggle-->
-                    <button type="button" (click)="toggleMobileMenu()" class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none px-0"
-                        title="Menu">
+                    <button type="button" 
+                            (click)="toggleMobileMenu()" 
+                            class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none px-0"
+                            title="Menu"
+                            *ngIf="ourProducts && ourProducts.length > 0">
                         <svg width="24" height="24" role="img" aria-hidden="true"
                             class="hdr-icon icon anm anm-bars-r Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM"
                             xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">

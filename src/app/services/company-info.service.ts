@@ -30,7 +30,7 @@ export class CompanyInfoService {
    * Estos datos son obligatorios para el cumplimiento legal (LSSI, RGPD) y facturación
    */
   readonly companyNIF: string = 'B12345678'; // CIF de prueba de sociedad futura // ⚠️ COMPLETAR: NIF/CIF de la empresa
-  readonly companyAddress: string = 'Calle Falsa 123, 1º A'; // ⚠️ COMPLETAR: Dirección fiscal completa
+  readonly companyAddress: string = 'Madrid, España'; // ⚠️ COMPLETAR: Dirección fiscal completa
   readonly companyCity: string = 'Madrid'; // ⚠️ COMPLETAR: Ciudad
   readonly companyPostalCode: string = '28080'; // ⚠️ COMPLETAR: Código postal
   readonly companyCountry: string = 'España';
