@@ -139,7 +139,12 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
             // Registro nuevo exitoso
             this.emailCaptured = true;
             this.showDuplicateMessage = false;
+            // Incrementar contador local inmediatamente para mejor UX
+            this.subscriberCount++;
           }
+          
+          // Recargar estadísticas para obtener el número real del servidor
+          this.loadSubscriberStats();
         },
         error: (error) => {
           console.error('Error al capturar email:', error);
@@ -177,9 +182,32 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Carga las estadísticas de suscriptores
+   */
+  private loadSubscriberStats(): void {
+    this.subscriptions.add(
+      this.prelaunchService.getStats().subscribe({
+        next: (response) => {
+          if (response && response.data && typeof response.data.total === 'number') {
+            this.subscriberCount = response.data.total;
+          } else if (response && typeof response.total === 'number') {
+            this.subscriberCount = response.total;
+          }
+          console.log('📊 Estadísticas cargadas - Total suscriptores:', this.subscriberCount);
+        },
+        error: (error) => {
+          console.error('❌ Error cargando estadísticas de suscriptores:', error);
+          // Mantener el valor por defecto de 0 en caso de error
+        }
+      })
+    );
+  }
+
   ngOnInit(): void {
     this.startCountdown();
     this.loadPreviewProducts();
+    this.loadSubscriberStats();
   }
 
   ngOnDestroy(): void {
