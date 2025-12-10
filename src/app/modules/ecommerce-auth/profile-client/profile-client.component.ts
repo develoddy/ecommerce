@@ -77,30 +77,17 @@ export class ProfileClientComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
   ) {
     this.activatedRoute.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
-      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
+      this.locale = params.get('locale') || 'es';  
+      this.country = params.get('country') || 'es'; 
     });
   }
 
   ngOnInit(): void {
-
-    // Suscribirse al token
-    // this.authService.accessToken$.subscribe((token) => {
-    //   this.accessToken = token;
-    //   console.log('Token actualizado en componente:', this.accessToken);
-    // });
-
     this.verifyAuthenticatedUser();
 
-    
-
-    
-    //this.showProfileClient();
-    //this.detailUser();
-
-    this.name_c = this.CURRENT_USER_AUTHENTICATED.name,//this.user.name; //this._ecommerceAuthService._authService.user.name;
-    this.surname_c = this.CURRENT_USER_AUTHENTICATED.surname; //this._ecommerceAuthService._authService.user.surname;
-    this.email_c = this.CURRENT_USER_AUTHENTICATED.email; //this._ecommerceAuthService._authService.user.email; 
+    this.name_c = this.CURRENT_USER_AUTHENTICATED.name,
+    this.surname_c = this.CURRENT_USER_AUTHENTICATED.surname; 
+    this.email_c = this.CURRENT_USER_AUTHENTICATED.email; 
   }
 
   private verifyAuthenticatedUser(): void {
@@ -156,8 +143,6 @@ export class ProfileClientComponent implements OnInit {
   }
 
   showProfileClient() {
-    console.log("---- MOSTRANDO PROFILE CLIENT: this.CURRENT_USER_AUTHENTICATED", this.CURRENT_USER_AUTHENTICATED);
-    
     let data = {
       user_id: this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : 0, //this.user._id, //this._ecommerceAuthService._authService.user._id,
     };
@@ -504,8 +489,6 @@ export class ProfileClientComponent implements OnInit {
       alertDanger("Todos los campos del formularios son importantes!");
       return;
     }
-
-    console.log("---- FRON: add reviewe", this.sale_detail_selected);
 
     let data = {
       _id: this.sale_detail_selected.review.id,
