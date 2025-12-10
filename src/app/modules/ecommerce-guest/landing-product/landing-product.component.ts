@@ -1248,27 +1248,132 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
 
   setupSEO() {
     const product = this.product_selected;
+    if (!product) return;
 
-    // Title más descriptivo y con palabras clave
-    const title = `Camiseta ${product.title} | Ropa para Programadores en LujanDev`;
+    // Generar título optimizado
+    const optimizedTitle = this.generateOptimizedTitle(product);
+    
+    // Generar descripción optimizada
+    const optimizedDescription = this.generateOptimizedDescription(product);
+    
+    // Generar keywords específicos
+    const productKeywords = this.generateProductKeywords(product);
+    
+    // Calcular precio para schema
+    const productForCalculation = {
+      price_usd: product.price_usd,
+      price_ves: product.price_ves
+    };
+    const finalPrice = this.priceCalculationService.calculateFinalPrice(
+      productForCalculation,
+      this.SALE_FLASH ? [this.SALE_FLASH] : []
+    );
 
-    // Description más atractiva y útil para buscadores
-    // Así usas la descripción real si está disponible, y el fallback solo si hace falta.
-    const description =
-      product.description_es &&
-      product.description_es !== 'Descripción no disponible'
-        ? product.description_es
-        : `Compra la camiseta ${product.title} en LujanDev. Moda exclusiva para programadores, envío internacional rápido.`;
-
-    // Imagen principal
-    const image = product.imagen || '';
-
-    // Llamada al servicio SEO
+    // Llamada al servicio SEO optimizado
     this.seoService.updateSeo({
-      title,
-      description,
-      image,
+      title: optimizedTitle,
+      description: optimizedDescription,
+      keywords: productKeywords,
+      image: product.imagen || '',
+      type: 'product',
+      product: {
+        name: product.title,
+        price: finalPrice,
+        currency: 'USD',
+        category: product.categorie?.title || 'Developer Merch',
+        brand: 'LujanDev',
+        availability: 'InStock',
+        condition: 'NewCondition'
+      }
     });
+  }
+
+  /**
+   * Genera título optimizado para el producto
+   */
+  private generateOptimizedTitle(product: any): string {
+    const category = product.categorie?.title || '';
+    const isHumorousProduct = this.isHumorousProduct(product);
+    
+    if (isHumorousProduct) {
+      return `${product.title} | Funny Programming T-Shirt | Developer Humor`;
+    }
+    
+    const categoryKeywords: { [key: string]: string } = {
+      'JavaScript': 'JavaScript Developer',
+      'Python': 'Python Programmer', 
+      'React': 'React Developer',
+      'Frontend': 'Frontend Developer',
+      'Backend': 'Backend Developer'
+    };
+    
+    const categoryKeyword = categoryKeywords[category] || 'Developer';
+    return `${product.title} | ${categoryKeyword} T-Shirt | Premium Coding Apparel`;
+  }
+
+  /**
+   * Genera descripción optimizada para el producto
+   */
+  private generateOptimizedDescription(product: any): string {
+    const baseDescription = product.description_es && product.description_es !== 'Descripción no disponible'
+      ? product.description_es
+      : `Premium ${product.title} for developers and programmers.`;
+    
+    const isHumorous = this.isHumorousProduct(product);
+    const suffix = isHumorous 
+      ? ' Perfect for developers with a sense of humor and coding enthusiasts who love programming jokes.'
+      : ' Ideal for software engineers, programmers, and coding professionals.';
+    
+    return `${baseDescription}${suffix} Quality developer merchandise designed by programmers for programmers.`;
+  }
+
+  /**
+   * Genera keywords específicos para el producto
+   */
+  private generateProductKeywords(product: any): string[] {
+    const baseKeywords = [
+      'developer merch',
+      'programmer shirt', 
+      'coding t-shirt',
+      'developer gift'
+    ];
+    
+    const category = product.categorie?.title?.toLowerCase() || '';
+    const isHumorous = this.isHumorousProduct(product);
+    
+    if (isHumorous) {
+      baseKeywords.push('funny programming', 'coding jokes', 'developer humor', 'programming memes');
+    }
+    
+    // Keywords específicos por categoría
+    const categoryKeywords: { [key: string]: string[] } = {
+      'javascript': ['javascript shirt', 'js developer', 'node.js apparel'],
+      'python': ['python programmer', 'python developer', 'snake code shirt'],
+      'react': ['react developer', 'react.js shirt', 'frontend developer'],
+      'backend': ['backend developer', 'server side', 'api developer'],
+      'frontend': ['frontend developer', 'ui developer', 'web developer']
+    };
+    
+    if (categoryKeywords[category]) {
+      baseKeywords.push(...categoryKeywords[category]);
+    }
+    
+    baseKeywords.push(`${product.title.toLowerCase()} shirt`);
+    
+    return baseKeywords.slice(0, 12);
+  }
+
+  /**
+   * Detecta si es un producto con humor
+   */
+  private isHumorousProduct(product: any): boolean {
+    const humorKeywords = ['funny', 'joke', 'humor', 'meme', 'lol', 'haha', 'coding life', 'bug', 'debug'];
+    const title = product.title?.toLowerCase() || '';
+    const description = product.description_es?.toLowerCase() || '';
+    
+    return humorKeywords.some(keyword => 
+      title.includes(keyword) || description.includes(keyword)
+    );
   }
 
   private checkDeviceType() {

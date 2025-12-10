@@ -3,6 +3,7 @@ import { HomeService } from '../../home/_services/home.service';
 import { PrelaunchService } from './_services/prelaunch.service';
 import { Subscription } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { SeoService } from 'src/app/services/seo.service';
 
 @Component({
   selector: 'app-pre-launch-landing',
@@ -49,6 +50,7 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
     private homeService: HomeService,
     private prelaunchService: PrelaunchService,
     private localizationService: LocalizationService,
+    private seoService: SeoService
   ) {
 
     this.country = this.localizationService.country;
@@ -214,9 +216,53 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.setupSEO();
     this.startCountdown();
     this.loadPreviewProducts();
     this.loadSubscriberStats();
+  }
+
+  /**
+   * Configura SEO específico para la página de pre-lanzamiento
+   */
+  setupSEO(): void {
+    const seoData = {
+      title: 'Coming Soon: Premium Developer Merch & Programming T-Shirts | Developer Store',
+      description: 'Exclusive developer merchandise coming soon! Get ready for premium programmer t-shirts, coding hoodies, and funny programming gifts. Join our early access list for special launch discounts.',
+      keywords: [
+        'developer merch coming soon',
+        'programmer t-shirts pre-launch',
+        'coding merchandise exclusive',
+        'programming gifts early access',
+        'developer store launch',
+        'programmer clothing premium',
+        'coding apparel exclusive',
+        'developer gear preview',
+        'programming merch collection',
+        'funny coding t-shirts',
+        'developer swag exclusive',
+        'programmer gifts collection',
+        'coding humor shirts',
+        'development team apparel',
+        'software engineer merch'
+      ],
+      image: '/assets/img/pre-launch-hero.jpg',
+      url: window.location.href,
+      type: 'prelaunch' as any,
+      prelaunch: {
+        launchDate: this.launchDate ? this.launchDate.toISOString() : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        subscriberCount: this.subscriberCount,
+        benefits: [
+          'Early access to exclusive developer merch',
+          'Special launch discount codes',
+          'Limited edition programmer t-shirts',
+          'Premium coding apparel collection',
+          'Funny programming gifts'
+        ]
+      }
+    };
+
+    this.seoService.updateSeo(seoData);
   }
 
   ngOnDestroy(): void {

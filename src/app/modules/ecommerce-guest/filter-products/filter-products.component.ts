@@ -6,6 +6,7 @@ import { combineLatest, Subscription } from 'rxjs';
 import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { ProductDisplayService } from '../_service/service_landing_product';
 import { AuthService } from '../../auth-profile/_services/auth.service';
+import { SeoService } from 'src/app/services/seo.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -89,6 +90,7 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
     public productDisplayService: ProductDisplayService,
      public _authService: AuthService,
      private cdr: ChangeDetectorRef,
+     private seoService: SeoService
   ) {
     
     this._routerActived.paramMap.subscribe(params => {
@@ -133,6 +135,7 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
 
     this.configInitial();
     this.checkDeviceType();
+    this.setupSEO();
     
 
     // Slider initialization handled by loader subscription
@@ -402,6 +405,7 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
     this.updateCategoryTitle();
 
     this.filterProduct();
+    this.updateSEOForFilters();
   }
 
   addCategorie(categorie:any) {
@@ -413,6 +417,7 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
       this.categories_selecteds.push(categorie._id);
     }
     this.filterProduct();
+    this.updateSEOForFilters();
   }
 
   toggleColor(colorName: string) {
@@ -775,5 +780,102 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
     if (typeof productSlider8items !== "undefined") {
       productSlider8items($);
     }
+  }
+
+  /**
+   * Configura SEO dinámico para la página de filtros/categoría
+   */
+  setupSEO(): void {
+    // Obtener información de la categoría actual
+    const currentCategory = this.categories.find((cat: any) => cat._id === this.idCategorie);
+    const categoryName = currentCategory?.title || 'Developer Products';
+    const isFilterActive = this.categories_selecteds.length > 0 || this.variedad_selected._id;
+    
+    let title: string;
+    let description: string;
+    let keywords: string[] = [];
+
+    if (isFilterActive) {
+      // SEO para página con filtros activos
+      title = `Filtered ${categoryName} | Developer Merch Collection`;
+      description = `Discover curated ${categoryName.toLowerCase()} for developers and programmers. Find the perfect coding apparel and developer merchandise.`;
+      keywords = [
+        'filtered developer merch',
+        'curated programmer products',
+        `${categoryName.toLowerCase()} collection`,
+        'developer product search',
+        'programming merchandise filter'
+      ];
+    } else if (categoryName !== 'Developer Products') {
+      // SEO específico para categoría
+      title = `${categoryName} | Developer Merch & Programming Apparel`;
+      description = `Shop ${categoryName.toLowerCase()} designed for developers, programmers, and coding enthusiasts. Premium quality developer merchandise and programming apparel.`;
+      keywords = this.generateCategoryKeywords(categoryName);
+    } else {
+      // SEO general para página de productos
+      title = 'Developer Merchandise & Programming Apparel Collection';
+      description = 'Browse our complete collection of developer merchandise, programming t-shirts, coding hoodies, and funny developer gifts for software engineers.';
+      keywords = [
+        'developer merchandise collection',
+        'programming apparel browse',
+        'coding t-shirts catalog',
+        'developer products shop',
+        'programmer clothing store'
+      ];
+    }
+
+    // Llamar al servicio SEO
+    this.seoService.updateSeo({
+      title,
+      description,
+      keywords: [...keywords, ...this.getBaseKeywords()],
+      image: '/assets/img/categories/' + (categoryName.toLowerCase().replace(/ /g, '-')) + '.jpg',
+      type: 'category'
+    });
+  }
+
+  /**
+   * Genera keywords específicos por categoría
+   */
+  private generateCategoryKeywords(categoryName: string): string[] {
+    const categoryKeywords: { [key: string]: string[] } = {
+      'programming humor': ['funny programming shirts', 'coding jokes apparel', 'developer humor collection'],
+      'javascript': ['javascript developer shirts', 'js programmer apparel', 'node.js merchandise'],
+      'python': ['python programmer shirts', 'python developer apparel', 'snake code merchandise'],
+      'react': ['react developer shirts', 'react.js apparel', 'frontend developer merch'],
+      'backend': ['backend developer shirts', 'server side apparel', 'api developer merch'],
+      'frontend': ['frontend developer shirts', 'ui developer apparel', 'web developer merch'],
+      'full stack': ['fullstack developer shirts', 'complete developer apparel', 'end-to-end dev merch']
+    };
+
+    const key = categoryName.toLowerCase();
+    return categoryKeywords[key] || [
+      `${categoryName.toLowerCase()} developer shirts`,
+      `${categoryName.toLowerCase()} programmer apparel`,
+      `${categoryName.toLowerCase()} coding merchandise`
+    ];
+  }
+
+  /**
+   * Obtiene keywords base para todas las páginas de categoría
+   */
+  private getBaseKeywords(): string[] {
+    return [
+      'developer merch',
+      'programmer shirts',
+      'coding apparel',
+      'developer gifts',
+      'programming merchandise'
+    ];
+  }
+
+  /**
+   * Actualiza SEO cuando cambian los filtros
+   */
+  updateSEOForFilters(): void {
+    // Llamar a setupSEO para recalcular con los nuevos filtros
+    setTimeout(() => {
+      this.setupSEO();
+    }, 100);
   }
 }

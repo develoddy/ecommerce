@@ -3,10 +3,39 @@ import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { URL_FRONTEND } from 'src/app/config/config';
 
+export interface SeoData {
+  title: string;
+  description: string;
+  keywords?: string[];
+  image?: string;
+  url?: string;
+  type?: 'product' | 'category' | 'homepage' | 'prelaunch';
+  product?: {
+    name: string;
+    price?: number;
+    currency?: string;
+    category?: string;
+    brand?: string;
+    availability?: string;
+    condition?: string;
+  };
+  prelaunch?: {
+    launchDate: string;
+    subscriberCount?: number;
+    benefits?: string[];
+  };
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class SeoService {
+  private readonly devKeywords = [
+    'developer merch', 'programmer shirts', 'coding t-shirts', 'funny programming',
+    'developer gifts', 'programmer hoodies', 'coding apparel', 'software engineer',
+    'programming humor', 'developer swag', 'coding jokes', 'programmer gifts'
+  ];
+
   constructor(
     private titleService: Title,
     private metaService: Meta,
@@ -14,35 +43,43 @@ export class SeoService {
   ) {}
 
   /**
-   * Actualiza el SEO de la página
-   * @param data title, description, image opcional y slug opcional
+   * Actualiza el SEO de la página con optimizaciones avanzadas
    */
-  updateSeo(data: { title: string; description: string; image?: string }) {
-    const { title, description, image } = data;
+  updateSeo(data: SeoData): void {
+    const domain = URL_FRONTEND.replace(/\/$/, '');
+    const cleanPath = this.router.url.split('?')[0];
+    const fullUrl = data.url || `${domain}${cleanPath}`;
 
-    const domain = URL_FRONTEND.replace(/\/$/, ''); 
+    // Optimizar título según tipo
+    const optimizedTitle = this.optimizeTitle(data);
+    this.titleService.setTitle(optimizedTitle);
 
-    // ✅ Siempre usa la ruta real del navegador (sin query params)
-    const cleanPath = this.router.url.split('?')[0]; 
-    const fullUrl = `${domain}${cleanPath}`;
+    // Meta description optimizada
+    const optimizedDescription = this.optimizeDescription(data);
+    this.metaService.updateTag({ name: 'description', content: optimizedDescription });
 
-    // Title y description
-    this.titleService.setTitle(`${title} | LujanDev Oficial`);
-    this.metaService.removeTag("name='description'");
-    this.metaService.updateTag({ name: 'description', content: description });
+    // Keywords
+    if (data.keywords && data.keywords.length > 0) {
+      const allKeywords = [...data.keywords, ...this.devKeywords].slice(0, 15);
+      this.metaService.updateTag({ name: 'keywords', content: allKeywords.join(', ') });
+    }
 
     // Open Graph y Twitter
     const metaTags = [
-      { property: 'og:title', content: title },
-      { property: 'og:description', content: description },
-      { property: 'og:image', content: image || '' },
+      { property: 'og:title', content: optimizedTitle },
+      { property: 'og:description', content: optimizedDescription },
+      { property: 'og:image', content: data.image || '' },
       { property: 'og:url', content: fullUrl },
+      { property: 'og:type', content: data.type === 'product' ? 'product' : 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: title },
-      { name: 'twitter:description', content: description },
-      { name: 'twitter:image', content: image || '' },
+      { name: 'twitter:title', content: optimizedTitle },
+      { name: 'twitter:description', content: optimizedDescription },
+      { name: 'twitter:image', content: data.image || '' },
     ];
     metaTags.forEach((tag:any) => this.metaService.updateTag(tag));
+
+    // JSON-LD Schema
+    this.addStructuredData(data, fullUrl);
 
     // Canonical = URL real
     this.setCanonicalUrl(fullUrl);
@@ -51,14 +88,106 @@ export class SeoService {
     this.setDynamicHreflangs();
   }
 
+  /**
+   * Optimiza el título según el tipo de página
+   */
+  private optimizeTitle(data: SeoData): string {
+    switch (data.type) {
+      case 'product':
+        return `${data.title} | Premium Developer Merch | LujanDev Store`;
+      case 'category':
+        return `${data.title} | Developer T-Shirts & Programming Merch | LujanDev`;
+      case 'prelaunch':
+        return `${data.title} | Coming Soon | LujanDev Developer Store`;
+      case 'homepage':
+        return `${data.title} | LujanDev - Premium Developer Merchandise`;
+      default:
+        return `${data.title} | LujanDev Developer Store`;
+    }
+  }
+
+  /**
+   * Optimiza la descripción con keywords naturales
+   */
+  private optimizeDescription(data: SeoData): string {
+    const baseDescription = data.description;
+    
+    switch (data.type) {
+      case 'product':
+        return `${baseDescription} Perfect for developers, programmers, and coding enthusiasts. Premium quality developer merchandise.`;
+      case 'prelaunch':
+        return `${baseDescription} Exclusive developer merch launching soon with special early-bird pricing.`;
+      default:
+        return baseDescription;
+    }
+  }
+
+  /**
+   * Agrega datos estructurados JSON-LD
+   */
+  private addStructuredData(data: SeoData, url: string): void {
+    // Remover scripts previos
+    const existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
+    existingScripts.forEach(script => script.remove());
+
+    // Schema del sitio web
+    const websiteSchema = {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "LujanDev Developer Store",
+      "url": URL_FRONTEND,
+      "description": "Premium developer merchandise, programmer t-shirts, and coding apparel for software engineers."
+    };
+
+    // Schema específico según tipo
+    if (data.type === 'product' && data.product) {
+      const productSchema = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": data.product.name,
+        "description": data.description,
+        "brand": {
+          "@type": "Brand",
+          "name": data.product.brand || "LujanDev"
+        },
+        "category": data.product.category || "Developer Merchandise",
+        "url": url,
+        "image": data.image || `${URL_FRONTEND}/assets/img/default-product.jpg`
+      };
+
+      if (data.product.price) {
+        (productSchema as any).offers = {
+          "@type": "Offer",
+          "price": data.product.price,
+          "priceCurrency": data.product.currency || "USD",
+          "availability": `https://schema.org/${data.product.availability || 'InStock'}`
+        };
+      }
+
+      this.insertJsonLdScript(productSchema);
+    }
+
+    this.insertJsonLdScript(websiteSchema);
+  }
+
+  /**
+   * Inserta script JSON-LD en el head
+   */
+  private insertJsonLdScript(schema: any): void {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+  }
+
   private setCanonicalUrl(url: string): void {
-      let link = document.querySelector("link[rel='canonical']");
+      let link = document.querySelector("link[rel='canonical']") as HTMLLinkElement;
       if (link) {
-          link.setAttribute('href', url);
+          link.href = url;
       } else {
           const newLink: HTMLLinkElement = document.createElement('link');
-          newLink.setAttribute('rel', 'canonical');
-          newLink.setAttribute('href', url);
+          newLink.rel = 'canonical';
+          newLink.href = url;
           document.head.appendChild(newLink);
       }
   }

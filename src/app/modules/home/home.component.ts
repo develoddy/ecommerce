@@ -364,10 +364,24 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setupSEO() {
     this.seoService.updateSeo({
-      title: 'Camisetas para Programadores | Tienda Lujandev',
-      description:
-        'Camisetas para Programadores | Tienda Lujandev | LujanDev Oficial',
-      image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/images/logo.png`,
+      title: 'Developer Merch & Funny Programming T-Shirts',
+      description: 'Premium developer merchandise store featuring funny programming t-shirts, coding hoodies, and developer gifts for software engineers and programmers.',
+      keywords: [
+        'developer merch',
+        'programmer shirts', 
+        'coding t-shirts',
+        'funny programming',
+        'developer gifts',
+        'programmer hoodies',
+        'coding apparel',
+        'software engineer merch',
+        'programming humor',
+        'developer swag',
+        'coding jokes',
+        'programmer gifts'
+      ],
+      image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/img/developer-merch-hero.jpg`,
+      type: 'homepage'
     });
   }
 
