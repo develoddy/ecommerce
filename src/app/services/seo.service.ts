@@ -50,6 +50,11 @@ export class SeoService {
     const cleanPath = this.router.url.split('?')[0];
     const fullUrl = data.url || `${domain}${cleanPath}`;
 
+    // Detectar idioma desde URL
+    const pathSegments = cleanPath.split('/');
+    const detectedLang = pathSegments[2] || 'es'; // /es/es/home -> 'es'
+    this.updateHtmlLang(detectedLang);
+
     // Optimizar título según tipo
     const optimizedTitle = this.optimizeTitle(data);
     this.titleService.setTitle(optimizedTitle);
@@ -110,15 +115,25 @@ export class SeoService {
    * Optimiza la descripción con keywords naturales
    */
   private optimizeDescription(data: SeoData): string {
-    const baseDescription = data.description;
+    let description = data.description;
+    
+    // Limitar a 155 caracteres para SEO óptimo
+    if (description.length > 155) {
+      description = description.substring(0, 152) + '...';
+    }
     
     switch (data.type) {
       case 'product':
-        return `${baseDescription} Perfect for developers, programmers, and coding enthusiasts. Premium quality developer merchandise.`;
+        const productSuffix = ' Perfect for developers and coding enthusiasts.';
+        const maxLength = 155 - productSuffix.length;
+        if (description.length > maxLength) {
+          description = description.substring(0, maxLength - 3) + '...';
+        }
+        return `${description}${productSuffix}`;
       case 'prelaunch':
-        return `${baseDescription} Exclusive developer merch launching soon with special early-bird pricing.`;
+        return `${description} Early-bird pricing available.`;
       default:
-        return baseDescription;
+        return description;
     }
   }
 
@@ -130,13 +145,27 @@ export class SeoService {
     const existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
     existingScripts.forEach(script => script.remove());
 
-    // Schema del sitio web
+    // Schema del sitio web con más detalles
     const websiteSchema = {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "LujanDev Developer Store",
+      "alternateName": "LujanDev",
       "url": URL_FRONTEND,
-      "description": "Premium developer merchandise, programmer t-shirts, and coding apparel for software engineers."
+      "description": "Premium developer merchandise, programmer t-shirts, and coding apparel for software engineers.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": `${URL_FRONTEND}/search?q={search_term_string}`,
+        "query-input": "required name=search_term_string"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "LujanDev",
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${URL_FRONTEND}/assets/images/logo.png`
+        }
+      }
     };
 
     // Schema específico según tipo
@@ -201,9 +230,18 @@ export class SeoService {
   }
 
   /**
+   * Actualiza el atributo lang del HTML
+   */
+  private updateHtmlLang(lang: string): void {
+    const validLangs = ['es', 'en'];
+    const targetLang = validLangs.includes(lang) ? lang : 'es';
+    document.documentElement.setAttribute('lang', targetLang);
+  }
+
+  /**
    * Genera hreflangs dinámicos según country/lang de la tienda
    */
-  private setDynamicHreflangs() {
+  private setDynamicHreflangs(): void {
     // Eliminar hreflangs previos
     document.head.querySelectorAll('link[rel="alternate"]').forEach(el => el.remove());
 
