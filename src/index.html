@@ -3,9 +3,10 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover">
   <meta name="mobile-web-app-capable" content="yes">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <base href="/">
 
   <!-- Title Of Site -->
@@ -16,6 +17,12 @@
  
   <!-- Keywords para SEO -->
   <meta name="keywords" content="developer merch, programmer shirts, coding t-shirts, funny programming, developer gifts, programmer hoodies, coding apparel, software engineer, programming humor, developer swag, coding jokes, programmer gifts, developer clothing, coding merchandise, tech apparel">
+  
+  <!-- Meta adicionales para SEO -->
+  <meta name="author" content="LujanDev">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
  
   <!-- Open Graph (Facebook, LinkedIn) -->
   <meta property="og:title" content="Developer Merch & Programming T-Shirts | Premium Coding Apparel | LujanDev" />
@@ -39,6 +46,10 @@
   <!-- Favicon -->
   <link rel="shortcut icon" href="assets/images/favicon.png" />
 
+  <!-- Preload recursos críticos -->
+  <link rel="preload" href="assets/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="assets/js/main.js" as="script">
+  
   <!-- CSS -->
   <link rel="stylesheet" href="assets/css/plugins.css">
   <link rel="stylesheet" href="assets/css/vendor/photoswipe.min.css">

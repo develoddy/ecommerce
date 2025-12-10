@@ -171,11 +171,19 @@ export class SeoService {
   }
 
   /**
-   * Inserta script JSON-LD en el head
+   * Inserta script JSON-LD en el head de forma optimizada
    */
   private insertJsonLdScript(schema: any): void {
+    // Evitar duplicados
+    const existingScript = document.querySelector(`script[type="application/ld+json"][data-schema-type="${schema['@type']}"]`);
+    if (existingScript) {
+      existingScript.textContent = JSON.stringify(schema);
+      return;
+    }
+
     const script = document.createElement('script');
     script.type = 'application/ld+json';
+    script.setAttribute('data-schema-type', schema['@type']);
     script.textContent = JSON.stringify(schema);
     document.head.appendChild(script);
   }
