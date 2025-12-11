@@ -28,110 +28,886 @@
 <!--Page Wrapper-->
 <div class="page-wrapper" >
 
-  <!-- <div id="page-content" [class.d-none]="loader.loading$ | async"> -->
-  <div id="page-content">
-    <!-- Header -->
-    <app-header></app-header>
-    <!--End Header-->
+  <ng-container *ngIf="ourProducts && ourProducts.length > 0; else emptyState">
+    <!-- End Body Container -->
+    <div id="page-content">
 
-    <!-- Body Container -->
-    <ng-container *ngIf="sliders && sliders.length > 0">
-      <!--Home Slideshow-->
-      <app-slider-home
-        [sliders]="sliders"
-        [locale]="locale"
-        [country]="country"
-      ></app-slider-home>
-      <!--End Home Slideshow-->
-    </ng-container>
+      <!-- Header -->
+      <app-header></app-header>
+      <!--End Header-->
 
-    <!-- Collection banner -->
-    <!-- <ng-container *ngIf="categories && categories.length > 0">
-      <app-collection-banners 
-        [categories]="categories"
-        [locale]="locale"
-        [country]="country"
-        [isVisible]="true">
-      </app-collection-banners>
-    </ng-container> -->
-    <!--End Collection banner-->
+      <!-- Body Container -->
+      <ng-container *ngIf="sliders && sliders.length > 0">
+        <!--Home Slideshow-->
+        <app-slider-home
+          [sliders]="sliders"
+          [locale]="locale"
+          [country]="country"
+        ></app-slider-home>
+        <!--End Home Slideshow-->
+      </ng-container>
 
-    <!--Popular Categories-->
-    <ng-container *ngIf="categories && categories.length > 0">
-      <app-category-list
-        [categories]="categories"
-        [locale]="locale"
-        [country]="country"
-      ></app-category-list>
-    </ng-container>
-    <!--End Popular Categories-->
+      <!-- Collection banner -->
+      <ng-container *ngIf="categories && categories.length > 0">
+        <app-collection-banners 
+          [categories]="categories"
+          [locale]="locale"
+          [country]="country"
+          [isVisible]="true">
+        </app-collection-banners>
+      </ng-container>
+      <!--End Collection banner-->
 
-    <!--Toolbar d-none-->
-    <ng-container *ngIf="ourProducts && ourProducts.length > 0">
-      <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5">
-        <div class="row align-items-center">
-          <div
-            class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-end"
-          >
-            <div class="filters-item d-flex align-items-center">
-              <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
-              <div class="grid-options view-mode d-flex">
-                <a class="icon-mode mode-list d-block" 
-                    data-col="1" 
-                    #grid1
-                    (click)="setGridView(1)"
-                    [class.active]="currentGridView.columns === 1"></a>
-                <a class="icon-mode mode-grid grid-2 d-block"
-                    data-col="2"
-                    #grid2
-                    (click)="setGridView(2)"
-                    [class.active]="currentGridView.columns === 2"></a>
-                <a class="icon-mode mode-grid grid-3 d-md-block"
-                    data-col="3"
-                    #grid3
-                    (click)="setGridView(3)"
-                    [class.active]="currentGridView.columns === 3"></a>
-                <a class="icon-mode mode-grid grid-4 d-lg-block"
-                    data-col="4"
-                    #grid4
-                    (click)="setGridView(4)"
-                    [class.active]="currentGridView.columns === 4"></a>
-                <a class="icon-mode mode-grid grid-5 d-xl-block"
-                    data-col="5"
-                    #grid5
-                    (click)="setGridView(5)"
-                    [class.active]="currentGridView.columns === 5"></a>
+      <!--Popular Categories-->
+      <!-- <ng-container *ngIf="categories && categories.length > 0">
+        <app-category-list
+          [categories]="categories"
+          [locale]="locale"
+          [country]="country"
+        ></app-category-list>
+      </ng-container> -->
+      <!--End Popular Categories-->
+
+      <ng-container *ngIf="ocultar">
+        <!--Toolbar d-none-->
+        <ng-container *ngIf="ourProducts && ourProducts.length > 0">
+          <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5">
+            <div class="row align-items-center">
+              <div
+                class="col-4 col-sm-2 col-md-4 col-lg-4 text-left filters-toolbar-item d-flex order-1 order-sm-0 w-100 justify-content-end"
+              >
+                <div class="filters-item d-flex align-items-center">
+                  <!-- <label class="mb-0 me-2 d-none d-lg-inline-block">Ver como:</label> -->
+                  <div class="grid-options view-mode d-flex">
+                    <a class="icon-mode mode-list d-block" 
+                        data-col="1" 
+                        #grid1
+                        (click)="setGridView(1)"
+                        [class.active]="currentGridView.columns === 1"></a>
+                    <a class="icon-mode mode-grid grid-2 d-block"
+                        data-col="2"
+                        #grid2
+                        (click)="setGridView(2)"
+                        [class.active]="currentGridView.columns === 2"></a>
+                    <a class="icon-mode mode-grid grid-3 d-md-block"
+                        data-col="3"
+                        #grid3
+                        (click)="setGridView(3)"
+                        [class.active]="currentGridView.columns === 3"></a>
+                    <a class="icon-mode mode-grid grid-4 d-lg-block"
+                        data-col="4"
+                        #grid4
+                        (click)="setGridView(4)"
+                        [class.active]="currentGridView.columns === 4"></a>
+                    <a class="icon-mode mode-grid grid-5 d-xl-block"
+                        data-col="5"
+                        #grid5
+                        (click)="setGridView(5)"
+                        [class.active]="currentGridView.columns === 5"></a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+        </ng-container>
+        <!--End Toolbar-->
+
+        <!--Product Grid-->
+        <ng-container *ngIf="ourProducts && ourProducts.length > 0">
+          <app-product-grid
+            [currentUser]="currentUser"
+            [ourProducts]="ourProducts"
+            [locale]="locale"
+            [country]="country"
+            [euro]="euro"
+            [currentUrl]="currentUrl"
+            [isMobile]="isMobile"
+            [getRouterDiscount]="getRouterDiscount"
+            [getPriceParts]="getPriceParts"
+            [openModalToCart]="openModalToCart"
+            [addWishlist]="addWishlist"
+            [changeProductImage]="changeProductImage"
+            [navigateToProduct]="navigateToProduct"
+            [FlashSale]="FlashSales"
+            [gridViewMode]="currentGridView"
+          ></app-product-grid>
+        </ng-container>
+
+        <!-- Hoodie Grid-->
+        <app-hodie-grid
+          [currentUser]="currentUser"
+          [hoodiesProducts]="hoodiesProducts"
+          [locale]="locale"
+          [country]="country"
+          [euro]="euro"
+          [currentUrl]="currentUrl"
+          [isMobile]="isMobile"
+          [getRouterDiscount]="getRouterDiscount"
+          [getPriceParts]="getPriceParts"
+          [openModalToCart]="openModalToCart"
+          [addWishlist]="addWishlist"
+          [changeProductImage]="changeProductImage"
+          [navigateToProduct]="navigateToProduct"
+          [FlashSale]="FlashSales"
+          [gridViewMode]="currentGridView"
+        ></app-hodie-grid>
+        <!--End Product Grid-->
+
+        <!-- Mug Grid-->
+        <app-mug-grid
+          [currentUser]="currentUser"
+          [mugsProducts]="mugsProducts"
+          [locale]="locale"
+          [country]="country"
+          [euro]="euro"
+          [currentUrl]="currentUrl"
+          [isMobile]="isMobile"
+          [getRouterDiscount]="getRouterDiscount"
+          [getPriceParts]="getPriceParts"
+          [openModalToCart]="openModalToCart"
+          [addWishlist]="addWishlist"
+          [changeProductImage]="changeProductImage"
+          [navigateToProduct]="navigateToProduct"
+          [FlashSale]="FlashSales"
+          [gridViewMode]="currentGridView"
+        ></app-mug-grid>
+        <!--End Product Grid-->
+
+        <!-- Cap Grid-->
+        <app-cap-grid
+          [currentUser]="currentUser"
+          [capsProducts]="capsProducts"
+          [locale]="locale"
+          [country]="country"
+          [euro]="euro"
+          [currentUrl]="currentUrl"
+          [isMobile]="isMobile"
+          [getRouterDiscount]="getRouterDiscount"
+          [getPriceParts]="getPriceParts"
+          [openModalToCart]="openModalToCart"
+          [addWishlist]="addWishlist"
+          [changeProductImage]="changeProductImage"
+          [navigateToProduct]="navigateToProduct"
+          [FlashSale]="FlashSales"
+          [gridViewMode]="currentGridView"
+        ></app-cap-grid>
+        <!--End Product Grid-->
+
+      </ng-container>
+
+      <!-- SE MUESTRAN TODOS LOS PRODUCTOS D-NONE -->
+      <div class="tab-pane d-none" id="newarrivals" role="tabpanel" aria-labelledby="newarrivals-tab">
+          <!--Product Grid-->
+          <div class="grid-products grid-view-items">
+              <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
+                  <ng-container *ngFor="let besProduct of besProducts">
+                      <div class="item col-item">
+                          <div class="product-box">
+                              <!-- Start Product Image -->
+                              <div class="product-image">
+                                  <!-- Start Product Image -->
+                                  <a href="product-layout1.html" class="product-img rounded-3">
+                                      <!-- Image -->
+                                      <img class="primary blur-up lazyload" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
+                                      <!-- End Image -->
+                                      <!-- Hover Image -->
+                                      <img class="hover blur-up lazyload" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
+                                      <!-- End Hover Image -->
+                                  </a>
+                                  <!-- End Product Image -->
+                                  <!--Product Button-->
+                                  <div class="button-set style1">
+                                      <!--Cart Button-->
+                                      <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                          <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                      </a>
+                                      <!--End Cart Button-->
+                                      <!--Quick View Button-->
+                                      <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                          <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                      </a>
+                                      <!--End Quick View Button-->
+                                      <!--Wishlist Button-->
+                                      <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                      <!--End Wishlist Button-->
+                                      <!--Compare Button-->
+                                      <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                      <!--End Compare Button-->
+                                  </div>
+                                  <!--End Product Button-->
+                              </div>
+                              <!-- End Product Image -->
+                              <!-- Start Product Details -->
+                              <div class="product-details">
+                                  <!-- Product Name -->
+                                  <div class="product-name">
+                                      <a href="product-layout1.html">Narror Neck Tie</a>
+                                  </div>
+                                  <!-- End Product Name -->
+                                  <!-- Product Price -->
+                                  <div class="product-price">
+                                      <span class="price old-price" *ngIf="besProduct.campaing_discount">{{ euro }}{{ besProduct.price_usd }}</span><span class="price">{{ euro }}{{ besProduct.price_usd - getDiscountProduct(besProduct) }}</span>
+                                  </div>
+                                  <!-- End Product Price -->
+                                  <!-- Product Review -->
+                                  <div class="product-review">
+                                      <i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                      <span class="caption hidden ms-1">0 Reviews</span>
+                                  </div>
+                                  <!-- End Product Review -->
+                                  <!-- Variant -->
+                                  <ul class="variants-clr swatches">
+                                      <li class="swatch medium radius navy" *ngFor="let color of besProduct.tags; let i = index" [class.active]="color === selectedColor" (click)="selectColor(color)">
+                                          <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black" [style.backgroundColor]="getColorHex(color)"></span>
+                                      </li>
+                                      <li class="swatch medium radius black d-none"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black"></span></li>
+                                      <li class="swatch medium radius navy d-none"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="navy"></span></li>
+                                      <li class="swatch medium radius darkgreen d-none"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="darkgreen"></span></li>
+                                  </ul>
+                                  <!-- End Variant -->
+                              </div>
+                              <!-- End product details -->
+                          </div>
+                      </div>
+                  </ng-container>
+                  
+                  <div class="item col-item d-none">
+                      <div class="product-box">
+                          <!-- Start Product Image -->
+                          <div class="product-image">
+                              <!-- Start Product Image -->
+                              <a href="product-layout1.html" class="product-img rounded-3">
+                                  <!-- Image -->
+                                  <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Image -->
+                                  <!-- Hover Image -->
+                                  <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Hover Image -->
+                              </a>
+                              <!-- End Product Image -->
+                              <!--Product Button-->
+                              <div class="button-set style1">
+                                  <!--Cart Button-->
+                                  <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                  </a>
+                                  <!--End Cart Button-->
+                                  <!--Quick View Button-->
+                                  <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                  </a>
+                                  <!--End Quick View Button-->
+                                  <!--Wishlist Button-->
+                                  <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                  <!--End Wishlist Button-->
+                                  <!--Compare Button-->
+                                  <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                  <!--End Compare Button-->
+                              </div>
+                              <!--End Product Button-->
+                          </div>
+                          <!-- End Product Image -->
+                          <!-- Start Product Details -->
+                          <div class="product-details">
+                              <!-- Product Name -->
+                              <div class="product-name">
+                                  <a href="product-layout1.html">Narror Neck Tie</a>
+                              </div>
+                              <!-- End Product Name -->
+                              <!-- Product Price -->
+                              <div class="product-price">
+                                  <span class="price">$134.00</span>
+                              </div>
+                              <!-- End Product Price -->
+                              <!-- Product Review -->
+                              <div class="product-review">
+                                  <i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                  <span class="caption hidden ms-1">0 Reviews</span>
+                              </div>
+                              <!-- End Product Review -->
+                              <!-- Variant -->
+                              <ul class="variants-clr swatches">
+                                  <li class="swatch medium radius black"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black"></span></li>
+                                  <li class="swatch medium radius navy"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="navy"></span></li>
+                                  <li class="swatch medium radius darkgreen"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="darkgreen"></span></li>
+                              </ul>
+                              <!-- End Variant -->
+                          </div>
+                          <!-- End product details -->
+                      </div>
+                  </div>
+                  <div class="item col-item d-none">
+                      <div class="product-box">
+                          <!-- Start Product Image -->
+                          <div class="product-image">
+                              <!-- Start Product Image -->
+                              <a href="product-layout1.html" class="product-img rounded-3">
+                                  <!-- Image -->
+                                  <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Image -->
+                                  <!-- Hover Image -->
+                                  <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Hover Image -->
+                              </a>
+                              <!-- End Product Image -->
+                              <!-- Product label -->
+                              <div class="product-labels"><span class="lbl pr-label4">Popular</span></div>
+                              <!-- End Product label -->
+                              <!--Product Button-->
+                              <div class="button-set style1">
+                                  <!--Cart Button-->
+                                  <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                  </a>
+                                  <!--End Cart Button-->
+                                  <!--Quick View Button-->
+                                  <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                  </a>
+                                  <!--End Quick View Button-->
+                                  <!--Wishlist Button-->
+                                  <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                  <!--End Wishlist Button-->
+                                  <!--Compare Button-->
+                                  <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                  <!--End Compare Button-->
+                              </div>
+                              <!--End Product Button-->
+                          </div>
+                          <!-- End Product Image -->
+                          <!-- Start Product Details -->
+                          <div class="product-details">
+                              <!-- Product Name -->
+                              <div class="product-name">
+                                  <a href="product-layout1.html">Men's Cheater Jacket</a>
+                              </div>
+                              <!-- End Product Name -->
+                              <!-- Product Price -->
+                              <div class="product-price">
+                                  <span class="price">$99.00</span>
+                              </div>
+                              <!-- End Product Price -->
+                              <!-- Product Review -->
+                              <div class="product-review">
+                                  <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                  <span class="caption hidden ms-1">19 Reviews</span>
+                              </div>
+                              <!-- End Product Review -->
+                          </div>
+                          <!-- End product details -->
+                      </div>
+                  </div>
+                  <div class="item col-item d-none">
+                      <div class="product-box">
+                          <!-- Start Product Image -->
+                          <div class="product-image">
+                              <!-- Start Product Image -->
+                              <a href="product-layout1.html" class="product-img rounded-3">
+                                  <!-- Image -->
+                                  <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Image -->
+                                  <!-- Hover Image -->
+                                  <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Hover Image -->
+                              </a>
+                              <!-- End Product Image -->
+                              <!--Product Button-->
+                              <div class="button-set style1">
+                                  <!--Cart Button-->
+                                  <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                  </a>
+                                  <!--End Cart Button-->
+                                  <!--Quick View Button-->
+                                  <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                  </a>
+                                  <!--End Quick View Button-->
+                                  <!--Wishlist Button-->
+                                  <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                  <!--End Wishlist Button-->
+                                  <!--Compare Button-->
+                                  <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                  <!--End Compare Button-->
+                              </div>
+                              <!--End Product Button-->
+                          </div>
+                          <!-- End Product Image -->
+                          <!-- Start Product Details -->
+                          <div class="product-details">
+                              <!-- Product Name -->
+                              <div class="product-name">
+                                  <a href="product-layout1.html">Casual Mustard Shirt</a>
+                              </div>
+                              <!-- End Product Name -->
+                              <!-- Product Price -->
+                              <div class="product-price">
+                                  <span class="price">$167.00</span>
+                              </div>
+                              <!-- End Product Price -->
+                              <!-- Product Review -->
+                              <div class="product-review">
+                                  <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i>
+                                  <span class="caption hidden ms-1">7 Reviews</span>
+                              </div>
+                              <!-- End Product Review -->
+                          </div>
+                          <!-- End product details -->
+                      </div>
+                  </div>
+                  <div class="item col-item d-none">
+                      <div class="product-box">
+                          <!-- Start Product Image -->
+                          <div class="product-image">
+                              <!-- Start Product Image -->
+                              <a href="product-layout1.html" class="product-img rounded-3">
+                                  <!-- Image -->
+                                  <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Image -->
+                                  <!-- Hover Image -->
+                                  <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Hover Image -->
+                              </a>
+                              <!-- End Product Image -->
+                              <!--Product Button-->
+                              <div class="button-set style1">
+                                  <!--Cart Button-->
+                                  <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                  </a>
+                                  <!--End Cart Button-->
+                                  <!--Quick View Button-->
+                                  <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                  </a>
+                                  <!--End Quick View Button-->
+                                  <!--Wishlist Button-->
+                                  <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                  <!--End Wishlist Button-->
+                                  <!--Compare Button-->
+                                  <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                  <!--End Compare Button-->
+                              </div>
+                              <!--End Product Button-->
+                          </div>
+                          <!-- End Product Image -->
+                          <!-- Start Product Details -->
+                          <div class="product-details">
+                              <!-- Product Name -->
+                              <div class="product-name">
+                                  <a href="product-layout1.html">Sleeve Round T-Shirt</a>
+                              </div>
+                              <!-- End Product Name -->
+                              <!-- Product Price -->
+                              <div class="product-price">
+                                  <span class="price">$154.00</span>
+                              </div>
+                              <!-- End Product Price -->
+                              <!-- Product Review -->
+                              <div class="product-review">
+                                  <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i>
+                                  <span class="caption hidden ms-1">19 Reviews</span>
+                              </div>
+                              <!-- End Product Review -->
+                          </div>
+                          <!-- End product details -->
+                      </div>
+                  </div>
+                  <div class="item col-item d-none">
+                      <div class="product-box">
+                          <!-- Start Product Image -->
+                          <div class="product-image">
+                              <!-- Start Product Image -->
+                              <a href="product-layout1.html" class="product-img rounded-3">
+                                  <!-- Image -->
+                                  <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Image -->
+                                  <!-- Hover Image -->
+                                  <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Hover Image -->
+                              </a>
+                              <!-- End Product Image -->
+                              <!--Product Button-->
+                              <div class="button-set style1">
+                                  <!--Cart Button-->
+                                  <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                  </a>
+                                  <!--End Cart Button-->
+                                  <!--Quick View Button-->
+                                  <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                  </a>
+                                  <!--End Quick View Button-->
+                                  <!--Wishlist Button-->
+                                  <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                  <!--End Wishlist Button-->
+                                  <!--Compare Button-->
+                                  <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                  <!--End Compare Button-->
+                              </div>
+                              <!--End Product Button-->
+                          </div>
+                          <!-- End Product Image -->
+                          <!-- Start Product Details -->
+                          <div class="product-details">
+                              <!-- Product Name -->
+                              <div class="product-name">
+                                  <a href="product-layout1.html">Backpack Laptop Bag</a>
+                              </div>
+                              <!-- End Product Name -->
+                              <!-- Product Price -->
+                              <div class="product-price">
+                                  <span class="price">$121.00</span>
+                              </div>
+                              <!-- End Product Price -->
+                              <!-- Product Review -->
+                              <div class="product-review">
+                                  <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                  <span class="caption hidden ms-1">6 Reviews</span>
+                              </div>
+                              <!-- End Product Review -->
+                          </div>
+                          <!-- End product details -->
+                      </div>
+                  </div>
+                  <div class="item col-item d-none">
+                      <div class="product-box">
+                          <!-- Start Product Image -->
+                          <div class="product-image">
+                              <!-- Start Product Image -->
+                              <a href="product-layout1.html" class="product-img rounded-3">
+                                  <!-- Image -->
+                                  <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Image -->
+                                  <!-- Hover Image -->
+                                  <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Hover Image -->
+                              </a>
+                              <!-- End Product Image -->
+                              <!--Product Button-->
+                              <div class="button-set style1">
+                                  <!--Cart Button-->
+                                  <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                  </a>
+                                  <!--End Cart Button-->
+                                  <!--Quick View Button-->
+                                  <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                  </a>
+                                  <!--End Quick View Button-->
+                                  <!--Wishlist Button-->
+                                  <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                  <!--End Wishlist Button-->
+                                  <!--Compare Button-->
+                                  <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                  <!--End Compare Button-->
+                              </div>
+                              <!--End Product Button-->
+                          </div>
+                          <!-- End Product Image -->
+                          <!-- Start Product Details -->
+                          <div class="product-details">
+                              <!-- Product Name -->
+                              <div class="product-name">
+                                  <a href="product-layout1.html">Cotton Casual Tshirt</a>
+                              </div>
+                              <!-- End Product Name -->
+                              <!-- Product Price -->
+                              <div class="product-price">
+                                  <span class="price">$167.00</span>
+                              </div>
+                              <!-- End Product Price -->
+                              <!-- Product Review -->
+                              <div class="product-review">
+                                  <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                  <span class="caption hidden ms-1">13 Reviews</span>
+                              </div>
+                              <!-- End Product Review -->
+                          </div>
+                          <!-- End product details -->
+                      </div>
+                  </div>
+                  <div class="item col-item d-none">
+                      <div class="product-box">
+                          <!-- Start Product Image -->
+                          <div class="product-image">
+                              <!-- Start Product Image -->
+                              <a href="product-layout1.html" class="product-img rounded-3">
+                                  <!-- Image -->
+                                  <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Image -->
+                                  <!-- Hover Image -->
+                                  <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Hover Image -->
+                              </a>
+                              <!-- End Product Image -->
+                              <!--Product Button-->
+                              <div class="button-set style1">
+                                  <!--Cart Button-->
+                                  <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                  </a>
+                                  <!--End Cart Button-->
+                                  <!--Quick View Button-->
+                                  <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                  </a>
+                                  <!--End Quick View Button-->
+                                  <!--Wishlist Button-->
+                                  <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                  <!--End Wishlist Button-->
+                                  <!--Compare Button-->
+                                  <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                  <!--End Compare Button-->
+                              </div>
+                              <!--End Product Button-->
+                          </div>
+                          <!-- End Product Image -->
+                          <!-- Start Product Details -->
+                          <div class="product-details">
+                              <!-- Product Name -->
+                              <div class="product-name">
+                                  <a href="product-layout1.html">Ankle Casual Pants</a>
+                              </div>
+                              <!-- End Product Name -->
+                              <!-- Product Price -->
+                              <div class="product-price">
+                                  <span class="price">$125.00</span>
+                              </div>
+                              <!-- End Product Price -->
+                              <!-- Product Review -->
+                              <div class="product-review">
+                                  <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i>
+                                  <span class="caption hidden ms-1">20 Reviews</span>
+                              </div>
+                              <!-- End Product Review -->
+                          </div>
+                          <!-- End product details -->
+                      </div>
+                  </div>
+                  <div class="item col-item d-none">
+                      <div class="product-box">
+                          <!-- Start Product Image -->
+                          <div class="product-image">
+                              <!-- Start Product Image -->
+                              <a href="product-layout1.html" class="product-img rounded-3">
+                                  <!-- Image -->
+                                  <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Image -->
+                                  <!-- Hover Image -->
+                                  <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
+                                  <!-- End Hover Image -->
+                              </a>
+                              <!-- End Product Image -->
+                              <!--Product Button-->
+                              <div class="button-set style1">
+                                  <!--Cart Button-->
+                                  <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
+                                  </a>
+                                  <!--End Cart Button-->
+                                  <!--Quick View Button-->
+                                  <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
+                                      <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
+                                  </a>
+                                  <!--End Quick View Button-->
+                                  <!--Wishlist Button-->
+                                  <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
+                                  <!--End Wishlist Button-->
+                                  <!--Compare Button-->
+                                  <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
+                                  <!--End Compare Button-->
+                              </div>
+                              <!--End Product Button-->
+                          </div>
+                          <!-- End Product Image -->
+                          <!-- Start Product Details -->
+                          <div class="product-details">
+                              <!-- Product Name -->
+                              <div class="product-name">
+                                  <a href="product-layout1.html">Straight Fit Trousers</a>
+                              </div>
+                              <!-- End Product Name -->
+                              <!-- Product Price -->
+                              <div class="product-price">
+                                  <span class="price">$122.00</span>
+                              </div>
+                              <!-- End Product Price -->
+                              <!-- Product Review -->
+                              <div class="product-review">
+                                  <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                  <span class="caption hidden ms-1">11 Reviews</span>
+                              </div>
+                              <!-- End Product Review -->
+                          </div>
+                          <!-- End product details -->
+                      </div>
+                  </div>
+              </div>
+
+              <div class="view-collection text-center mt-4 mt-md-5">
+                  <a href="shop-left-sidebar.html" class="btn btn-secondary btn-lg">Ver colección</a>
+              </div>
+          </div>
+          <!--End Product Grid-->
+      </div>
+      
+      <!--Parallax Banner-->
+      <app-flash-sale-banner
+        [FlashSales]="FlashSales"
+        [timeLeft]="timeLeft"
+        [locale]="locale"
+        [country]="country">
+      </app-flash-sale-banner>
+      <!--End Parallax Banner-->
+
+      <ng-container *ngIf="FlashSales && FlashSales.length > 0">
+        <!-- Flash Sale -->
+        <app-flash-sale
+          [FlashProductList]="FlashProductList"
+          [FlashSales]="FlashSales"
+          [locale]="locale"
+          [country]="country"
+          [euro]="euro"
+          [isMobile]="isMobile"
+          [getRouterDiscount]="getRouterDiscount"
+          [openModalToCart]="openModalToCart"
+          [addWishlist]="addWishlist"
+          [changeProductImage]="changeProductImage"
+          [navigateToProduct]="navigateToProduct">
+        </app-flash-sale>
+        <!-- /End Flash Sale-->
+      </ng-container>
+
+      <!--Featured Content-->
+      <div class="destination-section section">
+          <div class="container">
+              <div class="row align-items-center">
+                  <div class="col-12 col-sm-12 col-md-6">
+                      <div class="about-details px-50 py-5">
+                          <h2 class="fs-4 mb-3">Viste tu pasión por el código con estilo y actitud.</h2>
+                          <p>
+                            Descubre camisetas exclusivas diseñadas para quienes viven y respiran tecnología.
+                            En <b>LujanDev</b> encontrarás apparel inspirado en
+                            <b>JavaScript, NodeJS, TypeScript y los frameworks frontend más avanzados</b>.
+                          </p>
+                          <p>Diseños únicos creados para developers que buscan calidad, identidad y comodidad en su día a día.</p>
+                          <a
+                            *ngIf="allShirtsCategory" 
+                            [routerLink]="['/', locale, country, 'shop', 'filter-products', allShirtsCategory.slug, allShirtsCategory._id]" 
+                            class="btn btn-lg mt20">
+                            Comprar Ahora
+                          </a>
+                      </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-md-6">
+                      <div class="about-images mt-4 mt-md-0">
+                          <div class="row g-3">
+                              <img class="rounded-0 blur-up lazyloaded" data-src="assets/images/about/about1.jpg" src="assets/images/about/about1.jpg" alt="about" width="700" height="827">                              
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- End Featured Content-->
+
+      <!-- Storytelling / Brand Message -->
+      <app-brand-message [isMobile]="isMobile" [isDesktop]="isDesktop"></app-brand-message>
+      <!-- End Storytelling / Brand Message -->
+
+      <!--Testimonial Section-->
+      <ng-container *ngIf="ocultar">
+      <app-testimonials></app-testimonials>
+      </ng-container>
+      <!--End Testimonial section-->
+
+      <div class="section parallax-banner-style1 py-0" *ngIf="ocultar">
+        <div class="hero hero-large hero-overlay bg-size" style="background-image: url(&quot;assets/images/parallax/demo1-sale-banner.jpg&quot;); background-size: cover; background-position: center center; background-repeat: no-repeat;">
+            <img class="bg-img" src="assets/images/parallax/demo1-sale-banner.jpg" alt="Clearance Sale - Flat 50% Off" width="1920" height="645" style="display: none;">
         </div>
       </div>
-    </ng-container>
-    <!--End Toolbar-->
 
-    
-    <!--Product Grid-->
-    <ng-container *ngIf="ourProducts && ourProducts.length > 0; else emptyState">
-      <app-product-grid
-        [currentUser]="currentUser"
-        [ourProducts]="ourProducts"
-        [locale]="locale"
-        [country]="country"
-        [euro]="euro"
-        [currentUrl]="currentUrl"
-        [isMobile]="isMobile"
-        [getRouterDiscount]="getRouterDiscount"
-        [getPriceParts]="getPriceParts"
-        [openModalToCart]="openModalToCart"
-        [addWishlist]="addWishlist"
-        [changeProductImage]="changeProductImage"
-        [navigateToProduct]="navigateToProduct"
-        [FlashSale]="FlashSales"
-        [gridViewMode]="currentGridView"
-      ></app-product-grid>
-    </ng-container>
+      <!--Service Section-->
+      <app-service-section></app-service-section>
+      <!--End Service Section-->
 
-    <!-- Empty State -->
+      <!--Blog Post-->
+      <section class="section home-blog-post d-none" *ngIf="besProducts && besProducts.length > 0">
+        <div class="container">
+          <div class="section-header">
+            <p class="mb-2 mt-0">Latest post</p>
+            <h2>Most Recent News</h2>
+          </div>
+
+          <div class="blog-slider-3items gp15 arwOut5 hov-arrow">
+            <ng-container *ngFor="let besProduct of besProducts">
+              <div class="blog-item">
+                <div class="blog-article zoomscal-hov">
+                  <div class="blog-img">
+                    <a
+                      class="featured-image zoom-scal"
+                      href="blog-details.html"
+                      onclick="return false;"
+                      (click)="
+                        navigateToProduct(
+                          besProduct.slug,
+                          besProduct.campaing_discount?.id
+                        )
+                      "
+                    >
+                      <img
+                        class="blur-up lazyload"
+                        data-src="{{ besProduct.imagen }}"
+                        src="{{ besProduct.imagen }}"
+                        alt="New shop collection our shop"
+                        width="740"
+                        height="410"
+                      />
+                    </a>
+                    <div class="date">
+                      <span class="dt">25</span>
+                      <span class="mt"
+                        >Apr<br />
+                        <b>2023</b></span
+                      >
+                    </div>
+                  </div>
+                  <div class="blog-content">
+                    <h2 class="h3 mb-3">
+                      <a href="blog-details.html" onclick="return false;">{{
+                        besProduct.title
+                      }}</a>
+                    </h2>
+                    <p class="content">{{ besProduct.description }}</p>
+                    <a
+                      href="blog-details.html"
+                      onclick="return false;"
+                      (click)="
+                        navigateToProduct(
+                          besProduct.slug,
+                          besProduct.campaing_discount?.id
+                        )
+                      "
+                      class="btn btn-secondary btn-sm"
+                      >Read more</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </section>
+      <!--End Blog Post-->
+
+    </div>
+  <!-- End Body Container -->
+  </ng-container>
+
+  <!-- Empty State -->
     <ng-template #emptyState>
       <div class="empty-state-container">
         <div class="empty-state-content">
@@ -146,770 +922,7 @@
         </div>
       </div>
     </ng-template>
-    <!--End Product Grid-->
-
-    <ng-container *ngIf="ocultar">
-      <!--Product Grid-->
-      <app-hodie-grid
-        [currentUser]="currentUser"
-        [hoodiesProducts]="hoodiesProducts"
-        [locale]="locale"
-        [country]="country"
-        [euro]="euro"
-        [currentUrl]="currentUrl"
-        [isMobile]="isMobile"
-        [getRouterDiscount]="getRouterDiscount"
-        [getPriceParts]="getPriceParts"
-        [openModalToCart]="openModalToCart"
-        [addWishlist]="addWishlist"
-        [changeProductImage]="changeProductImage"
-        [navigateToProduct]="navigateToProduct"
-        [FlashSale]="FlashSales"
-        [gridViewMode]="currentGridView"
-      ></app-hodie-grid>
-      <!--End Product Grid-->
-
-      <!--Product Grid-->
-      <app-mug-grid
-        [currentUser]="currentUser"
-        [mugsProducts]="mugsProducts"
-        [locale]="locale"
-        [country]="country"
-        [euro]="euro"
-        [currentUrl]="currentUrl"
-        [isMobile]="isMobile"
-        [getRouterDiscount]="getRouterDiscount"
-        [getPriceParts]="getPriceParts"
-        [openModalToCart]="openModalToCart"
-        [addWishlist]="addWishlist"
-        [changeProductImage]="changeProductImage"
-        [navigateToProduct]="navigateToProduct"
-        [FlashSale]="FlashSales"
-        [gridViewMode]="currentGridView"
-      ></app-mug-grid>
-      <!--End Product Grid-->
-
-      <!--Product Grid-->
-      <app-cap-grid
-        [currentUser]="currentUser"
-        [capsProducts]="capsProducts"
-        [locale]="locale"
-        [country]="country"
-        [euro]="euro"
-        [currentUrl]="currentUrl"
-        [isMobile]="isMobile"
-        [getRouterDiscount]="getRouterDiscount"
-        [getPriceParts]="getPriceParts"
-        [openModalToCart]="openModalToCart"
-        [addWishlist]="addWishlist"
-        [changeProductImage]="changeProductImage"
-        [navigateToProduct]="navigateToProduct"
-        [FlashSale]="FlashSales"
-        [gridViewMode]="currentGridView"
-      ></app-cap-grid>
-      <!--End Product Grid-->
-
-    </ng-container>
-
-    <!-- SE MUESTRAN TODOS LOS PRODUCTOS D-NONE -->
-    <div class="tab-pane d-none" id="newarrivals" role="tabpanel" aria-labelledby="newarrivals-tab">
-        <!--Product Grid-->
-        <div class="grid-products grid-view-items">
-            <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
-                <ng-container *ngFor="let besProduct of besProducts">
-                    <div class="item col-item">
-                        <div class="product-box">
-                            <!-- Start Product Image -->
-                            <div class="product-image">
-                                <!-- Start Product Image -->
-                                <a href="product-layout1.html" class="product-img rounded-3">
-                                    <!-- Image -->
-                                    <img class="primary blur-up lazyload" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Image -->
-                                    <!-- Hover Image -->
-                                    <img class="hover blur-up lazyload" data-src="{{ besProduct.imagen }}" src="{{ besProduct.imagen }}" alt="Product" title="Product" width="625" height="808" />
-                                    <!-- End Hover Image -->
-                                </a>
-                                <!-- End Product Image -->
-                                <!--Product Button-->
-                                <div class="button-set style1">
-                                    <!--Cart Button-->
-                                    <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                    </a>
-                                    <!--End Cart Button-->
-                                    <!--Quick View Button-->
-                                    <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                        <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                    </a>
-                                    <!--End Quick View Button-->
-                                    <!--Wishlist Button-->
-                                    <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                    <!--End Wishlist Button-->
-                                    <!--Compare Button-->
-                                    <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                    <!--End Compare Button-->
-                                </div>
-                                <!--End Product Button-->
-                            </div>
-                            <!-- End Product Image -->
-                            <!-- Start Product Details -->
-                            <div class="product-details">
-                                <!-- Product Name -->
-                                <div class="product-name">
-                                    <a href="product-layout1.html">Narror Neck Tie</a>
-                                </div>
-                                <!-- End Product Name -->
-                                <!-- Product Price -->
-                                <div class="product-price">
-                                    <span class="price old-price" *ngIf="besProduct.campaing_discount">{{ euro }}{{ besProduct.price_usd }}</span><span class="price">{{ euro }}{{ besProduct.price_usd - getDiscountProduct(besProduct) }}</span>
-                                </div>
-                                <!-- End Product Price -->
-                                <!-- Product Review -->
-                                <div class="product-review">
-                                    <i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                    <span class="caption hidden ms-1">0 Reviews</span>
-                                </div>
-                                <!-- End Product Review -->
-                                <!-- Variant -->
-                                <ul class="variants-clr swatches">
-                                    <li class="swatch medium radius navy" *ngFor="let color of besProduct.tags; let i = index" [class.active]="color === selectedColor" (click)="selectColor(color)">
-                                        <span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black" [style.backgroundColor]="getColorHex(color)"></span>
-                                    </li>
-                                    <li class="swatch medium radius black d-none"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black"></span></li>
-                                    <li class="swatch medium radius navy d-none"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="navy"></span></li>
-                                    <li class="swatch medium radius darkgreen d-none"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="darkgreen"></span></li>
-                                </ul>
-                                <!-- End Variant -->
-                            </div>
-                            <!-- End product details -->
-                        </div>
-                    </div>
-                </ng-container>
-                
-                <div class="item col-item d-none">
-                    <div class="product-box">
-                        <!-- Start Product Image -->
-                        <div class="product-image">
-                            <!-- Start Product Image -->
-                            <a href="product-layout1.html" class="product-img rounded-3">
-                                <!-- Image -->
-                                <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Image -->
-                                <!-- Hover Image -->
-                                <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Hover Image -->
-                            </a>
-                            <!-- End Product Image -->
-                            <!--Product Button-->
-                            <div class="button-set style1">
-                                <!--Cart Button-->
-                                <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                </a>
-                                <!--End Cart Button-->
-                                <!--Quick View Button-->
-                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                </a>
-                                <!--End Quick View Button-->
-                                <!--Wishlist Button-->
-                                <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                <!--End Wishlist Button-->
-                                <!--Compare Button-->
-                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                <!--End Compare Button-->
-                            </div>
-                            <!--End Product Button-->
-                        </div>
-                        <!-- End Product Image -->
-                        <!-- Start Product Details -->
-                        <div class="product-details">
-                            <!-- Product Name -->
-                            <div class="product-name">
-                                <a href="product-layout1.html">Narror Neck Tie</a>
-                            </div>
-                            <!-- End Product Name -->
-                            <!-- Product Price -->
-                            <div class="product-price">
-                                <span class="price">$134.00</span>
-                            </div>
-                            <!-- End Product Price -->
-                            <!-- Product Review -->
-                            <div class="product-review">
-                                <i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                <span class="caption hidden ms-1">0 Reviews</span>
-                            </div>
-                            <!-- End Product Review -->
-                            <!-- Variant -->
-                            <ul class="variants-clr swatches">
-                                <li class="swatch medium radius black"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="black"></span></li>
-                                <li class="swatch medium radius navy"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="navy"></span></li>
-                                <li class="swatch medium radius darkgreen"><span class="swatchLbl" data-bs-toggle="tooltip" data-bs-placement="top" title="darkgreen"></span></li>
-                            </ul>
-                            <!-- End Variant -->
-                        </div>
-                        <!-- End product details -->
-                    </div>
-                </div>
-                <div class="item col-item d-none">
-                    <div class="product-box">
-                        <!-- Start Product Image -->
-                        <div class="product-image">
-                            <!-- Start Product Image -->
-                            <a href="product-layout1.html" class="product-img rounded-3">
-                                <!-- Image -->
-                                <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Image -->
-                                <!-- Hover Image -->
-                                <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Hover Image -->
-                            </a>
-                            <!-- End Product Image -->
-                            <!-- Product label -->
-                            <div class="product-labels"><span class="lbl pr-label4">Popular</span></div>
-                            <!-- End Product label -->
-                            <!--Product Button-->
-                            <div class="button-set style1">
-                                <!--Cart Button-->
-                                <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                </a>
-                                <!--End Cart Button-->
-                                <!--Quick View Button-->
-                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                </a>
-                                <!--End Quick View Button-->
-                                <!--Wishlist Button-->
-                                <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                <!--End Wishlist Button-->
-                                <!--Compare Button-->
-                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                <!--End Compare Button-->
-                            </div>
-                            <!--End Product Button-->
-                        </div>
-                        <!-- End Product Image -->
-                        <!-- Start Product Details -->
-                        <div class="product-details">
-                            <!-- Product Name -->
-                            <div class="product-name">
-                                <a href="product-layout1.html">Men's Cheater Jacket</a>
-                            </div>
-                            <!-- End Product Name -->
-                            <!-- Product Price -->
-                            <div class="product-price">
-                                <span class="price">$99.00</span>
-                            </div>
-                            <!-- End Product Price -->
-                            <!-- Product Review -->
-                            <div class="product-review">
-                                <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                <span class="caption hidden ms-1">19 Reviews</span>
-                            </div>
-                            <!-- End Product Review -->
-                        </div>
-                        <!-- End product details -->
-                    </div>
-                </div>
-                <div class="item col-item d-none">
-                    <div class="product-box">
-                        <!-- Start Product Image -->
-                        <div class="product-image">
-                            <!-- Start Product Image -->
-                            <a href="product-layout1.html" class="product-img rounded-3">
-                                <!-- Image -->
-                                <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Image -->
-                                <!-- Hover Image -->
-                                <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Hover Image -->
-                            </a>
-                            <!-- End Product Image -->
-                            <!--Product Button-->
-                            <div class="button-set style1">
-                                <!--Cart Button-->
-                                <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                </a>
-                                <!--End Cart Button-->
-                                <!--Quick View Button-->
-                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                </a>
-                                <!--End Quick View Button-->
-                                <!--Wishlist Button-->
-                                <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                <!--End Wishlist Button-->
-                                <!--Compare Button-->
-                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                <!--End Compare Button-->
-                            </div>
-                            <!--End Product Button-->
-                        </div>
-                        <!-- End Product Image -->
-                        <!-- Start Product Details -->
-                        <div class="product-details">
-                            <!-- Product Name -->
-                            <div class="product-name">
-                                <a href="product-layout1.html">Casual Mustard Shirt</a>
-                            </div>
-                            <!-- End Product Name -->
-                            <!-- Product Price -->
-                            <div class="product-price">
-                                <span class="price">$167.00</span>
-                            </div>
-                            <!-- End Product Price -->
-                            <!-- Product Review -->
-                            <div class="product-review">
-                                <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i>
-                                <span class="caption hidden ms-1">7 Reviews</span>
-                            </div>
-                            <!-- End Product Review -->
-                        </div>
-                        <!-- End product details -->
-                    </div>
-                </div>
-                <div class="item col-item d-none">
-                    <div class="product-box">
-                        <!-- Start Product Image -->
-                        <div class="product-image">
-                            <!-- Start Product Image -->
-                            <a href="product-layout1.html" class="product-img rounded-3">
-                                <!-- Image -->
-                                <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Image -->
-                                <!-- Hover Image -->
-                                <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Hover Image -->
-                            </a>
-                            <!-- End Product Image -->
-                            <!--Product Button-->
-                            <div class="button-set style1">
-                                <!--Cart Button-->
-                                <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                </a>
-                                <!--End Cart Button-->
-                                <!--Quick View Button-->
-                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                </a>
-                                <!--End Quick View Button-->
-                                <!--Wishlist Button-->
-                                <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                <!--End Wishlist Button-->
-                                <!--Compare Button-->
-                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                <!--End Compare Button-->
-                            </div>
-                            <!--End Product Button-->
-                        </div>
-                        <!-- End Product Image -->
-                        <!-- Start Product Details -->
-                        <div class="product-details">
-                            <!-- Product Name -->
-                            <div class="product-name">
-                                <a href="product-layout1.html">Sleeve Round T-Shirt</a>
-                            </div>
-                            <!-- End Product Name -->
-                            <!-- Product Price -->
-                            <div class="product-price">
-                                <span class="price">$154.00</span>
-                            </div>
-                            <!-- End Product Price -->
-                            <!-- Product Review -->
-                            <div class="product-review">
-                                <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i>
-                                <span class="caption hidden ms-1">19 Reviews</span>
-                            </div>
-                            <!-- End Product Review -->
-                        </div>
-                        <!-- End product details -->
-                    </div>
-                </div>
-                <div class="item col-item d-none">
-                    <div class="product-box">
-                        <!-- Start Product Image -->
-                        <div class="product-image">
-                            <!-- Start Product Image -->
-                            <a href="product-layout1.html" class="product-img rounded-3">
-                                <!-- Image -->
-                                <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Image -->
-                                <!-- Hover Image -->
-                                <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Hover Image -->
-                            </a>
-                            <!-- End Product Image -->
-                            <!--Product Button-->
-                            <div class="button-set style1">
-                                <!--Cart Button-->
-                                <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                </a>
-                                <!--End Cart Button-->
-                                <!--Quick View Button-->
-                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                </a>
-                                <!--End Quick View Button-->
-                                <!--Wishlist Button-->
-                                <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                <!--End Wishlist Button-->
-                                <!--Compare Button-->
-                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                <!--End Compare Button-->
-                            </div>
-                            <!--End Product Button-->
-                        </div>
-                        <!-- End Product Image -->
-                        <!-- Start Product Details -->
-                        <div class="product-details">
-                            <!-- Product Name -->
-                            <div class="product-name">
-                                <a href="product-layout1.html">Backpack Laptop Bag</a>
-                            </div>
-                            <!-- End Product Name -->
-                            <!-- Product Price -->
-                            <div class="product-price">
-                                <span class="price">$121.00</span>
-                            </div>
-                            <!-- End Product Price -->
-                            <!-- Product Review -->
-                            <div class="product-review">
-                                <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                <span class="caption hidden ms-1">6 Reviews</span>
-                            </div>
-                            <!-- End Product Review -->
-                        </div>
-                        <!-- End product details -->
-                    </div>
-                </div>
-                <div class="item col-item d-none">
-                    <div class="product-box">
-                        <!-- Start Product Image -->
-                        <div class="product-image">
-                            <!-- Start Product Image -->
-                            <a href="product-layout1.html" class="product-img rounded-3">
-                                <!-- Image -->
-                                <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Image -->
-                                <!-- Hover Image -->
-                                <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Hover Image -->
-                            </a>
-                            <!-- End Product Image -->
-                            <!--Product Button-->
-                            <div class="button-set style1">
-                                <!--Cart Button-->
-                                <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                </a>
-                                <!--End Cart Button-->
-                                <!--Quick View Button-->
-                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                </a>
-                                <!--End Quick View Button-->
-                                <!--Wishlist Button-->
-                                <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                <!--End Wishlist Button-->
-                                <!--Compare Button-->
-                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                <!--End Compare Button-->
-                            </div>
-                            <!--End Product Button-->
-                        </div>
-                        <!-- End Product Image -->
-                        <!-- Start Product Details -->
-                        <div class="product-details">
-                            <!-- Product Name -->
-                            <div class="product-name">
-                                <a href="product-layout1.html">Cotton Casual Tshirt</a>
-                            </div>
-                            <!-- End Product Name -->
-                            <!-- Product Price -->
-                            <div class="product-price">
-                                <span class="price">$167.00</span>
-                            </div>
-                            <!-- End Product Price -->
-                            <!-- Product Review -->
-                            <div class="product-review">
-                                <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                <span class="caption hidden ms-1">13 Reviews</span>
-                            </div>
-                            <!-- End Product Review -->
-                        </div>
-                        <!-- End product details -->
-                    </div>
-                </div>
-                <div class="item col-item d-none">
-                    <div class="product-box">
-                        <!-- Start Product Image -->
-                        <div class="product-image">
-                            <!-- Start Product Image -->
-                            <a href="product-layout1.html" class="product-img rounded-3">
-                                <!-- Image -->
-                                <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Image -->
-                                <!-- Hover Image -->
-                                <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Hover Image -->
-                            </a>
-                            <!-- End Product Image -->
-                            <!--Product Button-->
-                            <div class="button-set style1">
-                                <!--Cart Button-->
-                                <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                </a>
-                                <!--End Cart Button-->
-                                <!--Quick View Button-->
-                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                </a>
-                                <!--End Quick View Button-->
-                                <!--Wishlist Button-->
-                                <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                <!--End Wishlist Button-->
-                                <!--Compare Button-->
-                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                <!--End Compare Button-->
-                            </div>
-                            <!--End Product Button-->
-                        </div>
-                        <!-- End Product Image -->
-                        <!-- Start Product Details -->
-                        <div class="product-details">
-                            <!-- Product Name -->
-                            <div class="product-name">
-                                <a href="product-layout1.html">Ankle Casual Pants</a>
-                            </div>
-                            <!-- End Product Name -->
-                            <!-- Product Price -->
-                            <div class="product-price">
-                                <span class="price">$125.00</span>
-                            </div>
-                            <!-- End Product Price -->
-                            <!-- Product Review -->
-                            <div class="product-review">
-                                <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i>
-                                <span class="caption hidden ms-1">20 Reviews</span>
-                            </div>
-                            <!-- End Product Review -->
-                        </div>
-                        <!-- End product details -->
-                    </div>
-                </div>
-                <div class="item col-item d-none">
-                    <div class="product-box">
-                        <!-- Start Product Image -->
-                        <div class="product-image">
-                            <!-- Start Product Image -->
-                            <a href="product-layout1.html" class="product-img rounded-3">
-                                <!-- Image -->
-                                <img class="primary blur-up lazyload" data-src="assets/images/products/product1.jpg" src="assets/images/products/product1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Image -->
-                                <!-- Hover Image -->
-                                <img class="hover blur-up lazyload" data-src="assets/images/products/product1-1.jpg" src="assets/images/products/product1-1.jpg" alt="Product" title="Product" width="625" height="808" />
-                                <!-- End Hover Image -->
-                            </a>
-                            <!-- End Product Image -->
-                            <!--Product Button-->
-                            <div class="button-set style1">
-                                <!--Cart Button-->
-                                <a href="#addtocart-modal" class="btn-icon addtocart add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Add to Cart</span></span>
-                                </a>
-                                <!--End Cart Button-->
-                                <!--Quick View Button-->
-                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal" data-bs-toggle="modal" data-bs-target="#quickview_modal">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Quick View</span></span>
-                                </a>
-                                <!--End Quick View Button-->
-                                <!--Wishlist Button-->
-                                <a href="wishlist-style2.html" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Add To Wishlist"><i class="icon anm anm-heart-l"></i><span class="text">Add To Wishlist</span></a>
-                                <!--End Wishlist Button-->
-                                <!--Compare Button-->
-                                <a href="compare-style2.html" class="btn-icon compare" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Add to Compare</span></a>
-                                <!--End Compare Button-->
-                            </div>
-                            <!--End Product Button-->
-                        </div>
-                        <!-- End Product Image -->
-                        <!-- Start Product Details -->
-                        <div class="product-details">
-                            <!-- Product Name -->
-                            <div class="product-name">
-                                <a href="product-layout1.html">Straight Fit Trousers</a>
-                            </div>
-                            <!-- End Product Name -->
-                            <!-- Product Price -->
-                            <div class="product-price">
-                                <span class="price">$122.00</span>
-                            </div>
-                            <!-- End Product Price -->
-                            <!-- Product Review -->
-                            <div class="product-review">
-                                <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
-                                <span class="caption hidden ms-1">11 Reviews</span>
-                            </div>
-                            <!-- End Product Review -->
-                        </div>
-                        <!-- End product details -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="view-collection text-center mt-4 mt-md-5">
-                <a href="shop-left-sidebar.html" class="btn btn-secondary btn-lg">Ver colección</a>
-            </div>
-        </div>
-        <!--End Product Grid-->
-    </div>
-    
-    <!--Parallax Banner-->
-    <app-flash-sale-banner
-      [FlashSales]="FlashSales"
-      [timeLeft]="timeLeft"
-      [locale]="locale"
-      [country]="country">
-    </app-flash-sale-banner>
-    <!--End Parallax Banner-->
-
-    <ng-container *ngIf="FlashSales && FlashSales.length > 0">
-      <!-- Flash Sale -->
-      <app-flash-sale
-        [FlashProductList]="FlashProductList"
-        [FlashSales]="FlashSales"
-        [locale]="locale"
-        [country]="country"
-        [euro]="euro"
-        [isMobile]="isMobile"
-        [getRouterDiscount]="getRouterDiscount"
-        [openModalToCart]="openModalToCart"
-        [addWishlist]="addWishlist"
-        [changeProductImage]="changeProductImage"
-        [navigateToProduct]="navigateToProduct">
-      </app-flash-sale>
-      <!-- /End Flash Sale-->
-    </ng-container>
-
-    <!--Featured Content-->
-    <section class="section featured-content style1 pb-0 d-none">
-        <div class="container container-1330">
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="d-flex align-items-stretch justify-content-between w-100 flex-md-row flex-column">
-                        <div class="f-item fl-1 d-flex w-100 align-items-center justify-content-center bg-light order-md-0 order-xl-0 order-sm-1 order-lg-0 order-1">
-                            <div class="f-text order-3 text-center px-4 mx-sm-5 mx-md-4 py-4 py-sm-5 py-md-4"> 
-                                <h3 class="fs-3 mb-3 mb-md-4 text-black">20% OFF Spring Summer</h3>
-                                <div class="rte rte-setting d-flex mb-4 pb-md-2">
-                                    <p class="text-medium">Save even more on our winter sale with code<br> <b>WINTER18 + FREE SHIPPING</b> on all orders over $50</p>
-                                </div>
-                                <a href="shop-right-sidebar.html" class="btn btn-lg mt20">Discover Now!</a>
-                            </div>
-                        </div>
-                        <div class="f-item fl-1 d-flex w-100 align-items-center">
-                            <div class="f-image order-2">
-                                <img class="blur-up lazyloaded" data-src="assets/images/content/fc-img1.jpg" src="assets/images/content/fc-img1.jpg" alt="image" title="" width="750" height="625">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--End Featured Content-->
-
-    <!-- Storytelling / Brand Message -->
-    <app-brand-message [isMobile]="isMobile" [isDesktop]="isDesktop"></app-brand-message>
-    <!-- End Storytelling / Brand Message -->
-
-    <!--Testimonial Section-->
-    <ng-container *ngIf="ocultar">
-    <app-testimonials></app-testimonials>
-    </ng-container>
-    <!--End Testimonial section-->
-
-    
-    <!--Service Section-->
-    <app-service-section></app-service-section>
-    <!--End Service Section-->
-
-    <!--Blog Post-->
-    <section class="section home-blog-post d-none" *ngIf="besProducts && besProducts.length > 0">
-      <div class="container">
-        <div class="section-header">
-          <p class="mb-2 mt-0">Latest post</p>
-          <h2>Most Recent News</h2>
-        </div>
-
-        <div class="blog-slider-3items gp15 arwOut5 hov-arrow">
-          <ng-container *ngFor="let besProduct of besProducts">
-            <div class="blog-item">
-              <div class="blog-article zoomscal-hov">
-                <div class="blog-img">
-                  <a
-                    class="featured-image zoom-scal"
-                    href="blog-details.html"
-                    onclick="return false;"
-                    (click)="
-                      navigateToProduct(
-                        besProduct.slug,
-                        besProduct.campaing_discount?.id
-                      )
-                    "
-                  >
-                    <img
-                      class="blur-up lazyload"
-                      data-src="{{ besProduct.imagen }}"
-                      src="{{ besProduct.imagen }}"
-                      alt="New shop collection our shop"
-                      width="740"
-                      height="410"
-                    />
-                  </a>
-                  <div class="date">
-                    <span class="dt">25</span>
-                    <span class="mt"
-                      >Apr<br />
-                      <b>2023</b></span
-                    >
-                  </div>
-                </div>
-                <div class="blog-content">
-                  <h2 class="h3 mb-3">
-                    <a href="blog-details.html" onclick="return false;">{{
-                      besProduct.title
-                    }}</a>
-                  </h2>
-                  <p class="content">{{ besProduct.description }}</p>
-                  <a
-                    href="blog-details.html"
-                    onclick="return false;"
-                    (click)="
-                      navigateToProduct(
-                        besProduct.slug,
-                        besProduct.campaing_discount?.id
-                      )
-                    "
-                    class="btn btn-secondary btn-sm"
-                    >Read more</a
-                  >
-                </div>
-              </div>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-    </section>
-    <!--End Blog Post-->
-
-  </div>
-  <!-- End Body Container -->
+  <!--End Product Grid-->
 
   <!--Footer-->
   <app-footer></app-footer>

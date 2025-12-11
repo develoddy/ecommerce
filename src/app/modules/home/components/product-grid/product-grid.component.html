@@ -181,9 +181,6 @@
     </div>
 
     <div class="view-collection text-center mt-3 mb-5 mt-md-5 justify-content-center align-item-center d-flex">
-        <!-- <a href="shop-left-sidebar.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" [ngClass]="{ 'w-100': isMobile, 'px-2': isMobile }">
-            <button class="btn-dark-ld fw-light">Ver colección</button>
-        </a> -->
         <a *ngIf="categorie"
             [routerLink]="['/', locale, country, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]" 
             class="category-link clr-none"

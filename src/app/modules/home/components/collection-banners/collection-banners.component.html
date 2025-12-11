@@ -8,7 +8,7 @@
                 <div class="row sp-row">
                   <!-- Iterar sobre las categorías -->
                   <ng-container *ngFor="let cat of categories; let i = index">
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-6 collection-banner-item p-0">
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 collection-banner-item p-0">
                       <div class="collection-item sp-col">
                         <a [routerLink]="['/', locale, country, 'shop', 'filter-products', cat.slug, cat._id]" class="zoom-scal">
                           <div class="img">
@@ -24,18 +24,13 @@
                           </div>
 
                           <!-- Texto dinámico (puedes ajustar estilos según tu diseño) -->
-                          <div class="details" 
-                              [ngClass]="{
+                          <div class="details" [ngClass]="{
                                 'middle-right': i % 2 === 0,
                                 'middle-left': i % 2 !== 0
                               }">
-                            <div class="inner text-start">
-                              
+                            <div class="inner text-start text-uppercase">
                               <h3 class="title text-white">{{ cat.title }}</h3>
-                              <p class="mb-2">
-                                {{ cat.subtitle || 'Descubre más' }}
-                              </p>
-                              <span class="btn btn-outline-dark btn-md">Shop Now</span>
+                              <a [routerLink]="['/', locale, country, 'shop', 'filter-products', cat.slug, cat._id]" class="text-decoration-underline text-white"><span class="">Ver todo</span></a>
                             </div>
                           </div>
                         </a>

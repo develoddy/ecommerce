@@ -99,6 +99,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private timerInterval: any;
   public loading: boolean = false;
   ocultar = false;
+  allShirtsCategory:any = null;
   
   // Grid view references
   @ViewChild('grid1') grid1!: ElementRef;
@@ -245,6 +246,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.capsProducts.forEach((cap: any) => {
       cap.slug = this.productUIService.generateSlug(cap.title); 
     });
+
+    this.allShirtsCategory = this.getCategory('all-shirts', 'All shirts');
+
+    console.debug("DEBBUG: Processed categories All Shirts:", this.allShirtsCategory);
   }
 
   private processProductPrices(resp: any): void {
@@ -383,6 +388,24 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/img/developer-merch-hero.jpg`,
       type: 'homepage'
     });
+  }
+
+  private getCategory(slug: string, fallbackTitle: string): any {
+    if (!Array.isArray(this.categories)) return null;
+
+    // Buscar por slug
+    const bySlug = this.categories.find(
+      (c: any) => c?.slug?.toLowerCase() === slug.toLowerCase()
+    );
+
+    if (bySlug) return bySlug;
+
+    // Fallback: buscar por título
+    const byTitle = this.categories.find(
+      (c: any) => c?.title?.trim().toLowerCase() === fallbackTitle.trim().toLowerCase()
+    );
+
+    return byTitle || null;
   }
 
   getPriceParts = (price: number) => {

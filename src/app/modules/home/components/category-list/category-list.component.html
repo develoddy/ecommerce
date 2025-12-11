@@ -1,4 +1,4 @@
-<section class="section collection-slider pb-0" *ngIf="categories.length != 0">
+<!-- <section class="section collection-slider pb-0" *ngIf="categories.length != 0">
   <div class="container">
     <div class="section-header">
       <p class="mb-2 mt-0">Descubre nuestras</p>
@@ -9,8 +9,7 @@
         <article class="category-item" 
                  [style.animation-delay]="(i * 0.1) + 's'"
                  [attr.aria-label]="'Categoría ' + categorie.title">
-          <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" 
-             class="category-link clr-none"
+          <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" class="category-link clr-none"
              [attr.title]="'Explorar ' + categorie.title">
             <div class="zoom-scal zoom-scal-nopb rounded-3">
               <img class="blur-up lazyload" 
@@ -31,4 +30,37 @@
       </ng-container>
     </div>
   </div>
-</section>
+</section> -->
+
+
+<div class="container py-5">      
+   <div class="section-header">
+      <p class="mb-2 mt-0">Descubre nuestras</p>
+      <h2>Colecciones</h2>
+    </div>        
+    <div class="collection-style1 row col-row row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-2">
+      <ng-container *ngFor="let categorie of categories; let i = index">
+        <div class="category-item col-item zoomscal-hov">
+          <article class="category-item" [style.animation-delay]="(i * 0.1) + 's'" [attr.aria-label]="'Categoría ' + categorie.title">
+            <a href="" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" class="category-link clr-none">
+                <div class="zoom-scal zoom-scal-nopb">
+                  <img 
+                    class="blur-up w-100 lazyloaded" 
+                    [attr.data-src]="categorie.imagen_home"
+                    [src]="categorie.imagen_home" 
+                    [alt]="'Imagen de la categoría ' + categorie.title"
+                    width="365" 
+                    height="365"
+                    loading="lazy">
+                </div>
+                <div class="details d-flex justify-content-between align-items-center">
+                    <h4 class="category-title mb-0 fw-bold">{{ categorie.title }}</h4>
+                    <!-- <p class="counts">20 Items</p> -->
+                    <!-- <p class="counts text-muted">{{ categorie.total_products }} {{ categorie.total_products == 1 ? 'Producto' : 'Productos' }}</p> -->
+                </div>
+            </a>
+          </article>
+        </div>
+      </ng-container>
+    </div>
+</div>
