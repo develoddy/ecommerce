@@ -4,12 +4,17 @@
     <!-- Bloque centrado -->
     <div class="row mb-5 justify-content-center text-center">
       <div class="col-12 col-md-10 col-lg-8">
-        <h2 class="fw-bold text-white mb-3 text-uppercase lh-1" [ngClass]="{'fs-22': isMobile, 'fs-32': isDesktop}">
-          En LujanDev creemos que programar es más que código
+        <h2 class="text-white mb-3 lh-1" [ngClass]="{'fs-22': isMobile, 'fs-32': isDesktop}">
+          En LujanDev creemos que programar<br>
+          es más que código: es cultura, estilo y actitud
         </h2>
         <p class="lead text-white lh-1">
-          Es cultura, estilo y actitud. Nuestras camisetas <br /> están hechas 
-          para developers que quieren <br /> vestir su pasión con elegancia.
+          Nuestra colección de merch está diseñada<br> 
+          para developers que buscan calidad,<br> 
+          autenticidad y actitud en cada<br> prenda.
+
+          <!-- Nuestras camisetas <br /> están hechas 
+          para developers que quieren <br /> vestir su pasión con elegancia. -->
         </p>
       </div>
     </div>
@@ -49,7 +54,7 @@
             />
             <button 
               type="submit" 
-              class="btn-subscribe position-absolute px-0"
+              class="btn-subscribe position-absolute px-0 fw-normal"
               [disabled]="isSubmitting"
               style="z-index: 10;"
             >

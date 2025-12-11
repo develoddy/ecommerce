@@ -248,8 +248,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.allShirtsCategory = this.getCategory('all-shirts', 'All shirts');
-
-    console.debug("DEBBUG: Processed categories All Shirts:", this.allShirtsCategory);
   }
 
   private processProductPrices(resp: any): void {

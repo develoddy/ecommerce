@@ -763,6 +763,7 @@
       </app-flash-sale-banner>
       <!--End Parallax Banner-->
 
+      <!-- Flash Sale Section -->
       <ng-container *ngIf="FlashSales && FlashSales.length > 0">
         <!-- Flash Sale -->
         <app-flash-sale
@@ -780,18 +781,19 @@
         </app-flash-sale>
         <!-- /End Flash Sale-->
       </ng-container>
+      <!-- End Flash Sale Section -->
 
       <!--Featured Content-->
-      <div class="destination-section section">
-          <div class="container">
+      <div class="destination-section section py-0">
+          <div class="container-fluid">
               <div class="row align-items-center">
                   <div class="col-12 col-sm-12 col-md-6">
                       <div class="about-details px-50 py-5">
                           <h2 class="fs-4 mb-3">Viste tu pasión por el código con estilo y actitud.</h2>
                           <p>
-                            Descubre camisetas exclusivas diseñadas para quienes viven y respiran tecnología.
+                            Descubre camisetas exclusivas diseñadas para quienes viven y respiran tecnología.<br>
                             En <b>LujanDev</b> encontrarás apparel inspirado en
-                            <b>JavaScript, NodeJS, TypeScript y los frameworks frontend más avanzados</b>.
+                            <b>JavaScript, NodeJS, TypeScript</b> y los frameworks frontend más avanzados.
                           </p>
                           <p>Diseños únicos creados para developers que buscan calidad, identidad y comodidad en su día a día.</p>
                           <a
@@ -805,7 +807,7 @@
                   <div class="col-12 col-sm-12 col-md-6">
                       <div class="about-images mt-4 mt-md-0">
                           <div class="row g-3">
-                              <img class="rounded-0 blur-up lazyloaded" data-src="assets/images/about/about1.jpg" src="assets/images/about/about1.jpg" alt="about" width="700" height="827">                              
+                              <img class="rounded-0 blur-up lazyloaded" data-src="assets/images/about/about1.jpg" src="assets/images/about/about1.png" alt="about" width="700" height="827">                              
                           </div>
                       </div>
                   </div>
@@ -814,32 +816,20 @@
       </div>
       <!-- End Featured Content-->
 
-      <!-- Storytelling / Brand Message -->
-      <app-brand-message [isMobile]="isMobile" [isDesktop]="isDesktop"></app-brand-message>
-      <!-- End Storytelling / Brand Message -->
-
-      <!--Testimonial Section-->
-      <ng-container *ngIf="ocultar">
-      <app-testimonials></app-testimonials>
-      </ng-container>
-      <!--End Testimonial section-->
-
-      <div class="section parallax-banner-style1 py-0" *ngIf="ocultar">
-        <div class="hero hero-large hero-overlay bg-size" style="background-image: url(&quot;assets/images/parallax/demo1-sale-banner.jpg&quot;); background-size: cover; background-position: center center; background-repeat: no-repeat;">
-            <img class="bg-img" src="assets/images/parallax/demo1-sale-banner.jpg" alt="Clearance Sale - Flat 50% Off" width="1920" height="645" style="display: none;">
+      <!-- Parallax Banner Hoodie -->
+      <div class="section parallax-banner-style1 py-0" *ngIf="!ocultar">
+        <div class="hero hero-large hero-overlay bg-size" style="background-image: url(&quot;assets/images/parallax/hoodie-banner.png&quot;); background-size: cover; background-position: center center; background-repeat: no-repeat;">
+            <img class="bg-img" src="assets/images/parallax/hoodie-banner.png" alt="Clearance Sale - Flat 50% Off" width="1920" height="645" style="display: none;">
         </div>
       </div>
-
-      <!--Service Section-->
-      <app-service-section></app-service-section>
-      <!--End Service Section-->
+      <!-- End Parallax Banner -->
 
       <!--Blog Post-->
       <section class="section home-blog-post d-none" *ngIf="besProducts && besProducts.length > 0">
         <div class="container">
           <div class="section-header">
-            <p class="mb-2 mt-0">Latest post</p>
-            <h2>Most Recent News</h2>
+            <p class="mb-2 mt-0"><em>Sin bugs, solo estilo. Porque el código también se viste bien.</em></p>
+            <h2>Nuestros productos</h2>
           </div>
 
           <div class="blog-slider-3items gp15 arwOut5 hov-arrow">
@@ -867,7 +857,7 @@
                         height="410"
                       />
                     </a>
-                    <div class="date">
+                    <div class="date d-none">
                       <span class="dt">25</span>
                       <span class="mt"
                         >Apr<br />
@@ -891,7 +881,7 @@
                           besProduct.campaing_discount?.id
                         )
                       "
-                      class="btn btn-secondary btn-sm"
+                      class="btn btn-secondary btn-sm d-none"
                       >Read more</a
                     >
                   </div>
@@ -902,6 +892,54 @@
         </div>
       </section>
       <!--End Blog Post-->
+
+      <!--Testimonial Section-->
+      <ng-container *ngIf="ocultar">
+      <app-testimonials></app-testimonials>
+      </ng-container>
+      <!--End Testimonial section-->
+
+      <!-- Merch LujanDev Content-->
+      <div class="destination-section section">
+          <div class="container">
+              <div class="row align-items-center">
+                  <div class="col-12 col-sm-12 col-md-12">
+                      <div class="about-details text-center px-50 py-5">
+                          <h2 class="fs-4 mb-3">Merch que tu manager <br /><span class="gradient-text">jamás entenderá</span></h2>
+                          <p>
+                            Camisetas, tazas, gorras y sudaderas para quienes viven de bugs que son features.<br />
+                            <strong>Diseñado por un developer. Para developers. Sin bullshit marketera.</strong><br />
+                          </p>
+                          <a
+                            *ngIf="allShirtsCategory" 
+                            [routerLink]="['/', locale, country, 'shop', 'filter-products']" 
+                            class="btn btn-lg mt20">
+                            Comprar Ahora
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- End Merch LujanDev Content-->
+
+      <!-- Parallax Banner -->
+      <div class="section parallax-banner-style1 py-0" *ngIf="!ocultar">
+        <div class="hero hero-large hero-overlay bg-size" style="background-image: url(&quot;assets/images/parallax/gorra-banner.png&quot;); background-size: cover; background-position: center center; background-repeat: no-repeat;">
+            <img class="bg-img" src="assets/images/parallax/gorra-banner.png" alt="Clearance Sale - Flat 50% Off" width="1920" height="645" style="display: none;">
+        </div>
+      </div>
+      <!-- End Parallax Banner -->
+
+      <!--Service Section-->
+      <app-service-section></app-service-section>
+      <!--End Service Section-->
+
+      <!-- Storytelling / Brand Message -->
+      <app-brand-message [isMobile]="isMobile" [isDesktop]="isDesktop"></app-brand-message>
+      <!-- End Storytelling / Brand Message -->
+
+      
 
     </div>
   <!-- End Body Container -->
