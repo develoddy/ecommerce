@@ -1071,7 +1071,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 
 .hero-exlarge { height:900px; }
 .hero-xlarge { height:800px; }
-.hero-large { height:600px; }
+.hero-large { height:600px !important; }
 .hero-medium { height:450px; }
 .hero-small { height:380px; }
 
