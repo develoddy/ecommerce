@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HomeService } from '../../home/_services/home.service';
 import { PrelaunchService } from './_services/prelaunch.service';
+import { PrelaunchConfigService } from 'src/app/services/prelaunch-config.service';
 import { Subscription } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { SeoService } from 'src/app/services/seo.service';
@@ -49,6 +50,7 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
   constructor(
     private homeService: HomeService,
     private prelaunchService: PrelaunchService,
+    private prelaunchConfigService: PrelaunchConfigService,
     private localizationService: LocalizationService,
     private seoService: SeoService
   ) {
@@ -56,9 +58,9 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
 
-    // 🎯 VALIDACIÓN: Countdown hasta 13 diciembre 2025 (7 días de test)
+    // ⏰ Fecha de lanzamiento por defecto (se actualizará dinámicamente)
     this.launchDate = new Date('2025-12-13T12:00:00');
-    console.log('🚀 Countdown configurado para:', this.launchDate.toLocaleString());
+    console.log('🚀 Countdown inicial configurado para:', this.launchDate.toLocaleString());
   }
 
   /**
@@ -216,10 +218,36 @@ export class PreLaunchLandingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadLaunchDate();
     this.setupSEO();
-    this.startCountdown();
     this.loadPreviewProducts();
     this.loadSubscriberStats();
+  }
+
+  /**
+   * Cargar fecha de lanzamiento dinámicamente desde el backend
+   */
+  private loadLaunchDate(): void {
+    this.subscriptions.add(
+      this.prelaunchConfigService.getPrelaunchConfig().subscribe({
+        next: (config) => {
+          if (config.launch_date) {
+            this.launchDate = new Date(config.launch_date);
+            console.log('📅 Fecha de lanzamiento cargada dinámicamente:', this.launchDate.toLocaleString());
+          } else {
+            console.log('⚠️ No hay fecha configurada, usando fecha por defecto');
+          }
+          // Iniciar countdown después de cargar la fecha
+          this.startCountdown();
+        },
+        error: (error) => {
+          console.error('❌ Error cargando fecha de lanzamiento:', error);
+          console.log('🔄 Usando fecha por defecto');
+          // Iniciar countdown con fecha por defecto en caso de error
+          this.startCountdown();
+        }
+      })
+    );
   }
 
   /**
