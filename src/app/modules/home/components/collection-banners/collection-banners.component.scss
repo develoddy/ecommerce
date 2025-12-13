@@ -44,8 +44,8 @@
     text-align: center;
     color: white;
     position: absolute;
-    bottom: 2rem;
-    left: 2rem;
+    bottom: 0rem;
+    left: 1rem;
     
     p {
       margin-bottom: 0.5rem;
@@ -100,7 +100,7 @@
   height: 100%;
   
   &.sp-col {
-    margin-bottom: 1rem;
+    margin-bottom: 5rem;
   }
 }
 
@@ -163,7 +163,7 @@
     }
     
     .title {
-      font-size: 1.5rem;
+      font-size: 1rem;
       font-weight: bold;
       margin-bottom: 1rem;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -215,7 +215,7 @@
     
     .inner {
       .title {
-        font-size: 1.5rem;
+        font-size: 1rem;
       }
       
       .btn {

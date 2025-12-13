@@ -25,7 +25,10 @@
         <!--End Page Header-->
         <!--Main Content-->
         <div class="container-fluid" [ngClass]="{ 'px-0': isMobile }">
-            <app-category-slider [categories]="categories" [locale]="locale" [country]="country"></app-category-slider>
+            <ng-container *ngIf="!isMobile">
+                <app-category-slider [categories]="categories" [locale]="locale" [country]="country"></app-category-slider>
+            </ng-container>
+            
             
             <app-toolbar [isDesktop]="isDesktop" [isMobile]="isMobile" [products]="products" (openSidebar)="openSidebar()" (sortProducts)="onSortProducts($event)"></app-toolbar>
 
