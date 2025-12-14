@@ -571,7 +571,7 @@
                         <div class="search-drawer offcanvas offcanvas-top" tabindex="-1" id="search-drawer">
                             <div class="container">
                                 <div class="search-header d-flex-center justify-content-between mb-3">
-                                    <h3 class="title m-0">Busca tu outfit developer 🕶</h3>
+                                    <h3 class="title m-0 text-uppercase">Busca tu outfit developer 🕶</h3>
                                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                                         aria-label="Close"></button>
                                 </div>
@@ -592,7 +592,7 @@
                                                     (ngModelChange)="searchProduct()" 
                                                     (keyup.enter)="searchProduct()" 
                                                     #filter
-                                                    name="prod-search" id="prod-search" placeholder="Buscar en Lujandev." value="" 
+                                                    name="prod-search" id="prod-search" placeholder="Buscar en LujanDev." value="" 
                                                     style="border-bottom-left-radius: 8px; border-top-left-radius: 8px;"/>
                                                 <button type="submit"
                                                     class="action search d-flex-justify-center btn rounded-start-0">
@@ -629,7 +629,7 @@
                                                                 title="{{ product.title }}" />
                                                             <span class="search-badge-sale" *ngIf="product.campaing_discount">Sale</span>
                                                         </div>
-                                                        <div class="search-item-details">
+                                                        <div class="search-item-details text-start">
                                                             <h6 class="search-item-title">{{ product.title }}</h6>
                                                             <div class="search-item-category text-muted" *ngIf="product.categorie">
                                                                 <i class="icon anm anm-tag-l me-1"></i>{{ product.categorie.title }}
