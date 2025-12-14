@@ -54,6 +54,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
+  isMobileMenuOpen: boolean = false;
   source: any;
   locale: string = "";
   country: string = "";
@@ -159,6 +160,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
           filter(event => event instanceof NavigationEnd)
         ).subscribe((event: any) => {
           this.showSubscriptionSection = !event.urlAfterRedirects.includes('/checkout');
+          
+          // Cerrar menú móvil cuando se navegue
+          if (this.isMobileMenuOpen) {
+            this.closeMobileMenuAndOverlay();
+          }
           
           // Restaurar display del megamenu después de navegación
           setTimeout(() => {
@@ -825,6 +831,26 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         })
       );
     }
+
+    // Add window resize listener to close mobile menu on desktop
+    this.subscriptions.add(
+      fromEvent(window, 'resize').pipe(
+        debounceTime(100)
+      ).subscribe(() => {
+        if (window.innerWidth >= 992 && this.isMobileMenuOpen) {
+          this.closeMobileMenuAndOverlay();
+        }
+      })
+    );
+
+    // Add escape key listener to close mobile menu
+    this.subscriptions.add(
+      fromEvent<KeyboardEvent>(document, 'keydown').subscribe((event) => {
+        if (event.key === 'Escape' && this.isMobileMenuOpen) {
+          this.closeMobileMenuAndOverlay();
+        }
+      })
+    );
   }
 
   searchProduct() {
@@ -1008,14 +1034,35 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   toggleMobileMenu(): void {
-    $('.mobile-nav-wrapper').toggleClass("active");
-    $('body').toggleClass("menuOn");
-    $('.js-mobile-nav-toggle').toggleClass('mobile-nav--open mobile-nav--close');
+    // Toggle state
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
     
-    // Reset all submenus to closed state when opening menu
-    const isOpening = $('.mobile-nav-wrapper').hasClass("active");
-    if (isOpening) {
+    console.log('Mobile menu toggled:', this.isMobileMenuOpen); // Debug log
+    
+    const body = document.body;
+    const toggleButton = document.querySelector('.js-mobile-nav-toggle') as HTMLElement;
+    const mobileNavWrapper = document.querySelector('.mobile-nav-wrapper') as HTMLElement;
+    const mobileNavOverlay = document.querySelector('.mobile-nav-overlay') as HTMLElement;
+    
+    if (this.isMobileMenuOpen) {
+      // Opening menu
+      body.classList.add('menuOn');
       
+      if (mobileNavWrapper) {
+        mobileNavWrapper.classList.add('active');
+      }
+      
+      if (mobileNavOverlay) {
+        mobileNavOverlay.classList.add('active');
+      }
+      
+      if (toggleButton) {
+        toggleButton.classList.remove('mobile-nav--open');
+        toggleButton.classList.add('mobile-nav--close');
+        toggleButton.setAttribute('aria-expanded', 'true');
+      }
+      
+      // Reset all submenus to closed state when opening menu
       const allItems = document.querySelectorAll('.mobile-nav .lvl1');
       allItems.forEach((item) => {
         item.classList.remove('expanded', 'animating');
@@ -1024,17 +1071,59 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
           submenu.classList.remove('show');
         }
       });
+    } else {
+      // Closing menu
+      body.classList.remove('menuOn');
+      
+      if (mobileNavWrapper) {
+        mobileNavWrapper.classList.remove('active');
+      }
+      
+      if (mobileNavOverlay) {
+        mobileNavOverlay.classList.remove('active');
+      }
+      
+      if (toggleButton) {
+        toggleButton.classList.remove('mobile-nav--close');
+        toggleButton.classList.add('mobile-nav--open');
+        toggleButton.setAttribute('aria-expanded', 'false');
+      }
     }
+    
+    // Trigger change detection
+    this.cd.detectChanges();
   }
   
   closeMobileMenuAndOverlay(): void {
-    // Cerrar el menú móvil
-    $('.mobile-nav-wrapper').removeClass("active");
-    $('body').removeClass("menuOn");
-    $('.js-mobile-nav-toggle').removeClass('mobile-nav--close').addClass('mobile-nav--open');
+    const body = document.body;
+    const toggleButton = document.querySelector('.js-mobile-nav-toggle') as HTMLElement;
+    const mobileNavWrapper = document.querySelector('.mobile-nav-wrapper') as HTMLElement;
+    const mobileNavOverlay = document.querySelector('.mobile-nav-overlay') as HTMLElement;
     
-    // Cerrar cualquier overlay que pueda estar activo
-    $('.overlay-sidebar').removeClass('active');
+    // Update state
+    this.isMobileMenuOpen = false;
+    
+    console.log('Closing mobile menu'); // Debug log
+    
+    // Cerrar el menú móvil
+    body.classList.remove('menuOn');
+    
+    if (mobileNavWrapper) {
+      mobileNavWrapper.classList.remove('active');
+    }
+    
+    if (mobileNavOverlay) {
+      mobileNavOverlay.classList.remove('active');
+    }
+    
+    if (toggleButton) {
+      toggleButton.classList.remove('mobile-nav--close');
+      toggleButton.classList.add('mobile-nav--open');
+      toggleButton.setAttribute('aria-expanded', 'false');
+    }
+    
+    // Trigger change detection
+    this.cd.detectChanges();
   }
 
   toggleMobileSubmenu(event: Event): void {

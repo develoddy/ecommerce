@@ -612,9 +612,23 @@
    =================================== */
 
 @media (max-width: 991px) {
+  /* Mobile Navigation Wrapper */
   .mobile-nav-wrapper {
-    width: 300px;
-    max-width: 85vw;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 320px !important;
+    max-width: 85vw !important;
+    background: #ffffff !important;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1) !important;
+    z-index: 99999 !important;
+    overflow-y: auto !important;
+    transform: translateX(-100%) !important;
+    opacity: 0 !important;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s ease-in-out !important;
+    display: block !important;
+    visibility: hidden !important;
   }
 
   .mobile-nav .lvl1 {
@@ -816,6 +830,103 @@
   }
 }
 
+/* Active state for mobile nav */
 .mobile-nav-wrapper.active {
-  animation: slideInFromLeft 0.3s ease forwards;
+  transform: translateX(0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Mobile nav overlay */
+.mobile-nav-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  z-index: 99998 !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+  cursor: pointer !important;
+  display: block !important;
+}
+
+.mobile-nav-overlay.active {
+  opacity: 1 !important;
+}
+
+/* Prevent body scroll when menu is open */
+body.menuOn {
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+/* Ensure mobile nav is always on top */
+.mobile-nav-wrapper,
+.mobile-nav-overlay {
+  pointer-events: auto !important;
+}
+
+/* Mobile menu content */
+.mobile-nav {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Global mobile nav styles (outside media query for safety) */
+.mobile-nav-wrapper {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 300px !important;
+  max-width: 85vw !important;
+  background: #ffffff !important;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1) !important;
+  z-index: 99999 !important;
+  overflow-y: auto !important;
+  transform: translateX(-100%) !important;
+  opacity: 0 !important;
+  transition: all 0.3s ease-in-out !important;
+  display: block !important;
+  visibility: hidden !important;
+}
+
+.mobile-nav-wrapper.active {
+  transform: translateX(0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+.mobile-nav-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  z-index: 99998 !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+  cursor: pointer !important;
+  display: none !important;
+}
+
+.mobile-nav-overlay.active {
+  opacity: 1 !important;
+  display: block !important;
 }

@@ -531,6 +531,8 @@
                             (click)="toggleMobileMenu()" 
                             class="iconset menu-icon js-mobile-nav-toggle mobile-nav--open d-lg-none px-0"
                             title="Menu"
+                            aria-label="Toggle mobile menu"
+                            aria-expanded="false"
                             *ngIf="ourProducts && ourProducts.length > 0">
                         <svg width="24" height="24" role="img" aria-hidden="true"
                             class="hdr-icon icon anm anm-bars-r Icon_icon-content-1__kPDLF MenuAdaptive_menuIcon__AT3AM"
@@ -808,9 +810,18 @@
     </div>
 </ng-template>
 
+<!--Mobile Menu Overlay-->
+<div class="mobile-nav-overlay" 
+     *ngIf="isMobileMenuOpen" 
+     (click)="closeMobileMenuAndOverlay()" 
+     [ngClass]="{'active': isMobileMenuOpen}"></div>
+
 <!--Mobile Menu-->
-<div class="mobile-nav-wrapper" role="navigation" >
-    <div class="closemobileMenu" (click)="toggleMobileMenu()">Menu <i class="icon anm anm-times-l"></i></div>
+<div class="mobile-nav-wrapper" 
+     role="navigation" 
+     [attr.aria-hidden]="!isMobileMenuOpen"
+     [ngClass]="{'active': isMobileMenuOpen}">
+    <div class="closemobileMenu" (click)="toggleMobileMenu()" role="button" tabindex="0" (keydown.enter)="toggleMobileMenu()" (keydown.space)="toggleMobileMenu()">Menu <i class="icon anm anm-times-l"></i></div>
     <ul id="MobileNav" class="mobile-nav">
         <!-- Camisetas Category -->
         <li class="lvl1 parent megamenu">
@@ -818,9 +829,9 @@
                 Camisetas <i class="icon anm anm-angle-down-l"></i>
             </a>
             <ul class="lvl-2">
-                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central', categorieOurProducts?._id, 'logo-central']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Camisetas Logo Central</a></li>
-                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral', categorieOurProducts?._id, 'logo-lateral']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Camisetas Logo Lateral</a></li>
-                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas', categorieOurProducts?._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Todas las Camisetas</a></li>
+                <li *ngIf="categorieOurProducts?._id"><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-central', categorieOurProducts._id, 'logo-central']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Camisetas Logo Central</a></li>
+                <li *ngIf="categorieOurProducts?._id"><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas-logo-lateral', categorieOurProducts._id, 'logo-lateral']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Camisetas Logo Lateral</a></li>
+                <li *ngIf="categorieOurProducts?._id"><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'camisetas', categorieOurProducts._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Todas las Camisetas</a></li>
             </ul>
         </li>
         <!-- Hoddies Category -->
@@ -829,17 +840,17 @@
                 Hoddies <i class="icon anm anm-angle-down-l"></i>
             </a>
             <ul class="lvl-2">
-                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies', categorieHoodies?._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Todas las Hoddies</a></li>
-                <li><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies-con-capucha', categorieHoodies?._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Hoddies con Capucha</a></li>
+                <li *ngIf="categorieHoodies?._id"><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies', categorieHoodies._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Todas las Hoddies</a></li>
+                <li *ngIf="categorieHoodies?._id"><a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'hoddies-con-capucha', categorieHoodies._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Hoddies con Capucha</a></li>
             </ul>
         </li>
         <!-- Mug Category -->
-        <li class="lvl1">
-            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'mugs', categorieMugs?._id]" (click)="closeMobileMenuAndOverlay()">Mug</a>
+        <li class="lvl1" *ngIf="categorieMugs?._id">
+            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'mugs', categorieMugs._id]" (click)="closeMobileMenuAndOverlay()">Mug</a>
         </li>
         <!-- Gorras Category -->
-        <li class="lvl1">
-            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'gorras', categorieCaps?._id]" (click)="closeMobileMenuAndOverlay()">Gorras</a>
+        <li class="lvl1" *ngIf="categorieCaps?._id">
+            <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products', 'gorras', categorieCaps._id]" (click)="closeMobileMenuAndOverlay()">Gorras</a>
         </li>
         <li class="lvl1 parent megamenu d-none"><a href="#">Shop OLD<i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
