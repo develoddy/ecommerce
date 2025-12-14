@@ -248,7 +248,7 @@
     #MobileNav li li li li a { padding-left:40px; font-size:13px; background-color:#f7f7f7; }
     #MobileNav .mobile-menu-bottom { padding: 20px 10px 10px; }
     #MobileNav .mobile-menu-bottom li { border: none; }
-    #MobileNav .mobile-menu-bottom a { background-color: transparent; font-size: 13px; padding: 0px; text-transform: none; }
+    #MobileNav .mobile-menu-bottom a { background-color: transparent; font-size: 13px; padding: 12px 0px; text-transform: none; }
     #MobileNav .mobile-menu-bottom .icon { position:static; width: auto; height: auto;line-height: normal; font-size: 14px; }
     #MobileNav .mobile-menu-bottom .mobile-links li { margin: 0 0 8px; }
     #MobileNav .mobile-menu-bottom .mobile-links .title { margin: 20px 0 14px; text-transform: uppercase; border-top:1px solid #e7e7e7; padding-top: 20px; }
