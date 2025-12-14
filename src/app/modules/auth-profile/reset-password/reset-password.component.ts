@@ -75,6 +75,10 @@ export class ResetPasswordComponent implements OnInit {
     this.isPasswordVisible = !this.isPasswordVisible;
   }
 
+  clearPassword(): void {
+    this.newPassword = '';
+  }
+
   private checkDeviceType(): void {
     const width = window.innerWidth;
     this.isMobile = width <= 480;

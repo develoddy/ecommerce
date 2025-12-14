@@ -66,10 +66,12 @@ export class ForgotPasswordComponent implements OnInit
     }
   }
 
-  login() {
+  clearEmail(): void {
+    this.email = '';
   }
 
-  
+  login() {
+  }
 
   private checkDeviceType(): void {
     const width = window.innerWidth;

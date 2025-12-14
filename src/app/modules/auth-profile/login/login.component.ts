@@ -82,6 +82,37 @@ export class LoginComponent implements OnInit {
   }
 
   /**
+   * 🧹 Limpiar campo de email
+   */
+  clearEmail(): void {
+    this.email = "";
+    this.errorAutenticate = false;
+    // Enfocar el campo después de limpiar
+    setTimeout(() => {
+      const emailInput = document.getElementById('CustomerEmail');
+      if (emailInput) {
+        emailInput.focus();
+      }
+    }, 100);
+  }
+
+  /**
+   * 🧹 Limpiar campo de contraseña
+   */
+  clearPassword(): void {
+    this.password = "";
+    this.errorAutenticate = false;
+    this.isPasswordVisible = false; // Ocultar contraseña al limpiar
+    // Enfocar el campo después de limpiar
+    setTimeout(() => {
+      const passwordInput = document.getElementById('CustomerPassword');
+      if (passwordInput) {
+        passwordInput.focus();
+      }
+    }, 100);
+  }
+
+  /**
    * Migra el carrito del guest al usuario autenticado
    */
   private migrateGuestCart(user: any): void {

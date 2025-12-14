@@ -32,18 +32,36 @@
                                 <div class="form-row">
                                     <div class="form-group col-12">
                                         <label for="CustomerEmail" class="d-none">Correo electrónico <span class="required">*</span></label>
-                                        <div class="input-icon-wrapper">
+                                        <div class="input-icon-wrapper position-relative">
                                             <i class="icon anm anm-envelope-l input-icon"></i>
                                             <input type="email" 
                                                    name="email" 
-                                                   class="py-4 ps-5" 
+                                                   class="py-4 ps-5 pe-5" 
                                                    [(ngModel)]="email" 
                                                    placeholder="Correo electrónico" 
                                                    id="CustomerEmail" 
-                                                   value="" 
+                                                   autocomplete="off"
+                                                   autocorrect="off"
+                                                   autocapitalize="off"
+                                                   spellcheck="false"
                                                    required 
                                                    [ngClass]="{'border-success': email}" 
-                                                   style="border-radius: 8px; transition: all 0.3s ease;" />
+                                                   style="border-radius: 8px; transition: all 0.3s ease; width: 100%;" />
+                                            
+                                            <!-- Botón para limpiar email -->
+                                            <button *ngIf="email" 
+                                                    type="button" 
+                                                    class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                    (click)="clearEmail()"
+                                                    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                           width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                           border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                </svg>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="form-group col-12">
@@ -57,22 +75,44 @@
                                               [(ngModel)]="password" 
                                               placeholder="Contraseña" 
                                               id="CustomerPassword" 
+                                              autocomplete="off"
+                                              autocorrect="off"
+                                              autocapitalize="off"
+                                              spellcheck="false"
                                               required
-                                              class="py-4 ps-5 pe-5"
+                                              class="py-4 ps-5"
+                                              [class.pe-5]="!password"
+                                              [class.pe-6]="password"
                                               [ngClass]="{'border-success': password}"
                                               style="border-radius: 8px; transition: all 0.3s ease; width: 100%;"
                                             />
                                         
-                                            <!-- Botón para mostrar/ocultar contraseña -->
-                                            <button 
-                                              aria-live="polite" 
-                                              class="border-0 bg-transparent toggle-password-btn" 
-                                              type="button" 
-                                              (click)="togglePasswordVisibility()"
-                                              style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; transition: opacity 0.3s ease; padding: 8px;"
-                                              onmouseover="this.style.opacity='0.7'"
-                                              onmouseout="this.style.opacity='1'"
-                                            >
+                                            <!-- Botones para contraseña -->
+                                            <div class="password-actions d-flex align-items-center" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);">
+                                                <!-- Botón para limpiar contraseña -->
+                                                <button *ngIf="password" 
+                                                        type="button" 
+                                                        class="btn-clear-input d-flex align-items-center justify-content-center me-2" 
+                                                        (click)="clearPassword()"
+                                                        style="width: 24px; height: 24px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                               border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                        onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                        onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                    <svg width="14" height="14" fill="#6c757d" viewBox="0 0 16 16">
+                                                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                    </svg>
+                                                </button>
+                                                
+                                                <!-- Botón para mostrar/ocultar contraseña -->
+                                                <button 
+                                                  aria-live="polite" 
+                                                  class="border-0 bg-transparent toggle-password-btn" 
+                                                  type="button" 
+                                                  (click)="togglePasswordVisibility()"
+                                                  style="cursor: pointer; transition: opacity 0.3s ease; padding: 4px;"
+                                                  onmouseover="this.style.opacity='0.7'"
+                                                  onmouseout="this.style.opacity='1'"
+                                                >
                                               <!-- SVG de 'Mostrar' -->
                                               <svg *ngIf="!isPasswordVisible" width="24" height="24" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                                 <path d="M12 6.266c-5.24 0-8.653 5.242-8.796 5.464l-.173.27.173.27c.143.222 3.557 5.464 8.796 5.464s8.653-5.242 8.796-5.464l.173-.27-.173-.27c-.143-.222-3.557-5.464-8.796-5.464m0 10.468c-4.046 0-7.01-3.693-7.766-4.734.755-1.041 3.72-4.734 7.766-4.734s7.01 3.693 7.766 4.734c-.755 1.041-3.72 4.734-7.766 4.734M12 9c-1.654 0-3 1.346-3 3s1.346 3 3 3 3-1.346 3-3-1.346-3-3-3m0 5c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2"></path>
@@ -82,6 +122,7 @@
                                                 <path d="m16.878 7.83 3.976-3.976-.708-.708-4.16 4.161C14.825 6.696 13.489 6.266 12 6.266c-5.24 0-8.653 5.242-8.796 5.464l-.173.27.173.27c.091.142 1.527 2.336 3.918 3.9l-3.976 3.976.708.708 4.16-4.161c1.161.611 2.497 1.041 3.986 1.041 5.24 0 8.653-5.242 8.796-5.464l.173-.27-.173-.27c-.091-.142-1.527-2.336-3.918-3.9M4.234 12C4.99 10.959 7.954 7.266 12 7.266c1.181 0 2.267.32 3.236.791L13.733 9.56A3 3 0 0 0 12 9c-1.654 0-3 1.346-3 3 0 .647.21 1.243.56 1.733l-1.706 1.706c-1.862-1.17-3.157-2.801-3.62-3.439M14 12c0 1.103-.897 2-2 2-.37 0-.712-.108-1.01-.284l2.726-2.725c.176.297.284.64.284 1.009m-4 0c0-1.103.897-2 2-2 .37 0 .712.108 1.01.284l-2.726 2.725A2 2 0 0 1 10 12m2 4.734c-1.181 0-2.267-.32-3.236-.791l1.503-1.503c.49.35 1.086.56 1.733.56 1.654 0 3-1.346 3-3a2.97 2.97 0 0 0-.56-1.733l1.706-1.706c1.862 1.17 3.157 2.801 3.62 3.439-.755 1.041-3.72 4.734-7.766 4.734"></path>
                                               </svg>
                                             </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group col-12 mb-3">

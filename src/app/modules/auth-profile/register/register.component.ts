@@ -237,6 +237,62 @@ export class RegisterComponent implements OnInit {
     return maxDate.toISOString().split('T')[0]; // Formato YYYY-MM-DD
   }
 
+  clearField(fieldName: string) {
+    switch(fieldName) {
+      case 'name':
+        this.name = '';
+        break;
+      case 'email':
+        this.email = '';
+        break;
+      case 'zipcode':
+        this.zipcode = '';
+        break;
+      case 'phone':
+        this.phone = '';
+        break;
+      case 'birthday':
+        this.birthday = '';
+        break;
+      case 'password':
+        this.password = '';
+        break;
+      case 'repeat_password':
+        this.repeat_password = '';
+        break;
+    }
+    
+    // Limpiar también los errores del campo específico
+    this.touchedFields[fieldName] = false;
+    this.resetFieldError(fieldName);
+  }
+
+  private resetFieldError(fieldName: string) {
+    switch(fieldName) {
+      case 'name':
+        this.errorName = false;
+        break;
+      case 'email':
+        this.errorEmail = false;
+        break;
+      case 'zipcode':
+        this.errorZipcode = false;
+        break;
+      case 'phone':
+        this.errorPhone = false;
+        break;
+      case 'birthday':
+        this.errorBirthday = false;
+        break;
+      case 'password':
+        this.errorPassword = false;
+        break;
+      case 'repeat_password':
+        this.errorRepeatPassword = false;
+        break;
+    }
+  }
+
   resetForm() {
     this.email = '';
     this.name = '';

@@ -48,9 +48,37 @@
                                 <div class="form-row">
                                     <div class="form-group col-12">
                                         <label for="CustomerUsername" class="d-none">Nombre <span class="required">*</span></label>
-                                        <div class="input-icon-wrapper">
+                                        <div class="input-icon-wrapper position-relative">
                                             <i class="icon anm anm-user-al input-icon"></i>
-                                            <input type="text" name="name" [(ngModel)]="name" placeholder="Nombre" class="py-4 ps-5" [ngClass]="{'border border-danger': errorName, 'border-success': touchedFields['name'] && name && !errorName}" (input)="onInputChange('name')" id="CustomerUsername" value="" required style="border-radius: 8px; transition: all 0.3s ease;" />
+                                            <input type="text" 
+                                                   name="name" 
+                                                   [(ngModel)]="name" 
+                                                   placeholder="Nombre" 
+                                                   class="py-4 ps-5 pe-5" 
+                                                   [ngClass]="{'border border-danger': errorName, 'border-success': touchedFields['name'] && name && !errorName}" 
+                                                   (input)="onInputChange('name')" 
+                                                   id="CustomerUsername" 
+                                                   autocomplete="off"
+                                                   autocorrect="off"
+                                                   autocapitalize="words"
+                                                   spellcheck="false"
+                                                   required 
+                                                   style="border-radius: 8px; transition: all 0.3s ease; width: 100%;" />
+                                            
+                                            <!-- Botón para limpiar nombre -->
+                                            <button *ngIf="name" 
+                                                    type="button" 
+                                                    class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                    (click)="clearField('name')"
+                                                    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                           width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                           border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                </svg>
+                                            </button>
                                         </div>
                                         <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['name'] && !name" style="border-left: 4px solid #dc3545; border-radius: 6px;">
                                             <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
@@ -58,9 +86,37 @@
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerEmail"  class="d-none">E-mail <span class="required">*</span></label>
-                                        <div class="input-icon-wrapper">
+                                        <div class="input-icon-wrapper position-relative">
                                             <i class="icon anm anm-envelope-l input-icon"></i>
-                                            <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" class="py-4 ps-5" [ngClass]="{'border border-danger': errorEmail, 'border-success': touchedFields['email'] && email && !errorEmail}" (input)="onInputChange('email')" id="CustomerEmail" value="" required style="border-radius: 8px; transition: all 0.3s ease;" />
+                                            <input type="email" 
+                                                   name="email" 
+                                                   [(ngModel)]="email" 
+                                                   placeholder="E-mail" 
+                                                   class="py-4 ps-5 pe-5" 
+                                                   [ngClass]="{'border border-danger': errorEmail, 'border-success': touchedFields['email'] && email && !errorEmail}" 
+                                                   (input)="onInputChange('email')" 
+                                                   id="CustomerEmail" 
+                                                   autocomplete="off"
+                                                   autocorrect="off"
+                                                   autocapitalize="off"
+                                                   spellcheck="false"
+                                                   required 
+                                                   style="border-radius: 8px; transition: all 0.3s ease; width: 100%;" />
+                                            
+                                            <!-- Botón para limpiar email -->
+                                            <button *ngIf="email" 
+                                                    type="button" 
+                                                    class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                    (click)="clearField('email')"
+                                                    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                           width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                           border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                </svg>
+                                            </button>
                                         </div>
                                         <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['email'] && !email" style="border-left: 4px solid #dc3545; border-radius: 6px;">
                                             <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
@@ -68,9 +124,37 @@
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerZipcode" class="d-none">Código postal <span class="required">*</span></label>
-                                        <div class="input-icon-wrapper">
+                                        <div class="input-icon-wrapper position-relative">
                                             <i class="icon anm anm-map-marker-al input-icon"></i>
-                                            <input type="text" name="zipcode" [(ngModel)]="zipcode" placeholder="Código postal" class="py-4 ps-5" [ngClass]="{'border border-danger': errorZipcode, 'border-success': touchedFields['zipcode'] && zipcode && !errorZipcode}" (input)="onInputChange('zipcode')" id="CustomerZipcode" value="" required style="border-radius: 8px; transition: all 0.3s ease;" />
+                                            <input type="text" 
+                                                   name="zipcode" 
+                                                   [(ngModel)]="zipcode" 
+                                                   placeholder="Código postal" 
+                                                   class="py-4 ps-5 pe-5" 
+                                                   [ngClass]="{'border border-danger': errorZipcode, 'border-success': touchedFields['zipcode'] && zipcode && !errorZipcode}" 
+                                                   (input)="onInputChange('zipcode')" 
+                                                   id="CustomerZipcode" 
+                                                   autocomplete="off"
+                                                   autocorrect="off"
+                                                   autocapitalize="off"
+                                                   spellcheck="false"
+                                                   required 
+                                                   style="border-radius: 8px; transition: all 0.3s ease; width: 100%;" />
+                                            
+                                            <!-- Botón para limpiar zipcode -->
+                                            <button *ngIf="zipcode" 
+                                                    type="button" 
+                                                    class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                    (click)="clearField('zipcode')"
+                                                    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                           width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                           border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                </svg>
+                                            </button>
                                         </div>
                                         <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['zipcode'] && !zipcode" style="border-left: 4px solid #dc3545; border-radius: 6px;">
                                             <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
@@ -78,9 +162,37 @@
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="CustomerMovil" class="d-none">Móvil<span class="required">*</span></label>
-                                        <div class="input-icon-wrapper">
+                                        <div class="input-icon-wrapper position-relative">
                                             <i class="icon anm anm-phone-l input-icon"></i>
-                                            <input type="tel" name="phone" [(ngModel)]="phone" placeholder="Móvil" class="py-4 ps-5" [ngClass]="{'border border-danger': errorPhone, 'border-success': touchedFields['phone'] && phone && !errorPhone}" (input)="onInputChange('phone')" id="CustomerMovil" value="" required style="border-radius: 8px; transition: all 0.3s ease;" />
+                                            <input type="tel" 
+                                                   name="phone" 
+                                                   [(ngModel)]="phone" 
+                                                   placeholder="Móvil" 
+                                                   class="py-4 ps-5 pe-5" 
+                                                   [ngClass]="{'border border-danger': errorPhone, 'border-success': touchedFields['phone'] && phone && !errorPhone}" 
+                                                   (input)="onInputChange('phone')" 
+                                                   id="CustomerMovil" 
+                                                   autocomplete="off"
+                                                   autocorrect="off"
+                                                   autocapitalize="off"
+                                                   spellcheck="false"
+                                                   required 
+                                                   style="border-radius: 8px; transition: all 0.3s ease; width: 100%;" />
+                                            
+                                            <!-- Botón para limpiar phone -->
+                                            <button *ngIf="phone" 
+                                                    type="button" 
+                                                    class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                    (click)="clearField('phone')"
+                                                    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                           width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                           border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                </svg>
+                                            </button>
                                         </div>
                                         <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['phone'] && !phone" style="border-left: 4px solid #dc3545; border-radius: 6px;">
                                             <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
@@ -118,9 +230,37 @@
                                         <label for="CustomerPassword" class="fw-semibold mb-2" style="color: #222; font-size: 0.9rem; letter-spacing: 0.3px;">
                                             <i class="icon anm anm-lock-l me-2"></i>Contraseña
                                         </label>
-                                        <div class="input-icon-wrapper">
+                                        <div class="input-icon-wrapper position-relative">
                                             <i class="icon anm anm-lock-l input-icon"></i>
-                                            <input type="password" name="password" [(ngModel)]="password" class="py-4 ps-5" placeholder="Contraseña" [ngClass]="{'border border-danger': errorPassword, 'border-success': touchedFields['password'] && password && !errorPassword}" (input)="onInputChange('password')" id="CustomerPassword" value="" required style="border-radius: 8px; transition: all 0.3s ease;" />                        	
+                                            <input type="password" 
+                                                   name="password" 
+                                                   [(ngModel)]="password" 
+                                                   class="py-4 ps-5 pe-5" 
+                                                   placeholder="Contraseña" 
+                                                   [ngClass]="{'border border-danger': errorPassword, 'border-success': touchedFields['password'] && password && !errorPassword}" 
+                                                   (input)="onInputChange('password')" 
+                                                   id="CustomerPassword" 
+                                                   autocomplete="off"
+                                                   autocorrect="off"
+                                                   autocapitalize="off"
+                                                   spellcheck="false"
+                                                   required 
+                                                   style="border-radius: 8px; transition: all 0.3s ease; width: 100%;" />
+                                            
+                                            <!-- Botón para limpiar password -->
+                                            <button *ngIf="password" 
+                                                    type="button" 
+                                                    class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                    (click)="clearField('password')"
+                                                    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                           width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                           border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                </svg>
+                                            </button>
                                         </div>
                                         <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['password'] && !password" style="border-left: 4px solid #dc3545; border-radius: 6px;">
                                             <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
@@ -130,9 +270,37 @@
                                         <label for="CustomerConfirmPassword" class="fw-semibold mb-2" style="color: #222; font-size: 0.9rem; letter-spacing: 0.3px;">
                                             <i class="icon anm anm-lock-l me-2"></i>Confirmar Contraseña
                                         </label>
-                                        <div class="input-icon-wrapper">
+                                        <div class="input-icon-wrapper position-relative">
                                             <i class="icon anm anm-lock-l input-icon"></i>
-                                            <input id="CustomerConfirmPassword" type="Password" class="py-4 ps-5" name="repeat_password" [(ngModel)]="repeat_password" [ngClass]="{'border border-danger': errorRepeatPassword, 'border-success': touchedFields['repeat_password'] && repeat_password && !errorRepeatPassword && password === repeat_password}" (input)="onInputChange('repeat_password')" placeholder="Confirmar Contraseña" required style="border-radius: 8px; transition: all 0.3s ease;" />                         	
+                                            <input id="CustomerConfirmPassword" 
+                                                   type="password" 
+                                                   class="py-4 ps-5 pe-5" 
+                                                   name="repeat_password" 
+                                                   [(ngModel)]="repeat_password" 
+                                                   [ngClass]="{'border border-danger': errorRepeatPassword, 'border-success': touchedFields['repeat_password'] && repeat_password && !errorRepeatPassword && password === repeat_password}" 
+                                                   (input)="onInputChange('repeat_password')" 
+                                                   placeholder="Confirmar Contraseña" 
+                                                   autocomplete="off"
+                                                   autocorrect="off"
+                                                   autocapitalize="off"
+                                                   spellcheck="false"
+                                                   required 
+                                                   style="border-radius: 8px; transition: all 0.3s ease; width: 100%;" />
+                                            
+                                            <!-- Botón para limpiar repeat_password -->
+                                            <button *ngIf="repeat_password" 
+                                                    type="button" 
+                                                    class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                    (click)="clearField('repeat_password')"
+                                                    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                           width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                           border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                </svg>
+                                            </button>
                                         </div>
                                         <div class="alert alert-danger py-2 px-3 mt-2 mb-0" *ngIf="touchedFields['repeat_password'] && !repeat_password" style="border-left: 4px solid #dc3545; border-radius: 6px;">
                                             <i class="icon anm anm-times-circle me-2"></i><small>Completa este campo para continuar</small>
