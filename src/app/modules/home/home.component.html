@@ -68,9 +68,9 @@
       </ng-container> -->
       <!--End Popular Categories-->
 
-      <ng-container *ngIf="ocultar">
+      <ng-container>
         <!--Toolbar d-none-->
-        <ng-container *ngIf="ourProducts && ourProducts.length > 0">
+        <ng-container >
           <div class="toolbar toolbar-wrapper shop-toolbar px-4 mt-5">
             <div class="row align-items-center">
               <div
@@ -113,7 +113,7 @@
         <!--End Toolbar-->
 
         <!--Product Grid-->
-        <ng-container *ngIf="ourProducts && ourProducts.length > 0">
+        <ng-container >
           <app-product-grid
             [currentUser]="currentUser"
             [ourProducts]="ourProducts"
@@ -132,6 +132,10 @@
             [gridViewMode]="currentGridView"
           ></app-product-grid>
         </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="ocultar">
+        
 
         <!-- Hoodie Grid-->
         <app-hodie-grid

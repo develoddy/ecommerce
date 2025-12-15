@@ -27,6 +27,15 @@ import { LoaderService } from 'src/app/modules/home/_services/product/loader.ser
 import { SeoService } from 'src/app/services/seo.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 
+// 📏 SIZE GUIDES IMPORTS
+import { 
+  SizeGuide, 
+  SizeGuideUIState, 
+  ProcessedSizeTable, 
+  SIZE_GUIDE_TABS,
+  SizeGuideTab
+} from '../../../interfaces/size-guide.interface';
+
 // Importar los nuevos servicios especializados
 import { 
   ProductDisplayService,
@@ -98,6 +107,22 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   availableSizesCaps = ['One size'];
   tallaError = false;
   colorError = false;
+
+  // 📏 SIZE GUIDES PROPERTIES
+  sizeGuides: SizeGuide | null = null;
+  sizeGuideUIState: SizeGuideUIState = {
+    activeTab: 'measure_yourself',
+    activeUnit: 'cm',
+    selectedSize: '',
+    availableUnits: [],
+    tabsAvailable: {
+      measure_yourself: false,
+      product_measure: false,
+      international: false
+    }
+  };
+  processedSizeTables: ProcessedSizeTable[] = [];
+  sizeGuideTabs: Record<string, SizeGuideTab> = SIZE_GUIDE_TABS;
   cantidadError = false;
   isMobile: boolean = false;
   isTablet: boolean = false;
@@ -567,6 +592,10 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.REVIEWS = resp.REVIEWS;
     this.AVG_REVIEW = resp.AVG_REVIEW;
     this.COUNT_REVIEW = resp.COUNT_REVIEW;
+
+    // 📏 Procesar size guides de Printful
+    this.sizeGuides = resp.SIZE_GUIDES || null;
+    this.processSizeGuides();
 
     if (this.product_selected) {
       // 🚀 Aquí llamamos a SEO
@@ -1428,6 +1457,248 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.variedades.length > 0) {
       this.minicartService.openMiniSwatchesSizes();
     }
+  }
+
+  // ======================================
+  // 📏 SIZE GUIDES METHODS
+  // ======================================
+
+  /**
+   * Procesa las guías de tallas recibidas del backend
+   * y configura el estado inicial de la UI
+   */
+  private processSizeGuides(): void {
+    if (!this.sizeGuides) {
+      console.log('ℹ️ No hay guías de tallas disponibles para este producto');
+      
+      // 🧪 TEMPORAL: Activar mock data hasta configurar productos con Printful ID
+      if (this.product_selected?.title) {
+        console.log('🧪 Generando datos mock para mostrar funcionalidad...');
+        this.sizeGuides = {
+          product_id: 123,
+          available_sizes: ['S', 'M', 'L', 'XL'],
+          size_tables: [
+            {
+              type: 'measure_yourself',
+              unit: 'cm',
+              description: '<p><strong>Medidas corporales</strong> para encontrar tu talla perfecta. Mídete sin ropa y mantén la cinta métrica horizontal.</p>',
+              measurements: [
+                {
+                  type_label: 'Pecho (Chest)',
+                  values: [
+                    { size: 'S', min_value: '86', max_value: '91' },
+                    { size: 'M', min_value: '96', max_value: '101' },
+                    { size: 'L', min_value: '106', max_value: '111' },
+                    { size: 'XL', min_value: '116', max_value: '121' }
+                  ]
+                },
+                {
+                  type_label: 'Cintura (Waist)',
+                  values: [
+                    { size: 'S', min_value: '71', max_value: '76' },
+                    { size: 'M', min_value: '81', max_value: '86' },
+                    { size: 'L', min_value: '91', max_value: '96' },
+                    { size: 'XL', min_value: '101', max_value: '106' }
+                  ]
+                }
+              ]
+            },
+            {
+              type: 'product_measure',
+              unit: 'cm',
+              description: '<p><strong>Medidas del producto terminado.</strong> Compara con una prenda similar que ya tengas.</p>',
+              measurements: [
+                {
+                  type_label: 'Largo (Length)',
+                  values: [
+                    { size: 'S', value: '66' },
+                    { size: 'M', value: '69' },
+                    { size: 'L', value: '72' },
+                    { size: 'XL', value: '75' }
+                  ]
+                },
+                {
+                  type_label: 'Ancho (Width)',
+                  values: [
+                    { size: 'S', value: '46' },
+                    { size: 'M', value: '51' },
+                    { size: 'L', value: '56' },
+                    { size: 'XL', value: '61' }
+                  ]
+                }
+              ]
+            },
+            {
+              type: 'international',
+              unit: 'none',
+              description: '<p><strong>Equivalencias internacionales</strong> entre diferentes sistemas de tallas.</p>',
+              measurements: [
+                {
+                  type_label: 'Talla US',
+                  values: [
+                    { size: 'S', value: '6-8' },
+                    { size: 'M', value: '10-12' },
+                    { size: 'L', value: '14-16' },
+                    { size: 'XL', value: '18-20' }
+                  ]
+                },
+                {
+                  type_label: 'Talla EU',
+                  values: [
+                    { size: 'S', value: '36-38' },
+                    { size: 'M', value: '40-42' },
+                    { size: 'L', value: '44-46' },
+                    { size: 'XL', value: '48-50' }
+                  ]
+                }
+              ]
+            }
+          ]
+        };
+      } else {
+        return;
+      }
+    }
+
+    console.log('✅ Procesando guías de tallas:', this.sizeGuides);
+    console.log('🔧 Tabs disponibles:', this.sizeGuideUIState.tabsAvailable);
+    console.log('📊 Processed Size Tables:', this.processedSizeTables);
+
+    // Determinar qué tabs están disponibles
+    this.sizeGuideUIState.tabsAvailable = {
+      measure_yourself: this.sizeGuides.size_tables.some(table => table.type === 'measure_yourself'),
+      product_measure: this.sizeGuides.size_tables.some(table => table.type === 'product_measure'),
+      international: this.sizeGuides.size_tables.some(table => table.type === 'international')
+    };
+
+    // Actualizar disponibilidad en SIZE_GUIDE_TABS
+    Object.keys(this.sizeGuideTabs).forEach(key => {
+      const tabKey = key as 'measure_yourself' | 'product_measure' | 'international';
+      if (this.sizeGuideTabs[key] && tabKey in this.sizeGuideUIState.tabsAvailable) {
+        this.sizeGuideTabs[key].available = this.sizeGuideUIState.tabsAvailable[tabKey];
+      }
+    });
+
+    // Determinar unidades disponibles
+    const unitsSet = new Set<'inches' | 'cm'>();
+    this.sizeGuides.size_tables.forEach(table => {
+      if (table.unit === 'inches' || table.unit === 'cm') {
+        unitsSet.add(table.unit);
+      }
+    });
+    this.sizeGuideUIState.availableUnits = Array.from(unitsSet);
+
+    // Establecer tab activo inicial (priorizar measure_yourself)
+    if (this.sizeGuideUIState.tabsAvailable.measure_yourself) {
+      this.sizeGuideUIState.activeTab = 'measure_yourself';
+    } else if (this.sizeGuideUIState.tabsAvailable.product_measure) {
+      this.sizeGuideUIState.activeTab = 'product_measure';
+    } else if (this.sizeGuideUIState.tabsAvailable.international) {
+      this.sizeGuideUIState.activeTab = 'international';
+    }
+
+    // Establecer unidad inicial (priorizar cm)
+    if (this.sizeGuideUIState.availableUnits.includes('cm')) {
+      this.sizeGuideUIState.activeUnit = 'cm';
+    } else if (this.sizeGuideUIState.availableUnits.includes('inches')) {
+      this.sizeGuideUIState.activeUnit = 'inches';
+    }
+
+    // Procesar tablas para mostrar
+    this.updateProcessedSizeTables();
+  }
+
+  /**
+   * Actualiza las tablas procesadas según el tab y unidad activos
+   */
+  private updateProcessedSizeTables(): void {
+    if (!this.sizeGuides) return;
+
+    // Filtrar tablas por tipo y unidad
+    const filteredTables = this.sizeGuides.size_tables.filter(table => 
+      table.type === this.sizeGuideUIState.activeTab && 
+      (table.unit === this.sizeGuideUIState.activeUnit || table.unit === 'none')
+    );
+
+    // Procesar tablas para mostrar
+    this.processedSizeTables = filteredTables.map(table => ({
+      ...table,
+      measurements: table.measurements.map(measurement => ({
+        ...measurement,
+        values: measurement.values.map(value => ({
+          ...value,
+          displayValue: this.formatSizeValue(value),
+          isRange: !!(value.min_value && value.max_value)
+        }))
+      })),
+      hasRangeValues: table.measurements.some(m => 
+        m.values.some(v => v.min_value && v.max_value)
+      ),
+      hasSingleValues: table.measurements.some(m => 
+        m.values.some(v => v.value && !v.min_value && !v.max_value)
+      )
+    })) as ProcessedSizeTable[];
+  }
+
+  /**
+   * Formatea un valor de talla para mostrar
+   */
+  private formatSizeValue(value: { value?: string; min_value?: string; max_value?: string; }): string {
+    if (value.min_value && value.max_value) {
+      return `${value.min_value} - ${value.max_value}`;
+    }
+    if (value.value) {
+      return value.value;
+    }
+    return '';
+  }
+
+  /**
+   * Cambia el tab activo de las guías de tallas
+   */
+  onSizeGuideTabChange(tabKey: 'measure_yourself' | 'product_measure' | 'international'): void {
+    if (!this.sizeGuideUIState.tabsAvailable[tabKey]) return;
+    
+    this.sizeGuideUIState.activeTab = tabKey;
+    this.updateProcessedSizeTables();
+  }
+
+  /**
+   * Cambia la unidad de medida activa
+   */
+  onSizeGuideUnitChange(unit: 'inches' | 'cm'): void {
+    if (!this.sizeGuideUIState.availableUnits.includes(unit)) return;
+    
+    this.sizeGuideUIState.activeUnit = unit;
+    this.updateProcessedSizeTables();
+  }
+
+  /**
+   * Resalta una talla en la guía
+   */
+  onSizeSelect(size: string): void {
+    this.sizeGuideUIState.selectedSize = size;
+  }
+
+  /**
+   * Verifica si hay guías de tallas disponibles
+   */
+  hasSizeGuides(): boolean {
+    return !!(this.sizeGuides && this.sizeGuides.size_tables && this.sizeGuides.size_tables.length > 0);
+  }
+
+  /**
+   * Obtiene la lista de tallas disponibles
+   */
+  getAvailableSizes(): string[] {
+    return this.sizeGuides?.available_sizes || [];
+  }
+
+  /**
+   * Verifica si una talla está seleccionada actualmente
+   */
+  isSizeHighlighted(size: string): boolean {
+    return this.sizeGuideUIState.selectedSize === size || this.variedad_selected?.valor === size;
   }
 
   ngOnDestroy(): void {
