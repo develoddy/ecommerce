@@ -151,8 +151,6 @@
                                 {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} 
                                 <span class="slVariant ms-1 fw-bold text-uppercase">{{ variedad_selected?.valor || '' }}</span>
                             </label>
-
-                            
                         </div>
                         <div *ngIf="tallaError" class="text-danger mt-1 px-2" style="font-size: 0.8rem;">
                             <i class="icon anm anm-exclamation-triangle me-1"></i>Selecciona una talla
@@ -161,24 +159,21 @@
 
                     <!-- Guía de Tallas - Nueva implementación -->
                     <div *ngIf="hasSizeGuides()" class="p-2 align-self-center d-flex flex-column">
-                        <button type="button" 
+                        <a 
+                            href="#" 
+                            onclick="return false;" 
+                            class="text-decoration-underline" 
+                            (click)="openSizeGuideModal(); $event.stopPropagation(); $event.preventDefault()"
+                            >
+                            Guía de tallas
+                        </a>
+                        <!-- <button type="button" 
                                 class="btn btn-outline-primary btn-sm"
                                 (click)="openSizeGuideModal(); $event.stopPropagation(); $event.preventDefault()"
                                 style="font-size: 0.8rem;">
                             📏 Guía de tallas
-                        </button>
+                        </button> -->
                     </div>
-
-                    <!-- <div class="p-2 align-self-center d-flex flex-column">
-                        <a *ngIf="hasSizeGuides()"
-                               href="#sizechart-modal" 
-                               class="text-link sizelink size-chart-modal ms-2 btn btn-outline-primary btn-sm" 
-                               data-bs-toggle="modal" 
-                               data-bs-target="#sizechart_modal"
-                               style="text-decoration: none; font-size: 0.8rem;">
-                                📏 Guía de tallas
-                        </a>
-                    </div> -->
                     <!-- End Swatches Size -->
                         
                     <!-- Price Product -->
@@ -485,26 +480,26 @@
                                     <div class="product-item swatches-size w-100 mb-4 swatch-1 option2" 
                                          data-option-index="1"
                                          [ngClass]="{'border border-danger rounded p-2': tallaError}">
-                                        <label class="label d-flex align-items-center fw-normal text-uppercase mb-2"
+                                        <label class="label d-flex align-items-center justify-content-between fw-normal text-uppercase mb-2"
                                                [style.color]="tallaError ? '#dc3545' : ''">
                                             {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} 
                                             <span class="slVariant ms-1 fw-light">{{ variedad_selected?.valor || '' }}</span>
                                             <div *ngIf="hasSizeGuides()" class="p-2 align-self-center d-flex flex-column">
-                                                <button type="button" 
+                                                <a 
+                                                    href="#" 
+                                                    onclick="return false;" 
+                                                    class="text-decoration-underline" 
+                                                    (click)="openSizeGuideModal(); $event.stopPropagation(); $event.preventDefault()"
+                                                    >
+                                                    Guía de tallas
+                                                </a>
+                                                <!-- <button type="button" 
                                                         class="btn btn-outline-primary btn-sm"
                                                         (click)="openSizeGuideModal(); $event.stopPropagation(); $event.preventDefault()"
                                                         style="font-size: 0.8rem;">
                                                     📏 Guía de tallas
-                                                </button>
+                                                </button> -->
                                             </div>
-                                                                    <!-- <a *ngIf="hasSizeGuides()"
-                                               href="#sizechart-modal" 
-                                               class="text-link sizelink size-chart-modal ms-2 btn btn-outline-primary btn-sm" 
-                                               data-bs-toggle="modal" 
-                                               data-bs-target="#sizechart_modal"
-                                               style="text-decoration: none; font-size: 0.8rem;">
-                                                📏 Guía de tallas
-                                            </a> -->
                                         </label>
                                         <div *ngIf="tallaError" class="text-danger mt-1 mb-2" style="font-size: 0.85rem;">
                                             <i class="icon anm anm-exclamation-triangle me-1"></i>Por favor, selecciona una talla
