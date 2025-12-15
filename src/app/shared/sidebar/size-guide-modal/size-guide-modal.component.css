@@ -1,0 +1,50 @@
+/* Size Guide Modal Styles */
+.sizechart-modal .modal-dialog {
+  max-width: 90vw;
+}
+
+.sizechart-modal .modal-body {
+  padding: 2rem;
+}
+
+.sizechart-wrap {
+  min-height: 300px;
+}
+
+.size-chart-tbl table {
+  font-size: 0.9rem;
+}
+
+.size-chart-tbl th,
+.size-chart-tbl td {
+  padding: 0.75rem 0.5rem;
+  vertical-align: middle;
+}
+
+.measuring-instructions {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.measuring-instructions ul {
+  padding-left: 1.2rem;
+}
+
+.measuring-instructions li {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sizechart-modal .modal-dialog {
+    margin: 0.5rem;
+  }
+  
+  .sizechart-modal .modal-body {
+    padding: 1rem;
+  }
+  
+  .size-chart-tbl {
+    font-size: 0.8rem;
+  }
+}

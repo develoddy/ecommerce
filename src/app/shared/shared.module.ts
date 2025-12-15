@@ -15,6 +15,7 @@ import { ProductSliderSkeletonComponent } from './skeleton-loader/product-slider
 import { ProductSingleSkeletonComponent } from './skeleton-loader/product-single-skeleton/product-single-skeleton.component';
 import { MiniColorDrawerComponent } from './sidebar/mini-color-drawer/mini-color-drawer.component';
 import { MiniSizeDrawerComponent } from './sidebar/mini-size-drawer/mini-size-drawer.component';
+import { SizeGuideModalComponent } from './sidebar/size-guide-modal/size-guide-modal.component';
 import { BrandMessageComponent } from './brand-message/brand-message.component';
 
 @NgModule({
@@ -28,6 +29,7 @@ import { BrandMessageComponent } from './brand-message/brand-message.component';
     ProductSingleSkeletonComponent,
     MiniColorDrawerComponent,
     MiniSizeDrawerComponent,
+    SizeGuideModalComponent,
     BrandMessageComponent,
   ],
   imports: [
@@ -55,6 +57,7 @@ import { BrandMessageComponent } from './brand-message/brand-message.component';
     ProductSingleSkeletonComponent,
     MiniColorDrawerComponent,
     MiniSizeDrawerComponent,
+    SizeGuideModalComponent,
     BrandMessageComponent
   ]
 })

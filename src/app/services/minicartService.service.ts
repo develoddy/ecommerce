@@ -110,4 +110,31 @@ export class MinicartService {
   closeMiniSwatchesSizes() {
     alert("closeMiniSwatchesSizes desde el servicio");
   }
+
+  /** Size Guide Modal **/
+  openSizeGuideModal() {
+    const sizeGuideModal = document.getElementById('sizeguide-modal');
+    if (sizeGuideModal) {
+      const bsModal = bootstrap.Modal.getInstance(sizeGuideModal);
+      if (bsModal) {
+        bsModal.show();
+      } else {
+        // Crear una nueva instancia si no existe
+        new bootstrap.Modal(sizeGuideModal).show();
+      }
+    }
+  }
+
+  closeSizeGuideModal() {
+    const sizeGuideModal = document.getElementById('sizeguide-modal');
+    if (sizeGuideModal) {
+      const bsModal = bootstrap.Modal.getInstance(sizeGuideModal);
+      if (bsModal) {
+        bsModal.hide();
+      } else {
+        // Crear una nueva instancia si no existe
+        new bootstrap.Modal(sizeGuideModal).hide();
+      }
+    }
+  }
 }

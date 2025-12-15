@@ -1460,6 +1460,12 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
+  openSizeGuideModal() {
+    if (this.hasSizeGuides()) {
+      this.minicartService.openSizeGuideModal();
+    }
+  }
+
   // ======================================
   // 📏 SIZE GUIDES METHODS
   // ======================================
@@ -1513,81 +1519,10 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       this.sizeGuideUIState.activeUnit = 'inches';
     }
 
-    // Procesar tablas para mostrar
-    this.updateProcessedSizeTables();
+    // Las tablas procesadas ahora se manejan en el componente SizeGuideModalComponent
   }
 
-  /**
-   * Actualiza las tablas procesadas según el tab y unidad activos
-   */
-  private updateProcessedSizeTables(): void {
-    if (!this.sizeGuides) return;
 
-    // Filtrar tablas por tipo y unidad
-    const filteredTables = this.sizeGuides.size_tables.filter(table => 
-      table.type === this.sizeGuideUIState.activeTab && 
-      (table.unit === this.sizeGuideUIState.activeUnit || table.unit === 'none')
-    );
-
-    // Procesar tablas para mostrar
-    this.processedSizeTables = filteredTables.map(table => ({
-      ...table,
-      measurements: table.measurements.map(measurement => ({
-        ...measurement,
-        values: measurement.values.map(value => ({
-          ...value,
-          displayValue: this.formatSizeValue(value),
-          isRange: !!(value.min_value && value.max_value)
-        }))
-      })),
-      hasRangeValues: table.measurements.some(m => 
-        m.values.some(v => v.min_value && v.max_value)
-      ),
-      hasSingleValues: table.measurements.some(m => 
-        m.values.some(v => v.value && !v.min_value && !v.max_value)
-      )
-    })) as ProcessedSizeTable[];
-  }
-
-  /**
-   * Formatea un valor de talla para mostrar
-   */
-  private formatSizeValue(value: { value?: string; min_value?: string; max_value?: string; }): string {
-    if (value.min_value && value.max_value) {
-      return `${value.min_value} - ${value.max_value}`;
-    }
-    if (value.value) {
-      return value.value;
-    }
-    return '';
-  }
-
-  /**
-   * Cambia el tab activo de las guías de tallas
-   */
-  onSizeGuideTabChange(tabKey: 'measure_yourself' | 'product_measure' | 'international'): void {
-    if (!this.sizeGuideUIState.tabsAvailable[tabKey]) return;
-    
-    this.sizeGuideUIState.activeTab = tabKey;
-    this.updateProcessedSizeTables();
-  }
-
-  /**
-   * Cambia la unidad de medida activa
-   */
-  onSizeGuideUnitChange(unit: 'inches' | 'cm'): void {
-    if (!this.sizeGuideUIState.availableUnits.includes(unit)) return;
-    
-    this.sizeGuideUIState.activeUnit = unit;
-    this.updateProcessedSizeTables();
-  }
-
-  /**
-   * Resalta una talla en la guía
-   */
-  onSizeSelect(size: string): void {
-    this.sizeGuideUIState.selectedSize = size;
-  }
 
   /**
    * Verifica si hay guías de tallas disponibles
