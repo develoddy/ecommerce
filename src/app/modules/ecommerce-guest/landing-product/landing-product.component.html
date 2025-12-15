@@ -357,7 +357,7 @@
                                 <div class="d-flex flex-column mb-0">
                                     <!-- Title Product -->
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <h1 class="mb-0" style="color: #222; font-size: 1.5rem; font-weight: 600; letter-spacing: 0.3px;">
+                                        <h1 class="mb-0">
                                             {{ product_selected.title }}
                                         </h1>
                                         <a class="text-link wishlist lh-1" 
@@ -449,7 +449,7 @@
                                         <label class="label d-flex align-items-center fw-normal text-uppercase" 
                                                [style.color]="colorError ? '#dc3545' : ''">
                                             {{ selectedColor ? 'Color seleccionado' : 'Seleccionar color' }} 
-                                            <span class="slVariant ms-1 fw-light">{{ selectedColor || '' }}</span>
+                                            <span class="slVariant ms-1 fw-bold">{{ selectedColor || '' }}</span>
                                         </label>
                                         <div *ngIf="colorError" class="text-danger mt-1 mb-2" style="font-size: 0.85rem;">
                                             <i class="icon anm anm-exclamation-triangle me-1"></i>Por favor, selecciona un color
@@ -469,7 +469,7 @@
                                                             'background-color': getColorHex(color.color),
                                                             'width': '100%',
                                                             'height': '100%',
-                                                            'border-radius': '50%',
+                                                            'border-radius': '0%',
                                                             'cursor': 'pointer',
                                                             'display': 'block',
                                                             'border': '2px solid #fff',
@@ -489,7 +489,15 @@
                                                [style.color]="tallaError ? '#dc3545' : ''">
                                             {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} 
                                             <span class="slVariant ms-1 fw-light">{{ variedad_selected?.valor || '' }}</span>
-                                            <!-- <a *ngIf="hasSizeGuides()"
+                                            <div *ngIf="hasSizeGuides()" class="p-2 align-self-center d-flex flex-column">
+                                                <button type="button" 
+                                                        class="btn btn-outline-primary btn-sm"
+                                                        (click)="openSizeGuideModal(); $event.stopPropagation(); $event.preventDefault()"
+                                                        style="font-size: 0.8rem;">
+                                                    📏 Guía de tallas
+                                                </button>
+                                            </div>
+                                                                    <!-- <a *ngIf="hasSizeGuides()"
                                                href="#sizechart-modal" 
                                                class="text-link sizelink size-chart-modal ms-2 btn btn-outline-primary btn-sm" 
                                                data-bs-toggle="modal" 
