@@ -111,7 +111,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   // 📏 SIZE GUIDES PROPERTIES
   sizeGuides: SizeGuide | null = null;
   sizeGuideUIState: SizeGuideUIState = {
-    activeTab: 'measure_yourself',
+    activeTab: 'product_measure',
     activeUnit: 'cm',
     selectedSize: '',
     availableUnits: [],
@@ -578,10 +578,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private handleProductResponse(resp: any): void {
-  
-
     if (!resp || !resp.product) {
-      console.error('No product data available');
+      console.error('❌ No product data available');
       return; // Salir si no hay datos de producto
     }
 
@@ -593,8 +591,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.AVG_REVIEW = resp.AVG_REVIEW;
     this.COUNT_REVIEW = resp.COUNT_REVIEW;
 
-    // 📏 Procesar size guides de Printful
+    
+
+    // �📏 Procesar size guides de Printful
     this.sizeGuides = resp.SIZE_GUIDES || null;
+  
     this.processSizeGuides();
 
     if (this.product_selected) {
@@ -1469,100 +1470,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
    */
   private processSizeGuides(): void {
     if (!this.sizeGuides) {
-      console.log('ℹ️ No hay guías de tallas disponibles para este producto');
-      
-      // 🧪 TEMPORAL: Activar mock data hasta configurar productos con Printful ID
-      if (this.product_selected?.title) {
-        console.log('🧪 Generando datos mock para mostrar funcionalidad...');
-        this.sizeGuides = {
-          product_id: 123,
-          available_sizes: ['S', 'M', 'L', 'XL'],
-          size_tables: [
-            {
-              type: 'measure_yourself',
-              unit: 'cm',
-              description: '<p><strong>Medidas corporales</strong> para encontrar tu talla perfecta. Mídete sin ropa y mantén la cinta métrica horizontal.</p>',
-              measurements: [
-                {
-                  type_label: 'Pecho (Chest)',
-                  values: [
-                    { size: 'S', min_value: '86', max_value: '91' },
-                    { size: 'M', min_value: '96', max_value: '101' },
-                    { size: 'L', min_value: '106', max_value: '111' },
-                    { size: 'XL', min_value: '116', max_value: '121' }
-                  ]
-                },
-                {
-                  type_label: 'Cintura (Waist)',
-                  values: [
-                    { size: 'S', min_value: '71', max_value: '76' },
-                    { size: 'M', min_value: '81', max_value: '86' },
-                    { size: 'L', min_value: '91', max_value: '96' },
-                    { size: 'XL', min_value: '101', max_value: '106' }
-                  ]
-                }
-              ]
-            },
-            {
-              type: 'product_measure',
-              unit: 'cm',
-              description: '<p><strong>Medidas del producto terminado.</strong> Compara con una prenda similar que ya tengas.</p>',
-              measurements: [
-                {
-                  type_label: 'Largo (Length)',
-                  values: [
-                    { size: 'S', value: '66' },
-                    { size: 'M', value: '69' },
-                    { size: 'L', value: '72' },
-                    { size: 'XL', value: '75' }
-                  ]
-                },
-                {
-                  type_label: 'Ancho (Width)',
-                  values: [
-                    { size: 'S', value: '46' },
-                    { size: 'M', value: '51' },
-                    { size: 'L', value: '56' },
-                    { size: 'XL', value: '61' }
-                  ]
-                }
-              ]
-            },
-            {
-              type: 'international',
-              unit: 'none',
-              description: '<p><strong>Equivalencias internacionales</strong> entre diferentes sistemas de tallas.</p>',
-              measurements: [
-                {
-                  type_label: 'Talla US',
-                  values: [
-                    { size: 'S', value: '6-8' },
-                    { size: 'M', value: '10-12' },
-                    { size: 'L', value: '14-16' },
-                    { size: 'XL', value: '18-20' }
-                  ]
-                },
-                {
-                  type_label: 'Talla EU',
-                  values: [
-                    { size: 'S', value: '36-38' },
-                    { size: 'M', value: '40-42' },
-                    { size: 'L', value: '44-46' },
-                    { size: 'XL', value: '48-50' }
-                  ]
-                }
-              ]
-            }
-          ]
-        };
-      } else {
-        return;
-      }
+      return;
     }
-
-    console.log('✅ Procesando guías de tallas:', this.sizeGuides);
-    console.log('🔧 Tabs disponibles:', this.sizeGuideUIState.tabsAvailable);
-    console.log('📊 Processed Size Tables:', this.processedSizeTables);
 
     // Determinar qué tabs están disponibles
     this.sizeGuideUIState.tabsAvailable = {
@@ -1588,11 +1497,11 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     });
     this.sizeGuideUIState.availableUnits = Array.from(unitsSet);
 
-    // Establecer tab activo inicial (priorizar measure_yourself)
-    if (this.sizeGuideUIState.tabsAvailable.measure_yourself) {
-      this.sizeGuideUIState.activeTab = 'measure_yourself';
-    } else if (this.sizeGuideUIState.tabsAvailable.product_measure) {
+    // Establecer tab activo inicial (priorizar product_measure como Printful)
+    if (this.sizeGuideUIState.tabsAvailable.product_measure) {
       this.sizeGuideUIState.activeTab = 'product_measure';
+    } else if (this.sizeGuideUIState.tabsAvailable.measure_yourself) {
+      this.sizeGuideUIState.activeTab = 'measure_yourself';
     } else if (this.sizeGuideUIState.tabsAvailable.international) {
       this.sizeGuideUIState.activeTab = 'international';
     }

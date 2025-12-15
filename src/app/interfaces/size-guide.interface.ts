@@ -81,25 +81,25 @@ export interface SizeGuideTab {
 }
 
 export const SIZE_GUIDE_TABS: Record<string, SizeGuideTab> = {
-  measure_yourself: {
-    key: 'measure_yourself',
-    title: '📏 Mídete a ti mismo',
-    icon: 'fas fa-ruler',
-    description: 'Medidas de tu cuerpo para encontrar la talla perfecta',
-    available: false
-  },
   product_measure: {
     key: 'product_measure', 
-    title: '👕 Medidas del producto',
+    title: 'Medidas de producto',
     icon: 'fas fa-tshirt',
-    description: 'Dimensiones reales del producto terminado',
+    description: 'Dimensiones del producto terminado',
+    available: false
+  },
+  measure_yourself: {
+    key: 'measure_yourself',
+    title: 'Mídete',
+    icon: 'fas fa-ruler',
+    description: 'Cómo tomar tus medidas corporales',
     available: false
   },
   international: {
     key: 'international',
-    title: '🌍 Conversión internacional',
+    title: 'Conversión',
     icon: 'fas fa-globe',
-    description: 'Equivalencias entre tallas US, EU, UK y otras regiones',
+    description: 'Equivalencias internacionales',
     available: false
   }
 };

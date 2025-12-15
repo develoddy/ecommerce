@@ -343,5 +343,166 @@ input.qty:focus {
   }
 }
 
+/* ==================== Printful-Style Size Guide Improvements ==================== */
+
+/* Modal enhancements */
+.sizechart-modal .modal-content {
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.sizechart-modal .modal-body {
+  padding: 40px;
+}
+
+/* Navigation Tabs - Printful Style */
+.nav-tabs {
+  border-bottom: 2px solid #f1f3f4;
+  margin-bottom: 32px;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  border-radius: 0;
+  color: #5f6368;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 16px 24px;
+  margin-right: 0;
+  position: relative;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link.active {
+  color: #1a73e8;
+  background: transparent;
+  border: none;
+}
+
+.nav-tabs .nav-link.active::after {
+  background: #1a73e8;
+}
+
+.nav-tabs .nav-link:hover:not(.active) {
+  color: #202124;
+  background: rgba(26, 115, 232, 0.04);
+}
+
+/* Unit Selector - Printful Style */
+.form-check-input:checked {
+  background-color: #1a73e8;
+  border-color: #1a73e8;
+}
+
+.form-check-label {
+  color: #5f6368;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Table Styles - Printful Style */
+.size-chart-tbl {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.size-chart-tbl table {
+  margin-bottom: 0;
+  border-collapse: collapse;
+}
+
+.size-chart-tbl .table-secondary {
+  background-color: #f8f9fa !important;
+}
+
+.size-chart-tbl th {
+  background-color: #f8f9fa;
+  border: 1px solid #e8eaed;
+  font-weight: 600;
+  color: #202124;
+  font-size: 14px;
+  padding: 16px 12px;
+}
+
+.size-chart-tbl td {
+  border: 1px solid #e8eaed;
+  color: #5f6368;
+  font-size: 14px;
+  padding: 16px 12px;
+  font-weight: 400;
+}
+
+.size-chart-tbl .border-end {
+  border-right: 2px solid #e8eaed !important;
+}
+
+.size-chart-tbl .table-primary {
+  background-color: rgba(26, 115, 232, 0.08) !important;
+}
+
+.size-chart-tbl .table-primary th,
+.size-chart-tbl .table-primary td {
+  color: #1a73e8 !important;
+  font-weight: 600;
+}
+
+/* Available Sizes Display */
+.bg-outline-primary {
+  background-color: transparent !important;
+  color: #1a73e8 !important;
+  border: 2px solid #1a73e8 !important;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.bg-outline-primary.bg-primary {
+  background-color: #1a73e8 !important;
+  color: white !important;
+  border-color: #1a73e8 !important;
+}
+
+/* Disclaimer and Tips */
+small.text-muted {
+  color: #80868b !important;
+  font-size: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .sizechart-modal .modal-body {
+    padding: 24px;
+  }
+  
+  .nav-tabs .nav-link {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sizechart-modal .modal-body {
+    padding: 20px;
+  }
+  
+  .nav-tabs .nav-link {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
 
 
