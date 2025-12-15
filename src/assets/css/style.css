@@ -2258,7 +2258,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .swatches li.orange { background-color:#ffa602; }
 .swatches li.purple { background-color:#930293; }
 .swatches li.teal { background-color:#007d7d; }
-.swatches li.black { background-color:#000000; }
+.swatches li.black { background-color:#000000; border-radius: 50% !important; }
 .swatches li.red { background-color:#fb0404; }
 .swatches li.yellow { background-color:#fbfb02; }
 .swatches li.darkgreen { background-color:#00ac00; }

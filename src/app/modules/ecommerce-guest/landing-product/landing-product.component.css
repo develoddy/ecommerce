@@ -130,7 +130,7 @@
 
 /* Mejora visual de swatches */
 .swatch.active {
-  box-shadow: 0 0 0 3px #28a745 !important;
+  /* box-shadow: 0 0 0 3px #28a745 !important; */
   transform: scale(1.05);
 }
 
