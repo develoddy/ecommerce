@@ -257,6 +257,13 @@
                             <!-- Product Add -->
                         </div>
                         <!-- End Product Action -->
+                        
+                        <!-- Print on Demand Badge -->
+                        <div class="alert alert-info py-2 px-3 mt-2 mb-0 d-flex align-items-center" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.85rem;">
+                            <i class="icon anm anm-info-cir me-2"></i>
+                            <span><strong>Print on Demand:</strong> Producto fabricado bajo demanda especialmente para ti</span>
+                        </div>
+                        <!-- End Print on Demand Badge -->
                     </div>
                     <!-- End Product -->
                 </div>
@@ -565,6 +572,13 @@
                                 </div>
                                 <!-- End Product Action -->
 
+                                <!-- Print on Demand Badge -->
+                                <div class="alert alert-info py-2 px-3 mt-3 mb-0 d-flex align-items-center" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.85rem;">
+                                    <i class="icon anm anm-info-cir me-2"></i>
+                                    <span><strong>Print on Demand:</strong> Producto fabricado bajo demanda especialmente para ti</span>
+                                </div>
+                                <!-- End Print on Demand Badge -->
+
                                 <!-- Message error -->
                                 <ng-container *ngIf="errorResponse">
                                     <div class="alert alert-danger py-2 px-3 mt-3 mb-0" style="border-left: 4px solid #dc3545; border-radius: 6px; font-size: 0.9rem;">
@@ -717,59 +731,96 @@
                         <i class="icon anm anm-truck-l me-2"></i>Envío y devolucíones
                     </h3>
                     <div id="shipping-return" class="tab-content">
-                        <!-- <h4 class="text-uppercase fw-bold">Envío &amp; devolución</h4> -->
                         <div class="d-flex flex-column">
-                            <div class="border-bottom mb-4">
-                                <h4 class="text-uppercase fw-bold mb-2" style="color: #222; letter-spacing: 1px; font-size: 1.1rem;">
+                            <!-- Sección Envíos -->
+                            <div class="border-bottom mb-4 pb-3">
+                                <h4 class="text-uppercase fw-bold mb-3" style="color: #222; letter-spacing: 1px; font-size: 1.1rem;">
                                     <i class="icon anm anm-truck-l me-2"></i>Envíos
                                 </h4>
-                                <div class="d-flex flex-row py-3">
-                                    <div class=""><span>Envío a domicilio</span></div>
-                                    <div class=""><span>1 a 6 días laborables</span></div>
-                                    <div class="">
-                                        <span>Gratis en pedidos superiores a 30 €</span>
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="icon anm anm-check-cil me-2" style="color: #28a745;"></i>
+                                        <span><strong>Envío a domicilio:</strong> 3 a 7 días laborables</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="icon anm anm-check-cil me-2" style="color: #28a745;"></i>
+                                        <span><strong>Envío gratuito</strong> en pedidos superiores a 30 €</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="icon anm anm-check-cil me-2" style="color: #28a745;"></i>
+                                        <span>Seguimiento incluido en todos los envíos</span>
                                     </div>
                                 </div>
+                                <div class="alert alert-info mt-3 py-2 px-3 mb-0" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.9rem;">
+                                    <i class="icon anm anm-info-cir me-2"></i>
+                                    <strong>Print on Demand:</strong> Tus productos se fabrican bajo demanda especialmente para ti. Los tiempos de producción y envío pueden variar ligeramente.
+                                </div>
                             </div>
+
+                            <!-- Sección Devoluciones y Reembolsos -->
                             <div class="mb-3">
-                                <h4 class="text-uppercase fw-bold mb-2" style="color: #222; letter-spacing: 1px; font-size: 1.1rem;">
-                                    <i class="icon anm anm-sync-ar me-2"></i>Devoluciones
+                                <h4 class="text-uppercase fw-bold mb-3" style="color: #222; letter-spacing: 1px; font-size: 1.1rem;">
+                                    <i class="icon anm anm-sync-ar me-2"></i>Devoluciones y Reembolsos
                                 </h4>
-                                <div>Dispones de <strong>30 días</strong> para realizar tu devolución a través de cualquiera de los siguientes métodos:</div>
-                                <div class="d-flex flex-column">
-                                    <div class="d-flex flex-row border-bottom py-3">
-                                        <div class="d-flex flex-column flex-grow-1"><span>Devolución fácil</span></div>
-                                        <div class="d-flex flex-column"><span class="fw-bold">30 días</span></div>
-                                    </div>
-                                    <div class="d-flex flex-row border-bottom py-3">
-                                        <div class="d-flex flex-column flex-grow-1"><span>Envío estándar</span></div>
-                                        <div class="d-flex flex-column"><span class="fw-bold">Gratis</span></div>
-                                    </div>
-                                    <div class="d-flex flex-row border-bottom py-3">
-                                        <div class="d-flex flex-column flex-grow-1"><span>Seguimiento de pedido</span></div>
-                                        <div class="d-flex flex-column"><span class="fw-bold">Incluido</span></div>
+                                
+                                <!-- Advertencia importante -->
+                                <div class="alert alert-warning py-3 px-3 mb-3" style="border-left: 4px solid #ffc107; border-radius: 6px;">
+                                    <div class="d-flex align-items-start">
+                                        <i class="icon anm anm-exclamation-triangle me-2 mt-1" style="font-size: 1.2rem;"></i>
+                                        <div>
+                                            <strong class="d-block mb-1">Productos fabricados bajo demanda (Print on Demand)</strong>
+                                            <p class="mb-0" style="font-size: 0.9rem;">
+                                                Nuestros productos se fabrican especialmente para ti al realizar el pedido, por lo que <strong>no aceptamos devoluciones por cambio de opinión, talla incorrecta o preferencias personales</strong>.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <p>
-                                    Por motivos de higiene y personalización, no se podrán devolver productos personalizados, como camisetas, hoodies, mugs o gorras con diseños únicos. Todos los demás productos pueden devolverse dentro de los 30 días siguientes a la recepción, siempre que estén en perfecto estado.
-                                </p>
+
+                                <!-- Casos aceptados -->
+                                <div class="mb-3">
+                                    <h5 class="fw-semibold mb-2" style="color: #222; font-size: 1rem;">
+                                        ✅ Reclamaciones aceptadas (plazo de 30 días):
+                                    </h5>
+                                    <ul class="mb-0" style="line-height: 1.8;">
+                                        <li><strong>Producto defectuoso:</strong> Impresión dañada, rota o con manchas</li>
+                                        <li><strong>Daños en el envío:</strong> Producto deteriorado durante el transporte</li>
+                                        <li><strong>Producto incorrecto:</strong> Modelo, color o talla incorrectos</li>
+                                        <li><strong>Pedido perdido:</strong> No recibido por el transportista</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Casos NO aceptados -->
+                                <div class="mb-3">
+                                    <h5 class="fw-semibold mb-2" style="color: #dc3545; font-size: 1rem;">
+                                        ❌ NO se aceptan reclamaciones por:
+                                    </h5>
+                                    <ul class="mb-0" style="line-height: 1.8; color: #6c757d;">
+                                        <li>Cambio de opinión sobre el diseño o producto</li>
+                                        <li>Talla elegida incorrectamente por el cliente</li>
+                                        <li>"No era lo que esperaba" (diseño correcto pero no gusta)</li>
+                                        <li>Preferencias personales o estéticas</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Proceso de reclamación -->
+                                <div class="border-top pt-3 mt-3">
+                                    <h5 class="fw-semibold mb-2" style="color: #222; font-size: 1rem;">
+                                        📧 ¿Cómo gestionar una reclamación?
+                                    </h5>
+                                    <p class="mb-2" style="font-size: 0.95rem;">
+                                        Si tu pedido presenta alguno de los problemas aceptados, contacta con nosotros dentro de los <strong>30 días posteriores a la recepción</strong> proporcionando:
+                                    </p>
+                                    <ul style="line-height: 1.8;">
+                                        <li>Número de pedido</li>
+                                        <li>Fotografías claras del problema</li>
+                                        <li>Descripción detallada del defecto o error</li>
+                                    </ul>
+                                    <p class="mb-0" style="font-size: 0.9rem; color: #6c757d;">
+                                        En caso de confirmarse el error, procederemos a la <strong>reimpresión del producto o reembolso</strong>, según corresponda.
+                                    </p>
+                                </div>
                             </div>
                         </div>
-
-                        <!-- <ul class="checkmark-info">
-                            <li>Envío: En 24 horas</li>
-                            <li>1 año de garantía de marca</li>
-                            <li>Envío gratuito en todos los productos con una compra mínima de 30 .</li>
-                            <li>Plazo de entrega internacional: 7-10 días laborables</li>
-                            <li>Podría estar disponible el pago contra reembolso</li>
-                            <li>Devoluciones y cambios fáciles en 30 días</li>
-                        </ul>
-                        <h4>Devoluciones gratuitas y sencillas</h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-                        <h4>Special Financing</h4>
-                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage.</p> -->
                     </div>
                     <!-- End Shipping &amp; Return -->
 
