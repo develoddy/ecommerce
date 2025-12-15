@@ -98,7 +98,7 @@
                 <div class="d-flex flex-column flex-lg-row justify-content-between custom-border-bottom">
                     <!-- Title Product -->
                     <div class="p-2 align-self-center">
-                        <h1 class="mb-0" style="color: #222; font-size: 1.3rem; font-weight: 700;  font-family: 'Montserrat', sans-serif;">
+                        <h1 class="mb-0" >
                             {{ product_selected.title }}
                         </h1>
                     </div>
@@ -156,8 +156,9 @@
                             <i class="icon anm anm-exclamation-triangle me-1"></i>Selecciona una talla
                         </div>
                     </div>
+                    <!-- End Swatches Size -->
 
-                    <!-- Guía de Tallas - Nueva implementación -->
+                    <!-- Guía de Tallas -->
                     <div *ngIf="hasSizeGuides()" class="p-2 align-self-center d-flex flex-column">
                         <a 
                             href="#" 
@@ -167,98 +168,92 @@
                             >
                             Guía de tallas
                         </a>
-                        <!-- <button type="button" 
-                                class="btn btn-outline-primary btn-sm"
-                                (click)="openSizeGuideModal(); $event.stopPropagation(); $event.preventDefault()"
-                                style="font-size: 0.8rem;">
-                            📏 Guía de tallas
-                        </button> -->
                     </div>
-                    <!-- End Swatches Size -->
+                    <!-- End Guía de Tallas -->
                         
                     <!-- Price Product -->
-                    <div class="p-2 align-self-center ">
-                        <!-- <div class="d-flex flex-column mb-0"> -->
-                            <div class="product-price d-flex-center">
-                                <!-- Precio original tachado si hay descuento -->
-                                <ng-container *ngIf="hasDiscount()">
-                                    <span class="price old-price">€ {{ getOriginalPrice().toFixed(2) }}</span>
-                                </ng-container>
-                                
-                                <!-- Precio final (con descuento si aplica) -->
-                                <span class="price" [class.text-danger]="hasDiscount()">
-                                    € {{ getFinalPrice().toFixed(2) }}
+                    <div class="p-2 align-self-center">
+                        <div class="product-price d-flex-center">
+                            <!-- Precio original tachado si hay descuento -->
+                            <ng-container *ngIf="hasDiscount()">
+                                <span class="price old-price">€ {{ getOriginalPrice().toFixed(2) }}</span>
+                            </ng-container>
+                            
+                            <!-- Precio final (con descuento si aplica) -->
+                            <span class="price" [class.text-danger]="hasDiscount()">
+                                € {{ getFinalPrice().toFixed(2) }}
+                            </span>
+                            
+                            <!-- Versión alternativa con separación de decimales (oculta por defecto) -->
+                            <span class="price d-none" itemprop="priceCurrency" content="EUR">
+                                <span class="price-main" itemprop="price">
+                                    {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
                                 </span>
-                                
-                                <!-- Versión alternativa con separación de decimales (oculta por defecto) -->
-                                <span class="price d-none" itemprop="priceCurrency" content="EUR">
-                                    <span class="price-main" itemprop="price">
-                                        {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
-                                    </span>
-                                    <span class="price-decimals">
-                                        <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
-                                        <span class="currency-symbol">€</span>
-                                    </span>
+                                <span class="price-decimals">
+                                    <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
+                                    <span class="currency-symbol">€</span>
                                 </span>
-                            </div>
-                            <!-- Schema.org Offer -->
-                            <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                                <link itemprop="url" [href]="currentUrl" />
-                                <meta itemprop="priceCurrency" content="EUR" />
-                                <meta itemprop="price" content="{{ getFinalPrice().toFixed(2) }}" />
-                                <link itemprop="availability" href="https://schema.org/InStock" />
-                            </div>
-                        <!-- </div> -->
+                            </span>
+                        </div>
+                        <!-- Schema.org Offer -->
+                        <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                            <link itemprop="url" [href]="currentUrl" />
+                            <meta itemprop="priceCurrency" content="EUR" />
+                            <meta itemprop="price" content="{{ getFinalPrice().toFixed(2) }}" />
+                            <link itemprop="availability" href="https://schema.org/InStock" />
+                        </div>
                     </div>
                     <!-- End Price Product -->
+
+                    <div class="p-2 align-self-center">
+                        <!-- Product Quantity -->
+                        <div class="product-form-quantity d-flex-center" [ngClass]="{'border border-danger': cantidadError, 'mb-2': isMobile, 'me-2': isDesktop}">
+                            <label class="label d-flex align-items-center fw-normal d-none">
+                                <span>Cantidad</span>
+                            </label>
+                            <div class="qtyField" [ngClass]="{ 'w-100': isMobile, 'border-0': isDesktop }">
+                                <a class="qtyBtn minus" 
+                                    href="#" 
+                                    (click)="decreaseQuantity(); $event.preventDefault()"
+                                    style="transition: all 0.2s ease;"
+                                    onmouseover="this.style.backgroundColor='#222'; this.style.color='#fff'"
+                                    onmouseout="this.style.backgroundColor=''; this.style.color=''">
+                                    <i class="icon anm anm-minus-r"></i>
+                                </a>
+                                <input type="number" 
+                                    name="quantity" 
+                                    id="qty-cart"
+                                    [(ngModel)]="cantidad"
+                                    (input)="onQuantityChange($event)"
+                                    (blur)="onQuantityBlur($event)"
+                                    class="product-form-input qty border-0"
+                                    [ngClass]="{ 'w-100': isMobile }"
+                                    min="1"
+                                    step="1"
+                                    style="font-weight: 600; font-size: 1rem;" />
+                                <a class="qtyBtn plus" 
+                                    href="#" 
+                                    (click)="increaseQuantity(); $event.preventDefault()"
+                                    style="transition: all 0.2s ease;"
+                                    onmouseover="this.style.backgroundColor='#222'; this.style.color='#fff'"
+                                    onmouseout="this.style.backgroundColor=''; this.style.color=''">
+                                    <i class="icon anm anm-plus-r"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- End Product Quantity -->
+                    </div>
 
                     <!-- Action -->
                     <div class="p-2 align-self-center ">
                         <div class="product-action d-flex flex-lg-row flex-column d-flex-wrap">
-                            <!-- Product Quantity -->
-                            <div class="product-form-quantity d-flex-center" [ngClass]="{'border border-danger': cantidadError, 'mb-2': isMobile, 'me-2': isDesktop}">
-                                <label class="label d-flex align-items-center fw-normal d-none">
-                                    <span>Cantidad</span>
-                                </label>
-                                <div class="qtyField" [ngClass]="{ 'w-100': isMobile, 'border-0': isDesktop }">
-                                    <a class="qtyBtn minus" 
-                                       href="#" 
-                                       (click)="decreaseQuantity(); $event.preventDefault()"
-                                       style="transition: all 0.2s ease;"
-                                       onmouseover="this.style.backgroundColor='#222'; this.style.color='#fff'"
-                                       onmouseout="this.style.backgroundColor=''; this.style.color=''">
-                                        <i class="icon anm anm-minus-r"></i>
-                                    </a>
-                                    <input type="number" 
-                                        name="quantity" 
-                                        id="qty-cart"
-                                        [(ngModel)]="cantidad"
-                                        (input)="onQuantityChange($event)"
-                                        (blur)="onQuantityBlur($event)"
-                                        class="product-form-input qty border-0"
-                                        [ngClass]="{ 'w-100': isMobile }"
-                                        min="1"
-                                        step="1"
-                                        style="font-weight: 600; font-size: 1rem;" />
-                                    <a class="qtyBtn plus" 
-                                       href="#" 
-                                       (click)="increaseQuantity(); $event.preventDefault()"
-                                       style="transition: all 0.2s ease;"
-                                       onmouseover="this.style.backgroundColor='#222'; this.style.color='#fff'"
-                                       onmouseout="this.style.backgroundColor=''; this.style.color=''">
-                                        <i class="icon anm anm-plus-r"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- End Product Quantity -->
-                        
                             <!-- Product Add -->
                             <div class="product-form-submit addcart fl-1">
-                                <button type="submit" 
-                                        name="add" 
-                                        class="btn btn-dark w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center" 
-                                        (click)="storeCart()"
-                                        style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
+                                <button 
+                                    type="submit" 
+                                    name="add" 
+                                    class="btn-dark-ld" 
+                                    (click)="storeCart()">
                                     <i class="icon anm anm-bag-l me-2" style="font-size: 1.2rem;"></i>
                                     <span>Añadir al carrito</span>
                                 </button>
