@@ -646,15 +646,16 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private sortVariedades() {
-    // ✅ No autoseleccionar color - el usuario debe elegirlo explícitamente
-    this.selectedColor = '';
+    // ✅ Auto-seleccionar el primer color disponible (estilo Mango)
+    if (this.coloresDisponibles.length > 0) {
+      const primerColor = this.coloresDisponibles[0];
+      this.selectColor(primerColor);
+      return; // selectColor ya maneja updateVariedadesByColor
+    }
 
-    // Filtra las variedades por color y stock (solo si hay un color seleccionado)
-    this.variedades = this.selectedColor 
-      ? this.product_selected.variedades.filter(
-          (variedad: any) => variedad.color === this.selectedColor
-        )
-      : [];
+    // Si no hay colores disponibles, limpiar variedades
+    this.selectedColor = '';
+    this.variedades = [];
 
     // Selecciona el array de tallas de acuerdo a la categoría del producto
     const categoryTitle = this.product_selected.categorie?.title?.toLowerCase() || '';
