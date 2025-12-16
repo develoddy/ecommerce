@@ -39,11 +39,12 @@ import {
 // Importar los nuevos servicios especializados
 import { 
   ProductDisplayService,
-  CartManagerService,
+  CartApiService,
   AddressManagerService,
   ShippingService,
   ImageManagerService
 } from '../_service/service_landing_product';
+import { CartOrchestratorService } from '../../home/_services/product/cart-orchestrator.service';
 
 declare var $: any;
 
@@ -173,7 +174,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     private priceCalculationService: PriceCalculationService,
     // Nuevos servicios especializados
     public productDisplayService: ProductDisplayService,
-    public cartManagerService: CartManagerService,
+    public cartApiService: CartApiService,
+    public cartOrchestratorService: CartOrchestratorService,
     public addressManagerService: AddressManagerService,
     public shippingService: ShippingService,
     public imageManagerService: ImageManagerService
@@ -1034,9 +1036,9 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       variedad: this.variedad_selected ? this.variedad_selected.id : null,
       code_cupon: null,
       code_discount: this.SALE_FLASH ? (this.SALE_FLASH._id || this.SALE_FLASH.id) : null,
-      price_unitario: this.cartManagerService.calculateUnitPrice(this.product_selected, this.SALE_FLASH),
-      subtotal: this.cartManagerService.calculateSubtotal(this.product_selected, $('#qty-cart').val(), this.SALE_FLASH),
-      total: this.cartManagerService.calculateTotal(this.product_selected, $('#qty-cart').val(), this.SALE_FLASH),
+      price_unitario: this.cartOrchestratorService.calculateUnitPrice(this.product_selected, this.SALE_FLASH),
+      subtotal: this.cartOrchestratorService.calculateSubtotal(this.product_selected, $('#qty-cart').val(), this.SALE_FLASH),
+      total: this.cartOrchestratorService.calculateTotal(this.product_selected, $('#qty-cart').val(), this.SALE_FLASH),
     };
 
     this.wishlistService.registerWishlist(data).subscribe(
@@ -1129,7 +1131,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       }
       
       // Validar stock usando el servicio
-      if (!this.cartManagerService.validateStockAvailability(
+      if (!this.cartOrchestratorService.validateStockAvailability(
         this.product_selected, 
         this.variedad_selected, 
         this.cantidad
@@ -1153,9 +1155,21 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       campaignDiscount: this.product_selected.campaing_discount // Campaign Discount si existe
     };  
 
-    // Añadir al carrito usando el servicio especializado
+    // Construir datos del carrito usando método específico para landing (usa DOM)
+    const discountInfo = this.SALE_FLASH || this.product_selected.campaing_discount || null;
+    console.log('🐛 [DEBUG landing-product] SALE_FLASH:', this.SALE_FLASH);
+    console.log('🐛 [DEBUG landing-product] product.campaing_discount:', this.product_selected.campaing_discount);
+    console.log('🐛 [DEBUG landing-product] Final discountInfo:', discountInfo);
+    
+    const cartData = this.cartOrchestratorService.buildCartDataForLanding(
+      this.product_selected, 
+      this.variedad_selected, 
+      this.currentUser, 
+      discountInfo
+    );
+    console.log('🐛 [DEBUG landing-product] cartData generated:', cartData);
     this.subscriptions.add(
-      this.cartManagerService.addToCart(productData).subscribe(
+      this.cartApiService.addToCart(cartData).subscribe(
         (resp: any) => this.handleCartResponse(resp),
         (error: any) => this.handleCartError(error)
       )

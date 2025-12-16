@@ -662,11 +662,13 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
     let type_discount = null;
     let discount = 0;
     let code_discount = null;
+    let type_campaign = null;
     
     if (product.campaing_discount) {
       type_discount  = product.campaing_discount.type_discount;
       discount = product.campaing_discount.discount;
       code_discount = product.campaing_discount._id || product.campaing_discount.id;
+      type_campaign = product.campaing_discount.type_campaign; // ✅ Enviamos type_campaign explícitamente
     }
    
     let data = {
@@ -678,6 +680,7 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
       variedad: null,
       code_cupon: null,
       code_discount: code_discount,
+      type_campaign: type_campaign, // ✅ Incluimos type_campaign en los datos
       price_unitario: product.price_usd,
       subtotal: product.price_usd - this.getDiscountProduct(product),  
       total: (product.price_usd - this.getDiscountProduct(product))*1, // De momento es igual, luego aplicamos el descuento

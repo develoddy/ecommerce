@@ -25,7 +25,7 @@ import { LoaderService } from 'src/app/modules/home/_services/product/loader.ser
 import { PriceCalculationService } from './_services/product/price-calculation.service';
 import { FlashSaleTimerService, TimeLeft } from './_services/product/flash-sale-timer.service';
 import { ProductUIService } from './_services/product/product-ui.service';
-import { CartManagerService } from 'src/app/modules/home/_services/product/cart-manager.service';
+import { CartOrchestratorService } from 'src/app/modules/home/_services/product/cart-orchestrator.service';
 import { ModalService } from 'src/app/modules/home/_services/product/modal.service';
 import { ProductSelectionService } from 'src/app/modules/home/_services/product/product-selection.service';
 import { SliderManagerService } from 'src/app/modules/home/_services/product/slider-manager.service';
@@ -126,7 +126,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private priceCalculationService: PriceCalculationService,
     private flashSaleTimerService: FlashSaleTimerService,
     private productUIService: ProductUIService,
-    private cartManagerService: CartManagerService,
+    private cartOrchestratorService: CartOrchestratorService,
     private modalService: ModalService,
     private productSelectionService: ProductSelectionService,
     private sliderManagerService: SliderManagerService,
@@ -580,7 +580,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   storeCart(product: any) {
-    this.cartManagerService.storeCart(
+    this.cartOrchestratorService.storeCart(
       this.product_selected,
       this.variedad_selected,
       this.currentUser,
@@ -613,11 +613,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getPriceWithDiscount() {
-    return this.cartManagerService.getPriceWithDiscountParts(this.product_selected, this.SALE_FLASH);
+    return this.cartOrchestratorService.getPriceWithDiscountParts(this.product_selected, this.SALE_FLASH);
   }
 
   esProductoUnitario(variedades: any, valoresUnitarios: any) {
-    return this.cartManagerService.esProductoUnitario(variedades, valoresUnitarios);
+    return this.cartOrchestratorService.esProductoUnitario(variedades, valoresUnitarios);
   }
 
   openModalToCart = (besProduct: any) => {
@@ -673,7 +673,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getDiscount(FlashSale: any = null) {
-    return this.cartManagerService.calculateDiscount(this.product_selected, FlashSale);
+    return this.cartOrchestratorService.calculateDiscount(this.product_selected, FlashSale);
   }
 
   addWishlist = (product: any, FlashSale: any = null) => {

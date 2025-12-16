@@ -4,7 +4,8 @@ import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browse
 import { GridViewMode } from 'src/app/modules/home/_services/product/grid-view.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
-import { CartManagerService } from 'src/app/modules/ecommerce-guest/_service/service_landing_product';
+import { CartApiService } from 'src/app/modules/ecommerce-guest/_service/service_landing_product/cart-api.service';
+import { CartOrchestratorService } from 'src/app/modules/home/_services/product/cart-orchestrator.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -52,7 +53,8 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     private sanitizer: DomSanitizer,
     private cartService: CartService,
     private minicartService: MinicartService,
-    private cartManagerService: CartManagerService,
+    private cartApiService: CartApiService,
+    private cartOrchestratorService: CartOrchestratorService,
     private priceCalculationService: PriceCalculationService,
     public routerActived: ActivatedRoute,
   ) {
@@ -194,31 +196,27 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     }
     
     // Validate stock availability
-    if (!this.cartManagerService.validateStockAvailability(product, selectedVariety, 1)) {
+    if (!this.cartOrchestratorService.validateStockAvailability(product, selectedVariety, 1)) {
       this.showError('No hay stock disponible para esta variedad');
       return;
     }
     
-    // Calculate final price using PriceCalculationService (same logic as landing-product)
-    const finalPrice = this.priceCalculationService.calculateFinalPrice(product, []);
+    // Build cart data using CartOrchestratorService with correct discount info
+    // ⚠️ IMPORTANTE: No usar || con arrays - [] es truthy y descarta el campaing_discount
+    const discountInfo = (this.FlashSale && this.FlashSale.length > 0) 
+      ? this.FlashSale 
+      : product.campaing_discount;
     
-    // Prepare product data exactly like landing-product uses cartManagerService
-    const productData = {
-      product: product,
-      selectedColor: null, // No color selection in grid yet
-      selectedSize: selectedVariety,
-      quantity: 1, // Always add 1 when selecting size from grid
-      code_discount: null,
-      discount: { total: finalPrice }, // Use PriceCalculationService result
-      user: this.currentUser || null, // Ensure it's never undefined
-      saleFlash: null, // No flash sales in grid yet
-      campaignDiscount: product.campaing_discount || null
-    };
-
+    const cartData = this.cartOrchestratorService.buildCartData(
+      product, 
+      selectedVariety, 
+      this.currentUser, 
+      1, // quantity = 1
+      discountInfo
+    );
     
-    // Use cartManagerService like landing-product does
     this.subscriptions.add(
-      this.cartManagerService.addToCart(productData).subscribe(
+      this.cartApiService.addToCart(cartData).subscribe(
         (resp: any) => this.handleCartResponse(resp),
         (error: any) => this.handleCartError(error)
       )

@@ -15,6 +15,7 @@ export interface CartData {
   variedad: string | null;
   code_cupon: string | null;
   code_discount: string | null;
+  type_campaign: number | null; // ✅ Añadimos type_campaign al tipo
   price_unitario: number;
   subtotal: number;
   total: number;
@@ -34,7 +35,7 @@ export interface CartOperationResult {
 @Injectable({
   providedIn: 'root'
 })
-export class CartManagerService {
+export class CartOrchestratorService {
 
   constructor(
     private cartService: CartService,
@@ -151,33 +152,63 @@ export class CartManagerService {
    * @param product_selected - El producto seleccionado
    * @param variedad_selected - La variedad seleccionada
    * @param currentUser - Usuario actual
-   * @param SALE_FLASH - Información de Flash Sale
+   * @param quantity - Cantidad a añadir
+   * @param discount_info - Información de descuento (Flash Sale o Campaign Discount)
    * @returns Objeto con los datos del carrito
    */
   buildCartData(
     product_selected: any, 
     variedad_selected: any, 
     currentUser: any, 
-    SALE_FLASH: any = null
+    quantity: number = 1,
+    discount_info: any = null
   ): CartData {
-    const quantity = parseInt($('#qty-cart').val() as string, 10);
-    const discount = this.calculateDiscount(product_selected, SALE_FLASH);
-    const subtotal = product_selected.price_usd - discount;
+    // Determinar tipo de descuento y valores
+    let type_discount = null;
+    let discount_value = 0;
+    let code_discount = null;
+    let type_campaign = null;
+
+    if (discount_info) {
+      type_discount = discount_info.type_discount;
+      discount_value = discount_info.discount;
+      code_discount = discount_info._id || discount_info.id;
+      type_campaign = discount_info.type_campaign;
+    }
+
+    // Calcular precios usando los métodos del servicio
+    const price_unitario = this.calculateUnitPrice(product_selected, discount_info);
+    const subtotal = this.calculateSubtotal(product_selected, quantity, discount_info);
+    const total = this.calculateTotal(product_selected, quantity, discount_info);
 
     return {
-      user: currentUser.email ? currentUser._id : currentUser.id,
-      user_status: currentUser.email ? null : 'guest',
-      product: product_selected._id,
-      type_discount: SALE_FLASH ? SALE_FLASH.type_discount : null,
-      discount: SALE_FLASH ? SALE_FLASH.discount : 0,
+      user: currentUser?.email ? currentUser._id : currentUser?.id,
+      user_status: currentUser?.email ? 'authenticated' : 'guest',
+      product: product_selected._id || product_selected.id,
+      type_discount: type_discount,
+      discount: discount_value,
       cantidad: quantity,
       variedad: variedad_selected ? variedad_selected.id : null,
       code_cupon: null,
-      code_discount: SALE_FLASH ? (SALE_FLASH._id || SALE_FLASH.id) : null,
-      price_unitario: product_selected.price_usd,
+      code_discount: code_discount,
+      type_campaign: type_campaign,
+      price_unitario: price_unitario,
       subtotal: subtotal,
-      total: subtotal * quantity,
+      total: total,
     };
+  }
+
+  /**
+   * Construye CartData específicamente para landing-product (usa DOM para quantity)
+   */
+  buildCartDataForLanding(
+    product_selected: any, 
+    variedad_selected: any, 
+    currentUser: any, 
+    discount_info: any = null
+  ): CartData {
+    const quantity = parseInt($('#qty-cart').val() as string, 10) || 1;
+    return this.buildCartData(product_selected, variedad_selected, currentUser, quantity, discount_info);
   }
 
   /**
@@ -301,5 +332,57 @@ export class CartManagerService {
         errorMessage: 'Error al agregar al carrito'
       };
     }
+  }
+
+  /**
+   * Calcula el precio unitario con descuentos aplicados
+   */
+  calculateUnitPrice(product: any, discount: any = null): number {
+    if (!product) return 0;
+
+    let basePrice = product.price_usd || product.price_soles || 0;
+
+    if (discount) {
+      if (discount.type_discount === 1) {
+        // Descuento porcentual
+        basePrice = basePrice - (basePrice * discount.discount / 100);
+      } else if (discount.type_discount === 2) {
+        // Descuento fijo
+        basePrice = Math.max(0, basePrice - discount.discount);
+      }
+    }
+
+    return basePrice;
+  }
+
+  /**
+   * Calcula el subtotal para una cantidad específica
+   */
+  calculateSubtotal(product: any, quantity: number, discount: any = null): number {
+    const unitPrice = this.calculateUnitPrice(product, discount);
+    return unitPrice * quantity;
+  }
+
+  /**
+   * Calcula el total incluyendo impuestos y otros cargos
+   */
+  calculateTotal(product: any, quantity: number, discount: any = null, additionalCharges: number = 0): number {
+    const subtotal = this.calculateSubtotal(product, quantity, discount);
+    return subtotal + additionalCharges;
+  }
+
+  /**
+   * Valida la disponibilidad de stock antes de añadir al carrito
+   */
+  validateStockAvailability(product: any, selectedVariety: any, quantity: number): boolean {
+    if (!product) return false;
+    
+    if (selectedVariety) {
+      const variety = product.variedades?.find((v: any) => v.id === selectedVariety.id);
+      return variety && variety.stock >= quantity;
+    }
+    
+    // Para productos unitarios
+    return product.stock >= quantity;
   }
 }

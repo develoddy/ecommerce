@@ -606,7 +606,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       return `Cupón ${cart.code_cupon}`;
     }
     
-    // PRIORIDAD 2: Usar type_campaign validado en backend
+    // PRIORIDAD 2: Usar type_campaign validado en backend (ÚNICA FUENTE DE VERDAD)
     // type_campaign: 1=Campaign Discount, 2=Flash Sale, 3=Cupón
     if (cart.type_campaign === 3) {
       return `Cupón ${cart.code_cupon || ''}`;
@@ -616,13 +616,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       return 'Campaign Discount';
     }
     
-    // PRIORIDAD 3: Detectar Flash Sale por code_discount
-    if (cart.code_discount && !cart.code_cupon) {
-      return 'Flash Sale';
-    }
-    
-    // Por defecto: Campaign Discount
-    return 'Campaign Discount';
+    // Si no hay type_campaign válido, no mostrar badge
+    return '';
   }
 
   getFormattedPrice(price: any) {
