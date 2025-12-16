@@ -16,7 +16,7 @@
   <div *ngIf="!isLoading && error" class="container py-5">
     <div class="alert alert-danger shadow-sm" role="alert">
       <div class="d-flex align-items-center">
-        <i class="bi bi-exclamation-triangle-fill fs-3 me-3"></i>
+        <i class="icon anm anm-times-circle fs-3 me-3"></i>
         <div>
           <h5 class="alert-heading mb-1">Error al cargar el tracking</h5>
           <p class="mb-0">{{ error }}</p>
@@ -25,10 +25,10 @@
       <hr>
       <div class="d-flex gap-2">
         <button class="btn btn-outline-danger" (click)="goBack()">
-          <i class="bi bi-arrow-left me-2"></i>Volver
+          <i class="icon anm anm-angle-left-l me-2"></i>Volver
         </button>
         <button class="btn btn-danger" (click)="refreshTracking()">
-          <i class="bi bi-arrow-clockwise me-2"></i>Reintentar
+          <i class="icon anm anm-sync-ar me-2"></i>Reintentar
         </button>
       </div>
     </div>
@@ -40,7 +40,7 @@
     <!-- Header -->
     <div class="tracking-header mb-4">
       <button class="btn btn-link ps-0" (click)="goBack()">
-        <i class="bi bi-arrow-left me-2"></i>Volver a búsqueda
+        <i class="icon anm anm-angle-left-l me-2"></i>Volver a búsqueda
       </button>
       <div class="d-flex justify-content-between align-items-center flex-wrap">
         <div>
@@ -54,7 +54,7 @@
             {{ getStatusText() }}
           </span>
           <button class="btn btn-outline-primary ms-2" (click)="refreshTracking()">
-            <i class="bi bi-arrow-clockwise"></i>
+            <i class="icon anm anm-sync-ar"></i>
           </button>
         </div>
       </div>
@@ -85,10 +85,10 @@
               [ngClass]="getTimelineStepClass(event)">
               
               <div class="step-icon">
-                <i class="bi" [ngClass]="{
-                  'bi-check-circle-fill': event.completed,
-                  'bi-circle-fill': !event.completed && event.status === 'pending',
-                  'bi-arrow-repeat': event.status === 'processing'
+                <i class="icon anm" [ngClass]="{
+                  'anm-check-cil': event.completed,
+                  'anm-circle-o': !event.completed && event.status === 'pending',
+                  'anm-sync-ar': event.status === 'processing'
                 }"></i>
               </div>
               
@@ -113,7 +113,7 @@
         <div *ngIf="trackingData.trackingNumber" class="card mb-4 border-primary">
           <div class="card-body">
             <h5 class="card-title mb-3">
-              <i class="bi bi-truck me-2 text-primary"></i>
+              <i class="icon anm anm-truck-l me-2 text-primary"></i>
               Información de Envío
             </h5>
             <div class="row">
@@ -138,7 +138,7 @@
               *ngIf="trackingData.trackingUrl" 
               class="btn btn-primary w-100 mt-2"
               (click)="openTrackingUrl()">
-              <i class="bi bi-box-arrow-up-right me-2"></i>
+              <i class="icon anm anm-external-link me-2"></i>
               Rastrear en {{ trackingData.carrier }}
             </button>
           </div>
@@ -148,7 +148,7 @@
         <div class="card mb-4">
           <div class="card-body">
             <h5 class="card-title mb-3">
-              <i class="bi bi-bag-check me-2"></i>
+              <i class="icon anm anm-bag-l me-2"></i>
               Artículos del Pedido
             </h5>
             
@@ -223,18 +223,18 @@
         <div class="card bg-light">
           <div class="card-body">
             <h6 class="card-title mb-3">
-              <i class="bi bi-question-circle me-2"></i>
+              <i class="icon anm anm-question-cil me-2"></i>
               ¿Necesitas ayuda?
             </h6>
             <p class="small text-muted mb-3">
               Si tienes preguntas sobre tu pedido, no dudes en contactarnos.
             </p>
             <a href="mailto:support@tutienda.com" class="btn btn-outline-primary btn-sm w-100 mb-2">
-              <i class="bi bi-envelope me-2"></i>
+              <i class="icon anm anm-envelope-l me-2"></i>
               Enviar Email
             </a>
-            <a href="tel:+1234567890" class="btn btn-outline-primary btn-sm w-100">
-              <i class="bi bi-telephone me-2"></i>
+            <a href="tel:+1234567890" class="btn btn-outline-primary btn-sm w-100 d-none">
+              <i class="icon anm anm-phone-l me-2"></i>
               Llamar
             </a>
           </div>
