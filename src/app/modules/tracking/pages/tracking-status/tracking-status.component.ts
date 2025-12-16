@@ -264,27 +264,34 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
    * 🖼️ Obtener imagen de preview del producto
    */
   getItemImage(item: any): string {
-    // Prioridad: preview > thumbnail > placeholder
+    // 🎯 Lógica idéntica a successfull-checkout para consistencia visual
+    // Priorizar mockup con diseño aplicado (preview) sobre producto genérico
+    
+    // 1️⃣ Buscar en variedade.files (mockups con diseño aplicado)
+    if (item.variedade && Array.isArray(item.variedade.files) && item.variedade.files.length > 0) {
+      // Preview primero (mockup con diseño)
+      const previewFile = item.variedade.files.find((f: any) => f.type === 'preview');
+      if (previewFile && previewFile.preview_url) return previewFile.preview_url;
+
+      // Default como segunda opción
+      const defaultFile = item.variedade.files.find((f: any) => f.type === 'default');
+      if (defaultFile && defaultFile.preview_url) return defaultFile.preview_url;
+
+      // Cualquier archivo disponible como tercera opción
+      const anyFile = item.variedade.files[0];
+      if (anyFile) return anyFile.preview_url || anyFile.thumbnail_url || anyFile.url || '';
+    }
+
+    // 2️⃣ Fallback a files directamente (compatibilidad con respuesta de Printful)
     if (item.files && item.files.length > 0) {
-      // Buscar imagen de tipo 'preview' primero
       const previewFile = item.files.find((f: any) => f.type === 'preview');
-      if (previewFile?.preview_url) {
-        return previewFile.preview_url;
-      }
+      if (previewFile?.preview_url) return previewFile.preview_url;
       
-      // Fallback a thumbnail o cualquier imagen disponible
       const anyFile = item.files.find((f: any) => f.thumbnail_url || f.preview_url || f.url);
-      if (anyFile) {
-        return anyFile.thumbnail_url || anyFile.preview_url || anyFile.url;
-      }
+      if (anyFile) return anyFile.thumbnail_url || anyFile.preview_url || anyFile.url;
     }
     
-    // Fallback a imagen del producto si existe
-    if (item.product?.image) {
-      return item.product.image;
-    }
-    
-    // Placeholder final
-    return 'assets/images/placeholder.png';
+    // 3️⃣ Fallback final al producto genérico
+    return item.product?.imagen || item.product?.portada || 'assets/images/placeholder.png';
   }
 }
