@@ -1345,6 +1345,13 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
     //this.address_client_selected.this.usual_shipping_address;
   }
 
+  openInNewTab(path: string) {
+    const url = this._router.serializeUrl(
+      this._router.createUrlTree(['/', this.locale, this.country, 'shop', path])
+    );
+    window.open(url, '_blank');
+  }
+
   onAddressChange(event: any) {
     const selectedIndex = event.target.value;
     // listAddresses

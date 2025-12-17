@@ -630,8 +630,6 @@ getVarietyImage(cart: any): string {
       phone: this.phone
     };
 
-    // 🔍 PASO 1: VALIDAR CON BACKEND API (validación local con base de datos postal_codes)
-    console.log('🔍 [ResumenCheckout] Paso 1: Validando código postal con backend API...');
     
     this.addressValidationService.validateLocalRulesAsync(addressData).subscribe({
       next: (localValidation) => {
@@ -649,7 +647,7 @@ getVarietyImage(cart: any): string {
         }
         
         // ✅ Validación local correcta, ahora validar con Printful
-        console.log('✅ [ResumenCheckout] Validación backend OK, validando con Printful...');
+       
         this.validationMessage = 'Validando dirección con Printful...';
         
         // 🔍 PASO 2: VALIDAR CON PRINTFUL
@@ -798,6 +796,13 @@ getVarietyImage(cart: any): string {
         formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 100);
+  }
+
+  openInNewTab(path: string) {
+    const url = this._router.serializeUrl(
+      this._router.createUrlTree(['/', this.locale, this.country, 'shop', path])
+    );
+    window.open(url, '_blank');
   }
 
   /**

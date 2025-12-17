@@ -710,8 +710,7 @@
                                           y que aceptas las
                                           <a 
                                              class="text-decoration-underline fw-normal"
-                                             [routerLink]="['/', locale, country, 'shop', 'condiciones-venta']" 
-                                             onclick="return false;"
+                                             (click)="openInNewTab('condiciones-venta')"
                                              target="_blank"
                                              title="Condiciones Generales de Venta">Condiciones de venta</a>
                                     </small>
