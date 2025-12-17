@@ -712,6 +712,7 @@
                                              class="text-decoration-underline fw-normal"
                                              (click)="openInNewTab('condiciones-venta')"
                                              target="_blank"
+                                              style="cursor: pointer;"
                                              title="Condiciones Generales de Venta">Condiciones de venta</a>
                                     </small>
                                  </p>
@@ -916,7 +917,12 @@
                               <p class="lh-1 fw-lighter">
                                  <small>Al finalizar la compra, confirmas que has leído,
                                        entendido y que aceptas las
-                                       <a class="text-decoration-underline fw-normal" href="#" data-testid="" target="">Condiciones de venta</a>
+                                       <a 
+                                          class="text-decoration-underline fw-normal"
+                                          (click)="openInNewTab('condiciones-venta')"
+                                          target="_blank"
+                                          style="cursor: pointer;"
+                                          title="Condiciones Generales de Venta">Condiciones de venta</a>
                                  </small>
                               </p>
                            </div>
