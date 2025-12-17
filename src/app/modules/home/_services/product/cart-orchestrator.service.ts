@@ -385,4 +385,76 @@ export class CartOrchestratorService {
     // Para productos unitarios
     return product.stock >= quantity;
   }
+
+  /**
+   * Determina el descuento aplicable a un producto específico
+   * Sigue la misma lógica que PriceCalculationService.calculateFinalPrice()
+   * 
+   * Reglas de prioridad:
+   * 1. Si el producto está en FlashSale → aplicar FlashSale
+   * 2. Si no está en FlashSale pero tiene campaing_discount → aplicar campaing_discount
+   * 3. Si ninguno aplica → null (precio normal)
+   * 
+   * @param product - Producto a evaluar
+   * @param flashSales - Array de Flash Sales activas (puede ser array o objeto único)
+   * @returns Objeto de descuento aplicable o null
+   */
+  getApplicableDiscount(product: any, flashSales: any = null): any {
+    if (!product) return null;
+
+    const productId = product._id || product.id;
+    if (!productId) return null;
+
+    // Normalizar flashSales a array si es necesario
+    let flashSalesArray: any[] = [];
+    if (flashSales) {
+      if (Array.isArray(flashSales)) {
+        flashSalesArray = flashSales;
+      } else {
+        flashSalesArray = [flashSales];
+      }
+    }
+
+    // 1️⃣ PRIORIDAD 1: Verificar si el producto está en algún Flash Sale activo
+    if (flashSalesArray.length > 0) {
+      for (const flash of flashSalesArray) {
+        // Validación defensiva: verificar que discounts_products existe y es un array
+        if (!flash.discounts_products || !Array.isArray(flash.discounts_products)) {
+          continue;
+        }
+
+        // Verificar si el producto está en la lista de productos con descuento
+        const isInFlash = flash.discounts_products.some((fp: any) => {
+          const flashProductId = fp.product?.id || fp.product?._id || fp.productId;
+          return flashProductId === productId;
+        });
+
+        if (isInFlash) {
+          // ✅ El producto SÍ está en este Flash Sale
+          return {
+            _id: flash._id || flash.id,
+            id: flash.id || flash._id,
+            type_discount: flash.type_discount,
+            discount: flash.discount,
+            type_campaign: flash.type_campaign || null,
+            discounts_products: flash.discounts_products
+          };
+        }
+      }
+    }
+
+    // 2️⃣ PRIORIDAD 2: Si no está en Flash Sale, verificar campaign discount individual
+    if (product.campaing_discount && product.campaing_discount.type_discount) {
+      return {
+        _id: product.campaing_discount._id || product.campaing_discount.id,
+        id: product.campaing_discount.id || product.campaing_discount._id,
+        type_discount: product.campaing_discount.type_discount,
+        discount: product.campaing_discount.discount,
+        type_campaign: product.campaing_discount.type_campaign || 2 // Campaign discount
+      };
+    }
+
+    // 3️⃣ Sin descuento aplicable
+    return null;
+  }
 }

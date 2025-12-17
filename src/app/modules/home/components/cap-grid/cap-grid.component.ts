@@ -213,10 +213,11 @@ export class CapGridComponent implements OnChanges, OnDestroy  {
     // console.log('📊 Selected variety:', selectedVariety);
     
     // Build cart data and send via API
-    // ⚠️ IMPORTANTE: No usar || con arrays - [] es truthy y descarta el campaing_discount
-    const discountInfo = (this.FlashSale && this.FlashSale.length > 0) 
-      ? this.FlashSale 
-      : (product.campaing_discount || null);
+    // ✅ Usar método centralizado que valida pertenencia a FlashSale
+    const discountInfo = this.cartOrchestratorService.getApplicableDiscount(
+      product,
+      this.FlashSale
+    );
     const cartData = this.cartOrchestratorService.buildCartData(
       product, 
       selectedVariety, 

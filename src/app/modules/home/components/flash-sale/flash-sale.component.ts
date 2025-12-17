@@ -1,4 +1,9 @@
-import { Component, Input, OnInit, OnChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
+import { MinicartService } from 'src/app/services/minicartService.service';
+import { CartApiService } from 'src/app/modules/ecommerce-guest/_service/service_landing_product/cart-api.service';
+import { CartOrchestratorService } from 'src/app/modules/home/_services/product/cart-orchestrator.service';
 
 @Component({
   selector: 'app-flash-sale',
@@ -6,7 +11,7 @@ import { Component, Input, OnInit, OnChanges, ViewEncapsulation } from '@angular
   styleUrls: ['./flash-sale.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class FlashSaleComponent implements OnInit, OnChanges {
+export class FlashSaleComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() FlashProductList: any[] = [];
   @Input() locale: string = '';
@@ -14,11 +19,26 @@ export class FlashSaleComponent implements OnInit, OnChanges {
   @Input() euro: string = '€';
   @Input() isMobile: boolean = false;
   @Input() FlashSales: any[] = [];
+  @Input() currentUser: any; // Usuario actual para el carrito
   @Input() getRouterDiscount!: (product: any) => any;
   @Input() openModalToCart!: (product: any) => void;
   @Input() addWishlist!: (product: any, flashSale: any) => void;
   @Input() changeProductImage!: (product: any, image: string) => void;
   @Input() navigateToProduct!: (slug: string, discountId?: string) => void;
+
+  // Para manejo de errores al añadir al carrito
+  errorResponse: boolean = false;
+  errorMessage: string = '';
+  
+  // Subscripciones para cleanup
+  private subscriptions: Subscription = new Subscription();
+
+  constructor(
+    private cartService: CartService,
+    private minicartService: MinicartService,
+    private cartApiService: CartApiService,
+    private cartOrchestratorService: CartOrchestratorService
+  ) {}
 
   ngOnInit() {
     this.markDiscountedProducts();
@@ -136,13 +156,65 @@ export class FlashSaleComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Handle size selection
+   * Handle size selection for a product - Adds product to cart automatically
    * @param product - Product object
    * @param size - Selected size
    */
   onSizeSelect(product: any, size: string): void {
     const productId = product.uniqueId || product.id || product._id;
+    
+    if (!productId) {
+      console.error('Product ID not found for size selection');
+      return;
+    }
+
+    // Update selected size for this product
     this.selectedSizes[productId] = size;
+    
+    // Find the selected variety based on current color and size
+    const currentColorIndex = this.selectedColors[productId] || 0;
+    const currentColor = product.colores?.[currentColorIndex]?.color;
+    
+    let selectedVariety = null;
+    
+    if (product.variedades && Array.isArray(product.variedades)) {
+      selectedVariety = product.variedades.find((v: any) => 
+        v.valor === size && (!currentColor || v.color === currentColor)
+      );
+    }
+    
+    if (!selectedVariety) {
+      this.showError('No se encontró la variedad seleccionada');
+      return;
+    }
+    
+    // Validate stock availability
+    if (!this.cartOrchestratorService.validateStockAvailability(product, selectedVariety, 1)) {
+      this.showError('No hay stock disponible para esta variedad');
+      return;
+    }
+    
+    // Build cart data using CartOrchestratorService with correct discount info
+    // ✅ Usar método centralizado que valida pertenencia a FlashSale
+    const discountInfo = this.cartOrchestratorService.getApplicableDiscount(
+      product,
+      this.FlashSales
+    );
+    
+    const cartData = this.cartOrchestratorService.buildCartData(
+      product, 
+      selectedVariety, 
+      this.currentUser, 
+      1, // quantity = 1
+      discountInfo
+    );
+    
+    this.subscriptions.add(
+      this.cartApiService.addToCart(cartData).subscribe(
+        (resp: any) => this.handleCartResponse(resp),
+        (error: any) => this.handleCartError(error)
+      )
+    );
   }
 
   /**
@@ -215,6 +287,62 @@ export class FlashSaleComponent implements OnInit, OnChanges {
   isProductHovered(product: any): boolean {
     const productId = product.uniqueId || product.id || product._id;
     return this.hoveredProduct === productId;
+  }
+
+  /**
+   * Show error message
+   * @param message - Error message to display
+   */
+  private showError(message: string): void {
+    this.errorResponse = true;
+    this.errorMessage = message;
+    console.error('❌ FlashSale Error:', message);
+  }
+
+  /**
+   * Handle cart response after adding product
+   * @param resp - Response from cart service
+   */
+  private handleCartResponse(resp: any): void {
+    if (resp.message == 403) {
+      this.errorResponse = true;
+      this.errorMessage = resp.message_text;
+      console.error('❌ Cart Error 403:', resp.message_text);
+    } else {
+      // Success: update cart and open minicart
+      this.cartService.changeCart(resp.cart);
+      this.minicartService.openMinicart();
+      
+      // Clear any previous errors
+      this.errorResponse = false;
+      this.errorMessage = '';
+    }
+  }
+
+  /**
+   * Handle cart error
+   * @param error - Error object
+   */
+  private handleCartError(error: any): void {
+    console.error('❌ Cart Error:', error);
+    
+    if (error?.error?.message === 'EL TOKEN NO ES VALIDO') {
+      this.cartService._authService.logout();
+      return;
+    }
+    
+    // Handle other errors
+    const errorMessage = error?.error?.message_text || error?.message || 'Error al añadir el producto al carrito';
+    this.showError(errorMessage);
+  }
+
+  /**
+   * Cleanup subscriptions when component is destroyed
+   */
+  ngOnDestroy(): void {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
   }
 
 }
