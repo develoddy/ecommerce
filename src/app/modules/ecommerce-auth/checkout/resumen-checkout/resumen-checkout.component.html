@@ -500,29 +500,38 @@
                 <!-- CART SUMMARY VERSION MÓVIL -->
                 <div class="cart-info mb-4 d-block d-md-none bg-white border-0 p-0">
                     <div class="cart-info mb-4 bg-white border-0 p-0">
-                        <h3 class="title mb-3 text-uppercase d-none">Resumen de Precio</h3>
+                        <h3 class="title mb-3 text-uppercase ">Resumen de Precio</h3>
                         <div class="cart-order-detail cart-col">
                             <!-- Subtotal-->
                             <div class="row g-0">
-                                <span class="col-6 col-sm-6 cart-subtotal-title">Subtotal</span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
                                 <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                     <span class="money">
-                                        <span class="price-small" [ngClass]="hasAnyCartDiscount() ? 'old-price text-decoration-line-through' : ''">
-                                            <span class="me-1">{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.{{ getFormattedPrice(getOriginalSubtotal()).decimalPart }}</span>
-                                            <span class="">{{ euro }}</span>
-                                        </span>
+                                        <!-- Mostrar subtotal original solo si hay descuentos, sino mostrar subtotal final -->
+                                        <ng-container *ngIf="hasAnyCartDiscount(); else noDiscountSubtotal">
+                                            <span class="price-small fw-light old-price text-decoration-line-through">
+                                                <span class="me-1">{{ euro }}</span>
+                                                <span>{{getFormattedPrice(getOriginalSubtotal()).integerPart}}.{{getFormattedPrice(getOriginalSubtotal()).decimalPart}}</span>
+                                            </span>
+                                        </ng-container>
+                                        <ng-template #noDiscountSubtotal>
+                                            <span class="price-small fw-light">
+                                                <span class="me-1">{{ euro }}</span>
+                                                <span>{{getFormattedPrice(getSubtotal()).integerPart}}.{{getFormattedPrice(getSubtotal()).decimalPart}}</span>
+                                            </span>
+                                        </ng-template>
                                     </span>
                                 </span>
                             </div>
 
                             <!-- Descuento aplicado (solo si hay descuentos) -->
                             <div class="row g-0" *ngIf="hasAnyCartDiscount()">
-                                <span class="col-6 col-sm-6 cart-subtotal-title text-danger">Descuento</span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title text-danger fw-light">Descuento</span>
                                 <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
                                     <span class="money">
-                                        <span class="price-small">
-                                            -<span class="me-1">{{getFormattedPrice(getTotalDiscount()).integerPart}}.{{ getFormattedPrice(getTotalDiscount()).decimalPart }}</span>
-                                            <span class="">{{ euro }}</span>
+                                        <span class="price-small fw-light">
+                                            <span class="me-1">{{ euro }}</span>
+                                            -<span>{{getFormattedPrice(getTotalDiscount()).integerPart}}.{{getFormattedPrice(getTotalDiscount()).decimalPart}}</span>
                                         </span>
                                     </span>
                                 </span>
@@ -530,24 +539,25 @@
 
                             <!-- Envío Gratis -->
                             <div class="row g-0 mb-2">
-                                <span class="col-6 col-sm-6 cart-subtotal-title">Envío</span>
-                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Gratis</span></span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Envío</span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">Gratis</span></span>
                             </div>
 
                             <!-- Total Precio actual -->
                             <div class="row g-0">
-                                <span class="col-6 col-sm-6 cart-subtotal-title text-uppercase fw-bold">Total</span>
-                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                    <span class="money price fw-bold ">
-                                        <span class="me-1">{{getFormattedPrice(totalCarts).integerPart}}.{{ getFormattedPrice(totalCarts).decimalPart }}</span>
-                                        <span class="">{{ euro }}</span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase fw-normal">Total</span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title fs-6 cart-subtotal text-end">
+                                    <span class="money price fw-normal">
+                                        <span class="me-1">{{ euro }}</span>
+                                        <span>{{getFormattedPrice(getTotal()).integerPart}}.{{ getFormattedPrice(getTotal()).decimalPart }}</span>
+                                        
                                     </span>
                                 </span>
                             </div>
 
                             <!-- Impuestos incluidos -->
                             <div class="row g-0 d-none">
-                                <div class="col-6 col-sm-6 text-center">
+                                <div class="col-6 col-sm-6text-center">
                                     <small class="text-muted fw-light">Impuestos incluidos</small>
                                 </div>
                             </div>
@@ -678,7 +688,7 @@
                 </div> -->
                 <!-- END CODIGO PROMOCIONAL -->
 
-                <!-- CART SUMMARY -->
+                <!-- CART SUMMARY VERSION DESKTOP -->
                 <div class="cart-info mb-5 mb-5 d-none d-md-block bg-white border-0 p-0">
                     <div class="cart-order-detail cart-col">
                         <!-- Subtotal-->
@@ -744,7 +754,7 @@
                 </div>
                 <!-- CART SUMMARY -->
 
-                <!-- CARTS LIST -->
+                <!-- CARTS LIST  -->
                 <div class="col-12 order-0 lists-carts  order-md-2">
                     <div class="block order-summary p-0">
                         <div class="block-content">
