@@ -579,9 +579,11 @@
                         <p class="text-center mb-0" style="font-size: 0.85rem;">
                             <small class="text-muted">Al continuar, confirmas que has leído la
                                 <a class="text-dark fw-semibold text-decoration-underline" 
-                                   href="#" 
-                                   [routerLink]="['/', locale, country, 'shop', 'privacy-policy']" 
-                                   onclick="return false;">Política de privacidad</a></small>
+                                   href="#"
+                                   onclick="return false;"
+                                   target="_blank"
+                                   [routerLink]="['/', locale, country, 'shop', 'privacy-policy']">Política de privacidad</a>
+                                </small>
                         </p>
                     </div>
                 </ng-container>

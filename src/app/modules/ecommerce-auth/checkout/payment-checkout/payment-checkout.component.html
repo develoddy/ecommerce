@@ -708,7 +708,12 @@
                                  <p class="lh-1 fw-lighter">
                                     <small>Al finalizar la compra, confirmas que has leído, entendido
                                           y que aceptas las
-                                          <a class="text-decoration-underline fw-normal" href="#" data-testid="" target="" onclick="return false;">Condiciones de venta</a>
+                                          <a 
+                                             class="text-decoration-underline fw-normal"
+                                             [routerLink]="['/', locale, country, 'shop', 'condiciones-venta']" 
+                                             onclick="return false;"
+                                             target="_blank"
+                                             title="Condiciones Generales de Venta">Condiciones de venta</a>
                                     </small>
                                  </p>
                               </div>
