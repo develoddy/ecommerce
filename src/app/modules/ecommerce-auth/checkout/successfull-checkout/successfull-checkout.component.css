@@ -942,7 +942,7 @@
 /* Responsive para número de pedido */
 @media (max-width: 576px) {
   .success-text {
-    padding: 2rem 1rem !important;
+    padding: 1rem 1rem !important;
   }
   
   .success-text h1 {
