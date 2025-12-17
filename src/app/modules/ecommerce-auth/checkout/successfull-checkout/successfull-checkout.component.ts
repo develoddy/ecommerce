@@ -543,11 +543,33 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Navigate to My Purchases page to track the order
+   * Navigate to public tracking page using orderId + trackingToken
+   * ✅ Works for both guest and authenticated users
+   * ✅ Consistent with email confirmation flow
+   * ✅ No login required
    */
   navigateToTrackOrder() {
-    // Navigate to my purchases page where customer can track their order
-    this._router.navigate(['/', this.country, this.locale, 'account', 'mypurchases']);
+    if (!this.sale || !this.sale.id || !this.sale.trackingToken) {
+      console.error('❌ Missing sale data for tracking navigation', {
+        saleId: this.sale?.id,
+        hasTrackingToken: !!this.sale?.trackingToken
+      });
+      
+      // Fallback: redirect to tracking search page
+      this._router.navigate(['/', this.country, this.locale, 'tracking']);
+      return;
+    }
+
+    // Navigate to public tracking page with orderId + token
+    // Same URL structure as email confirmation link
+    this._router.navigate([
+      '/', 
+      this.country, 
+      this.locale, 
+      'tracking', 
+      this.sale.id, 
+      this.sale.trackingToken
+    ]);
   }
 
   goToNextStep() {
