@@ -14,34 +14,60 @@
                 </div>
                 <!-- Idioma y moneda -->
                 <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-right d-flex align-items-center justify-content-end">
-                    <div class="select-wrap language-picker float-start">
-                        <ul class="default-option">
+                    <!-- Selector de Idioma -->
+                    <div class="select-wrap language-picker float-start" [class.active]="isLanguageDropdownOpen">
+                        <ul class="default-option" (click)="toggleLanguageDropdown()">
                             <li>
                                 <div class="option">
-                                    <span>{{ locale.toUpperCase() }}</span>
+                                    <ng-container [ngSwitch]="locale">
+                                        <span *ngSwitchCase="'es'">🇪🇸 ES</span>
+                                        <span *ngSwitchCase="'fr'">🇫🇷 FR</span>
+                                        <span *ngSwitchCase="'it'">🇮🇹 IT</span>
+                                        <span *ngSwitchCase="'de'">🇩🇪 DE</span>
+                                        <span *ngSwitchDefault>{{ locale.toUpperCase() }}</span>
+                                    </ng-container>
                                 </div>
                             </li>
                         </ul>
-                        <ul class="select-ul">
+                        <ul class="select-ul" [class.active]="isLanguageDropdownOpen">
                             <li *ngFor="let localeOption of availableLocales" (click)="onLocaleChange(localeOption.code)">
                                 <div class="option" [class.active]="locale === localeOption.code">
-                                    <span>{{ localeOption.name }}</span>
+                                    <ng-container [ngSwitch]="localeOption.code">
+                                        <span *ngSwitchCase="'es'">🇪🇸 Castellano</span>
+                                        <span *ngSwitchCase="'fr'">🇫🇷 Français</span>
+                                        <span *ngSwitchCase="'it'">🇮🇹 Italiano</span>
+                                        <span *ngSwitchCase="'de'">🇩🇪 Deutsch</span>
+                                        <span *ngSwitchDefault>{{ localeOption.name }}</span>
+                                    </ng-container>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                    <div class="select-wrap currency-picker float-start">
-                        <ul class="default-option">
+                    <!-- Selector de País -->
+                    <div class="select-wrap currency-picker float-start" [class.active]="isCountryDropdownOpen">
+                        <ul class="default-option" (click)="toggleCountryDropdown()">
                             <li>
                                 <div class="option">
-                                    <span>{{ country.toUpperCase() }}</span>
+                                    <ng-container [ngSwitch]="country">
+                                        <span *ngSwitchCase="'es'">🇪🇸 ES</span>
+                                        <span *ngSwitchCase="'fr'">🇫🇷 FR</span>
+                                        <span *ngSwitchCase="'it'">🇮🇹 IT</span>
+                                        <span *ngSwitchCase="'de'">🇩🇪 DE</span>
+                                        <span *ngSwitchDefault>{{ country.toUpperCase() }}</span>
+                                    </ng-container>
                                 </div>
                             </li>
                         </ul>
-                        <ul class="select-ul">
+                        <ul class="select-ul" [class.active]="isCountryDropdownOpen">
                             <li *ngFor="let countryOption of countries" (click)="onCountryChange(countryOption.code)">
                                 <div class="option" [class.active]="country === countryOption.code">
-                                    <span>{{ countryOption.name }}</span>
+                                    <ng-container [ngSwitch]="countryOption.code">
+                                        <span *ngSwitchCase="'es'">🇪🇸 España</span>
+                                        <span *ngSwitchCase="'fr'">🇫🇷 France</span>
+                                        <span *ngSwitchCase="'it'">🇮🇹 Italia</span>
+                                        <span *ngSwitchCase="'de'">🇩🇪 Deutschland</span>
+                                        <span *ngSwitchDefault>{{ countryOption.name }}</span>
+                                    </ng-container>
                                 </div>
                             </li>
                         </ul>

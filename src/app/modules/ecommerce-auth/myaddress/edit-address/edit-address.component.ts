@@ -4,6 +4,7 @@ import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AddressValidationService } from '../../_services/address-validation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 declare var $:any;
 
@@ -67,13 +68,11 @@ export class EditAddressComponent implements OnInit {
     private router: Router,
     public _routerActived: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private dynamicRouter: DynamicRouterService
+    private dynamicRouter: DynamicRouterService,
+    private localizationService: LocalizationService
   ) {
-
-    this._routerActived.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
-      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
-    });
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
   }
   
   /**
@@ -191,10 +190,26 @@ export class EditAddressComponent implements OnInit {
 
   ngOnInit(): void {
     this.SPINNER();
+    this.subscribeToLocalization();
     this.verifyAuthenticatedUser();
     this.checkIfAddressClientExists();
     this.subscribeToQueryParams();
     this.showProfileClient();
+  }
+  
+  private subscribeToLocalization(): void {
+    // Suscribirse a cambios de country y locale
+    this.subscriptions.add(
+      this.localizationService.country$.subscribe(country => {
+        this.country = country;
+      })
+    );
+    
+    this.subscriptions.add(
+      this.localizationService.locale$.subscribe(locale => {
+        this.locale = locale;
+      })
+    );
   }
   
   private SPINNER() {

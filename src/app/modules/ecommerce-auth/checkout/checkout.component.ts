@@ -103,12 +103,28 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       }
     });
 
+    this.subscribeToLocalization();
     this.subscribeToCheckoutEvents();
     this.loadCurrentDataCart();
     this.verifyAuthenticatedUser();
     this.initializeExternalScripts();
     this.watchRouteChanges();
     this.updateCurrentStep();
+  }
+
+  private subscribeToLocalization(): void {
+    // Suscribirse a cambios de country y locale
+    this.subscriptions.add(
+      this.localizationService.country$.subscribe(country => {
+        this.country = country;
+      })
+    );
+    
+    this.subscriptions.add(
+      this.localizationService.locale$.subscribe(locale => {
+        this.locale = locale;
+      })
+    );
   }
 
   private initializeExternalScripts(): void {

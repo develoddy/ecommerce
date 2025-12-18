@@ -111,6 +111,9 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
 
+    // Suscribirse a cambios de localización
+    this.subscribeToLocalization();
+
     if (sessionId) {
       this.fetchSaleWithRetry(sessionId, 20, 2000);
     } else {
@@ -535,6 +538,21 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
         this.shippingAddress = this.listAddressGuest[0];
       });
     }
+  }
+
+  private subscribeToLocalization(): void {
+    // Suscribirse a cambios de country y locale
+    this.subscriptions.add(
+      this.localizationService.country$.subscribe(country => {
+        this.country = country;
+      })
+    );
+    
+    this.subscriptions.add(
+      this.localizationService.locale$.subscribe(locale => {
+        this.locale = locale;
+      })
+    );
   }
 
   navigateToHome() {

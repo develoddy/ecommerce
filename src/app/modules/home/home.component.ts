@@ -192,6 +192,22 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscribeToCartData();
     this.subscribeToWishlistData();
     this.subscribeToGridViewChanges();
+    this.subscribeToLocalization();
+  }
+
+  private subscribeToLocalization(): void {
+    // Suscribirse a cambios de country y locale
+    this.subscriptions.add(
+      this.localizationService.country$.subscribe(country => {
+        this.country = country;
+      })
+    );
+    
+    this.subscriptions.add(
+      this.localizationService.locale$.subscribe(locale => {
+        this.locale = locale;
+      })
+    );
   }
 
   private initializeHomeData(): void {

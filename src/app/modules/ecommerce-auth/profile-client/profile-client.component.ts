@@ -3,6 +3,7 @@ import { EcommerceAuthService } from '../_services/ecommerce-auth.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth-profile/_services/auth.service';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 declare var $:any;
 
@@ -63,6 +64,7 @@ export class ProfileClientComponent implements OnInit {
   loading: boolean = false;
 
   loadingSubscription: Subscription = new Subscription();
+  private subscriptions: Subscription = new Subscription();
 
   locale: string = "";
   country: string = "";
@@ -75,19 +77,34 @@ export class ProfileClientComponent implements OnInit {
     public _ecommerceAuthService: EcommerceAuthService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private localizationService: LocalizationService
   ) {
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  
-      this.country = params.get('country') || 'es'; 
-    });
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
   }
 
   ngOnInit(): void {
+    this.subscribeToLocalization();
     this.verifyAuthenticatedUser();
 
     this.name_c = this.CURRENT_USER_AUTHENTICATED.name,
     this.surname_c = this.CURRENT_USER_AUTHENTICATED.surname; 
     this.email_c = this.CURRENT_USER_AUTHENTICATED.email; 
+  }
+
+  private subscribeToLocalization(): void {
+    // Suscribirse a cambios de country y locale
+    this.subscriptions.add(
+      this.localizationService.country$.subscribe(country => {
+        this.country = country;
+      })
+    );
+    
+    this.subscriptions.add(
+      this.localizationService.locale$.subscribe(locale => {
+        this.locale = locale;
+      })
+    );
   }
 
   private verifyAuthenticatedUser(): void {
@@ -514,6 +531,9 @@ export class ProfileClientComponent implements OnInit {
     // Desuscribirse al destruir el componente
     if (this.loadingSubscription) {
       this.loadingSubscription.unsubscribe();
+    }
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
     }
   }
 }

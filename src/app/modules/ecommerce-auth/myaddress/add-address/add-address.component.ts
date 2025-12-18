@@ -167,6 +167,7 @@ export class AddAddressComponent implements OnInit {
   ngOnInit(): void {
     
     this.SPINNER();
+    this.subscribeToLocalization();
     
     // Captura la URL de retorno si existe
     this.returnUrl = this.activatedRoute.snapshot.queryParamMap.get('returnUrl') || `/${this.country}/${this.locale}/account/myaddresses`;
@@ -176,6 +177,21 @@ export class AddAddressComponent implements OnInit {
     
     this.verifyAuthenticatedUser();
     this.subscribeToQueryParams();
+  }
+
+  private subscribeToLocalization(): void {
+    // Suscribirse a cambios de country y locale
+    this.subscriptions.add(
+      this.localizationService.country$.subscribe(country => {
+        this.country = country;
+      })
+    );
+    
+    this.subscriptions.add(
+      this.localizationService.locale$.subscribe(locale => {
+        this.locale = locale;
+      })
+    );
   }
 
   /**

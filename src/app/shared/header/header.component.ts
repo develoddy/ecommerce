@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, EventEmitter, Output, ChangeDetectorRef, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy, EventEmitter, Output, ChangeDetectorRef, Renderer2, HostListener } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, debounceTime, forkJoin, fromEvent, Observable, of, Subscription, tap } from 'rxjs';
@@ -65,6 +65,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   source: any;
   locale: string = "";
   country: string = "";
+  
+  // Variables para controlar dropdowns
+  isLanguageDropdownOpen: boolean = false;
+  isCountryDropdownOpen: boolean = false;
   currentUser: any = null;
   width: number = 100; // valor por defecto
   height: number = 100; // valor por defecto
@@ -111,6 +115,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private dynamicRouter: DynamicRouterService
     // public loader: LoaderService,
   ) {
+    // Inicializar valores desde el servicio en el constructor
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
+    
     this.subscriptions.add(
       this.subscriptionService.showSubscriptionSection$.subscribe(value => {
         this.showSubscriptionSection = value;
@@ -119,9 +127,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.country = this.localizationService.country;
-    this.locale = this.localizationService.locale;
-
     // Subscribe to LocalizationService for reactive country/locale updates
     this.subscriptions.add(
       this.localizationService.country$.subscribe(country => {
@@ -1062,17 +1067,81 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.availableLocales = this.languageOptions[newCountry] || [];
       const newLocale = this.availableLocales.length > 0 ? this.availableLocales[0].code : 'es';
       
-      // Actualizar LocalizationService y navegar
+      // Cerrar dropdown
+      this.isCountryDropdownOpen = false;
+      
+      // Actualizar LocalizationService
       this.localizationService.setLocaleAndCountry(newCountry, newLocale);
-      this.router.navigate([`/${newCountry}/${newLocale}/home`]);
+      
+      // Obtener la ruta actual sin el prefijo de país/locale
+      const currentUrl = this.router.url;
+      const urlSegments = currentUrl.split('/').filter(s => s);
+      
+      // Saltar los primeros dos segmentos (country y locale actuales)
+      const routeWithoutLocale = urlSegments.slice(2).join('/');
+      
+      // Navegar a la misma ruta pero con el nuevo país/locale
+      if (routeWithoutLocale) {
+        this.router.navigate([`/${newCountry}/${newLocale}/${routeWithoutLocale}`]);
+      } else {
+        this.router.navigate([`/${newCountry}/${newLocale}/home`]);
+      }
     }
   }
 
   // Método para cambiar de idioma (mismo patrón que preHome)
   onLocaleChange(newLocale: string) {
     if (newLocale !== this.locale) {
+      // Cerrar dropdown
+      this.isLanguageDropdownOpen = false;
+      
+      // Actualizar LocalizationService
       this.localizationService.setLocaleAndCountry(this.country, newLocale);
-      this.router.navigate([`/${this.country}/${newLocale}/home`]);
+      
+      // Obtener la ruta actual sin el prefijo de país/locale
+      const currentUrl = this.router.url;
+      const urlSegments = currentUrl.split('/').filter(s => s);
+      
+      // Saltar los primeros dos segmentos (country y locale actuales)
+      const routeWithoutLocale = urlSegments.slice(2).join('/');
+      
+      // Navegar a la misma ruta pero con el nuevo locale
+      if (routeWithoutLocale) {
+        this.router.navigate([`/${this.country}/${newLocale}/${routeWithoutLocale}`]);
+      } else {
+        this.router.navigate([`/${this.country}/${newLocale}/home`]);
+      }
+    }
+  }
+
+  // Toggle dropdown de idioma
+  toggleLanguageDropdown() {
+    this.isLanguageDropdownOpen = !this.isLanguageDropdownOpen;
+    if (this.isLanguageDropdownOpen) {
+      this.isCountryDropdownOpen = false; // Cerrar el otro dropdown
+    }
+  }
+
+  // Toggle dropdown de país
+  toggleCountryDropdown() {
+    this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
+    if (this.isCountryDropdownOpen) {
+      this.isLanguageDropdownOpen = false; // Cerrar el otro dropdown
+    }
+  }
+
+  // Cerrar dropdowns al hacer click fuera
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const languagePicker = target.closest('.language-picker');
+    const countryPicker = target.closest('.currency-picker');
+    
+    if (!languagePicker) {
+      this.isLanguageDropdownOpen = false;
+    }
+    if (!countryPicker) {
+      this.isCountryDropdownOpen = false;
     }
   }
 

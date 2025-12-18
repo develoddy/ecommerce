@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 declare var $:any;
 
@@ -34,17 +35,31 @@ export class ListAddressComponent implements OnInit, OnDestroy {
     public _ecommerceAuthService: EcommerceAuthService, 
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    
+    private localizationService: LocalizationService
   ) {
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
-      this.country = params.get('country') || 'es'; // Valor predeterminado si no se encuentra
-    });
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
   }
 
   ngOnInit(): void {
     this.SPINNER();
+    this.subscribeToLocalization();
     this.verifyAuthenticatedUser();
+  }
+
+  private subscribeToLocalization(): void {
+    // Suscribirse a cambios de country y locale
+    this.subscriptions.add(
+      this.localizationService.country$.subscribe(country => {
+        this.country = country;
+      })
+    );
+    
+    this.subscriptions.add(
+      this.localizationService.locale$.subscribe(locale => {
+        this.locale = locale;
+      })
+    );
   }
 
   private SPINNER() {
