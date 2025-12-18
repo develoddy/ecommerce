@@ -12,29 +12,9 @@ export class PreHomeComponent implements OnInit {
   selectedCountry = 'es'; // España por defecto
   selectedLocale = '';  // Se asigna automáticamente
 
-  // Países del PRE-LAUNCH - Los 4 mercados principales
-  countries = [
-    { code: 'es', name: 'España (Península y Baleares)' },
-    { code: 'fr', name: 'France' },
-    { code: 'it', name: 'Italia' },
-    { code: 'de', name: 'Deutschland' }
-  ];
-
-  // Idiomas nativos por país para PRE-LAUNCH
-  languageOptions: { [key: string]: { code: string, name: string }[] } = {
-    'es': [
-      { code: 'es', name: 'Castellano' }
-    ],
-    'fr': [
-      { code: 'fr', name: 'Français' }
-    ],
-    'it': [
-      { code: 'it', name: 'Italiano' }
-    ],
-    'de': [
-      { code: 'de', name: 'Deutsch' }
-    ]
-  };
+  // Usar configuración centralizada del servicio
+  countries = this.localizationService.countries;
+  languageOptions = this.localizationService.languageOptions;
 
   availableLocales: { code: string, name: string }[] = []; // Idiomas disponibles según el país seleccionado
 

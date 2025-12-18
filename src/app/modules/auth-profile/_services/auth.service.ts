@@ -5,6 +5,7 @@ import { URL_SERVICE } from 'src/app/config/config';
 import { catchError, map, of, BehaviorSubject, finalize, window, Observable, tap, filter, throwError, switchMap, take } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { TokenService } from './token.service';
+import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,8 @@ export class AuthService {
     private _http               : HttpClient, 
     private _router             : Router, 
     private localizationService : LocalizationService,
-    private tokenService        : TokenService
+    private tokenService        : TokenService,
+    private dynamicRouter       : DynamicRouterService
   ) {
     // Registrar callback de logout en TokenService
     if (this.tokenService) {
@@ -262,8 +264,17 @@ export class AuthService {
 
   requestPasswordReset(email: string) {
     this.loadingSubject.next(true);
-    const URL = URL_SERVICE + "users/request-reset-password"; // Ajusta la URL según sea necesario
-    return this._http.post(URL, { email }).pipe(
+    const URL = URL_SERVICE + "users/request-reset-password";
+    
+    // Obtener country/locale actuales
+    const country = this.localizationService.country;
+    const locale = this.localizationService.locale;
+    
+    return this._http.post(URL, { 
+      email,
+      country,
+      locale 
+    }).pipe(
       map((response: any) => {
         // Manejar la respuesta aquí si es necesario
         return response; // Puedes devolver una respuesta significativa
@@ -325,8 +336,8 @@ export class AuthService {
       next: () => {
         this.addGuestLocalStorage().subscribe({
           next: () => {
-            const { country, locale } = this.getLocaleAndCountry();
-            this._router.navigate(['/', country, locale, 'home']);
+            // Usar DynamicRouterService para mantener consistencia de country/locale
+            this.dynamicRouter.navigateWithLocale(['home']);
           },
           error: (err) => {
             console.error("❌ Error al crear guest tras logout", err);

@@ -14,6 +14,7 @@ import { combineLatest } from 'rxjs';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { HeaderEventsService } from 'src/app/services/headerEvents.service';
 import { HomeService } from 'src/app/modules/home/_services/home.service';
+import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
 import { ProductUIService } from 'src/app/modules/home/_services/product/product-ui.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 import { SafeUrl } from '@angular/platform-browser';
@@ -43,6 +44,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   euro = "€";
   selectedLanguage: string = 'ES';
+  
+  // Usar configuración centralizada del servicio
+  countries = this.localizationService.countries;
+  languageOptions = this.localizationService.languageOptions;
+  availableLocales: { code: string, name: string }[] = [];
+
   listCarts: any[] = [];
   listWishlists: any = [];
   totalCarts: number = 0;
@@ -100,7 +107,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private productUIService: ProductUIService,
     private priceCalculationService: PriceCalculationService,
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef,
+    private dynamicRouter: DynamicRouterService
     // public loader: LoaderService,
   ) {
     this.subscriptions.add(
@@ -113,6 +121,23 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
+
+    // Subscribe to LocalizationService for reactive country/locale updates
+    this.subscriptions.add(
+      this.localizationService.country$.subscribe(country => {
+        this.country = country;
+        this.updateAvailableLocales();
+      })
+    );
+
+    this.subscriptions.add(
+      this.localizationService.locale$.subscribe(locale => {
+        this.locale = locale;
+      })
+    );
+
+    // Initialize available locales
+    this.updateAvailableLocales();
 
     // ✅ Evaluar inmediatamente según la ruta actual
     // this.isFixed = this.router.url.includes('/home');
@@ -758,8 +783,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.search_product = '';
     this.products_search = [];
     
-    // Navegación SPA-friendly sin reload
-    this.router.navigate(['/', this.country, this.locale, 'shop', 'product', slug], { queryParams: { _id: discountId } });
+    // Navegación usando DynamicRouterService para mantener consistencia con country/locale
+    const routeParams = ['shop', 'product', slug];
+    const queryParams = discountId ? { _id: discountId } : {};
+    this.dynamicRouter.navigateWithLocale(routeParams, { queryParams });
   }
 
   /**
@@ -1022,6 +1049,31 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.subscriptions.unsubscribe();
     } 
     cleanupHOMEINITTEMPLATE($);
+  }
+
+  // Método para actualizar idiomas disponibles según el país (mismo patrón que preHome)
+  updateAvailableLocales() {
+    this.availableLocales = this.languageOptions[this.country] || [];
+  }
+
+  // Método para cambiar de país (mismo patrón que preHome)
+  onCountryChange(newCountry: string) {
+    if (newCountry !== this.country) {
+      this.availableLocales = this.languageOptions[newCountry] || [];
+      const newLocale = this.availableLocales.length > 0 ? this.availableLocales[0].code : 'es';
+      
+      // Actualizar LocalizationService y navegar
+      this.localizationService.setLocaleAndCountry(newCountry, newLocale);
+      this.router.navigate([`/${newCountry}/${newLocale}/home`]);
+    }
+  }
+
+  // Método para cambiar de idioma (mismo patrón que preHome)
+  onLocaleChange(newLocale: string) {
+    if (newLocale !== this.locale) {
+      this.localizationService.setLocaleAndCountry(this.country, newLocale);
+      this.router.navigate([`/${this.country}/${newLocale}/home`]);
+    }
   }
 
   closeMinicart(): void {

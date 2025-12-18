@@ -5,7 +5,7 @@
         <article class="category-item" 
                  [style.animation-delay]="(i * 0.1) + 's'"
                  [attr.aria-label]="'Categoría ' + categorie.title">
-          <a [routerLink]="['/', locale, country, 'shop', 'filter-products', categorie.slug, categorie._id]" 
+          <a [routerLink]="dynamicRouter.getRouterLink(['shop', 'filter-products', categorie.slug, categorie._id])" 
              class="category-link clr-none"
              [attr.title]="'Explorar ' + categorie.title">
             <div class="zoom-scal zoom-scal-nopb rounded-3">

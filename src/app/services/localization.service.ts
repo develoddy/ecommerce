@@ -12,6 +12,21 @@ export class LocalizationService {
   
   country$ = this.countrySubject.asObservable();
   locale$ = this.localeSubject.asObservable();
+
+  // Configuración centralizada de países e idiomas
+  readonly countries = [
+    { code: 'es', name: 'España' },
+    { code: 'fr', name: 'France' },
+    { code: 'it', name: 'Italia' },
+    { code: 'de', name: 'Deutschland' }
+  ];
+
+  readonly languageOptions: { [key: string]: { code: string, name: string }[] } = {
+    'es': [{ code: 'es', name: 'Castellano' }],
+    'fr': [{ code: 'fr', name: 'Français' }],
+    'it': [{ code: 'it', name: 'Italiano' }],
+    'de': [{ code: 'de', name: 'Deutsch' }]
+  };
   
   constructor(private router: Router) {
     // Escuchar cambios de ruta para actualizar país/idioma automáticamente

@@ -1,6 +1,56 @@
 <ng-container *ngIf="showSubscriptionSection; else onlyLogo">
     
-    
+    <!--Top Header-->
+    <div class="top-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Teléfono -->
+                <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-left">
+                    <i class="icon anm anm-phone-l me-2"></i><a href="tel:+34605974436">(+34) 605 974 436</a>
+                </div>
+                <!-- Mensaje central -->
+                <div class="col-12 col-sm-12 col-md-6 col-lg-4 text-center d-none d-md-block">
+                    En LujanDev programar es <strong>estilo y actitud</strong>
+                </div>
+                <!-- Idioma y moneda -->
+                <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-right d-flex align-items-center justify-content-end">
+                    <div class="select-wrap language-picker float-start">
+                        <ul class="default-option">
+                            <li>
+                                <div class="option">
+                                    <span>{{ locale.toUpperCase() }}</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="select-ul">
+                            <li *ngFor="let localeOption of availableLocales" (click)="onLocaleChange(localeOption.code)">
+                                <div class="option" [class.active]="locale === localeOption.code">
+                                    <span>{{ localeOption.name }}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="select-wrap currency-picker float-start">
+                        <ul class="default-option">
+                            <li>
+                                <div class="option">
+                                    <span>{{ country.toUpperCase() }}</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="select-ul">
+                            <li *ngFor="let countryOption of countries" (click)="onCountryChange(countryOption.code)">
+                                <div class="option" [class.active]="country === countryOption.code">
+                                    <span>{{ countryOption.name }}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Top Header-->
 
     <!--Header-->
     <header class="header d-flex align-items-center header-1 header-fixed">

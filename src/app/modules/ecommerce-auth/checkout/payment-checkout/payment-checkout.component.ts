@@ -136,6 +136,18 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
     this.loadCurrentDataCart();
     this.checkDeviceType();
     
+    // 🌍 Actualizar country y locale cuando cambien
+    this.subscriptions.add(
+      this.localizationService.country$.subscribe(country => {
+        this.country = country;
+      })
+    );
+    this.subscriptions.add(
+      this.localizationService.locale$.subscribe(locale => {
+        this.locale = locale;
+      })
+    );
+    
     // Sistema de monitoreo continuo para selectedPaymentMethod
     this.paymentMethodCheckInterval = setInterval(() => {
       if (this.previousPaymentMethod !== this.selectedPaymentMethod) {
@@ -606,6 +618,8 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       cart: cartWithFinalPrices,
       userId: this.CURRENT_USER_AUTHENTICATED?._id || null,
       guestId: this.CURRENT_USER_GUEST?.id || null,
+      country: this.country,
+      locale: this.locale,
       address: {
         name: this.name,
         surname: this.surname,
@@ -842,7 +856,9 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
             sale,
             sale_address,
             external_id: externalId,
-            shipping: shippingMethod
+            shipping: shippingMethod,
+            country: this.country,
+            locale: this.locale
           };
 
           this._authEcommerce.registerSale(orderDataToSend, isGuest).subscribe((resp: any) => {

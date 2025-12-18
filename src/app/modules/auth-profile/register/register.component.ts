@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { LocalizationService } from 'src/app/services/localization.service';
+import { Subscription } from 'rxjs';
 
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -13,7 +15,7 @@ declare function alertSuccess([]):any;
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   touchedFields: { [key: string]: boolean } = {
     name: false,
@@ -27,6 +29,7 @@ export class RegisterComponent implements OnInit {
 
   locale: string = "";
   country: string = "";
+  private subscriptions: Subscription = new Subscription();
   
   
   isMobile: boolean = false;
@@ -62,16 +65,27 @@ export class RegisterComponent implements OnInit {
     public _router: Router,
     public translate: TranslateService,
     public routerActived: ActivatedRoute,
-    private recaptchaV3Service: ReCaptchaV3Service
+    private recaptchaV3Service: ReCaptchaV3Service,
+    private localizationService: LocalizationService
   ) {
-    
-    this.routerActived.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  // Valor predeterminado
-      this.country = params.get('country') || 'es'; // Valor predeterminado
-    });
+    this.country = this.localizationService.country;
+    this.locale = this.localizationService.locale;
   }
 
   ngOnInit(): void {
+
+    // Subscribe to LocalizationService for reactive country/locale updates
+    this.subscriptions.add(
+      this.localizationService.country$.subscribe(country => {
+        this.country = country;
+      })
+    );
+
+    this.subscriptions.add(
+      this.localizationService.locale$.subscribe(locale => {
+        this.locale = locale;
+      })
+    );
 
     this._authService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
@@ -290,6 +304,12 @@ export class RegisterComponent implements OnInit {
       case 'repeat_password':
         this.errorRepeatPassword = false;
         break;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
     }
   }
 

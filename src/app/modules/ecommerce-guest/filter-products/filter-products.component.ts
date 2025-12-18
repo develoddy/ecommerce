@@ -7,6 +7,7 @@ import { LoaderService } from 'src/app/modules/home/_services/product/loader.ser
 import { ProductDisplayService } from '../_service/service_landing_product';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { SeoService } from 'src/app/services/seo.service';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -90,7 +91,8 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
     public productDisplayService: ProductDisplayService,
      public _authService: AuthService,
      private cdr: ChangeDetectorRef,
-     private seoService: SeoService
+     private seoService: SeoService,
+     private localizationService: LocalizationService
   ) {
     
     this._routerActived.paramMap.subscribe(params => {
@@ -108,6 +110,19 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
 
     this.subscribeToServiceStates();
     this.verifyAuthenticatedUser()
+
+    // Subscribe to LocalizationService for reactive country/locale updates
+    this.subscriptions.add(
+      this.localizationService.country$.subscribe(country => {
+        this.country = country;
+      })
+    );
+
+    this.subscriptions.add(
+      this.localizationService.locale$.subscribe(locale => {
+        this.locale = locale;
+      })
+    );
 
     this._ecommerceGuestService._authService.user.subscribe(user => {
       if (user) {

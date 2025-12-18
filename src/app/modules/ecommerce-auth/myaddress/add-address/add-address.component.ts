@@ -424,6 +424,39 @@ export class AddAddressComponent implements OnInit {
     }, 6000); // Desaparece después de 3 segundos
   }
 
+  clearField(fieldName: string) {
+    switch(fieldName) {
+      case 'name':
+        this.name = '';
+        break;
+      case 'surname':
+        this.surname = '';
+        break;
+      case 'email':
+        this.email = '';
+        break;
+      case 'calle':
+        this.calle = '';
+        break;
+      case 'numero':
+        this.numero = '';
+        break;
+      case 'apartamento':
+        this.apartamento = '';
+        break;
+      case 'zipcode':
+        this.zipcode = '';
+        this.ciudad = '';
+        this.poblacion = '';
+        this.availableCities = [];
+        this.postalCodeError = '';
+        break;
+      case 'phone':
+        this.phone = '';
+        break;
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();

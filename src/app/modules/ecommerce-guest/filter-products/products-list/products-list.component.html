@@ -13,7 +13,7 @@
                                     <!-- Etiqueta vertical -->
                                     <span class="product-tag-vertical">Nueva colección</span>
                                 
-                                    <a href="#" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" onclick="return false;" class="product-img rounded-0">
+                                    <a href="#" [routerLink]="['/', country, locale, 'shop', 'product', product.slug]" onclick="return false;" class="product-img rounded-0">
                                         <img class="primary blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
                                         <ng-container *ngIf="product.imagen_two">
                                             <img class="hover blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen_two" [src]="product.imagen_two" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>

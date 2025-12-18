@@ -50,15 +50,32 @@
                                             <div class="row justify-content-center">
                                                 <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
                                                     <label for="firstname" class="form-label d-none">Nombre <span class="required">*</span></label>
-                                                    <input name="firstname" 
-                                                            [(ngModel)]="name" 
-                                                            #firstname="ngModel" 
-                                                            id="firstname" 
-                                                            type="text" 
-                                                            required 
-                                                            placeholder="Nombre" 
-                                                            class="form-control py-4" 
-                                                            [ngClass]="{'is-invalid': firstname.invalid && (firstname.touched || addressForm.submitted)}" />
+                                                    <div class="position-relative">
+                                                        <input name="firstname" 
+                                                                [(ngModel)]="name" 
+                                                                #firstname="ngModel" 
+                                                                id="firstname" 
+                                                                type="text" 
+                                                                required 
+                                                                placeholder="Nombre" 
+                                                                class="form-control py-4" 
+                                                                [ngClass]="{'is-invalid': firstname.invalid && (firstname.touched || addressForm.submitted)}" />
+                                                        
+                                                        <!-- Botón para limpiar nombre -->
+                                                        <button *ngIf="name" 
+                                                                type="button" 
+                                                                class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                                (click)="clearField('name')"
+                                                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                                       width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                                       border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                                onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                                onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                            <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                     <div *ngIf="firstname.invalid && (firstname.touched || addressForm.submitted)" class="invalid-feedback">
                                                         Completa este campo para continuar
                                                     </div>
@@ -70,16 +87,33 @@
                                             <div class="row justify-content-center">
                                                 <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
                                                     <label for="lastname" class="form-label d-none">Apellidos <span class="required">*</span></label>
-                                                    <input name="lastname" 
-                                                        [(ngModel)]="surname" 
-                                                        #lastname="ngModel" 
-                                                        id="lastname" 
-                                                        type="text" 
-                                                        required 
-                                                        placeholder="Apellidos" 
-                                                        class="form-control py-4" 
-                                                        [ngClass]="{'is-invalid': lastname.invalid && (lastname.touched || addressForm.submitted)}" 
-                                                    />
+                                                    <div class="position-relative">
+                                                        <input name="lastname" 
+                                                            [(ngModel)]="surname" 
+                                                            #lastname="ngModel" 
+                                                            id="lastname" 
+                                                            type="text" 
+                                                            required 
+                                                            placeholder="Apellidos" 
+                                                            class="form-control py-4" 
+                                                            [ngClass]="{'is-invalid': lastname.invalid && (lastname.touched || addressForm.submitted)}" 
+                                                        />
+                                                        
+                                                        <!-- Botón para limpiar apellidos -->
+                                                        <button *ngIf="surname" 
+                                                                type="button" 
+                                                                class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                                (click)="clearField('surname')"
+                                                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                                       width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                                       border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                                onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                                onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                            <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                     <div *ngIf="lastname.invalid && (lastname.touched || addressForm.submitted)" class="invalid-feedback">
                                                         Completa este campo para continuar
                                                     </div>
@@ -92,16 +126,33 @@
                                             <div class="row justify-content-center">
                                                 <div class="form-group  col-12 col-sm-6 col-md-6 col-lg-4">
                                                     <label for="email" class="form-label d-none">E-Mail <span class="required">*</span></label>
-                                                    <input  name="email" 
-                                                            [(ngModel)]="email" 
-                                                            #emailRef="ngModel" 
-                                                            id="email" 
-                                                            type="email" 
-                                                            required 
-                                                            placeholder="E-mail" 
-                                                            class="form-control py-4" 
-                                                            [ngClass]="{'is-invalid': emailRef.invalid && (emailRef.touched || addressForm.submitted)}" 
-                                                    />
+                                                    <div class="position-relative">
+                                                        <input  name="email" 
+                                                                [(ngModel)]="email" 
+                                                                #emailRef="ngModel" 
+                                                                id="email" 
+                                                                type="email" 
+                                                                required 
+                                                                placeholder="E-mail" 
+                                                                class="form-control py-4" 
+                                                                [ngClass]="{'is-invalid': emailRef.invalid && (emailRef.touched || addressForm.submitted)}" 
+                                                        />
+                                                        
+                                                        <!-- Botón para limpiar email -->
+                                                        <button *ngIf="email" 
+                                                                type="button" 
+                                                                class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                                (click)="clearField('email')"
+                                                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                                       width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                                       border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                                onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                                onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                            <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                     <div *ngIf="emailRef.invalid && (emailRef.touched || addressForm.submitted)" class="invalid-feedback">
                                                         Completa este campo para continuar
                                                     </div>
@@ -140,15 +191,32 @@
                                             <div class="row justify-content-center">
                                                 <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
                                                     <label for="calle" class="form-label d-none">Calle <span class="required">*</span></label>
-                                                    <input  name="calle" 
-                                                            id="calle" 
-                                                            type="text" 
-                                                            required 
-                                                            [(ngModel)]="calle" 
-                                                            #calleRef="ngModel" 
-                                                            placeholder="Calle (ej: Calle Gran Vía)" 
-                                                            class="form-control py-4 fw-light" 
-                                                            [ngClass]="{'is-invalid': calleRef.invalid && (calleRef.touched || addressForm.submitted)}" />
+                                                    <div class="position-relative">
+                                                        <input  name="calle" 
+                                                                id="calle" 
+                                                                type="text" 
+                                                                required 
+                                                                [(ngModel)]="calle" 
+                                                                #calleRef="ngModel" 
+                                                                placeholder="Calle (ej: Calle Gran Vía)" 
+                                                                class="form-control py-4 fw-light" 
+                                                                [ngClass]="{'is-invalid': calleRef.invalid && (calleRef.touched || addressForm.submitted)}" />
+                                                        
+                                                        <!-- Botón para limpiar calle -->
+                                                        <button *ngIf="calle" 
+                                                                type="button" 
+                                                                class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                                (click)="clearField('calle')"
+                                                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                                       width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                                       border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                                onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                                onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                            <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                     <div *ngIf="calleRef.invalid && (calleRef.touched || addressForm.submitted)" class="invalid-feedback">
                                                         Completa este campo para continuar
                                                     </div>
@@ -159,15 +227,32 @@
                                             <div class="row justify-content-center">
                                                 <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
                                                     <label for="numero" class="form-label d-none">Número <span class="required">*</span></label>
-                                                    <input  name="numero" 
-                                                            id="numero" 
-                                                            type="text" 
-                                                            required 
-                                                            [(ngModel)]="numero" 
-                                                            #numeroRef="ngModel" 
-                                                            placeholder="Número (ej: 123)" 
-                                                            class="form-control py-4 fw-light" 
-                                                            [ngClass]="{'is-invalid': numeroRef.invalid && (numeroRef.touched || addressForm.submitted)}" />
+                                                    <div class="position-relative">
+                                                        <input  name="numero" 
+                                                                id="numero" 
+                                                                type="text" 
+                                                                required 
+                                                                [(ngModel)]="numero" 
+                                                                #numeroRef="ngModel" 
+                                                                placeholder="Número (ej: 123)" 
+                                                                class="form-control py-4 fw-light" 
+                                                                [ngClass]="{'is-invalid': numeroRef.invalid && (numeroRef.touched || addressForm.submitted)}" />
+                                                        
+                                                        <!-- Botón para limpiar numero -->
+                                                        <button *ngIf="numero" 
+                                                                type="button" 
+                                                                class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                                (click)="clearField('numero')"
+                                                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                                       width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                                       border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                                onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                                onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                            <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                     <div *ngIf="numeroRef.invalid && (numeroRef.touched || addressForm.submitted)" class="invalid-feedback">
                                                         Debes incluir el número de la calle para el envío
                                                     </div>
@@ -178,12 +263,29 @@
                                             <div class="row justify-content-center">
                                                 <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
                                                     <label for="apartamento" class="form-label d-none">Apartamento/Piso</label>
-                                                    <input  name="apartamento" 
-                                                            id="apartamento" 
-                                                            type="text" 
-                                                            [(ngModel)]="apartamento" 
-                                                            placeholder="Apartamento/Piso (opcional, ej: 3º B)" 
-                                                            class="form-control py-4 fw-light" />
+                                                    <div class="position-relative">
+                                                        <input  name="apartamento" 
+                                                                id="apartamento" 
+                                                                type="text" 
+                                                                [(ngModel)]="apartamento" 
+                                                                placeholder="Apartamento/Piso (opcional, ej: 3º B)" 
+                                                                class="form-control py-4 fw-light" />
+                                                        
+                                                        <!-- Botón para limpiar apartamento -->
+                                                        <button *ngIf="apartamento" 
+                                                                type="button" 
+                                                                class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                                (click)="clearField('apartamento')"
+                                                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                                       width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                                       border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                                onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                                onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                            <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                     <small class="form-text text-muted">Opcional: piso, puerta, escalera, etc.</small>
                                                 </div>
                                             </div>
@@ -209,6 +311,22 @@
                                                                     'is-invalid': (zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted)) || postalCodeError
                                                                 }" 
                                                         />
+                                                        
+                                                        <!-- Botón para limpiar zipcode -->
+                                                        <button *ngIf="zipcode && !isLoadingPostalCode" 
+                                                                type="button" 
+                                                                class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                                (click)="clearField('zipcode')"
+                                                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                                       width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                                       border-radius: 50%; cursor: pointer; transition: all 0.3s ease; z-index: 10;"
+                                                                onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                                onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                            <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                            </svg>
+                                                        </button>
+                                                        
                                                         <!-- Spinner de carga -->
                                                         <div *ngIf="isLoadingPostalCode" 
                                                              class="position-absolute" 
@@ -323,16 +441,33 @@
                                             <div class="row justify-content-center">
                                                 <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
                                                     <label for="phone" class="form-label d-none">Móvil <span class="required">*</span></label>
-                                                    <input  name="phone" 
-                                                            id="phone" 
-                                                            type="tel" 
-                                                            required 
-                                                            [(ngModel)]="phone" 
-                                                            #phoneRef="ngModel" 
-                                                            placeholder="Móvil" 
-                                                            class="form-control py-4 fw-light" 
-                                                            [ngClass]="{'is-invalid': phoneRef.invalid && (phoneRef.touched || addressForm.submitted)}" 
-                                                    />
+                                                    <div class="position-relative">
+                                                        <input  name="phone" 
+                                                                id="phone" 
+                                                                type="tel" 
+                                                                required 
+                                                                [(ngModel)]="phone" 
+                                                                #phoneRef="ngModel" 
+                                                                placeholder="Móvil" 
+                                                                class="form-control py-4 fw-light" 
+                                                                [ngClass]="{'is-invalid': phoneRef.invalid && (phoneRef.touched || addressForm.submitted)}" 
+                                                        />
+                                                        
+                                                        <!-- Botón para limpiar phone -->
+                                                        <button *ngIf="phone" 
+                                                                type="button" 
+                                                                class="btn-clear-input d-flex align-items-center justify-content-center" 
+                                                                (click)="clearField('phone')"
+                                                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
+                                                                       width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); 
+                                                                       border-radius: 50%; cursor: pointer; transition: all 0.3s ease;"
+                                                                onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                                                                onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                            <svg width="16" height="16" fill="#6c757d" viewBox="0 0 16 16">
+                                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                     <div *ngIf="phoneRef.invalid && (phoneRef.touched || addressForm.submitted)" class="invalid-feedback">
                                                         Completa este campo para continuar
                                                     </div>

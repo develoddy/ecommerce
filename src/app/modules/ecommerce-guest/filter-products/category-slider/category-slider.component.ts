@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
 
 @Component({
   selector: 'app-category-slider',
@@ -7,6 +8,6 @@ import { Component, Input } from '@angular/core';
 })
 export class CategorySliderComponent {
   @Input() categories: any[] = [];
-  @Input() locale: string = '';
-  @Input() country: string = '';
+
+  constructor(public dynamicRouter: DynamicRouterService) {}
 }

@@ -1447,6 +1447,42 @@ getVarietyImage(cart: any): string {
     return this.getSubtotal(); // Envío es gratis, así que total = subtotal final
   }
 
+  /**
+   * 🎯 UX IMPROVEMENT: Limpiar campos del formulario individualmente
+   * Proporciona botones de limpieza rápida para cada campo de entrada
+   */
+  clearField(fieldName: string): void {
+    switch (fieldName) {
+      case 'name':
+        this.name = '';
+        break;
+      case 'surname':
+        this.surname = '';
+        break;
+      case 'email':
+        this.email = '';
+        break;
+      case 'calle':
+        this.calle = '';
+        break;
+      case 'numero':
+        this.numero = '';
+        break;
+      case 'apartamento':
+        this.apartamento = '';
+        break;
+      case 'zipcode':
+        this.zipcode = '';
+        this.ciudad = '';
+        this.poblacion = '';
+        this.availableCities = [];
+        break;
+      case 'phone':
+        this.phone = '';
+        break;
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
