@@ -248,7 +248,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   gotoPoliticaCookie() {
-    this.router.navigate(['/', this.locale, this.country, 'shop', 'privacy-policy']);
+    this.router.navigate(['/', this.country, this.locale, 'shop', 'privacy-policy']);
     this.modalInstance?.hide();
   }
 

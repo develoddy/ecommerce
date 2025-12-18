@@ -30,7 +30,7 @@ export class CartApiService {
   addToCart(cartItem: any): Observable<any> {
     this.loadingSubject.next(true);
 
-    console.log("🛒 [CartApiService] Enviando al backend:", cartItem);
+
 
     // Determinar endpoint según si hay usuario
     const endpoint = cartItem.user_status === 'authenticated' 

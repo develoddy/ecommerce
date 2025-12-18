@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../auth-profile/_services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
+import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
 
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -59,6 +60,7 @@ export class AccountComponent implements OnInit {
     public _ecommerceAuthService: EcommerceAuthService,
     public _router: Router,
     private activatedRoute: ActivatedRoute,
+    private dynamicRouter: DynamicRouterService
   ) {
     this.activatedRoute.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  // Valor predeterminado si no se encuentra
@@ -83,7 +85,7 @@ export class AccountComponent implements OnInit {
         this.CURRENT_USER_AUTHENTICATED = user;
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
-        this._router.navigate(['/', this.locale, this.country, 'auth', 'login']);
+        this._router.navigate(['/', this.country, this.locale, 'auth', 'login']);
       }
     });
   }
@@ -256,7 +258,7 @@ export class AccountComponent implements OnInit {
 
         setTimeout(() => {
           //this._router.navigateByUrl("/registered/messageSuccess");
-          this._router.navigate(['/', this.locale, this.country, 'account', 'registered', 'messageSuccess']);
+          this.dynamicRouter.navigateWithLocale(['account', 'registered', 'messageSuccess']);
         }, 50);
       }
     });

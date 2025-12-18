@@ -9,6 +9,7 @@ import { CheckoutService } from '../_services/checkoutService';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { PriceCalculationService } from '../../home/_services/product/price-calculation.service';
 import { LoaderService } from '../../home/_services/product/loader.service';
+import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE($: any): any;
@@ -82,6 +83,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     private checkoutService: CheckoutService,
     private localizationService: LocalizationService,
     private priceCalculationService: PriceCalculationService,
+    private dynamicRouter: DynamicRouterService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -293,17 +295,17 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         (resp: any) => {
           this.listAddressClients = resp.address_client;
           if (this.listAddressClients.length === 0) {
-            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+            this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
           } else {
             if (this.currentStep === 'successfull') {
-              this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'successfull'], { queryParams: { initialized: true, from: 'step4' } });
+              this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'successfull'], { queryParams: { initialized: true, from: 'step4' } });
               return;
             }
             if (this.currentStep === 'payment') {
-              this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
+              this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
             }
              else {
-              this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+              this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
             }
           }
       });
@@ -317,16 +319,16 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         (resp: any) => {
           this.listAddressGuest = resp.addresses;
           if (this.listAddressGuest.length === 0) {
-            this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+            this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
           } else {
             if (this.currentStep === 'successfull') {
-              this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'successfull'], { queryParams: { initialized: true, from: 'step4' } });
+              this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'successfull'], { queryParams: { initialized: true, from: 'step4' } });
               return;
             }
             if (this.currentStep === 'payment') {
-              this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
+              this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
             } else {
-              this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+              this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
             }
           }
       });
@@ -336,7 +338,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   navigateToCart() {
     this.shouldCleanGuest = false;
     this.subscriptionService.setShowSubscriptionSection(true);
-    this._router.navigate(['/', this.locale, this.country, 'shop', 'cart']);
+    this._router.navigate(['/', this.country, this.locale, 'shop', 'cart']);
   }
 
   onCheckboxChange(event: any) {
@@ -551,7 +553,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
   verifyExistEmail(email: string) {
     sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-    this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add'],{ queryParams: { email } });
+    this.dynamicRouter.navigateWithLocale(['account', 'myaddresses', 'add'], { queryParams: { email } });
   }
 
   login() {
@@ -568,7 +570,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         if (!resp.error && resp) {
           // Tras login en checkout padre, ir al paso de resumen sin recargar
           this._cartService.resetCart();
-          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'login' } });
+          this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'login' } });
          } else {
           this.errorAutenticate = true;
           this.errorMessageAutenticate = resp.error.message;
@@ -578,14 +580,14 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   showLogin(): void {
-    this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'login']); // Redirige al componente de login
+    this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'login']); // Redirige al componente de login
   }
      
   handleGuestCheckout() {
     // En resumen, cada vez que haya un cambio en los datos del carrito, este código redirige al usuario a 
     // una página de resumen de la compra, pasando ciertos parámetros para controlar el flujo de la aplicación.
     this._cartService.currenteDataCart$.subscribe(() => {
-        this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { 
+        this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'resumen'], { 
           queryParams: { 
             initialized: true, 
             from: 'step2' 
@@ -599,11 +601,11 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
    */
   navigateToStep(step: string): void {
     if (step === 'resumen' && this.currentStep !== 'resumen') {
-      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { 
+      this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { 
         queryParams: { initialized: true, from: 'stepper' }
       });
     } else if (step === 'payment' && this.currentStep === 'successfull') {
-      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'payment'], { 
+      this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'payment'], { 
         queryParams: { initialized: true, from: 'stepper' }
       });
     }

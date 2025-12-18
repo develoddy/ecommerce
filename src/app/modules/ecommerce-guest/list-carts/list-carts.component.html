@@ -98,7 +98,7 @@
                                     </div>
                                     <div class="p-2 d-flex flex-column">
                                         <div class="text-uppercase lh-1 mb-2">
-                                            <a href="#" class="fw-semibold text-dark" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]" style="letter-spacing: 0.3px;">
+                                            <a href="#" class="fw-semibold text-dark" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'product', cart.product.slug]" style="letter-spacing: 0.3px;">
                                                 {{ cart.product.title }}
                                             </a>
                                         </div>
@@ -440,8 +440,8 @@
                                             <div class="alert alert-info py-2 px-3 mt-2 mb-2" *ngIf="isGuestUser() && !showCouponError" style="border-left: 4px solid #0dcaf0;">
                                                 <i class="icon anm anm-info-cil me-2"></i>
                                                 Los cupones solo están disponibles para usuarios registrados. <br />
-                                                <a href="#" class="text-decoration-underline fw-bold" routerLink="/es/es/auth/login">Inicia sesión</a> 
-                                                o <a href="#" class="text-decoration-underline fw-bold" routerLink="/es/es/auth/register">regístrate</a> para usar cupones.
+                                                <a href="#" class="text-decoration-underline fw-bold" [routerLink]="dynamicRouter.routerLinks.login">Inicia sesión</a> 
+                                                o <a href="#" class="text-decoration-underline fw-bold" [routerLink]="dynamicRouter.routerLinks.register">regístrate</a> para usar cupones.
                                             </div>
                                             
                                             <!-- Mensajes de ayuda normales (se ocultan cuando hay error o es guest) -->
@@ -602,7 +602,7 @@
     <!-- STICKY MENUBAR MOBILE -->
     <div class="menubar-mobile d-flex align-items-center justify-content-between d-lg-none">
         <div class="menubar-shop menubar-item">
-            <a href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']"><i class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">Compra</span></a>
+            <a href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products']"><i class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">Compra</span></a>
         </div>
         <div class="menubar-account menubar-item">
             <a href="my-account.html" [routerLink]="

@@ -9,24 +9,31 @@ import { LocalizationService } from 'src/app/services/localization.service';
 })
 export class PreHomeComponent implements OnInit {
 
-  selectedCountry = 'es'; // Valor predeterminado o el que elijas
-  selectedLocale = '';  // Valor predeterminado o el que elijas
+  selectedCountry = 'es'; // España por defecto
+  selectedLocale = '';  // Se asigna automáticamente
 
-  // Opciones de países
+  // Países del PRE-LAUNCH - Los 4 mercados principales
   countries = [
     { code: 'es', name: 'España (Península y Baleares)' },
-    // { code: 'us', name: 'Estados Unidos' },
+    { code: 'fr', name: 'France' },
+    { code: 'it', name: 'Italia' },
+    { code: 'de', name: 'Deutschland' }
   ];
 
-  // Opciones de idioma por país
+  // Idiomas nativos por país para PRE-LAUNCH
   languageOptions: { [key: string]: { code: string, name: string }[] } = {
     'es': [
-      { code: 'es', name: 'Castellano' },
-      //{ code: 'ca', name: 'Catalán' }
+      { code: 'es', name: 'Castellano' }
     ],
-    //'us': [
-    //  { code: 'en', name: 'English (USA)' }
-    //]
+    'fr': [
+      { code: 'fr', name: 'Français' }
+    ],
+    'it': [
+      { code: 'it', name: 'Italiano' }
+    ],
+    'de': [
+      { code: 'de', name: 'Deutsch' }
+    ]
   };
 
   availableLocales: { code: string, name: string }[] = []; // Idiomas disponibles según el país seleccionado

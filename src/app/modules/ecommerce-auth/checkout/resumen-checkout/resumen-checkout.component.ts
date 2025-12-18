@@ -9,6 +9,8 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Address, CheckoutService } from '../../_services/checkoutService';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
+import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
+import { LocalizationService } from 'src/app/services/localization.service';
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function actionNetxCheckout([]):any;
@@ -119,7 +121,9 @@ export class ResumenCheckoutComponent implements OnInit {
     public routerActived: ActivatedRoute,
     private checkoutService: CheckoutService,
     private cdr: ChangeDetectorRef,
-    private priceCalculationService: PriceCalculationService
+    private priceCalculationService: PriceCalculationService,
+    private dynamicRouter: DynamicRouterService,
+    private localizationService: LocalizationService
   ) {
     this.routerActived.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  
@@ -128,10 +132,11 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   /**
-   * Obtiene la lista de países europeos soportados
+   * Obtiene la lista de países del pre-launch (los 4 principales)
+   * Post-validación se expandirá gradualmente
    */
   get supportedCountries() {
-    return this.addressValidationService.EUROPEAN_COUNTRIES;
+    return this.addressValidationService.getAvailableCountries(true); // true = pre-launch mode
   }
 
   /**
@@ -201,6 +206,9 @@ export class ResumenCheckoutComponent implements OnInit {
     this.verifyAuthenticatedUser();
     this.currentDataCart();
     this.checkDeviceType();
+    
+    // 🎯 UX IMPROVEMENT: Preseleccionar país basado en la URL del usuario
+    this.preselectCountryFromUrl();
     setTimeout(() => {
       this.loadLoading();
       setTimeout(() => {
@@ -472,7 +480,7 @@ getVarietyImage(cart: any): string {
   
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
-    this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
+    this._router.navigate(['/', this.country, this.locale, 'shop', 'home']);
   }
   
   goToNextStep() {
@@ -496,7 +504,7 @@ getVarietyImage(cart: any): string {
 
     // Todo OK, continuar al pago
     this.checkoutService.setNavigatingToPayment(true);
-    this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
+    this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'payment'], { queryParams: { initialized: true, from: 'step3' } });
   }
 
   getFormattedPrice(price: any) {
@@ -991,13 +999,13 @@ getVarietyImage(cart: any): string {
 
   goToRegisterAddress() {
     if (this.CURRENT_USER_AUTHENTICATED) {
-      this._router.navigate(['/', this.country, this.locale, 'account', 'myaddresses', 'add'], {
-        queryParams: { returnUrl: `/${this.country}/${this.locale}/account/checkout` }
+      this.dynamicRouter.navigateWithLocale(['account', 'myaddresses', 'add'], {
+        queryParams: { returnUrl: this.dynamicRouter.createUrlWithLocale(['account', 'checkout']) }
       });
     } else if (this.CURRENT_USER_GUEST) {
-      this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'delivery'], {
+      this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'delivery'], {
         queryParams: { 
-          returnUrl: `/${this.locale}/${this.country}/account/checkout/resumen?initialized=true&from=step2` 
+          returnUrl: this.dynamicRouter.createUrlWithLocale(['account', 'checkout', 'resumen']) + '?initialized=true&from=step2' 
         }
       });
     }
@@ -1050,7 +1058,7 @@ getVarietyImage(cart: any): string {
 
   verifyExistEmail(email: string) {
     sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-    this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add'],{ queryParams: { email } });
+    this.dynamicRouter.navigateWithLocale(['account', 'myaddresses', 'add'], { queryParams: { email } });
   }
 
   public login() {
@@ -1065,7 +1073,7 @@ getVarietyImage(cart: any): string {
     const subscriptionLogin =  this._authService.login(this.email_identify, this.password_identify).subscribe(
       (resp:any) => {
         if (!resp.error && resp) {
-          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout'])
+          this.dynamicRouter.navigateWithLocale(['account', 'checkout'])
           .then(() => {
             window.location.reload();
           });
@@ -1442,6 +1450,30 @@ getVarietyImage(cart: any): string {
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
+    }
+  }
+
+  /**
+   * 🎯 UX IMPROVEMENT: Preselecciona automáticamente el país basado en la URL
+   * Si el usuario navega en /fr/fr/, preselecciona Francia
+   * Si navega en /de/de/, preselecciona Alemania, etc.
+   */
+  private preselectCountryFromUrl(): void {
+    const currentCountry = this.localizationService.country.toUpperCase();
+    
+    // Mapear códigos de país de URL a códigos de formulario
+    const countryMapping: {[key: string]: string} = {
+      'ES': 'ES', // España
+      'FR': 'FR', // Francia  
+      'IT': 'IT', // Italia
+      'DE': 'DE'  // Alemania
+    };
+    
+    // Si el país actual está en nuestros países soportados, preseleccionarlo
+    if (countryMapping[currentCountry]) {
+      this.pais = countryMapping[currentCountry];
+      
+      console.log(`🎯 UX (Checkout): Preseleccionando país ${this.pais} basado en URL /${this.localizationService.country}/${this.localizationService.locale}/`);
     }
   }
 

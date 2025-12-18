@@ -158,7 +158,7 @@ export class WishlistManagerService {
     
     if (!user || !user.email) {
       alertSuccess('Autentifíquese para poder añadir el producto a favoritos');
-      this.router.navigate(['/', locale, country, 'auth', 'login']);
+      this.router.navigate(['/', country, locale, 'auth', 'login']);
       return {
         success: false,
         message: 'Por favor, autentifíquese para poder añadir el producto a favoritos',

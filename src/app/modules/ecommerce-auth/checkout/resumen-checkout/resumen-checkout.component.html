@@ -599,7 +599,7 @@
                     Inspírate con las últimas tendencias y descubre algo nuevo para renovar tu armario
                 </p>
                 <div class="mt-4">
-                    <a onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'filter-products']" class="text-decoration-none">
+                    <a onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products']" class="text-decoration-none">
                         <button class="btn-dark-ld text-uppercase">Descubrir novedades</button>
                     </a>
                 </div>
@@ -785,7 +785,7 @@
                                             <div class="d-flex flex-column ">
                                                 <div class="d-flex lh-1 mb-2">
                                                     <div class="fw-normal me-2">
-                                                        <a href="#" class="fw-normal d-inline-block" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                                        <a href="#" class="fw-normal d-inline-block" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
                                                     </div>
                                                     <div class="">
                                                         <!-- Mostrar precio con descuento si aplica -->

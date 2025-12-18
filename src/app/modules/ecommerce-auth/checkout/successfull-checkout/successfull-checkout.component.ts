@@ -539,7 +539,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
-    this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
+    this._router.navigate(['/', this.country, this.locale, 'shop', 'home']);
   }
 
   /**
@@ -893,7 +893,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       .subscribe((resp: any) => {
         if (!resp.error && resp) {
           this._router
-            .navigate(['/', this.locale, this.country, 'account', 'checkout'])
+            .navigate(['/', this.country, this.locale, 'account', 'checkout'])
             .then(() => {
               window.location.reload();
             });

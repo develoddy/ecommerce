@@ -84,7 +84,7 @@
                             <!--End Product Vendor-->
                             <!-- Product Name -->
                             <div class="product-name">
-                                <a [routerLink]="['/', locale, country, 'shop', 'product', ourProduct.slug]" [queryParams]="getRouterDiscount(ourProduct)" class="text-truncate d-inline-block product-title fw-light" itemprop="name">
+                                <a [routerLink]="['/', country, locale, 'shop', 'product', ourProduct.slug]" [queryParams]="getRouterDiscount(ourProduct)" class="text-truncate d-inline-block product-title fw-light" itemprop="name">
                                     {{ ourProduct.title }}
                                 </a>
                                 <!-- Subtítulo para SEO y visual -->

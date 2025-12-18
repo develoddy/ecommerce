@@ -48,7 +48,7 @@ export class FooterComponent implements OnInit {
   }
 
   gotoPoliticaCookie() {
-    this._router.navigate(['/', this.locale, this.country, 'shop', 'privacy-policy']);
+    this._router.navigate(['/', this.country, this.locale, 'shop', 'privacy-policy']);
     this.modalInstance?.hide();
   }
 

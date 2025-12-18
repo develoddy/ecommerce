@@ -204,7 +204,7 @@
                                                     <div class="d-flex flex-column flex-md-row align-items-start gap-3">
                                                         <!-- PRODUCTO IMAGE -->
                                                         <div class="product-image-container" style="min-width: 120px;">
-                                                            <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', sale.product.slug]" class="d-block" style="border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                                            <a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'product', sale.product.slug]" class="d-block" style="border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                                                             <img class="product-image"
                                                                 [src]="getImageUrl(sale)"
                                                                 [alt]="sale.product?.title || sale.product?.name || 'product'"
@@ -221,7 +221,7 @@
                                                         <div class="flex-grow-1">
                                                             <!-- TITULO DEL PRODUCTO-->
                                                             <div class="mb-2">
-                                                                <a class="text-decoration-none" [routerLink]="['/', this.locale, this.country, 'shop', 'product', sale.product.slug]">
+                                                                <a class="text-decoration-none" [routerLink]="['/', this.country, this.locale, 'shop', 'product', sale.product.slug]">
                                                                     <h5 class="mb-1" style="color: #2c3e50; font-weight: 600; font-size: 1.1rem;">{{ sale.product.title }}</h5>
                                                                 </a>
                                                             </div>
@@ -626,7 +626,7 @@
                         <!-- Seguir comprando -->
                         <div class="col-12 col-md-6">
 
-                             <a [routerLink]="['/', locale, country, 'shop', 'filter-products']"  class="text-decoration-none d-block">
+                             <a [routerLink]="['/', country, locale, 'shop', 'filter-products']"  class="text-decoration-none d-block">
                                 <button class="btn-dark-ld">
                                     <i class="me-3 icon anm anm-bag-l" style="font-size: 1.3rem;"></i>
                                     <span style="font-size: 1rem;">Seguir comprando</span>

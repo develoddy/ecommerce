@@ -1115,7 +1115,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
 
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
-    this._router.navigate(['/', this.locale, this.country, 'shop', 'home']);
+    this._router.navigate(['/', this.country, this.locale, 'shop', 'home']);
   }
 
   onCheckboxChange(event: any) {

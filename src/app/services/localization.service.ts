@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,30 +13,62 @@ export class LocalizationService {
   country$ = this.countrySubject.asObservable();
   locale$ = this.localeSubject.asObservable();
   
-  // constructor(private activatedRoute: ActivatedRoute, private router: Router) {
-  //   this.activatedRoute.paramMap.subscribe(params => {
-  //     const locale = params.get('locale') || 'es';
-  //     const country = params.get('country') || 'es';
-      
-      
-  //     // Actualizar los valores cuando cambian en la ruta
-  //     this.countrySubject.next(country);
-  //     this.localeSubject.next(locale);
-      
-  //   });
-  // }
+  constructor(private router: Router) {
+    // Escuchar cambios de ruta para actualizar país/idioma automáticamente
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.updateFromUrl(event.url);
+    });
 
+    // Inicializar desde la URL actual
+    this.updateFromUrl(this.router.url);
+  }
+
+  /**
+   * Actualiza país e idioma desde la URL actual
+   */
+  private updateFromUrl(url: string) {
+    const segments = url.split('/').filter(s => s);
+    
+    if (segments.length >= 2) {
+      const country = segments[0];
+      const locale = segments[1];
+      
+      // Solo actualizar si son válidos (2 caracteres)
+      if (country.length === 2 && locale.length === 2) {
+        this.countrySubject.next(country);
+        this.localeSubject.next(locale);
+      }
+    }
+  }
+
+  /**
+   * Establece país e idioma manualmente (para pre-home)
+   */
   setLocaleAndCountry(country: string, locale: string) {
     this.countrySubject.next(country);
     this.localeSubject.next(locale);
   }
 
+  /**
+   * Obtiene país actual (desde URL o estado)
+   */
   get country(): string {
     return this.countrySubject.value;
   }
 
+  /**
+   * Obtiene idioma actual (desde URL o estado)
+   */
   get locale(): string {
     return this.localeSubject.value;
   }
-  
+
+  /**
+   * Obtiene el prefijo completo para rutas
+   */
+  get routePrefix(): string {
+    return `/${this.country}/${this.locale}`;
+  }
 }

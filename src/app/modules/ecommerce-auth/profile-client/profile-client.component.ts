@@ -99,7 +99,7 @@ export class ProfileClientComponent implements OnInit {
         
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
-        this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
+        this.router.navigate(['/', this.country, this.locale, 'auth', 'login']);
       }
     });
 
@@ -133,7 +133,7 @@ export class ProfileClientComponent implements OnInit {
           alertWarning(['Tu sesión ha expirado. Por favor, inicia sesión nuevamente.']);
           // Esperar 2 segundos antes de redirigir para que el usuario vea el mensaje
           setTimeout(() => {
-            this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
+            this.router.navigate(['/', this.country, this.locale, 'auth', 'login']);
           }, 2000);
         } else {
           alertDanger(['Error al cargar tus datos. Por favor, intenta nuevamente.']);
@@ -173,7 +173,7 @@ export class ProfileClientComponent implements OnInit {
         if (err.status === 401) {
           alertWarning(['Tu sesión ha expirado. Por favor, inicia sesión nuevamente.']);
           setTimeout(() => {
-            this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
+            this.router.navigate(['/', this.country, this.locale, 'auth', 'login']);
           }, 2000);
         } else {
           alertDanger(['Error al cargar tu perfil. Por favor, recarga la página.']);

@@ -96,7 +96,7 @@
                             <!--End Product Vendor-->
                             <!-- Product Name -->
                             <div class="product-name lh-1">
-                                <a [routerLink]="['/',locale,country,'shop','product',capProduct.slug]" 
+                                <a [routerLink]="['/',country,locale,'shop','product',capProduct.slug]" 
                                     [queryParams]="getRouterDiscount(capProduct)" 
                                     class="text-truncate d-inline-block product-title fw-light" 
                                     itemprop="name">
@@ -175,7 +175,7 @@
     </div>
     <div class="view-collection text-center mt-5 mb-5 mt-md-5 justify-content-center align-item-center d-flex">
         <a *ngIf="categorie"
-            [routerLink]="['/', locale, country, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]" 
+            [routerLink]="['/', country, locale, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]" 
             class="category-link clr-none"
             [attr.title]="'Explorar ' + categorie.title">
             <button class="btn-dark-ld fw-light">Explorar {{ categorie.title }}</button>

@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -76,6 +77,7 @@ export class LoginCheckoutComponent implements OnInit {
     public _router: Router,
     private subscriptionService: SubscriptionService,
     public routerActived: ActivatedRoute,
+    private dynamicRouter: DynamicRouterService
   ) {
     this.routerActived.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  // Valor predeterminado
@@ -149,7 +151,7 @@ export class LoginCheckoutComponent implements OnInit {
 
   enterAsGuest() {
     //  this._router.navigate(['/', this.locale, this.country, 'account', 'checkout']);
-      this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen'], { 
+      this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'resumen'], { 
           queryParams: { 
             initialized: true, 
             from: 'step2' 
@@ -164,14 +166,14 @@ export class LoginCheckoutComponent implements OnInit {
     this._authEcommerce._authService.user.pipe(take(1)).subscribe(user => {
       if (user) {
         // ✅ Usuario autenticado → ir a resumen
-        this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']);
+        this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen']);
         return;
       }
       // Verificar invitado solo si viene de initialized
       this._authEcommerce._authService.userGuest.pipe(take(1)).subscribe(guestUser => {
         if (guestUser && guestUser.state === 1 && initialized === 'true') {
           // ⚠️ Invitado confirmado → ir a resumen
-          this._router.navigate(['/', this.locale, this.country, 'account', 'checkout', 'resumen']);
+          this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen']);
         }
         // Si no, permanecer en login
       });
@@ -187,7 +189,7 @@ export class LoginCheckoutComponent implements OnInit {
           this.listAddressClients = resp.address_client;
           if (this.listAddressClients.length === 0) {
             sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-            this._router.navigate(['/', this.locale, this.country, 'account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
+            this.dynamicRouter.navigateWithLocale(['account', 'myaddresses', 'add']); // Redirige al formulario de agregar dirección
           }
       });
     }
@@ -426,7 +428,7 @@ export class LoginCheckoutComponent implements OnInit {
   verifyExistEmail(email: string) {
     alert("entra en verify email");
     sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
-    this._router.navigate(['/', this.country, this.locale,  'account', 'myaddresses', 'add'],{ queryParams: { email } });
+    this.dynamicRouter.navigateWithLocale(['account', 'myaddresses', 'add'], { queryParams: { email } });
   }
 
   

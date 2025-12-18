@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AddressValidationService } from '../../_services/address-validation.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
 
 declare var $:any;
 
@@ -65,7 +66,8 @@ export class EditAddressComponent implements OnInit {
     private addressValidationService: AddressValidationService,
     private router: Router,
     public _routerActived: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dynamicRouter: DynamicRouterService
   ) {
 
     this._routerActived.paramMap.subscribe(params => {
@@ -75,10 +77,11 @@ export class EditAddressComponent implements OnInit {
   }
   
   /**
-   * Obtiene la lista de países europeos soportados
+   * Obtiene la lista de países del pre-launch (los 4 principales)
+   * Post-validación se expandirá gradualmente
    */
   get supportedCountries() {
-    return this.addressValidationService.EUROPEAN_COUNTRIES;
+    return this.addressValidationService.getAvailableCountries(true); // true = pre-launch mode
   }
 
   /**
@@ -229,7 +232,7 @@ export class EditAddressComponent implements OnInit {
         
       } else {
         this.CURRENT_USER_AUTHENTICATED = null;
-        this.router.navigate(['/', this.locale, this.country, 'auth', 'login']);
+        this.router.navigate(['/', this.country, this.locale, 'auth', 'login']);
       }
     });
   }
@@ -492,7 +495,7 @@ export class EditAddressComponent implements OnInit {
           this.hideMessageAfterDelay();
           alertSuccess(resp.message);
           this.resetForm();
-          this.router.navigate(['/', this.locale, this.country, 'account', 'myaddresses']);
+          this.dynamicRouter.navigateWithLocale(['account', 'myaddresses']);
         } else {
           this.status = false;
           this.errorOrSuccessMessage = "Error al actualizar la dirección.";

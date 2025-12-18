@@ -131,7 +131,7 @@
                                                 <input id="remember" name="remember" type="checkbox" value="remember" required />
                                                 <label for="remember"> Mantener la sesión iniciada</label>
                                             </div>
-                                            <a href="forgot-password.html" class="d-none" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'forgot-password']">¿Has olvidado tu contraseña?</a>
+                                            <a href="forgot-password.html" class="d-none" onclick="return false;" [routerLink]="['/', country, locale, 'auth', 'forgot-password']">¿Has olvidado tu contraseña?</a>
                                         </div>
                                     </div>
                                     <div class="form-group col-12" *ngIf="this.errorAutenticate">
@@ -163,7 +163,7 @@
                                         </button>
                                     </div>
                                     <div class="form-group col-12">
-                                        <a href="register.html" onclick="return false;" [routerLink]="['/', locale, country, 'auth', 'register']" class="text-decoration-none d-block">
+                                        <a href=\"register.html\" onclick=\"return false;\" [routerLink]=\"['/', country, locale, 'auth', 'register']\" class=\"text-decoration-none d-block\">
                                             <button type="button" 
                                                     class="btn-outline-white-ld w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center" 
                                                     style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
@@ -190,7 +190,7 @@
 
                                 <!-- <div class="login-signup-text mt-4 mb-2 fs-6 text-center text-muted">¿No tienes una cuenta? <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="btn-link">Regístrate ahora</a></div> -->
                                 <div class="login-signup-text mt-5 mb-2 text-center">
-                                    <a href="register.html" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'auth', 'resetpassword']" class="text-decoration-underline" >¿Has olvidado tu contraseña?</a>
+                                    <a href="register.html" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'auth', 'resetpassword']" class="text-decoration-underline" >¿Has olvidado tu contraseña?</a>
                                 </div>
                             </form>
                         </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, take } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
+import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
 
 declare var $:any;
 declare function alertDanger([]):any;
@@ -52,6 +53,7 @@ export class DeliveryComponent implements OnInit {
     public _ecommerceAuthService: EcommerceAuthService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private dynamicRouter: DynamicRouterService
   ) {
 
     this.activatedRoute.paramMap.subscribe(params => {
@@ -88,7 +90,7 @@ export class DeliveryComponent implements OnInit {
 
   goToBackResumenStep() {
   //this.checkoutService.setNavigatingToPayment(true);
-  this.router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
+  this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'resumen'], { queryParams: { initialized: true, from: 'step2' } });
 }
 
   private SPINNER() {

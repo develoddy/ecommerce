@@ -63,7 +63,7 @@
                                 <div class="product-vendor">{{ product.categorie.title || '' }}</div>
                                 <!-- Product Name -->
                                 <div class="product-name lh-1">
-                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', locale, country, 'shop', 'product', product.slug]" [queryParams]="getRouterDiscount(product)" class="text-truncate d-inline-block product-title fw-light">{{ product.title }}</a>
+                                    <a href="product-layout1.html" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', product.slug]" [queryParams]="getRouterDiscount(product)" class="text-truncate d-inline-block product-title fw-light">{{ product.title }}</a>
                                 </div>
                                 <!-- End Product Name -->
                                 <!-- Product Price -->

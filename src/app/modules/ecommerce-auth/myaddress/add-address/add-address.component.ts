@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
 import { AddressValidationService } from '../../_services/address-validation.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LocalizationService } from 'src/app/services/localization.service';
 
 declare var $:any;
 declare function alertDanger([]):any;
@@ -65,6 +66,7 @@ export class AddAddressComponent implements OnInit {
     private addressValidationService: AddressValidationService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private localizationService: LocalizationService
   ) {
 
     this.activatedRoute.paramMap.subscribe(params => {
@@ -74,10 +76,11 @@ export class AddAddressComponent implements OnInit {
   }
   
   /**
-   * Obtiene la lista de países europeos soportados
+   * Obtiene la lista de países del pre-launch (los 4 principales)
+   * Post-validación se expandirá gradualmente
    */
   get supportedCountries() {
-    return this.addressValidationService.EUROPEAN_COUNTRIES;
+    return this.addressValidationService.getAvailableCountries(true); // true = pre-launch mode
   }
 
   /**
@@ -168,8 +171,35 @@ export class AddAddressComponent implements OnInit {
     // Captura la URL de retorno si existe
     this.returnUrl = this.activatedRoute.snapshot.queryParamMap.get('returnUrl') || `/${this.country}/${this.locale}/account/myaddresses`;
     
+    // 🎯 UX IMPROVEMENT: Preseleccionar país basado en la URL del usuario
+    this.preselectCountryFromUrl();
+    
     this.verifyAuthenticatedUser();
     this.subscribeToQueryParams();
+  }
+
+  /**
+   * 🎯 UX IMPROVEMENT: Preselecciona automáticamente el país basado en la URL
+   * Si el usuario navega en /fr/fr/, preselecciona Francia
+   * Si navega en /de/de/, preselecciona Alemania, etc.
+   */
+  private preselectCountryFromUrl(): void {
+    const currentCountry = this.localizationService.country.toUpperCase();
+    
+    // Mapear códigos de país de URL a códigos de formulario
+    const countryMapping: {[key: string]: string} = {
+      'ES': 'ES', // España
+      'FR': 'FR', // Francia  
+      'IT': 'IT', // Italia
+      'DE': 'DE'  // Alemania
+    };
+    
+    // Si el país actual está en nuestros países soportados, preseleccionarlo
+    if (countryMapping[currentCountry]) {
+      this.pais = countryMapping[currentCountry];
+      
+      console.log(`🎯 UX: Preseleccionando país ${this.pais} basado en URL /${this.localizationService.country}/${this.localizationService.locale}/`);
+    }
   }
 
   private subscribeToQueryParams(): void {

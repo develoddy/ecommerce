@@ -61,7 +61,19 @@ export interface PostalCodeValidation {
 export class AddressValidationService {
 
   /**
-   * Países europeos soportados por Printful con sus códigos ISO
+   * Países para PRE-LAUNCH (Enero 2026) - Los 4 mercados principales
+   * Expandir gradualmente post-validación
+   */
+  public readonly PRE_LAUNCH_COUNTRIES: PrintfulCountry[] = [
+    { code: 'ES', name: 'España' },
+    { code: 'FR', name: 'Francia' },
+    { code: 'IT', name: 'Italia' },
+    { code: 'DE', name: 'Alemania' }
+  ];
+
+  /**
+   * Lista completa de países europeos soportados por Printful
+   * Para uso futuro post-validación del mercado
    * Fuente: https://developers.printful.com/docs/#section/Countries
    */
   public readonly EUROPEAN_COUNTRIES: PrintfulCountry[] = [
@@ -109,11 +121,23 @@ export class AddressValidationService {
     private ecommerceAuthService: EcommerceAuthService,
     private http: HttpClient
   ) {
-    // Construir mapeo inverso
+    // Construir mapeo inverso para ambas listas
+    this.PRE_LAUNCH_COUNTRIES.forEach(country => {
+      this.countryNameToCode[country.name] = country.code;
+      this.countryNameToCode[country.name.toLowerCase()] = country.code;
+    });
     this.EUROPEAN_COUNTRIES.forEach(country => {
       this.countryNameToCode[country.name] = country.code;
       this.countryNameToCode[country.name.toLowerCase()] = country.code;
     });
+  }
+
+  /**
+   * Obtiene la lista de países activa según la fase de lanzamiento
+   * @param prelaunch - Si true, devuelve solo países del pre-launch
+   */
+  getAvailableCountries(prelaunch: boolean = true): PrintfulCountry[] {
+    return prelaunch ? this.PRE_LAUNCH_COUNTRIES : this.EUROPEAN_COUNTRIES;
   }
 
   /**

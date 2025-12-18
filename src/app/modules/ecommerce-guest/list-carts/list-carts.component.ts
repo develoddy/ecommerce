@@ -10,6 +10,7 @@ import { WishlistService } from '../_service/wishlist.service';
 import { SeoService } from 'src/app/services/seo.service';
 import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
+import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -71,7 +72,8 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     private seoService: SeoService,
     public _wishlistService: WishlistService,
     public loader: LoaderService,
-    private priceCalculationService: PriceCalculationService
+    private priceCalculationService: PriceCalculationService,
+    public dynamicRouter: DynamicRouterService
   ) {
     // Obtenemos `locale` y `country` de la ruta actual
     this.activatedRoute.paramMap.subscribe(params => {
@@ -116,7 +118,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Guarda el estado para hacer scroll hacia arriba
     sessionStorage.setItem('scrollToTop', 'true');
     // Navega a la página del producto (SPA-friendly sin reload)
-    this.router.navigate(['/', this.locale, this.country, 'shop', 'product', slug]);
+    this.router.navigate(['/', this.country, this.locale, 'shop', 'product', slug]);
   }
 
   private checkDeviceType() {
