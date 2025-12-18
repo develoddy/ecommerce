@@ -52,7 +52,7 @@
                         </p>
                         <div class="view-collection text-center mt-4 mb-4">
                             <a onclick="return false;" 
-                               [routerLink]="['/', locale, country, 'shop', 'filter-products']" 
+                               [routerLink]="dynamicRouter.getRouterLink(['shop', 'filter-products'])" 
                                class="btn btn-primary btn-lg px-5 text-uppercase">
                                 <i class="icon anm anm-search-l me-2"></i>Descubrir novedades
                             </a>
@@ -92,13 +92,13 @@
                                         </a>
                                     </div>
                                     <div class="p-2">
-                                        <a href="#" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'shop', 'product', cart.product.slug]">
+                                        <a href="#" onclick="return false;" [routerLink]="dynamicRouter.getRouterLink(['shop', 'product', cart.product.slug])">
                                             <img class="blur-up lazyload" [src]="getVarietyImage(cart)" alt="product" title="{{ cart.product.title }} / {{ cart.variedad?.color }}" width="250" height="250" />
                                         </a>
                                     </div>
                                     <div class="p-2 d-flex flex-column">
                                         <div class="text-uppercase lh-1 mb-2">
-                                            <a href="#" class="fw-semibold text-dark" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'product', cart.product.slug]" style="letter-spacing: 0.3px;">
+                                            <a href="#" class="fw-semibold text-dark" onclick="return false;" [routerLink]="dynamicRouter.getRouterLink(['shop', 'product', cart.product.slug])" style="letter-spacing: 0.3px;">
                                                 {{ cart.product.title }}
                                             </a>
                                         </div>
@@ -290,7 +290,7 @@
                                     <input type="checkbox" value="allen-vela" id="cart-tearm" />
                                     <label for="cart-tearm">Estoy de acuerdo con los términos y condiciones</label>
                                 </div>
-                                <a [href]="'/' + locale + '/' + country + '/account/checkout'" id="cartCheckout" class="text-decoration-none d-block mt-3">
+                                <a [routerLink]="dynamicRouter.getRouterLink(['account', 'checkout'])" id="cartCheckout" class="text-decoration-none d-block mt-3">
                                     <button type="submit" 
                                             name="add" 
                                             class="btn-dark-ld text-uppercase"
@@ -535,7 +535,7 @@
                                                         condiciones</label>
                                                 </div>
                                                 
-                                                <a [href]="'/' + locale + '/' + country + '/account/checkout'" id="cartCheckout" class="">
+                                                <a [routerLink]="dynamicRouter.getRouterLink(['account', 'checkout'])" id="cartCheckout" class="">
                                                     <button _ngcontent-serverapp-c57="" type="submit" name="add"
                                                         class="btn-dark-ld product-form-cart-submit text-uppercase fw-normal mt-3 mb-2">
                                                         <span>Continuar con el pago</span>
@@ -602,20 +602,20 @@
     <!-- STICKY MENUBAR MOBILE -->
     <div class="menubar-mobile d-flex align-items-center justify-content-between d-lg-none">
         <div class="menubar-shop menubar-item">
-            <a href="shop-grid-view.html" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products']"><i class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">Compra</span></a>
+            <a href="shop-grid-view.html" onclick="return false;" [routerLink]="dynamicRouter.getRouterLink(['shop', 'filter-products'])"><i class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">Compra</span></a>
         </div>
         <div class="menubar-account menubar-item">
             <a href="my-account.html" [routerLink]="
             currentUser.email
-                ? ['/', locale, country, 'account', 'my-account']
-                : ['/', locale, country, 'auth', 'login']
+                ? dynamicRouter.getRouterLink(['account', 'my-account'])
+                : dynamicRouter.routerLinks.login
             "><i class="menubar-icon icon anm anm-user-al"></i><span class="menubar-label">Cuenta</span></a>
         </div>
         <div class="menubar-search menubar-item">
             <a [href]="['/']"><span class="menubar-icon anm anm-home-l"></span><span class="menubar-label">Inicio</span></a>
         </div>
         <div class="menubar-wish menubar-item">
-            <a href="wishlist-style1.html" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'favorites']">
+            <a href="wishlist-style1.html" onclick="return false;" [routerLink]="dynamicRouter.getRouterLink(['account', 'favorites'])">
                 <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-heart-l"></i><span class="wishlist-count counter menubar-count" *ngIf="listWishlists.length > 0">{{
                             listWishlists.length }}</span></span>
                 <span class="menubar-label">Favoritos</span>
@@ -624,8 +624,8 @@
         <div class="menubar-cart menubar-item">
             <a href="#;" onclick="return false;" [routerLink]="
             currentUser
-                ? ['/', locale, country, 'shop', 'cart']
-                : ['/', locale, country, 'auth', 'login']
+                ? dynamicRouter.getRouterLink(['shop', 'cart'])
+                : dynamicRouter.routerLinks.login
             " class="btn-minicart" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
                 <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-cart-l"></i><span class="cart-count counter menubar-count" *ngIf="listCarts.length > 0">{{ listCarts.length }}</span></span>
                 <span class="menubar-label">Carrito</span>

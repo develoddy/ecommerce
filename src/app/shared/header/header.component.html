@@ -1,71 +1,6 @@
 <ng-container *ngIf="showSubscriptionSection; else onlyLogo">
-    <!--Top Header-->
-    <div class="top-header d-none">
-        <div class="container">
-            <div class="row align-items-center">
-                <!-- Teléfono -->
-                <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-left">
-                    <i class="icon anm anm-phone-l me-2"></i><a href="tel:+34605974436">(+34) 605 974 436</a>
-                </div>
-                <!-- Mensaje central -->
-                <div class="col-12 col-sm-12 col-md-6 col-lg-4 text-center d-none d-md-block">
-                    En LujanDev programar es <strong>estilo y actitud</strong>
-                </div>
-                <!-- Idioma y moneda -->
-                <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-right d-flex align-items-center justify-content-end">
-                    <div class="select-wrap language-picker float-start">
-                        <ul class="default-option">
-                            <li>
-                                <div class="option english">
-                                    <div class="icon"><img src="assets/images/flag/spain.png" alt="english" width="24"
-                                            height="24" /></div><span>ES</span>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="select-ul">
-                            <li>
-                                <div class="option arabic">
-                                    <div class="icon"><img src="assets/images/flag/spain.png" alt="arabic" width="24"
-                                            height="24" /></div><span>Español</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="option english">
-                                    <div class="icon"><img src="assets/images/flag/english.png" alt="english" width="24"
-                                            height="24" /></div><span>English</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="select-wrap currency-picker float-start">
-                        <ul class="default-option">
-                            <li>
-                                <div class="option USD">
-                                    <div class="icon"><img src="assets/images/flag/eur.png" alt="usd" width="24"
-                                            height="24" /></div><span>EUR</span>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="select-ul">
-                            <li>
-                                <div class="option USD">
-                                    <div class="icon"><img src="assets/images/flag/usd.png" alt="usd" width="24"
-                                            height="24" /></div><span>USD</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="option EUR">
-                                    <div class="icon"><img src="assets/images/flag/eur.png" alt="eur" width="24"
-                                            height="24" /></div><span>EUR</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--End Top Header-->
+    
+    
 
     <!--Header-->
     <header class="header d-flex align-items-center header-1 header-fixed">
@@ -806,7 +741,7 @@
 </ng-container>
 <ng-template #onlyLogo>
     <div class="checkout-logo-header text-center py-3">
-        <a routerLink="/" class="logo"><img src="assets/images/logo.png" alt="Lujan Ecommerce" /></a>
+        <a [routerLink]="['/', country, locale, 'home']" class="logo"><img src="assets/images/logo.png" alt="Lujan Ecommerce" /></a>
     </div>
 </ng-template>
 

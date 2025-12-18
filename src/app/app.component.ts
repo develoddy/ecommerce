@@ -70,8 +70,18 @@ export class AppComponent implements AfterViewInit {
       });
     });
 
+    // Inicializar valores
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
+
+    // Suscribirse a cambios de localización
+    this.localizationService.country$.subscribe((country: string) => {
+      this.country = country;
+    });
+
+    this.localizationService.locale$.subscribe((locale: string) => {
+      this.locale = locale;
+    });
   }
 
   async ngAfterViewInit(): Promise<void> {
