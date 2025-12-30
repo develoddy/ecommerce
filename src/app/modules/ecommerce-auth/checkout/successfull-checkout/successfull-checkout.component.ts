@@ -90,6 +90,11 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
 
   minDeliveryDate: string | null = null;
   maxDeliveryDate: string | null = null;
+  
+  // 🆕 Module purchase detection
+  isModulePurchase: boolean = false;
+  moduleType: string | null = null; // 'digital', 'service', 'physical'
+  moduleName: string | null = null;
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
@@ -326,6 +331,9 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   successPayStripe() {
     //console.log('[Frontend] 🚀 successPayStripe() called');
     
+    // 🆕 Limpiar sessionStorage de módulo para evitar conflictos en próximas compras
+    sessionStorage.removeItem('modulePurchase');
+    
     // Initial synchronous load from CheckoutService
     const initialData = this.checkoutService.getSaleData();
     //console.log('[Frontend] 📦 CheckoutService initialData:', initialData);
@@ -342,6 +350,23 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       // });
       
       this.sale = saleInfo;
+      
+      // 🆕 Detectar si es compra de módulo
+      this.isModulePurchase = !!(saleInfo.module_id || initialData.isModulePurchase);
+      
+      if (this.isModulePurchase && saleDetails.length > 0) {
+        const moduleDetail = saleDetails[0];
+        // Cargar tipo de módulo desde el detalle
+        if (moduleDetail.module_id) {
+          // El tipo se puede inferir o cargar desde la API
+          this.moduleType = 'digital'; // Por defecto, se puede mejorar con API call
+          this.moduleName = moduleDetail.product?.title || 'Módulo'; // Placeholder
+        }
+        console.log('🎯 [Successfull] Module purchase detected:', {
+          moduleId: moduleDetail.module_id,
+          type: this.moduleType
+        });
+      }
       
       // 🔥 FIX: Cargar dirección de envío desde sale_addresses (snake_case por Sequelize) si no está en shippingAddress (PayPal fallback)
       console.log('📦 [Successfull] Checking shipping address:', {
@@ -650,8 +675,8 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       if (anyFile) return anyFile.preview_url || anyFile.thumbnail_url || anyFile.url || '';
     }
 
-    // 4️⃣ Fallback al producto
-    return sale.product?.imagen || sale.product?.portada || '';
+    // 4️⃣ Fallback al producto, o placeholder para módulos
+    return sale.product?.imagen || sale.product?.portada || 'assets/images/logo-checkout.png';
   }
 
   removeAllCart(user_id: any) {

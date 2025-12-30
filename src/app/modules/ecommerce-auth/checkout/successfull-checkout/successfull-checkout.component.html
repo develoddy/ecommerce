@@ -135,9 +135,26 @@
             <p class="mb-2 text-success" style="font-size: 1.2rem; font-weight: 600; max-width: 600px; margin: 0 auto;">
                 ✅ Tu pago se ha realizado con éxito
             </p>
-            <p class="mb-4 text-muted" style="font-size: 1rem; max-width: 600px; margin: 0 auto;">
+            
+            <!-- 🆕 Mensaje diferenciado según tipo de compra -->
+            <p *ngIf="!isModulePurchase" class="mb-4 text-muted" style="font-size: 1rem; max-width: 600px; margin: 0 auto;">
                 <i class="icon anm anm-truck-l me-2 text-primary"></i>
                 Tu pedido está en camino y lo recibirás pronto. Recibirás un correo con todos los detalles.
+            </p>
+            
+            <p *ngIf="isModulePurchase && moduleType === 'digital'" class="mb-4 text-muted" style="font-size: 1rem; max-width: 600px; margin: 0 auto;">
+                <i class="icon anm anm-download-l me-2 text-primary"></i>
+                Tu módulo digital está listo. Recibirás un correo con el enlace de descarga en los próximos minutos.
+            </p>
+            
+            <p *ngIf="isModulePurchase && moduleType === 'service'" class="mb-4 text-muted" style="font-size: 1rem; max-width: 600px; margin: 0 auto;">
+                <i class="icon anm anm-calendar-l me-2 text-primary"></i>
+                Gracias por tu compra. Recibirás un correo con instrucciones para agendar tu sesión.
+            </p>
+            
+            <p *ngIf="isModulePurchase && moduleType === 'physical'" class="mb-4 text-muted" style="font-size: 1rem; max-width: 600px; margin: 0 auto;">
+                <i class="icon anm anm-truck-l me-2 text-primary"></i>
+                Tu pedido está siendo preparado. Recibirás un correo con el seguimiento del envío.
             </p>
             
             <!-- Número de pedido mejorado -->
@@ -204,7 +221,7 @@
                                                     <div class="d-flex flex-column flex-md-row align-items-start gap-3">
                                                         <!-- PRODUCTO IMAGE -->
                                                         <div class="product-image-container" style="min-width: 120px;">
-                                                            <a href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'product', sale.product.slug]" class="d-block" style="border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                                            <a *ngIf="sale.product?.slug" href="#" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'product', sale.product.slug]" class="d-block" style="border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                                                             <img class="product-image"
                                                                 [src]="getImageUrl(sale)"
                                                                 [alt]="sale.product?.title || sale.product?.name || 'product'"
@@ -214,6 +231,14 @@
                                                                 style="object-fit: cover; border-radius: 8px;"
                                                             />
                                                         </a>
+                                                        <img *ngIf="!sale.product?.slug" class="product-image"
+                                                            [src]="getImageUrl(sale)"
+                                                            [alt]="sale.product?.title || sale.product?.name || 'Módulo'"
+                                                            [title]="sale.product?.title || sale.product?.name || 'Módulo'"
+                                                            width="120"
+                                                            height="120"
+                                                            style="object-fit: cover; border-radius: 8px;"
+                                                        />
                                                     </div>
                                                         <!--  END PRODUCTO IMAGE -->
                                                         
@@ -221,9 +246,10 @@
                                                         <div class="flex-grow-1">
                                                             <!-- TITULO DEL PRODUCTO-->
                                                             <div class="mb-2">
-                                                                <a class="text-decoration-none" [routerLink]="['/', this.country, this.locale, 'shop', 'product', sale.product.slug]">
+                                                                <a *ngIf="sale.product?.slug" class="text-decoration-none" [routerLink]="['/', this.country, this.locale, 'shop', 'product', sale.product.slug]">
                                                                     <h5 class="mb-1" style="color: #2c3e50; font-weight: 600; font-size: 1.1rem;">{{ sale.product.title }}</h5>
                                                                 </a>
+                                                                <h5 *ngIf="!sale.product?.slug" class="mb-1" style="color: #2c3e50; font-weight: 600; font-size: 1.1rem;">{{ sale.product?.title || 'Módulo' }}</h5>
                                                             </div>
 
                                                         <!-- PRECIO DEL PRODUCTO -->
@@ -268,7 +294,7 @@
                                                             <!-- ATRIBUTOS DEL PRODUCTO -->
                                                             <div class="product-attributes mb-3">
                                                                 <div class="row g-2">
-                                                                    <div class="col-6 col-md-4">
+                                                                    <div class="col-6 col-md-4" *ngIf="sale.variedade?.color">
                                                                         <div class="d-flex align-items-center">
                                                                             <div class="attribute-icon me-2" style="width: 20px; height: 20px; background: #e3f2fd; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                                                                                 <i class="icon anm anm-palette" style="font-size: 0.7rem; color: #1976d2;"></i>
@@ -561,8 +587,10 @@
                                         Estado del envío
                                     </h3>
                                     
-                                    <!-- Estado visual del envío -->
-                                    <div class="shipping-status mb-3 p-3" style="background: #fff3cd; border-radius: 12px; border-left: 4px solid #fd7e14;">
+                                    <!-- 🆕 Estado diferenciado según tipo de compra -->
+                                    
+                                    <!-- PRODUCTOS FÍSICOS (PRINTFUL) -->
+                                    <div *ngIf="!isModulePurchase" class="shipping-status mb-3 p-3" style="background: #fff3cd; border-radius: 12px; border-left: 4px solid #fd7e14;">
                                         <div class="d-flex align-items-center mb-2">
                                             <div class="status-indicator me-3" style="width: 12px; height: 12px; background: #fd7e14; border-radius: 50%;"></div>
                                             <strong style="color: #856404;">🔄 Procesando pedido</strong>
@@ -570,8 +598,35 @@
                                         <small class="text-muted">Tu pedido está siendo preparado por nuestro proveedor Printful</small>
                                     </div>
                                     
-                                    <!-- Fecha estimada -->
-                                    <div class="delivery-estimate p-3" style="background: #f8f9fa; border-radius: 12px; border-left: 4px solid #fd7e14;">
+                                    <!-- MÓDULOS DIGITALES -->
+                                    <div *ngIf="isModulePurchase && moduleType === 'digital'" class="shipping-status mb-3 p-3" style="background: #d1f2eb; border-radius: 12px; border-left: 4px solid #28a745;">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="status-indicator me-3" style="width: 12px; height: 12px; background: #28a745; border-radius: 50%;"></div>
+                                            <strong style="color: #155724;">✅ Disponible ahora</strong>
+                                        </div>
+                                        <small class="text-muted">Tu contenido digital está listo para descarga</small>
+                                    </div>
+                                    
+                                    <!-- MÓDULOS DE SERVICIO -->
+                                    <div *ngIf="isModulePurchase && moduleType === 'service'" class="shipping-status mb-3 p-3" style="background: #d1ecf1; border-radius: 12px; border-left: 4px solid #17a2b8;">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="status-indicator me-3" style="width: 12px; height: 12px; background: #17a2b8; border-radius: 50%;"></div>
+                                            <strong style="color: #0c5460;">📅 Pendiente de agendar</strong>
+                                        </div>
+                                        <small class="text-muted">Revisa tu email para coordinar la sesión</small>
+                                    </div>
+                                    
+                                    <!-- MÓDULOS FÍSICOS -->
+                                    <div *ngIf="isModulePurchase && moduleType === 'physical'" class="shipping-status mb-3 p-3" style="background: #fff3cd; border-radius: 12px; border-left: 4px solid #fd7e14;">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="status-indicator me-3" style="width: 12px; height: 12px; background: #fd7e14; border-radius: 50%;"></div>
+                                            <strong style="color: #856404;">🔄 Preparando envío</strong>
+                                        </div>
+                                        <small class="text-muted">Tu pedido será enviado pronto</small>
+                                    </div>
+                                    
+                                    <!-- Fecha estimada: SOLO para productos físicos -->
+                                    <div *ngIf="!isModulePurchase || moduleType === 'physical'" class="delivery-estimate p-3" style="background: #f8f9fa; border-radius: 12px; border-left: 4px solid #fd7e14;">
                                         <div class="mb-2">
                                             <i class="icon anm anm-calendar-l me-2" style="color: #fd7e14;"></i>
                                             <small class="text-muted d-block" style="font-size: 0.75rem;">Fecha estimada de entrega</small>
@@ -598,8 +653,22 @@
                                         </ng-template>
                                     </div>
                                     
-                                    <!-- Botón de seguimiento mejorado -->
-                                    <div class="mt-3">
+                                    <!-- Información para digitales/servicios -->
+                                    <div *ngIf="isModulePurchase && (moduleType === 'digital' || moduleType === 'service')" class="delivery-estimate p-3" style="background: #f8f9fa; border-radius: 12px; border-left: 4px solid #28a745;">
+                                        <div class="mb-2">
+                                            <i class="icon anm anm-envelope-l me-2" style="color: #28a745;"></i>
+                                            <small class="text-muted d-block" style="font-size: 0.75rem;">Entrega inmediata</small>
+                                        </div>
+                                        <strong class="text-success" style="font-size: 1rem;">
+                                            📧 Revisa tu correo electrónico
+                                        </strong>
+                                        <div class="mt-1">
+                                            <small class="text-muted">Recibirás las instrucciones de acceso en minutos</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Botón de seguimiento: solo para físicos -->
+                                    <div *ngIf="!isModulePurchase || moduleType === 'physical'" class="mt-3">
                                         <button class="btn-dark-ld" 
                                                 style="border-radius: 8px; font-weight: 600;"
                                                 (click)="navigateToTrackOrder()">

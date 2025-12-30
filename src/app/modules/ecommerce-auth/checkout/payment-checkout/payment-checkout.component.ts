@@ -58,6 +58,9 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   listCarts: any = [];
   totalCarts: any = null;
   show = false;
+  // 🆕 Compra de módulo
+  isModulePurchase: boolean = false;
+  modulePurchaseData: any = null;
   user: any;
   code_cupon: any = null;
   sale: any;
@@ -131,6 +134,14 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    // 🆕 Detectar si es compra de módulo
+    const modulePurchaseStr = sessionStorage.getItem('modulePurchase');
+    if (modulePurchaseStr) {
+      this.isModulePurchase = true;
+      this.modulePurchaseData = JSON.parse(modulePurchaseStr);
+      console.log('[Payment] Detected MODULE purchase:', this.modulePurchaseData);
+    }
+    
     this.loadSPINER();
     this.verifyAuthenticatedUser();
     this.loadCurrentDataCart();
@@ -595,9 +606,13 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       return;
     }
 
-    if (!this.listCarts || this.listCarts.length === 0) {
-      alertDanger('El carrito está vacío');
-      return;
+    // 🆕 Validaciones diferentes para módulo vs Printful
+    if (!this.isModulePurchase) {
+      // Validaciones Printful
+      if (!this.listCarts || this.listCarts.length === 0) {
+        alertDanger('El carrito está vacío');
+        return;
+      }
     }
 
     if (!this.listAddresses || !this.address_client_selected) {
@@ -606,32 +621,58 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       return;
     }
 
-    // Procesar el carrito con precios finales (incluyendo descuentos)
-    const cartWithFinalPrices = this.listCarts.map((item: any) => ({
-      ...item,
-      finalPrice: this.getFinalUnitPrice(item), // Precio final con descuento si aplica
-      originalPrice: parseFloat(item.variedad?.retail_price || item.price_unitario || 0), // Precio original
-      hasDiscount: this.getFinalUnitPrice(item) < parseFloat(item.variedad?.retail_price || item.price_unitario || 0)
-    }));
+    // 🆕 Crear payload diferente según tipo de compra
+    let payload: any;
+    
+    if (this.isModulePurchase) {
+      // Compra de módulo: sin cart, con moduleId/moduleKey
+      payload = {
+        moduleId: this.modulePurchaseData.moduleId,
+        moduleKey: this.modulePurchaseData.moduleKey,
+        userId: this.CURRENT_USER_AUTHENTICATED?._id || null,
+        guestId: this.CURRENT_USER_GUEST?.id || null,
+        country: this.country,
+        locale: this.locale,
+        address: {
+          name: this.name,
+          surname: this.surname,
+          email: this.email,
+          pais: this.pais,
+          ciudad: this.ciudad,
+          region: this.poblacion,
+          telefono: this.phone,
+          address: this.address,
+          zipcode: this.zipcode,
+        },
+      };
+    } else {
+      // Procesar el carrito con precios finales (incluyendo descuentos)
+      const cartWithFinalPrices = this.listCarts.map((item: any) => ({
+        ...item,
+        finalPrice: this.getFinalUnitPrice(item), // Precio final con descuento si aplica
+        originalPrice: parseFloat(item.variedad?.retail_price || item.price_unitario || 0), // Precio original
+        hasDiscount: this.getFinalUnitPrice(item) < parseFloat(item.variedad?.retail_price || item.price_unitario || 0)
+      }));
 
-    const payload = {
-      cart: cartWithFinalPrices,
-      userId: this.CURRENT_USER_AUTHENTICATED?._id || null,
-      guestId: this.CURRENT_USER_GUEST?.id || null,
-      country: this.country,
-      locale: this.locale,
-      address: {
-        name: this.name,
-        surname: this.surname,
-        email: this.email,
-        pais: this.pais,
-        ciudad: this.ciudad,
-        region: this.poblacion,
-        telefono: this.phone,
-        address: this.address,
-        zipcode: this.zipcode,
-      },
-    };
+      payload = {
+        cart: cartWithFinalPrices,
+        userId: this.CURRENT_USER_AUTHENTICATED?._id || null,
+        guestId: this.CURRENT_USER_GUEST?.id || null,
+        country: this.country,
+        locale: this.locale,
+        address: {
+          name: this.name,
+          surname: this.surname,
+          email: this.email,
+          pais: this.pais,
+          ciudad: this.ciudad,
+          region: this.poblacion,
+          telefono: this.phone,
+          address: this.address,
+          zipcode: this.zipcode,
+        },
+      };
+    }
 
     // Guarda el payload antes de redirigir
     this.checkoutService.setSalePayload(payload);
@@ -739,11 +780,14 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
 
         // set up the transaction
         createOrder: (data: any, actions: any) => {
-          if (this.listCarts.length == 0) {
-            alertDanger(
-              'No se puede proceder con la orden si el carrito está vacío.'
-            );
-            return;
+          // 🆕 Validación diferente para módulo vs Printful
+          if (!this.isModulePurchase) {
+            if (this.listCarts.length == 0) {
+              alertDanger(
+                'No se puede proceder con la orden si el carrito está vacío.'
+              );
+              return;
+            }
           }
 
           if (!this.listAddresses || !this.address_client_selected) {
@@ -818,7 +862,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           // Usar el total final calculado (con descuentos aplicados)
           const finalTotal = this.getSubtotal();
           
-          let sale = {
+          let sale: any = {
             user: this.CURRENT_USER_AUTHENTICATED
               ? this.CURRENT_USER_AUTHENTICATED._id
               : undefined,
@@ -832,6 +876,12 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
               Order.purchase_units[0].payments.captures[0].id,
             total: finalTotal, // Usar total calculado con descuentos
           };
+          
+          // 🆕 Si es módulo, agregar module_id directamente al objeto sale
+          if (this.isModulePurchase && this.modulePurchaseData?.moduleId) {
+            sale.module_id = this.modulePurchaseData.moduleId;
+            console.log('[PayPal] Adding module_id to sale:', sale.module_id);
+          }
 
           let sale_address = {
             name: this.name,
@@ -851,8 +901,8 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           const externalId = `order_${Date.now()}`;
           const shippingMethod = "STANDARD";
 
-           // 🔹 Payload completo para backend
-          const orderDataToSend = {
+           // 🆕 Payload completo para backend (con moduleId si es módulo)
+          const orderDataToSend: any = {
             sale,
             sale_address,
             external_id: externalId,
@@ -860,6 +910,12 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
             country: this.country,
             locale: this.locale
           };
+          
+          // 🆕 Si es compra de módulo, agregar moduleId/moduleKey
+          if (this.isModulePurchase) {
+            orderDataToSend.moduleId = this.modulePurchaseData.moduleId;
+            orderDataToSend.moduleKey = this.modulePurchaseData.moduleKey;
+          }
 
           this._authEcommerce.registerSale(orderDataToSend, isGuest).subscribe((resp: any) => {
             this.isLastStepActive_3 = false;
@@ -980,6 +1036,32 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   }
 
   loadCurrentDataCart() {
+    // 🆕 Si es módulo, no cargar cart normal (ya se cargó en ngOnInit)
+    if (this.isModulePurchase) {
+      console.log('[Payment] Skipping cart service subscription for module purchase');
+      // Calcular total desde modulePurchaseData
+      const modulePrice = parseFloat(this.modulePurchaseData.modulePrice) || 0;
+      this.totalCarts = modulePrice;
+      this.listCarts = [{
+        id: null,
+        product: {
+          title: this.modulePurchaseData.moduleName,
+          imagen: 'assets/images/logo-checkout.png',
+          slug: null
+        },
+        variedad: null,
+        cantidad: 1,
+        price_unitario: modulePrice,
+        subtotal: modulePrice,
+        total: modulePrice,
+        discount: 0,
+        type_discount: 1,
+        isModule: true,
+        moduleKey: this.modulePurchaseData.moduleKey
+      }];
+      return;
+    }
+    
     this.subscriptions.add(
       this._cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
@@ -997,6 +1079,11 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   * Obtiene la imagen correcta de la variedad (preview > default) o fallback al producto
   */
   getVarietyImage(cart: any): string {
+      // 🆕 Si no hay product o product.imagen, retornar placeholder para módulos
+      if (!cart.product?.imagen) {
+        return 'assets/images/logo-checkout.png'; // Usar logo como placeholder
+      }
+      
       if (!cart.variedad?.files) return cart.product.imagen;
 
       // Buscamos primero la imagen tipo 'preview'
@@ -1116,6 +1203,14 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   }
 
   generateShippingRate(selectedAddress: Address | null = null) {
+    // 🆕 Si es módulo, NO calcular envío (no hay envío físico)
+    if (this.isModulePurchase) {
+      console.log('[Payment] Skipping shipping rate calculation for module purchase');
+      this.shippingRate = 0;
+      this.shippingMethod = '';
+      return;
+    }
+    
     /* GENERAR ITEMS PARA ENVÍO */
     const items = this.listCarts.map((item: any) => ({
       variant_id: item.variedad.variant_id,

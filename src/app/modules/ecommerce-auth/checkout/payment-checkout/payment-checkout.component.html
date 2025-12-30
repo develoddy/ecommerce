@@ -494,12 +494,13 @@
                                                                      </td>
                                                                      <td class="text-start proName">
                                                                         <div class="list-view-item-title">
-                                                                              <a href="product-layout1.html" onclick="return false;" [routerLink]="[
+                                                                              <a *ngIf="cart.product?.slug" href="product-layout1.html" onclick="return false;" [routerLink]="[
                                                                               '/landing-product',
                                                                               cart.product.slug
                                                                               ]">{{ cart.product.title }}</a>
+                                                                              <span *ngIf="!cart.product?.slug">{{ cart.product?.title || 'Módulo' }}</span>
                                                                         </div>
-                                                                        <div class="cart-meta-text">
+                                                                        <div class="cart-meta-text" *ngIf="cart.variedad">
                                                                               Color: {{ cart.variedad.color
                                                                         }}<br />Talla: {{ cart.variedad.valor }}
                                                                         </div>
@@ -941,18 +942,27 @@
                                     <div class="d-flex py-3 gap-3 align-items-start">
                                        <!-- Imagen -->
                                        <div style="flex: 0 0 auto">
-                                          <a [routerLink]="['/landing-product',cart.product.slug]">
+                                          <a *ngIf="cart.product?.slug" [routerLink]="['/landing-product',cart.product.slug]">
                                              <img 
                                                 class="blur-up lazyload" 
                                                 [attr.data-src]="getVarietyImage(cart)" 
                                                 [src]="getVarietyImage(cart)" 
-                                                [alt]="cart.product.title" 
-                                                [title]="cart.product.title" 
+                                                [alt]="cart.product?.title || 'Producto'" 
+                                                [title]="cart.product?.title || 'Producto'" 
                                                 width="120" 
                                                 height="170" 
                                                 />
-                                                <!-- <img class="blur-up lazyload" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="Product" width="120" height="170" /> -->
                                           </a>
+                                          <img *ngIf="!cart.product?.slug" 
+                                             class="blur-up lazyload" 
+                                             [attr.data-src]="getVarietyImage(cart)" 
+                                             [src]="getVarietyImage(cart)" 
+                                             [alt]="cart.product?.title || 'Módulo'" 
+                                             [title]="cart.product?.title || 'Módulo'" 
+                                             width="120" 
+                                             height="170" 
+                                             />
+                                                <!-- <img class="blur-up lazyload" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="Product" width="120" height="170" /> -->
                                        </div>
                                        <!-- Info del producto -->
                                        <div class="flex-grow-1 d-flex flex-column justify-content-between">
@@ -960,7 +970,8 @@
                                           <div class="d-flex flex-column ">
                                                 <div class="d-flex lh-1 mb-2">
                                                    <div class="fw-normal me-2">
-                                                      <a href="#" class="fw-normal d-inline-block" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                                      <a *ngIf="cart.product?.slug" href="#" class="fw-normal d-inline-block" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
+                                                      <span *ngIf="!cart.product?.slug" class="fw-normal">{{ cart.product?.title || 'Módulo' }}</span>
                                                    </div>
                                                    <div class="">
                                                       <!-- Mostrar precio con descuento si aplica -->
@@ -1001,11 +1012,11 @@
                                                       </ng-template>
                                                    </div>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1">
+                                                <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.product?.sku">
                                                    <span class="w-25">Art. nº</span>
                                                    <span class="ms-lg-3 ms-5">{{ cart.product.sku }}</span>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1">
+                                                <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.variedad?.color">
                                                    <span class="w-25">Color</span>
                                                    <span class="ms-lg-3 ms-5 fw-light">{{ cart.variedad.color }}</span>
                                                 </div>

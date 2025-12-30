@@ -51,6 +51,9 @@ export class ResumenCheckoutComponent implements OnInit {
   listCarts:any = [];
   totalCarts:any=null;
   show = false;
+  // 🆕 Compra de módulo
+  isModulePurchase: boolean = false;
+  modulePurchaseData: any = null;
   // Estado del formulario de dirección
   showAddressForm = false;
   isEditMode = false;
@@ -203,8 +206,50 @@ export class ResumenCheckoutComponent implements OnInit {
   ngAfterViewInit() {}
 
   ngOnInit(): void {
+    // 🆕 Detectar si es compra de módulo
+    const modulePurchaseStr = sessionStorage.getItem('modulePurchase');
+    if (modulePurchaseStr) {
+      this.isModulePurchase = true;
+      this.modulePurchaseData = JSON.parse(modulePurchaseStr);
+      console.log('[Checkout] Detected MODULE purchase:', this.modulePurchaseData);
+      
+      // 🔥 Asegurar que el precio es número
+      const modulePrice = parseFloat(this.modulePurchaseData.modulePrice) || 0;
+      console.log('[Checkout] Module price parsed:', modulePrice, 'Original:', this.modulePurchaseData.modulePrice);
+      
+      // Simular cart item para el módulo (para compatibilidad con UI)
+      this.listCarts = [{
+        id: null,
+        product: {
+          title: this.modulePurchaseData.moduleName,
+          portada: null,
+          imagen: 'assets/images/logo-checkout.png', // 🆕 Imagen placeholder para módulos (usar logo temporalmente)
+          slug: null // 🆕 Null para evitar links rotos
+        },
+        variedad: null,
+        cantidad: 1,
+        price_unitario: modulePrice, // 🔥 Asegurar que es número
+        subtotal: modulePrice,
+        total: modulePrice,
+        discount: 0,
+        type_discount: 1,
+        isModule: true, // Flag para identificar que es módulo
+        moduleKey: this.modulePurchaseData.moduleKey
+      }];
+      
+      this.totalCarts = modulePrice; // 🔥 Asegurar que totalCarts también es número
+      
+      console.log('[Checkout] Simulated cart for module:', this.listCarts[0]);
+      console.log('[Checkout] Total carts:', this.totalCarts);
+    }
+    
     this.verifyAuthenticatedUser();
-    this.currentDataCart();
+    
+    // Solo cargar cart normal si NO es módulo
+    if (!this.isModulePurchase) {
+      this.currentDataCart();
+    }
+    
     this.checkDeviceType();
     
     // 🎯 UX IMPROVEMENT: Preseleccionar país basado en la URL del usuario
@@ -463,6 +508,11 @@ export class ResumenCheckoutComponent implements OnInit {
  * Obtiene la imagen correcta de la variedad (preview > default) o fallback al producto
  */
 getVarietyImage(cart: any): string {
+    // 🆕 Si no hay product o product.imagen, retornar placeholder para módulos
+    if (!cart.product?.imagen) {
+      return 'assets/images/logo-checkout.png'; // Usar logo como placeholder
+    }
+    
     if (!cart.variedad?.files) return cart.product.imagen;
 
     // Buscamos primero la imagen tipo 'preview'
@@ -490,10 +540,13 @@ getVarietyImage(cart: any): string {
       return;
     }
 
-    // Validar que se haya calculado el envío correctamente
-    if (this.shippingRate === 0 && !this.shippingMethod) {
-      alertWarning('No se pudo calcular el envío para la dirección seleccionada. Por favor, verifica que la dirección sea correcta o selecciona otra.');
-      return;
+    // 🆕 Si es módulo, NO validar shipping (no requiere envío físico)
+    if (!this.isModulePurchase) {
+      // Validar que se haya calculado el envío correctamente (solo Printful)
+      if (this.shippingRate === 0 && !this.shippingMethod) {
+        alertWarning('No se pudo calcular el envío para la dirección seleccionada. Por favor, verifica que la dirección sea correcta o selecciona otra.');
+        return;
+      }
     }
 
     // Validar que haya productos en el carrito
