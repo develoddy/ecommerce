@@ -1,0 +1,153 @@
+<div class="container py-5" *ngIf="!isLoading && module">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a (click)="goToHome()" class="cursor-pointer">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a (click)="goToLabs()" class="cursor-pointer">Labs</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">{{ module.name }}</li>
+    </ol>
+  </nav>
+
+  <!-- Header del módulo -->
+  <div class="row mb-5">
+    <div class="col-lg-8 mx-auto text-center">
+      <!-- Icono del módulo -->
+      <div class="mb-4">
+        <span 
+          class="symbol symbol-circle symbol-100px"
+          [style.background-color]="module.color">
+          <span class="symbol-label fs-1">{{ module.icon }}</span>
+        </span>
+      </div>
+
+      <!-- Título y descripción -->
+      <h1 class="display-4 fw-bold mb-3">{{ module.name }}</h1>
+      <p class="lead text-muted mb-4">{{ module.description }}</p>
+
+      <!-- Badges -->
+      <div class="d-flex justify-content-center gap-2 mb-4">
+        <span class="badge" [ngClass]="modulesService.getTypeBadgeClass(module.type)">
+          {{ module.type }}
+        </span>
+        <span class="badge" [ngClass]="modulesService.getStatusBadgeClass(module.status)">
+          {{ module.status }}
+        </span>
+      </div>
+
+      <!-- Precio -->
+      <div class="mb-4">
+        <h2 class="display-5 fw-bold">{{ modulesService.formatCurrency(module.price_base) }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido específico según tipo de módulo -->
+  
+  <!-- 1. Productos Físicos (Merch/Printful) -->
+  <div *ngIf="isPhysicalProduct()" class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>
+        <strong>Productos físicos:</strong> Este módulo está vinculado a productos físicos. 
+        La integración con el catálogo de productos se implementará próximamente.
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Productos Digitales -->
+  <div *ngIf="isDigitalProduct()" class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card shadow-sm">
+        <div class="card-body p-5">
+          <h3 class="card-title mb-4">¿Qué incluye?</h3>
+          <ul class="list-unstyled mb-4">
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              Descarga inmediata
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              Actualizaciones gratuitas
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              Acceso de por vida
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              Soporte incluido
+            </li>
+          </ul>
+
+          <button class="btn btn-primary btn-lg w-100">
+            Comprar ahora
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Servicios -->
+  <div *ngIf="isService()" class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card shadow-sm">
+        <div class="card-body p-5">
+          <h3 class="card-title mb-4">Reserva tu sesión</h3>
+          <p class="text-muted mb-4">
+            Este servicio incluye una sesión personalizada donde trabajaremos juntos 
+            en tu proyecto o problema específico.
+          </p>
+
+          <button class="btn btn-primary btn-lg w-100">
+            Agendar sesión
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats del módulo (opcional) -->
+  <div class="row mt-5" *ngIf="stats && stats.totalSales > 0">
+    <div class="col-lg-8 mx-auto">
+      <div class="card border-0 bg-light">
+        <div class="card-body text-center p-4">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-2">
+                <i class="bi bi-cart-check fs-2 text-primary"></i>
+              </div>
+              <h4 class="fw-bold mb-0">{{ stats.totalSales }}</h4>
+              <small class="text-muted">Ventas</small>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-2">
+                <i class="bi bi-currency-euro fs-2 text-success"></i>
+              </div>
+              <h4 class="fw-bold mb-0">{{ modulesService.formatCurrency(stats.totalRevenue) }}</h4>
+              <small class="text-muted">Revenue</small>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-2">
+                <i class="bi bi-star-fill fs-2 text-warning"></i>
+              </div>
+              <h4 class="fw-bold mb-0">4.8</h4>
+              <small class="text-muted">Valoración</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading state -->
+<div class="container py-5 text-center" *ngIf="isLoading">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <p class="text-muted mt-3">Cargando módulo...</p>
+</div>

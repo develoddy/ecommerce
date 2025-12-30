@@ -4,6 +4,10 @@ import { AuthGuard } from './modules/auth-profile/_services/guards/auth.guard';
 import { CheckFirstVisitGuard } from './modules/auth-profile/_services/guards/check-first-visit.guard';
 import { PrelaunchGuard } from './modules/auth-profile/_services/guards/prelaunch.guard';
 import { CustomPreloadingStrategy } from './services/customPreLoadingStrategy.service';
+import { ModuleResolver } from './guards/module.resolver';
+import { ModuleActiveGuard } from './guards/module-active.guard';
+import { ModuleLandingComponent } from './components/module-landing/module-landing.component';
+import { LabsComponent } from './components/labs/labs.component';
 
 const routes: Routes = [
 
@@ -19,6 +23,14 @@ const routes: Routes = [
     loadChildren: () => import('./modules/ecommerce-initial/ecommerce-initial.module').then(m => m.EcommerceInitialModule),
     data: { preload: true } // Podemos precargar 
   },
+  
+  // 🆕 Ruta para Labs (catálogo de experimentos)
+  {
+    path: 'labs',
+    component: LabsComponent
+  },
+
+  // 🔹 Rutas i18n existentes (NO tocar - Merch store)
   {
     path: ':country/:locale',
     children: [
@@ -62,6 +74,15 @@ const routes: Routes = [
       }
     ],
   },
+  
+  // 🆕 Rutas dinámicas para módulos (catch-all, DEBE IR AL FINAL)
+  {
+    path: ':moduleKey',
+    component: ModuleLandingComponent,
+    resolve: { module: ModuleResolver },
+    canActivate: [ModuleActiveGuard]
+  },
+  
   // Ruta para manejar cualquier otra URL no válida
   {
     path: '**',

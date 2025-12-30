@@ -17,6 +17,8 @@ import { SystemHealthComponent } from './components/system-health.component';
 import { ErrorHandler } from '@angular/core';
 import * as Sentry from '@sentry/angular';
 import { PrelaunchConfigService } from './services/prelaunch-config.service';
+import { ModuleLandingComponent } from './components/module-landing/module-landing.component';
+import { LabsComponent } from './components/labs/labs.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -32,6 +34,8 @@ export function initializePrelaunchConfig(prelaunchService: PrelaunchConfigServi
   declarations: [
     AppComponent,
     SystemHealthComponent,
+    ModuleLandingComponent,
+    LabsComponent,
   ],
   imports: [
     RecaptchaModule,
