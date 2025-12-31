@@ -64,9 +64,172 @@
                     </h3>
                 </div>
                 <!-- END SHIPPING RATES -->
+                
+                <!-- 🆕 MENSAJE INFORMATIVO: Para módulos digitales/servicios/integraciones -->
+                <div *ngIf="!requiresShipping()" class="alert mb-4" 
+                     [ngClass]="{
+                       'alert-success': moduleType === 'digital',
+                       'alert-info': moduleType === 'service' || moduleType === 'integration'
+                     }"
+                     style="border-radius: 12px; border-left: 4px solid;">
+                    
+                    <!-- DIGITAL -->
+                    <div *ngIf="moduleType === 'digital'" class="d-flex align-items-start">
+                        <i class="icon anm anm-download-l me-3" style="font-size: 2rem; color: #28a745;"></i>
+                        <div>
+                            <h5 class="mb-2" style="color: #155724; font-weight: 600;">
+                                <i class="icon anm anm-check-circle-o me-2"></i>Entrega digital instantánea
+                            </h5>
+                            <p class="mb-0" style="color: #155724;">
+                                No necesitas proporcionar dirección de envío. Te enviaremos el enlace de descarga a tu email.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- SERVICE -->
+                    <div *ngIf="moduleType === 'service'" class="d-flex align-items-start">
+                        <i class="icon anm anm-calendar-l me-3" style="font-size: 2rem; color: #17a2b8;"></i>
+                        <div>
+                            <h5 class="mb-2" style="color: #0c5460; font-weight: 600;">
+                                <i class="icon anm anm-check-circle-o me-2"></i>Servicio personalizado
+                            </h5>
+                            <p class="mb-0" style="color: #0c5460;">
+                                No necesitas proporcionar dirección de envío. Te enviaremos instrucciones para agendar a tu email.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- INTEGRATION -->
+                    <div *ngIf="moduleType === 'integration'" class="d-flex align-items-start">
+                        <i class="icon anm anm-cog me-3" style="font-size: 2rem; color: #17a2b8;"></i>
+                        <div>
+                            <h5 class="mb-2" style="color: #0c5460; font-weight: 600;">
+                                <i class="icon anm anm-check-circle-o me-2"></i>Acceso a integración
+                            </h5>
+                            <p class="mb-0" style="color: #0c5460;">
+                                No necesitas proporcionar dirección de envío. Te enviaremos credenciales a tu email.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 🆕 FORMULARIO SIMPLIFICADO: Para módulos digitales/servicios (solo email si es guest) -->
+                <div *ngIf="!requiresShipping() && !CURRENT_USER_AUTHENTICATED" class="mb-lg-5 mb-3">
+                    <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+                        <div class="card-body p-4">
+                            <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
+                                <i class="icon anm anm-envelope-l me-2"></i>Información de contacto
+                            </h3>
+                            <p class="text-muted mb-4">
+                                <small>Te enviaremos la información a este email</small>
+                            </p>
+                            
+                            <form #contactForm="ngForm" novalidate>
+                                <!-- Email (obligatorio) -->
+                                <div class="row justify-content-center mb-3">
+                                    <div class="form-group col-12">
+                                        <label for="contact-email" class="form-label fw-bold">
+                                            Email <span class="required text-danger">*</span>
+                                        </label>
+                                        <div class="position-relative">
+                                            <input 
+                                                name="contact_email" 
+                                                [(ngModel)]="guestEmail" 
+                                                #contactEmail="ngModel" 
+                                                id="contact-email" 
+                                                type="email" 
+                                                required 
+                                                email
+                                                placeholder="tu@email.com" 
+                                                class="form-control py-3" 
+                                                [ngClass]="{'is-invalid': contactEmail.invalid && (contactEmail.touched || contactForm.submitted)}" 
+                                            />
+                                            <button 
+                                                *ngIf="guestEmail" 
+                                                type="button" 
+                                                (click)="clearField('guestEmail')" 
+                                                class="position-absolute d-flex align-items-center justify-content-center" 
+                                                style="right: 12px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); border-radius: 50%; cursor: pointer;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div *ngIf="contactEmail.invalid && (contactEmail.touched || contactForm.submitted)" class="invalid-feedback d-block">
+                                            <span *ngIf="contactEmail.errors?.required">El email es obligatorio</span>
+                                            <span *ngIf="contactEmail.errors?.email">Ingresa un email válido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Nombre (opcional pero recomendado) -->
+                                <div class="row justify-content-center mb-3">
+                                    <div class="form-group col-12">
+                                        <label for="contact-name" class="form-label fw-bold">
+                                            Nombre completo <span class="text-muted">(opcional)</span>
+                                        </label>
+                                        <input 
+                                            name="contact_name" 
+                                            [(ngModel)]="guestName" 
+                                            id="contact-name" 
+                                            type="text" 
+                                            placeholder="Tu nombre" 
+                                            class="form-control py-3" 
+                                        />
+                                        <small class="text-muted">Nos ayuda a personalizar la comunicación</small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Botón para continuar -->
+                                <div class="row justify-content-center mt-4">
+                                    <div class="col-12">
+                                        <button 
+                                            type="button"
+                                            class="btn btn-dark w-100 py-3 text-uppercase fw-normal" 
+                                            (click)="confirmarDireccion()"
+                                            [disabled]="contactForm.invalid">
+                                            Continuar al pago
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 🆕 MENSAJE PARA USUARIOS AUTENTICADOS: Confirmación de email -->
+                <div *ngIf="!requiresShipping() && CURRENT_USER_AUTHENTICATED" class="mb-lg-5 mb-3">
+                    <div class="card border-0 shadow-sm" style="border-radius: 12px; background: #f8f9fa;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-start">
+                                <i class="icon anm anm-check-circle-o me-3" style="font-size: 2rem; color: #28a745;"></i>
+                                <div>
+                                    <h5 class="mb-2" style="font-weight: 600;">
+                                        Email de entrega confirmado
+                                    </h5>
+                                    <p class="mb-0 text-muted">
+                                        Enviaremos la información a: <strong>{{ CURRENT_USER_AUTHENTICATED.email }}</strong>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botón para continuar -->
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-12">
+                            <button 
+                                type="button"
+                                class="btn btn-dark w-100 py-3 text-uppercase fw-normal" 
+                                (click)="confirmarDireccion()">
+                                Continuar al pago
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- SHIPPING ADDRESS -->
-                <div class="mb-lg-5 mb-3" [ngClass]="{'w-100': isDesktop}">
+                <!-- 🆕 SHIPPING ADDRESS: Solo mostrar si requiere envío (Printful o módulos físicos) -->
+                <div *ngIf="requiresShipping()" class="mb-lg-5 mb-3" [ngClass]="{'w-100': isDesktop}">
                     <div class="dashboard-content h-100 mb-3" id="top-tabContent">
                         <!-- Address Book -->
                         <div class="tab-pane h-100" id="address">
@@ -1089,7 +1252,7 @@
             <div class="minicart-bottom" *ngIf="listAddressClients.length != 0 || listAddressGuest.length != 0">
                 <div class="minicart-action d-flex flex-column mt-3">
                     <button class="cart-btn btn-dark-ld me-1 py-3 mb-3" (click)="confirmarDireccion()">
-                        Confirmar dirección
+                        {{ requiresShipping() ? 'Confirmar dirección' : 'Continuar al pago' }}
                     </button>
                     <a *ngIf="CURRENT_USER_AUTHENTICATED" href="#" onclick="return false;" (click)="showNewAddressForm(); closeMiniAdress()" class="cart-btn btn-outline-white-ld text-black me-1 py-3 mb-3">
                         <i class="icon anm anm-plus-l me-2"></i>Añadir otra dirección

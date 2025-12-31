@@ -25,8 +25,8 @@
             </div>
             <!-- END DELIVERY METHODS -->
 
-            <!-- SHIPPING ADDRESS -->
-            <div class="block payment-methods pb-0 mb-4 p-0">
+            <!-- 🆕 SHIPPING ADDRESS: Solo mostrar si requiere envío (Printful o módulos físicos) -->
+            <div *ngIf="requiresShipping()" class="block payment-methods pb-0 mb-4 p-0">
                   <div class="block-content">
                      <!-- Mostrar la lista de direcciones -->
                      <div class="address-book-section" [class.d-none]="loading" *ngIf="this.selectedAddress">
@@ -250,6 +250,50 @@
                   </div>
             </div>
             <!-- END SHIPPING ADDRESS -->
+
+            <!-- 🆕 EMAIL DE ENTREGA: Para módulos digitales/servicios/integraciones -->
+            <div *ngIf="!requiresShipping() && email" class="block payment-methods pb-0 mb-4 p-0">
+                  <div class="block-content">
+                     <div class="address-book-section">
+                        <div class="top-sec mb-3 d-flex justify-content-between align-items-center">
+                              <h3 class="mb-0 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px;">
+                                 <i class="icon anm anm-envelope-l me-2"></i>Email de entrega
+                              </h3>
+                              <div>
+                                 <button type="button" class="btn btn-outline-secondary btn-sm" (click)="gotoResumen()">
+                                       <i class="icon anm anm-edit-l me-1"></i>Cambiar
+                                 </button>
+                              </div>
+                        </div>
+                        <div class="row">
+                              <div class="address-select-box active">
+                                 <div class="address-box border p-3">
+                                    <!-- Info módulo digital -->
+                                    <div class="d-flex flex-row justify-content-between mb-3">
+                                          <div class="d-flex flex-row align-items-center">
+                                             <i class="icon anm anm-check-circle-o me-2" style="font-size: 1.5rem; color: #28a745;"></i>
+                                             <div>
+                                                <p class="mb-1 fw-bold">Producto digital</p>
+                                                <p class="mb-0 text-muted small">Envío inmediato por correo electrónico</p>
+                                             </div>
+                                          </div>
+                                    </div>
+                                    <!-- Email de contacto -->
+                                    <div class="top d-flex-justify-center justify-content-between mb-2">
+                                          <p class="m-0 fw-bold">{{ name || 'Cliente' }}</p>
+                                    </div>
+                                    <div class="mid">
+                                          <p class="address mb-0 fw-light">
+                                             <i class="icon anm anm-envelope-l me-2"></i>{{ email }}
+                                          </p>
+                                    </div>
+                                 </div>
+                              </div>
+                        </div>
+                     </div>
+                  </div>
+            </div>
+            <!-- END EMAIL DE ENTREGA -->
 
             <!-- PAYMENT METHODS -->
             <div class="mb-3 payment-methods mb-4">

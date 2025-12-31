@@ -356,14 +356,13 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       
       if (this.isModulePurchase && saleDetails.length > 0) {
         const moduleDetail = saleDetails[0];
-        // Cargar tipo de módulo desde el detalle
-        if (moduleDetail.module_id) {
-          // El tipo se puede inferir o cargar desde la API
-          this.moduleType = 'digital'; // Por defecto, se puede mejorar con API call
-          this.moduleName = moduleDetail.product?.title || 'Módulo'; // Placeholder
+        // Cargar información completa del módulo desde backend
+        if (moduleDetail.module_id || saleInfo.module_id) {
+          const moduleId = moduleDetail.module_id || saleInfo.module_id;
+          this.loadModuleInfo(moduleId);
         }
         console.log('🎯 [Successfull] Module purchase detected:', {
-          moduleId: moduleDetail.module_id,
+          moduleId: moduleDetail.module_id || saleInfo.module_id,
           type: this.moduleType
         });
       }
@@ -531,11 +530,32 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       if (user) {
         this.CURRENT_USER_AUTHENTICATED = user;
         this.CURRENT_USER_GUEST = null;
+        
+        // 🆕 Para módulos digitales/servicios, usar email del usuario autenticado
+        if (this.isModulePurchase && !this.requiresShipping()) {
+          this.email = user.email;
+          console.log('[Success] Using authenticated user email for module:', this.email);
+        }
+        
         this.checkIfAddressClientExists();
       } else {
         this._authEcommerce._authService.userGuest.subscribe((guestUser) => {
           if (guestUser?.guest) {
             this.CURRENT_USER_GUEST = guestUser;
+            
+            // 🆕 Para módulos digitales/servicios, recuperar email de sessionStorage
+            if (this.isModulePurchase && !this.requiresShipping()) {
+              const guestEmail = sessionStorage.getItem('moduleGuestEmail');
+              const guestName = sessionStorage.getItem('moduleGuestName');
+              if (guestEmail) {
+                this.email = guestEmail;
+                if (guestName) {
+                  this.name = guestName;
+                }
+                console.log('[Success] Using guest email for module:', this.email);
+              }
+            }
+            
             this.checkIfAddressGuestExists();
           } else {
             this.CURRENT_USER_GUEST = null;
@@ -1116,6 +1136,36 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     if (originalPrice <= 0 || discountAmount <= 0) return 0;
     
     return Math.round((discountAmount / originalPrice) * 100);
+  }
+
+  /**
+   * 🆕 Cargar información completa del módulo desde backend
+   */
+  loadModuleInfo(moduleId: number) {
+    this._authEcommerce.getModuleById(moduleId).subscribe(
+      (resp: any) => {
+        this.moduleType = resp.module.type; // 'digital', 'service', 'physical', 'integration'
+        this.moduleName = resp.module.name;
+        console.log('[Successfull] ✅ Module info loaded:', {
+          name: this.moduleName,
+          type: this.moduleType
+        });
+      },
+      (error) => {
+        console.error('[Successfull] ❌ Error loading module:', error);
+        // Fallback a tipo 'digital' si falla
+        this.moduleType = 'digital';
+        this.moduleName = 'Módulo';
+      }
+    );
+  }
+
+  /**
+   * Determina si la compra requiere envío físico
+   * Solo módulos con type='physical' requieren dirección de envío
+   */
+  requiresShipping(): boolean {
+    return this.moduleType === 'physical' || !this.isModulePurchase;
   }
 
   private checkDeviceType(): void {

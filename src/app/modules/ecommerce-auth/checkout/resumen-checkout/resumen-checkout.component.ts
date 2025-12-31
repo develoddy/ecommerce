@@ -54,6 +54,13 @@ export class ResumenCheckoutComponent implements OnInit {
   // 🆕 Compra de módulo
   isModulePurchase: boolean = false;
   modulePurchaseData: any = null;
+  moduleType: string | null = null; // 'digital', 'service', 'physical', 'integration'
+  moduleData: any = null; // Información completa del módulo
+  
+  // 🆕 Variables para formulario de contacto (invitados que compran módulos)
+  guestEmail: string = '';
+  guestName: string = '';
+  
   // Estado del formulario de dirección
   showAddressForm = false;
   isEditMode = false;
@@ -213,6 +220,9 @@ export class ResumenCheckoutComponent implements OnInit {
       this.modulePurchaseData = JSON.parse(modulePurchaseStr);
       console.log('[Checkout] Detected MODULE purchase:', this.modulePurchaseData);
       
+      // 🔥 Cargar información completa del módulo desde backend
+      this.loadModuleData(this.modulePurchaseData.moduleId);
+      
       // 🔥 Asegurar que el precio es número
       const modulePrice = parseFloat(this.modulePurchaseData.modulePrice) || 0;
       console.log('[Checkout] Module price parsed:', modulePrice, 'Original:', this.modulePurchaseData.modulePrice);
@@ -261,6 +271,38 @@ export class ResumenCheckoutComponent implements OnInit {
         actionNetxCheckout($);
       }, 150);
     }, 1000);
+  }
+
+  /**
+   * 🆕 Cargar información completa del módulo desde backend
+   * Determina tipo de módulo (digital, service, physical, integration)
+   */
+  loadModuleData(moduleId: number) {
+    this._authEcommerce.getModuleById(moduleId).subscribe(
+      (resp: any) => {
+        this.moduleData = resp.module;
+        this.moduleType = resp.module.type; // 'digital', 'service', 'physical', 'integration'
+        console.log('[Resumen] ✅ Module loaded:', {
+          name: this.moduleData.name,
+          type: this.moduleType,
+          requiresShipping: this.requiresShipping()
+        });
+      },
+      (error) => {
+        console.error('[Resumen] ❌ Error loading module:', error);
+        // Fallback a tipo 'digital' si falla
+        this.moduleType = 'digital';
+      }
+    );
+  }
+  
+  /**
+   * 🆕 Determinar si el módulo requiere dirección de envío
+   * Solo módulos tipo 'physical' requieren envío
+   */
+  requiresShipping(): boolean {
+    if (!this.isModulePurchase) return true; // Printful siempre requiere envío
+    return this.moduleType === 'physical'; // Solo físicos necesitan envío
   }
 
   loadShippingRateWithAddress(address: any, items: {variant_id: number, quantity: number}[], isFallback: boolean = false) {
@@ -989,6 +1031,61 @@ getVarietyImage(cart: any): string {
   }
 
   confirmarDireccion() {
+    // 🆕 Para módulos digitales/servicios sin envío: validar solo email
+    if (!this.requiresShipping()) {
+      console.log('🔍 [ResumenCheckout] confirmarDireccion() - Módulo sin envío detectado');
+      console.log('🔍 [ResumenCheckout] isModulePurchase:', this.isModulePurchase);
+      console.log('🔍 [ResumenCheckout] moduleType:', this.moduleType);
+      console.log('🔍 [ResumenCheckout] CURRENT_USER_AUTHENTICATED:', !!this.CURRENT_USER_AUTHENTICATED);
+      
+      // Usuario autenticado: siempre tiene email
+      if (this.CURRENT_USER_AUTHENTICATED) {
+        this.email = this.CURRENT_USER_AUTHENTICATED.email;
+        console.log('✅ [ResumenCheckout] Usuario autenticado - Email:', this.email);
+        // Navegar directamente al paso de pago
+        this.navigateToPayment();
+        return;
+      }
+      
+      // Usuario invitado: validar que ingresó email
+      console.log('🔍 [ResumenCheckout] Usuario invitado - guestEmail:', this.guestEmail);
+      console.log('🔍 [ResumenCheckout] Usuario invitado - guestName:', this.guestName);
+      
+      if (!this.guestEmail || !this.guestEmail.trim()) {
+        console.error('❌ [ResumenCheckout] Email vacío');
+        alertWarning('Por favor, ingresa tu email para continuar');
+        return;
+      }
+      
+      // Validar formato de email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(this.guestEmail)) {
+        console.error('❌ [ResumenCheckout] Email inválido:', this.guestEmail);
+        alertWarning('Por favor, ingresa un email válido');
+        return;
+      }
+      
+      console.log('✅ [ResumenCheckout] Email válido capturado:', this.guestEmail);
+      
+      // Guardar email en sessionStorage para PaymentCheckout
+      sessionStorage.setItem('moduleGuestEmail', this.guestEmail);
+      console.log('✅ [ResumenCheckout] Guardado moduleGuestEmail en sessionStorage');
+      
+      if (this.guestName) {
+        sessionStorage.setItem('moduleGuestName', this.guestName);
+        console.log('✅ [ResumenCheckout] Guardado moduleGuestName:', this.guestName);
+      } else {
+        sessionStorage.setItem('moduleGuestName', 'Cliente');
+        console.log('✅ [ResumenCheckout] Guardado moduleGuestName: Cliente (default)');
+      }
+      
+      // Navegar al paso de pago
+      console.log('🚀 [ResumenCheckout] Navegando a payment-checkout...');
+      this.navigateToPayment();
+      return;
+    }
+    
+    // 🔹 Flujo normal para productos físicos (Printful o módulos physical)
     if (!this.selectedAddressId) {
       console.warn('No hay dirección seleccionada');
       return;
@@ -1040,6 +1137,19 @@ getVarietyImage(cart: any): string {
     }
 
     this.closeMiniAdress();
+  }
+  
+  /**
+   * 🆕 Navegar al paso de pago
+   * Usado tanto para módulos sin envío como para productos con dirección confirmada
+   */
+  navigateToPayment() {
+    this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'payment'], {
+      queryParams: { 
+        initialized: 'true',
+        from: 'step2'
+      }
+    });
   }
 
   loadAddresses() {
@@ -1514,6 +1624,12 @@ getVarietyImage(cart: any): string {
         break;
       case 'email':
         this.email = '';
+        break;
+      case 'guestEmail':
+        this.guestEmail = '';
+        break;
+      case 'guestName':
+        this.guestName = '';
         break;
       case 'calle':
         this.calle = '';

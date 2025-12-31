@@ -240,4 +240,17 @@ export class EcommerceAuthService {
       responseType: 'blob' as 'json' // Para recibir el archivo PDF como blob
     });
   }
+  
+  // 🆕 ================ MÉTODOS PARA MÓDULOS ================ 🆕
+  
+  /**
+   * Obtener información completa de un módulo por ID
+   */
+  getModuleById(moduleId: number) {
+    this.loadingSubject.next(true);
+    let URL = URL_SERVICE + `modules/${moduleId}`;
+    return this._http.get(URL).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    );
+  }
 }

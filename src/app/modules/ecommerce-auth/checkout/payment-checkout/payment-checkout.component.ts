@@ -115,6 +115,10 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   usandoFallback: boolean = false;
   private previousPaymentMethod: 'card' | 'paypal' = 'card';
   private paymentMethodCheckInterval: any;
+  
+  // 🆕 Module properties
+  moduleType: string | null = null; // 'digital', 'service', 'physical', 'integration'
+  moduleData: any = null; // Información completa del módulo
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
@@ -140,6 +144,9 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       this.isModulePurchase = true;
       this.modulePurchaseData = JSON.parse(modulePurchaseStr);
       console.log('[Payment] Detected MODULE purchase:', this.modulePurchaseData);
+      
+      // 🔥 Cargar información completa del módulo desde backend
+      this.loadModuleData(this.modulePurchaseData.moduleId);
     }
     
     this.loadSPINER();
@@ -613,12 +620,26 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         alertDanger('El carrito está vacío');
         return;
       }
-    }
-
-    if (!this.listAddresses || !this.address_client_selected) {
-      this.validMessage = true;
-      this.errorOrSuccessMessage = 'Por favor, seleccione una dirección de envío.';
-      return;
+      
+      // Solo validar dirección para productos físicos
+      if (!this.listAddresses || !this.address_client_selected) {
+        this.validMessage = true;
+        this.errorOrSuccessMessage = 'Por favor, seleccione una dirección de envío.';
+        return;
+      }
+    } else {
+      // Validaciones para módulos
+      if (!this.email) {
+        alertDanger('Email requerido para módulos digitales');
+        return;
+      }
+      
+      // Solo validar dirección si requiere envío (módulos físicos)
+      if (this.requiresShipping() && (!this.listAddresses || !this.address_client_selected)) {
+        this.validMessage = true;
+        this.errorOrSuccessMessage = 'Por favor, seleccione una dirección de envío.';
+        return;
+      }
     }
 
     // 🆕 Crear payload diferente según tipo de compra
@@ -626,14 +647,37 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
     
     if (this.isModulePurchase) {
       // Compra de módulo: sin cart, con moduleId/moduleKey
-      payload = {
+      const basePayload: any = {
         moduleId: this.modulePurchaseData.moduleId,
         moduleKey: this.modulePurchaseData.moduleKey,
         userId: this.CURRENT_USER_AUTHENTICATED?._id || null,
         guestId: this.CURRENT_USER_GUEST?.id || null,
         country: this.country,
         locale: this.locale,
-        address: {
+      };
+      
+      // Para módulos digitales/servicios: datos mínimos
+      if (!this.requiresShipping()) {
+        console.log('📧 [PaymentCheckout Stripe] ===== CONSTRUYENDO address para MÓDULO =====');
+        console.log('📧 [PaymentCheckout Stripe] this.email:', this.email);
+        console.log('📧 [PaymentCheckout Stripe] this.name:', this.name);
+        
+        basePayload.address = {
+          name: this.name || 'Cliente',
+          surname: '',
+          email: this.email,
+          pais: this.country || 'ES',
+          ciudad: '',
+          region: '',
+          telefono: '',
+          address: 'Producto Digital',
+          zipcode: '',
+        };
+        
+        console.log('✅ [PaymentCheckout Stripe] address construido:', JSON.stringify(basePayload.address));
+      } else {
+        // Módulos físicos: dirección completa
+        basePayload.address = {
           name: this.name,
           surname: this.surname,
           email: this.email,
@@ -643,8 +687,16 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           telefono: this.phone,
           address: this.address,
           zipcode: this.zipcode,
-        },
-      };
+        };
+      }
+      
+      payload = basePayload;
+      
+      console.log('📦 [PaymentCheckout Stripe] ===== PAYLOAD MÓDULO =====');
+      console.log('📦 [PaymentCheckout Stripe] payload.address.email:', payload.address.email);
+      console.log('📦 [PaymentCheckout Stripe] payload.moduleId:', payload.moduleId);
+      console.log('📦 [PaymentCheckout Stripe] payload.moduleKey:', payload.moduleKey);
+      console.log('📦 [PaymentCheckout Stripe] Payload completo:', JSON.stringify(payload, null, 2));
     } else {
       // Procesar el carrito con precios finales (incluyendo descuentos)
       const cartWithFinalPrices = this.listCarts.map((item: any) => ({
@@ -788,13 +840,28 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
               );
               return;
             }
-          }
-
-          if (!this.listAddresses || !this.address_client_selected) {
-            this.validMessage = true;
-            this.errorOrSuccessMessage =
-              'Por favor, seleccione la dirección de envío correspondiente.';
-            return;
+            
+            // Solo validar dirección para productos físicos
+            if (!this.listAddresses || !this.address_client_selected) {
+              this.validMessage = true;
+              this.errorOrSuccessMessage =
+                'Por favor, seleccione la dirección de envío correspondiente.';
+              return;
+            }
+          } else {
+            // Validaciones para módulos
+            if (!this.email) {
+              alertDanger('Email requerido para módulos digitales');
+              return;
+            }
+            
+            // Solo validar dirección si requiere envío (módulos físicos)
+            if (this.requiresShipping() && (!this.listAddresses || !this.address_client_selected)) {
+              this.validMessage = true;
+              this.errorOrSuccessMessage =
+                'Por favor, seleccione la dirección de envío correspondiente.';
+              return;
+            }
           }
 
           // Calcular precios para PayPal (con descuentos aplicados correctamente)
@@ -883,19 +950,45 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
             console.log('[PayPal] Adding module_id to sale:', sale.module_id);
           }
 
-          let sale_address = {
-            name: this.name,
-            surname: this.surname,
-            pais: this.pais,
-            address: this.address,
-            referencia: '',
-            ciudad: this.ciudad,
-            region: this.poblacion,
-            telefono: this.phone,
-            email: this.email,
-            nota: '',
-            zipcode: this.zipcode,
-          };
+          // 🆕 Para módulos digitales/servicios, usar datos mínimos
+          let sale_address: any;
+          if (this.isModulePurchase && !this.requiresShipping()) {
+            console.log('📧 [PaymentCheckout] ===== CONSTRUYENDO sale_address para MÓDULO =====');
+            console.log('📧 [PaymentCheckout] this.email:', this.email);
+            console.log('📧 [PaymentCheckout] this.name:', this.name);
+            
+            // Módulos digitales: solo email (y nombre si existe)
+            sale_address = {
+              name: this.name || 'Cliente',
+              surname: '',
+              pais: this.country || 'ES',
+              address: 'Producto Digital',
+              referencia: '',
+              ciudad: '',
+              region: '',
+              telefono: '',
+              email: this.email,
+              nota: 'Compra de módulo digital',
+              zipcode: '',
+            };
+            
+            console.log('✅ [PaymentCheckout] sale_address construido:', JSON.stringify(sale_address));
+          } else {
+            // Productos físicos: dirección completa
+            sale_address = {
+              name: this.name,
+              surname: this.surname,
+              pais: this.pais,
+              address: this.address,
+              referencia: '',
+              ciudad: this.ciudad,
+              region: this.poblacion,
+              telefono: this.phone,
+              email: this.email,
+              nota: '',
+              zipcode: this.zipcode,
+            };
+          }
 
           // Generamos external_id único y shipping
           const externalId = `order_${Date.now()}`;
@@ -911,11 +1004,19 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
             locale: this.locale
           };
           
+          console.log('📦 [PaymentCheckout] ===== ENVIANDO ORDEN AL BACKEND =====');
+          console.log('📦 [PaymentCheckout] orderDataToSend.sale_address.email:', orderDataToSend.sale_address.email);
+          console.log('📦 [PaymentCheckout] isModulePurchase:', this.isModulePurchase);
+          
           // 🆕 Si es compra de módulo, agregar moduleId/moduleKey
           if (this.isModulePurchase) {
             orderDataToSend.moduleId = this.modulePurchaseData.moduleId;
             orderDataToSend.moduleKey = this.modulePurchaseData.moduleKey;
+            console.log('📦 [PaymentCheckout] Agregando moduleId:', orderDataToSend.moduleId);
+            console.log('📦 [PaymentCheckout] Agregando moduleKey:', orderDataToSend.moduleKey);
           }
+          
+          console.log('📦 [PaymentCheckout] Payload completo:', JSON.stringify(orderDataToSend, null, 2));
 
           this._authEcommerce.registerSale(orderDataToSend, isGuest).subscribe((resp: any) => {
             this.isLastStepActive_3 = false;
@@ -1035,6 +1136,38 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  /**
+   * 🆕 Cargar información completa del módulo desde backend
+   * Determina tipo de módulo (digital, service, physical, integration)
+   */
+  loadModuleData(moduleId: number) {
+    this._authEcommerce.getModuleById(moduleId).subscribe(
+      (resp: any) => {
+        this.moduleData = resp.module;
+        this.moduleType = resp.module.type; // 'digital', 'service', 'physical', 'integration'
+        console.log('[Payment] ✅ Module loaded:', {
+          name: this.moduleData.name,
+          type: this.moduleType,
+          requiresShipping: this.requiresShipping()
+        });
+      },
+      (error) => {
+        console.error('[Payment] ❌ Error loading module:', error);
+        // Fallback a tipo 'digital' si falla
+        this.moduleType = 'digital';
+      }
+    );
+  }
+  
+  /**
+   * 🆕 Determinar si el módulo requiere dirección de envío
+   * Solo módulos tipo 'physical' requieren envío
+   */
+  requiresShipping(): boolean {
+    if (!this.isModulePurchase) return true; // Printful siempre requiere envío
+    return this.moduleType === 'physical'; // Solo físicos necesitan envío
+  }
+
   loadCurrentDataCart() {
     // 🆕 Si es módulo, no cargar cart normal (ya se cargó en ngOnInit)
     if (this.isModulePurchase) {
@@ -1115,12 +1248,25 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   }
 
   private verifyAuthenticatedUser(): void {
+    console.log('🔍 [PaymentCheckout] verifyAuthenticatedUser() iniciado');
+    console.log('🔍 [PaymentCheckout] isModulePurchase:', this.isModulePurchase);
+    console.log('🔍 [PaymentCheckout] requiresShipping():', this.requiresShipping());
+    
     this._authEcommerce._authService.user.pipe(take(1)).subscribe((user) => {
       if (user) {
         this.CURRENT_USER_AUTHENTICATED = user;
         this.CURRENT_USER_GUEST = null;
+        console.log('✅ [PaymentCheckout] Usuario autenticado detectado:', user.email);
+        
+        // 🆕 Para módulos digitales/servicios, usar email del usuario autenticado
+        if (this.isModulePurchase && !this.requiresShipping()) {
+          this.email = user.email;
+          console.log('✅ [PaymentCheckout] Email asignado (autenticado):', this.email);
+        }
+        
         this.checkIfAddressClientExists();
       } else {
+        console.log('🔍 [PaymentCheckout] No hay usuario autenticado, verificando guest...');
         this._authEcommerce._authService.userGuest
           .pipe(take(1))
           .subscribe((guestUser) => {
@@ -1128,11 +1274,54 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
               // ⚠️ Modo invitado detectado → forzar login
               this.CURRENT_USER_AUTHENTICATED = null;
               this.CURRENT_USER_GUEST = guestUser;
+              console.log('✅ [PaymentCheckout] Guest user detectado, id:', guestUser.id);
+              
+              // 🆕 Para módulos digitales/servicios, recuperar email de sessionStorage
+              if (this.isModulePurchase && !this.requiresShipping()) {
+                console.log('🔍 [PaymentCheckout] Intentando recuperar email de sessionStorage...');
+                const guestEmail = sessionStorage.getItem('moduleGuestEmail');
+                const guestName = sessionStorage.getItem('moduleGuestName');
+                console.log('🔍 [PaymentCheckout] moduleGuestEmail en sessionStorage:', guestEmail);
+                console.log('🔍 [PaymentCheckout] moduleGuestName en sessionStorage:', guestName);
+                
+                if (guestEmail) {
+                  this.email = guestEmail;
+                  if (guestName) {
+                    this.name = guestName;
+                  }
+                  console.log('✅ [PaymentCheckout] Email asignado (guest con cuenta):', this.email);
+                  console.log('✅ [PaymentCheckout] Name asignado:', this.name);
+                } else {
+                  console.error('❌ [PaymentCheckout] No se encontró moduleGuestEmail en sessionStorage!');
+                }
+              }
+              
               this.checkIfAddressGuestExists();
             } else {
-              // ❌ Ningún usuario válido → también forzar login
+              // ❌ Ningún usuario válido → usuario completamente nuevo
               this.CURRENT_USER_AUTHENTICATED = null;
               this.CURRENT_USER_GUEST = null;
+              console.log('⚠️ [PaymentCheckout] Usuario COMPLETAMENTE NUEVO (sin guest)');
+              
+              // 🆕 Para módulos digitales/servicios de invitados nuevos, recuperar email de sessionStorage
+              if (this.isModulePurchase && !this.requiresShipping()) {
+                console.log('🔍 [PaymentCheckout] Intentando recuperar email de sessionStorage (NEW USER)...');
+                const guestEmail = sessionStorage.getItem('moduleGuestEmail');
+                const guestName = sessionStorage.getItem('moduleGuestName');
+                console.log('🔍 [PaymentCheckout] moduleGuestEmail en sessionStorage:', guestEmail);
+                console.log('🔍 [PaymentCheckout] moduleGuestName en sessionStorage:', guestName);
+                
+                if (guestEmail) {
+                  this.email = guestEmail;
+                  if (guestName) {
+                    this.name = guestName;
+                  }
+                  console.log('✅ [PaymentCheckout] Email asignado (NEW user):', this.email);
+                  console.log('✅ [PaymentCheckout] Name asignado:', this.name);
+                } else {
+                  console.error('❌ [PaymentCheckout] No se encontró moduleGuestEmail en sessionStorage!');
+                }
+              }
             }
           });
       }
