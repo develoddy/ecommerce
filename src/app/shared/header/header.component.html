@@ -815,9 +815,20 @@
     </header>
     <!--End Header-->
 </ng-container>
+<!--
+    🆕 LOGO CON REDIRECCIÓN DINÁMICA
+    
+    El logo redirige según el contexto del checkout:
+    - Si es checkout de módulo/servicio: redirige al módulo (e.g., /notion-templates)
+    - Si es checkout normal de merch: redirige a la home (/:country/:locale/home)
+    
+    La lógica está en getLogoRoute() del component.ts
+-->
 <ng-template #onlyLogo>
     <div class="checkout-logo-header text-center py-3">
-        <a [routerLink]="['/', country, locale, 'home']" class="logo"><img src="assets/images/logo.png" alt="Lujan Ecommerce" /></a>
+        <a [routerLink]="getLogoRoute()" class="logo">
+            <img src="assets/images/logo.png" alt="Lujan Ecommerce" />
+        </a>
     </div>
 </ng-template>
 

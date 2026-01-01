@@ -87,6 +87,16 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedSizes: { [productId: string]: string } = {}; // Track selected size for each product
   hoveredProduct: string | null = null; // Track which product is being hovered
   
+  /**
+   * 🆕 MODULE CHECKOUT CONTEXT
+   * Guarda la clave del módulo cuando el usuario está en checkout de un módulo/servicio.
+   * Esto permite que el logo del header redirija correctamente:
+   * - Si viene de un módulo (e.g., /notion-templates): redirige al módulo
+   * - Si es checkout normal de merch: redirige a la home del ecommerce
+   * El valor se obtiene de sessionStorage (configurado en module-landing.component.ts)
+   */
+  moduleCheckoutKey: string | null = null;
+  
 
   categorieOurProducts: any;
   categorieHoodies: any;
@@ -184,12 +194,18 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       // Initial header visibility based on current route
       this.showSubscriptionSection = !this.router.url.includes('/checkout');
       
+      // 🆕 Detectar contexto de módulo en checkout
+      this.detectModuleCheckoutContext();
+      
       // 🔥 LISTENER GLOBAL: Restaurar megamenu después de navegación
       this.subscriptions.add(
         this.router.events.pipe(
           filter(event => event instanceof NavigationEnd)
         ).subscribe((event: any) => {
           this.showSubscriptionSection = !event.urlAfterRedirects.includes('/checkout');
+          
+          // 🆕 Re-detectar contexto de módulo después de cada navegación
+          this.detectModuleCheckoutContext();
           
           // Cerrar menú móvil cuando se navegue
           if (this.isMobileMenuOpen) {
@@ -1320,5 +1336,50 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       parentLi.classList.remove('animating');
       
     }, 400);
+  }
+
+  /**
+   * 🆕 DETECTAR CONTEXTO DE MÓDULO EN CHECKOUT
+   * 
+   * Detecta si el checkout actual proviene de la compra de un módulo/servicio.
+   * Lee el sessionStorage donde module-landing.component.ts guarda la info del módulo.
+   * 
+   * Esto permite que el logo del header redirija correctamente:
+   * - Checkout de módulo → redirige al módulo específico
+   * - Checkout normal de merch → redirige a home del ecommerce
+   * 
+   * @see module-landing.component.ts - purchaseModule()
+   */
+  private detectModuleCheckoutContext(): void {
+    try {
+      const modulePurchase = sessionStorage.getItem('modulePurchase');
+      if (modulePurchase) {
+        const moduleData = JSON.parse(modulePurchase);
+        this.moduleCheckoutKey = moduleData.moduleKey || null;
+      } else {
+        this.moduleCheckoutKey = null;
+      }
+    } catch (error) {
+      console.warn('Error al detectar contexto de módulo en checkout:', error);
+      this.moduleCheckoutKey = null;
+    }
+  }
+
+  /**
+   * 🆕 OBTENER RUTA DINÁMICA DEL LOGO
+   * 
+   * Retorna la ruta de navegación del logo según el contexto actual:
+   * - Si hay un módulo en checkout: redirige al landing del módulo (e.g., /notion-templates)
+   * - Si es checkout normal de merch: redirige a la home del ecommerce (/:country/:locale/home)
+   * 
+   * Se usa en el template: [routerLink]="getLogoRoute()"
+   * 
+   * @returns Array con la ruta para routerLink
+   */
+  getLogoRoute(): any[] {
+    if (this.moduleCheckoutKey) {
+      return ['/', this.moduleCheckoutKey];
+    }
+    return ['/', this.country, this.locale, 'home'];
   }
 }

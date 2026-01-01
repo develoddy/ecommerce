@@ -3,8 +3,8 @@
         <!-- ======== COL IZQUIRDA ======== -->
         <ng-container *ngIf="listCarts.length > 0; else showAddress">
             <div id="main-left">
-                <!-- DELIVERY METHODS -->
-                <div class="mb-5">
+                <!-- DELIVERY METHODS: Solo mostrar para productos físicos (Printful merch) -->
+                <div class="mb-5" *ngIf="requiresShipping()">
                     <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
                         <i class="icon anm anm-truck-l me-2"></i>Tipo de envío
                     </h3>
