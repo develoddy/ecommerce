@@ -13,7 +13,7 @@ export interface Module {
   color: string;
   target_sales: number;
   validation_days: number;
-  price_base: number;
+  base_price: number;
   is_active: boolean;
   status: 'draft' | 'testing' | 'live' | 'archived';
   launched_at?: string;
@@ -21,6 +21,15 @@ export interface Module {
   archived_at?: string;
   createdAt: string;
   updatedAt: string;
+  // Nuevos campos de marketing
+  tagline?: string;
+  screenshots?: string[];
+  download_url?: string;
+  post_purchase_email?: string;
+  detailed_description?: string;
+  features?: string[];
+  tech_stack?: string[];
+  requirements?: string[];
 }
 
 export interface ModuleStats {

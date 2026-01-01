@@ -16,6 +16,10 @@ export class ModuleLandingComponent implements OnInit {
   recentSales: any[] = [];
   isLoading = true;
   isPurchasing = false;
+  // 🖼️ Modal de imagen
+  showImageModal = false;
+  currentImageUrl = '';
+  currentImageIndex = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -95,7 +99,7 @@ export class ModuleLandingComponent implements OnInit {
       moduleId: this.module.id,
       moduleKey: this.module.key,
       moduleName: this.module.name,
-      modulePrice: this.module.price_base,
+      modulePrice: this.module.base_price,
       moduleType: this.module.type
     }));
 
@@ -108,5 +112,51 @@ export class ModuleLandingComponent implements OnInit {
         moduleKey: this.module.key 
       } 
     });
+  }
+
+  /**
+   * Abre un screenshot en modal con zoom
+   */
+  openScreenshot(url: string): void {
+    this.currentImageUrl = url;
+    this.currentImageIndex = this.module.screenshots?.indexOf(url) || 0;
+    this.showImageModal = true;
+    // Prevenir scroll del body cuando el modal está abierto
+    document.body.style.overflow = 'hidden';
+  }
+
+  /**
+   * Cierra el modal de imagen
+   */
+  closeImageModal(): void {
+    this.showImageModal = false;
+    this.currentImageUrl = '';
+    document.body.style.overflow = 'auto';
+  }
+
+  /**
+   * Navega a la imagen anterior
+   */
+  previousImage(): void {
+    if (!this.module.screenshots || this.module.screenshots.length === 0) return;
+    this.currentImageIndex = (this.currentImageIndex - 1 + this.module.screenshots.length) % this.module.screenshots.length;
+    this.currentImageUrl = this.module.screenshots[this.currentImageIndex];
+  }
+
+  /**
+   * Navega a la siguiente imagen
+   */
+  nextImage(): void {
+    if (!this.module.screenshots || this.module.screenshots.length === 0) return;
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.module.screenshots.length;
+    this.currentImageUrl = this.module.screenshots[this.currentImageIndex];
+  }
+
+  /**
+   * Maneja errores de carga de imágenes
+   */
+  onImageError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    target.src = 'assets/images/placeholder.png';
   }
 }
