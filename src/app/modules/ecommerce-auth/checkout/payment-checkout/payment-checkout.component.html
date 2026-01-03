@@ -755,9 +755,10 @@
                                           y que aceptas las
                                           <a 
                                              class="text-decoration-underline fw-normal"
-                                             (click)="openInNewTab('condiciones-venta')"
+                                             (click)="isModulePurchase ? false : openInNewTab('condiciones-venta')"
+                                             onclick="return !this.isModulePurchase"
                                              target="_blank"
-                                              style="cursor: pointer;"
+                                             [style.cursor]="isModulePurchase ? 'default' : 'pointer'"
                                              title="Condiciones Generales de Venta">Condiciones de venta</a>
                                     </small>
                                  </p>
@@ -964,9 +965,10 @@
                                        entendido y que aceptas las
                                        <a 
                                           class="text-decoration-underline fw-normal"
-                                          (click)="openInNewTab('condiciones-venta')"
+                                          (click)="isModulePurchase ? false : openInNewTab('condiciones-venta')"
+                                          onclick="return !this.isModulePurchase"
                                           target="_blank"
-                                          style="cursor: pointer;"
+                                          [style.cursor]="isModulePurchase ? 'default' : 'pointer'"
                                           title="Condiciones Generales de Venta">Condiciones de venta</a>
                                  </small>
                               </p>
