@@ -777,7 +777,7 @@
          <div id="main-right">
             <!-- BLOQUE: TU CARRITO -->
             <div class="order-1">
-               <h3 class="title mb-0 text-uppercase fw-normal mb-3">TU CARRITO</h3>
+               <h3 class="title mb-0 text-uppercase fw-normal mb-3 fw-bold" *ngClass="{'d-none': isMobile}">Resumen de precio</h3>
 
                <!-- CODIGO PROMOCIONAL OCUTALMOS-->
                <!-- AHORA EL CUPON SE GESTIONA EN LIST CART -->
@@ -980,7 +980,7 @@
                <div class="col-12 order-0 lists-carts  order-md-2">
                   <div class="block order-summary p-0">
                         <div class="block-content">
-                           <h3 class="mb-0 text-uppercase">Artículos ({{ listCarts.length }})</h3>
+                           <h3 class="mb-0 text-uppercase" style="color: #222;font-size: 1.25rem;letter-spacing: 0.5px;border-bottom: 2px solid #222;padding-bottom: 0.5rem;">Artículos ({{ listCarts.length }})</h3>
                            <div class="order-list">
                               <ng-container *ngFor="let cart of listCarts">
                                     <div class="d-flex py-3 gap-3 align-items-start">

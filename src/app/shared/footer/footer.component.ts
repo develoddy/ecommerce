@@ -14,6 +14,7 @@ export class FooterComponent implements OnInit {
 
   CURRENT_USER_AUTHENTICATED:any=null;
   showSubscriptionSection: boolean = true;
+  showFooter: boolean = true; // 🆕 Control de visibilidad completa del footer
   locale: string = "";
   country: string = "";
   private modalInstance: any;
@@ -37,13 +38,28 @@ export class FooterComponent implements OnInit {
 
     this.verifyAuthenticatedUser(); 
 
-     // Oculta la sección de suscripción en /myaddress y cualquier ruta que incluya /edit
-     const currentUrl = this._router.url;
+    // Oculta la sección de suscripción en /myaddress y cualquier ruta que incluya /edit
+    const currentUrl = this._router.url;
+
+    // 🆕 OCULTAR FOOTER COMPLETO en checkout de módulos digitales
+    if (currentUrl.includes('/checkout') && this.isModulePurchase()) {
+      this.showFooter = false;
+      return;
+    }
 
     // Oculta la sección de suscripción en /myaddress
-    //if (this._router.url === '/myaddress') { 
     if ( currentUrl === '/myaddresses' || currentUrl === '/myaddresses/add' || currentUrl.includes('/edit') || currentUrl.includes('/my-account') || currentUrl.includes('/checkout') || currentUrl.includes('/registered') || currentUrl.includes('/mypurchases') ) {
       this.showSubscriptionSection = false;
+    }
+  }
+
+  // 🆕 Detectar si es compra de módulo (verifica sessionStorage)
+  private isModulePurchase(): boolean {
+    try {
+      const modulePurchaseStr = sessionStorage.getItem('modulePurchase');
+      return !!modulePurchaseStr; // true si existe
+    } catch (e) {
+      return false;
     }
   }
 

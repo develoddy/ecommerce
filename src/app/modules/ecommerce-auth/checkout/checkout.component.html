@@ -28,15 +28,15 @@
                                     <div class="position-absolute w-100" style="height: 3px; background-color: #e9ecef; top: 50%; transform: translateY(-50%); z-index: 0; left: 0; right: 0;">
                                         <div class="progress-line" 
                                              [style.width]="currentStep === 'resumen' ? '0%' : currentStep === 'payment' ? '50%' : '100%'"
-                                             style="height: 100%; background: linear-gradient(90deg, #28a745 0%, #20c997 100%); transition: width 0.5s ease;"></div>
+                                             style="height: 100%; background: linear-gradient(90deg, #000 0%, #ccc 100%); transition: width 0.5s ease;"></div>
                                     </div>
 
                                     <!-- Step 1: Envío -->
                                     <div class="col-4 text-center position-relative" style="z-index: 1;">
                                         <div class="step-wrapper">
                                             <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
-                                                 [style.background-color]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '#28a745' : '#ffffff'"
-                                                 [style.border]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '3px solid #28a745' : '3px solid #dee2e6'"
+                                                 [style.background-color]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '#000' : '#ffffff'"
+                                                 [style.border]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '3px solid #000' : '3px solid #dee2e6'"
                                                  style="width: 56px; height: 56px; border-radius: 50%; transition: all 0.3s ease; cursor: pointer;"
                                                  (click)="currentStep !== 'resumen' && navigateToStep('resumen')">
                                                 <i class="icon anm anm-truck-l" 
@@ -55,8 +55,8 @@
                                     <div class="col-4 text-center position-relative" style="z-index: 1;">
                                         <div class="step-wrapper">
                                             <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
-                                                 [style.background-color]="currentStep === 'payment' || currentStep === 'successfull' ? '#28a745' : '#ffffff'"
-                                                 [style.border]="currentStep === 'payment' || currentStep === 'successfull' ? '3px solid #28a745' : '3px solid #dee2e6'"
+                                                 [style.background-color]="currentStep === 'payment' || currentStep === 'successfull' ? '#000' : '#ffffff'"
+                                                 [style.border]="currentStep === 'payment' || currentStep === 'successfull' ? '3px solid #000' : '3px solid #dee2e6'"
                                                  style="width: 56px; height: 56px; border-radius: 50%; transition: all 0.3s ease; cursor: pointer;"
                                                  (click)="currentStep === 'successfull' && navigateToStep('payment')">
                                                 <i class="icon anm anm-credit-card-l" 
@@ -75,8 +75,8 @@
                                     <div class="col-4 text-center position-relative" style="z-index: 1;">
                                         <div class="step-wrapper">
                                             <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
-                                                 [style.background-color]="currentStep === 'successfull' ? '#28a745' : '#ffffff'"
-                                                 [style.border]="currentStep === 'successfull' ? '3px solid #28a745' : '3px solid #dee2e6'"
+                                                 [style.background-color]="currentStep === 'successfull' ? '#000' : '#ffffff'"
+                                                 [style.border]="currentStep === 'successfull' ? '3px solid #000' : '3px solid #dee2e6'"
                                                  style="width: 56px; height: 56px; border-radius: 50%; transition: all 0.3s ease;">
                                                 <i class="icon anm anm-check-cil" 
                                                    [style.color]="currentStep === 'successfull' ? '#ffffff' : '#6c757d'"

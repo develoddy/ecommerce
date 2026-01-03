@@ -9,6 +9,19 @@ import { PrelaunchConfigService } from '../../../../services/prelaunch-config.se
 })
 export class PrelaunchGuard implements CanActivate {
 
+  // 🆕 LISTA BLANCA: Rutas que NO están protegidas por prelaunch
+  private whitelistedRoutes: string[] = [
+    '/preHome',                      // Landing de prelaunch
+    '/labs',                         // Catálogo de experimentos
+    '/account/checkout',             // Checkout completo (todas las sub-rutas)
+  ];
+
+  // 🆕 Patrones regex para rutas dinámicas
+  private dynamicRoutePatterns: RegExp[] = [
+    /^\/[^\/]+$/,                    // Módulos dinámicos: /seo-dashboard, /otro-modulo, etc.
+    /^\/[a-z]{2}\/[a-z]{2}\/account\/checkout/  // Checkout con i18n: /es/es/account/checkout
+  ];
+
   constructor(
     private router: Router,
     private prelaunchConfigService: PrelaunchConfigService
@@ -17,6 +30,26 @@ export class PrelaunchGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+
+    // 🆕 VERIFICAR SI LA RUTA ESTÁ EN LA LISTA BLANCA (exacta o por prefijo)
+    const isWhitelisted = this.whitelistedRoutes.some(whitelistedRoute => 
+      state.url === whitelistedRoute || state.url.startsWith(whitelistedRoute + '/')
+    );
+
+    if (isWhitelisted) {
+      console.log('✅ Ruta en lista blanca, permitiendo acceso:', state.url);
+      return true;
+    }
+
+    // 🆕 VERIFICAR SI LA RUTA COINCIDE CON PATRONES DINÁMICOS
+    const matchesDynamicPattern = this.dynamicRoutePatterns.some(pattern => 
+      pattern.test(state.url)
+    );
+
+    if (matchesDynamicPattern) {
+      console.log('✅ Ruta dinámica detectada, permitiendo acceso:', state.url);
+      return true;
+    }
 
     // 🚀 VERIFICAR PRE-LAUNCH DE MANERA ASÍNCRONA
     return this.prelaunchConfigService.getPrelaunchStatus().pipe(
