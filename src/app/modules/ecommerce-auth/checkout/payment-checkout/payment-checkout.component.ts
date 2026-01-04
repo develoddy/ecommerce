@@ -821,7 +821,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
 
     try {
       // 🔹 Cargar el SDK dinámicamente antes de usar `paypal.Buttons`
-      const clientId = 'AXuACmEIWqiMwegE6pisIhiTOPldHac-2XYD0aJjoPuy34JB6grxNeDc-1jgTqv_W5QvC7o4pZIvVe8G';
+      const clientId = environment.paypalClientId;
       await this.loadPayPalSdk(clientId);
 
       const paypal = (window as any).paypal;
