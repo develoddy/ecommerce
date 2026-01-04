@@ -147,6 +147,10 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       
       // 🔥 Cargar información completa del módulo desde backend
       this.loadModuleData(this.modulePurchaseData.moduleId);
+    } else {
+      // 🔥 Asegurarse de limpiar el flag si NO hay modulePurchase en sessionStorage
+      this.isModulePurchase = false;
+      this.modulePurchaseData = null;
     }
     
     this.loadSPINER();
@@ -612,6 +616,14 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       alertDanger('Stripe no pudo cargarse');
       return;
     }
+    
+    // 🐛 DEBUG: Estado actual del componente
+    console.log('🔍 [Stripe Debug] Estado del componente:', {
+      isModulePurchase: this.isModulePurchase,
+      modulePurchaseData: this.modulePurchaseData,
+      sessionStorageModulePurchase: sessionStorage.getItem('modulePurchase'),
+      listCartsLength: this.listCarts?.length
+    });
 
     // 🆕 Validaciones diferentes para módulo vs Printful
     if (!this.isModulePurchase) {
@@ -1193,6 +1205,13 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         moduleKey: this.modulePurchaseData.moduleKey
       }];
       return;
+    }
+    
+    // 🔥 Si NO es compra de módulo, limpiar el sessionStorage
+    // Esto evita que queden datos antiguos de módulos que causen conflictos
+    if (sessionStorage.getItem('modulePurchase')) {
+      console.log('[Payment] Limpiando modulePurchase del sessionStorage (compra regular de productos)');
+      sessionStorage.removeItem('modulePurchase');
     }
     
     this.subscriptions.add(
