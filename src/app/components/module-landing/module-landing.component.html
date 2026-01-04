@@ -17,11 +17,12 @@
     <div class="col-lg-8 mx-auto text-center">
       <!-- Icono del módulo -->
       <div class="mb-4">
-        <span 
-          class="symbol symbol-circle symbol-100px"
-          [style.background-color]="module.color">
-          <span class="symbol-label fs-1">{{ module.icon }}</span>
-        </span>
+        <div 
+          class="d-inline-flex justify-content-center align-items-center rounded-circle"
+          [style.background-color]="getColorHex(module.color)"
+          style="width: 100px; height: 100px;">
+          <i [class]="'fas ' + module.icon" style="font-size: 3rem; color: white;"></i>
+        </div>
       </div>
 
       <!-- Título y descripción -->

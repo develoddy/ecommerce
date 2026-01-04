@@ -25,9 +25,9 @@ export class ModuleActiveGuard implements CanActivate {
       map((response) => {
         const module = response.module;
         
-        // Validar que el módulo esté activo y en estado 'live'
-        if (!module.is_active || module.status !== 'live') {
-          console.warn(`Module ${key} is not active or not live`);
+        // Validar que el módulo esté activo y en estado 'testing' o 'live' (Build in Public)
+        if (!module.is_active || (module.status !== 'live' && module.status !== 'testing')) {
+          console.warn(`Module ${key} is not active or not in valid status (testing/live)`);
           this.router.navigate(['/error/404']);
           return false;
         }

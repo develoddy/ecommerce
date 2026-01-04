@@ -48,6 +48,13 @@ export class LabsComponent implements OnInit {
         // Filtrar el módulo de Merch si existe (key puede ser 'printful' o 'printful-merch')
         this.modules = modules.filter(m => m.key !== 'printful' && m.key !== 'printful-merch');
         this.filteredModules = [...this.modules];
+        
+        // 🐛 Debug: Ver qué iconos están llegando
+        console.log('📦 Módulos cargados:', this.modules.map(m => ({ 
+          name: m.name, 
+          icon: m.icon, 
+          iconClass: 'fas ' + m.icon 
+        })));
         this.isLoading = false;
       },
       error: (error) => {
@@ -101,5 +108,21 @@ export class LabsComponent implements OnInit {
       service: 'Servicio'
     };
     return labels[type] || type;
+  }
+
+  /**
+   * Convertir colores Bootstrap a hexadecimales
+   */
+  getColorHex(color: string): string {
+    const colorMap: { [key: string]: string } = {
+      'primary': '#007bff',
+      'success': '#28a745',
+      'warning': '#ffc107',
+      'danger': '#dc3545',
+      'info': '#17a2b8',
+      'secondary': '#6c757d',
+      'dark': '#343a40'
+    };
+    return colorMap[color] || '#007bff';
   }
 }

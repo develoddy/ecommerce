@@ -70,8 +70,8 @@
         <!-- Header con color del módulo -->
         <div 
           class="card-header text-center py-4"
-          [style.background-color]="module.color">
-          <span class="display-1">{{ module.icon }}</span>
+          [style.background-color]="getColorHex(module.color)">
+          <i [class]="'fas ' + module.icon" style="font-size: 4rem; color: white;"></i>
         </div>
 
         <div class="card-body d-flex flex-column">
