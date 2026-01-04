@@ -1,123 +1,62 @@
-<!-- 🎨 LOADING PREMIUM - Procesando pago con seguridad -->
-<div *ngIf="loading" class="payment-loading-overlay">
-    <div class="loading-container">
-        <!-- Animated Icon Container -->
-        <div class="icon-animation-wrapper">
-            <!-- Pulsating background circles (múltiples capas) -->
-            <div class="pulse-circle pulse-circle-1"></div>
-            <div class="pulse-circle pulse-circle-2"></div>
-            <div class="pulse-circle pulse-circle-3"></div>
-            
-            <!-- Main Icon -->
-            <div class="main-icon">💳</div>
-            
-            <!-- Rotating border -->
-            <div class="spinner-border spinner-custom" role="status">
-                <span class="visually-hidden">Procesando pago seguro...</span>
-            </div>
-            
-            <!-- Success checkmark (aparece al final) -->
-            <div class="success-checkmark">
-                <div class="check-icon">
-                    <span class="icon-line line-tip"></span>
-                    <span class="icon-line line-long"></span>
-                    <div class="icon-circle"></div>
-                    <div class="icon-fix"></div>
-                </div>
+<!-- LOADING MINIMALISTA - Estilo LujanDev -->
+<div *ngIf="loading" class="payment-loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); display: flex; align-items: center; justify-content: center; z-index: 9999;">
+    <div class="loading-container text-center" style="max-width: 400px; padding: 2rem;">
+        
+        <!-- Simple Spinner -->
+        <div class="mb-4">
+            <div class="spinner-border" role="status" style="width: 3rem; height: 3rem; border: 3px solid #f3f3f3; border-top: 3px solid #000; border-radius: 50%; animation: spin 1s linear infinite;">
+                <span class="visually-hidden">Procesando...</span>
             </div>
         </div>
         
-        <!-- Loading Progress Steps -->
-        <div class="loading-steps">
-            <h3 class="loading-title">
-                Procesando tu pago de forma segura
-            </h3>
-            
-            <!-- Progress Bar Mejorada -->
-            <div class="progress-wrapper">
-                <div class="progress-bar-custom">
-                    <div class="progress-fill"></div>
-                    <div class="progress-glow"></div>
-                </div>
-                <div class="progress-percentage">
-                    <span class="percentage-text"></span>
-                </div>
+        <!-- Título -->
+        <h3 class="mb-3" style="color: #000; font-size: 1.5rem; font-weight: 600; letter-spacing: -0.5px;">
+            Procesando pago
+        </h3>
+        
+        <!-- Mensaje simple -->
+        <p class="mb-4" style="color: #666; font-size: 0.95rem; line-height: 1.5;">
+            Por favor, espera mientras confirmamos tu transacción de forma segura.
+        </p>
+        
+        <!-- Barra de progreso minimalista -->
+        <div class="progress mb-4" style="height: 2px; background: #f0f0f0; border-radius: 2px; overflow: hidden;">
+            <div class="progress-bar" role="progressbar" style="width: 0%; background: #000; animation: progress 2s ease-in-out infinite;"></div>
+        </div>
+        
+        <!-- Badges de seguridad simplificados -->
+        <div class="d-flex justify-content-center align-items-center gap-3 mb-3" style="font-size: 0.75rem; color: #999;">
+            <div class="d-flex align-items-center">
+                <i class="icon anm anm-lock me-1" style="font-size: 0.85rem;"></i>
+                <span>Conexión segura</span>
             </div>
-            
-            <!-- Status Messages con rotación -->
-            <div class="status-messages">
-                <p class="status-message status-active">
-                    <i class="icon anm anm-lock status-icon"></i>
-                    Verificando datos de pago...
-                </p>
-                <p class="status-message">
-                    <i class="icon anm anm-shield status-icon"></i>
-                    Conectando con pasarela segura...
-                </p>
-                <p class="status-message">
-                    <i class="icon anm anm-check-circle-o status-icon"></i>
-                    Confirmando transacción...
-                </p>
-                <p class="status-message">
-                    <i class="icon anm anm-envelope-l status-icon"></i>
-                    Enviando confirmación por email...
-                </p>
+            <span style="color: #ddd;">|</span>
+            <div class="d-flex align-items-center">
+                <i class="icon anm anm-shield me-1" style="font-size: 0.85rem;"></i>
+                <span>Cifrado SSL</span>
             </div>
         </div>
         
-        <!-- Security Badges Mejorados -->
-        <div class="security-badges">
-            <div class="badge-item badge-animate">
-                <div class="badge-icon badge-icon-success">
-                    <i class="icon anm anm-lock"></i>
-                </div>
-                <div class="badge-content">
-                    <small class="badge-label">Conexión segura</small>
-                    <strong class="badge-value">SSL 256-bit</strong>
-                </div>
-            </div>
-            <div class="badge-item badge-animate" style="animation-delay: 0.2s;">
-                <div class="badge-icon badge-icon-primary">
-                    <i class="icon anm anm-shield"></i>
-                </div>
-                <div class="badge-content">
-                    <small class="badge-label">Cifrado</small>
-                    <strong class="badge-value">Stripe & PayPal</strong>
-                </div>
-            </div>
-            <div class="badge-item badge-animate" style="animation-delay: 0.4s;">
-                <div class="badge-icon badge-icon-warning">
-                    <i class="icon anm anm-check-circle-o"></i>
-                </div>
-                <div class="badge-content">
-                    <small class="badge-label">Verificado</small>
-                    <strong class="badge-value">PCI DSS</strong>
-                </div>
-            </div>
-        </div>
+        <!-- Nota -->
+        <p style="color: #999; font-size: 0.8rem; margin: 0;">
+            No cierres esta ventana
+        </p>
         
-        <!-- Helper Text Mejorado -->
-        <div class="helper-text-wrapper">
-            <div class="helper-icon">
-                <i class="icon anm anm-info-circle"></i>
-            </div>
-            <div class="helper-content">
-                <p class="helper-title">Por favor, mantén esta ventana abierta</p>
-                <p class="helper-description">
-                    Tu pago se está procesando de forma segura. Recibirás un email de confirmación en unos segundos.
-                </p>
-            </div>
-        </div>
-        
-        <!-- Estimated Time -->
-        <div class="estimated-time">
-            <div class="time-icon-wrapper">
-                <i class="icon anm anm-clock-o time-icon"></i>
-            </div>
-            <span class="time-text">Tiempo estimado: <strong>10-30 segundos</strong></span>
-        </div>
     </div>
 </div>
+
+<style>
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes progress {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+}
+</style>
 
 <div [ngClass]="{'tab-pane': true, 'active': isLastStepActive_4 && isSaleSuccess}" id="steps4" [class.d-none]="loading">
     <ng-container>
