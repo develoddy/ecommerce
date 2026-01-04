@@ -1,0 +1,56 @@
+export const environment = {
+    production: true,
+
+    URL_BACKEND: 'https://api.lujandev.com/',
+    URL_SERVICE: 'https://api.lujandev.com/api/',
+    URL_FRONTEND: 'https://tienda.lujandev.com/',
+    
+    // 🔴 STRIPE - Cambiar a Publishable Key LIVE
+    // Obtener de: https://dashboard.stripe.com/apikeys (modo Live)
+    stripePublicKey: 'pk_live_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    
+    // 🔴 PAYPAL - Cambiar a Client ID LIVE
+    // Obtener de: https://developer.paypal.com/dashboard/ → Tab "Live" → Create App
+    paypalClientId: 'AXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+    
+    // Sentry
+    sentryDsn: 'https://541cd1a333fb1d2682bbd12a394ac3e1@o4510481830707200.ingest.de.sentry.io/4510481837391952'
+};
+
+// -----------------------------
+// 📝 INSTRUCCIONES PARA ACTIVAR PRODUCCIÓN
+// -----------------------------
+//
+// 1. STRIPE:
+//    - Ir a: https://dashboard.stripe.com/
+//    - Activar cuenta (completar info, agregar banco)
+//    - Ir a: Developers → API keys → Toggle "Live mode"
+//    - Copiar: Publishable key (pk_live_...)
+//    - Pegar en línea 9
+//
+// 2. STRIPE WEBHOOK:
+//    - Ir a: Developers → Webhooks → Add endpoint
+//    - URL: https://api.lujandev.com/api/stripe/webhook
+//    - Events: checkout.session.completed, payment_intent.succeeded, payment_intent.payment_failed
+//    - Copiar: Signing secret (whsec_...)
+//    - Pegar en: api/.env.production → STRIPE_WEBHOOK_SECRET
+//
+// 3. PAYPAL:
+//    - Ir a: https://developer.paypal.com/dashboard/
+//    - Tab: "Live" (no Sandbox)
+//    - Create App → Nombre: "LujanDev Ecommerce"
+//    - Copiar: Client ID (no empieza con "sandbox")
+//    - Pegar en línea 13
+//
+// 4. REBUILD:
+//    ng build --configuration production
+//
+// 5. DEPLOY:
+//    Subir archivos de dist/ a servidor
+//
+// 6. TEST:
+//    - Compra €1 con Stripe (tarjeta real)
+//    - Compra €1 con PayPal (cuenta real)
+//    - Verificar emails, webhooks, base de datos
+//
+// ✅ Ver guía completa: OBTENER-CREDENCIALES-PRODUCCION.md
