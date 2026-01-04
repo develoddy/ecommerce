@@ -116,6 +116,20 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
 
+    // 🔒 Detectar recarga manual: si ya visitó esta página, redirigir a /labs
+    const hasVisitedSuccess = sessionStorage.getItem('visited_success_page');
+    if (hasVisitedSuccess === 'true') {
+      console.log('[Success] Recarga detectada - redirigiendo a /labs...');
+      sessionStorage.removeItem('visited_success_page');
+      sessionStorage.removeItem('checkout_sale_data');
+      sessionStorage.removeItem('modulePurchase');
+      this._router.navigate(['/labs']);
+      return;
+    }
+
+    // Marcar que el usuario está visitando la página de éxito por primera vez
+    sessionStorage.setItem('visited_success_page', 'true');
+
     // Suscribirse a cambios de localización
     this.subscribeToLocalization();
 
@@ -1185,6 +1199,10 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // 🔒 Limpiar flag de visita cuando el usuario navega fuera de la página
+    sessionStorage.removeItem('visited_success_page');
+    sessionStorage.removeItem('checkout_sale_data');
+    
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     }
