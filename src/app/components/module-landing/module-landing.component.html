@@ -172,23 +172,27 @@
           <ul class="list-unstyled mb-4">
             <li class="mb-2">
               <i class="fas fa-check-circle text-success me-2"></i>
-              Descarga inmediata
+              <strong>Descarga inmediata:</strong><br>
+              Recibe un enlace por correo para descargar el ZIP del módulo al instante
             </li>
             <li class="mb-2">
               <i class="fas fa-check-circle text-success me-2"></i>
-              Actualizaciones gratuitas
+              <strong>Actualizaciones gratuitas:</strong><br>
+              Mejoras y nuevas versiones enviadas automáticamente a tu email
             </li>
             <li class="mb-2">
               <i class="fas fa-check-circle text-success me-2"></i>
-              Acceso de por vida
+              <strong>Acceso de por vida:</strong><br>
+              Una compra y tendrás el módulo para siempre
             </li>
             <li class="mb-2">
               <i class="fas fa-check-circle text-success me-2"></i>
-              Soporte incluido
+              <strong>Soporte incluido:</strong><br>
+              Asistencia por email para cualquier duda técnica o instalación
             </li>
           </ul>
 
-          <button class="btn btn-primary btn-lg w-100" (click)="purchaseModule()" [disabled]="isPurchasing">
+          <button class="btn-dark-ld" (click)="purchaseModule()" [disabled]="isPurchasing">
             <span *ngIf="!isPurchasing">Comprar ahora</span>
             <span *ngIf="isPurchasing">
               <span class="spinner-border spinner-border-sm me-2"></span>
@@ -211,7 +215,7 @@
             en tu proyecto o problema específico.
           </p>
 
-          <button class="btn btn-primary btn-lg w-100" (click)="purchaseModule()" [disabled]="isPurchasing">
+          <button class="btn-dark-ld" (click)="purchaseModule()" [disabled]="isPurchasing">
             <span *ngIf="!isPurchasing">Agendar sesión</span>
             <span *ngIf="isPurchasing">
               <span class="spinner-border spinner-border-sm me-2"></span>
