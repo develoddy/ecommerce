@@ -90,7 +90,8 @@
 }
 
 .header-tagline span {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+  background: linear-gradient(135deg, #000 0%, #444 100%);
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
@@ -105,7 +106,9 @@
 /* 1️⃣ HERO SECTION */
 /* ================================ */
 .hero-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+  background: linear-gradient(135deg, #000 0%, #444 100%);
+  /* background-color: #000; */
   color: white;
   padding: 80px 0;
   text-align: center;
@@ -151,6 +154,7 @@
 
 .gradient-text {
   background: linear-gradient(45deg, #fbbf24, #f59e0b);
+  /* background: linear-gradient(45deg, #2563eb, #1d4ed8); */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -223,7 +227,8 @@
   font-size: 2.2rem;
   font-weight: 800;
   font-family: var(--font-mono);
-  color: #667eea;
+  /* color: #667eea; */
+  color: #000;
   line-height: 1;
 }
 
@@ -349,7 +354,8 @@
 }
 
 .cta-button.primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+  background: linear-gradient(135deg, #000 0%, #444 100%);
   color: white;
   box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
   position: relative;
@@ -373,8 +379,9 @@
 }
 
 .cta-button.primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #5b6fd8 0%, #6a4190 100%);
-  transform: translateY(-3px);
+  /* background: linear-gradient(135deg, #5b6fd8 0%, #6a4190 100%); */
+  background: linear-gradient(135deg, #000 0%, #444 100%);
+  transform: translateY(0px);
   box-shadow: 0 12px 30px rgba(102, 126, 234, 0.35);
 }
 
