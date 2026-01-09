@@ -80,13 +80,13 @@
 
     <!--Header-->
     <header class="header d-flex align-items-center header-1 header-fixed">
-        <div [ngClass]="{'container-fluid px-5': isDesktop || isTablet, 'container': isMobile }"
+        <div [ngClass]="{'container-fluid px-0': isDesktop || isTablet, 'container': isMobile }"
             class="container-header">
             <div class="row">
                 <!--Menu-->
                 <div *ngIf="!isMobile && !isTablet"
                     class="col-1 col-sm-1 col-md-1 align-self-center d-menu-col d-flex justify-content-start"
-                    [ngClass]="{'col-lg-4': isDesktop, 'col-lg-6': isMobile}">
+                    [ngClass]="{'col-lg-5': isDesktop, 'col-lg-6': isMobile }">
                     <nav class="navigation" id="AccessibleNav">
                         <ul id="siteNav" class="site-nav medium center">
                             <li class="lvl1 parent megamenu text-uppercase fw-bold" *ngIf="ourProducts && ourProducts.length > 0">
@@ -536,7 +536,7 @@
 
                 <!--Logo-->
                 <div class="logo col-4 col-sm-3 col-md-3 d-flex  align-self-center"
-                    [ngClass]="{'col-lg-4 justify-content-center': isDesktop, 'col-lg-3 justify-content-start': isMobile}">
+                    [ngClass]="{'col-lg-2 justify-content-center': isDesktop, 'col-lg-3 justify-content-start': isMobile}">
                     <!--Mobile Toggle-->
                     <button type="button" 
                             (click)="toggleMobileMenu()" 
@@ -561,7 +561,7 @@
 
                 <!--Right Icon-->
                 <div class="col-8 col-sm-9 col-md-6 align-self-center icons-col d-flex justify-content-end"
-                    [ngClass]="{'col-lg-4': isDesktop}">
+                    [ngClass]="{'col-lg-5': isDesktop}">
                     <!--Search-->
                     <div class="search-parent iconset" [ngClass]="{'px-2': isMobile}" *ngIf="ourProducts && ourProducts.length > 0">
                         <div class="site-search" title="Search">

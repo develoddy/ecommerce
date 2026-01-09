@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { CartService } from '../../_service/cart.service';
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { SafeUrl } from '@angular/platform-browser';
+import { GridViewMode } from 'src/app/modules/home/_services/product/grid-view.service';
 
 @Component({
   selector: 'app-products-list',
@@ -22,7 +23,9 @@ export class ProductsListComponent implements OnInit, OnChanges {
   @Input() getRouterDiscount: any;
   @Input() changeProductImage: any;
   @Input() currentUser: any; // Usuario actual para el carrito
+  @Input() gridViewMode: GridViewMode = { columns: 4, type: 'grid', className: 'grid-4-col' };
   
+  gridClasses: string = 'row-cols-2 row-cols-md-4'; // Clases CSS computadas
 
   pageSize = 12;
   currentPage = 1;
@@ -57,13 +60,18 @@ export class ProductsListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.updateGridClasses();
     this.updatePagedProducts();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.products) {
+    if (changes['products']) {
       this.currentPage = 1;
       this.updatePagedProducts();
+    }
+    
+    if (changes['gridViewMode']) {
+      this.updateGridClasses();
     }
   }
 
@@ -446,5 +454,22 @@ export class ProductsListComponent implements OnInit, OnChanges {
   getOriginalPriceParts(product: any) {
     const originalPrice = this.getOriginalPrice(product);
     return this.priceCalculationService.getPriceParts(originalPrice);
+  }
+
+  /**
+   * Actualiza las clases CSS del grid cuando cambia el modo de vista
+   */
+  private updateGridClasses(): void {
+    const columns = this.gridViewMode?.columns || 4;
+    
+    const classMap: { [key: number]: string } = {
+      1: 'row-cols-1 row-cols-md-1',
+      2: 'row-cols-2 row-cols-md-2',
+      3: 'row-cols-2 row-cols-md-3',
+      4: 'row-cols-2 row-cols-md-4',
+      5: 'row-cols-2 row-cols-md-5'
+    };
+    
+    this.gridClasses = classMap[columns] || classMap[4];
   }
 }

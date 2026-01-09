@@ -89,12 +89,39 @@
 
 			<div class="filters-item d-flex align-items-center justify-content-center">
 				<div class="grid-options view-mode d-flex">
+                    <a class="icon-mode mode-list d-block" 
+                        data-col="1" 
+                        #grid1
+                        (click)="setGridView(1)"
+                        [class.active]="currentGridView.columns === 1"></a>
+                    <a class="icon-mode mode-grid grid-2 d-block"
+                        data-col="2"
+                        #grid2
+                        (click)="setGridView(2)"
+                        [class.active]="currentGridView.columns === 2"></a>
+                    <a class="icon-mode mode-grid grid-3 d-md-block"
+                        data-col="3"
+                        #grid3
+                        (click)="setGridView(3)"
+                        [class.active]="currentGridView.columns === 3"></a>
+                    <a class="icon-mode mode-grid grid-4 d-lg-block"
+                        data-col="4"
+                        #grid4
+                        (click)="setGridView(4)"
+                        [class.active]="currentGridView.columns === 4"></a>
+                    <a class="icon-mode mode-grid grid-5 d-xl-block"
+                        data-col="5"
+                        #grid5
+                        (click)="setGridView(5)"
+                        [class.active]="currentGridView.columns === 5"></a>
+                </div>
+				<!-- <div class="grid-options view-mode d-flex">
 					<a class="icon-mode mode-list d-block" data-col="1"></a>
 					<a class="icon-mode mode-grid grid-2 d-block" data-col="2"></a>
 					<a class="icon-mode mode-grid grid-3 d-md-block" data-col="3"></a>
 					<a class="icon-mode mode-grid grid-4 d-lg-block" data-col="4"></a>
 					<a class="icon-mode mode-grid grid-5 d-xl-block" data-col="5"></a>
-				</div>
+				</div> -->
 			</div> 
 		</div>
 		<div class="col-4 col-sm-4 col-md-4 col-lg-3 text-center product-count order-0 order-md-1 mb-sm-0 d-none">

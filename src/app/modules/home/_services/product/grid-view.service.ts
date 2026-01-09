@@ -22,8 +22,6 @@ export class GridViewService {
   private currentViewSubject = new BehaviorSubject<GridViewMode>(this.gridModes[3]); // Default to 4-column grid (desktop)
   public currentView$ = this.currentViewSubject.asObservable();
 
-  constructor() {}
-
   /**
    * Set the current grid view mode
    * @param columns - Number of columns (1-5)

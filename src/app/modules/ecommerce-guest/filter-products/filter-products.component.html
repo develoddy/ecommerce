@@ -30,7 +30,15 @@
             </ng-container>
             
             
-            <app-toolbar [isDesktop]="isDesktop" [isMobile]="isMobile" [products]="products" (openSidebar)="openSidebar()" (sortProducts)="onSortProducts($event)"></app-toolbar>
+            <app-toolbar 
+                [isDesktop]="isDesktop" 
+                [isMobile]="isMobile" 
+                [products]="products" 
+                [currentGridView]="currentGridView"
+                (openSidebar)="openSidebar()" 
+                (sortProducts)="onSortProducts($event)"
+                (gridViewChange)="setGridView($event)">
+            </app-toolbar>
 
             <app-sidebar-filter
                 [noneSidebar]="noneSidebar"
@@ -61,6 +69,7 @@
                 [euro]="euro"
                 [locale]="locale"
                 [country]="country"
+                [gridViewMode]="currentGridView"
                 [getPriceParts]="getPriceParts.bind(this)"
                 [getRouterDiscount]="getRouterDiscount.bind(this)"
                 [changeProductImage]="changeProductImage.bind(this)"

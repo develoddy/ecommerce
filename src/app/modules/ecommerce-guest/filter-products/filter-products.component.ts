@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewEncapsulation, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostListener, ViewEncapsulation, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { EcommerceGuestService } from '../_service/ecommerce-guest.service';
 import { CartService } from '../_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { ProductDisplayService } from '../_service/service_landing_product';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { SeoService } from 'src/app/services/seo.service';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { GridViewMode, GridViewService } from '../../home/_services/product/grid-view.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
@@ -36,11 +37,11 @@ declare function sliderRefresh(): any;
 export class FilterProductsComponent implements OnInit, OnDestroy {
 
   /* ------------------ PROPERTIES  ------------------ */
-  // @ViewChild('grid1') grid1!: ElementRef;
-  // @ViewChild('grid2') grid2!: ElementRef;
-  // @ViewChild('grid3') grid3!: ElementRef;
-  // @ViewChild('grid4') grid4!: ElementRef;
-  // @ViewChild('grid5') grid5!: ElementRef;
+  @ViewChild('grid1') grid1!: ElementRef;
+  @ViewChild('grid2') grid2!: ElementRef;
+  @ViewChild('grid3') grid3!: ElementRef;
+  @ViewChild('grid4') grid4!: ElementRef;
+  @ViewChild('grid5') grid5!: ElementRef;
   
   euro = "€";
   categories:any=[];
@@ -80,9 +81,12 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
   // Properties for additional filtering
   showOnlyDiscounted: boolean = false;
   searchQuery: string = '';
+
+  currentGridView: GridViewMode = { columns: 4, type: 'grid', className: 'grid-4-col' };
   
   /* ------------------ CONSTRUCTOR ------------------ */
   constructor(
+    private gridViewService: GridViewService,
     public _ecommerceGuestService: EcommerceGuestService,
     public _cartService: CartService,
     public _router: Router,
@@ -91,9 +95,12 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
     public productDisplayService: ProductDisplayService,
      public _authService: AuthService,
      private cdr: ChangeDetectorRef,
+     private ngZone: NgZone,
      private seoService: SeoService,
      private localizationService: LocalizationService
   ) {
+
+    this.currentGridView = this.gridViewService.getCurrentView();
     
     this._routerActived.paramMap.subscribe(params => {
       // VALORES PREDETERMINADO SI NO SE ENCUENTRA
@@ -151,6 +158,7 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
     this.configInitial();
     this.checkDeviceType();
     this.setupSEO();
+    this.subscribeToGridViewChanges();
     
 
     // Slider initialization handled by loader subscription
@@ -216,6 +224,57 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
   }
   closeSidebar() {
     this.noneSidebar = true;
+  }
+
+  private subscribeToGridViewChanges(): void {
+    const serviceId = (this.gridViewService as any).serviceId;
+    
+    const subscription = this.gridViewService.currentView$.subscribe({
+      next: (view) => {
+        console.log('🔔 Filter-Products: Service [' + serviceId + '] emitted new view:', view);
+        this.currentGridView = view;
+        console.log('✅ Filter-Products: currentGridView updated to:', this.currentGridView);
+        this.updateGridViewUI();
+        this.cdr.detectChanges();
+        console.log('🔄 Filter-Products: Change detection triggered');
+      },
+      error: (err) => {
+        console.error('❌ Filter-Products: Subscription error:', err);
+      },
+      complete: () => {
+        console.log('🏁 Filter-Products: Subscription completed');
+      }
+    });
+    this.subscriptions.add(subscription);
+  }
+
+  // Grid View Methods
+  setGridView(columns: number): void {
+    
+    // Actualizar el servicio Y obtener el valor directamente
+    this.gridViewService.setGridView(columns);
+    
+    // Obtener el valor actual inmediatamente del BehaviorSubject privado
+    const currentValue = (this.gridViewService as any)['currentViewSubject']?.getValue();
+      
+    if (currentValue) {
+      this.currentGridView = currentValue;
+      this.updateGridViewUI();
+      this.cdr.detectChanges();
+      
+    }
+  }
+
+  private updateGridViewUI(): void {
+    // Remove active class from all grid buttons
+    [this.grid1, this.grid2, this.grid3, this.grid4, this.grid5].forEach((grid, index) => {
+      if (grid?.nativeElement) {
+        grid.nativeElement.classList.remove('active');
+        if (index + 1 === this.currentGridView.columns) {
+          grid.nativeElement.classList.add('active');
+        }
+      }
+    });
   }
 
   private checkDeviceType(): void {
