@@ -121,6 +121,26 @@
         </div>
     </section>
 
+    <!-- Brand -->
+    <section class="brand-section">
+        <div class="row mb-5 justify-content-center text-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <h2 class="text-white mb-3 lh-1 fs-32 text-fs-22">
+                En LujanDev creemos que programar<br>
+                es más que código: es cultura, estilo y actitud
+                </h2>
+                <p class="lead text-white lh-1">
+                Nuestra colección de merch está diseñada<br> 
+                para developers que buscan calidad,<br> 
+                autenticidad y actitud en cada<br> prenda.
+
+                <!-- Nuestras camisetas <br /> están hechas 
+                para developers que quieren <br /> vestir su pasión con elegancia. -->
+                </p>
+            </div>
+        </div>
+    </section>
+
     <!-- 2.5️⃣ FORMULARIO DE CAPTURA -->
     <section class="email-capture-section" id="signup-main">
         <div class="container">
@@ -137,7 +157,7 @@
 
                     <div class="email-form">
                         <div class="input-group">
-                            <input type="email" [(ngModel)]="email" placeholder="Introduce tu e-mail" class="email-input form-control form-control-solid h-auto py-7 px-6 rounded-lg" [class.error]="emailError" (keyup.enter)="captureEmail()" />
+                            <input type="email" [(ngModel)]="email" placeholder="tu@email.dev" class="email-input form-control form-control-solid h-auto py-7 px-6 rounded-lg" [class.error]="emailError" (keyup.enter)="captureEmail()" />
                             <button class="cta-button primary fw-normal" [disabled]="isSubmitting" (click)="captureEmail()">
                                 <span *ngIf="!isSubmitting">Notificarme</span>
                                 <span *ngIf="isSubmitting" class="loading">
@@ -214,41 +234,42 @@
             <div class="benefits-grid">
                 <div class="benefit-item">
                     <div class="benefit-icon">🎁</div>
-                    <h4 class="benefit-title">Cupón exclusivo de lanzamiento</h4>
+                    <h4 class="benefit-title">Un pequeño detalle de lanzamiento</h4>
                     <p class="benefit-description">
-                        Acceso a descuentos especiales que solo los pre-registrados recibirán.
+                        Los primeros en apuntarse tendrían un cupón cuando (y solo si) esto se publica.
                     </p>
                 </div>
 
                 <div class="benefit-item">
                     <div class="benefit-icon">⚡</div>
-                    <h4 class="benefit-title">Acceso prioritario</h4>
+                    <h4 class="benefit-title">No habrá stock infinito ni drops constantes.</h4>
                     <p class="benefit-description">
-                        Sé el primero en comprar antes que se agoten los diseños más populares.
+                        Primero entra quien estuvo desde el principio.
                     </p>
                 </div>
 
                 <div class="benefit-item">
                     <div class="benefit-icon">🚀</div>
-                    <h4 class="benefit-title">Productos únicos</h4>
+                    <h4 class="benefit-title">Diseños con intención</h4>
                     <p class="benefit-description">
-                        Diseños exclusivos creados por y para la comunidad de developers.
+                        Nada genérico. Nada hecho por cumplir.
+                        Solo piezas que tengan sentido para devs.
                     </p>
                 </div>
 
                 <div class="benefit-item">
                     <div class="benefit-icon">💎</div>
-                    <h4 class="benefit-title">Calidad premium</h4>
+                    <h4 class="benefit-title">Calidad cuidada</h4>
                     <p class="benefit-description">
-                        Materiales de alta calidad que soportan las largas jornadas de código.
+                        Porque si pasas horas frente al código, la prenda también debería aguantar.
                     </p>
                 </div>
 
                 <div class="benefit-item">
                     <div class="benefit-icon">🌟</div>
-                    <h4 class="benefit-title">Comunidad exclusiva</h4>
+                    <h4 class="benefit-title">Gente afín</h4>
                     <p class="benefit-description">
-                        Únete a una red de developers que comparten tu pasión por el código.
+                        Más que clientes, developers que entienden el proceso y la idea.
                     </p>
                 </div>
             </div>
@@ -260,10 +281,10 @@
         <div class="container-cat-final">
             <div class="cta-content">
                 <div class="cta-text">
-                    <h2 class="cta-title">No te pierdas el lanzamiento</h2>
+                    <h2 class="cta-title fs-32">Esto ya lo están siguiendo otros developers</h2>
                     <p class="cta-description">
-                        Únete a los developers que ya están esperando.
-                        <br>Solo <span class="highlight">{{countdown.days}} días para validar</span> la demanda.
+                        Únete a otros developers que están siguiendo este experimento.
+                        <br>Durante los próximos <span class="highlight">{{countdown.days}} días</span> decidiré si este proyecto merece avanzar.
                     </p>
                 </div>
 
@@ -271,9 +292,9 @@
                 <div class="email-capture-final">
                     <div class="capture-form" *ngIf="!emailCaptured">
                         <div class="email-form-inline">
-                            <input type="email" [(ngModel)]="email" placeholder="Introduce tu email" class="email-input-final form-control form-control-solid h-auto py-7 px-6 rounded-lg" [class.error]="emailError" (keyup.enter)="captureEmail()" />
-                            <button class="cta-button primary large" [disabled]="isSubmitting" (click)="captureEmail()">
-                                <span *ngIf="!isSubmitting">Quiero acceso VIP</span>
+                            <input type="email" [(ngModel)]="email" placeholder="tu@email.dev" class="email-input-final form-control form-control-solid h-auto py-7 px-6 rounded-lg" [class.error]="emailError" (keyup.enter)="captureEmail()" />
+                            <button class="cta-button primary large fw-normal" [disabled]="isSubmitting" (click)="captureEmail()">
+                                <span *ngIf="!isSubmitting">Seguir el proyecto</span>
                                 <span *ngIf="isSubmitting">
                                     <i class="spinner"></i> Registrando...
                                 </span>
@@ -288,24 +309,24 @@
                     <!-- Success State Final - Registro Nuevo -->
                     <div class="success-state-final" *ngIf="emailCaptured && !showDuplicateMessage && !showResubscribedMessage">
                         <div class="success-content">
-                            <h3>🎉 ¡Bienvenido a la lista VIP!</h3>
-                            <p>Recibirás todas las novedades y tu cupón exclusivo muy pronto.</p>
+                            <h3>Gracias por sumarte 🙌</h3>
+                            <p>Te avisaré de la evolución del proyecto y, si sale adelante, tendrás acceso al cupón de lanzamiento.</p>
                         </div>
                     </div>
 
                     <!-- Success State Final - Email Ya Registrado -->
                     <div class="success-state-final already-registered" *ngIf="emailCaptured && showDuplicateMessage">
                         <div class="success-content">
-                            <h3>ℹ️ ¡Ya estás en la lista VIP!</h3>
-                            <p>Este email ya está registrado. ¡Recibirás todas las notificaciones!</p>
+                            <h3>Ya estabas dentro 👀</h3>
+                            <p>Este email ya está siguiendo el proyecto. Te avisaré si hay novedades.</p>
                         </div>
                     </div>
 
                     <!-- Success State Final - Resubscrito -->
                     <div class="success-state-final resubscribed" *ngIf="emailCaptured && showResubscribedMessage">
                         <div class="success-content">
-                            <h3>🎉 ¡Bienvenido de nuevo a la lista VIP!</h3>
-                            <p>Te has reactivado exitosamente. ¡Gracias por volver!</p>
+                            <h3>Bienvenido de nuevo 👋</h3>
+                            <p>Vuelves a estar dentro del seguimiento del proyecto. Gracias por regresar.</p>
                         </div>
                     </div>
                 </div>
@@ -314,11 +335,11 @@
                     <p class="proof-text">
                         <!-- <i class="fas fa-users me-2"></i>  -->
                         <ng-container *ngIf="subscriberCount === 0">
-                        Sé el primero en registrarte 🚀
+                            Sé el primero en registrarte 🚀
                         </ng-container>
 
                         <ng-container *ngIf="subscriberCount === 1">
-                        <strong id="subscriber-count">1 developer</strong> ya se registró
+                            <strong id="subscriber-count">1 developer</strong> ya está siguiendo el proyecto
                         </ng-container>
 
                         <ng-container *ngIf="subscriberCount > 1">
@@ -326,7 +347,7 @@
                             {{ subscriberCount }}+
                             developers
                         </strong>
-                        ya se registraron
+                        ya están siguiendo el proyecto
                         </ng-container>
                     </p>
                 </div>
