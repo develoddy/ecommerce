@@ -27,17 +27,27 @@
                 </h1>
 
                 <p class="hero-subtitle">
+                    Esto no empezó como una tienda. Empezó como un garabato, una idea y 8 meses<br />
+                    construyendo un stack desde cero.<br />
+                    <strong>Diseñado por un developer. Para developers.<br /> Sin bullshit marketera.</strong>
+                </p>
+
+                <!-- <p class="hero-subtitle">
                     Camisetas, tazas, gorras y sudaderas para quienes viven de bugs que son features.<br />
                     <strong>Diseñado por un developer. Para developers. Sin bullshit marketera.</strong><br />
                     Solo fabricamos si 30 de nosotros lo queremos de verdad.
-                    <!-- <strong>exclusivos</strong> creados por y para developers.
-                    <strong>Solo lanzamos si hay suficiente demanda.</strong> -->
-                </p>
+                    <strong>exclusivos</strong> creados por y para developers.
+                    <strong>Solo lanzamos si hay suficiente demanda.</strong>
+                </p> -->
 
                 <!-- Urgencia + Countdown -->
                 <div class="urgency-section">
                     <div class="countdown-container">
-                        <h3 class="countdown-title">Lanzamos en:</h3>
+                        <div class="mb-4">
+                            <h3 class="countdown-title mb-0">Esto está en fase pre-launch</h3>
+                            <span  style="color: #1e293b;">No hay stock. No hay prisas. Solo queremos saber si esto conecta de verdad.</span>
+                        </div>
+                        
                         <div class="countdown-display">
                             <div class="countdown-item">
                                 <span class="countdown-number">{{countdown.days}}</span>
@@ -70,9 +80,9 @@
     <section class="products-teaser" id="products">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Un vistazo a lo que viene</h2>
+                <h2 class="section-title">Lo que estoy explorando</h2>
                 <p class="section-subtitle">
-                    Diseños únicos, calidad premium y estilo que define tu pasión por el código.
+                    Algunas ideas de diseño nacidas entre bugs, café frío y noches largas. Nada se fabrica aún.
                 </p>
             </div>
 
@@ -116,12 +126,19 @@
         <div class="container">
             <div class="email-capture-hero">
                 <div class="capture-form capture-form-primary" *ngIf="!emailCaptured">
-                    <h3 class="form-title">Acceso anticipado solo para pre-registrados</h3>
+                    <!-- <h3 class="form-title">Acceso anticipado solo para pre-registrados</h3> -->
+                    <div class="text-center mb-4">
+                        <h3 class="form-title mb-2">Si te interesa seguir el proyecto</h3>
+                        <span class="text-center">
+                            Déjame tu correo y te informaré sobre la evolución de esta idea. <br> No hay envíos automáticos ni campañas comerciales. Si el proyecto avanza, <br> lo sabrás. Si no, también.
+                        </span>
+                    </div>
+                    
 
                     <div class="email-form">
                         <div class="input-group">
                             <input type="email" [(ngModel)]="email" placeholder="Introduce tu e-mail" class="email-input form-control form-control-solid h-auto py-7 px-6 rounded-lg" [class.error]="emailError" (keyup.enter)="captureEmail()" />
-                            <button class="cta-button primary" [disabled]="isSubmitting" (click)="captureEmail()">
+                            <button class="cta-button primary fw-normal" [disabled]="isSubmitting" (click)="captureEmail()">
                                 <span *ngIf="!isSubmitting">Notificarme</span>
                                 <span *ngIf="isSubmitting" class="loading">
                                     <i class="spinner"></i> Registrando...
@@ -136,7 +153,9 @@
 
                     <p class="form-note">
                         <!-- <i class="icon-gift"></i> -->
-                        Solo los pre-registrados recibirán el <strong>cupón exclusivo</strong> de lanzamiento.
+                        <!-- Solo los pre-registrados recibirán el <strong>cupón exclusivo</strong> de lanzamiento. -->
+                        <!-- Los primeros registrados recibirán un <strong>cupón de lanzamiento</strong> si el proyecto llega a publicarse. -->
+                        Si el proyecto avanza, los primeros registrados tendrán un <strong>cupón de lanzamiento</strong>.
                     </p>
                 </div>
 
