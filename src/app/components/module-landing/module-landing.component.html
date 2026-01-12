@@ -227,6 +227,155 @@
     </div>
   </div>
 
+  <!-- 4. 🚀 Módulos SaaS (Subscripción) -->
+  <div *ngIf="isSaaSModule()" class="row">
+    <div class="col-lg-10 mx-auto">
+      
+      <!-- Trial Banner -->
+      <div class="alert alert-success mb-5 shadow-sm" *ngIf="getTrialDays() > 0">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h4 class="alert-heading mb-2">
+              <i class="fas fa-gift me-2"></i>
+              ¡Prueba gratis durante {{ getTrialDays() }} días!
+            </h4>
+            <p class="mb-0">
+              Acceso completo sin tarjeta de crédito. Cancela cuando quieras sin compromiso.
+            </p>
+          </div>
+          <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <button 
+              class="btn btn-success btn-lg fw-bold px-4 me-2"
+              (click)="startSaaSTrial()"
+              [disabled]="isPurchasing">
+              <i class="fas fa-rocket me-2"></i>
+              Iniciar Trial Gratis
+            </button>
+            <button 
+              class="btn btn-outline-primary btn-lg"
+              [routerLink]="['/tenant/login']"
+              [queryParams]="{module: module.key}">
+              <i class="fas fa-sign-in-alt me-2"></i>
+              Iniciar sesión
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing Plans -->
+      <div class="text-center mb-5">
+        <h3 class="fw-bold mb-3">Elige tu plan</h3>
+        <p class="text-muted lead">
+          Todos los planes incluyen acceso completo. Elige el que mejor se adapte a tus necesidades.
+        </p>
+      </div>
+
+      <div class="row g-4" *ngIf="getSaaSPricingPlans().length > 0">
+        <div 
+          class="col-md-4" 
+          *ngFor="let plan of getSaaSPricingPlans(); let i = index">
+          <div class="card shadow-sm h-100 hover-lift" 
+               [ngClass]="{'border-primary': plan.recommended}">
+            
+            <!-- Popular Badge -->
+            <div class="position-relative">
+              <span 
+                *ngIf="plan.recommended" 
+                class="badge bg-primary position-absolute top-0 start-50 translate-middle">
+                Más popular
+              </span>
+            </div>
+
+            <div class="card-body p-4 text-center">
+              <!-- Plan Name -->
+              <h4 class="fw-bold mb-3">{{ plan.name }}</h4>
+              
+              <!-- Price -->
+              <div class="mb-4">
+                <h2 class="display-4 fw-bold mb-0">
+                  {{ plan.price }}€
+                </h2>
+                <small class="text-muted">/mes</small>
+              </div>
+
+              <!-- Description -->
+              <p class="text-muted mb-4" *ngIf="plan.description">
+                {{ plan.description }}
+              </p>
+
+              <!-- CTA Button -->
+              <button 
+                class="btn w-100 mb-3"
+                [ngClass]="plan.recommended ? 'btn-primary' : 'btn-outline-primary'"
+                (click)="startSaaSTrial(plan)"
+                [disabled]="isPurchasing">
+                <span *ngIf="!isPurchasing">
+                  <i class="fas fa-rocket me-2"></i>
+                  {{ getTrialDays() > 0 ? 'Probar ' + getTrialDays() + ' días gratis' : 'Empezar ahora' }}
+                </span>
+                <span *ngIf="isPurchasing">
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Procesando...
+                </span>
+              </button>
+
+              <small class="text-muted">
+                <i class="fas fa-lock me-1"></i>
+                Sin compromiso. Cancela cuando quieras.
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No hay planes configurados -->
+      <div class="alert alert-warning" *ngIf="getSaaSPricingPlans().length === 0">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Pricing próximamente:</strong> Los planes de subscripción para este módulo están siendo configurados.
+      </div>
+
+      <!-- FAQ Section para SaaS -->
+      <div class="row mt-5">
+        <div class="col-lg-8 mx-auto">
+          <div class="card shadow-sm">
+            <div class="card-body p-5">
+              <h4 class="mb-4">Preguntas frecuentes</h4>
+              
+              <div class="mb-4">
+                <h6 class="fw-bold">¿Necesito tarjeta de crédito para el trial?</h6>
+                <p class="text-muted mb-0">
+                  No. El trial es 100% gratuito y no requiere tarjeta. Solo necesitas registrarte con tu email.
+                </p>
+              </div>
+
+              <div class="mb-4">
+                <h6 class="fw-bold">¿Qué pasa cuando termina el trial?</h6>
+                <p class="text-muted mb-0">
+                  Puedes elegir suscribirte a un plan o simplemente dejar de usar el servicio. Sin compromisos.
+                </p>
+              </div>
+
+              <div class="mb-4">
+                <h6 class="fw-bold">¿Puedo cambiar de plan después?</h6>
+                <p class="text-muted mb-0">
+                  Sí, puedes cambiar de plan o cancelar tu subscripción en cualquier momento desde tu dashboard.
+                </p>
+              </div>
+
+              <div>
+                <h6 class="fw-bold">¿Ofrecen reembolsos?</h6>
+                <p class="text-muted mb-0">
+                  Sí, si no estás satisfecho con el servicio, ofrecemos reembolso completo durante los primeros 7 días.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Stats del módulo (opcional) -->
   <div class="row mt-5" *ngIf="stats && stats.totalSales > 0">
     <div class="col-lg-8 mx-auto">

@@ -19,6 +19,10 @@ import * as Sentry from '@sentry/angular';
 import { PrelaunchConfigService } from './services/prelaunch-config.service';
 import { ModuleLandingComponent } from './components/module-landing/module-landing.component';
 import { LabsComponent } from './components/labs/labs.component';
+import { TrialRegisterComponent } from './components/trial-register/trial-register.component';
+import { SaasDashboardComponent } from './components/saas-dashboard/saas-dashboard.component';
+import { TenantLoginComponent } from './components/tenant-login/tenant-login.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -36,11 +40,15 @@ export function initializePrelaunchConfig(prelaunchService: PrelaunchConfigServi
     SystemHealthComponent,
     ModuleLandingComponent,
     LabsComponent,
+    TrialRegisterComponent,
+    SaasDashboardComponent,
+    TenantLoginComponent,
   ],
   imports: [
     RecaptchaModule,
     RecaptchaFormsModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     TranslateModule.forRoot(),
     HttpClientModule,

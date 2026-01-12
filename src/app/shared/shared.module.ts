@@ -58,7 +58,11 @@ import { BrandMessageComponent } from './brand-message/brand-message.component';
     MiniColorDrawerComponent,
     MiniSizeDrawerComponent,
     SizeGuideModalComponent,
-    BrandMessageComponent
+    BrandMessageComponent,
+    // Exportar módulos de formularios para que estén disponibles en toda la app
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule
   ]
 })
 export class SharedModule { }

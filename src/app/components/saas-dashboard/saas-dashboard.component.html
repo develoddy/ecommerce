@@ -1,0 +1,200 @@
+<div class="container-fluid">
+  
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted mt-3">Cargando dashboard...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && error" class="alert alert-danger mt-5">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    {{ error }}
+    <button class="btn btn-primary ms-3" (click)="logout()">
+      Ir a inicio
+    </button>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!isLoading && !error && tenant && module" class="dashboard-wrapper">
+    
+    <!-- Header -->
+    <div class="dashboard-header bg-light py-3 px-4 border-bottom">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h4 class="mb-0">
+            <i class="fas fa-rocket me-2"></i>
+            {{ module.name }}
+          </h4>
+          <small class="text-muted">Dashboard</small>
+        </div>
+        <div class="col-md-6 text-end">
+          <span class="badge me-3" [ngClass]="getStatusClass()">
+            {{ getStatusMessage() }}
+          </span>
+          <button class="btn btn-sm btn-outline-secondary" (click)="logout()">
+            <i class="fas fa-sign-out-alt me-1"></i>
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="row mt-4">
+      
+      <!-- Sidebar -->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="card-title mb-3">
+              <i class="fas fa-user-circle me-2"></i>
+              Tu cuenta
+            </h6>
+            
+            <div class="mb-3">
+              <small class="text-muted d-block">Nombre</small>
+              <strong>{{ tenant.name }}</strong>
+            </div>
+            
+            <div class="mb-3">
+              <small class="text-muted d-block">Email</small>
+              <strong>{{ tenant.email }}</strong>
+            </div>
+            
+            <div class="mb-3">
+              <small class="text-muted d-block">Plan actual</small>
+              <strong>{{ tenant.plan || 'Trial' }}</strong>
+            </div>
+
+            <!-- Trial Info -->
+            <div *ngIf="tenant.is_on_trial" class="alert alert-info py-2 px-3 mb-3">
+              <small>
+                <i class="fas fa-clock me-1"></i>
+                <strong>{{ tenant.days_remaining }}</strong> días de trial restantes
+              </small>
+            </div>
+
+            <!-- Upgrade Button (si está en trial) -->
+            <button 
+              *ngIf="tenant.is_on_trial" 
+              class="btn btn-primary btn-sm w-100 mb-2"
+              (click)="upgradePlan()">
+              <i class="fas fa-arrow-up me-1"></i>
+              Actualizar a plan pago
+            </button>
+
+            <!-- Subscription Info -->
+            <div *ngIf="!tenant.is_on_trial && tenant.status === 'active'" class="mb-3">
+              <small class="text-muted d-block">Próxima renovación</small>
+              <strong>{{ tenant.subscription_end_date | date:'dd/MM/yyyy' }}</strong>
+            </div>
+
+            <!-- Cancelled Info -->
+            <div *ngIf="tenant.status === 'cancelled'" class="alert alert-warning py-2 px-3">
+              <small>
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                Tu suscripción finalizará el {{ tenant.subscription_end_date | date:'dd/MM/yyyy' }}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-body">
+            
+            <!-- Welcome Message -->
+            <div class="alert alert-success mb-4">
+              <h5 class="alert-heading">
+                <i class="fas fa-check-circle me-2"></i>
+                ¡Bienvenido, {{ tenant.name }}!
+              </h5>
+              <p class="mb-0">
+                Has accedido exitosamente a <strong>{{ module.name }}</strong>.
+                <span *ngIf="tenant.is_on_trial">
+                  Tienes {{ tenant.days_remaining }} días para probar todas las funcionalidades.
+                </span>
+              </p>
+            </div>
+
+            <!-- Module Description -->
+            <div class="mb-4">
+              <h5>Acerca de este módulo</h5>
+              <p>{{ module.description }}</p>
+            </div>
+
+            <!-- Module-Specific Content -->
+            <div class="module-content">
+              
+              <!-- Placeholder para contenido específico del módulo -->
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="card text-center mb-3">
+                    <div class="card-body">
+                      <i class="fas fa-envelope fa-3x text-primary mb-3"></i>
+                      <h6>Campañas</h6>
+                      <p class="text-muted small">Crea y gestiona tus newsletters</p>
+                      <button class="btn btn-sm btn-outline-primary" disabled>
+                        Próximamente
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="card text-center mb-3">
+                    <div class="card-body">
+                      <i class="fas fa-users fa-3x text-success mb-3"></i>
+                      <h6>Suscriptores</h6>
+                      <p class="text-muted small">Gestiona tu lista de contactos</p>
+                      <button class="btn btn-sm btn-outline-success" disabled>
+                        Próximamente
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="card text-center mb-3">
+                    <div class="card-body">
+                      <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
+                      <h6>Estadísticas</h6>
+                      <p class="text-muted small">Analiza el rendimiento</p>
+                      <button class="btn btn-sm btn-outline-info" disabled>
+                        Próximamente
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- API Integration Info -->
+              <div class="alert alert-light border mt-4">
+                <h6>
+                  <i class="fas fa-code me-2"></i>
+                  Integración API
+                </h6>
+                <p class="mb-2">Este módulo expone una API REST para integración con tus aplicaciones:</p>
+                <code class="bg-dark text-light p-2 d-block rounded">
+                  {{ module.saas_config?.api_endpoint || 'API en desarrollo' }}
+                </code>
+                <small class="text-muted mt-2 d-block">
+                  <i class="fas fa-book me-1"></i>
+                  Documentación próximamente disponible
+                </small>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

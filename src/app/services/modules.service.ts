@@ -8,7 +8,7 @@ export interface Module {
   key: string;
   name: string;
   description: string;
-  type: 'physical' | 'digital' | 'service';
+  type: 'physical' | 'digital' | 'service' | 'saas';
   icon: string;
   color: string;
   target_sales: number;
@@ -30,6 +30,18 @@ export interface Module {
   features?: string[];
   tech_stack?: string[];
   requirements?: string[];
+  // 🚀 SaaS fields
+  saas_config?: {
+    pricing?: Array<{
+      name: string;
+      price: number;
+      description: string;
+      currency: string;
+    }>;
+    trial_days?: number;
+    api_endpoint?: string;
+    dashboard_route?: string;
+  };
 }
 
 export interface ModuleStats {

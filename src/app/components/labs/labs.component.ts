@@ -81,7 +81,7 @@ export class LabsComponent implements OnInit {
    * Navega al detalle del módulo
    */
   goToModule(moduleKey: string): void {
-    this.router.navigate([`/${moduleKey}`]);
+    this.router.navigate([`/labs/${moduleKey}`]);
   }
 
   /**

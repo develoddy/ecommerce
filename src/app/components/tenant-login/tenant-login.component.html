@@ -1,0 +1,104 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-5 col-md-7">
+      
+      <!-- Loading Module -->
+      <div *ngIf="isLoadingModule" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="text-muted mt-3">Cargando...</p>
+      </div>
+
+      <!-- Login Card -->
+      <div *ngIf="!isLoadingModule" class="card shadow-lg border-0">
+        <div class="card-body p-5">
+          
+          <!-- Header -->
+          <div class="text-center mb-4">
+            <h2 class="fw-bold mb-2">Iniciar sesión</h2>
+            <p class="text-muted">
+              <strong>{{ moduleName }}</strong>
+            </p>
+          </div>
+
+          <!-- Error Alert -->
+          <div *ngIf="error" class="alert alert-danger" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            {{ error }}
+          </div>
+
+          <!-- Login Form -->
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            
+            <!-- Email -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Email *</label>
+              <input 
+                type="email" 
+                class="form-control"
+                formControlName="email"
+                placeholder="tu@email.com"
+                [class.is-invalid]="hasError('email', 'required') || hasError('email', 'email')">
+              <div class="invalid-feedback" *ngIf="hasError('email', 'required')">
+                El email es requerido
+              </div>
+              <div class="invalid-feedback" *ngIf="hasError('email', 'email')">
+                Ingresa un email válido
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Contraseña *</label>
+              <input 
+                type="password" 
+                class="form-control"
+                formControlName="password"
+                placeholder="Tu contraseña"
+                [class.is-invalid]="hasError('password', 'required')">
+              <div class="invalid-feedback" *ngIf="hasError('password', 'required')">
+                La contraseña es requerida
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+              type="submit" 
+              class="btn btn-primary btn-lg w-100 mb-3"
+              [disabled]="isSubmitting">
+              <span *ngIf="!isSubmitting">
+                <i class="fas fa-sign-in-alt me-2"></i>
+                Iniciar sesión
+              </span>
+              <span *ngIf="isSubmitting">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Iniciando sesión...
+              </span>
+            </button>
+
+            <!-- Register Link -->
+            <div class="text-center mb-3">
+              <small class="text-muted">
+                ¿No tienes cuenta? 
+                <a href="javascript:void(0)" (click)="goToRegister()" class="text-primary fw-bold">
+                  Inicia tu trial gratis
+                </a>
+              </small>
+            </div>
+
+            <!-- Back Button -->
+            <button 
+              type="button" 
+              class="btn btn-outline-secondary w-100"
+              (click)="goBack()"
+              [disabled]="isSubmitting">
+              <i class="fas fa-arrow-left me-2"></i>
+              Volver
+            </button>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

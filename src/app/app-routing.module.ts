@@ -8,6 +8,10 @@ import { ModuleResolver } from './guards/module.resolver';
 import { ModuleActiveGuard } from './guards/module-active.guard';
 import { ModuleLandingComponent } from './components/module-landing/module-landing.component';
 import { LabsComponent } from './components/labs/labs.component';
+import { TrialRegisterComponent } from './components/trial-register/trial-register.component';
+import { SaasDashboardComponent } from './components/saas-dashboard/saas-dashboard.component';
+import { TenantLoginComponent } from './components/tenant-login/tenant-login.component';
+import { TenantAuthGuard } from './guards/tenant-auth.guard';
 
 const routes: Routes = [
 
@@ -27,7 +31,39 @@ const routes: Routes = [
   // 🆕 Ruta para Labs (catálogo de experimentos)
   {
     path: 'labs',
-    component: LabsComponent
+    children: [
+      // Catálogo de módulos
+      {
+        path: '',
+        component: LabsComponent
+      },
+      // Landing de módulo específico
+      {
+        path: ':moduleKey',
+        component: ModuleLandingComponent,
+        resolve: { module: ModuleResolver },
+        canActivate: [ModuleActiveGuard]
+      }
+    ]
+  },
+
+  // 🆕 Ruta para registro de trial SaaS
+  {
+    path: 'trial/register',
+    component: TrialRegisterComponent
+  },
+
+  // 🆕 Ruta para login de tenants
+  {
+    path: 'tenant/login',
+    component: TenantLoginComponent
+  },
+
+  // 🆕 Ruta para dashboard SaaS (protegida)
+  {
+    path: 'app/:moduleKey',
+    component: SaasDashboardComponent,
+    canActivate: [TenantAuthGuard]
   },
 
   // 🔹 Rutas i18n existentes (NO tocar - Merch store)
@@ -73,14 +109,6 @@ const routes: Routes = [
         redirectTo: 'error/404'
       }
     ],
-  },
-  
-  // 🆕 Rutas dinámicas para módulos (catch-all, DEBE IR AL FINAL)
-  {
-    path: ':moduleKey',
-    component: ModuleLandingComponent,
-    resolve: { module: ModuleResolver },
-    canActivate: [ModuleActiveGuard]
   },
   
   // Ruta para manejar cualquier otra URL no válida

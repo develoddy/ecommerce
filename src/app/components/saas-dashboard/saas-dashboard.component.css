@@ -1,0 +1,29 @@
+.dashboard-wrapper {
+  min-height: calc(100vh - 200px);
+}
+
+.dashboard-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: white !important;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.module-content .card {
+  transition: transform 0.2s;
+}
+
+.module-content .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+code {
+  font-size: 0.875rem;
+}

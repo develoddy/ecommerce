@@ -1,0 +1,19 @@
+/* Efecto hover para tarjetas */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Cursor pointer para elementos clicables */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Estilos para pricing cards */
+.card.border-primary {
+  border-width: 2px !important;
+}

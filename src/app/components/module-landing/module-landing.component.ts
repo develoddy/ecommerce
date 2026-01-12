@@ -4,6 +4,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { Module, ModuleDetailResponse, ModulesService } from 'src/app/services/modules.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
+import { SaasService } from 'src/app/services/saas.service';
 
 @Component({
   selector: 'app-module-landing',
@@ -28,7 +29,8 @@ export class ModuleLandingComponent implements OnInit {
     private meta: Meta,
     public modulesService: ModulesService,
     private authService: AuthService,
-    private dynamicRouter: DynamicRouterService
+    private dynamicRouter: DynamicRouterService,
+    private saasService: SaasService
   ) {}
 
   ngOnInit(): void {
@@ -73,6 +75,30 @@ export class ModuleLandingComponent implements OnInit {
   }
 
   /**
+   * 🚀 Verifica si el módulo es tipo SaaS
+   */
+  isSaaSModule(): boolean {
+    return this.module.type === 'saas';
+  }
+
+  /**
+   * 🚀 Obtiene los planes de pricing del módulo SaaS
+   */
+  getSaaSPricingPlans(): any[] {
+    if (!this.module.saas_config || !this.module.saas_config.pricing) {
+      return [];
+    }
+    return this.module.saas_config.pricing;
+  }
+
+  /**
+   * 🚀 Obtiene los días de trial del módulo SaaS
+   */
+  getTrialDays(): number {
+    return this.module.saas_config?.trial_days || 14;
+  }
+
+  /**
    * Navega a la home
    */
   goToHome(): void {
@@ -112,6 +138,21 @@ export class ModuleLandingComponent implements OnInit {
         moduleKey: this.module.key 
       } 
     });
+  }
+
+  /**
+   * 🚀 Inicia el trial gratuito de un módulo SaaS
+   */
+  startSaaSTrial(plan?: any): void {
+    if (this.isPurchasing) return;
+    
+    // Redirigir a página de registro de trial
+    const queryParams: any = { module: this.module.key };
+    if (plan) {
+      queryParams.plan = plan.name;
+    }
+
+    this.router.navigate(['/trial/register'], { queryParams });
   }
 
   /**

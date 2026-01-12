@@ -1,0 +1,167 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-5 col-md-7">
+      
+      <!-- Loading Module -->
+      <div *ngIf="isLoadingModule" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="text-muted mt-3">Cargando información...</p>
+      </div>
+
+      <!-- Registration Card -->
+      <div *ngIf="!isLoadingModule" class="card shadow-lg border-0">
+        <div class="card-body p-5">
+          
+          <!-- Header -->
+          <div class="text-center mb-4">
+            <h2 class="fw-bold mb-2">Comienza tu trial gratis</h2>
+            <p class="text-muted">
+              <strong>{{ moduleName }}</strong>
+            </p>
+            <div class="alert alert-success py-2">
+              <i class="fas fa-gift me-2"></i>
+              <strong>{{ trialDays }} días gratis</strong> • Sin tarjeta • Cancela cuando quieras
+            </div>
+          </div>
+
+          <!-- Error Alert -->
+          <div *ngIf="error" class="alert alert-danger" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            {{ error }}
+          </div>
+
+          <!-- Registration Form -->
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            
+            <!-- Name -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Nombre completo *</label>
+              <input 
+                type="text" 
+                class="form-control"
+                formControlName="name"
+                placeholder="Juan Pérez"
+                [class.is-invalid]="hasError('name', 'required') || hasError('name', 'minlength')">
+              <div class="invalid-feedback" *ngIf="hasError('name', 'required')">
+                El nombre es requerido
+              </div>
+              <div class="invalid-feedback" *ngIf="hasError('name', 'minlength')">
+                El nombre debe tener al menos 2 caracteres
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Email *</label>
+              <input 
+                type="email" 
+                class="form-control"
+                formControlName="email"
+                placeholder="tu@email.com"
+                [class.is-invalid]="hasError('email', 'required') || hasError('email', 'email')">
+              <div class="invalid-feedback" *ngIf="hasError('email', 'required')">
+                El email es requerido
+              </div>
+              <div class="invalid-feedback" *ngIf="hasError('email', 'email')">
+                Ingresa un email válido
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Contraseña *</label>
+              <input 
+                type="password" 
+                class="form-control"
+                formControlName="password"
+                placeholder="Mínimo 6 caracteres"
+                [class.is-invalid]="hasError('password', 'required') || hasError('password', 'minlength')">
+              <div class="invalid-feedback" *ngIf="hasError('password', 'required')">
+                La contraseña es requerida
+              </div>
+              <div class="invalid-feedback" *ngIf="hasError('password', 'minlength')">
+                La contraseña debe tener al menos 6 caracteres
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Confirmar contraseña *</label>
+              <input 
+                type="password" 
+                class="form-control"
+                formControlName="confirmPassword"
+                placeholder="Repite tu contraseña"
+                [class.is-invalid]="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched">
+              <div class="invalid-feedback" *ngIf="registerForm.hasError('passwordMismatch')">
+                Las contraseñas no coinciden
+              </div>
+            </div>
+
+            <!-- Terms -->
+            <div class="mb-4">
+              <div class="form-check">
+                <input 
+                  class="form-check-input" 
+                  type="checkbox" 
+                  formControlName="acceptTerms"
+                  id="acceptTerms"
+                  [class.is-invalid]="hasError('acceptTerms', 'required')">
+                <label class="form-check-label small" for="acceptTerms">
+                  Acepto los <a href="/legal/terms" target="_blank">términos y condiciones</a> 
+                  y la <a href="/legal/privacy" target="_blank">política de privacidad</a>
+                </label>
+                <div class="invalid-feedback" *ngIf="hasError('acceptTerms', 'required')">
+                  Debes aceptar los términos
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+              type="submit" 
+              class="btn btn-primary btn-lg w-100 mb-3"
+              [disabled]="isSubmitting">
+              <span *ngIf="!isSubmitting">
+                <i class="fas fa-rocket me-2"></i>
+                Comenzar trial de {{ trialDays }} días
+              </span>
+              <span *ngIf="isSubmitting">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Creando cuenta...
+              </span>
+            </button>
+
+            <!-- Back Button -->
+            <button 
+              type="button" 
+              class="btn btn-outline-secondary w-100"
+              (click)="goBack()"
+              [disabled]="isSubmitting">
+              <i class="fas fa-arrow-left me-2"></i>
+              Volver
+            </button>
+          </form>
+
+          <!-- Info -->
+          <div class="mt-4 pt-4 border-top">
+            <small class="text-muted d-block mb-2">
+              <i class="fas fa-check-circle text-success me-2"></i>
+              Sin tarjeta de crédito
+            </small>
+            <small class="text-muted d-block mb-2">
+              <i class="fas fa-check-circle text-success me-2"></i>
+              Cancela cuando quieras
+            </small>
+            <small class="text-muted d-block">
+              <i class="fas fa-check-circle text-success me-2"></i>
+              Soporte por email incluido
+            </small>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
