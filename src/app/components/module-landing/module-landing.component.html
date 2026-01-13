@@ -231,58 +231,125 @@
   <div *ngIf="isSaaSModule()" class="row">
     <div class="col-lg-10 mx-auto">
       
-      <!-- Trial Banner -->
-      <div class="alert alert-success mb-5 shadow-sm" *ngIf="getTrialDays() > 0">
-        <div class="row align-items-center">
-          <div class="col-md-8">
-            <h4 class="alert-heading mb-2">
-              <i class="fas fa-gift me-2"></i>
-              ¡Prueba gratis durante {{ getTrialDays() }} días!
-            </h4>
-            <p class="mb-0">
-              Acceso completo sin tarjeta de crédito. Cancela cuando quieras sin compromiso.
-            </p>
-          </div>
-          <div class="col-md-4 text-md-end mt-3 mt-md-0">
-            <button 
-              class="btn btn-success btn-lg fw-bold px-4 me-2"
-              (click)="startSaaSTrial()"
-              [disabled]="isPurchasing">
+      <!-- 🎯 CTA Principal: Trial Banner -->
+      <div class="text-center py-5 mb-5" *ngIf="getTrialDays() > 0">
+        <div class="mb-4">
+          <span class="badge bg-success fs-5 px-4 py-2">
+            <i class="fas fa-gift me-2"></i>
+            Prueba GRATIS durante {{ getTrialDays() }} días
+          </span>
+        </div>
+        
+        <h3 class="fw-bold mb-3">
+          Acceso completo. Sin tarjeta de crédito. Sin compromiso.
+        </h3>
+        
+        <p class="text-muted lead mb-4">
+          Explora todas las funcionalidades y decide qué plan se adapta mejor a ti.
+        </p>
+
+        <!-- CTA Principal -->
+        <div class="mb-3">
+          <button 
+            class="btn btn-success btn-lg fw-bold px-5 py-3"
+            (click)="startSaaSTrial()"
+            [disabled]="isPurchasing">
+            <span *ngIf="!isPurchasing">
               <i class="fas fa-rocket me-2"></i>
-              Iniciar Trial Gratis
-            </button>
-            <button 
-              class="btn btn-outline-primary btn-lg"
-              [routerLink]="['/tenant/login']"
-              [queryParams]="{module: module.key}">
-              <i class="fas fa-sign-in-alt me-2"></i>
-              Iniciar sesión
-            </button>
+              Empezar mi trial gratis ahora
+            </span>
+            <span *ngIf="isPurchasing">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Procesando...
+            </span>
+          </button>
+        </div>
+
+        <!-- Link Secundario -->
+        <p class="text-muted">
+          ¿Ya tienes una cuenta? 
+          <a 
+            [routerLink]="['/tenant/login']" 
+            [queryParams]="{module: module.key}"
+            class="text-primary fw-semibold text-decoration-none">
+            Inicia sesión aquí
+          </a>
+        </p>
+      </div>
+
+      <!-- ✨ Lo que incluye tu trial -->
+      <div class="card shadow-sm mb-5">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-4 text-center">
+            <i class="fas fa-check-circle text-success me-2"></i>
+            ¿Qué incluye el trial de {{ getTrialDays() }} días?
+          </h5>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-start">
+                <i class="fas fa-check text-success me-3 mt-1"></i>
+                <div>
+                  <strong>Acceso completo a todas las funcionalidades</strong>
+                  <p class="text-muted small mb-0">Sin limitaciones ni restricciones</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-start">
+                <i class="fas fa-check text-success me-3 mt-1"></i>
+                <div>
+                  <strong>Sin tarjeta de crédito</strong>
+                  <p class="text-muted small mb-0">Solo necesitas tu email para empezar</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-start">
+                <i class="fas fa-check text-success me-3 mt-1"></i>
+                <div>
+                  <strong>Cancela cuando quieras</strong>
+                  <p class="text-muted small mb-0">Sin compromisos ni penalizaciones</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-start">
+                <i class="fas fa-check text-success me-3 mt-1"></i>
+                <div>
+                  <strong>Soporte técnico incluido</strong>
+                  <p class="text-muted small mb-0">Te ayudamos a configurar todo</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Pricing Plans -->
-      <div class="text-center mb-5">
-        <h3 class="fw-bold mb-3">Elige tu plan</h3>
-        <p class="text-muted lead">
-          Todos los planes incluyen acceso completo. Elige el que mejor se adapte a tus necesidades.
+      <!-- 💰 Planes (Solo Informativos) -->
+      <div class="text-center mb-4">
+        <h3 class="fw-bold mb-2">Planes disponibles después del trial</h3>
+        <p class="text-muted">
+          Relájate, podrás elegir tu plan desde tu dashboard cuando termine el periodo de prueba.
         </p>
       </div>
 
-      <div class="row g-4" *ngIf="getSaaSPricingPlans().length > 0">
+      <div class="row g-4 mb-5" *ngIf="getSaaSPricingPlans().length > 0">
         <div 
           class="col-md-4" 
           *ngFor="let plan of getSaaSPricingPlans(); let i = index">
-          <div class="card shadow-sm h-100 hover-lift" 
-               [ngClass]="{'border-primary': plan.recommended}">
+          <div class="card shadow-sm h-100" 
+               [ngClass]="{'border-primary border-2': plan.recommended}">
             
             <!-- Popular Badge -->
             <div class="position-relative">
               <span 
                 *ngIf="plan.recommended" 
                 class="badge bg-primary position-absolute top-0 start-50 translate-middle">
-                Más popular
+                ⭐ Más popular
               </span>
             </div>
 
@@ -299,33 +366,19 @@
               </div>
 
               <!-- Description -->
-              <p class="text-muted mb-4" *ngIf="plan.description">
+              <p class="text-muted mb-0" *ngIf="plan.description">
                 {{ plan.description }}
               </p>
-
-              <!-- CTA Button -->
-              <button 
-                class="btn w-100 mb-3"
-                [ngClass]="plan.recommended ? 'btn-primary' : 'btn-outline-primary'"
-                (click)="startSaaSTrial(plan)"
-                [disabled]="isPurchasing">
-                <span *ngIf="!isPurchasing">
-                  <i class="fas fa-rocket me-2"></i>
-                  {{ getTrialDays() > 0 ? 'Probar ' + getTrialDays() + ' días gratis' : 'Empezar ahora' }}
-                </span>
-                <span *ngIf="isPurchasing">
-                  <span class="spinner-border spinner-border-sm me-2"></span>
-                  Procesando...
-                </span>
-              </button>
-
-              <small class="text-muted">
-                <i class="fas fa-lock me-1"></i>
-                Sin compromiso. Cancela cuando quieras.
-              </small>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Nota aclaratoria -->
+      <div class="alert alert-info text-center mb-5">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Recuerda:</strong> Durante el trial tienes acceso completo sin importar el plan. 
+        Cuando decidas continuar, podrás elegir el que mejor se adapte a tus necesidades.
       </div>
 
       <!-- No hay planes configurados -->
