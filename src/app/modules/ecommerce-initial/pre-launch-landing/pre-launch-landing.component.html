@@ -27,9 +27,9 @@
                 </h1>
 
                 <p class="hero-subtitle">
-                    Esto no empezó como una tienda. Empezó como un garabato, una idea y 8 meses<br />
-                    construyendo un stack desde cero.<br />
-                    <strong>Diseñado por un developer. Para developers.<br /> Sin bullshit marketera.</strong>
+                    ¿Cansado del merch genérico que venden en todas partes?<br />
+                    Estoy explorando diseños únicos para developers que quieren vestir<br /> su pasión sin parecer un anuncio andante.<br />
+                    <strong>Ideas en proceso. Nada fabricado aún. Solo quiero saber si esto te interesa.</strong>
                 </p>
 
                 <!-- <p class="hero-subtitle">
@@ -44,8 +44,8 @@
                 <div class="urgency-section">
                     <div class="countdown-container">
                         <div class="mb-4">
-                            <h3 class="countdown-title mb-0">Esto está en fase pre-launch</h3>
-                            <span  style="color: #1e293b;">No hay stock. No hay prisas. Solo queremos saber si esto conecta de verdad.</span>
+                            <h3 class="countdown-title mb-0">Fase de validación activa</h3>
+                            <span  style="color: #1e293b;">No hay stock ni fabricación. Solo quiero saber si estos diseños conectan contigo.</span>
                         </div>
                         
                         <div class="countdown-display">
@@ -80,9 +80,9 @@
     <section class="products-teaser" id="products">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Lo que estoy explorando</h2>
+                <h2 class="section-title">Diseños que estoy explorando</h2>
                 <p class="section-subtitle">
-                    Algunas ideas de diseño nacidas entre bugs, café frío y noches largas.<br /> Nada se fabrica aún.
+                    Conceptos iniciales de merch pensado para developers.<br /> Nada está fabricado. Solo quiero tu opinión.
                 </p>
             </div>
 
@@ -126,16 +126,13 @@
         <div class="row mb-5 justify-content-center text-center">
             <div class="col-12 col-md-10 col-lg-8">
                 <h2 class="text-white mb-3 lh-1 fs-32 text-fs-22">
-                En LujanDev creemos que programar<br>
-                es más que código: es cultura, estilo y actitud
+                Merch para developers<br>
+                que buscan algo diferente
                 </h2>
                 <p class="lead text-white lh-1">
-                Nuestra colección de merch está diseñada<br> 
-                para developers que buscan calidad,<br> 
-                autenticidad y actitud en cada<br> prenda.
-
-                <!-- Nuestras camisetas <br /> están hechas 
-                para developers que quieren <br /> vestir su pasión con elegancia. -->
+                ¿Te interesa merch con diseños únicos,<br> 
+                calidad real y sin los clichés de siempre?<br>
+                Déjame tu email y sé de los primeros<br> en ver los diseños finales.
                 </p>
             </div>
         </div>
@@ -148,9 +145,9 @@
                 <div class="capture-form capture-form-primary" *ngIf="!emailCaptured">
                     <!-- <h3 class="form-title">Acceso anticipado solo para pre-registrados</h3> -->
                     <div class="text-center mb-4">
-                        <h3 class="form-title mb-2">Si te interesa seguir el proyecto</h3>
+                        <h3 class="form-title mb-2">¿Te interesa ser de los primeros?</h3>
                         <span class="text-center">
-                            Déjame tu correo y te informaré sobre la evolución de esta idea. <br> No hay envíos automáticos ni campañas comerciales. Si el proyecto avanza, <br> lo sabrás. Si no, también.
+                            Déjame tu email y te avisaré cuando los diseños estén listos. <br> Si hay suficiente interés, lo lanzo. Si no, te aviso también. <br> Sin spam ni rollos comerciales.
                         </span>
                     </div>
                     
@@ -172,20 +169,17 @@
                     </div>
 
                     <p class="form-note">
-                        <!-- <i class="icon-gift"></i> -->
-                        <!-- Solo los pre-registrados recibirán el <strong>cupón exclusivo</strong> de lanzamiento. -->
-                        <!-- Los primeros registrados recibirán un <strong>cupón de lanzamiento</strong> si el proyecto llega a publicarse. -->
-                        Si el proyecto avanza, los primeros registrados tendrán un <strong>cupón de lanzamiento</strong>.
+                        <i class="icon-gift"></i>
+                        Si esto llega a fabricarse, los primeros en registrarse tendrán un <strong>cupón de descuento exclusivo</strong>.
                     </p>
                 </div>
 
                 <!-- Success State - Registro Nuevo -->
                 <div class="success-state" *ngIf="emailCaptured && !showDuplicateMessage && !showResubscribedMessage">
                     <div class="success-icon">✅</div>
-                    <h3 class="success-title">¡Genial! Ya estás pre-registrado</h3>
+                    <h3 class="success-title">¡Listo! Ya estás en la lista</h3>
                     <p class="success-message">
-                        Te notificaremos el día del lanzamiento con tu cupón exclusivo.
-                        <br><strong>¡No olvides revisar tu email!</strong>
+                        Te avisaré cuando los diseños estén listos y, si esto sale adelante, <br>tendrás tu cupón de lanzamiento.<br><strong>Revisa tu email para confirmar</strong>
                     </p>
                     <button class="cta-button secondary" (click)="resetForm()">
                         Registrar otro email
@@ -195,10 +189,10 @@
                 <!-- Success State - Email Ya Registrado -->
                 <div class="success-state already-registered" *ngIf="emailCaptured && showDuplicateMessage">
                     <div class="info-icon">ℹ️</div>
-                    <h3 class="success-title">¡Ya estás en nuestra lista!</h3>
+                    <h3 class="success-title">¡Ya estás dentro!</h3>
                     <p class="success-message">
-                        Este email ya está registrado para el pre-launch.
-                        <br><strong>¡Tranquilo, recibirás todas las notificaciones VIP!</strong>
+                        Este email ya está en la lista.
+                        <br><strong>Te avisaré cuando haya novedades. Sin spam prometido.</strong>
                     </p>
                     <button class="cta-button secondary" (click)="resetForm()">
                         Registrar otro email
@@ -225,51 +219,50 @@
     <section class="benefits-section" id="benefits">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">¿Por qué registrarte ahora?</h2>
+                <h2 class="section-title">¿Por qué dejar tu email?</h2>
                 <p class="section-subtitle">
-                    No es solo una tienda más. Es la comunidad de developers que estabas esperando.
+                    Porque si hay suficiente interés, esto puede convertirse en algo real.
                 </p>
             </div>
 
             <div class="benefits-grid">
                 <div class="benefit-item">
                     <div class="benefit-icon">🎁</div>
-                    <h4 class="benefit-title">Un pequeño detalle de lanzamiento</h4>
+                    <h4 class="benefit-title">Cupón de lanzamiento</h4>
                     <p class="benefit-description">
-                        Los primeros en apuntarse tendrían un cupón cuando (y solo si) esto se publica.
+                        Si esto se fabrica, los primeros registrados tendrán un descuento exclusivo.
                     </p>
                 </div>
 
                 <div class="benefit-item">
                     <div class="benefit-icon">⚡</div>
-                    <h4 class="benefit-title">No habrá stock infinito ni drops constantes.</h4>
+                    <h4 class="benefit-title">Ver los diseños primero</h4>
                     <p class="benefit-description">
-                        Primero entra quien estuvo desde el principio.
+                        Acceso anticipado antes del lanzamiento público (si llega a haberlo).
                     </p>
                 </div>
 
                 <div class="benefit-item">
                     <div class="benefit-icon">🚀</div>
-                    <h4 class="benefit-title">Diseños con intención</h4>
+                    <h4 class="benefit-title">Diseños únicos</h4>
                     <p class="benefit-description">
-                        Nada genérico. Nada hecho por cumplir.
-                        Solo piezas que tengan sentido para devs.
+                        Merch pensado para developers, sin los clichés típicos de "Hello World".
                     </p>
                 </div>
 
                 <div class="benefit-item">
                     <div class="benefit-icon">💎</div>
-                    <h4 class="benefit-title">Calidad cuidada</h4>
+                    <h4 class="benefit-title">Calidad sobre cantidad</h4>
                     <p class="benefit-description">
-                        Porque si pasas horas frente al código, la prenda también debería aguantar.
+                        Solo fabricaré si hay suficiente interés. Nada de productos masivos sin sentido.
                     </p>
                 </div>
 
                 <div class="benefit-item">
                     <div class="benefit-icon">🌟</div>
-                    <h4 class="benefit-title">Gente afín</h4>
+                    <h4 class="benefit-title">Sin spam ni rollos</h4>
                     <p class="benefit-description">
-                        Más que clientes, developers que entienden el proceso y la idea.
+                        Solo te escribiré si hay algo relevante. Promesa de developer.
                     </p>
                 </div>
             </div>
@@ -281,11 +274,11 @@
         <div class="container-cat-final">
             <div class="cta-content">
                 <div class="cta-text">
-                    <h2 class="cta-title fs-32">Sigue el proyecto y descubre si conecta</h2>
+                    <h2 class="cta-title fs-32">¿Te interesa? Déjame tu email</h2>
                     
                     <p class="cta-description">
-                        Únete a otros developers que están siguiendo este experimento.
-                        <br>Durante los próximos <span class="highlight">{{countdown.days}} días</span> decidiré si este proyecto merece avanzar.
+                        Si hay suficiente interés en los próximos <span class="highlight">{{countdown.days}} días</span>, <br>esto pasa de ser solo una idea a convertirse en merch real.
+                        <br><strong>Sin compromiso. Sin spam. Solo validación.</strong>
                     </p>
                 </div>
 
@@ -295,7 +288,7 @@
                         <div class="email-form-inline">
                             <input type="email" [(ngModel)]="email" placeholder="tu@email.dev" class="email-input-final form-control form-control-solid h-auto py-7 px-6 rounded-lg" [class.error]="emailError" (keyup.enter)="captureEmail()" />
                             <button class="cta-button primary large fw-normal" [disabled]="isSubmitting" (click)="captureEmail()">
-                                <span *ngIf="!isSubmitting">Seguir el proyecto</span>
+                                <span *ngIf="!isSubmitting">Quiero estar en la lista</span>
                                 <span *ngIf="isSubmitting">
                                     <i class="spinner"></i> Registrando...
                                 </span>
@@ -310,24 +303,24 @@
                     <!-- Success State Final - Registro Nuevo -->
                     <div class="success-state-final" *ngIf="emailCaptured && !showDuplicateMessage && !showResubscribedMessage">
                         <div class="success-content">
-                            <h3>Gracias por sumarte 🙌</h3>
-                            <p>Te avisaré de la evolución del proyecto y, si sale adelante, tendrás acceso al cupón de lanzamiento.</p>
+                            <h3>¡Ya estás dentro! 🙌</h3>
+                            <p>Te avisaré cuando los diseños estén listos. Si esto se fabrica, tendrás tu cupón de descuento.</p>
                         </div>
                     </div>
 
                     <!-- Success State Final - Email Ya Registrado -->
                     <div class="success-state-final already-registered" *ngIf="emailCaptured && showDuplicateMessage">
                         <div class="success-content">
-                            <h3>Ya estabas dentro 👀</h3>
-                            <p>Este email ya está siguiendo el proyecto. Te avisaré si hay novedades.</p>
+                            <h3>Ya estás en la lista 👀</h3>
+                            <p>Este email ya está registrado. Te avisaré cuando haya novedades.</p>
                         </div>
                     </div>
 
                     <!-- Success State Final - Resubscrito -->
                     <div class="success-state-final resubscribed" *ngIf="emailCaptured && showResubscribedMessage">
                         <div class="success-content">
-                            <h3>Bienvenido de nuevo 👋</h3>
-                            <p>Vuelves a estar dentro del seguimiento del proyecto. Gracias por regresar.</p>
+                            <h3>¡Bienvenido otra vez! 👋</h3>
+                            <p>Vuelves a estar en la lista. Te mantendré informado si esto avanza.</p>
                         </div>
                     </div>
                 </div>
@@ -336,11 +329,11 @@
                     <p class="proof-text">
                         <!-- <i class="fas fa-users me-2"></i>  -->
                         <ng-container *ngIf="subscriberCount === 0">
-                            Sé el primero en registrarte 🚀
+                            Sé el primero en validar esta idea 🚀
                         </ng-container>
 
                         <ng-container *ngIf="subscriberCount === 1">
-                            <strong id="subscriber-count">1 developer</strong> ya está siguiendo el proyecto
+                            <strong id="subscriber-count">1 developer</strong> ya mostró interés
                         </ng-container>
 
                         <ng-container *ngIf="subscriberCount > 1">
@@ -348,7 +341,7 @@
                             {{ subscriberCount }}+
                             developers
                         </strong>
-                        ya están siguiendo el proyecto
+                        ya mostraron interés en esta idea
                         </ng-container>
                     </p>
                 </div>
