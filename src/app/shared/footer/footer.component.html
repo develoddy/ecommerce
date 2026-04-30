@@ -1,4 +1,4 @@
-<footer class="modern-footer" *ngIf="showFooter">
+<footer class="luxury-footer" *ngIf="showFooter">
 
     <!-- Newsletter Section -->
     <div class="newsletter-section d-none" *ngIf="showSubscriptionSection && CURRENT_USER_AUTHENTICATED">
@@ -33,25 +33,27 @@
     </div>
     <!-- / End Newsletter  -->
 
-    <!-- Main Footer Content -->
+    <!-- Main Footer Content - Luxury Editorial Design -->
     <div class="footer-main">
         <div class="container-fluid">
-            <div class="footer-grid">
+            
+            <!-- Logo Premium Section -->
+            <div class="footer-logo-section">
+                <a class="footer-logo-link" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'home']">
+                    <img src="assets/images/logo.png" alt="LujanDev" title="LujanDev" class="footer-logo-img" />
+                </a>
+            </div>
+
+            <!-- Elegant Divider -->
+            <div class="footer-divider-line"></div>
+            
+            <!-- Footer Columns Grid -->
+            <div class="footer-columns-grid">
                 
-                <!-- Footer Column 0: Logo -->
-                <div class="footer-column logo-column">
-                    <a class="footer-logo" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'home']">
-                        <img src="assets/images/logo.png" alt="LujanDev" title="LujanDev" />
-                    </a>
-                </div>
-                
-                <!-- Divider Line -->
-                <div class="footer-divider"></div>
-                
-                <!-- Footer Column 1: About -->
+                <!-- Column 1: Company -->
                 <div class="footer-column">
-                    <h3 class="footer-title">Compañía</h3>
-                    <ul class="footer-links">
+                    <h3 class="footer-column-title">Compañía</h3>
+                    <ul class="footer-column-links">
                         <li><a href="#" onclick="return false">Sobre nosotros</a></li>
                         <li><a href="#" onclick="return false">Empresa</a></li>
                         <li><a href="#" onclick="return false">Días especiales</a></li>
@@ -61,10 +63,10 @@
                     </ul>
                 </div>
 
-                <!-- Footer Column 2: Help -->
+                <!-- Column 2: Help -->
                 <div class="footer-column">
-                    <h3 class="footer-title">Ayuda</h3>
-                    <ul class="footer-links">
+                    <h3 class="footer-column-title">Ayuda</h3>
+                    <ul class="footer-column-links">
                         <li><a href="#" onclick="return false">Centro de ayuda</a></li>
                         <li><a [routerLink]="['/', this.country, this.locale, 'account', 'mypurchases']">Mis compras</a></li>
                         <li><a href="#" onclick="return false">Devoluciones</a></li>
@@ -72,27 +74,27 @@
                     </ul>
                 </div>
 
-                <!-- Footer Column 3: Country & Language -->
+                <!-- Column 3: Country & Language -->
                 <div class="footer-column">
-                    <h3 class="footer-title">País e idioma</h3>
-                    <button class="country-selector">
-                        <svg width="20" height="20" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
+                    <h3 class="footer-column-title">País e idioma</h3>
+                    <button class="country-selector-luxury">
+                        <svg width="18" height="18" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
                             <path d="M13.305 2.104c-.429-.056-.862-.095-1.305-.095s-.876.039-1.304.095h-.001C5.797 2.747 2 6.938 2 12.009c0 5.514 4.486 10 10 10s10-4.486 10-10c0-5.07-3.797-9.262-8.695-9.905m6.855 6.132h-2.748a13.45 13.45 0 0 0-2.759-4.827 9.04 9.04 0 0 1 5.507 4.827M17 12c0 1.098-.16 2.108-.414 3.025H12.49v-5.79h4.161c.213.848.348 1.768.348 2.765zm-4.14 8.965c-.121.012-.246.012-.369.019v-4.96h3.764c-1.038 2.744-2.85 4.468-3.395 4.941m-5.118-4.94h3.75v4.958c-.118-.007-.237-.007-.353-.018-.546-.471-2.36-2.191-3.397-4.94M7 12c0-.996.135-1.916.35-2.764h4.141v5.789H7.412A11.3 11.3 0 0 1 7 12m4.118-8.946c.123-.012.249-.012.373-.02v5.202H7.646c1.003-2.853 2.878-4.663 3.472-5.182m1.373 5.182V3.034c.13.007.263.007.392.02.594.518 2.471 2.323 3.473 5.182zM9.347 3.409a13.45 13.45 0 0 0-2.76 4.827H3.84a9.04 9.04 0 0 1 5.507-4.827M3.442 9.236h2.876A12.4 12.4 0 0 0 6 12c0 1.095.145 2.1.376 3.025H3.53A9 9 0 0 1 3 12.009c0-.968.158-1.899.442-2.773m.515 6.789h2.711c.7 2.056 1.815 3.6 2.699 4.589a9.04 9.04 0 0 1-5.41-4.59zm10.676 4.589a13.5 13.5 0 0 0 2.699-4.59h2.71a9.04 9.04 0 0 1-5.409 4.59m5.836-5.59h-2.845c.231-.923.376-1.93.376-3.024 0-.994-.124-1.91-.318-2.764h2.876c.284.874.442 1.805.442 2.773a9 9 0 0 1-.531 3.016z"></path>
                         </svg>
-                        <div class="country-text">
-                            <span class="country-name">España</span>
-                            <span class="country-lang">Castellano</span>
+                        <div class="country-info">
+                            <span class="country-name-luxury">España</span>
+                            <span class="country-lang-luxury">Castellano</span>
                         </div>
-                        <svg width="16" height="16" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
+                        <svg width="14" height="14" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
                             <path d="m9.354 18.354-.707-.708L14.293 12 8.647 6.354l.707-.708L15.707 12z"></path>
                         </svg>
                     </button>
                 </div>
 
-                <!-- Footer Column 4: Social Media -->
+                <!-- Column 4: Social Media -->
                 <div class="footer-column">
-                    <h3 class="footer-title">Síguenos</h3>
-                    <ul class="social-links">
+                    <h3 class="footer-column-title">Síguenos</h3>
+                    <ul class="social-links-luxury">
                         <li>
                             <a href="https://www.instagram.com/tienda.lujandev/" target="_blank" title="Instagram" aria-label="Instagram">
                                 <svg width="20" height="20" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
@@ -128,33 +130,36 @@
             </div>
         </div>
     </div>
-    <!-- Footer Bottom -->
-    <div class="footer-bottom">
+    
+    <!-- Footer Bottom - Editorial Legal Section -->
+    <div class="footer-bottom-luxury">
         <div class="container-fluid">
-            <div class="footer-bottom-content">
-                <!-- Información Legal de la Empresa -->
-                <div class="footer-legal-info">
-                    <p class="company-name"><strong>{{ company.companyName }}</strong></p>
-                    <p class="company-details">
-                        <!-- NIF/CIF: <span class="placeholder">{{ company.getFormattedNIF() }}</span> |  -->
-                        <span>{{ company.companyAddress }}</span> | 
-                        Email: {{ company.companyEmail }}
-                        <span *ngIf="company.companyPhone"> | Tel: {{ company.companyPhone }}</span>
-                    </p>
-                </div>
+            
+            <!-- Legal Info Company -->
+            <div class="footer-legal-section">
+                <p class="company-name-luxury">{{ company.companyName }}</p>
+                <p class="company-details-luxury">
+                    {{ company.companyAddress }} · Email: {{ company.companyEmail }}<span *ngIf="company.companyPhone"> · Tel: {{ company.companyPhone }}</span>
+                </p>
+            </div>
 
-                <p class="copyright">© 2025 {{ company.companyName }}. Todos los derechos reservados</p>
+            <!-- Separator Line -->
+            <div class="footer-separator-luxury"></div>
+            
+            <!-- Bottom Row -->
+            <div class="footer-bottom-row">
+                <p class="copyright-luxury">© {{ 2025 }} {{ company.companyName }}. Todos los derechos reservados</p>
                 
-                <!-- Enlaces Legales -->
-                <ul class="legal-links">
+                <!-- Legal Links -->
+                <ul class="legal-links-luxury">
                     <li><a [routerLink]="['/', country, locale, 'shop', 'aviso-legal']" title="Aviso Legal">Aviso Legal</a></li>
                     <li><a [routerLink]="['/', country, locale, 'shop', 'privacy-policy']" title="Política de Privacidad">Privacidad</a></li>
                     <li><a [routerLink]="['/', country, locale, 'shop', 'politica-cookies']" title="Política de Cookies">Cookies</a></li>
-                    <li><a [routerLink]="['/', country, locale, 'shop', 'condiciones-venta']" title="Condiciones Generales de Venta">Condiciones de Venta</a></li>
-                    <!-- <li><a href="#" onclick="return false" title="Canal Ético">Canal Ético</a></li> -->
+                    <li><a [routerLink]="['/', country, locale, 'shop', 'condiciones-venta']" title="Condiciones Generales de Venta">Condiciones</a></li>
                     <li><a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" title="Plataforma de Resolución de Litigios en Línea de la UE">ODR</a></li>
                 </ul>
             </div>
+
         </div>
     </div>
 </footer>
