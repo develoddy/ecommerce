@@ -639,6 +639,20 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         this.errorOrSuccessMessage = 'Por favor, seleccione una dirección de envío.';
         return;
       }
+      
+      // 🔒 VALIDACIÓN ESTRICTA: Verificar que los campos de dirección tengan valores reales
+      if (!this.name || !this.name.trim() || !this.address || !this.address.trim() || !this.email || !this.email.trim()) {
+        this.validMessage = true;
+        this.errorOrSuccessMessage = 'Por favor, complete todos los campos obligatorios de la dirección (nombre, dirección, email).';
+        console.error('❌ [Stripe Validation] Dirección incompleta detectada:', {
+          name: this.name,
+          address: this.address,
+          email: this.email,
+          ciudad: this.ciudad,
+          pais: this.pais
+        });
+        return;
+      }
     } else {
       // Validaciones para módulos
       if (!this.email) {
@@ -650,6 +664,13 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       if (this.requiresShipping() && (!this.listAddresses || !this.address_client_selected)) {
         this.validMessage = true;
         this.errorOrSuccessMessage = 'Por favor, seleccione una dirección de envío.';
+        return;
+      }
+      
+      // 🔒 VALIDACIÓN ESTRICTA para módulos físicos
+      if (this.requiresShipping() && (!this.name || !this.name.trim() || !this.address || !this.address.trim())) {
+        this.validMessage = true;
+        this.errorOrSuccessMessage = 'Por favor, complete todos los campos obligatorios de la dirección.';
         return;
       }
     }
