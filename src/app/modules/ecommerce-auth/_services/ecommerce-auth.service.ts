@@ -37,12 +37,36 @@ export class EcommerceAuthService {
     );
   }
 
-  listAddressGuest() {
+  listAddressGuest(guestId?: number | string) {
     this.loadingSubject.next(true);
+    const resolvedGuestId = guestId ?? this.resolveCurrentGuestId();
     let URL = URL_SERVICE+"address_guest/list";
+
+    if (resolvedGuestId !== null && resolvedGuestId !== undefined) {
+      URL += `?guest_id=${encodeURIComponent(String(resolvedGuestId))}`;
+    }
+
     return this._http.get(URL).pipe(
       finalize(() => this.loadingSubject.next(false)) 
     );
+  }
+
+  private resolveCurrentGuestId(): number | null {
+    const guestFromSubject = this._authService.userGuestSubject?.value;
+    const guestFromStorage = localStorage.getItem('user_guest');
+
+    let guest: any = guestFromSubject;
+    if (!guest && guestFromStorage) {
+      try {
+        guest = JSON.parse(guestFromStorage);
+      } catch (error) {
+        guest = null;
+      }
+    }
+
+    const rawId = guest?.id ?? guest?._id ?? guest?.guest_id ?? null;
+    const parsedId = Number(rawId);
+    return Number.isFinite(parsedId) && parsedId > 0 ? parsedId : null;
   }
 
   listOneAdessGuest(idGuest:any) {

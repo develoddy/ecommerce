@@ -473,7 +473,8 @@ export class ResumenCheckoutComponent implements OnInit {
   checkIfAddressGuestExists() {
     const currentUrl = this._router.url;
     if (this.CURRENT_USER_GUEST) {
-      this._authEcommerce.listAddressGuest().subscribe(
+      const guestId = this.getCurrentGuestId();
+      this._authEcommerce.listAddressGuest(guestId || undefined).subscribe(
         (resp: any) => {
           this.listAddressGuest = resp.addresses;
           // ✅ Restaurar dirección seleccionada para invitado
@@ -815,7 +816,17 @@ getVarietyImage(cart: any): string {
       payload.user = this.CURRENT_USER_AUTHENTICATED._id;
       request$ = this._authEcommerce.registerAddressClient(payload);
     } else {
-      payload.guest = this.CURRENT_USER_GUEST.id;
+      const guestId = this.getCurrentGuestId();
+      if (!guestId) {
+        this.validationMessage = '';
+        this.status = false;
+        this.validMessage = true;
+        this.errorOrSuccessMessage = 'No se pudo identificar el invitado para guardar la dirección';
+        this.hideMessageAfterDelay();
+        alertDanger('No se pudo identificar el invitado. Recarga la página e inténtalo de nuevo.');
+        return;
+      }
+      payload.guest = guestId;
       request$ = this._authEcommerce.registerAddressGuest(payload);
     }
 
@@ -1124,7 +1135,12 @@ getVarietyImage(cart: any): string {
       // - Guardar la dirección en backend asociada al guest.id
       // - O solo mantenerla en sessionStorage
 
-      const guestId = this.CURRENT_USER_GUEST.id;
+      const guestId = this.getCurrentGuestId();
+      if (!guestId) {
+        alertDanger('No se pudo identificar el invitado para actualizar la dirección habitual.');
+        return;
+      }
+
       this._authEcommerce.setGuestUsualShippingAddress(this.selectedAddressId, guestId).subscribe({
         next: (res:any) => {
           if (res.status == 200) {
@@ -1158,6 +1174,12 @@ getVarietyImage(cart: any): string {
     } else if (this.CURRENT_USER_GUEST) {
       this.checkIfAddressGuestExists();
     }
+  }
+
+  private getCurrentGuestId(): number | null {
+    const rawId = this.CURRENT_USER_GUEST?.id ?? this.CURRENT_USER_GUEST?._id ?? this.CURRENT_USER_GUEST?.guest_id;
+    const guestId = Number(rawId);
+    return Number.isFinite(guestId) && guestId > 0 ? guestId : null;
   }
 
   goToRegisterAddress() {
@@ -1368,10 +1390,14 @@ getVarietyImage(cart: any): string {
   private proceedWithUpdate() {
     // Usar editingAddressId en lugar de address_client_selected.id
     const addressId = this.editingAddressId || this.address_client_selected?.id;
+    const guestId = this.getCurrentGuestId();
+    const guestSessionId = this.CURRENT_USER_GUEST?.session_id || null;
     
     let data = {
       _id       : addressId,
-      user      : this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : this.CURRENT_USER_GUEST,
+      user      : this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : guestId,
+      guestId   : guestId,
+      guestSessionId: guestSessionId,
       name      : this.name,
       surname   : this.surname,
       pais      : this.pais,
