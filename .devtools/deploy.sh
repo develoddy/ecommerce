@@ -109,7 +109,7 @@ fi
 
 # ================= PASO 5: Pull automático en servidor remoto =================
 echo -e "\n${CYAN}5️⃣ PASO 5: Actualizar servidor remoto${NC}"
-ssh -i "$SSH_KEY" "$SSH_USER@$SSH_HOST" "cd $REMOTE_PATH && git pull origin main"
+ssh -i "$SSH_KEY" "$SSH_USER@$SSH_HOST" "cd $REMOTE_PATH && git fetch origin main && git reset --hard origin/main"
 if [ $? -eq 0 ]; then
   echo -e "${GREEN}✅ Servidor remoto actualizado correctamente${NC}"
 else
