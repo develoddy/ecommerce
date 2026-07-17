@@ -79,6 +79,15 @@ echo -e "${GREEN}✅ Verificación completada${NC}"
 # ================= PASO 4: Push final desde deploy local =================
 echo -e "\n${CYAN}4️⃣ PASO 4: Push final desde carpeta de deploy local${NC}"
 cd "$(dirname "$DEPLOY_DIR")" || exit
+
+# Primero, sincronizar con el remote (pull)
+echo -e "${CYAN}📥 Sincronizando con remote antes de push...${NC}"
+git pull origin main --rebase
+if [ $? -ne 0 ]; then
+  echo -e "${YELLOW}⚠️ Hubo conflictos o advertencias en git pull. Continuando...${NC}"
+fi
+
+# Ahora hacer commit y push
 git add .
 git commit -m "🚀 Deploy ECOMMERCE $(date '+%Y-%m-%d %H:%M:%S')" >/dev/null 2>&1
 git push origin main
