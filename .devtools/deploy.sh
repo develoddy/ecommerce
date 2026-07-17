@@ -9,6 +9,15 @@ CYAN='\033[0;36m'
 MAGENTA='\033[1;35m'
 NC='\033[0m' # No Color
 
+# ================= CONFIGURACIÓN DE NODE =================
+# Cargar NVM y usar Node v14.21.3
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+nvm use 14.21.3
+
+echo -e "${CYAN}📦 Node version: $(node -v)${NC}"
+echo -e "${CYAN}📦 NPM version: $(npm -v)${NC}"
+
 # ================= CONFIGURACIÓN =================
 PROJECT_DIR="$(pwd)" # Repo local ecommerce
 BUILD_DIR="dist/ecommerce"
