@@ -44,6 +44,7 @@ export class ProductDisplayService {
 
   /**
    * Calcula y establece los colores disponibles del producto
+   * 🆕 Prioriza imágenes de Files (mockups) sobre galerias
    */
   setColoresDisponibles(product: any): void {
     if (!product || !product.variedades) {
@@ -56,15 +57,36 @@ export class ProductDisplayService {
       // La estructura correcta es variedad.color directamente
       if (variedad.color) {
         const colorKey = variedad.color.toLowerCase();
+        
         if (!coloresMap.has(colorKey)) {
-          // Buscar imagen específica en las galerías para este color
-          const galeriaConImagen = product.galerias?.find(
-            (g: any) => g.color === variedad.color && g.imagen
-          );
-          
+          let imagenColor = product.imagen; // Fallback a portada
+
+          // 🆕 Prioridad 1: Imagen de Files (preview)
+          if (variedad.files && Array.isArray(variedad.files) && variedad.files.length > 0) {
+            const previewFile = variedad.files.find((f: any) => f.type === 'preview' && f.visible !== false);
+            if (previewFile) {
+              imagenColor = previewFile.preview_url || previewFile.thumbnail_url || previewFile.url;
+            }
+          }
+
+          // Prioridad 2: Imagen de variedad (ProductVariants)
+          if (!imagenColor && variedad.imagen) {
+            imagenColor = variedad.imagen;
+          }
+
+          // Prioridad 3: Buscar en galerias por color
+          if (!imagenColor) {
+            const galeriaConImagen = product.galerias?.find(
+              (g: any) => g.color === variedad.color && g.imagen
+            );
+            if (galeriaConImagen) {
+              imagenColor = galeriaConImagen.imagen;
+            }
+          }
+
           coloresMap.set(colorKey, {
             color: variedad.color,
-            imagen: galeriaConImagen?.imagen || product.imagen
+            imagen: imagenColor
           });
         }
       }
@@ -110,33 +132,69 @@ export class ProductDisplayService {
 
   /**
    * Filtra galerías únicas del producto
+   * 🆕 Prioriza Files de Printful (mockups) sobre otras fuentes
    */
   filterUniqueGalerias(product: any): void {
     if (!product || !product.variedades) return;
 
     const uniqueImages = new Map();
     
+    // 🆕 Prioridad 1: Files de Printful (mockups)
     product.variedades.forEach((variedad: any) => {
+      if (variedad.files && Array.isArray(variedad.files)) {
+        variedad.files.forEach((file: any) => {
+          if (file.visible !== false) {
+            const imageUrl = file.preview_url || file.thumbnail_url || file.url;
+            
+            if (imageUrl) {
+              // Usar idFile como clave única para evitar duplicados reales
+              const uniqueKey = `file-${file.idFile}`;
+              
+              if (!uniqueImages.has(uniqueKey)) {
+                uniqueImages.set(uniqueKey, {
+                  imagen: imageUrl,
+                  color: variedad.color || 'default',
+                  size: variedad.valor || '',
+                  source: 'file',
+                  fileType: file.type,
+                  priority: file.type === 'preview' ? 1 : 2 // Preview tiene mayor prioridad
+                });
+              }
+            }
+          }
+        });
+      }
+
+      // Prioridad 2: Imagen de variedad (ProductVariants)
       if (variedad.imagen) {
-        const imageKey = variedad.imagen;
+        const imageKey = `variant-${variedad.id}`;
         if (!uniqueImages.has(imageKey)) {
           uniqueImages.set(imageKey, {
             imagen: variedad.imagen,
-            color: variedad.valor?.valor || 'default'
+            color: variedad.color || 'default',
+            size: variedad.valor || '',
+            source: 'variant',
+            priority: 3
           });
         }
       }
     });
 
-    // Agregar imagen principal si no existe
-    if (product.imagen && !uniqueImages.has(product.imagen)) {
-      uniqueImages.set(product.imagen, {
+    // Prioridad 3: Agregar imagen principal si no existe y no hay mockups
+    if (product.imagen && uniqueImages.size === 0) {
+      uniqueImages.set('portada', {
         imagen: product.imagen,
-        color: 'principal'
+        color: 'principal',
+        size: '',
+        source: 'portada',
+        priority: 4
       });
     }
 
-    const galerias = Array.from(uniqueImages.values());
+    // Ordenar por prioridad y convertir a array
+    const galerias = Array.from(uniqueImages.values())
+      .sort((a, b) => a.priority - b.priority);
+      
     this.uniqueGaleriasSubject.next(galerias);
   }
 

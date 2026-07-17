@@ -143,6 +143,7 @@ export class ImageManagerService {
 
   /**
    * Filtra imágenes únicas de las variedades del producto
+   * 🆕 Incluye Files de Printful (mockups) y ProductVariants
    */
   filterUniqueImagesFromVarieties(variedades: any[], mainImage?: string): any[] {
     if (!variedades) return [];
@@ -154,17 +155,66 @@ export class ImageManagerService {
       uniqueImages.set(mainImage, {
         imagen: mainImage,
         color: 'principal',
-        alt: 'Imagen principal del producto'
+        size: '',
+        alt: 'Imagen principal del producto',
+        source: 'portada'
       });
     }
 
-    // Filtrar imágenes únicas de las variedades
+    // 🆕 Procesar Files de cada variedad (mockups de Printful)
     variedades.forEach((variedad: any) => {
-      if (variedad.imagen && !uniqueImages.has(variedad.imagen)) {
-        uniqueImages.set(variedad.imagen, {
+      const color = variedad.color || 'default';
+      const size = variedad.valor || '';
+
+      // Prioridad 1: Files de Printful (preview images)
+      if (variedad.files && Array.isArray(variedad.files)) {
+        variedad.files.forEach((file: any) => {
+          // Usar preview_url como imagen principal
+          const imageUrl = file.preview_url || file.thumbnail_url || file.url;
+          
+          if (imageUrl && file.visible !== false) {
+            // Crear clave única: idFile-type para evitar duplicados reales
+            const uniqueKey = `file-${file.idFile}-${file.type}`;
+            
+            if (!uniqueImages.has(uniqueKey)) {
+              uniqueImages.set(uniqueKey, {
+                imagen: imageUrl,
+                color: color,
+                size: size,
+                alt: `${file.type} - ${color} ${size}`,
+                source: 'file',
+                fileType: file.type,
+                fileId: file.idFile,
+                hash: file.hash,
+                width: file.width,
+                height: file.height
+              });
+            }
+          }
+        });
+      }
+
+      // Prioridad 2: Imagen de ProductVariants (si no hay Files o como fallback)
+      if (variedad.imagen && !uniqueImages.has(`variant-${variedad.id}`)) {
+        uniqueImages.set(`variant-${variedad.id}`, {
           imagen: variedad.imagen,
-          color: variedad.valor?.valor || 'variedad',
-          alt: `Imagen del producto - ${variedad.valor?.valor || 'variedad'}`
+          color: color,
+          size: size,
+          alt: `${color} ${size}`,
+          source: 'variant',
+          variantId: variedad.id
+        });
+      }
+
+      // Prioridad 3: Imagen de ProductVariant (campo del join)
+      if (variedad.productVariant?.image && !uniqueImages.has(`pv-${variedad.productVariant.id}`)) {
+        uniqueImages.set(`pv-${variedad.productVariant.id}`, {
+          imagen: variedad.productVariant.image,
+          color: color,
+          size: size,
+          alt: `${variedad.productVariant.name || color}`,
+          source: 'productVariant',
+          productVariantId: variedad.productVariant.id
         });
       }
     });
