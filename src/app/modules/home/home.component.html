@@ -47,26 +47,37 @@
         <!--End Home Slideshow-->
       </ng-container>
 
-      <!-- Collection banner -->
-      <ng-container *ngIf="categories && categories.length > 0">
-        <app-collection-banners 
-          [categories]="categories"
-          [locale]="locale"
-          [country]="country"
-          [isVisible]="true">
-        </app-collection-banners>
-      </ng-container>
-      <!--End Collection banner-->
-
-      <!--Popular Categories-->
-      <!-- <ng-container *ngIf="categories && categories.length > 0">
-        <app-category-list
-          [categories]="categories"
-          [locale]="locale"
-          [country]="country"
-        ></app-category-list>
-      </ng-container> -->
-      <!--End Popular Categories-->
+      <!--Featured Content-->
+      <div class="destination-section section py-0">
+          <div class="container-fluid px-0">
+              <div class="row align-items-center">
+                  <div class="col-12 col-sm-12 col-md-6 order-2 order-md-2">
+                      <div class="about-details px-50 py-5">
+                          <span class="from-build-label">FROM THE BUILD / 002</span>
+                          <h2 class="mb-3 fw-bold" style="font-size: clamp(32px, 3vw, 52px);line-height: .98;font-weight: 700;letter-spacing: -0.04em;">FUNCIONABA EN<br>LOCALHOST.</h2>
+                          <p>
+                            Producción tenía otros planes.
+                          </p>
+                          <p>La clase de cosas que pasan construyendo software y terminan convirtiéndose en un diseño <b>LujanDev</b>.</p>
+                          <a
+                            *ngIf="allShirtsCategory" 
+                            [routerLink]="['/', locale, country, 'shop', 'filter-products', allShirtsCategory.slug, allShirtsCategory._id]" 
+                            class="btn btn-lg mt20">
+                            VER DROP 001 →
+                          </a>
+                      </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-md-6 order-1 order-md-1">
+                      <div class="about-images mt-md-0">
+                          <div class="row g-3">
+                              <img class="rounded-0 blur-up lazyloaded" data-src="assets/images/about/localhost-history.png" src="assets/images/about/localhost-history.png" alt="about" width="700" height="827">                              
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- End Featured Content-->
 
       <ng-container>
         <!--Toolbar d-none-->
@@ -133,6 +144,27 @@
           ></app-product-grid>
         </ng-container>
       </ng-container>
+
+      <!-- Collection banner -->
+      <ng-container *ngIf="categories && categories.length > 0">
+        <app-collection-banners 
+          [categories]="categories"
+          [locale]="locale"
+          [country]="country"
+          [isVisible]="true">
+        </app-collection-banners>
+      </ng-container>
+      <!--End Collection banner-->
+
+      <!--Popular Categories-->
+      <!-- <ng-container *ngIf="categories && categories.length > 0">
+        <app-category-list
+          [categories]="categories"
+          [locale]="locale"
+          [country]="country"
+        ></app-category-list>
+      </ng-container> -->
+      <!--End Popular Categories-->
 
       <ng-container *ngIf="ocultar">
         
@@ -787,39 +819,6 @@
         <!-- /End Flash Sale-->
       </ng-container>
       <!-- End Flash Sale Section -->
-
-      <!--Featured Content-->
-      <div class="destination-section section py-0">
-          <div class="container-fluid px-0">
-              <div class="row align-items-center">
-                  <div class="col-12 col-sm-12 col-md-6 order-2 order-md-2">
-                      <div class="about-details px-50 py-5">
-                          <h2 class="fs-4 mb-3">Viste tu pasión por el código con estilo y actitud.</h2>
-                          <p>
-                            Descubre camisetas exclusivas diseñadas para quienes viven y respiran tecnología.<br>
-                            En <b>LujanDev</b> encontrarás apparel inspirado en
-                            <b>JavaScript, NodeJS, TypeScript</b> y los frameworks frontend más avanzados.
-                          </p>
-                          <p>Diseños únicos creados para developers que buscan calidad, identidad y comodidad en su día a día.</p>
-                          <a
-                            *ngIf="allShirtsCategory" 
-                            [routerLink]="['/', locale, country, 'shop', 'filter-products', allShirtsCategory.slug, allShirtsCategory._id]" 
-                            class="btn btn-lg mt20">
-                            Comprar Ahora
-                          </a>
-                      </div>
-                  </div>
-                  <div class="col-12 col-sm-12 col-md-6 order-1 order-md-1">
-                      <div class="about-images mt-md-0">
-                          <div class="row g-3">
-                              <img class="rounded-0 blur-up lazyloaded" data-src="assets/images/about/about1.jpg" src="assets/images/about/about1.png" alt="about" width="700" height="827">                              
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <!-- End Featured Content-->
 
       <!-- Parallax Banner Hoodie -->
       <div class="section parallax-banner-style1 py-0">

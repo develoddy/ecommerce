@@ -20,7 +20,7 @@
     .header-7 .menu-position-left #siteNav > li .megamenu { margin-left: -320px !important; }
     .index-demo10 .slideshow-large .slideshow-wrap { height: 600px; }
     .grid-products .product-box .product-image .product-tag-vertical,
-    .product-slider-5items .product-box .product-image .product-tag-vertical {left: 5px;top: 50%!important;font-size: 0.60rem;padding: 2px 6px;opacity: 0.9;}
+    .product-slider-5items .product-box .product-image .product-tag-vertical {left: 5px;top: 35%!important;font-size: 0.60rem;padding: 2px 6px;opacity: 0.9;}
 }
 
 @media only screen and (max-width: 1320px) {
