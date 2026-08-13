@@ -573,7 +573,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 .section-header p { margin:5px 0 0; display:block; color: #888; font-size: 18px !important; font-family: "Inter", sans-serif; }
 .section-header .small-tlt { margin: 0 0 10px; }
 
-.section { padding-top:60px; padding-bottom:60px; }
+.section { padding-top:80px; padding-bottom:80px; }
 .section-md { padding-top:40px; padding-bottom:40px; }
 .section-sm { padding-top:30px; padding-bottom:30px; }
 .pb-section { padding-bottom:50px; }
@@ -3057,6 +3057,18 @@ a.logo {
 .tracking-steps .step.current { color: #ffffff; background-color: #131313; }
 .tracking-steps .step.current:after { border-left: 17px solid #131313; }
 .orderstracking-from .form-group .btn { height: 45px; }
+.from-build-banner {
+    width: 100%;
+    aspect-ratio: 1920 / 645;
+    background-image: url('/assets/images/parallax/from-the-build-banner.png');
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+.from-build-section {
+  margin: 80px 0;
+}
+
 
 
 /*======================================================================
