@@ -1047,12 +1047,27 @@
     .video-section .sub-title { font-size: 14px; }
     .video-section .sub-title br { display: none; }
 
-    .from-build-section {
-        margin: 48px 0 64px;
+    .lujandev-manifesto {
+        padding: 72px 22px;
     }
 
-    .from-build-mobile-content {
-        padding: 42px 28px 52px;
+    .manifesto-label {
+        margin-bottom: 26px;
+        font-size: 10px;
+    }
+
+    .manifesto-title {
+        font-size: 32px;
+        line-height: .92;
+    }
+
+    .manifesto-lead {
+        margin-top: 34px;
+        font-size: 16px;
+    }
+
+    .manifesto-copy {
+        font-size: 14px;
     }
 
 

@@ -933,18 +933,42 @@
           <div class="container">
               <div class="row align-items-center">
                   <div class="col-12 col-sm-12 col-md-12">
-                      <div class="about-details text-center px-50 py-5">
-                          <h2 class="fs-4 mb-3">Merch que tu manager <br /><span class="gradient-text">jamás entenderá</span></h2>
-                          <p>
-                            Camisetas, tazas, gorras y sudaderas para quienes viven de bugs que son features.<br />
-                            <strong>Diseñado por un developer. Para developers. Sin bullshit marketera.</strong><br />
-                          </p>
-                          <a
-                            *ngIf="allShirtsCategory" 
-                            [routerLink]="['/', locale, country, 'shop', 'filter-products']" 
-                            class="btn btn-lg mt20">
-                            Comprar Ahora
-                          </a>
+                      <div class="about-details text-center d-flex justify-content-center">
+
+                        <!-- LujanDev Manifesto -->
+                        <section class="lujandev-manifesto">
+                          <div class="container">
+                            <span class="manifesto-label">
+                              LUJANDEV / BUILT IN PUBLIC
+                            </span>
+
+                            <h2 class="manifesto-title">
+                              NO DISEÑAMOS<br>
+                              SOBRE CÓDIGO.<br><br>
+
+                              DISEÑAMOS DESDE<br>
+                              LO QUE PASA<br>
+                              CONSTRUYÉNDOLO.
+                            </h2>
+
+                            <p class="manifesto-lead">
+                              Bugs reales. Deploys reales. Noches reales.
+                            </p>
+
+                            <p class="manifesto-copy">
+                              Lo que pasa mientras construimos LujanDev
+                              termina formando parte de LujanDev.
+                            </p>
+
+                            <a
+                              [routerLink]="['/', locale, country, 'about']"
+                              class="manifesto-link">
+                              CONOCE LA HISTORIA →
+                            </a>
+
+                          </div>
+                        </section>
+
                       </div>
                   </div>
               </div>
