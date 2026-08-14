@@ -584,58 +584,23 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder { opacity:0.7; -ms-f
 #page-content { margin:0 0 40px; }
 
 
-.lujandev-manifesto {
-    background: #fff;
-    color: #111;
-    padding: 120px 0;
-}
+.lujandev-manifesto {background: #fff;color: #111;padding: 120px 0;}
+.lujandev-manifesto .container {max-width: 1200px;}
+.manifesto-label {display: block;margin-bottom: 32px;font-size: 12px;font-weight: 500;letter-spacing: 1.5px;}
+.manifesto-title {max-width: 900px;margin: 0;font-size: clamp(52px, 4.2vw, 96px);line-height: .9;font-weight: 800;letter-spacing: -0.055em;}
+.manifesto-lead {margin: 48px 0 0;font-size: 18px;font-weight: 600;}
+.manifesto-copy {max-width: 100%;margin: 12px 0 0;font-size: 15px;line-height: 1.6;color: #666;}
+.manifesto-link {display: inline-block;margin-top: 36px;padding-bottom: 4px;border-bottom: 1px solid #111;color: #111;font-size: 12px;font-weight: 600;letter-spacing: .5px;text-decoration: none;}
 
-.lujandev-manifesto .container {
-    max-width: 1200px;
-}
-
-.manifesto-label {
-    display: block;
-    margin-bottom: 32px;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 1.5px;
-}
-
-.manifesto-title {
-    max-width: 900px;
-    margin: 0;
-    font-size: clamp(52px, 4.2vw, 96px);
-    line-height: .9;
-    font-weight: 800;
-    letter-spacing: -0.055em;
-}
-
-.manifesto-lead {
-    margin: 48px 0 0;
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.manifesto-copy {
-    max-width: 100%;
-    margin: 12px 0 0;
-    font-size: 15px;
-    line-height: 1.6;
-    color: #666;
-}
-
-.manifesto-link {
-    display: inline-block;
-    margin-top: 36px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid #111;
-    color: #111;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: .5px;
-    text-decoration: none;
-}
+.build-continues {background: #050505;color: #fff;padding: 110px 24px;}
+.build-continues-label {display: block;margin-bottom: 26px;font-size: 11px;letter-spacing: 1.5px;text-transform: uppercase;color: rgba(255,255,255,.55);}
+.build-continues-title {margin: 0;font-size: clamp(52px, 5vw, 78px);line-height: .9;font-weight: 800;letter-spacing: -0.055em;}
+.build-continues-copy {margin: 32px 0 0;font-size: 16px;line-height: 1.5;color: rgba(255,255,255,.7);}
+.build-continues-newsletter-label {margin: 55px 0 22px;font-size: 10px;letter-spacing: 1.4px;color: rgba(255,255,255,.5);}
+.build-newsletter-form {display: flex;align-items: center;border-bottom: 1px solid rgba(255,255,255,.65);}
+.build-newsletter-form input {flex: 1;background: transparent;border: 0;outline: 0;color: #fff;padding: 14px 0;font-size: 14px;}
+.build-newsletter-form input::placeholder {color: rgba(255,255,255,.4);}
+.build-newsletter-form button {background: transparent;border: 0;color: #fff;padding: 14px 0 14px 20px;font-size: 11px;font-weight: 600;letter-spacing: .5px;}
 
 
 

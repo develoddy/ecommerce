@@ -1047,28 +1047,16 @@
     .video-section .sub-title { font-size: 14px; }
     .video-section .sub-title br { display: none; }
 
-    .lujandev-manifesto {
-        padding: 72px 22px;
-    }
-
-    .manifesto-label {
-        margin-bottom: 26px;
-        font-size: 10px;
-    }
-
-    .manifesto-title {
-        font-size: 32px;
-        line-height: .92;
-    }
-
-    .manifesto-lead {
-        margin-top: 34px;
-        font-size: 16px;
-    }
-
-    .manifesto-copy {
-        font-size: 14px;
-    }
+    .lujandev-manifesto {padding: 72px 22px;}
+    .manifesto-label {margin-bottom: 26px;font-size: 10px;}
+    .manifesto-title {font-size: 32px;line-height: .92;}
+    .manifesto-lead {margin-top: 34px;font-size: 16px;}
+    .manifesto-copy {font-size: 14px;}
+    .build-continues {padding: 72px 22px 90px;}
+    .build-continues-title {font-size: 44px;}
+    .build-continues-copy {font-size: 14px;}
+    .build-newsletter-form {align-items: flex-end;}
+    .build-newsletter-form button {font-size: 10px;white-space: nowrap;}
 
 
 
