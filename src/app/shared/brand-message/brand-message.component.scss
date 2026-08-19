@@ -1,6 +1,6 @@
 /* Brand Message Component Styles */
 .page-header {
-  padding: 4rem 0;
+  padding: 8rem 0;
 }
 
 .page-title h2 {
@@ -75,7 +75,7 @@
       width: auto;
       height: 100%;
       padding: 0 12px;
-      font-size: 12px;
+      font-size: 12px !important;
       z-index: 10; // También en mobile
     }
   }

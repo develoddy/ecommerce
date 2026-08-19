@@ -53,13 +53,13 @@
                 
                 <!-- Column 1: Company -->
                 <div class="footer-column">
-                    <h3 class="footer-column-title">LujanDev</h3>
+                    <h3 class="footer-column-title">Explora</h3>
                     <ul class="footer-column-links">
                         <li><a href="#" onclick="return false">Sobre nosotros</a></li>
                         <li><a href="#" onclick="return false">Build in Public</a></li>
                         <li><a href="#" onclick="return false">Drop 001</a></li>
                         <li>
-                            <button type="button" aria-label="Tiendas" class="footer-link-btn">Tiendas</button>
+                            <button type="button" aria-label="Todos los productos" class="footer-link-btn">Todos los productos</button>
                         </li>
                     </ul>
                 </div>
@@ -140,7 +140,8 @@
             <div class="footer-legal-section">
                 <p class="company-name-luxury">{{ company.companyName }}</p>
                 <p class="company-details-luxury">
-                    {{ company.companyAddress }} · Email: {{ company.companyEmail }}<span *ngIf="company.companyPhone"> · Tel: {{ company.companyPhone }}</span>
+                    {{ company.companyAddress }} · {{ company.companyEmail }}
+                    <!-- <span *ngIf="company.companyPhone"> · Tel: {{ company.companyPhone }}</span> -->
                 </p>
             </div>
 

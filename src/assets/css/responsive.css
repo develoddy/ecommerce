@@ -540,7 +540,7 @@
     .btn-sm { padding: 8px 15px; }
     .btn.rounded-pill { padding-left: 20px; padding-right: 20px; }
     .btn-link, .btn-brd { padding: 0; }
-    input, button, select, textarea, .form-control { font-size: 16px; }
+    input, button, select, textarea, .form-control { font-size: 12px !important; }
     input, select, .input-group > .form-control, .input-group > .btn { height: 40px; }
     .small-hide { display: none !important; }
     .section-md { padding-top: 30px; padding-bottom: 30px; }
@@ -556,7 +556,7 @@
     .product-details-img .product-zoom-right #zoompro { pointer-events:none; }
     .pb-section { padding-bottom:15px; }
     .section { padding-top:40px; padding-bottom:40px; }
-    #page-content { margin: 0 0 30px; }
+    #page-content { margin: 0 0 2px; }
     .mobile-hide { display:none; }
     .form-group { margin-bottom: 15px; }
     .section-header { margin-bottom: 20px; }
