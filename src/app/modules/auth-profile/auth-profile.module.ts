@@ -28,13 +28,7 @@ import { RecaptchaV3Module } from 'ng-recaptcha';
     CommonModule,
     FormsModule,
     AuthProfileRoutingModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [ HttpClient ]
-      }
-    }),
+    TranslateModule,
     SharedModule,
     ReactiveFormsModule,
     HttpClientModule,

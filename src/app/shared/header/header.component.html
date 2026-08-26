@@ -15,7 +15,7 @@
                 <!-- Mensaje central -->
                 <div class="col-8 col-sm-12 col-md-6 col-lg-6 text-center d-none d-md-block">
                     <!-- Merch que tu manager <strong>jamás entenderá</strong> -->
-                     <span class="top-header-message">Bugs. deploys. noches largas. ahora se llevan.</span>
+                     <span class="top-header-message">{{ 'header.tagline' | translate }}</span>
                 </div>
 
                 <!-- Idioma y moneda -->
@@ -39,7 +39,8 @@
                             <li *ngFor="let localeOption of availableLocales" (click)="onLocaleChange(localeOption.code)">
                                 <div class="option" [class.active]="locale === localeOption.code">
                                     <ng-container [ngSwitch]="localeOption.code">
-                                        <span *ngSwitchCase="'es'">🇪🇸 Castellano</span>
+                                        <span *ngSwitchCase="'es'">🇪🇸 {{ 'header.language_selector.castellano' | translate }}</span>
+                                        <span *ngSwitchCase="'en'">🇬🇧 {{ 'main.english' | translate }}</span>
                                         <span *ngSwitchCase="'fr'">🇫🇷 Français</span>
                                         <span *ngSwitchCase="'it'">🇮🇹 Italiano</span>
                                         <span *ngSwitchCase="'de'">🇩🇪 Deutsch</span>
@@ -68,7 +69,7 @@
                             <li *ngFor="let countryOption of countries" (click)="onCountryChange(countryOption.code)">
                                 <div class="option" [class.active]="country === countryOption.code">
                                     <ng-container [ngSwitch]="countryOption.code">
-                                        <span *ngSwitchCase="'es'">🇪🇸 España</span>
+                                        <span *ngSwitchCase="'es'">🇪🇸 {{ 'header.country_selector.spain' | translate }}</span>
                                         <span *ngSwitchCase="'fr'">🇫🇷 France</span>
                                         <span *ngSwitchCase="'it'">🇮🇹 Italia</span>
                                         <span *ngSwitchCase="'de'">🇩🇪 Deutschland</span>
@@ -96,25 +97,25 @@
                     <nav class="navigation" id="AccessibleNav">
                         <ul id="siteNav" class="site-nav medium center">
                             <li class="lvl1 parent megamenu text-uppercase fw-bold" *ngIf="ourProducts && ourProducts.length > 0">
-                                <a href="#" onclick="return false;">Camisetas <i class="icon anm anm-angle-down-l"></i></a>
+                                <a href="#" onclick="return false;">{{ 'header.categories_menu.tshirts' | translate }} <i class="icon anm anm-angle-down-l"></i></a>
                                 <div class="megamenu style1">
                                     <ul class="row grid--uniform mmWrapper">
                                         <li class="lvl-1 col-md-3 col-lg-3 w-22">
-                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Camisetas</a>
+                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">{{ 'header.categories_menu.tshirts' | translate }}</a>
                                             <ul class="subLinks">
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas-logo-central', categorieOurProducts?._id, 'logo-central']" class="site-nav lvl-2 text-small">Camisetas Logo Central</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas-logo-central', categorieOurProducts?._id, 'logo-central']" class="site-nav lvl-2 text-small">{{ 'header.categories_menu.tshirts_center_logo' | translate }}</a>
                                                 </li>
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas-logo-lateral', categorieOurProducts?._id, 'logo-lateral']" class="site-nav lvl-2 text-small">Camisetas Logo Lateral</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas-logo-lateral', categorieOurProducts?._id, 'logo-lateral']" class="site-nav lvl-2 text-small">{{ 'header.categories_menu.tshirts_side_logo' | translate }}</a>
                                                 </li>
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas', categorieOurProducts?._id]" class="site-nav lvl-2 text-small">Todas las Camisetas</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas', categorieOurProducts?._id]" class="site-nav lvl-2 text-small">{{ 'header.categories_menu.all_tshirts' | translate }}</a>
                                                 </li>
                                             </ul>
                                         </li>
                                         <li class="lvl-1 col-md-3 col-lg-6 product-col">
-                                            <a href="#;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
+                                            <a href="#;" class="site-nav lvl-1 menu-title">{{ 'header.categories_menu.best_sellers' | translate }}</a>
                                             <div class="grid-products weekly-product productSlider gp10 mt-1">
                                                 <ng-container *ngFor="let product of ourProducts?.slice(0, 6)">
                                                     <div class="item">
@@ -124,7 +125,7 @@
                                                                     <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="product" title="Product" width="625" height="808" />
                                                                 </a>
                                                                 <div class="product-labels" *ngIf="product.campaing_discount">
-                                                                    <span class="lbl on-sale">Sale</span>
+                                                                    <span class="lbl on-sale">{{ 'header.sale_badge' | translate }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="product-details text-center">
@@ -145,22 +146,22 @@
                                 </div>
                             </li>
                             <li class="lvl1 parent megamenu text-uppercase fw-bold" *ngIf="hoodiesProducts && hoodiesProducts.length > 0">
-                                <a href="#" onclick="return false;">Hoddies <i class="icon anm anm-angle-down-l"></i></a>
+                                <a href="#" onclick="return false;">{{ 'header.categories_menu.hoodies' | translate }} <i class="icon anm anm-angle-down-l"></i></a>
                                 <div class="megamenu style1">
                                     <ul class="row grid--uniform mmWrapper">
                                         <li class="lvl-1 col-md-3 col-lg-3 w-22">
-                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Hoddies</a>
+                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">{{ 'header.categories_menu.hoodies' | translate }}</a>
                                             <ul class="subLinks">
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'hoddies', categorieHoodies?._id]" class="site-nav lvl-2 text-small">Todas las Hoddies</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'hoddies', categorieHoodies?._id]" class="site-nav lvl-2 text-small">{{ 'header.categories_menu.all_hoodies' | translate }}</a>
                                                 </li>
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'hoddies-con-capucha', categorieHoodies?._id]" class="site-nav lvl-2 text-small">Hoddies con Capucha</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'hoddies-con-capucha', categorieHoodies?._id]" class="site-nav lvl-2 text-small">{{ 'header.categories_menu.hoodies_with_hood' | translate }}</a>
                                                 </li>
                                             </ul>
                                         </li>
                                         <li class="lvl-1 col-md-3 col-lg-6 product-col">
-                                            <a href="#;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
+                                            <a href="#;" class="site-nav lvl-1 menu-title">{{ 'header.categories_menu.best_sellers' | translate }}</a>
                                             <div class="grid-products weekly-product productSlider gp10 mt-1">
                                                 <ng-container *ngFor="let product of hoodiesProducts?.slice(0, 6)">
                                                     <div class="item">
@@ -170,7 +171,7 @@
                                                                     <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="product" title="Product" width="625" height="808" />
                                                                 </a>
                                                                 <div class="product-labels" *ngIf="product.campaing_discount">
-                                                                    <span class="lbl on-sale">Sale</span>
+                                                                    <span class="lbl on-sale">{{ 'header.sale_badge' | translate }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="product-details text-center">
@@ -191,19 +192,19 @@
                                 </div>
                             </li>
                             <li class="lvl1 parent megamenu text-uppercase fw-bold" *ngIf="mugsProducts && mugsProducts.length > 0">
-                                <a href="#" onclick="return false;">Mug <i class="icon anm anm-angle-down-l"></i></a>
+                                <a href="#" onclick="return false;">{{ 'header.categories_menu.mugs' | translate }} <i class="icon anm anm-angle-down-l"></i></a>
                                 <div class="megamenu style1">
                                     <ul class="row grid--uniform mmWrapper">
                                         <li class="lvl-1 col-md-3 col-lg-3 w-22">
-                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Mugs</a>
+                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">{{ 'header.categories_menu.mugs' | translate }}</a>
                                             <ul class="subLinks">
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'mugs', categorieMugs?._id]" class="site-nav lvl-2 text-small">Todos los Mugs</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'mugs', categorieMugs?._id]" class="site-nav lvl-2 text-small">{{ 'header.categories_menu.all_mugs' | translate }}</a>
                                                 </li>
                                             </ul>
                                         </li>
                                         <li class="lvl-1 col-md-3 col-lg-6 product-col">
-                                            <a href="#;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
+                                            <a href="#;" class="site-nav lvl-1 menu-title">{{ 'header.categories_menu.best_sellers' | translate }}</a>
                                             <div class="grid-products weekly-product productSlider gp10 mt-1">
                                                 <ng-container *ngFor="let product of mugsProducts?.slice(0, 6)">
                                                     <div class="item">
@@ -213,7 +214,7 @@
                                                                     <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="product" title="Product" width="625" height="808" />
                                                                 </a>
                                                                 <div class="product-labels" *ngIf="product.campaing_discount">
-                                                                    <span class="lbl on-sale">Sale</span>
+                                                                    <span class="lbl on-sale">{{ 'header.sale_badge' | translate }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="product-details text-center">
@@ -234,19 +235,19 @@
                                 </div>
                             </li>
                             <li class="lvl1 parent megamenu text-uppercase fw-bold" *ngIf="capsProducts && capsProducts.length > 0">
-                                <a href="#" onclick="return false;">Gorras <i class="icon anm anm-angle-down-l"></i></a>
+                                <a href="#" onclick="return false;">{{ 'header.categories_menu.caps' | translate }} <i class="icon anm anm-angle-down-l"></i></a>
                                 <div class="megamenu style1">
                                     <ul class="row grid--uniform mmWrapper">
                                         <li class="lvl-1 col-md-3 col-lg-3 w-22">
-                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">Gorras</a>
+                                            <a href="#;" onclick="return false;" class="site-nav lvl-1 menu-title">{{ 'header.categories_menu.caps' | translate }}</a>
                                             <ul class="subLinks">
                                                 <li class="lvl-2">
-                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'gorras', categorieCaps?._id]" class="site-nav lvl-2 text-small">Todas las Gorras</a>
+                                                    <a href="#" onclick="return false;" (click)="closeMegamenu()" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'gorras', categorieCaps?._id]" class="site-nav lvl-2 text-small">{{ 'header.categories_menu.all_caps' | translate }}</a>
                                                 </li>
                                             </ul>
                                         </li>
                                         <li class="lvl-1 col-md-3 col-lg-6 product-col" *ngIf="capsProducts && capsProducts.length > 0">
-                                            <a href="#;" class="site-nav lvl-1 menu-title">Los más vendidos</a>
+                                            <a href="#;" class="site-nav lvl-1 menu-title">{{ 'header.categories_menu.best_sellers' | translate }}</a>
                                             <div class="grid-products weekly-product productSlider gp10 mt-1">
                                                 <ng-container *ngFor="let product of capsProducts?.slice(0, 6)">
                                                     <div class="item">
@@ -256,7 +257,7 @@
                                                                     <img class="blur-up lazyload" [attr.data-src]="product.imagen" [src]="product.imagen" alt="product" title="Product" width="625" height="808" />
                                                                 </a>
                                                                 <div class="product-labels" *ngIf="product.campaing_discount">
-                                                                    <span class="lbl on-sale">Sale</span>
+                                                                    <span class="lbl on-sale">{{ 'header.sale_badge' | translate }}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="product-details text-center">
@@ -581,14 +582,14 @@
                                         d="M18 10.5C18 6.364 14.636 3 10.5 3S3 6.364 3 10.5 6.364 18 10.5 18a7.46 7.46 0 0 0 4.93-1.862l4.716 4.716.708-.708-4.716-4.715A7.46 7.46 0 0 0 18 10.5M10.5 17C6.916 17 4 14.084 4 10.5S6.916 4 10.5 4 17 6.916 17 10.5 14.084 17 10.5 17">
                                     </path>
                                 </svg>
-                                <span class="menubar-label text-uppercase fw-bold">Buscar</span>
+                                <span class="menubar-label text-uppercase fw-bold">{{ 'header.search.label' | translate }}</span>
                             </a>
                             <!-- <span class="HeaderSearchBox_text__gst9O">Buscar</span> -->
                         </div>
                         <div class="search-drawer offcanvas offcanvas-top" tabindex="-1" id="search-drawer">
                             <div class="container">
                                 <div class="search-header d-flex-center justify-content-between mb-3">
-                                    <h3 class="title m-0 text-uppercase">Busca tu outfit developer 🕶</h3>
+                                    <h3 class="title m-0 text-uppercase">{{ 'header.search.title' | translate }}</h3>
                                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                                         aria-label="Close"></button>
                                 </div>
@@ -598,7 +599,7 @@
                                         <div class="d-flex searchField">
                                             <div class="search-category d-none">
                                                 <select class="rgsearch-category rounded-end-0" [(ngModel)]="selected_category" name="category">
-                                                    <option value="0">Todas las categorías</option>
+                                                    <option value="0">{{ 'header.search.all_categories' | translate }}</option>
                                                     <option *ngFor="let categorie of categories" [value]="categorie.id">
                                                         {{ categorie.title }}</option>
                                                 </select>
@@ -609,7 +610,7 @@
                                                     (ngModelChange)="searchProduct()" 
                                                     (keyup.enter)="searchProduct()" 
                                                     #filter
-                                                    name="prod-search" id="prod-search" placeholder="Buscar en LujanDev." value="" 
+                                                    name="prod-search" id="prod-search" placeholder="{{ 'header.search.placeholder' | translate }}" value="" 
                                                     style="border-bottom-left-radius: 8px; border-top-left-radius: 8px;"/>
                                                 <button type="submit"
                                                     class="action search d-flex-justify-center btn rounded-start-0">
@@ -632,7 +633,7 @@
                                         <!--Search products-->
                                         <div class="search-products" *ngIf="products_search && products_search.length > 0">
                                             <div class="search-results-header mb-3 pb-2 border-bottom">
-                                                <h6 class="mb-0 text-muted">{{ products_search.length }} {{ products_search.length === 1 ? 'resultado encontrado' : 'resultados encontrados' }}</h6>
+                                                <h6 class="mb-0 text-muted">{{ products_search.length }} {{ products_search.length === 1 ? ('header.search.result_found' | translate) : ('header.search.results_found' | translate) }}</h6>
                                             </div>
                                             <div class="search-results-list">
                                                 <div class="search-item" *ngFor="let product of products_search" 
@@ -644,7 +645,7 @@
                                                                 [src]="product.imagen" 
                                                                 alt="{{ product.title }}"
                                                                 title="{{ product.title }}" />
-                                                            <span class="search-badge-sale" *ngIf="product.campaing_discount">Sale</span>
+                                                            <span class="search-badge-sale" *ngIf="product.campaing_discount">{{ 'header.sale_badge' | translate }}</span>
                                                         </div>
                                                         <div class="search-item-details text-start">
                                                             <h6 class="search-item-title">{{ product.title }}</h6>
@@ -665,8 +666,8 @@
                                         </div>
                                         <div class="search-no-results text-center py-5" *ngIf="search_product && search_product.length > 1 && (!products_search || products_search.length === 0)">
                                             <i class="icon anm anm-search-l search-empty-icon mb-3"></i>
-                                            <h5 class="mb-2">No encontramos resultados</h5>
-                                            <p class="text-muted">Intenta buscar con otras palabras clave</p>
+                                            <h5 class="mb-2">{{ 'header.search.no_results' | translate }}</h5>
+                                            <p class="text-muted">{{ 'header.search.try_other_keywords' | translate }}</p>
                                         </div>
                                         <!--End Search products-->
                                     </form>
@@ -678,7 +679,7 @@
 
                     <!--Account-->
                     <div class="account-parent iconset" [ngClass]="{'px-2': isMobile}" *ngIf="ourProducts && ourProducts.length > 0">
-                        <div class="account-link" title="Cuenta">
+                        <div class="account-link" title="{{ 'header.account.title' | translate }}">
                             <ng-container *ngIf="isMobile; else desktopLink">
                                 <a [routerLink]="currentUser && currentUser.email ? ['/', country, locale, 'account', 'my-account'] : ['/', country, locale, 'auth', 'login']"
                                     class="text-white">
@@ -700,10 +701,10 @@
                                     </path>
                                 </svg>
                             </ng-template>
-                            <span class="menubar-label text-uppercase fw-bold" *ngIf="currentUser && currentUser.email; else notAuthenticated">Mi cuenta</span>
+                            <span class="menubar-label text-uppercase fw-bold" *ngIf="currentUser && currentUser.email; else notAuthenticated">{{ 'header.list_account.myaccount' | translate }}</span>
                             <ng-template #notAuthenticated>
                                 <span class="menubar-label text-uppercase fw-bold"
-                                    [routerLink]="['/', country, locale, 'auth', 'login']">Iniciar sesión</span>
+                                    [routerLink]="['/', country, locale, 'auth', 'login']">{{ 'header.list_account.login' | translate }}</span>
                             </ng-template>
                         </div>
                         <div id="accountBox">
@@ -714,13 +715,11 @@
                                         *ngIf="currentUser && !currentUser.email; else isAuthenticated">
                                         <button class="btn-dark-ld mb-3 text-uppercase">
                                             <a href="login.html" onclick="return false;" (click)="goLogin()"
-                                                class="text-white"><i class="icon anm anm-sign-in-al d-none"></i>Iniciar
-                                                sesión</a>
+                                                class="text-white"><i class="icon anm anm-sign-in-al d-none"></i>{{ 'header.list_account.login' | translate }}</a>
                                         </button>
-                                        <div class="login-signup-text text-center text-secondary form-text">¿No tienes
-                                            una cuenta? <a href="login.html" onclick="return false;"
+                                        <div class="login-signup-text text-center text-secondary form-text">{{ 'header.account.no_account' | translate }} <a href="login.html" onclick="return false;"
                                                 [routerLink]="['/', country, locale, 'auth', 'register']"
-                                                class="fw-bold text-decoration-underline">Regístrate</a></div>
+                                                class="fw-bold text-decoration-underline">{{ 'header.account.signup' | translate }}</a></div>
                                     </li>
                                     <ng-template #isAuthenticated>
                                         <!-- <h5 class="text-secondary px-3">{{ currentUser && currentUser.name }}</h5> -->
@@ -731,7 +730,7 @@
                                         <a href="#" onclick="return false;"
                                             [routerLink]="['/', country, locale, 'auth', 'login']"
                                             class="d-flex flex-row w-100">
-                                            <span class="flex-grow-1">Lujandev likes you</span>
+                                            <span class="flex-grow-1">{{ 'header.account.lujandev_likes_you' | translate }}</span>
                                             <i class="icon anm anm-chevron-r-right"></i>
                                         </a>
                                     </li>
@@ -739,7 +738,7 @@
                                         <a href="#" onclick="return false;"
                                             [routerLink]="['/', country, locale, 'auth', 'login']"
                                             class="d-flex flex-row w-100">
-                                            <span class="flex-grow-1">Ayuda</span>
+                                            <span class="flex-grow-1">{{ 'header.account.help' | translate }}</span>
                                             <i class="icon anm anm-chevron-r-right"></i>
                                         </a>
                                     </li>
@@ -747,7 +746,7 @@
                                         <a href="my-account.html" onclick="return false;"
                                             [routerLink]="['/', this.country, this.locale, 'account', 'my-account']"
                                             class="d-flex flex-row w-100">
-                                            <span class="flex-grow-1">Mi cuenta</span>
+                                            <span class="flex-grow-1">{{ 'header.list_account.myaccount' | translate }}</span>
                                             <i class="icon anm anm-chevron-r-right"></i>
                                         </a>
                                     </li>
@@ -755,14 +754,14 @@
                                         <a href="register.html" onclick="return false;"
                                             [routerLink]="['/', this.country, this.locale, 'account', 'mypurchases']"
                                             class="d-flex flex-row w-100">
-                                            <span class="flex-grow-1">Mis compras </span>
+                                            <span class="flex-grow-1">{{ 'header.list_account.mypurchases' | translate }} </span>
                                             <i class="icon anm anm-chevron-r-right"></i>
                                         </a>
                                     </li>
                                     <li class="list-group-item d-flex" *ngIf="currentUser?.email">
                                         <a href="login.html" onclick="return false;" (click)="logout()"
                                             class="d-flex flex-row w-100">
-                                            <span class="flex-grow-1">Cerrar sesión</span>
+                                            <span class="flex-grow-1">{{ 'header.list_account.logout' | translate }}</span>
                                             <i class="con anm anm-chevron-r-right"></i>
                                         </a>
                                     </li>
@@ -774,7 +773,7 @@
                     <!--End Account-->
 
                     <!--Wishlist-->
-                    <div class="wishlist-link iconset" [ngClass]="{'px-2': isMobile}" title="Wishlist" *ngIf="ourProducts && ourProducts.length > 0">
+                    <div class="wishlist-link iconset" [ngClass]="{'px-2': isMobile}" title="{{ 'header.wishlist.title' | translate }}" *ngIf="ourProducts && ourProducts.length > 0">
                         <a href="wishlist-style1.html" onclick="return false;"
                             [routerLink]="['/', this.country, this.locale, 'account', 'favorites']">
                             <!-- <i class="hdr-icon icon anm anm-heart-l"></i> -->
@@ -785,7 +784,7 @@
                                     d="m12 21-.4-.4c-.8-.8-1.5-1.5-2.3-2.2-3.7-3.5-6.8-6.5-6.8-10.1 0-2.8 1.9-5.1 4.3-5.3 2-.2 3.7.7 5.2 2.6 1.5-1.9 3.2-2.8 5.2-2.6 2.5.2 4.3 2.5 4.3 5.3 0 3.6-3.2 6.6-6.8 10.1-.8.7-1.5 1.5-2.3 2.2zM7.3 4h-.4C5 4.2 3.5 6 3.5 8.3c0 3.2 3 6.1 6.5 9.4.7.6 1.3 1.3 2 1.9.7-.7 1.3-1.3 2-1.9 3.5-3.3 6.5-6.2 6.5-9.4C20.5 6 19 4.2 17.1 4c-1.7-.2-3.3.7-4.7 2.7l-.4.6-.4-.6C10.3 4.9 8.9 4 7.3 4">
                                 </path>
                             </svg>
-                            <span class="menubar-label text-uppercase fw-bold">Favoritos</span>
+                            <span class="menubar-label text-uppercase fw-bold">{{ 'header.wishlist.title' | translate }}</span>
                             <span class="wishlist-count" *ngIf="listWishlists.length > 0">{{ listWishlists.length
                                 }}</span>
                         </a>
@@ -794,13 +793,13 @@
                     <!--End Wishlist-->
 
                     <!--Minicart-->
-                    <div class="header-cart iconset" [ngClass]="{'px-2': isMobile}" title="Carro" *ngIf="ourProducts && ourProducts.length > 0">
+                    <div class="header-cart iconset" [ngClass]="{'px-2': isMobile}" title="{{ 'header.cart.title' | translate }}" *ngIf="ourProducts && ourProducts.length > 0">
                         <ng-container *ngIf="isMobile; else desktopLinkMiniCart">
                             <a href="cart-style1.html" onclick="return false;"
                                 [routerLink]="currentUser ? ['/', country, locale, 'shop', 'cart'] : ['/', country, locale, 'auth', 'login']"
                                 class="header-cart btn-minicart clr-none">
                                 <i class="hdr-icon icon anm anm-cart-l"></i><span
-                                    class="menubar-label">Carro</span><span class="cart-count"
+                                    class="menubar-label">{{ 'header.cart.title' | translate }}</span><span class="cart-count"
                                     *ngIf="listCarts.length > 0">{{ listCarts.length }}</span>
                             </a>
                         </ng-container>
@@ -808,7 +807,7 @@
                             <a href="#;" class="header-cart btn-minicart clr-none" data-bs-toggle="offcanvas"
                                 data-bs-target="#minicart-drawer">
                                 <i class="hdr-icon icon anm anm-cart-l"></i><span
-                                    class="menubar-label text-uppercase fw-bold">Carro</span><span class="cart-count"
+                                    class="menubar-label text-uppercase fw-bold">{{ 'header.cart.title' | translate }}</span><span class="cart-count"
                                     *ngIf="listCarts.length > 0">{{ listCarts.length }}</span>
                             </a>
                         </ng-template>
@@ -849,36 +848,36 @@
      role="navigation" 
      [attr.aria-hidden]="!isMobileMenuOpen"
      [ngClass]="{'active': isMobileMenuOpen}">
-    <div class="closemobileMenu" (click)="toggleMobileMenu()" role="button" tabindex="0" (keydown.enter)="toggleMobileMenu()" (keydown.space)="toggleMobileMenu()">Menu <i class="icon anm anm-times-l"></i></div>
+    <div class="closemobileMenu" (click)="toggleMobileMenu()" role="button" tabindex="0" (keydown.enter)="toggleMobileMenu()" (keydown.space)="toggleMobileMenu()">{{ 'header.mobile.menu' | translate }} <i class="icon anm anm-times-l"></i></div>
     <ul id="MobileNav" class="mobile-nav">
         <!-- Camisetas Category -->
         <li class="lvl1 parent megamenu">
             <a href="javascript:void(0);" (click)="toggleMobileSubmenu($event)">
-                Camisetas <i class="icon anm anm-angle-down-l"></i>
+                {{ 'header.categories_menu.tshirts' | translate }} <i class="icon anm anm-angle-down-l"></i>
             </a>
             <ul class="lvl-2">
-                <li *ngIf="categorieOurProducts?._id"><a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas-logo-central', categorieOurProducts._id, 'logo-central']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Camisetas Logo Central</a></li>
-                <li *ngIf="categorieOurProducts?._id"><a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas-logo-lateral', categorieOurProducts._id, 'logo-lateral']" (click)="closeMobileMenuAndOverlay()" class="site-nav">Camisetas Logo Lateral</a></li>
-                <li *ngIf="categorieOurProducts?._id"><a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas', categorieOurProducts._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Todas las Camisetas</a></li>
+                <li *ngIf="categorieOurProducts?._id"><a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas-logo-central', categorieOurProducts._id, 'logo-central']" (click)="closeMobileMenuAndOverlay()" class="site-nav">{{ 'header.categories_menu.tshirts_center_logo' | translate }}</a></li>
+                <li *ngIf="categorieOurProducts?._id"><a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas-logo-lateral', categorieOurProducts._id, 'logo-lateral']" (click)="closeMobileMenuAndOverlay()" class="site-nav">{{ 'header.categories_menu.tshirts_side_logo' | translate }}</a></li>
+                <li *ngIf="categorieOurProducts?._id"><a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'camisetas', categorieOurProducts._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">{{ 'header.categories_menu.all_tshirts' | translate }}</a></li>
             </ul>
         </li>
         <!-- Hoddies Category -->
         <li class="lvl1 parent megamenu">
             <a href="javascript:void(0);" (click)="toggleMobileSubmenu($event)">
-                Hoddies <i class="icon anm anm-angle-down-l"></i>
+                {{ 'header.categories_menu.hoodies' | translate }} <i class="icon anm anm-angle-down-l"></i>
             </a>
             <ul class="lvl-2">
-                <li *ngIf="categorieHoodies?._id"><a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'hoddies', categorieHoodies._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Todas las Hoddies</a></li>
-                <li *ngIf="categorieHoodies?._id"><a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'hoddies-con-capucha', categorieHoodies._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">Hoddies con Capucha</a></li>
+                <li *ngIf="categorieHoodies?._id"><a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'hoddies', categorieHoodies._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">{{ 'header.categories_menu.all_hoodies' | translate }}</a></li>
+                <li *ngIf="categorieHoodies?._id"><a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'hoddies-con-capucha', categorieHoodies._id]" (click)="closeMobileMenuAndOverlay()" class="site-nav">{{ 'header.categories_menu.hoodies_with_hood' | translate }}</a></li>
             </ul>
         </li>
         <!-- Mug Category -->
         <li class="lvl1" *ngIf="categorieMugs?._id">
-            <a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'mugs', categorieMugs._id]" (click)="closeMobileMenuAndOverlay()">Mug</a>
+            <a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'mugs', categorieMugs._id]" (click)="closeMobileMenuAndOverlay()">{{ 'header.categories_menu.mugs' | translate }}</a>
         </li>
         <!-- Gorras Category -->
         <li class="lvl1" *ngIf="categorieCaps?._id">
-            <a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'gorras', categorieCaps._id]" (click)="closeMobileMenuAndOverlay()">Gorras</a>
+            <a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products', 'gorras', categorieCaps._id]" (click)="closeMobileMenuAndOverlay()">{{ 'header.categories_menu.caps' | translate }}</a>
         </li>
         <li class="lvl1 parent megamenu d-none"><a href="#">Shop OLD<i class="icon anm anm-angle-down-l"></i></a>
             <ul class="lvl-2">
@@ -1012,15 +1011,15 @@
                     <li *ngIf="!currentUser || !currentUser.email"><a href="login.html"
                             class="d-flex align-items-center text-uppercase" onclick="return false;"
                             [routerLink]="['/', country, locale,  'auth', 'login']"><i
-                                class="icon anm anm-sign-in-al"></i>Iniciar sesión</a></li>
+                                class="icon anm anm-sign-in-al"></i>{{ 'header.list_account.login' | translate }}</a></li>
                     <li *ngIf="!currentUser || !currentUser.email"><a href="register.html"
                             class="d-flex align-items-center text-uppercase" onclick="return false;"
                             [routerLink]="['/', country, locale,  'auth', 'register']"><i
-                                class="icon anm anm-user-al"></i>Registrar</a></li>
+                                class="icon anm anm-user-al"></i>{{ 'auth_profile.register.button_signup' | translate }}</a></li>
                     <li *ngIf="currentUser && !currentUser.user_guest"><a href="my-account.html"
                             class="d-flex align-items-center text-uppercase" onclick="return false;"
                             [routerLink]="['/', country, locale,  'account', 'my-account']"><i
-                                class="icon anm anm-user-cil"></i>Mi cuenta</a></li>
+                                class="icon anm anm-user-cil"></i>{{ 'header.list_account.myaccount' | translate }}</a></li>
                     <!-- <a href="my-account.html" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'my-account']" class="d-flex flex-row w-100">
                         <span class="flex-grow-1">Mi cuenta</span>
                         <i class="icon anm anm-chevron-r-right"></i>

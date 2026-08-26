@@ -22,7 +22,10 @@ export class LocalizationService {
   ];
 
   readonly languageOptions: { [key: string]: { code: string, name: string }[] } = {
-    'es': [{ code: 'es', name: 'Castellano' }],
+    'es': [
+      { code: 'es', name: 'Castellano' },
+      { code: 'en', name: 'English' }
+    ],
     'fr': [{ code: 'fr', name: 'Français' }],
     'it': [{ code: 'it', name: 'Italiano' }],
     'de': [{ code: 'de', name: 'Deutsch' }]

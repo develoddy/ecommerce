@@ -70,6 +70,13 @@ export class AppComponent implements AfterViewInit {
       });
     });
 
+    // 🌐 FASE 1: Configurar ngx-translate desde URL
+    // Establecer español como idioma por defecto (fallback)
+    this.translate.setDefaultLang('es');
+    
+    // Usar el locale inicial extraído de la URL (/es/es o /es/en)
+    this.translate.use(this.localizationService.locale);
+
     // Inicializar valores
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -81,6 +88,18 @@ export class AppComponent implements AfterViewInit {
 
     this.localizationService.locale$.subscribe((locale: string) => {
       this.locale = locale;
+      // 🌐 Sincronizar cambio de locale con ngx-translate
+      // Cuando la URL cambie (ej: navegación de /es/es a /es/en), ngx-translate usará el nuevo idioma
+      this.translate.use(locale).subscribe({
+        next: translations => {
+          console.log('🌐 TRANSLATE LANGUAGE:', locale);
+          console.log('🌐 TRANSLATIONS LOADED:', translations);
+          console.log('🌐 HEADER TAGLINE:', this.translate.instant('header.tagline'));
+        },
+        error: error => {
+          console.error('❌ TRANSLATION LOAD ERROR:', error);
+        }
+      });
     });
   }
 

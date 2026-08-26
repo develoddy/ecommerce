@@ -47,13 +47,7 @@ import { CapGridComponent } from './components/cap-grid/cap-grid.component';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [ HttpClient ]
-      }
-    }),
+    TranslateModule,
   ]
 })
 export class HomeModule { }

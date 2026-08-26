@@ -26,13 +26,7 @@ import { ChatWidgetComponent } from './components/chat-widget/chat-widget.compon
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [ HttpClient ]
-      }
-    }),
+    TranslateModule,
   ],
   exports: [ ChatWidgetComponent ]
 })

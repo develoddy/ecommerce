@@ -39,13 +39,7 @@ import { BrandMessageComponent } from './brand-message/brand-message.component';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [ HttpClient ]
-      }
-    }),
+    TranslateModule,
   ], 
   exports: [
     HeaderComponent,
@@ -62,7 +56,8 @@ import { BrandMessageComponent } from './brand-message/brand-message.component';
     // Exportar módulos de formularios para que estén disponibles en toda la app
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    TranslateModule
   ]
 })
 export class SharedModule { }

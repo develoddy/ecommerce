@@ -34,6 +34,13 @@
         }
     },
     "header": {
+        "tagline": "Bugs. deploys. noches largas. ahora se llevan.",
+        "language_selector": {
+            "castellano": "Castellano"
+        },
+        "country_selector": {
+            "spain": "España"
+        },
         "home":"Inicio",
         "shop": {
             "title": "Compras",
@@ -56,12 +63,54 @@
         "list_account": {
             "myaccount":"Mi cuenta",
             "myorders":"Mis pedidos",
+            "mypurchases":"Mis compras",
             "support":"Soporte",
-            "login":"Entrar",
+            "login":"Iniciar sesión",
             "logout":"Cerrar sesión"
         },
-        "categories":"Categorias"
-        
+        "categories":"Categorias",
+        "categories_menu": {
+            "tshirts": "Camisetas",
+            "hoodies": "Hoddies",
+            "mugs": "Mugs",
+            "caps": "Gorras",
+            "all_tshirts": "Todas las Camisetas",
+            "tshirts_center_logo": "Camisetas Logo Central",
+            "tshirts_side_logo": "Camisetas Logo Lateral",
+            "all_hoodies": "Todas las Hoddies",
+            "hoodies_with_hood": "Hoddies con Capucha",
+            "all_mugs": "Todos los Mugs",
+            "all_caps": "Todas las Gorras",
+            "best_sellers": "Los más vendidos"
+        },
+        "search": {
+            "label": "Buscar",
+            "title": "Busca tu outfit developer 🕶",
+            "placeholder": "Buscar en LujanDev.",
+            "all_categories": "Todas las categorías",
+            "trending": "Tendencias actuales:",
+            "result_found": "resultado encontrado",
+            "results_found": "resultados encontrados",
+            "no_results": "No encontramos resultados",
+            "try_other_keywords": "Intenta buscar con otras palabras clave"
+        },
+        "account": {
+            "title": "Cuenta",
+            "no_account": "¿No tienes una cuenta?",
+            "signup": "Regístrate",
+            "lujandev_likes_you": "Lujandev likes you",
+            "help": "Ayuda"
+        },
+        "wishlist": {
+            "title": "Favoritos"
+        },
+        "cart": {
+            "title": "Carro"
+        },
+        "mobile": {
+            "menu": "Menu"
+        },
+        "sale_badge": "Sale"
     },
     "home": {
         "today":"Hoy",

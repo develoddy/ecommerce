@@ -50,7 +50,6 @@ export function initializePrelaunchConfig(prelaunchService: PrelaunchConfigServi
     FormsModule,
     ReactiveFormsModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
-    TranslateModule.forRoot(),
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {

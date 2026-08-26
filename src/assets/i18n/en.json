@@ -34,9 +34,16 @@
         }
     },
     "header": {
+        "tagline": "Bugs. deploys. late nights. now trending.",
+        "language_selector": {
+            "castellano": "Spanish"
+        },
+        "country_selector": {
+            "spain": "Spain"
+        },
         "home":"Home",
         "shop": {
-            "title": "Compras",
+            "title": "Shop",
             "list": {
                 "":""
             }
@@ -56,11 +63,54 @@
         "list_account": {
             "myaccount":"My Account",
             "myorders":"My Orders",
+            "mypurchases":"My Purchases",
             "support":"Support",
             "login":"Log In",
             "logout":"Log Out"
         },
-        "categories":"Categories"
+        "categories":"Categories",
+        "categories_menu": {
+            "tshirts": "T-Shirts",
+            "hoodies": "Hoodies",
+            "mugs": "Mugs",
+            "caps": "Caps",
+            "all_tshirts": "All T-Shirts",
+            "tshirts_center_logo": "Center Logo T-Shirts",
+            "tshirts_side_logo": "Side Logo T-Shirts",
+            "all_hoodies": "All Hoodies",
+            "hoodies_with_hood": "Hoodies with Hood",
+            "all_mugs": "All Mugs",
+            "all_caps": "All Caps",
+            "best_sellers": "Best Sellers"
+        },
+        "search": {
+            "label": "Search",
+            "title": "Find your developer outfit 🕶",
+            "placeholder": "Search in LujanDev.",
+            "all_categories": "All categories",
+            "trending": "Trending now:",
+            "result_found": "result found",
+            "results_found": "results found",
+            "no_results": "No results found",
+            "try_other_keywords": "Try searching with different keywords"
+        },
+        "account": {
+            "title": "Account",
+            "no_account": "Don't have an account?",
+            "signup": "Sign up",
+            "lujandev_likes_you": "Lujandev likes you",
+            "help": "Help"
+        },
+        "wishlist": {
+            "title": "Favorites"
+        },
+        "cart": {
+            "title": "Cart"
+        },
+        "mobile": {
+            "menu": "Menu"
+        },
+        "sale_badge": "Sale"
     },
     "home": { 
         "today":"Today's",
