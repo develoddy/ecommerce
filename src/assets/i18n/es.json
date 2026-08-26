@@ -71,14 +71,14 @@
         "categories":"Categorias",
         "categories_menu": {
             "tshirts": "Camisetas",
-            "hoodies": "Hoddies",
+            "hoodies": "Hoodies",
             "mugs": "Mugs",
             "caps": "Gorras",
             "all_tshirts": "Todas las Camisetas",
             "tshirts_center_logo": "Camisetas Logo Central",
             "tshirts_side_logo": "Camisetas Logo Lateral",
-            "all_hoodies": "Todas las Hoddies",
-            "hoodies_with_hood": "Hoddies con Capucha",
+            "all_hoodies": "Todas las Hoodies",
+            "hoodies_with_hood": "Hoodies con Capucha",
             "all_mugs": "Todos los Mugs",
             "all_caps": "Todas las Gorras",
             "best_sellers": "Los más vendidos"
@@ -121,6 +121,54 @@
         "users_feedback":"Comentarios de los usuarios",
         "new_arrivals":"Los recién llegados",
 
+        "featured_build": {
+            "label": "FROM THE BUILD / 002",
+            "title": "FUNCIONABA EN<br>LOCALHOST.",
+            "subtitle": "Producción tenía otros planes.",
+            "description": "La clase de cosas que pasan construyendo software y terminan convirtiéndose en un diseño <b>LujanDev</b>.",
+            "cta": "VER DROP 001 →"
+        },
+
+        "collection_banners": {
+            "title": "COMPRA POR CATEGORÍA"
+        },
+
+        "manifesto": {
+            "label": "LUJANDEV / BUILT IN PUBLIC",
+            "title": "NO DISEÑAMOS<br>SOBRE CÓDIGO.<br><br>DISEÑAMOS DESDE<br>LO QUE PASA<br>CONSTRUYÉNDOLO.",
+            "lead": "Bugs reales. Deploys reales. Noches reales.",
+            "copy": "Lo que pasa mientras construimos LujanDev termina formando parte de LujanDev.",
+            "cta": "CONOCE LA HISTORIA →"
+        },
+
+        "brand_message": {
+            "title": "EL BUILD<br>CONTINÚA.",
+            "copy": "Nuevos bugs. Nuevos deploys.<br>Nuevas historias que pueden terminar<br>convertidas en el siguiente diseño.",
+            "newsletter_label": "BUILD LOGS. NUEVOS DROPS. SIN SPAM.",
+            "success": "¡Ya estás dentro del build!",
+            "placeholder": "Introduce tu correo electrónico",
+            "cta": "ÚNETE AL BUILD →"
+        },
+
+        "service_section": {
+            "support": {
+                "title": "Atención real",
+                "description": "Estamos contigo."
+            },
+            "shipping": {
+                "title": "Envío + seguimiento",
+                "description": "Sabes dónde está."
+            },
+            "payment": {
+                "title": "Pago seguro",
+                "description": "Sin historias."
+            },
+            "returns": {
+                "title": "Devoluciones fáciles",
+                "description": "Sin complicaciones."
+            }
+        },
+
         "service_and_quality": {
             "delivery": {
                 "title": "Entrega rápida y segura",
@@ -138,6 +186,41 @@
                 "title": "Soporte de calidad profesional",
                 "description": "Soporte en vivo 24 horas al día, 7 días a la semana."
             }
+        }
+    },
+    "footer": {
+        "explore": {
+            "title": "EXPLORA",
+            "about": "Sobre nosotros",
+            "all_products": "Todos los productos"
+        },
+        "help": {
+            "title": "AYUDA",
+            "shipping": "Envíos",
+            "returns": "Devoluciones",
+            "contact": "Contacto"
+        },
+        "localization": {
+            "title": "PAÍS E IDIOMA",
+            "country": "España",
+            "language": "Castellano"
+        },
+        "social": {
+            "follow_build": "SIGUE EL BUILD"
+        },
+        "copyright": "Todos los derechos reservados",
+        "legal": {
+            "legal_notice": "Aviso Legal",
+            "privacy": "Privacidad",
+            "cookies": "Cookies",
+            "terms": "Condiciones"
+        },
+        "legal_titles": {
+            "legal_notice": "Aviso Legal",
+            "privacy": "Política de Privacidad",
+            "cookies": "Política de Cookies",
+            "terms": "Condiciones Generales de Venta",
+            "odr": "Plataforma de Resolución de Litigios en Línea de la UE"
         }
     },
     "main": {

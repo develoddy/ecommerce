@@ -5,17 +5,12 @@
     <div class="row mb-5 justify-content-center text-center">
       <div class="col-12 col-md-10 col-lg-8">
         <span class="build-continues-label">
-          LUJANDEV / BUILT IN PUBLIC
+          {{ 'home.manifesto.label' | translate }}
         </span>
 
-        <h2 class="text-white mb-3 lh-1 build-continues-title" [ngClass]="{'fs-22': isMobile, 'fs-32': isDesktop}">
-          EL BUILD<br>
-          CONTINÚA.
+        <h2 class="text-white mb-3 lh-1 build-continues-title" [ngClass]="{'fs-22': isMobile, 'fs-32': isDesktop}" [innerHTML]="'home.brand_message.title' | translate">
         </h2>
-        <p class="lead text-white lh-1 build-continues-copy">
-          Nuevos bugs. Nuevos deploys.<br>
-          Nuevas historias que pueden terminar<br>
-          convertidas en el siguiente diseño.
+        <p class="lead text-white lh-1 build-continues-copy" [innerHTML]="'home.brand_message.copy' | translate">
         </p>
       </div>
     </div>
@@ -24,13 +19,13 @@
     <div class="row justify-content-center text-center" *ngIf="isGuest">
       <div class="col-12 col-md-8 col-lg-6">
         <p class="text-white mb-3 lh-1 mb-3 fs-12 build-continues-newsletter-label">
-          BUILD LOGS. NUEVOS DROPS. SIN SPAM.
+          {{ 'home.brand_message.newsletter_label' | translate }}
         </p>
         
         <!-- Success Message -->
         <div class="alert alert-success text-center mb-3" *ngIf="showSuccessMessage">
           <i class="fas fa-check-circle me-2"></i>
-          ¡Ya estás dentro del build!
+          {{ 'home.brand_message.success' | translate }}
         </div>
 
         <!-- Error Message -->
@@ -48,7 +43,7 @@
               [(ngModel)]="email"
               class="form-control bg-transparent border-0 border-bottom border-white text-white rounded-0 shadow-none px-0 pe-5"
               [ngClass]="{'w-100': isMobile}"
-              placeholder="Introduce tu correo electrónico"
+              [placeholder]="'home.brand_message.placeholder' | translate"
               [disabled]="isSubmitting"
               autocomplete="email"
               required
@@ -59,7 +54,7 @@
               [disabled]="isSubmitting"
               style="z-index: 10;"
             >
-              <span *ngIf="!isSubmitting">ÚNETE AL BUILD →</span>
+              <span *ngIf="!isSubmitting">{{ 'home.brand_message.cta' | translate }}</span>
               <span *ngIf="isSubmitting">
                 <i class="fas fa-spinner fa-spin"></i>
               </span>

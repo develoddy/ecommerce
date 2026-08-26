@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 
 interface ServiceFeature {
   icon: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
 }
 
 @Component({
@@ -16,23 +16,23 @@ export class ServiceSectionComponent {
   services: ServiceFeature[] = [
     {
       icon: 'icon anm anm-phone-call-l',
-      title: 'Atención real',
-      description: 'Estamos contigo.'
+      titleKey: 'home.service_section.support.title',
+      descriptionKey: 'home.service_section.support.description'
     },
     {
       icon: 'icon anm anm-truck-l',
-      title: 'Envío + seguimiento',
-      description: 'Sabes dónde está.'
+      titleKey: 'home.service_section.shipping.title',
+      descriptionKey: 'home.service_section.shipping.description'
     },
     {
       icon: 'icon anm anm-credit-card-l',
-      title: 'Pago seguro',
-      description: 'Sin historias.'
+      titleKey: 'home.service_section.payment.title',
+      descriptionKey: 'home.service_section.payment.description'
     },
     {
       icon: 'icon anm anm-redo-l',
-      title: 'Devoluciones fáciles',
-      description: 'Sin complicaciones.'
+      titleKey: 'home.service_section.returns.title',
+      descriptionKey: 'home.service_section.returns.description'
     }
   ];
 

@@ -34,7 +34,7 @@
         }
     },
     "header": {
-        "tagline": "Bugs. deploys. late nights. now trending.",
+        "tagline": "Bugs. deploys. late nights. now wearable.",
         "language_selector": {
             "castellano": "Spanish"
         },
@@ -121,6 +121,54 @@
         "users_feedback":"Users Feedback",
         "new_arrivals":"New Arrivals",
 
+        "featured_build": {
+            "label": "FROM THE BUILD / 002",
+            "title": "IT WORKED ON<br>LOCALHOST.",
+            "subtitle": "Production had other plans.",
+            "description": "The kind of thing that happens while building software and somehow ends up becoming a LujanDev design.",
+            "cta": "EXPLORE DROP 001 →"
+        },
+
+        "collection_banners": {
+            "title": "SHOP BY CATEGORY"
+        },
+
+        "manifesto": {
+            "label": "LUJANDEV / BUILT IN PUBLIC",
+            "title": "WE DON'T DESIGN<br>ABOUT CODE.<br><br>WE DESIGN FROM<br>WHAT HAPPENS<br>WHILE BUILDING IT.",
+            "lead": "Real bugs. Real deploys. Real late nights.",
+            "copy": "What happens while building LujanDev ends up becoming part of LujanDev.",
+            "cta": "DISCOVER THE STORY →"
+        },
+
+        "brand_message": {
+            "title": "THE BUILD<br>CONTINUES.",
+            "copy": "New bugs. New deploys.<br>New stories that might end up<br>as the next design.",
+            "newsletter_label": "BUILD LOGS. NEW DROPS. NO SPAM.",
+            "success": "You're in the build.",
+            "placeholder": "Your email",
+            "cta": "JOIN THE BUILD →"
+        },
+
+        "service_section": {
+            "support": {
+                "title": "Real support",
+                "description": "We're here."
+            },
+            "shipping": {
+                "title": "Shipping + tracking",
+                "description": "Know where it is."
+            },
+            "payment": {
+                "title": "Secure payment",
+                "description": "No hassle."
+            },
+            "returns": {
+                "title": "Easy returns",
+                "description": "No complications."
+            }
+        },
+
         "service_and_quality": {
             "delivery": {
                 "title": "Fast & Secure Delivery",
@@ -138,6 +186,41 @@
                 "title": "Pro Quality Support",
                 "description": "24/7 Live support."
             }
+        }
+    },
+    "footer": {
+        "explore": {
+            "title": "EXPLORE",
+            "about": "About us",
+            "all_products": "All products"
+        },
+        "help": {
+            "title": "HELP",
+            "shipping": "Shipping",
+            "returns": "Returns",
+            "contact": "Contact"
+        },
+        "localization": {
+            "title": "COUNTRY & LANGUAGE",
+            "country": "Spain",
+            "language": "English"
+        },
+        "social": {
+            "follow_build": "FOLLOW THE BUILD"
+        },
+        "copyright": "All rights reserved",
+        "legal": {
+            "legal_notice": "Legal Notice",
+            "privacy": "Privacy",
+            "cookies": "Cookies",
+            "terms": "Terms"
+        },
+        "legal_titles": {
+            "legal_notice": "Legal Notice",
+            "privacy": "Privacy Policy",
+            "cookies": "Cookie Policy",
+            "terms": "Terms and Conditions of Sale",
+            "odr": "EU Online Dispute Resolution Platform"
         }
     },
     "main": {

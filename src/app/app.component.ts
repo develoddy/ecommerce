@@ -90,16 +90,7 @@ export class AppComponent implements AfterViewInit {
       this.locale = locale;
       // 🌐 Sincronizar cambio de locale con ngx-translate
       // Cuando la URL cambie (ej: navegación de /es/es a /es/en), ngx-translate usará el nuevo idioma
-      this.translate.use(locale).subscribe({
-        next: translations => {
-          console.log('🌐 TRANSLATE LANGUAGE:', locale);
-          console.log('🌐 TRANSLATIONS LOADED:', translations);
-          console.log('🌐 HEADER TAGLINE:', this.translate.instant('header.tagline'));
-        },
-        error: error => {
-          console.error('❌ TRANSLATION LOAD ERROR:', error);
-        }
-      });
+      this.translate.use(locale);
     });
   }
 
