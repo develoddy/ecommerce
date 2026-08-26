@@ -186,6 +186,23 @@
                 "title": "Soporte de calidad profesional",
                 "description": "Soporte en vivo 24 horas al día, 7 días a la semana."
             }
+        },
+
+        "product_grid": {
+            "meta": "HECHO DE BUGS,<br>DEPLOYS Y DEMASIADAS HORAS.",
+            "description": "Diseños nacidos de lo que pasa mientras construyes y envías software.",
+            "best_seller": "Mejor Vendido",
+            "available_sizes": "Tallas disponibles:",
+            "out_of_stock": "Sin stock",
+            "select_size": "Seleccionar talla",
+            "add_to_cart": "Añadir al carrito",
+            "quick_view": "Vista rápida",
+            "add_to_favorites": "Añadir a favoritos",
+            "add_to_compare": "Añadir para comparar",
+            "view_drop": "VER DROP 001 →",
+            "explore_category": "Explorar",
+            "product_image_alt": "Camiseta {{product}} — LujanDev Drop 001",
+            "discount_label": "¡Oferta –{{percent}}%!"
         }
     },
     "footer": {

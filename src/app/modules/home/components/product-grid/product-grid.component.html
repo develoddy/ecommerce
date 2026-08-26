@@ -2,9 +2,8 @@
     
      <div class="section-header ms-3 mb-0">
         <h2>DROP 001</h2>
-        <span class="drop-meta">HECHO DE BUGS,<br>
-        DEPLOYS Y DEMASIADAS HORAS.</span>
-        <p class="fw-light lh-1 fs-14">Diseños nacidos de lo que pasa mientras construyes y envías software.</p>
+        <span class="drop-meta" [innerHTML]="'home.product_grid.meta' | translate"></span>
+        <p class="fw-light lh-1 fs-14">{{ 'home.product_grid.description' | translate }}</p>
     </div>
     <div class="row col-row product-options g-1" [ngClass]="getGridClasses()">
     <!-- <div class="product-slider-5items gp10 arwOut5 grid-product" > -->
@@ -25,8 +24,8 @@
                                 <img class="primary blur-up lazyload rounded-0 w-100 h-100" 
                                      data-src="{{ ourProduct.imagen }}" 
                                      src="{{ ourProduct.imagen }}" 
-                                     alt="Camiseta {{ourProduct.title}} — LujanDev Drop 001" 
-                                     title="Camiseta {{ourProduct.title}} — LujanDev Drop 001" 
+                                     [alt]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
+                                     [title]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
                                      width="625" height="608" 
                                      style="object-fit: cover" />
                                 <!-- End Image -->
@@ -35,8 +34,8 @@
                                     <img class="hover blur-up lazyload rounded-0 w-100 h-100" 
                                          data-src="{{ ourProduct.imagen_two }}" 
                                          src="{{ ourProduct.imagen_two }}" 
-                                         alt="Camiseta {{ourProduct.title}} — LujanDev Drop 001" 
-                                         title="Camiseta {{ourProduct.title}} — LujanDev Drop 001" 
+                                         [alt]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
+                                         [title]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
                                          width="625" height="808" 
                                          style="object-fit: cover" />
                                 </ng-container>
@@ -51,14 +50,14 @@
                                 </span>
                                 <!-- Label de mejor vendido -->
                                 <span *ngIf="!ourProduct.hasDiscount && ourProduct.isBestSeller" class="lbl pr-label4">
-                                    Mejor Vendido
+                                    {{ 'home.product_grid.best_seller' | translate }}
                                 </span>
                             </div>
                             <!-- End Product label -->
 
                             <!-- Size Selector - Appears on Hover -->
                             <div class="size-selector" *ngIf="isProductHovered(ourProduct) && getAvailableSizes(ourProduct).length > 0">
-                                <div class="size-label">Tallas disponibles:</div>
+                                <div class="size-label">{{ 'home.product_grid.available_sizes' | translate }}</div>
                                 <div class="size-options">
                                     <button *ngFor="let size of getAvailableSizes(ourProduct)" 
                                             class="size-btn"
@@ -66,7 +65,7 @@
                                             [class.unavailable]="!isSizeAvailable(ourProduct, size)"
                                             [disabled]="!isSizeAvailable(ourProduct, size)"
                                             (click)="onSizeSelect(ourProduct, size)"
-                                            [title]="!isSizeAvailable(ourProduct, size) ? 'Sin stock' : 'Seleccionar talla ' + size">
+                                            [title]="!isSizeAvailable(ourProduct, size) ? ('home.product_grid.out_of_stock' | translate) : (('home.product_grid.select_size' | translate) + ' ' + size)">
                                         {{ size }}
                                     </button>
                                 </div>
@@ -77,19 +76,19 @@
                             <div class="button-set style1" [ngClass]="{ 'd-none': isMobile }">
                                 <!--Cart Button-->
                                 <a href="#" onclick="return false;" class="btn-icon addtocart add-to-cart-modal d-none" (click)="openModalToCart(ourProduct)">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Cart"><i class="icon anm anm-cart-l"></i><span class="text">Añadir al carrito</span></span>
+                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" [title]="'home.product_grid.add_to_cart' | translate"><i class="icon anm anm-cart-l"></i><span class="text">{{ 'home.product_grid.add_to_cart' | translate }}</span></span>
                                 </a>
                                 <!--End Cart Button-->
                                 <!--Quick View Button-->
                                 <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModalToCart(ourProduct)">
-                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick View"><i class="icon anm anm-search-plus-l"></i><span class="text">Vista rápida</span></span>
+                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" [title]="'home.product_grid.quick_view' | translate"><i class="icon anm anm-search-plus-l"></i><span class="text">{{ 'home.product_grid.quick_view' | translate }}</span></span>
                                 </a>
                                 <!--End Quick View Button-->
                                 <!--Wishlist Button-->
-                                <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" title="Añadir a favoritos" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">Añadir a favoritos</span></a>
+                                <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" [title]="'home.product_grid.add_to_favorites' | translate" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">{{ 'home.product_grid.add_to_favorites' | translate }}</span></a>
                                 <!--End Wishlist Button-->
                                 <!--Compare Button-->
-                                <a href="#" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to Compare"><i class="icon anm anm-random-r"></i><span class="text">Añadir para comparar</span></a>
+                                <a href="#" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" [title]="'home.product_grid.add_to_compare' | translate"><i class="icon anm anm-random-r"></i><span class="text">{{ 'home.product_grid.add_to_compare' | translate }}</span></a>
                                 <!--End Compare Button-->
                             </div>
                             <!--End Product Button-->
@@ -103,7 +102,7 @@
                             <!--End Product Vendor-->
                             <!-- Product Name class="text-truncate d-inline-block product-title fw-light" -->
                             <div class="product-name lh-1">
-                                <a [routerLink]="['/',locale,country,'shop','product',ourProduct.slug]" 
+                                <a [routerLink]="['/',country,locale,'shop','product',ourProduct.slug]" 
                                     [queryParams]="getRouterDiscount(ourProduct)" 
                                     class="product-title fw-light" 
                                     itemprop="name">
@@ -168,7 +167,7 @@
                                 <div class="addtocart-btn">
                                     <form class="addtocart" action="#" method="post">
                                         <a href="#addtocart-modal" class="btn btn-md add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
-                                            <i class="icon anm anm-cart-l me-2"></i><span class="text">Añadir al carrito</span>
+                                            <i class="icon anm anm-cart-l me-2"></i><span class="text">{{ 'home.product_grid.add_to_cart' | translate }}</span>
                                         </a>
                                     </form>
                                 </div>
@@ -184,11 +183,11 @@
 
     <div class="view-collection text-center px-3 mt-3 mb-5 mt-md-5 justify-content-right align-item-center d-flex">
         <a *ngIf="categorie"
-            [routerLink]="['/', locale, country, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]" 
+            [routerLink]="['/', country, locale, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]" 
             class="category-link clr-none"
-            [attr.title]="'Explorar ' + categorie.title">
-            <button class="btn-dark-ld fw-light">VER DROP 001 →</button>
-            <!-- <button class="btn-dark-ld fw-light">Explorar {{ categorie.title }}</button> -->
+            [attr.title]="('home.product_grid.explore_category' | translate) + ' ' + categorie.title">
+            <button class="btn-dark-ld fw-light">{{ 'home.product_grid.view_drop' | translate }}</button>
+            <!-- <button class="btn-dark-ld fw-light">{{ 'home.product_grid.explore_category' | translate }} {{ categorie.title }}</button> -->
         </a>
     </div>
 </div>

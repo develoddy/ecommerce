@@ -186,6 +186,23 @@
                 "title": "Pro Quality Support",
                 "description": "24/7 Live support."
             }
+        },
+
+        "product_grid": {
+            "meta": "BUILT FROM BUGS,<br>DEPLOYS AND WAY TOO MANY HOURS.",
+            "description": "Designs born from what happens while building and shipping software.",
+            "best_seller": "Best Seller",
+            "available_sizes": "Available sizes:",
+            "out_of_stock": "Out of stock",
+            "select_size": "Select size",
+            "add_to_cart": "Add to cart",
+            "quick_view": "Quick view",
+            "add_to_favorites": "Add to favorites",
+            "add_to_compare": "Add to compare",
+            "view_drop": "EXPLORE DROP 001 →",
+            "explore_category": "Explore",
+            "product_image_alt": "T-Shirt {{product}} — LujanDev Drop 001",
+            "discount_label": "Deal –{{percent}}%!"
         }
     },
     "footer": {

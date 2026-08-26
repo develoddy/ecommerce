@@ -10,6 +10,7 @@ import { PriceCalculationService } from 'src/app/modules/home/_services/product/
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { URL_FRONTEND } from 'src/app/config/config';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-product-grid',
@@ -57,6 +58,7 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     private cartOrchestratorService: CartOrchestratorService,
     private priceCalculationService: PriceCalculationService,
     public routerActived: ActivatedRoute,
+    private translate: TranslateService
   ) {
     this.routerActived.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  
@@ -427,7 +429,7 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
       const discountPercent = product.campaing_discount.discount;
       if (discountPercent && discountPercent > 0) {
         //console.log('🏷️ getDiscountLabel returning:', `¡Oferta –${discountPercent}%!`, 'for product:', product.title);
-        return `¡Oferta –${discountPercent}%!`;
+        return this.translate.instant('home.product_grid.discount_label', { percent: discountPercent });
       }
     }
 
