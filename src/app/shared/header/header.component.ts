@@ -1150,13 +1150,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    const languagePicker = target.closest('.language-picker');
-    const countryPicker = target.closest('.currency-picker');
+    const languageSelector = target.closest('.language-selector');
+    const countrySelector = target.closest('.country-selector');
     
-    if (!languagePicker) {
+    if (!languageSelector) {
       this.isLanguageDropdownOpen = false;
     }
-    if (!countryPicker) {
+    if (!countrySelector) {
       this.isCountryDropdownOpen = false;
     }
   }
