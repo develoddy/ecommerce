@@ -193,7 +193,7 @@ body {
 .language-selector .option {
   display: flex;
   align-items: center;
-  padding: 0.4rem 0.75rem;
+  padding: 0.4rem 0.95rem;
   font-size: 0.875rem;
   font-weight: 500;
   color: #222;
@@ -202,16 +202,28 @@ body {
   white-space: nowrap;
 }
 
-.country-selector .option:hover,
-.language-selector .option:hover {
+/* Hover y active del trigger completo (incluyendo chevron) */
+.country-selector .default-option:hover,
+.language-selector .default-option:hover,
+.country-selector.active .default-option,
+.language-selector.active .default-option {
   background: #f8f9fa;
+  border-radius: 6px;
 }
 
-/* Texto visible en hover */
+/* Anular background del .option interior del trigger */
+.country-selector .default-option .option:hover,
+.language-selector .default-option .option:hover {
+  background: transparent;
+}
+
+/* Texto visible en hover del trigger completo */
+.country-selector .default-option:hover .country-name,
 .country-selector .option:hover .country-name {
   color: #222;
 }
 
+.language-selector .default-option:hover .language-code,
 .language-selector .option:hover .language-code {
   color: #222;
 }
@@ -244,6 +256,7 @@ body {
 /* Chevron del selector de país */
 .country-selector .default-option::before {
   color: rgba(255, 255, 255, 0.9);
+  right: 10px;
 }
 
 .country-selector:hover .default-option::before,
@@ -253,6 +266,11 @@ body {
 
 .country-selector.active .default-option::before {
   color: #222;
+}
+
+/* Padding para el trigger del selector de país */
+.country-selector .default-option {
+  padding-right: 28px;
 }
 
 /* Idioma - solo código */
@@ -272,6 +290,7 @@ body {
 /* Chevron del selector de idioma */
 .language-selector .default-option::before {
   color: rgba(255, 255, 255, 0.9);
+  right: 10px;
 }
 
 .language-selector:hover .default-option::before,
@@ -281,6 +300,11 @@ body {
 
 .language-selector.active .default-option::before {
   color: #222;
+}
+
+/* Padding para el trigger del selector de idioma */
+.language-selector .default-option {
+  padding-right: 28px;
 }
 
 .language-name {
