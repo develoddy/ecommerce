@@ -241,6 +241,20 @@ body {
   color: #222;
 }
 
+/* Chevron del selector de país */
+.country-selector .default-option::before {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.country-selector:hover .default-option::before,
+.country-selector .default-option:hover::before {
+  color: #222;
+}
+
+.country-selector.active .default-option::before {
+  color: #222;
+}
+
 /* Idioma - solo código */
 .language-code {
   font-size: 0.875rem;
@@ -252,6 +266,20 @@ body {
 
 /* Estado activo: texto oscuro sobre fondo blanco */
 .language-selector.active .language-code {
+  color: #222;
+}
+
+/* Chevron del selector de idioma */
+.language-selector .default-option::before {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.language-selector:hover .default-option::before,
+.language-selector .default-option:hover::before {
+  color: #222;
+}
+
+.language-selector.active .default-option::before {
   color: #222;
 }
 
@@ -375,31 +403,103 @@ body {
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
+  /* Top-header mobile: dos filas centradas */
+  .top-header .row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .top-header-message {
+    font-size: 11px;
+    display: block;
+    padding: 0.25rem 0;
+  }
+  
   .locale-controls-wrapper {
-    gap: 0.4rem;
+    gap: 0.5rem;
+    font-size: 13px;
   }
   
   .country-selector .option,
   .language-selector .option {
-    padding: 0.3rem 0.5rem;
-    font-size: 0.75rem;
+    font-size: 13px;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .country-name,
+  .language-code {
+    font-size: 13px;
   }
   
   .country-flag {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
   }
   
+  /* Dropdowns más anchos en mobile para legibilidad */
+  .country-selector .select-ul {
+    min-width: 230px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  
+  .language-selector .select-ul {
+    min-width: 160px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  
+  .country-selector .select-ul.active,
+  .language-selector .select-ul.active {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (max-width: 576px) {
+  .top-header .row {
+    gap: 0.4rem;
+  }
+  
+  .top-header-message {
+    font-size: 11px;
+    padding: 0.2rem 0;
+  }
+  
+  .locale-controls-wrapper {
+    gap: 1rem;
+  }
+  
+  .country-selector .option,
+  .language-selector .option {
+    padding: 0.35rem 0.5rem;
+    font-size: 13px;
+  }
+  
+  .country-flag {
+    font-size: 1rem;
+  }
+  
+  /* Mantener nombre visible en mobile */
   .country-name {
-    display: none; /* En móvil muy pequeño solo bandera */
+    display: inline-block;
+    font-size: 13px;
   }
   
   .language-code {
-    font-size: 0.75rem;
+    font-size: 13px;
   }
   
   .locale-separator {
     height: 14px;
+  }
+  
+  /* Dropdowns ancho fijo para legibilidad */
+  .country-selector .select-ul {
+    min-width: 230px;
+  }
+  
+  .language-selector .select-ul {
+    min-width: 160px;
   }
 }
 
