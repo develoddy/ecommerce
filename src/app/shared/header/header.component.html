@@ -1038,10 +1038,14 @@
                             class="d-flex align-items-center text-uppercase" onclick="return false;"
                             [routerLink]="['/', country, locale,  'auth', 'register']"><i
                                 class="icon anm anm-user-al"></i>{{ 'auth_profile.register.button_signup' | translate }}</a></li>
-                    <li *ngIf="currentUser && !currentUser.user_guest"><a href="my-account.html"
+                    <li *ngIf="currentUser?.email"><a href="my-account.html"
                             class="d-flex align-items-center text-uppercase" onclick="return false;"
                             [routerLink]="['/', country, locale,  'account', 'my-account']"><i
                                 class="icon anm anm-user-cil"></i>{{ 'header.list_account.myaccount' | translate }}</a></li>
+                    <li *ngIf="currentUser?.email"><a href="login.html"
+                            class="d-flex align-items-center text-uppercase" onclick="return false;"
+                            (click)="logout()"><i
+                                class="icon anm anm-sign-out-al"></i>{{ 'header.list_account.logout' | translate }}</a></li>
                     <!-- <a href="my-account.html" onclick="return false;" [routerLink]="['/', this.locale, this.country, 'account', 'my-account']" class="d-flex flex-row w-100">
                         <span class="flex-grow-1">Mi cuenta</span>
                         <i class="icon anm anm-chevron-r-right"></i>
