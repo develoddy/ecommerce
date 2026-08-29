@@ -1066,6 +1066,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // 🔥 CRITICAL: Limpiar estado del menú móvil antes de destruir componente
+    // Esto previene que body.menuOn persista después de navegación
+    if (this.isMobileMenuOpen) {
+      this.closeMobileMenuAndOverlay();
+    }
+    
+    // 🛡️ Limpieza defensiva: asegurar que body.menuOn siempre se elimine
+    document.body.classList.remove('menuOn');
+    
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     } 
@@ -1227,18 +1236,18 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   closeMobileMenuAndOverlay(): void {
-    const body = document.body;
-    const toggleButton = document.querySelector('.js-mobile-nav-toggle') as HTMLElement;
-    const mobileNavWrapper = document.querySelector('.mobile-nav-wrapper') as HTMLElement;
-    const mobileNavOverlay = document.querySelector('.mobile-nav-overlay') as HTMLElement;
+    // 🔥 CRÍTICO: Limpiar body.menuOn PRIMERO para eliminar overlay ::after inmediatamente
+    document.body.classList.remove('menuOn');
     
     // Update state
     this.isMobileMenuOpen = false;
     
     console.log('Closing mobile menu'); // Debug log
     
-    // Cerrar el menú móvil
-    body.classList.remove('menuOn');
+    // Limpiar elementos del DOM (pueden no existir si *ngIf ya los eliminó)
+    const toggleButton = document.querySelector('.js-mobile-nav-toggle') as HTMLElement;
+    const mobileNavWrapper = document.querySelector('.mobile-nav-wrapper') as HTMLElement;
+    const mobileNavOverlay = document.querySelector('.mobile-nav-overlay') as HTMLElement;
     
     if (mobileNavWrapper) {
       mobileNavWrapper.classList.remove('active');
