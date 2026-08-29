@@ -71,8 +71,8 @@ export class AppComponent implements AfterViewInit {
     });
 
     // 🌐 FASE 1: Configurar ngx-translate desde URL
-    // Establecer español como idioma por defecto (fallback)
-    this.translate.setDefaultLang('es');
+    // Establecer inglés como idioma por defecto (fallback)
+    this.translate.setDefaultLang('en');
     
     // Usar el locale inicial extraído de la URL (/es/es o /es/en)
     this.translate.use(this.localizationService.locale);

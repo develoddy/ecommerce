@@ -8,7 +8,7 @@ import { filter } from 'rxjs/operators';
 })
 export class LocalizationService {
   private countrySubject = new BehaviorSubject<string>('es');
-  private localeSubject = new BehaviorSubject<string>('es');
+  private localeSubject = new BehaviorSubject<string>('en');
   
   country$ = this.countrySubject.asObservable();
   locale$ = this.localeSubject.asObservable();
