@@ -592,6 +592,22 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     return this.priceCalculationService.getPriceParts(price);
   }
 
+  /**
+   * Obtiene la descripción del producto según el locale actual
+   * Fallback: si el idioma actual no tiene descripción, usa el otro idioma
+   */
+  getProductDescription(): string {
+    if (!this.product_selected) {
+      return '';
+    }
+
+    if (this.locale === 'en') {
+      return this.product_selected.description_en || this.product_selected.description_es || '';
+    }
+    
+    return this.product_selected.description_es || this.product_selected.description_en || '';
+  }
+
   private handleProductResponse(resp: any): void {
     if (!resp || !resp.product) {
       console.error('❌ No product data available');

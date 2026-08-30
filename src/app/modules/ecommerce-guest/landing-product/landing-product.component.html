@@ -687,7 +687,7 @@
                         <p class="product-sku fw-light text-muted fs-16">Art. Nº. <span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
                         <div class="product-description mb-3">
                             <div class="row">
-                                <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="product_selected.description_es"></div>
+                                <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="getProductDescription()"></div>
                                 <!-- <div class="col-12 col-sm-12 col-md-4 col-lg-4">
                                     <img [src]="firstImage" [attr.data-zoom-image]="firstImage" alt="image" width="600" height="600" />
                                 </div> -->
