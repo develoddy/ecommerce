@@ -11,8 +11,8 @@
     <section class="product-slider py-5">
         <div class="container-fluid px-0">
             <div class="section-header px-3">
-                <h2 class="text-uppercase">Del mismo estilo</h2>
-                <p class="fw-light lh-1 fs-14"><em>Productos que hacen match con tu setup y tu estilo dev.</em></p>
+                <h2 class="text-uppercase">{{ 'product_detail.related_products.title' | translate }}</h2>
+                <p class="fw-light lh-1 fs-14"><em>{{ 'product_detail.related_products.subtitle' | translate }}</em></p>
             </div>
             <div class="product-slider-5items gp5 arwOut5 grid-product">
                 <ng-container *ngFor="let product of related_products">
@@ -21,7 +21,7 @@
                             <!-- Start Product Image -->
                             <div class="product-image mb-2">
                                 <!-- Etiqueta vertical -->
-                                <span class="product-tag-vertical">Nueva colección</span>
+                                <span class="product-tag-vertical">{{ 'product_detail.related_products.new_collection' | translate }}</span>
 
                                 <a (click)="navigateToProduct.emit({slug: product.slug,discountId: product.campaing_discount?.id})" class="product-img">
                                     <img class="primary blur-up rounded-0 w-100 h-100 lazyloaded" [attr.data-src]="product.imagen" [src]="product.imagen" alt="{{ product.title }}" title="{{ product.title }}" width="625" height="808" />

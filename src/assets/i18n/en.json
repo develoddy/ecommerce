@@ -246,5 +246,96 @@
         "english": "English",
         "input_placeholder": "Introduce text here",
         "introduced_text": "Introduced text is: {{ text }}"
+    },
+    "product_detail": {
+        "loading": "Loading product...",
+        "colors": "Colors",
+        "color_selected": "Color selected",
+        "select_color": "Select color",
+        "error_select_color": "Select a color",
+        "sizes": "Sizes",
+        "size_selected": "Size selected",
+        "select_size": "Select size",
+        "error_select_size": "Select a size",
+        "size_guide": "Size guide",
+        "add_to_cart": "Add to cart",
+        "add_to_favorites": "Add to favorites",
+        "print_on_demand": "Print on Demand: Product made on demand especially for you",
+        "article_number": "Item No.",
+        "quantity": "Quantity",
+        "select": "Select",
+        "add": "Add",
+        "tabs": {
+            "description": "Description",
+            "shipping_returns": "Shipping & Returns",
+            "reviews": "Reviews",
+            "composition": "Composition, origin and care"
+        },
+        "details": {
+            "color": "Color"
+        },
+        "shipping": {
+            "title": "Shipping",
+            "home_delivery": "Home delivery: 3 to 7 business days",
+            "free_shipping": "Shipping included in the product price",
+            "tracking_included": "Tracking included on all shipments",
+            "pod_notice": "Print on Demand: Your products are made on demand especially for you. Production and shipping times may vary slightly.",
+            "free_delivery": "FREE delivery on",
+            "for": "to",
+            "all_spain": "across Spain",
+            "not_available": "Shipping not available",
+            "not_available_address": "for the selected address."
+        },
+        "returns": {
+            "title": "Returns and Refunds",
+            "pod_products": "Print on Demand Products",
+            "pod_warning": "Our products are made especially for you when you place your order, so we do not accept returns for change of mind, incorrect size or personal preferences.",
+            "accepted_claims": "Accepted claims (30-day period):",
+            "defective_product": "Defective product: Damaged, broken or stained print",
+            "shipping_damage": "Shipping damage: Product damaged during transport",
+            "wrong_product": "Wrong product: Incorrect model, color or size",
+            "lost_order": "Lost order: Not received by carrier",
+            "not_accepted": "NO claims accepted for:",
+            "change_mind": "Change of mind about design or product",
+            "wrong_size_choice": "Size chosen incorrectly by customer",
+            "not_expected": "\"Not what I expected\" (correct design but not liked)",
+            "personal_preferences": "Personal or aesthetic preferences",
+            "how_to_claim": "How to manage a claim?",
+            "claim_instructions": "If your order has any of the accepted issues, contact us within 30 days of receipt providing:",
+            "order_number": "Order number",
+            "photos": "Clear photos of the problem",
+            "description": "Detailed description of the defect or error",
+            "resolution": "If the error is confirmed, we will proceed with product reprint or refund, as appropriate."
+        },
+        "reviews": {
+            "title": "Reviews",
+            "avg_rating": "Average rating",
+            "ratings": "Ratings",
+            "no_reviews": "This product has no reviews yet. Be the first to share your opinion!",
+            "customer_reviews": "Customer reviews",
+            "write_review": "Write a review",
+            "email_notice": "Your email address will not be published. Required fields are marked with *",
+            "name": "Name",
+            "email": "Email",
+            "review_title": "Review title",
+            "rating": "Rating",
+            "review_body": "Review body",
+            "characters_remaining": "(1500) characters remaining",
+            "submit_review": "Submit review"
+        },
+        "errors": {
+            "please_select_color": "Please select a color",
+            "please_select_size": "Please select a size"
+        },
+        "related_products": {
+            "title": "More in this style",
+            "subtitle": "Products that match your setup and dev style.",
+            "new_collection": "New collection"
+        },
+        "interest_products": {
+            "title": "Recommended for devs",
+            "subtitle": "Products that fit your passion for code and tech culture.",
+            "new_collection": "New collection"
+        }
     }
 }

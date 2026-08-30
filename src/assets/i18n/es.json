@@ -246,5 +246,96 @@
         "english": "Inglés",
         "input_placeholder": "Introduce texto aquí",
         "introduced_text": "El texto introducido es: {{ text }}"
+    },
+    "product_detail": {
+        "loading": "Cargando producto...",
+        "colors": "Colores",
+        "color_selected": "Color seleccionado",
+        "select_color": "Seleccionar color",
+        "error_select_color": "Selecciona un color",
+        "sizes": "Tallas",
+        "size_selected": "Talla seleccionada",
+        "select_size": "Seleccionar talla",
+        "error_select_size": "Selecciona una talla",
+        "size_guide": "Guía de tallas",
+        "add_to_cart": "Añadir al carrito",
+        "add_to_favorites": "Añadir a favoritos",
+        "print_on_demand": "Print on Demand: Producto fabricado bajo demanda especialmente para ti",
+        "article_number": "Art. Nº.",
+        "quantity": "Cantidad",
+        "select": "Seleccionar",
+        "add": "Añadir",
+        "tabs": {
+            "description": "Descripción",
+            "shipping_returns": "Envíos y devoluciones",
+            "reviews": "Reseñas",
+            "composition": "Composición, origen y cuidados"
+        },
+        "details": {
+            "color": "Color"
+        },
+        "shipping": {
+            "title": "Envíos",
+            "home_delivery": "Envío a domicilio: 3 a 7 días laborables",
+            "free_shipping": "Envío incluido en el precio del producto",
+            "tracking_included": "Seguimiento incluido en todos los envíos",
+            "pod_notice": "Print on Demand: Tus productos se fabrican bajo demanda especialmente para ti. Los tiempos de producción y envío pueden variar ligeramente.",
+            "free_delivery": "Entrega GRATIS el",
+            "for": "para",
+            "all_spain": "en toda España",
+            "not_available": "Envío no disponible",
+            "not_available_address": "para la dirección seleccionada."
+        },
+        "returns": {
+            "title": "Devoluciones y Reembolsos",
+            "pod_products": "Productos fabricados bajo demanda (Print on Demand)",
+            "pod_warning": "Nuestros productos se fabrican especialmente para ti al realizar el pedido, por lo que no aceptamos devoluciones por cambio de opinión, talla incorrecta o preferencias personales.",
+            "accepted_claims": "Reclamaciones aceptadas (plazo de 30 días):",
+            "defective_product": "Producto defectuoso: Impresión dañada, rota o con manchas",
+            "shipping_damage": "Daños en el envío: Producto deteriorado durante el transporte",
+            "wrong_product": "Producto incorrecto: Modelo, color o talla incorrectos",
+            "lost_order": "Pedido perdido: No recibido por el transportista",
+            "not_accepted": "NO se aceptan reclamaciones por:",
+            "change_mind": "Cambio de opinión sobre el diseño o producto",
+            "wrong_size_choice": "Talla elegida incorrectamente por el cliente",
+            "not_expected": "\"No era lo que esperaba\" (diseño correcto pero no gusta)",
+            "personal_preferences": "Preferencias personales o estéticas",
+            "how_to_claim": "¿Cómo gestionar una reclamación?",
+            "claim_instructions": "Si tu pedido presenta alguno de los problemas aceptados, contacta con nosotros dentro de los 30 días posteriores a la recepción proporcionando:",
+            "order_number": "Número de pedido",
+            "photos": "Fotografías claras del problema",
+            "description": "Descripción detallada del defecto o error",
+            "resolution": "En caso de confirmarse el error, procederemos a la reimpresión del producto o reembolso, según corresponda."
+        },
+        "reviews": {
+            "title": "Reseñas",
+            "avg_rating": "Puntuación media",
+            "ratings": "Calificaciones",
+            "no_reviews": "Este producto no tiene reseñas por ahora. ¡Sé el primero en compartir tu opinión!",
+            "customer_reviews": "Reseñas de clientes",
+            "write_review": "Escribe una reseña",
+            "email_notice": "Tu dirección de correo electrónico no será publicada. Los campos obligatorios están marcados con *",
+            "name": "Nombre",
+            "email": "Correo electrónico",
+            "review_title": "Título de la reseña",
+            "rating": "Clasificación",
+            "review_body": "Cuerpo de la reseña",
+            "characters_remaining": "(1500) caracteres restantes",
+            "submit_review": "Enviar reseña"
+        },
+        "errors": {
+            "please_select_color": "Por favor, selecciona un color",
+            "please_select_size": "Por favor, selecciona una talla"
+        },
+        "related_products": {
+            "title": "Del mismo estilo",
+            "subtitle": "Productos que hacen match con tu setup y tu estilo dev.",
+            "new_collection": "Nueva colección"
+        },
+        "interest_products": {
+            "title": "Recomendado para devs",
+            "subtitle": "Productos que encajan con tu pasión por el código y la cultura tech.",
+            "new_collection": "Nueva colección"
+        }
     }
 }

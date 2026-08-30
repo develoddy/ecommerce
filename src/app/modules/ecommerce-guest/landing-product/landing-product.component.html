@@ -6,7 +6,7 @@
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
             <span class="sr-only"></span>
         </div>
-        <h4 class="text-muted mt-3">Cargando producto...</h4>
+        <h4 class="text-muted mt-3">{{ 'product_detail.loading' | translate }}</h4>
     </div>
 </div>
 
@@ -121,15 +121,15 @@
                                onmouseover="this.style.color='#6c757d'"
                                onmouseout="this.style.color='#222'">
                                 <i class="icon anm anm-plus-l me-2"></i>
-                                <span>Colores</span>
+                                <span>{{ 'product_detail.colors' | translate }}</span>
                             </a>
                             <label class="mb-0 lh-1"> <!-- [style.color]="colorError ? '#dc3545' : '#222'" -->
-                                {{ selectedColor ? 'Color seleccionado' : 'Seleccionar color' }} 
+                                {{ selectedColor ? ('product_detail.color_selected' | translate) : ('product_detail.select_color' | translate) }} 
                                 <span class="slVariant ms-1 fw-bold text-uppercase">{{ selectedColor || '' }}</span>
                             </label>
                         </div>
                         <div *ngIf="colorError" class="text-danger mt-1 px-2" style="font-size: 0.8rem;">
-                            <i class="icon anm anm-exclamation-triangle me-1"></i>Selecciona un color
+                            <i class="icon anm anm-exclamation-triangle me-1"></i>{{ 'product_detail.errors.please_select_color' | translate }}
                         </div>
                     </div>
                     <!-- End Swatches Color -->
@@ -145,15 +145,15 @@
                                onmouseover="this.style.color='#6c757d'"
                                onmouseout="this.style.color='#222'">
                                 <i class="icon anm anm-plus-l me-2"></i>
-                                <span>Tallas</span>
+                                <span>{{ 'product_detail.sizes' | translate }}</span>
                             </a>
                             <label class="mb-0 lh-1"> <!-- [style.color]="tallaError ? '#dc3545' : '#222'" -->
-                                {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} 
+                                {{ variedad_selected?.valor == null ? ('product_detail.select_size' | translate) : ('product_detail.size_selected' | translate) }} 
                                 <span class="slVariant ms-1 fw-bold text-uppercase">{{ variedad_selected?.valor || '' }}</span>
                             </label>
                         </div>
                         <div *ngIf="tallaError" class="text-danger mt-1 px-2" style="font-size: 0.8rem;">
-                            <i class="icon anm anm-exclamation-triangle me-1"></i>Selecciona una talla
+                            <i class="icon anm anm-exclamation-triangle me-1"></i>{{ 'product_detail.errors.please_select_size' | translate }}
                         </div>
                     </div>
                     <!-- End Swatches Size -->
@@ -166,7 +166,7 @@
                             class="text-decoration-underline" 
                             (click)="openSizeGuideModal(); $event.stopPropagation(); $event.preventDefault()"
                             >
-                            Guía de tallas
+                            {{ 'product_detail.size_guide' | translate }}
                         </a>
                     </div>
                     <!-- End Guía de Tallas -->
@@ -255,7 +255,7 @@
                                     class="btn-dark-ld" 
                                     (click)="storeCart()">
                                     <i class="icon anm anm-bag-l me-2" style="font-size: 1.2rem;"></i>
-                                    <span>Añadir al carrito</span>
+                                    <span>{{ 'product_detail.add_to_cart' | translate }}</span>
                                 </button>
                             </div>
                             <!-- Product Add -->
@@ -265,7 +265,7 @@
                         <!-- Print on Demand Badge -->
                         <div class="alert alert-info py-2 px-3 mt-2 mb-0 d-flex align-items-center" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.85rem;">
                             <i class="icon anm anm-info-cir me-2"></i>
-                            <span><strong>Print on Demand:</strong> Producto fabricado bajo demanda especialmente para ti</span>
+                            <span [innerHTML]="'product_detail.print_on_demand' | translate"></span>
                         </div>
                         <!-- End Print on Demand Badge -->
                     </div>
@@ -438,11 +438,11 @@
                                          [ngClass]="{'border border-danger rounded p-2': colorError}">
                                         <label class="label d-flex align-items-center fw-normal text-uppercase" 
                                                [style.color]="colorError ? '#dc3545' : ''">
-                                            {{ selectedColor ? 'Color seleccionado' : 'Seleccionar color' }} 
+                                            {{ selectedColor ? ('product_detail.color_selected' | translate) : ('product_detail.select_color' | translate) }} 
                                             <span class="slVariant ms-1 fw-bold">{{ selectedColor || '' }}</span>
                                         </label>
                                         <div *ngIf="colorError" class="text-danger mt-1 mb-2" style="font-size: 0.85rem;">
-                                            <i class="icon anm anm-exclamation-triangle me-1"></i>Por favor, selecciona un color
+                                            <i class="icon anm anm-exclamation-triangle me-1"></i>{{ 'product_detail.errors.please_select_color' | translate }}
                                         </div>
                                         <ul class="variants-clr swatches d-flex-center pt-1 clearfix" style="gap: 10px;">
                                             <ng-container *ngFor="let color of coloresDisponibles">
@@ -477,7 +477,7 @@
                                          [ngClass]="{'border border-danger rounded p-2': tallaError}">
                                         <label class="label d-flex align-items-center justify-content-between fw-normal text-uppercase mb-2"
                                                [style.color]="tallaError ? '#dc3545' : ''">
-                                            {{ variedad_selected?.valor == null ? 'Seleccionar talla' : 'Talla seleccionada' }} 
+                                            {{ variedad_selected?.valor == null ? ('product_detail.select_size' | translate) : ('product_detail.size_selected' | translate) }} 
                                             <span class="slVariant ms-1 fw-light">{{ variedad_selected?.valor || '' }}</span>
                                             <div *ngIf="hasSizeGuides()" class="p-2 align-self-center d-flex flex-column">
                                                 <a 
@@ -486,7 +486,7 @@
                                                     class="text-decoration-underline" 
                                                     (click)="openSizeGuideModal(); $event.stopPropagation(); $event.preventDefault()"
                                                     >
-                                                    Guía de tallas
+                                                    {{ 'product_detail.size_guide' | translate }}
                                                 </a>
                                                 <!-- <button type="button" 
                                                         class="btn btn-outline-primary btn-sm"
@@ -497,7 +497,7 @@
                                             </div>
                                         </label>
                                         <div *ngIf="tallaError" class="text-danger mt-1 mb-2" style="font-size: 0.85rem;">
-                                            <i class="icon anm anm-exclamation-triangle me-1"></i>Por favor, selecciona una talla
+                                            <i class="icon anm anm-exclamation-triangle me-1"></i>{{ 'product_detail.errors.please_select_size' | translate }}
                                         </div>
                                         <ul class="variants-size size-swatches d-flex pt-1 clearfix" 
                                             style="gap: 8px;">
@@ -577,7 +577,7 @@
                                                 (click)="storeCart()"
                                                 style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
                                             <i class="icon anm anm-bag-l me-2" style="font-size: 1.2rem;"></i>
-                                            <span>Añadir al carrito</span>
+                                            <span>{{ 'product_detail.add_to_cart' | translate }}</span>
                                         </button>
                                     </div>
                                     <!-- Product Add -->
@@ -587,7 +587,7 @@
                                 <!-- Print on Demand Badge -->
                                 <div class="alert alert-info py-2 px-3 mt-3 mb-0 d-flex align-items-center" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.85rem;">
                                     <i class="icon anm anm-info-cir me-2"></i>
-                                    <span><strong>Print on Demand:</strong> Producto fabricado bajo demanda especialmente para ti</span>
+                                    <span [innerHTML]="'product_detail.print_on_demand' | translate"></span>
                                 </div>
                                 <!-- End Print on Demand Badge -->
 
@@ -601,7 +601,7 @@
 
                                 <!-- Product Info link -->
                                 <p class="infolinks d-flex-center justify-content-between d-none">
-                                    <a class="text-link wishlist fw-light" href="#" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>Añadir a favoritos</span></a>
+                                    <a class="text-link wishlist fw-light" href="#" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l me-2"></i> <span>{{ 'product_detail.add_to_favorites' | translate }}</span></a>
                                 </p>
                                 <!-- End Product Info link -->
                             </form>
@@ -613,13 +613,13 @@
                                 <div class="alert alert-success py-2 px-3 mb-3" style="border-left: 4px solid #28a745; border-radius: 6px;">
                                     <i class="icon anm anm-truck-l me-2" style="font-size: 1.3rem;"></i>
                                     <strong style="font-size: 0.95rem;">
-                                        Entrega GRATIS el {{ fechaEntregaMin }}
+                                        {{ 'product_detail.shipping.free_delivery' | translate }} {{ fechaEntregaMin }}
                                     </strong>
                                     <ng-container *ngIf="!isFallbackAddress; else generic">
-                                        <span class="d-block" style="font-size: 0.85rem;">para <span class="text-decoration-underline">{{ address }}</span></span>
+                                    <span class="d-block" style="font-size: 0.85rem;">{{ 'product_detail.shipping.for' | translate }} <span class="text-decoration-underline">{{ address }}</span></span>
                                     </ng-container>
                                     <ng-template #generic>
-                                        <span class="d-block" style="font-size: 0.85rem;">en toda España</span>
+                                        <span class="d-block" style="font-size: 0.85rem;">{{ 'product_detail.shipping.all_spain' | translate }}</span>
                                     </ng-template>
                                 </div>
                             </div>
@@ -627,8 +627,8 @@
                             <div class="shippingMsg featureText" *ngIf="shippingRate === 0">
                                 <div class="alert alert-warning py-2 px-3 mb-3" style="border-left: 4px solid #ffc107; border-radius: 6px;">
                                     <i class="icon anm anm-exclamation-triangle me-2" style="font-size: 1.2rem;"></i>
-                                    <strong style="font-size: 0.95rem;">Envío no disponible</strong>
-                                    <span class="d-block" style="font-size: 0.85rem;">para la dirección seleccionada.</span>
+                                    <strong style="font-size: 0.95rem;">{{ 'product_detail.shipping.not_available' | translate }}</strong>
+                                    <span class="d-block" style="font-size: 0.85rem;">{{ 'product_detail.shipping.not_available_address' | translate }}</span>
                                 </div>
                             </div>
                             <div class="freeShipMsg featureText d-none" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}30.00</span></b> Más para envío gratis</div>
@@ -659,24 +659,24 @@
                 <ul class="product-tabs style2 list-unstyled d-flex-wrap d-flex-justify-start d-none d-md-flex" style="border-bottom: 2px solid #e9ecef;">
                     <li rel="description" class="active">
                         <a class="tablink fw-semibold d-flex align-items-center" style="letter-spacing: 0.5px; padding: 12px 24px; transition: all 0.3s ease;">
-                            <i class="icon anm anm-file-text-o me-2"></i>Descripción
+                            <i class="icon anm anm-file-text-o me-2"></i>{{ 'product_detail.tabs.description' | translate }}
                         </a>
                     </li>
                     <li rel="shipping-return">
                         <a class="tablink fw-semibold d-flex align-items-center" style="letter-spacing: 0.5px; padding: 12px 24px; transition: all 0.3s ease;">
-                            <i class="icon anm anm-truck-l me-2"></i>Envíos y devoluciones
+                            <i class="icon anm anm-truck-l me-2"></i>{{ 'product_detail.tabs.shipping_returns' | translate }}
                         </a>
                     </li>
                     <li rel="reviews">
                         <a class="tablink fw-semibold d-flex align-items-center" style="letter-spacing: 0.5px; padding: 12px 24px; transition: all 0.3s ease;">
-                            <i class="icon anm anm-star me-2"></i>Reseñas
+                            <i class="icon anm anm-star me-2"></i>{{ 'product_detail.tabs.reviews' | translate }}
                         </a>
                     </li>
                 </ul>
                 <div class="tab-container">
                     <!-- Description -->
                     <h3 class="tabs-ac-style d-md-none" rel="description" style="font-weight: 600; letter-spacing: 0.5px;">
-                        <i class="icon anm anm-file-text-o me-2"></i>Descripción
+                        <i class="icon anm anm-file-text-o me-2"></i>{{ 'product_detail.tabs.description' | translate }}
                     </h3>
                     <div id="description" class="tab-content">
                         <h2 class="fw-semibold mb-2" 
@@ -684,7 +684,7 @@
                             style="color: #222; letter-spacing: 0.3px; font-size: 1.5rem;">
                             {{ product_selected.title }}
                         </h2>
-                        <p class="product-sku fw-light text-muted fs-16">Art. Nº. <span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
+                        <p class="product-sku fw-light text-muted fs-16">{{ 'product_detail.article_number' | translate }} <span class="text fw-light" itemprop="sku">{{ product_selected.sku }}</span></p>
                         <div class="product-description mb-3">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-8 col-lg-8" [innerHTML]="getProductDescription()"></div>
@@ -697,7 +697,7 @@
                     <!-- End Description -->
 
                     <!-- Additional Information -->
-                    <h3 class="tabs-ac-style d-md-none d-none" rel="additionalInformation">Composición, origen y cuidados</h3>
+                    <h3 class="tabs-ac-style d-md-none d-none" rel="additionalInformation">{{ 'product_detail.tabs.composition' | translate }}</h3>
                     <div id="additionalInformation" class="tab-content">
                         <div class="product-description">
                             <div class="row">
@@ -740,39 +740,39 @@
 
                     <!-- Shipping &amp; Return -->
                     <h3 class="tabs-ac-style d-md-none" rel="shipping-return" style="font-weight: 600; letter-spacing: 0.5px;">
-                        <i class="icon anm anm-truck-l me-2"></i>Envío y devolucíones
+                        <i class="icon anm anm-truck-l me-2"></i>{{ 'product_detail.tabs.shipping_returns' | translate }}
                     </h3>
                     <div id="shipping-return" class="tab-content">
                         <div class="d-flex flex-column">
                             <!-- Sección Envíos -->
                             <div class="border-bottom mb-4 pb-3">
                                 <h4 class="text-uppercase fw-bold mb-3" style="color: #222; letter-spacing: 1px; font-size: 1.1rem;">
-                                    <i class="icon anm anm-truck-l me-2"></i>Envíos
+                                    <i class="icon anm anm-truck-l me-2"></i>{{ 'product_detail.shipping.title' | translate }}
                                 </h4>
                                 <div class="d-flex flex-column gap-2">
                                     <div class="d-flex align-items-center">
                                         <i class="icon anm anm-check-cil me-2" style="color: #28a745;"></i>
-                                        <span><strong>Envío a domicilio:</strong> 3 a 7 días laborables</span>
+                                        <span [innerHTML]="'product_detail.shipping.home_delivery' | translate"></span>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <i class="icon anm anm-check-cil me-2" style="color: #28a745;"></i>
-                                        <span><strong>Envío incluido</strong> en el precio del producto</span>
+                                        <span [innerHTML]="'product_detail.shipping.free_shipping' | translate"></span>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <i class="icon anm anm-check-cil me-2" style="color: #28a745;"></i>
-                                        <span>Seguimiento incluido en todos los envíos</span>
+                                        <span>{{ 'product_detail.shipping.tracking_included' | translate }}</span>
                                     </div>
                                 </div>
                                 <div class="alert alert-info mt-3 py-2 px-3 mb-0" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.9rem;">
                                     <i class="icon anm anm-info-cir me-2"></i>
-                                    <strong>Print on Demand:</strong> Tus productos se fabrican bajo demanda especialmente para ti. Los tiempos de producción y envío pueden variar ligeramente.
+                                    <span [innerHTML]="'product_detail.shipping.pod_notice' | translate"></span>
                                 </div>
                             </div>
 
                             <!-- Sección Devoluciones y Reembolsos -->
                             <div class="mb-3">
                                 <h4 class="text-uppercase fw-bold mb-3" style="color: #222; letter-spacing: 1px; font-size: 1.1rem;">
-                                    <i class="icon anm anm-sync-ar me-2"></i>Devoluciones y Reembolsos
+                                    <i class="icon anm anm-sync-ar me-2"></i>{{ 'product_detail.returns.title' | translate }}
                                 </h4>
                                 
                                 <!-- Advertencia importante -->
@@ -780,9 +780,8 @@
                                     <div class="d-flex align-items-start">
                                         <i class="icon anm anm-exclamation-triangle me-2 mt-1" style="font-size: 1.2rem;"></i>
                                         <div>
-                                            <strong class="d-block mb-1">Productos fabricados bajo demanda (Print on Demand)</strong>
-                                            <p class="mb-0" style="font-size: 0.9rem;">
-                                                Nuestros productos se fabrican especialmente para ti al realizar el pedido, por lo que <strong>no aceptamos devoluciones por cambio de opinión, talla incorrecta o preferencias personales</strong>.
+                                            <strong class="d-block mb-1">{{ 'product_detail.returns.pod_products' | translate }}</strong>
+                                            <p class="mb-0" style="font-size: 0.9rem;" [innerHTML]="'product_detail.returns.pod_warning' | translate">
                                             </p>
                                         </div>
                                     </div>
@@ -791,20 +790,20 @@
                                 <!-- Casos aceptados -->
                                 <div class="mb-3">
                                     <h5 class="fw-semibold mb-2" style="color: #222; font-size: 1rem;">
-                                        ✅ Reclamaciones aceptadas (plazo de 30 días):
+                                        ✅ {{ 'product_detail.returns.accepted_claims' | translate }}
                                     </h5>
                                     <ul class="mb-0" style="line-height: 1.8;">
-                                        <li><strong>Producto defectuoso:</strong> Impresión dañada, rota o con manchas</li>
-                                        <li><strong>Daños en el envío:</strong> Producto deteriorado durante el transporte</li>
-                                        <li><strong>Producto incorrecto:</strong> Modelo, color o talla incorrectos</li>
-                                        <li><strong>Pedido perdido:</strong> No recibido por el transportista</li>
+                                        <li [innerHTML]="'product_detail.returns.defective_product' | translate"></li>
+                                        <li [innerHTML]="'product_detail.returns.shipping_damage' | translate"></li>
+                                        <li [innerHTML]="'product_detail.returns.wrong_product' | translate"></li>
+                                        <li [innerHTML]="'product_detail.returns.lost_order' | translate"></li>
                                     </ul>
                                 </div>
 
                                 <!-- Casos NO aceptados -->
                                 <div class="mb-3">
                                     <h5 class="fw-semibold mb-2" style="color: #dc3545; font-size: 1rem;">
-                                        ❌ NO se aceptan reclamaciones por:
+                                        ❌ {{ 'product_detail.returns.not_accepted' | translate }}
                                     </h5>
                                     <ul class="mb-0" style="line-height: 1.8; color: #6c757d;">
                                         <li>Cambio de opinión sobre el diseño o producto</li>
@@ -817,18 +816,16 @@
                                 <!-- Proceso de reclamación -->
                                 <div class="border-top pt-3 mt-3">
                                     <h5 class="fw-semibold mb-2" style="color: #222; font-size: 1rem;">
-                                        📧 ¿Cómo gestionar una reclamación?
+                                        📧 {{ 'product_detail.returns.how_to_claim' | translate }}
                                     </h5>
-                                    <p class="mb-2" style="font-size: 0.95rem;">
-                                        Si tu pedido presenta alguno de los problemas aceptados, contacta con nosotros dentro de los <strong>30 días posteriores a la recepción</strong> proporcionando:
+                                    <p class="mb-2" style="font-size: 0.95rem;" [innerHTML]="'product_detail.returns.claim_instructions' | translate">
                                     </p>
                                     <ul style="line-height: 1.8;">
-                                        <li>Número de pedido</li>
-                                        <li>Fotografías claras del problema</li>
-                                        <li>Descripción detallada del defecto o error</li>
+                                        <li>{{ 'product_detail.returns.order_number' | translate }}</li>
+                                        <li>{{ 'product_detail.returns.photos' | translate }}</li>
+                                        <li>{{ 'product_detail.returns.description' | translate }}</li>
                                     </ul>
-                                    <p class="mb-0" style="font-size: 0.9rem; color: #6c757d;">
-                                        En caso de confirmarse el error, procederemos a la <strong>reimpresión del producto o reembolso</strong>, según corresponda.
+                                    <p class="mb-0" style="font-size: 0.9rem; color: #6c757d;" [innerHTML]="'product_detail.returns.resolution' | translate">
                                     </p>
                                 </div>
                             </div>
@@ -838,7 +835,7 @@
 
                     <!-- Review -->
                     <h3 class="tabs-ac-style d-md-none" rel="reviews" style="font-weight: 600; letter-spacing: 0.5px;">
-                        <i class="icon anm anm-star me-2"></i>Reseñas
+                        <i class="icon anm anm-star me-2"></i>{{ 'product_detail.tabs.reviews' | translate }}
                     </h3>
                     <div id="reviews" class="tab-content">
                         <div class="row">
@@ -847,7 +844,7 @@
                                     <div class="avg-rating d-flex-center mb-3">
                                         <h4 class="avg-mark">5.0</h4>
                                         <div class="avg-content ms-3">
-                                            <p class="text-rating">Puntuación media</p>
+                                            <p class="text-rating">{{ 'product_detail.reviews.avg_rating' | translate }}</p>
                                             <div class="ratings-full product-review">
                                                 <a class="reviewLink d-flex-center" href="#reviews"><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><span class="caption ms-2">24 Calificaciones</span></a>
                                             </div>
@@ -899,17 +896,17 @@
                                             <div class="text-center">
                                                 <i class="icon anm anm-comments-l mb-3" style="font-size: 3rem; color: #0dcaf0;"></i>
                                                 <h4 class="mb-2" style="color: #222; font-weight: 600; letter-spacing: 0.5px;">
-                                                    <i class="icon anm anm-star me-2"></i>Reseñas
+                                                    <i class="icon anm anm-star me-2"></i>{{ 'product_detail.tabs.reviews' | translate }}
                                                 </h4>
                                                 <p class="mb-0" style="color: #6c757d; font-size: 1rem;">
-                                                    Este producto no tiene reseñas por ahora. ¡Sé el primero en compartir tu opinión!
+                                                    {{ 'product_detail.reviews.no_reviews' | translate }}
                                                 </p>
                                             </div>
                                         </div>
                                     </ng-container>
                                     <ng-template #showReview>
                                         <h3 class="spr-form-title mb-3" style="color: #222; font-weight: 600; letter-spacing: 0.5px; font-size: 1.3rem;">
-                                            <i class="icon anm anm-comments-l me-2"></i>Reseñas de clientes
+                                            <i class="icon anm anm-comments-l me-2"></i>{{ 'product_detail.reviews.customer_reviews' | translate }}
                                         </h3>
                                         <div class="review-inner">
                                             <ng-container *ngFor="let REVIEW of REVIEWS">
@@ -1726,7 +1723,7 @@
                 <div class="stickyOptions position-relative" [ngClass]="{'border border-danger': tallaError}">
                     <!-- <div class="selectedOpt text-uppercase fw-light">Seleccionar</div> -->
                      <div class="selectedOpt text-uppercase fw-light" (click)="toggleOptions()">
-                        {{ variedad_selected ? variedad_selected.color + ' / ' + variedad_selected.valor : 'Seleccionar' }}
+                        {{ variedad_selected ? variedad_selected.color + ' / ' + variedad_selected.valor : ('product_detail.select' | translate) }}
                     </div>
                     <ul [ngClass]="{'d-block': showOptions, 'd-none': !showOptions}">
                         <li 
@@ -1778,7 +1775,7 @@
                             (click)="storeCart()"
                             style="letter-spacing: 0.5px; border-radius: 6px; transition: all 0.3s ease;">
                         <i class="icon anm anm-bag-l me-2"></i>
-                        <span>Añadir</span>
+                        <span>{{ 'product_detail.add' | translate }}</span>
                     </button>
                 </div>
 
