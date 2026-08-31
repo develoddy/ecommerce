@@ -389,12 +389,17 @@ export class AnalyticsService {
     this.trackEvent('view_item', {
       event_category: 'ecommerce',
       event_label: productName,
+      value: value,
       custom_parameters: {
-        item_id: productId,
-        item_name: productName,
-        item_category: category,
         currency: 'EUR',
-        value: value
+        value: value,
+        items: [{
+          item_id: productId,
+          item_name: productName,
+          item_category: category,
+          price: value,
+          quantity: 1
+        }]
       }
     });
 

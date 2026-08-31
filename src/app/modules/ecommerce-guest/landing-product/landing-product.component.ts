@@ -26,6 +26,7 @@ import { LocalizationService } from 'src/app/services/localization.service';
 import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { SeoService } from 'src/app/services/seo.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 // 📏 SIZE GUIDES IMPORTS
 import { 
@@ -155,6 +156,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   showOptions: boolean = false;
   showStickyCart = false;
   featuredImage: string = '';
+  private lastTrackedProductId: string | null = null;
 
 
   constructor(
@@ -172,6 +174,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     private localizationService: LocalizationService,
     public loader: LoaderService,
     private priceCalculationService: PriceCalculationService,
+    private analyticsService: AnalyticsService,
     // Nuevos servicios especializados
     public productDisplayService: ProductDisplayService,
     public cartApiService: CartApiService,
@@ -646,6 +649,16 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       // Configurar servicios con el producto seleccionado
       this.initializeProductServices();
       this.sortVariedades();
+
+      if (this.product_selected._id && this.product_selected._id !== this.lastTrackedProductId) {
+        this.analyticsService.trackProductView(
+          this.product_selected._id,
+          this.product_selected.title || this.product_selected.name,
+          this.product_selected.categorie?.title,
+          this.getFinalPrice()
+        );
+        this.lastTrackedProductId = this.product_selected._id;
+      }
 
       this.ngZone.runOutsideAngular(() => {
         setTimeout(() => {
