@@ -20,6 +20,7 @@ import { CheckoutService } from '../../_services/checkoutService';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { Location } from '@angular/common';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -107,7 +108,8 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     private checkoutService: CheckoutService,
     private localizationService: LocalizationService,
     private priceCalculationService: PriceCalculationService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private analyticsService: AnalyticsService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -326,6 +328,9 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
           this.checkoutService.setSaleSuccess(true);
           
           this.successPayStripe();
+
+          // GA4 purchase (aislado): solo aquí, con una venta real confirmada por Stripe
+          this.trackPurchaseAnalytics(resp.sale, this.saleDetails);
         } else {
           // No hay venta aún, reintentar
           setTimeout(() => this.fetchSaleWithRetry(sessionId, tries - 1, delay), delay);
@@ -340,6 +345,38 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  /**
+   * Helper exclusivo de Analytics: dispara GA4 purchase una sola vez por sale.id (Stripe),
+   * sin afectar ningún cálculo ni flujo existente de la compra.
+   */
+  private trackPurchaseAnalytics(sale: any, saleDetails: any[]): void {
+    if (!sale?.id) {
+      return;
+    }
+
+    const dedupeKey = `ga4_purchase_${sale.id}`;
+    if (localStorage.getItem(dedupeKey)) {
+      return;
+    }
+
+    const items = (saleDetails || []).map((detail: any) => ({
+      item_id: detail.product?.id,
+      item_name: detail.product?.title,
+      item_category: detail.product?.category?.title,
+      price: this.getFinalUnitPrice(detail),
+      quantity: detail.cantidad
+    }));
+
+    const value = parseFloat(
+      items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0).toFixed(2)
+    );
+
+    this.analyticsService.whenReady().then(() => {
+      this.analyticsService.trackPurchase(String(sale.id), value, sale.currency_total || 'EUR', items);
+      localStorage.setItem(dedupeKey, '1');
+    });
   }
 
   successPayStripe() {
