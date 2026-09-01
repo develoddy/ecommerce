@@ -28,6 +28,10 @@ export class AnalyticsService {
   private ga4Initialized = false;
   private metaPixelInitialized = false;
   private isBrowser: boolean;
+
+  // Resuelve cuando GA4 termina de inicializarse (sin polling ni timeout fijo)
+  private ga4ReadyResolve!: () => void;
+  private ga4ReadyPromise: Promise<void> = new Promise(resolve => { this.ga4ReadyResolve = resolve; });
   
   // 🔧 IDs de configuración - CAMBIAR POR LOS REALES
   private readonly GA4_MEASUREMENT_ID = 'G-VKXW9PHC3B'; 
@@ -38,6 +42,16 @@ export class AnalyticsService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
+    if (!this.isBrowser) {
+      this.ga4ReadyResolve();
+    }
+  }
+
+  /**
+   * Promesa que resuelve cuando GA4 está listo para recibir eventos (o de inmediato si ya lo está)
+   */
+  whenReady(): Promise<void> {
+    return this.ga4Initialized ? Promise.resolve() : this.ga4ReadyPromise;
   }
 
   async initializeAnalytics(): Promise<void> {
@@ -193,6 +207,7 @@ export class AnalyticsService {
       });
       
       this.ga4Initialized = true;
+      this.ga4ReadyResolve();
       console.log('✅ Google Analytics 4 inicializado correctamente con RGPD compliance');
       
     } catch (error) {
@@ -450,6 +465,24 @@ export class AnalyticsService {
       value: value,
       currency: 'EUR',
       num_items: quantity
+    });
+  }
+
+  /**
+   * Tracking de visualización del carrito
+   * @param value Valor total real del carrito
+   * @param items Items del carrito
+   */
+  trackViewCart(value: number, items: GAEcommerceItem[] = []) {
+    // GA4 - View Cart Event
+    this.trackEvent('view_cart', {
+      event_category: 'ecommerce',
+      value: value,
+      custom_parameters: {
+        currency: 'EUR',
+        value: value,
+        items: items
+      }
     });
   }
 

@@ -10,6 +10,7 @@ import { LocalizationService } from 'src/app/services/localization.service';
 import { PriceCalculationService } from '../../home/_services/product/price-calculation.service';
 import { LoaderService } from '../../home/_services/product/loader.service';
 import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 declare var $:any;
 declare function HOMEINITTEMPLATE($: any): any;
@@ -83,7 +84,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     private checkoutService: CheckoutService,
     private localizationService: LocalizationService,
     private priceCalculationService: PriceCalculationService,
-    private dynamicRouter: DynamicRouterService
+    private dynamicRouter: DynamicRouterService,
+    private analyticsService: AnalyticsService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -106,10 +108,37 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     this.subscribeToLocalization();
     this.subscribeToCheckoutEvents();
     this.loadCurrentDataCart();
+    this.trackBeginCheckoutOnce();
     this.verifyAuthenticatedUser();
     this.initializeExternalScripts();
     this.watchRouteChanges();
     this.updateCurrentStep();
+  }
+
+  /**
+   * Dispara GA4 begin_checkout una sola vez, con el primer carrito no vacío recibido
+   */
+  private trackBeginCheckoutOnce(): void {
+    this._cartService.currenteDataCart$.pipe(
+      filter(carts => carts && carts.length > 0),
+      take(1)
+    ).subscribe((carts: any[]) => {
+      const items = carts.map((cart: any) => ({
+        item_id: cart.product._id,
+        item_name: cart.product.title || cart.product.name,
+        item_category: cart.product.categorie?.title,
+        price: this.getAnalyticsFinalUnitPrice(cart),
+        quantity: cart.cantidad
+      }));
+
+      const value = parseFloat(
+        carts.reduce((sum: number, cart: any) => sum + (this.getAnalyticsFinalUnitPrice(cart) * cart.cantidad), 0).toFixed(2)
+      );
+
+      this.analyticsService.whenReady().then(() => {
+        this.analyticsService.trackBeginCheckout(value, items);
+      });
+    });
   }
 
   private subscribeToLocalization(): void {
@@ -227,6 +256,62 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     
     // Si no hay descuento, usar precio de variedad o precio unitario
     return parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+  }
+
+  /**
+   * Precio final EXCLUSIVO para Analytics (GA4 begin_checkout): replica cupón/flash sale/campaign discount
+   * con redondeo .95, sin afectar el cálculo funcional del checkout (getFinalUnitPrice).
+   */
+  private getAnalyticsFinalUnitPrice(cart: any): number {
+    const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
+
+    // Si no hay descuento aplicado, retornar precio original
+    if (!cart.type_discount || !cart.discount) {
+      return originalPrice;
+    }
+
+    const discountValue = parseFloat(cart.discount);
+
+    // Verificar que el descuento sea válido
+    if (isNaN(discountValue) || discountValue <= 0) {
+      return originalPrice;
+    }
+
+    let priceAfterDiscount: number;
+
+    if (cart.type_discount === 1) {
+      // Descuento porcentual
+      if (cart.code_cupon) {
+        // CUPONES REALES - aplicar redondeo .95
+        if (discountValue > 100) return originalPrice;
+        priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+        priceAfterDiscount = Math.max(0, priceAfterDiscount);
+        return this.priceCalculationService.formatPrice(priceAfterDiscount);
+      } else if (cart.code_discount && !cart.code_cupon) {
+        // FLASH SALE con descuento porcentual - usar el descuento como porcentaje
+        if (discountValue > 100) return originalPrice;
+        priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+        priceAfterDiscount = Math.max(0, priceAfterDiscount);
+        return this.priceCalculationService.formatPrice(priceAfterDiscount);
+      } else {
+        // CAMPAIGN DISCOUNTS - cart.discount contiene el PRECIO FINAL, no el porcentaje
+        if (discountValue > 0 && discountValue < originalPrice) {
+          return this.priceCalculationService.formatPrice(discountValue);
+        } else {
+          if (discountValue > 100) return originalPrice;
+          priceAfterDiscount = originalPrice * (1 - discountValue / 100);
+          priceAfterDiscount = Math.max(0, priceAfterDiscount);
+          return this.priceCalculationService.formatPrice(priceAfterDiscount);
+        }
+      }
+    } else if (cart.type_discount === 2) {
+      // Descuento de monto fijo - Aplicar redondeo .95
+      priceAfterDiscount = Math.max(0, originalPrice - discountValue);
+      return this.priceCalculationService.formatPrice(priceAfterDiscount);
+    } else {
+      // Tipo de descuento no reconocido
+      return originalPrice;
+    }
   }
 
   /**

@@ -1212,7 +1212,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     console.log('🐛 [DEBUG landing-product] cartData generated:', cartData);
     this.subscriptions.add(
       this.cartApiService.addToCart(cartData).subscribe(
-        (resp: any) => this.handleCartResponse(resp),
+        (resp: any) => this.handleCartResponse(resp, cartData),
         (error: any) => this.handleCartError(error)
       )
     );
@@ -1224,13 +1224,22 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     alertDanger(message);
   }
 
-  private handleCartResponse(resp: any) {
+  private handleCartResponse(resp: any, cartData: any) {
     if (resp.message == 403) {
       this.errorResponse = true;
       this.errorMessage = resp.message_text;
     } else {
       this.cartService.changeCart(resp.cart);
       this.minicartService.openMinicart();
+
+      // GA4 add_to_cart: solo tras confirmación del backend, con los mismos datos enviados
+      this.analyticsService.trackAddToCart(
+        cartData.product,
+        this.product_selected.title || this.product_selected.name,
+        this.product_selected.categorie?.title,
+        cartData.price_unitario,
+        cartData.cantidad
+      );
     }
   }
 

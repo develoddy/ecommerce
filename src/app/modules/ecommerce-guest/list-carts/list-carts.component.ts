@@ -11,6 +11,7 @@ import { SeoService } from 'src/app/services/seo.service';
 import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -69,7 +70,8 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     public _wishlistService: WishlistService,
     public loader: LoaderService,
     private priceCalculationService: PriceCalculationService,
-    public dynamicRouter: DynamicRouterService
+    public dynamicRouter: DynamicRouterService,
+    private analyticsService: AnalyticsService
   ) {}
   
   ngAfterViewInit(): void {}
@@ -424,6 +426,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       resp.carts.forEach((cart: any) => {
         this.cartService.changeCart(cart);
       });
+      this.trackViewCart(resp.carts);
     });
   }
 
@@ -432,6 +435,32 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       resp.carts.forEach((cart: any) => {
         this.cartService.changeCart(cart);
       });
+      this.trackViewCart(resp.carts);
+    });
+  }
+
+  /**
+   * Dispara GA4 view_cart una sola vez con los items reales de la respuesta del backend
+   */
+  private trackViewCart(carts: any[]): void {
+    if (!carts || carts.length === 0) {
+      return;
+    }
+
+    const items = carts.map((cart: any) => ({
+      item_id: cart.product._id,
+      item_name: cart.product.title || cart.product.name,
+      item_category: cart.product.categorie?.title,
+      price: this.getFinalUnitPrice(cart),
+      quantity: cart.cantidad
+    }));
+
+    const value = parseFloat(
+      carts.reduce((sum: number, cart: any) => sum + (this.getFinalUnitPrice(cart) * cart.cantidad), 0).toFixed(2)
+    );
+
+    this.analyticsService.whenReady().then(() => {
+      this.analyticsService.trackViewCart(value, items);
     });
   }
 

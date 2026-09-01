@@ -1772,7 +1772,7 @@
                     <button type="submit" 
                             name="add" 
                             class="btn-dark-ld text-uppercase fw-semibold px-4 py-2" 
-                            (click)="storeCart()"
+                            (click)="storeCart(); $event.preventDefault()"
                             style="letter-spacing: 0.5px; border-radius: 6px; transition: all 0.3s ease;">
                         <i class="icon anm anm-bag-l me-2"></i>
                         <span>{{ 'product_detail.add' | translate }}</span>
