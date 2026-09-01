@@ -251,10 +251,10 @@ export class SeoService {
     // Extraer la ruta limpia (después de /country/lang)
     const restPath = pathSegments.slice(3).join('/');
 
-    // Map de idiomas → country correspondiente
+    // Map de idiomas → country correspondiente (siempre 'es': único país soportado actualmente)
     const hreflangMap = {
-      es: 'es', // España
-      en: 'us', // EE.UU.
+      es: 'es', // España / Español
+      en: 'es', // España / English
     };
 
     Object.entries(hreflangMap).forEach(([lang, country]) => {
@@ -265,10 +265,10 @@ export class SeoService {
       document.head.appendChild(link);
     });
 
-    // x-default → versión principal en inglés
+    // x-default → versión principal real de la app (es/en)
     const defaultLink: HTMLLinkElement = document.createElement('link');
     defaultLink.rel = 'alternate';
-    defaultLink.href = `${baseUrl}/es/es/${restPath}`;
+    defaultLink.href = `${baseUrl}/es/en/${restPath}`;
     defaultLink.hreflang = 'x-default';
     document.head.appendChild(defaultLink);
   }
