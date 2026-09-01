@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { TranslateService } from '@ngx-translate/core';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 @Component({
   selector: 'app-product-grid',
@@ -58,7 +59,8 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     private cartOrchestratorService: CartOrchestratorService,
     private priceCalculationService: PriceCalculationService,
     public routerActived: ActivatedRoute,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private analyticsService: AnalyticsService
   ) {
     this.routerActived.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  
@@ -220,7 +222,7 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
     
     this.subscriptions.add(
       this.cartApiService.addToCart(cartData).subscribe(
-        (resp: any) => this.handleCartResponse(resp),
+        (resp: any) => this.handleCartResponse(resp, cartData, product),
         (error: any) => this.handleCartError(error)
       )
     );
@@ -454,7 +456,7 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
    * Handle cart response after adding product
    * @param resp - Response from cart service
    */
-  private handleCartResponse(resp: any): void {
+  private handleCartResponse(resp: any, cartData: any, product: any): void {
     if (resp.message == 403) {
       this.errorResponse = true;
       this.errorMessage = resp.message_text;
@@ -463,8 +465,16 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
       // Success: update cart and open minicart
       this.cartService.changeCart(resp.cart);
       this.minicartService.openMinicart();
-     
-      
+
+      // GA4 add_to_cart: solo tras confirmación del backend, con los datos realmente enviados
+      this.analyticsService.trackAddToCart(
+        cartData.product,
+        product.title || product.name,
+        product.categorie?.title || product.category?.title,
+        cartData.price_unitario,
+        cartData.cantidad
+      );
+
       // Clear any previous errors
       this.errorResponse = false;
       this.errorMessage = '';

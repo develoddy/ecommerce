@@ -4,6 +4,7 @@ import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.servi
 import { MinicartService } from 'src/app/services/minicartService.service';
 import { CartApiService } from 'src/app/modules/ecommerce-guest/_service/service_landing_product/cart-api.service';
 import { CartOrchestratorService } from 'src/app/modules/home/_services/product/cart-orchestrator.service';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 @Component({
   selector: 'app-flash-sale',
@@ -37,7 +38,8 @@ export class FlashSaleComponent implements OnInit, OnChanges, OnDestroy {
     private cartService: CartService,
     private minicartService: MinicartService,
     private cartApiService: CartApiService,
-    private cartOrchestratorService: CartOrchestratorService
+    private cartOrchestratorService: CartOrchestratorService,
+    private analyticsService: AnalyticsService
   ) {}
 
   ngOnInit() {
@@ -211,7 +213,7 @@ export class FlashSaleComponent implements OnInit, OnChanges, OnDestroy {
     
     this.subscriptions.add(
       this.cartApiService.addToCart(cartData).subscribe(
-        (resp: any) => this.handleCartResponse(resp),
+        (resp: any) => this.handleCartResponse(resp, cartData, product),
         (error: any) => this.handleCartError(error)
       )
     );
@@ -303,7 +305,7 @@ export class FlashSaleComponent implements OnInit, OnChanges, OnDestroy {
    * Handle cart response after adding product
    * @param resp - Response from cart service
    */
-  private handleCartResponse(resp: any): void {
+  private handleCartResponse(resp: any, cartData: any, product: any): void {
     if (resp.message == 403) {
       this.errorResponse = true;
       this.errorMessage = resp.message_text;
@@ -312,7 +314,16 @@ export class FlashSaleComponent implements OnInit, OnChanges, OnDestroy {
       // Success: update cart and open minicart
       this.cartService.changeCart(resp.cart);
       this.minicartService.openMinicart();
-      
+
+      // GA4 add_to_cart: solo tras confirmación del backend, con los datos realmente enviados
+      this.analyticsService.trackAddToCart(
+        cartData.product,
+        product.title || product.name,
+        product.categorie?.title || product.category?.title,
+        cartData.price_unitario,
+        cartData.cantidad
+      );
+
       // Clear any previous errors
       this.errorResponse = false;
       this.errorMessage = '';
