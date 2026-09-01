@@ -1,6 +1,7 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { CookieConsentService } from './cookie-consent.service';
+import { environment } from 'src/environments/environment';
 
 declare var gtag: Function;
 declare var fbq: Function;
@@ -34,7 +35,7 @@ export class AnalyticsService {
   private ga4ReadyPromise: Promise<void> = new Promise(resolve => { this.ga4ReadyResolve = resolve; });
   
   // 🔧 IDs de configuración - CAMBIAR POR LOS REALES
-  private readonly GA4_MEASUREMENT_ID = 'G-VKXW9PHC3B'; 
+  private readonly GA4_MEASUREMENT_ID = environment.ga4MeasurementId; 
   private readonly META_PIXEL_ID = '000000000000000';
 
   constructor(
