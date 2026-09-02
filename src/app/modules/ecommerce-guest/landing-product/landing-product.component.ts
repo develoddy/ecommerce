@@ -611,6 +611,22 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     return this.product_selected.description_es || this.product_selected.description_en || '';
   }
 
+  /**
+   * Fuente única de verdad de disponibilidad (SEO): usa Variedad.stock si el producto
+   * tiene variantes, o Product.stock si es de inventario unitario. No afecta al carrito/checkout.
+   */
+  isProductAvailable(): boolean {
+    if (!this.product_selected) {
+      return false;
+    }
+
+    if (this.product_selected.type_inventario == 2) {
+      return !!this.product_selected.variedades?.some((v: any) => Number(v?.stock) > 0);
+    }
+
+    return Number(this.product_selected.stock) > 0;
+  }
+
   private handleProductResponse(resp: any): void {
     if (!resp || !resp.product) {
       console.error('❌ No product data available');
@@ -1375,10 +1391,10 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
       product: {
         name: product.title,
         price: finalPrice,
-        currency: 'USD',
+        currency: 'EUR',
         category: product.categorie?.title || 'Developer Merch',
         brand: 'LujanDev',
-        availability: 'InStock',
+        availability: this.isProductAvailable() ? 'InStock' : 'OutOfStock',
         condition: 'NewCondition'
       }
     });
@@ -1408,11 +1424,12 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   /**
-   * Genera descripción optimizada para el producto
+   * Genera descripción optimizada para el producto (usa la misma lógica de locale que la ficha visual)
    */
   private generateOptimizedDescription(product: any): string {
-    const baseDescription = product.description_es && product.description_es !== 'Descripción no disponible'
-      ? product.description_es
+    const localizedDescription = this.getProductDescription();
+    const baseDescription = localizedDescription && localizedDescription !== 'Descripción no disponible'
+      ? localizedDescription
       : `Premium ${product.title} for developers and programmers.`;
     
     const isHumorous = this.isHumorousProduct(product);

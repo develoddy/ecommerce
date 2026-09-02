@@ -200,7 +200,7 @@
                             <link itemprop="url" [href]="currentUrl" />
                             <meta itemprop="priceCurrency" content="EUR" />
                             <meta itemprop="price" content="{{ getFinalPrice().toFixed(2) }}" />
-                            <link itemprop="availability" href="https://schema.org/InStock" />
+                            <link itemprop="availability" [href]="isProductAvailable() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'" />
                         </div>
                     </div>
                     <!-- End Price Product -->
@@ -388,7 +388,7 @@
                                         <link itemprop="url" [href]="currentUrl" />
                                         <meta itemprop="priceCurrency" content="EUR" />
                                         <meta itemprop="price" content="{{ getFinalPrice().toFixed(2) }}" />
-                                        <link itemprop="availability" href="https://schema.org/InStock" />
+                                        <link itemprop="availability" [href]="isProductAvailable() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'" />
                                     </div>
                                 </div>
 
@@ -401,7 +401,7 @@
                                     </p>
                                     <p class="product-vendor d-none">Proveedor:<span class="text"><a href="#">HVL</a></span></p>
                                     <meta itemprop="productID" content="{{ product_selected.sku }}">
-                                    <meta itemprop="availability" content="https://schema.org/InStock" />
+                                    <meta itemprop="availability" [attr.content]="isProductAvailable() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'" />
                                 </div>
                                 <!-- Product Reviews -->
                                 <div class="product-review d-flex-center d-none">
