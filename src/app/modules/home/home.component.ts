@@ -206,6 +206,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this.localizationService.locale$.subscribe(locale => {
         this.locale = locale;
+        this.setupSEO();
       })
     );
   }
@@ -382,9 +383,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setupSEO() {
+    const isSpanish = this.locale === 'es';
+
+    const title = isSpanish
+      ? 'Camisetas para Developers, Sudaderas y Merch'
+      : 'Developer T-Shirts, Hoodies & Coding Merch';
+
+    const description = isSpanish
+      ? 'Camisetas, sudaderas, gorras y tazas inspiradas en bugs, deploys, noches largas y la realidad de construir software. Descubre LujanDev DROP 001.'
+      : 'Developer t-shirts, hoodies, caps and mugs inspired by bugs, deploys, late nights and the reality of building software. Discover LujanDev DROP 001.';
+
     this.seoService.updateSeo({
-      title: 'Developer Merch & Funny Programming T-Shirts',
-      description: 'Premium developer merchandise store featuring funny programming t-shirts, coding hoodies, and developer gifts for software engineers and programmers.',
+      title: title,
+      description: description,
       keywords: [
         'developer merch',
         'programmer shirts', 
