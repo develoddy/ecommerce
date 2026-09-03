@@ -509,6 +509,56 @@
                 "unknown_error": "Unknown error",
                 "update_address_error": "Oops! The address could not be updated"
             }
+        },
+        "payment": {
+            "shipping": {
+                "title": "Shipping address"
+            },
+            "digital_delivery": {
+                "title": "Delivery email",
+                "product_type": "Digital product",
+                "immediate_delivery": "Immediate delivery by email",
+                "default_customer_name": "Customer"
+            },
+            "methods": {
+                "title": "Payment method",
+                "card_label": "Card",
+                "paypal_label": "Paypal",
+                "paypal_info": "After clicking “Complete purchase”, a pop-up window will ask you to log in to your PayPal account. Review the payment and shipping details to complete the purchase. You will then be taken to the order confirmation page of www.tienda.lujandev.com"
+            },
+            "buttons": {
+                "pay_with_card": "Pay with card"
+            },
+            "legal": {
+                "terms_text": "By completing your purchase, you confirm that you have read, understood and agree to the",
+                "terms_link": "Terms of sale",
+                "terms_title": "General Terms of Sale"
+            },
+            "address_modal": {
+                "select_country_placeholder": "Select a country",
+                "address_label": "Address",
+                "state_label": "City",
+                "state_default_option": "Province/State",
+                "default_shipping_text": "Default shipping address",
+                "save_button": "Save changes"
+            },
+            "errors": {
+                "stripe_load_failed": "Stripe could not be loaded",
+                "empty_cart": "The cart is empty",
+                "select_shipping_address": "Please select a shipping address.",
+                "complete_address_fields": "Please complete all required address fields (name, address, email).",
+                "email_required_modules": "Email required for digital modules",
+                "complete_required_address_fields": "Please complete all required address fields.",
+                "cannot_proceed_empty_cart": "Cannot proceed with the order if the cart is empty.",
+                "select_appropriate_shipping": "Please select the corresponding shipping address."
+            },
+            "address": {
+                "update_error": "Error updating the address."
+            }
+        },
+        "steps": {
+            "payment": "Payment",
+            "confirmation": "Confirmation"
         }
     }
 }

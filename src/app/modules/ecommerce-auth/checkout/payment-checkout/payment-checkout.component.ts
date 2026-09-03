@@ -21,6 +21,7 @@ import { environment } from 'src/environments/environment';
 import { loadStripe } from '@stripe/stripe-js';
 import { StripePayService } from '../../_services/stripePay.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
+import { TranslateService } from '@ngx-translate/core';
 
 declare var $: any;
 declare function HOMEINITTEMPLATE([]): any;
@@ -131,7 +132,8 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
     private localizationService: LocalizationService,
     private stripePayService: StripePayService,
     private ngZone: NgZone,
-    private priceCalculationService: PriceCalculationService
+    private priceCalculationService: PriceCalculationService,
+    private translate: TranslateService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
@@ -613,7 +615,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
     const stripe = await this.loadStripeSdk();
 
     if (!stripe) {
-      alertDanger('Stripe no pudo cargarse');
+      alertDanger(this.translate.instant('checkout.payment.errors.stripe_load_failed'));
       return;
     }
     
@@ -629,21 +631,21 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
     if (!this.isModulePurchase) {
       // Validaciones Printful
       if (!this.listCarts || this.listCarts.length === 0) {
-        alertDanger('El carrito está vacío');
+        alertDanger(this.translate.instant('checkout.payment.errors.empty_cart'));
         return;
       }
       
       // Solo validar dirección para productos físicos
       if (!this.listAddresses || !this.address_client_selected) {
         this.validMessage = true;
-        this.errorOrSuccessMessage = 'Por favor, seleccione una dirección de envío.';
+        this.errorOrSuccessMessage = this.translate.instant('checkout.payment.errors.select_shipping_address');
         return;
       }
       
       // 🔒 VALIDACIÓN ESTRICTA: Verificar que los campos de dirección tengan valores reales
       if (!this.name || !this.name.trim() || !this.address || !this.address.trim() || !this.email || !this.email.trim()) {
         this.validMessage = true;
-        this.errorOrSuccessMessage = 'Por favor, complete todos los campos obligatorios de la dirección (nombre, dirección, email).';
+        this.errorOrSuccessMessage = this.translate.instant('checkout.payment.errors.complete_address_fields');
         console.error('❌ [Stripe Validation] Dirección incompleta detectada:', {
           name: this.name,
           address: this.address,
@@ -656,21 +658,21 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
     } else {
       // Validaciones para módulos
       if (!this.email) {
-        alertDanger('Email requerido para módulos digitales');
+        alertDanger(this.translate.instant('checkout.payment.errors.email_required_modules'));
         return;
       }
       
       // Solo validar dirección si requiere envío (módulos físicos)
       if (this.requiresShipping() && (!this.listAddresses || !this.address_client_selected)) {
         this.validMessage = true;
-        this.errorOrSuccessMessage = 'Por favor, seleccione una dirección de envío.';
+        this.errorOrSuccessMessage = this.translate.instant('checkout.payment.errors.select_shipping_address');
         return;
       }
       
       // 🔒 VALIDACIÓN ESTRICTA para módulos físicos
       if (this.requiresShipping() && (!this.name || !this.name.trim() || !this.address || !this.address.trim())) {
         this.validMessage = true;
-        this.errorOrSuccessMessage = 'Por favor, complete todos los campos obligatorios de la dirección.';
+        this.errorOrSuccessMessage = this.translate.instant('checkout.payment.errors.complete_required_address_fields');
         return;
       }
     }
@@ -869,7 +871,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           if (!this.isModulePurchase) {
             if (this.listCarts.length == 0) {
               alertDanger(
-                'No se puede proceder con la orden si el carrito está vacío.'
+                this.translate.instant('checkout.payment.errors.cannot_proceed_empty_cart')
               );
               return;
             }
@@ -878,13 +880,13 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
             if (!this.listAddresses || !this.address_client_selected) {
               this.validMessage = true;
               this.errorOrSuccessMessage =
-                'Por favor, seleccione la dirección de envío correspondiente.';
+                this.translate.instant('checkout.payment.errors.select_appropriate_shipping');
               return;
             }
           } else {
             // Validaciones para módulos
             if (!this.email) {
-              alertDanger('Email requerido para módulos digitales');
+              alertDanger(this.translate.instant('checkout.payment.errors.email_required_modules'));
               return;
             }
             
@@ -892,7 +894,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
             if (this.requiresShipping() && (!this.listAddresses || !this.address_client_selected)) {
               this.validMessage = true;
               this.errorOrSuccessMessage =
-                'Por favor, seleccione la dirección de envío correspondiente.';
+                this.translate.instant('checkout.payment.errors.select_appropriate_shipping');
               return;
             }
           }
@@ -1532,9 +1534,9 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       this.status = false;
       this.validMessage = true;
       this.errorOrSuccessMessage =
-        'Rellene los campos obligatorios de la dirección de envío';
+        this.translate.instant('checkout.resumen.messages.fill_required_fields');
       this.hideMessageAfterDelay();
-      alertDanger('Rellene los campos obligatorios de la dirección de envío');
+      alertDanger(this.translate.instant('checkout.resumen.messages.fill_required_fields'));
       return;
     }
 
@@ -1564,13 +1566,13 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           $('#addNewModal').modal('hide');
         } else {
           this.status = false;
-          this.errorOrSuccessMessage = 'Error al guardar la dirección';
+          this.errorOrSuccessMessage = this.translate.instant('checkout.resumen.messages.save_error');
           this.hideMessageAfterDelay();
         }
       },
       (error) => {
         this.status = false;
-        this.errorOrSuccessMessage = 'Error al guardar la dirección';
+        this.errorOrSuccessMessage = this.translate.instant('checkout.resumen.messages.save_error');
         this.hideMessageAfterDelay();
       }
     );
@@ -1590,7 +1592,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       this.status = false;
       this.validMessage = true;
       this.errorOrSuccessMessage =
-        'Por favor, rellene los campos obligatorios de la dirección de envío';
+        this.translate.instant('checkout.resumen.messages.fill_required_fields');
       this.hideMessageAfterDelay();
       return;
     }
@@ -1625,13 +1627,13 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           $('#addEditModal').modal('hide');
         } else {
           this.status = false;
-          this.errorOrSuccessMessage = 'Error al actualizar la dirección.';
+          this.errorOrSuccessMessage = this.translate.instant('checkout.payment.address.update_error');
           this.hideMessageAfterDelay();
         }
       },
       (error) => {
         this.status = false;
-        this.errorOrSuccessMessage = 'Error al actualizar la dirección.';
+        this.errorOrSuccessMessage = this.translate.instant('checkout.payment.address.update_error');
         this.hideMessageAfterDelay();
       }
     );
@@ -1738,11 +1740,11 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
 
   public login() {
     if (!this.email_identify) {
-      alertDanger('Es necesario ingresar el email');
+      alertDanger(this.translate.instant('checkout.resumen.messages.login_email_required'));
     }
 
     if (!this.password_identify) {
-      alertDanger('Es necesario ingresar el password');
+      alertDanger(this.translate.instant('checkout.resumen.messages.login_password_required'));
     }
 
     const subscriptionLogin = this._authService

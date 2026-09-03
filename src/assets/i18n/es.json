@@ -509,6 +509,56 @@
                 "unknown_error": "Error desconocido",
                 "update_address_error": "¡Oops! No se pudo actualizar la dirección"
             }
+        },
+        "payment": {
+            "shipping": {
+                "title": "Dirección de envío"
+            },
+            "digital_delivery": {
+                "title": "Email de entrega",
+                "product_type": "Producto digital",
+                "immediate_delivery": "Envío inmediato por correo electrónico",
+                "default_customer_name": "Cliente"
+            },
+            "methods": {
+                "title": "Método de pago",
+                "card_label": "Tarjeta",
+                "paypal_label": "Paypal",
+                "paypal_info": "Después de hacer clic en “Completar la compra”, aparecerá una ventana emergente que te pedirá que inicies sesión en tu cuenta de PayPal. Revisa el pago y los detalles de envío para completar la compra. A continuación, irás a la página de confirmación del pedido de www.tienda.lujandev.com"
+            },
+            "buttons": {
+                "pay_with_card": "Pagar con tarjeta"
+            },
+            "legal": {
+                "terms_text": "Al finalizar la compra, confirmas que has leído, entendido y que aceptas las",
+                "terms_link": "Condiciones de venta",
+                "terms_title": "Condiciones Generales de Venta"
+            },
+            "address_modal": {
+                "select_country_placeholder": "Seleccione un país",
+                "address_label": "Dirección",
+                "state_label": "Ciudad",
+                "state_default_option": "Provincia/Estado",
+                "default_shipping_text": "Dirección de envío habitual",
+                "save_button": "Guardar cambios"
+            },
+            "errors": {
+                "stripe_load_failed": "Stripe no pudo cargarse",
+                "empty_cart": "El carrito está vacío",
+                "select_shipping_address": "Por favor, seleccione una dirección de envío.",
+                "complete_address_fields": "Por favor, complete todos los campos obligatorios de la dirección (nombre, dirección, email).",
+                "email_required_modules": "Email requerido para módulos digitales",
+                "complete_required_address_fields": "Por favor, complete todos los campos obligatorios de la dirección.",
+                "cannot_proceed_empty_cart": "No se puede proceder con la orden si el carrito está vacío.",
+                "select_appropriate_shipping": "Por favor, seleccione la dirección de envío correspondiente."
+            },
+            "address": {
+                "update_error": "Error al actualizar la dirección."
+            }
+        },
+        "steps": {
+            "payment": "Pago",
+            "confirmation": "Confirmación"
         }
     }
 }

@@ -32,11 +32,11 @@
                      <div class="address-book-section" [class.d-none]="loading" *ngIf="this.selectedAddress">
                         <div class="top-sec mb-3 d-flex justify-content-between align-items-center">
                               <h3 class="mb-0 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px;">
-                                 <i class="icon anm anm-map-marker-al me-2"></i>Dirección de envío
+                                 <i class="icon anm anm-map-marker-al me-2"></i>{{ 'checkout.payment.shipping.title' | translate }}
                               </h3>
                               <div>
                                  <button type="button" class="btn btn-outline-secondary btn-sm" (click)="gotoResumen()">
-                                       <i class="icon anm anm-edit-l me-1"></i>Cambiar
+                                       <i class="icon anm anm-edit-l me-1"></i>{{ 'checkout.resumen.address_list.change_button' | translate }}
                                  </button>
                               </div>
                         </div>
@@ -53,15 +53,15 @@
                                                       <path d="M12 7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 3c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1"></path>
                                                 </svg>
                                              </span>
-                                             <span class="px-2 fw-bold">Domicilio</span>
-                                             <span class="fw-bold">GRATIS</span>
+                                             <span class="px-2 fw-bold">{{ 'checkout.resumen.delivery.home' | translate }}</span>
+                                             <span class="fw-bold">{{ 'checkout.resumen.delivery.free' | translate }}</span>
                                           </div>
                                     </div>
                                     <!-- / End Domicilio Gratis  -->
                                     <!-- Shipping rates -->
                                     <div class="mb-3">
                                           <p class="fw-bold text-uppercase mb-0">
-                                             Entrega:
+                                             {{ 'checkout.resumen.delivery.label' | translate }}
                                              <span class="fw-light text-capitalize">
                                                 <ng-container *ngIf="entregaUnica">
                                                       {{ fechaEntregaLabel }}
@@ -86,7 +86,7 @@
                                           </div>
                                           <div class="address mb-1">
                                              <p class="fw-light">
-                                                Tel. +34 {{ selectedAddress.phone }}
+                                                {{ 'checkout.resumen.address_list.phone_with_prefix' | translate:{phone: selectedAddress.phone} }}
                                              </p>
                                           </div>
                                           <div class="address mb-1">
@@ -127,7 +127,7 @@
                                                 " 
                                                 *ngIf="selectedAddress.usual_shipping_address">
                                                 <i class="icon anm anm-check-cil me-2" style="font-size: 0.9rem;"></i>
-                                                <span class="text-uppercase">Dirección habitual</span>
+                                                <span class="text-uppercase">{{ 'checkout.resumen.address_list.default_badge' | translate }}</span>
                                           </div>
                                     </div>
                                     <!-- / End Informacion address -->
@@ -141,7 +141,7 @@
                         <div class="modal-dialog modal-lg modal-dialog-centered">
                               <div class="modal-content">
                                  <div class="modal-header justify-content-center border-0">
-                                    <h2 class="modal-title text-uppercase" id="addNewModalLabel">Editar dirección</h2>
+                                    <h2 class="modal-title text-uppercase" id="addNewModalLabel">{{ 'checkout.resumen.address_form.edit_title' | translate }}</h2>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                  </div>
                                  <div class="modal-body border-0">
@@ -149,24 +149,24 @@
                                           <!-- Nombre -->
                                           <div class="row justify-content-center">
                                              <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
-                                                <label for="firstname" class="form-label d-none">Nombre <span class="required">*</span></label>
-                                                <input name="firstname" value="" id="firstname" type="text" [(ngModel)]="name" required="" placeholder="Nombre" class="form-control" />
+                                                <label for="firstname" class="form-label d-none">{{ 'checkout.resumen.address_form.name_label' | translate }} <span class="required">*</span></label>
+                                                <input name="firstname" value="" id="firstname" type="text" [(ngModel)]="name" required="" [placeholder]="'checkout.resumen.address_form.name_placeholder' | translate" class="form-control" />
                                              </div>
                                           </div>
                                           <!-- Apellidos -->
                                           <div class="row justify-content-center">
                                              <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
-                                                <label for="lastname" class="form-label d-none">Apellidos <span class="required">*</span></label>
-                                                <input name="lastname" value="" id="lastname" type="text" [(ngModel)]="surname" required="" placeholder="Aellidos" class="form-control" />
+                                                <label for="lastname" class="form-label d-none">{{ 'checkout.resumen.address_form.surname_label' | translate }} <span class="required">*</span></label>
+                                                <input name="lastname" value="" id="lastname" type="text" [(ngModel)]="surname" required="" [placeholder]="'checkout.resumen.address_form.surname_placeholder' | translate" class="form-control" />
                                              </div>
                                           </div>
                                           <!-- Pais -->
                                           <div class="row justify-content-center">
                                              <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
-                                                <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
+                                                <label for="address_country1" class="form-label d-none">{{ 'checkout.resumen.address_form.country_label' | translate }} <span class="required">*</span></label>
                                                 <select id="address_country1" name="address[country]" [(ngModel)]="pais" data-default="United States" disabled class="form-control text-muted">
-                                                      <option value="0" label="Seleccione un país" selected="selected">
-                                                         Seleccione un país
+                                                      <option value="0" [label]="'checkout.payment.address_modal.select_country_placeholder' | translate" selected="selected">
+                                                         {{ 'checkout.payment.address_modal.select_country_placeholder' | translate }}
                                                       </option>
                                                       <optgroup id="country-optgroup-Eu" label="Europe">
                                                          <option value="IT" label="Italy">Italy</option>
@@ -182,31 +182,31 @@
                                           <!-- Direccion -->
                                           <div class="row justify-content-center">
                                              <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
-                                                <label for="address-1" class="form-label d-none">Dirección <span class="required">*</span></label>
-                                                <input name="address_1" value="" id="address-1" type="text" required="" [(ngModel)]="address" placeholder="Dirección" class="form-control" />
+                                                <label for="address-1" class="form-label d-none">{{ 'checkout.payment.address_modal.address_label' | translate }} <span class="required">*</span></label>
+                                                <input name="address_1" value="" id="address-1" type="text" required="" [(ngModel)]="address" [placeholder]="'checkout.payment.address_modal.address_label' | translate" class="form-control" />
                                              </div>
                                           </div>
                                           <!-- Codigo postal -->
                                           <div class="row justify-content-center">
                                              <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
-                                                <label for="postcode" class="form-label d-none">Código postal <span class="required">*</span></label>
-                                                <input name="postcode" value="" id="postcode" type="text" class="form-control" [(ngModel)]="zipcode" placeholder="Código postal" />
+                                                <label for="postcode" class="form-label d-none">{{ 'checkout.resumen.postal_code.label' | translate }} <span class="required">*</span></label>
+                                                <input name="postcode" value="" id="postcode" type="text" class="form-control" [(ngModel)]="zipcode" [placeholder]="'checkout.resumen.postal_code.label' | translate" />
                                              </div>
                                           </div>
                                           <!-- Población -->
                                           <div class="row justify-content-center">
                                              <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
-                                                <label for="new-city" class="form-label d-none">Población <span class="required">*</span></label>
-                                                <input name="city" placeholder="Población" value="" required="" [(ngModel)]="poblacion" id="new-city" type="text" />
+                                                <label for="new-city" class="form-label d-none">{{ 'checkout.resumen.city.label' | translate }} <span class="required">*</span></label>
+                                                <input name="city" [placeholder]="'checkout.resumen.city.label' | translate" value="" required="" [(ngModel)]="poblacion" id="new-city" type="text" />
                                              </div>
                                           </div>
                                           <!-- Ciudad -->
                                           <div class="row justify-content-center">
                                              <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
-                                                <label for="address_State" class="form-label d-none">Ciudad <span class="required">*</span></label>
+                                                <label for="address_State" class="form-label d-none">{{ 'checkout.payment.address_modal.state_label' | translate }} <span class="required">*</span></label>
                                                 <select id="address_State" name="address[State]" data-default="" [(ngModel)]="ciudad" class="form-control">
-                                                      <option value="0" label="Select a state" selected="selected">
-                                                         Provincia/Estado
+                                                      <option value="0" [label]="'checkout.payment.address_modal.state_default_option' | translate" selected="selected">
+                                                         {{ 'checkout.payment.address_modal.state_default_option' | translate }}
                                                       </option>
                                                       <option value="Madrid">Madrid</option>
                                                       <option value="New York">New York</option>
@@ -216,20 +216,20 @@
                                           <!-- Email -->
                                           <div class="row justify-content-center">
                                              <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
-                                                <label for="email" class="form-label d-none">E-Mail <span class="required">*</span></label>
-                                                <input name="email" value="" id="email" type="email" required="" [(ngModel)]="email" placeholder="E-mail" disabled class="form-control text-muted text-uppercase" />
+                                                <label for="email" class="form-label d-none">{{ 'checkout.resumen.address_form.email_label' | translate }} <span class="required">*</span></label>
+                                                <input name="email" value="" id="email" type="email" required="" [(ngModel)]="email" [placeholder]="'checkout.resumen.address_form.email_placeholder' | translate" disabled class="form-control text-muted text-uppercase" />
                                              </div>
                                           </div>
                                           <!-- Telefono -->
                                           <div class="row justify-content-center">
                                              <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
-                                                <label for="phone" class="form-label d-none">Móvil <span class="required">*</span></label>
-                                                <input name="phone" value="" id="phone" type="tel" required="" [(ngModel)]="phone" placeholder="Móvil" class="form-control" />
+                                                <label for="phone" class="form-label d-none">{{ 'checkout.resumen.address_form.phone_label' | translate }} <span class="required">*</span></label>
+                                                <input name="phone" value="" id="phone" type="tel" required="" [(ngModel)]="phone" [placeholder]="'checkout.resumen.address_form.phone_placeholder' | translate" class="form-control" />
                                              </div>
                                           </div>
                                           <div class="row justify-content-center mt-0 mb-3">
                                              <div class="form-group col-12 col-sm-6 col-md-6 col-lg-8">
-                                                <p class="mt-3">Dirección de envío habitual</p>
+                                                <p class="mt-3">{{ 'checkout.payment.address_modal.default_shipping_text' | translate }}</p>
                                              </div>
                                           </div>
                                     </fieldset>
@@ -238,7 +238,7 @@
                                     <div class="form-row row-cols-lg-1 row-cols-md-2 row-cols-sm-1 row-cols-1 text-center">
                                           <div class="form-group">
                                              <button type="submit" class="btn btn-primary text-uppercase fw-normal btn-lg" (click)="storeAddress()">
-                                                <span>Guardar cambios</span>
+                                                <span>{{ 'checkout.payment.address_modal.save_button' | translate }}</span>
                                              </button>
                                           </div>
                                     </div>
@@ -257,11 +257,11 @@
                      <div class="address-book-section">
                         <div class="top-sec mb-3 d-flex justify-content-between align-items-center">
                               <h3 class="mb-0 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px;">
-                                 <i class="icon anm anm-envelope-l me-2"></i>Email de entrega
+                                 <i class="icon anm anm-envelope-l me-2"></i>{{ 'checkout.payment.digital_delivery.title' | translate }}
                               </h3>
                               <div>
                                  <button type="button" class="btn btn-outline-secondary btn-sm" (click)="gotoResumen()">
-                                       <i class="icon anm anm-edit-l me-1"></i>Cambiar
+                                       <i class="icon anm anm-edit-l me-1"></i>{{ 'checkout.resumen.address_list.change_button' | translate }}
                                  </button>
                               </div>
                         </div>
@@ -273,14 +273,14 @@
                                           <div class="d-flex flex-row align-items-center">
                                              <i class="icon anm anm-check-circle-o me-2" style="font-size: 1.5rem; color: #28a745;"></i>
                                              <div>
-                                                <p class="mb-1 fw-bold">Producto digital</p>
-                                                <p class="mb-0 text-muted small">Envío inmediato por correo electrónico</p>
+                                                <p class="mb-1 fw-bold">{{ 'checkout.payment.digital_delivery.product_type' | translate }}</p>
+                                                <p class="mb-0 text-muted small">{{ 'checkout.payment.digital_delivery.immediate_delivery' | translate }}</p>
                                              </div>
                                           </div>
                                     </div>
                                     <!-- Email de contacto -->
                                     <div class="top d-flex-justify-center justify-content-between mb-2">
-                                          <p class="m-0 fw-bold">{{ name || 'Cliente' }}</p>
+                                          <p class="m-0 fw-bold">{{ name || ('checkout.payment.digital_delivery.default_customer_name' | translate) }}</p>
                                     </div>
                                     <div class="mid">
                                           <p class="address mb-0 fw-light">
@@ -299,7 +299,7 @@
             <div class="mb-3 payment-methods mb-4">
                   <div class="block-content">
                      <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
-                        <i class="icon anm anm-credit-card-l me-2"></i>Método de pago
+                        <i class="icon anm anm-credit-card-l me-2"></i>{{ 'checkout.payment.methods.title' | translate }}
                      </h3>
                      <div class="payment-accordion-radio">
                         <div class="accordion" id="accordionExample">
@@ -312,7 +312,7 @@
                                                 <div class="card-link align-items-center d-flex">
                                                    <span class="customRadio clearfix mb-0">
                                                          <input id="paymentRadio1" value="card" name="paymentMethod" type="radio" class="radio" checked="checked" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange()" checked />
-                                                         <label for="paymentRadio1" class="mb-0 fs-14 text-uppercase fw-normal ms-2">Tarjeta</label>
+                                                         <label for="paymentRadio1" class="mb-0 fs-14 text-uppercase fw-normal ms-2">{{ 'checkout.payment.methods.card_label' | translate }}</label>
                                                    </span>
                                                 </div>
                                              </div>
@@ -466,7 +466,7 @@
                                                 <div class="card-link align-items-center d-flex">
                                                    <span class="customRadio clearfix mb-0">
                                                          <input id="paymentRadio5" value="paypal" name="paymentMethod" type="radio" class="radio" checked="checked" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange()" (click)="onPaypalRadioClick($event)" />
-                                                         <label for="paymentRadio5" class="mb-0 fs-14 text-uppercase fw-normal ms-2" (click)="onPaypalRadioChange($event)">Paypal</label>
+                                                         <label for="paymentRadio5" class="mb-0 fs-14 text-uppercase fw-normal ms-2" (click)="onPaypalRadioChange($event)">{{ 'checkout.payment.methods.paypal_label' | translate }}</label>
                                                    </span>
                                                 </div>
                                              </div>
@@ -487,12 +487,7 @@
                                  <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                                     <div class="px-0">
                                           <p class="lh-1 fw-light">
-                                             Después de hacer clic en “Completar la compra”, aparecerá
-                                             una ventana emergente que te pedirá que inicies sesión en
-                                             tu cuenta de PayPal. Revisa el pago y los detalles de
-                                             envío para completar la compra. A continuación, irás a la
-                                             página de confirmación del pedido de
-                                             www.tienda.lujandev.com
+                                             {{ 'checkout.payment.methods.paypal_info' | translate }}
                                           </p>
                                     </div>
                                  </div>
@@ -610,11 +605,11 @@
             <!-- CART SUMMARY VERSION MÓVIL -->
             <div class="cart-info mb-4 d-block d-md-none bg-transparent border-0 p-0 border border-success" *ngIf="isMobile">
                   <div class="cart-info mb-3 bg-transparent border-0 p-0">
-                     <h3 class="title mb-3 text-uppercase ">Resumen de Precio</h3>
+                     <h3 class="title mb-3 text-uppercase ">{{ 'checkout.resumen.cart_summary.title' | translate }}</h3>
                      <div class="cart-order-detail cart-col">
                         <!-- Subtotal-->
                         <div class="row g-0">
-                              <span class="col-6 col-sm-6 cart-subtotal-title">Subtotal</span>
+                              <span class="col-6 col-sm-6 cart-subtotal-title">{{ 'checkout.resumen.cart_summary.subtotal' | translate }}</span>
                               <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                  <!-- Mostrar subtotal original solo si hay descuentos, sino mostrar subtotal final -->
                                  <ng-container *ngIf="hasAnyCartDiscount(); else noDiscountSubtotalMobile">
@@ -640,7 +635,7 @@
                         
                         <!-- Descuento aplicado (solo si hay descuentos) -->
                         <div class="row g-0" *ngIf="hasAnyCartDiscount()">
-                              <span class="col-6 col-sm-6 cart-subtotal-title text-danger">Descuento</span>
+                              <span class="col-6 col-sm-6 cart-subtotal-title text-danger">{{ 'checkout.resumen.cart_summary.discount' | translate }}</span>
                               <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
                                  <span class="price-small">
                                     -<span class="">{{ getFormattedPrice(getTotalDiscount()).integerPart}}.</span>
@@ -654,13 +649,13 @@
                         
                         <!-- Envío Gratis -->
                         <div class="row g-0 mb-2">
-                              <span class="col-6 col-sm-6 cart-subtotal-title">Envío</span>
-                              <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">Gratis</span></span>
+                              <span class="col-6 col-sm-6 cart-subtotal-title">{{ 'checkout.resumen.cart_summary.shipping' | translate }}</span>
+                              <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ 'checkout.resumen.cart_summary.free' | translate }}</span></span>
                         </div>
                         
                         <!-- Total Precio actual -->
                         <div class="row g-0 pt-2">
-                              <span class="col-6 col-sm-6 cart-subtotal-title ls-1 text-uppercase fw-bold">Total</span>
+                              <span class="col-6 col-sm-6 cart-subtotal-title ls-1 text-uppercase fw-bold">{{ 'checkout.resumen.cart_summary.total' | translate }}</span>
                               <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                  <strong>
                                     <span class="price fw-bold">
@@ -677,7 +672,7 @@
                         <!-- Impuestos incluidos -->
                         <div class="row g-0 d-none">
                            <div class="col-6 col-sm-6 text-center">
-                              <small class="text-muted fw-light">Impuestos incluidos</small>
+                              <small class="text-muted fw-light">{{ 'checkout.resumen.cart_summary.taxes_included' | translate }}</small>
                            </div>
                         </div>
 
@@ -686,7 +681,7 @@
                         <!-- Botón Stripe (Tarjeta) - Móvil -->
                         <button *ngIf="selectedPaymentMethod === 'card'" (click)="payWithStripe()" class="btn-dark-ld mt-3 mb-2 text-uppercase">
                               <ng-container *ngIf="!isLoadingStripe; else loadingStripe">
-                                 Pagar con tarjeta
+                                 {{ 'checkout.payment.buttons.pay_with_card' | translate }}
                               </ng-container>
                               <ng-template #loadingStripe>
                                  <span class="loading-spinner">
@@ -751,15 +746,14 @@
                         <div class="">
                               <div class="TermsOfSale_terms__2leN4" id="checkout.step2.termsofsale">
                                  <p class="lh-1 fw-lighter">
-                                    <small>Al finalizar la compra, confirmas que has leído, entendido
-                                          y que aceptas las
+                                    <small>{{ 'checkout.payment.legal.terms_text' | translate }}
                                           <a 
                                              class="text-decoration-underline fw-normal"
                                              (click)="isModulePurchase ? false : openInNewTab('condiciones-venta')"
                                              onclick="return !this.isModulePurchase"
                                              target="_blank"
                                              [style.cursor]="isModulePurchase ? 'default' : 'pointer'"
-                                             title="Condiciones Generales de Venta">Condiciones de venta</a>
+                                             [title]="'checkout.payment.legal.terms_title' | translate">{{ 'checkout.payment.legal.terms_link' | translate }}</a>
                                     </small>
                                  </p>
                               </div>
@@ -778,7 +772,7 @@
          <div id="main-right">
             <!-- BLOQUE: TU CARRITO -->
             <div class="order-1">
-               <h3 class="title mb-0 text-uppercase fw-normal mb-3 fw-bold" *ngClass="{'d-none': isMobile}">Resumen de precio</h3>
+               <h3 class="title mb-0 text-uppercase fw-normal mb-3 fw-bold" *ngClass="{'d-none': isMobile}">{{ 'checkout.resumen.cart_summary.title' | translate }}</h3>
 
                <!-- CODIGO PROMOCIONAL OCUTALMOS-->
                <!-- AHORA EL CUPON SE GESTIONA EN LIST CART -->
@@ -822,7 +816,7 @@
                   <div class="cart-order-detail cart-col">
                      <!-- Subtotal-->
                      <div class="row g-0">
-                           <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
+                           <span class="col-6 col-sm-6 cart-subtotal-title fw-light">{{ 'checkout.resumen.cart_summary.subtotal' | translate }}</span>
                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                               <!-- Mostrar subtotal original solo si hay descuentos, sino mostrar subtotal final -->
                               <ng-container *ngIf="hasAnyCartDiscount(); else noDiscountSubtotalDesktop">
@@ -848,7 +842,7 @@
                      
                      <!-- Descuento aplicado (solo si hay descuentos) -->
                      <div class="row g-0" *ngIf="hasAnyCartDiscount()">
-                           <span class="col-6 col-sm-6 cart-subtotal-title text-danger fw-light">Descuento</span>
+                           <span class="col-6 col-sm-6 cart-subtotal-title text-danger fw-light">{{ 'checkout.resumen.cart_summary.discount' | translate }}</span>
                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
                               <span class="price-small fw-light">
                                  <span class="me-1">{{ euro }}</span>
@@ -863,13 +857,13 @@
                      
                      <!-- Envío Gratis -->
                      <div class="row g-0 mb-2">
-                           <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Envío</span>
-                           <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">Gratis</span></span>
+                           <span class="col-6 col-sm-6 cart-subtotal-title fw-light">{{ 'checkout.resumen.cart_summary.shipping' | translate }}</span>
+                           <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">{{ 'checkout.resumen.cart_summary.free' | translate }}</span></span>
                      </div>
                      
                      <!-- Total Precio actual -->
                      <div class="row g-0">
-                           <span class="col-6 col-sm-6 cart-subtotal-title fs-6 ls-1 text-uppercase fw-normal">Total</span>
+                           <span class="col-6 col-sm-6 cart-subtotal-title fs-6 ls-1 text-uppercase fw-normal">{{ 'checkout.resumen.cart_summary.total' | translate }}</span>
                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6 cart-subtotal text-end">
                               <strong>
                                  <span class="price fw-normal">
@@ -886,7 +880,7 @@
                      <!-- Impuestos incluidos -->
                      <div class="row g-0 d-none">
                         <div class="col-6 col-sm-6 text-center">
-                           <small class="text-muted fw-light">Impuestos incluidos</small>
+                           <small class="text-muted fw-light">{{ 'checkout.resumen.cart_summary.taxes_included' | translate }}</small>
                         </div>
                      </div>
 
@@ -894,7 +888,7 @@
                      <!-- Botón Stripe (Tarjeta) -->
                      <button *ngIf="selectedPaymentMethod === 'card'" (click)="payWithStripe()" class="btn-dark-ld mt-3 mb-2">
                            <ng-container *ngIf="!isLoadingStripe; else loadingStripe">
-                              Pagar con tarjeta
+                              {{ 'checkout.payment.buttons.pay_with_card' | translate }}
                            </ng-container>
                            <ng-template #loadingStripe>
                               <span class="loading-spinner">
@@ -961,15 +955,14 @@
                      <div class="mb-5">
                            <div class="" id="checkout.step2.termsofsale">
                               <p class="lh-1 fw-lighter">
-                                 <small>Al finalizar la compra, confirmas que has leído,
-                                       entendido y que aceptas las
+                                 <small>{{ 'checkout.payment.legal.terms_text' | translate }}
                                        <a 
                                           class="text-decoration-underline fw-normal"
                                           (click)="isModulePurchase ? false : openInNewTab('condiciones-venta')"
                                           onclick="return !this.isModulePurchase"
                                           target="_blank"
                                           [style.cursor]="isModulePurchase ? 'default' : 'pointer'"
-                                          title="Condiciones Generales de Venta">Condiciones de venta</a>
+                                          [title]="'checkout.payment.legal.terms_title' | translate">{{ 'checkout.payment.legal.terms_link' | translate }}</a>
                                  </small>
                               </p>
                            </div>
@@ -982,7 +975,7 @@
                <div class="col-12 order-0 lists-carts  order-md-2">
                   <div class="block order-summary p-0">
                         <div class="block-content">
-                           <h3 class="mb-0 text-uppercase" style="color: #222;font-size: 1.25rem;letter-spacing: 0.5px;border-bottom: 2px solid #222;padding-bottom: 0.5rem;">Artículos ({{ listCarts.length }})</h3>
+                           <h3 class="mb-0 text-uppercase" style="color: #222;font-size: 1.25rem;letter-spacing: 0.5px;border-bottom: 2px solid #222;padding-bottom: 0.5rem;">{{ 'checkout.resumen.items_list.title' | translate }} ({{ listCarts.length }})</h3>
                            <div class="order-list">
                               <ng-container *ngFor="let cart of listCarts">
                                     <div class="d-flex py-3 gap-3 align-items-start">
@@ -1059,23 +1052,23 @@
                                                    </div>
                                                 </div>
                                                 <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.product?.sku">
-                                                   <span class="w-25">Art. nº</span>
+                                                   <span class="w-25">{{ 'checkout.resumen.items_list.sku_label' | translate }}</span>
                                                    <span class="ms-lg-3 ms-5">{{ cart.product.sku }}</span>
                                                 </div>
                                                 <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.variedad?.color">
-                                                   <span class="w-25">Color</span>
+                                                   <span class="w-25">{{ 'checkout.resumen.items_list.color_label' | translate }}</span>
                                                    <span class="ms-lg-3 ms-5 fw-light">{{ cart.variedad.color }}</span>
                                                 </div>
                                                 <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.variedad">
-                                                   <span class="w-25">Talla</span>
+                                                   <span class="w-25">{{ 'checkout.resumen.items_list.size_label' | translate }}</span>
                                                    <span class="ms-lg-3 ms-5 fw-light">{{ cart.variedad.valor }}</span>
                                                 </div>
                                                 <div class="d-flex fw-light lh-1 mb-1">
-                                                   <span class="w-25">Cantidad</span>
+                                                   <span class="w-25">{{ 'checkout.resumen.items_list.quantity_label' | translate }}</span>
                                                    <span class="ms-lg-3 ms-5 fw-light">{{ cart.cantidad}}</span>
                                                 </div>
                                                 <div class="d-flex fw-light lh-1 mb-1">
-                                                   <span class="w-25">Total</span>
+                                                   <span class="w-25">{{ 'checkout.resumen.items_list.total_label' | translate }}</span>
                                                    <span class="money ms-lg-3 ms-5">
                                                       <span>
                                                          <span class="me-1">{{ euro }}</span>
