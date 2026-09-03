@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, Output, EventEmitter, HostListener, ChangeDetectorRef } from '@angular/core';
 import { forkJoin, Subscription, take } from 'rxjs';
 import { EcommerceAuthService } from '../../_services/ecommerce-auth.service';
-import { AddressValidationService } from '../../_services/address-validation.service';
+import { AddressValidationService, PostalCodeCheckResult, PostalCodeCheckState } from '../../_services/address-validation.service';
 import { AuthService } from 'src/app/modules/auth-profile/_services/auth.service';
 import { CartService } from 'src/app/modules/ecommerce-guest/_service/cart.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -119,6 +119,11 @@ export class ResumenCheckoutComponent implements OnInit {
   isProvinceReadonly: boolean = true;
   postalCodeError: string = '';
   cityError: string = '';
+  // 🎯 Estado de clasificación del CP (INVALID_FORMAT / FOUND / NOT_FOUND / TECHNICAL_ERROR)
+  postalCodeState: PostalCodeCheckState | null = null;
+  postalCodeWarning: string = '';
+  isManualFallback: boolean = false;
+  private lastCheckedZip: string = '';
 
   constructor(
     public _authEcommerce: EcommerceAuthService,
@@ -146,7 +151,9 @@ export class ResumenCheckoutComponent implements OnInit {
    * Post-validación se expandirá gradualmente
    */
   get supportedCountries() {
-    return this.addressValidationService.getAvailableCountries(true); // true = pre-launch mode
+    // 🇪🇸 TEMPORAL: checkout restringido a España durante la fase de validación comercial.
+    // PRE_LAUNCH_COUNTRIES (FR/IT/DE) se mantiene intacto en el servicio para reactivarlo más adelante.
+    return this.addressValidationService.getAvailableCountries(true).filter(country => country.code === 'ES');
   }
 
   /**
@@ -154,60 +161,77 @@ export class ResumenCheckoutComponent implements OnInit {
    * Se ejecuta cuando el usuario termina de escribir el CP (blur o change)
    */
   onZipCodeChange(zipCode: string) {
-    // Limpiar errores previos
-    this.postalCodeError = '';
-    this.cityError = '';
-    
-    // Validar longitud mínima (España: 5 dígitos)
-    if (!zipCode || zipCode.length < 5) {
-      this.availableCities = [];
-      this.ciudad = ''; // Limpiar provincia
-      this.poblacion = ''; // Limpiar ciudad
+    const trimmed = (zipCode || '').trim();
+
+    if (!trimmed) {
+      this.lastCheckedZip = '';
+      this.resetPostalCodeState();
       return;
     }
 
+    // Mismo CP ya evaluado: no repetir la llamada ni pisar datos manuales ya introducidos
+    if (trimmed === this.lastCheckedZip) {
+      return;
+    }
+    this.lastCheckedZip = trimmed;
+
+    this.postalCodeError = '';
+    this.cityError = '';
     this.isLoadingPostalCode = true;
     const countryCode = this.addressValidationService.getCountryCode(this.pais || 'ES');
-    
-    console.log(`🔍 [ResumenCheckout] Buscando CP ${zipCode} en ${countryCode}`);
-    
-    this.addressValidationService.getPostalCodeInfo(countryCode, zipCode)
-      .subscribe({
-        next: (info) => {
-          this.isLoadingPostalCode = false;
-          
-          if (!info || !info.exists) {
-            // ❌ Código postal no encontrado
-            this.postalCodeError = `El código postal ${zipCode} no existe en ${this.pais || 'España'}`;
-            this.availableCities = [];
-            this.ciudad = '';
-            this.poblacion = '';
-            console.log(`❌ [ResumenCheckout] CP ${zipCode} no encontrado`);
-            return;
-          }
-          
-          // ✅ CP encontrado - autocompletar provincia (readonly)
-          console.log(`✅ [ResumenCheckout] CP ${zipCode} encontrado:`, info);
-          this.ciudad = info.province; // Autocompletar provincia
-          this.availableCities = info.cities;
-          
-          // Si solo hay una ciudad, autoseleccionarla
-          if (info.cities.length === 1) {
-            this.poblacion = info.cities[0].city;
-            console.log(`✅ [ResumenCheckout] Ciudad autoseleccionada: ${this.poblacion}`);
-          } else if (info.cities.length > 1) {
-            // Múltiples ciudades - usuario debe seleccionar
-            this.poblacion = ''; // Limpiar para forzar selección manual
-            console.log(`ℹ️ [ResumenCheckout] ${info.cities.length} ciudades disponibles para CP ${zipCode}`);
-          }
-        },
-        error: (err) => {
-          console.error('❌ Error buscando código postal:', err);
-          this.isLoadingPostalCode = false;
-          this.postalCodeError = 'Error al validar el código postal. Por favor intenta de nuevo.';
-          this.availableCities = [];
+
+    console.log(`🔍 [ResumenCheckout] Verificando CP ${trimmed} en ${countryCode}`);
+
+    this.addressValidationService.checkPostalCode(trimmed, countryCode).subscribe({
+      next: (result) => {
+        this.isLoadingPostalCode = false;
+        console.log(`🔍 [ResumenCheckout] Estado CP ${trimmed}:`, result.state);
+        this.applyPostalCodeState(result);
+      }
+    });
+  }
+
+  /**
+   * 🎯 Aplica el estado de clasificación del CP a los campos del formulario.
+   * Evita mezclar datos derivados/manuales de un CP anterior (sin estados "stale").
+   */
+  private applyPostalCodeState(result: PostalCodeCheckResult) {
+    this.postalCodeState = result.state;
+    this.postalCodeError = '';
+    this.postalCodeWarning = '';
+    this.isManualFallback = result.state === 'NOT_FOUND' || result.state === 'TECHNICAL_ERROR';
+    this.isProvinceReadonly = !this.isManualFallback;
+    this.availableCities = [];
+    this.ciudad = '';
+    this.poblacion = '';
+
+    switch (result.state) {
+      case 'INVALID_FORMAT':
+        this.postalCodeError = result.message;
+        break;
+      case 'FOUND':
+        this.ciudad = result.info?.province || '';
+        this.availableCities = result.info?.cities || [];
+        if (this.availableCities.length === 1) {
+          this.poblacion = this.availableCities[0].city;
         }
-      });
+        break;
+      case 'NOT_FOUND':
+      case 'TECHNICAL_ERROR':
+        this.postalCodeWarning = result.message;
+        break;
+    }
+  }
+
+  private resetPostalCodeState() {
+    this.postalCodeState = null;
+    this.postalCodeError = '';
+    this.postalCodeWarning = '';
+    this.isManualFallback = false;
+    this.isProvinceReadonly = true;
+    this.availableCities = [];
+    this.ciudad = '';
+    this.poblacion = '';
   }
 
   ngAfterViewInit() {}
@@ -326,6 +350,17 @@ export class ResumenCheckoutComponent implements OnInit {
       return;
     }
 
+    // 🇪🇸 TEMPORAL: durante la validación comercial no se calcula envío para direcciones fuera de España
+    // (evita llamadas innecesarias a Printful; isCountrySupported() se deja intacto para uso futuro)
+    if (!this.isSpainAddress(addressObj)) {
+      console.warn("Dirección fuera de España (España-only):", addressObj.pais);
+      this.shippingRate = 0;
+      this.shippingMethod = '';
+      this.fechaEntregaMin = '';
+      this.fechaEntregaMax = '';
+      return;
+    }
+
     this.address = addressObj.address;
     this.usandoFallback = isFallback;
 
@@ -346,7 +381,7 @@ export class ResumenCheckoutComponent implements OnInit {
     const payload = {
       recipient: {
         address1: addressObj.address,
-        city: addressObj.ciudad || addressObj.poblacion,
+        city: addressObj.poblacion || addressObj.ciudad,
         country_code: countryCode,
         zip: addressObj.zipcode,
         state_code: addressObj.ciudad || addressObj.poblacion
@@ -484,18 +519,19 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   restoreSelectedAddress(list: any[], storageKey: string) {
-    // 1. Buscar dirección habitual en db
+    // 1. Buscar dirección habitual en db (preferir una en España si la habitual no lo es)
     const habitual = list.find(addr => addr.usual_shipping_address === true);
     if (habitual) {
-      this.selectedAddressId = habitual.id;
-      this.selectedAddress = habitual;
+      const habitualToUse = this.isSpainAddress(habitual) ? habitual : (list.find(addr => this.isSpainAddress(addr)) || habitual);
+      this.selectedAddressId = habitualToUse.id;
+      this.selectedAddress = habitualToUse;
       if (this.selectedAddress) {
         this.generateShippingRate(this.selectedAddress);
       }
       return;
     }
 
-    // 2. Si no hay habitual, buscar en sessionStorage
+    // 2. Si no hay habitual, buscar en sessionStorage (respeta la selección explícita previa del usuario)
     const savedAddressId = sessionStorage.getItem(storageKey);
     if (savedAddressId) {
       const parsedId = parseInt(savedAddressId, 10);
@@ -507,10 +543,11 @@ export class ResumenCheckoutComponent implements OnInit {
       }
     }
     
-     // 3. Fallback: usar la primera del array
+     // 3. Fallback: preferir la primera dirección de España si existe, si no la primera del array
     if (list.length > 0) {
-      this.selectedAddressId = list[0].id;
-      this.selectedAddress = list[0];
+      const fallbackAddress = list.find(addr => this.isSpainAddress(addr)) || list[0];
+      this.selectedAddressId = fallbackAddress.id;
+      this.selectedAddress = fallbackAddress;
       if (this.selectedAddress) {
         this.generateShippingRate(this.selectedAddress);
       }
@@ -576,6 +613,15 @@ getVarietyImage(cart: any): string {
     this._router.navigate(['/', this.country, this.locale, 'shop', 'home']);
   }
   
+  /**
+   * 🇪🇸 TEMPORAL: normaliza el país de una dirección y confirma si corresponde a España.
+   * Acepta 'ES' / 'es' / 'España' / 'españa'. Válido mientras el mercado comercial sea España-only.
+   */
+  private isSpainAddress(address: any): boolean {
+    const raw = (address?.pais || '').toString().trim().toLowerCase();
+    return raw === 'es' || raw === 'españa';
+  }
+
   goToNextStep() {
     // Validar que haya dirección seleccionada
     if (!this.selectedAddress) {
@@ -585,6 +631,12 @@ getVarietyImage(cart: any): string {
 
     // 🆕 Si es módulo, NO validar shipping (no requiere envío físico)
     if (!this.isModulePurchase) {
+      // 🇪🇸 GUARD DEFINITIVO: durante la validación comercial solo se permiten envíos a España
+      if (!this.isSpainAddress(this.selectedAddress)) {
+        alertWarning('Actualmente solo realizamos envíos a España.');
+        return;
+      }
+
       // Validar que se haya calculado el envío correctamente (solo Printful)
       if (this.shippingRate === 0 && !this.shippingMethod) {
         alertWarning('No se pudo calcular el envío para la dirección seleccionada. Por favor, verifica que la dirección sea correcta o selecciona otra.');
@@ -735,69 +787,77 @@ getVarietyImage(cart: any): string {
     };
 
     
-    this.addressValidationService.validateLocalRulesAsync(addressData).subscribe({
-      next: (localValidation) => {
-        if (!localValidation.isValid) {
-          // ❌ Validación local falló (CP o ciudad no válidos según BD)
-          console.log('❌ [ResumenCheckout] Validación de backend falló:', localValidation.message);
+    const proceedToPrintful = () => {
+      this.validationMessage = 'Validando dirección con Printful...';
+      this.addressValidationService.validateWithPrintful(addressData).subscribe({
+        next: (validation) => {
+          this.isValidating = false;
+          
+          if (!validation.isValid) {
+            // ❌ Dirección no válida según Printful
+            this.status = false;
+            this.validMessage = true;
+            this.errorOrSuccessMessage = validation.message;
+            this.validationMessage = '';
+            this.hideMessageAfterDelay();
+            alertDanger(validation.message);
+            return;
+          }
+
+          // ✅ Dirección válida, proceder a guardar
+          console.log('✅ [ResumenCheckout] Validación Printful OK, guardando...');
+          this.validationMessage = 'Dirección válida, guardando...';
+          this.saveValidatedAddress(addressData);
+        },
+        error: (err) => {
+          console.error('❌ Error validando dirección con Printful:', err);
           this.isValidating = false;
           this.status = false;
           this.validMessage = true;
-          this.errorOrSuccessMessage = localValidation.message;
+          this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
           this.validationMessage = '';
           this.hideMessageAfterDelay();
-          alertDanger(localValidation.message);
-          return;
+          alertDanger("Error al validar la dirección");
         }
-        
-        // ✅ Validación local correcta, ahora validar con Printful
-       
-        this.validationMessage = 'Validando dirección con Printful...';
-        
-        // 🔍 PASO 2: VALIDAR CON PRINTFUL
-        this.addressValidationService.validateWithPrintful(addressData).subscribe({
-          next: (validation) => {
-            this.isValidating = false;
-            
-            if (!validation.isValid) {
-              // ❌ Dirección no válida según Printful
-              this.status = false;
-              this.validMessage = true;
-              this.errorOrSuccessMessage = validation.message;
-              this.validationMessage = '';
-              this.hideMessageAfterDelay();
-              alertDanger(validation.message);
-              return;
-            }
+      });
+    };
 
-            // ✅ Dirección válida, proceder a guardar
-            console.log('✅ [ResumenCheckout] Validación Printful OK, guardando...');
-            this.validationMessage = 'Dirección válida, guardando...';
-            this.saveValidatedAddress(addressData);
-          },
-          error: (err) => {
-            console.error('❌ Error validando dirección con Printful:', err);
+    if (this.postalCodeState === 'NOT_FOUND' || this.postalCodeState === 'TECHNICAL_ERROR') {
+      // 🎯 CP ausente de postal_codes o servicio postal caído: la validación cruzada local
+      // siempre rechazaría este CP; Printful valida operacionalmente la dirección manual.
+      console.log('ℹ️ [ResumenCheckout] CP en modo fallback manual, se omite validateLocalRulesAsync()');
+      proceedToPrintful();
+    } else {
+      this.addressValidationService.validateLocalRulesAsync(addressData).subscribe({
+        next: (localValidation) => {
+          if (!localValidation.isValid) {
+            // ❌ Validación local falló (CP o ciudad no válidos según BD)
+            console.log('❌ [ResumenCheckout] Validación de backend falló:', localValidation.message);
             this.isValidating = false;
             this.status = false;
             this.validMessage = true;
-            this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
+            this.errorOrSuccessMessage = localValidation.message;
             this.validationMessage = '';
             this.hideMessageAfterDelay();
-            alertDanger("Error al validar la dirección");
+            alertDanger(localValidation.message);
+            return;
           }
-        });
-      },
-      error: (err) => {
-        console.error('❌ Error validando con backend:', err);
-        this.isValidating = false;
-        this.status = false;
-        this.validMessage = true;
-        this.errorOrSuccessMessage = "Error al validar el código postal y ciudad";
-        this.validationMessage = '';
-        this.hideMessageAfterDelay();
-        alertDanger("Error al validar el código postal y ciudad");
-      }
-    });
+          
+          // ✅ Validación local correcta, ahora validar con Printful
+          proceedToPrintful();
+        },
+        error: (err) => {
+          console.error('❌ Error validando con backend:', err);
+          this.isValidating = false;
+          this.status = false;
+          this.validMessage = true;
+          this.errorOrSuccessMessage = "Error al validar el código postal y ciudad";
+          this.validationMessage = '';
+          this.hideMessageAfterDelay();
+          alertDanger("Error al validar el código postal y ciudad");
+        }
+      });
+    }
   }
 
   /**
@@ -1322,69 +1382,78 @@ getVarietyImage(cart: any): string {
     // 🔍 PASO 1: VALIDAR CON BACKEND API (validación local con base de datos postal_codes)
     console.log('🔍 [ResumenCheckout-Update] Paso 1: Validando código postal con backend API...');
     
-    this.addressValidationService.validateLocalRulesAsync(addressData).subscribe({
-      next: (localValidation) => {
-        if (!localValidation.isValid) {
-          // ❌ Validación local falló (CP o ciudad no válidos según BD)
-          console.log('❌ [ResumenCheckout-Update] Validación de backend falló:', localValidation.message);
+    const proceedToPrintful = () => {
+      this.validationMessage = 'Validando dirección con Printful...';
+      this.addressValidationService.validateWithPrintful(addressData).subscribe({
+        next: (validation) => {
+          this.isValidating = false;
+          
+          if (!validation.isValid) {
+            // ❌ Dirección no válida según Printful
+            this.status = false;
+            this.validMessage = true;
+            this.errorOrSuccessMessage = validation.message;
+            this.validationMessage = '';
+            this.hideMessageAfterDelay();
+            alertDanger(validation.message);
+            return;
+          }
+
+          // ✅ Dirección válida, proceder a actualizar
+          console.log('✅ [ResumenCheckout-Update] Validación Printful OK, actualizando...');
+          this.validationMessage = 'Dirección válida, actualizando...';
+          this.proceedWithUpdate();
+        },
+        error: (err) => {
+          console.error('❌ Error validando dirección con Printful:', err);
           this.isValidating = false;
           this.status = false;
           this.validMessage = true;
-          this.errorOrSuccessMessage = localValidation.message;
+          this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
           this.validationMessage = '';
           this.hideMessageAfterDelay();
-          alertDanger(localValidation.message);
-          return;
+          alertDanger("Error al validar la dirección");
         }
-        
-        // ✅ Validación local correcta, ahora validar con Printful
-        console.log('✅ [ResumenCheckout-Update] Validación backend OK, validando con Printful...');
-        this.validationMessage = 'Validando dirección con Printful...';
-        
-        // 🔍 PASO 2: VALIDAR CON PRINTFUL
-        this.addressValidationService.validateWithPrintful(addressData).subscribe({
-          next: (validation) => {
-            this.isValidating = false;
-            
-            if (!validation.isValid) {
-              // ❌ Dirección no válida según Printful
-              this.status = false;
-              this.validMessage = true;
-              this.errorOrSuccessMessage = validation.message;
-              this.validationMessage = '';
-              this.hideMessageAfterDelay();
-              alertDanger(validation.message);
-              return;
-            }
+      });
+    };
 
-            // ✅ Dirección válida, proceder a actualizar
-            console.log('✅ [ResumenCheckout-Update] Validación Printful OK, actualizando...');
-            this.validationMessage = 'Dirección válida, actualizando...';
-            this.proceedWithUpdate();
-          },
-          error: (err) => {
-            console.error('❌ Error validando dirección con Printful:', err);
+    if (this.postalCodeState === 'NOT_FOUND' || this.postalCodeState === 'TECHNICAL_ERROR') {
+      // 🎯 CP ausente de postal_codes o servicio postal caído: la validación cruzada local
+      // siempre rechazaría este CP; Printful valida operacionalmente la dirección manual.
+      console.log('ℹ️ [ResumenCheckout-Update] CP en modo fallback manual, se omite validateLocalRulesAsync()');
+      proceedToPrintful();
+    } else {
+      this.addressValidationService.validateLocalRulesAsync(addressData).subscribe({
+        next: (localValidation) => {
+          if (!localValidation.isValid) {
+            // ❌ Validación local falló (CP o ciudad no válidos según BD)
+            console.log('❌ [ResumenCheckout-Update] Validación de backend falló:', localValidation.message);
             this.isValidating = false;
             this.status = false;
             this.validMessage = true;
-            this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
+            this.errorOrSuccessMessage = localValidation.message;
             this.validationMessage = '';
             this.hideMessageAfterDelay();
-            alertDanger("Error al validar la dirección");
+            alertDanger(localValidation.message);
+            return;
           }
-        });
-      },
-      error: (err) => {
-        console.error('❌ Error validando con backend:', err);
-        this.isValidating = false;
-        this.status = false;
-        this.validMessage = true;
-        this.errorOrSuccessMessage = "Error al validar el código postal y ciudad";
-        this.validationMessage = '';
-        this.hideMessageAfterDelay();
-        alertDanger("Error al validar el código postal y ciudad");
-      }
-    });
+          
+          // ✅ Validación local correcta, ahora validar con Printful
+          console.log('✅ [ResumenCheckout-Update] Validación backend OK, validando con Printful...');
+          proceedToPrintful();
+        },
+        error: (err) => {
+          console.error('❌ Error validando con backend:', err);
+          this.isValidating = false;
+          this.status = false;
+          this.validMessage = true;
+          this.errorOrSuccessMessage = "Error al validar el código postal y ciudad";
+          this.validationMessage = '';
+          this.hideMessageAfterDelay();
+          alertDanger("Error al validar el código postal y ciudad");
+        }
+      });
+    }
   }
 
   private proceedWithUpdate() {

@@ -42,6 +42,16 @@ export interface PostalCodeInfo {
   postalCode: string;
   province: string;
   cities: { city: string; isPrimary: boolean }[];
+  // true solo cuando el fallo es técnico (HTTP != 404); ausente/false = CP simplemente no encontrado
+  technicalError?: boolean;
+}
+
+export type PostalCodeCheckState = 'INVALID_FORMAT' | 'FOUND' | 'NOT_FOUND' | 'TECHNICAL_ERROR';
+
+export interface PostalCodeCheckResult {
+  state: PostalCodeCheckState;
+  message: string;
+  info?: PostalCodeInfo;
 }
 
 export interface PostalCodeValidation {
@@ -221,12 +231,43 @@ export class AddressValidationService {
       }),
       catchError(error => {
         console.warn('⚠️ [AddressValidation] Backend API error:', error);
-        // Si el backend no tiene el CP, devolver null para fallback a Printful
+        // Si el backend no tiene el CP, devolver null (NOT_FOUND real)
         if (error.status === 404) {
           console.log('ℹ️ [AddressValidation] ZIP not found in backend database - fallback to Printful');
           return of(null);
         }
-        return of(null);
+        // Fallo técnico (500/timeout/red): se distingue de un NOT_FOUND real para no bloquear una compra legítima
+        console.warn('⚠️ [AddressValidation] Technical error contacting postal service:', error.status);
+        return of({ exists: false, postalCode, province: '', cities: [], technicalError: true } as PostalCodeInfo);
+      })
+    );
+  }
+
+  /**
+   * 🎯 Clasifica un código postal en uno de 4 estados: INVALID_FORMAT, FOUND, NOT_FOUND, TECHNICAL_ERROR.
+   * Reutiliza validateZipCode() (formato) y getPostalCodeInfo() (existencia/errores) sin tocarlos.
+   */
+  checkPostalCode(zipCode: string, countryCode: string): Observable<PostalCodeCheckResult> {
+    const formatError = this.validateZipCode(zipCode, countryCode);
+    if (formatError) {
+      return of({ state: 'INVALID_FORMAT', message: formatError });
+    }
+
+    return this.getPostalCodeInfo(countryCode, zipCode).pipe(
+      map((info): PostalCodeCheckResult => {
+        if (info?.technicalError) {
+          return {
+            state: 'TECHNICAL_ERROR',
+            message: 'No hemos podido verificar automáticamente el código postal. Introduce población y provincia.'
+          };
+        }
+        if (!info || !info.exists) {
+          return {
+            state: 'NOT_FOUND',
+            message: 'No hemos podido autocompletar este código postal. Introduce la población y provincia manualmente.'
+          };
+        }
+        return { state: 'FOUND', message: 'Código postal válido', info };
       })
     );
   }

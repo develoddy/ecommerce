@@ -246,8 +246,12 @@
                                                         <i class="icon anm anm-times-r me-1"></i>{{ postalCodeError }}
                                                     </div>
                                                     <!-- Mensaje de éxito -->
-                                                    <div *ngIf="zipcode && !postalCodeError && !isLoadingPostalCode && ciudad" class="text-success small mt-1">
+                                                    <div *ngIf="postalCodeState === 'FOUND' && !isLoadingPostalCode" class="text-success small mt-1">
                                                         <i class="icon anm anm-check me-1"></i>Código postal válido
+                                                    </div>
+                                                    <!-- Aviso de fallback manual (CP válido no encontrado / error técnico) -->
+                                                    <div *ngIf="postalCodeWarning" class="text-warning small mt-1">
+                                                        <i class="icon anm anm-info-r me-1"></i>{{ postalCodeWarning }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -257,7 +261,7 @@
                                                 <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
                                                     <label for="address_State" class="form-label d-none">Provincia/Estado <span class="required">*</span></label>
                                                     <input  name="state" 
-                                                            placeholder="Provincia (se autocompleta con el CP)" 
+                                                            [placeholder]="isManualFallback ? 'Provincia' : 'Provincia (se autocompleta con el CP)'" 
                                                             class="form-control  fw-light bg-light" 
                                                             required 
                                                             [(ngModel)]="ciudad" 
@@ -266,11 +270,11 @@
                                                             [ngClass]="{'is-invalid': ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)}" 
                                                             id="address_State" 
                                                             type="text" />
-                                                    <small class="form-text text-muted" *ngIf="!ciudad">
+                                                    <small class="form-text text-muted" *ngIf="!ciudad && !isManualFallback">
                                                         <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
                                                     </small>
                                                     <div *ngIf="ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                        Ingresa primero el código postal
+                                                        {{ isManualFallback ? 'Introduce la provincia' : 'Ingresa primero el código postal' }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -278,7 +282,7 @@
                                             <!-- 🎯 Ciudad/Población (DROPDOWN SI HAY MÚLTIPLES OPCIONES) -->
                                             <div class="row justify-content-center">
                                                 <div class="form-group col-12 col-sm-6 col-md-6 col-lg-4">
-                                                    <label for="new-city" class="form-label d-none">Ciudad <span class="required">*</span></label>
+                                                    <label for="new-city" class="form-label d-none">Población <span class="required">*</span></label>
                                                     
                                                     <!-- Dropdown si hay múltiples ciudades -->
                                                     <ng-container *ngIf="availableCities.length > 1; else singleCity">
@@ -310,22 +314,22 @@
                                                     <!-- Input si hay una sola ciudad o aún no se ha buscado -->
                                                     <ng-template #singleCity>
                                                         <input  name="poblacion" 
-                                                                placeholder="Ciudad (se autocompleta con el CP)" 
+                                                                [placeholder]="isManualFallback ? 'Población' : 'Población (se autocompleta con el CP)'" 
                                                                 class="form-control  fw-light bg-light" 
                                                                 required 
                                                                 [(ngModel)]="poblacion" 
                                                                 #poblacionInput="ngModel" 
-                                                                [readonly]="availableCities.length === 1"
+                                                                [readonly]="!isManualFallback"
                                                                 [ngClass]="{'is-invalid': poblacionInput.invalid && (poblacionInput.touched || addressForm.submitted)}" 
                                                                 id="new-city" 
                                                                 type="text" />
                                                         
-                                                        <small class="form-text text-muted" *ngIf="availableCities.length === 0 && !poblacion">
+                                                        <small class="form-text text-muted" *ngIf="!isManualFallback && availableCities.length === 0 && !poblacion">
                                                             <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
                                                         </small>
                                                         
                                                         <div *ngIf="poblacionInput.invalid && (poblacionInput.touched || addressForm.submitted)" class="invalid-feedback d-block">
-                                                            Ingresa primero el código postal
+                                                            {{ isManualFallback ? 'Introduce la población' : 'Ingresa primero el código postal' }}
                                                         </div>
                                                     </ng-template>
                                                     
