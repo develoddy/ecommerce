@@ -11,6 +11,7 @@ import { MinicartService } from 'src/app/services/minicartService.service';
 import { PriceCalculationService } from 'src/app/modules/home/_services/product/price-calculation.service';
 import { DynamicRouterService } from 'src/app/services/dynamic-router.service';
 import { LocalizationService } from 'src/app/services/localization.service';
+import { TranslateService } from '@ngx-translate/core';
 declare var $:any;
 declare function HOMEINITTEMPLATE([]):any;
 declare function actionNetxCheckout([]):any;
@@ -138,7 +139,8 @@ export class ResumenCheckoutComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private priceCalculationService: PriceCalculationService,
     private dynamicRouter: DynamicRouterService,
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+    private translate: TranslateService
   ) {
     this.routerActived.paramMap.subscribe(params => {
       this.locale = params.get('locale') || 'es';  
@@ -207,6 +209,7 @@ export class ResumenCheckoutComponent implements OnInit {
 
     switch (result.state) {
       case 'INVALID_FORMAT':
+        // Mensaje din\u00e1mico (formato/ejemplo/rango por pa\u00eds) generado en AddressValidationService; no se traduce aqu\u00ed
         this.postalCodeError = result.message;
         break;
       case 'FOUND':
@@ -217,8 +220,10 @@ export class ResumenCheckoutComponent implements OnInit {
         }
         break;
       case 'NOT_FOUND':
+        this.postalCodeWarning = this.translate.instant('checkout.resumen.postal_code.not_found_warning');
+        break;
       case 'TECHNICAL_ERROR':
-        this.postalCodeWarning = result.message;
+        this.postalCodeWarning = this.translate.instant('checkout.resumen.postal_code.technical_error_warning');
         break;
     }
   }
@@ -370,7 +375,7 @@ export class ResumenCheckoutComponent implements OnInit {
     // Verificar si el país está soportado
     if (!this.addressValidationService.isCountrySupported(countryCode)) {
       console.warn("País no permitido:", countryCode);
-      alertWarning(`Lo sentimos, no realizamos envíos a ${addressObj.pais}. Solo enviamos a países de la Unión Europea.`);
+      alertWarning(this.translate.instant('checkout.resumen.messages.country_not_allowed', { country: addressObj.pais }));
       this.shippingRate = 0;
       this.shippingMethod = '';
       this.fechaEntregaMin = '';
@@ -422,7 +427,7 @@ export class ResumenCheckoutComponent implements OnInit {
 
           this.shippingMethod = rate.name;
         } else {
-          alertWarning('No se pudo calcular el envío para esta dirección. Verifica que todos los datos sean correctos.');
+          alertWarning(this.translate.instant('checkout.resumen.messages.shipping_error_generic'));
           this.shippingRate = 0;
           this.shippingMethod = '';
           this.fechaEntregaMin = '';
@@ -433,13 +438,13 @@ export class ResumenCheckoutComponent implements OnInit {
         console.error("❌ Error al calcular tarifas de envío", err);
         
         // Mostrar mensaje más específico según el error
-        let errorMessage = 'No se pudo calcular el envío para esta dirección.';
+        let errorMessage = this.translate.instant('checkout.resumen.messages.shipping_error_default');
         if (err.error?.error?.message) {
           const printfulError = err.error.error.message.toLowerCase();
           if (printfulError.includes('zip') || printfulError.includes('postal')) {
-            errorMessage = 'El código postal no es válido para este país.';
+            errorMessage = this.translate.instant('checkout.resumen.messages.shipping_error_invalid_zip');
           } else if (printfulError.includes('address')) {
-            errorMessage = 'La dirección no es válida. Verifica que todos los datos sean correctos.';
+            errorMessage = this.translate.instant('checkout.resumen.messages.shipping_error_invalid_address');
           }
         }
         
@@ -625,7 +630,7 @@ getVarietyImage(cart: any): string {
   goToNextStep() {
     // Validar que haya dirección seleccionada
     if (!this.selectedAddress) {
-      alertWarning('Por favor, selecciona una dirección de envío antes de continuar.');
+      alertWarning(this.translate.instant('checkout.resumen.messages.select_address_required'));
       return;
     }
 
@@ -633,20 +638,20 @@ getVarietyImage(cart: any): string {
     if (!this.isModulePurchase) {
       // 🇪🇸 GUARD DEFINITIVO: durante la validación comercial solo se permiten envíos a España
       if (!this.isSpainAddress(this.selectedAddress)) {
-        alertWarning('Actualmente solo realizamos envíos a España.');
+        alertWarning(this.translate.instant('checkout.resumen.messages.spain_only_shipping'));
         return;
       }
 
       // Validar que se haya calculado el envío correctamente (solo Printful)
       if (this.shippingRate === 0 && !this.shippingMethod) {
-        alertWarning('No se pudo calcular el envío para la dirección seleccionada. Por favor, verifica que la dirección sea correcta o selecciona otra.');
+        alertWarning(this.translate.instant('checkout.resumen.messages.shipping_calc_failed'));
         return;
       }
     }
 
     // Validar que haya productos en el carrito
     if (!this.listCarts || this.listCarts.length === 0) {
-      alertWarning('Tu carrito está vacío. Añade productos antes de continuar.');
+      alertWarning(this.translate.instant('checkout.resumen.messages.empty_cart_error'));
       return;
     }
 
@@ -757,9 +762,9 @@ getVarietyImage(cart: any): string {
         !this.ciudad || !this.email || !this.phone) {
       this.status = false;
       this.validMessage = true;
-      this.errorOrSuccessMessage = "Rellene los campos obligatorios de la dirección de envío";
+      this.errorOrSuccessMessage = this.translate.instant('checkout.resumen.messages.fill_required_fields');
       this.hideMessageAfterDelay();
-      alertDanger("Rellene los campos obligatorios de la dirección de envío");
+      alertDanger(this.translate.instant('checkout.resumen.messages.fill_required_fields'));
       return;
     }
 
@@ -771,7 +776,7 @@ getVarietyImage(cart: any): string {
 
     // Marcar como validando
     this.isValidating = true;
-    this.validationMessage = 'Validando código postal y ciudad...';
+    this.validationMessage = this.translate.instant('checkout.resumen.messages.validating_postal');
 
     // Construir objeto de dirección para validación
     const addressData = {
@@ -788,7 +793,7 @@ getVarietyImage(cart: any): string {
 
     
     const proceedToPrintful = () => {
-      this.validationMessage = 'Validando dirección con Printful...';
+      this.validationMessage = this.translate.instant('checkout.resumen.messages.validating_printful');
       this.addressValidationService.validateWithPrintful(addressData).subscribe({
         next: (validation) => {
           this.isValidating = false;
@@ -806,7 +811,7 @@ getVarietyImage(cart: any): string {
 
           // ✅ Dirección válida, proceder a guardar
           console.log('✅ [ResumenCheckout] Validación Printful OK, guardando...');
-          this.validationMessage = 'Dirección válida, guardando...';
+          this.validationMessage = this.translate.instant('checkout.resumen.messages.address_valid_saving');
           this.saveValidatedAddress(addressData);
         },
         error: (err) => {
@@ -814,10 +819,10 @@ getVarietyImage(cart: any): string {
           this.isValidating = false;
           this.status = false;
           this.validMessage = true;
-          this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
+          this.errorOrSuccessMessage = this.translate.instant('checkout.resumen.messages.printful_validation_error');
           this.validationMessage = '';
           this.hideMessageAfterDelay();
-          alertDanger("Error al validar la dirección");
+          alertDanger(this.translate.instant('checkout.resumen.messages.printful_validation_error_short'));
         }
       });
     };
@@ -851,10 +856,10 @@ getVarietyImage(cart: any): string {
           this.isValidating = false;
           this.status = false;
           this.validMessage = true;
-          this.errorOrSuccessMessage = "Error al validar el código postal y ciudad";
+          this.errorOrSuccessMessage = this.translate.instant('checkout.resumen.messages.postal_validation_error');
           this.validationMessage = '';
           this.hideMessageAfterDelay();
-          alertDanger("Error al validar el código postal y ciudad");
+          alertDanger(this.translate.instant('checkout.resumen.messages.postal_validation_error'));
         }
       });
     }
@@ -881,9 +886,9 @@ getVarietyImage(cart: any): string {
         this.validationMessage = '';
         this.status = false;
         this.validMessage = true;
-        this.errorOrSuccessMessage = 'No se pudo identificar el invitado para guardar la dirección';
+        this.errorOrSuccessMessage = this.translate.instant('checkout.resumen.messages.guest_not_identified_save');
         this.hideMessageAfterDelay();
-        alertDanger('No se pudo identificar el invitado. Recarga la página e inténtalo de nuevo.');
+        alertDanger(this.translate.instant('checkout.resumen.messages.guest_not_identified_save_alert'));
         return;
       }
       payload.guest = guestId;
@@ -910,12 +915,12 @@ getVarietyImage(cart: any): string {
         this.loadAddresses();
       } else {
         this.status = false;
-        this.errorOrSuccessMessage = "Error al guardar la dirección";
+        this.errorOrSuccessMessage = this.translate.instant('checkout.resumen.messages.save_error');
         this.hideMessageAfterDelay();
       }
     }, error => {
       this.status = false;
-      this.errorOrSuccessMessage = "Error al guardar la dirección";
+      this.errorOrSuccessMessage = this.translate.instant('checkout.resumen.messages.save_error');
       this.hideMessageAfterDelay();
     });
   }
@@ -1124,7 +1129,7 @@ getVarietyImage(cart: any): string {
       
       if (!this.guestEmail || !this.guestEmail.trim()) {
         console.error('❌ [ResumenCheckout] Email vacío');
-        alertWarning('Por favor, ingresa tu email para continuar');
+        alertWarning(this.translate.instant('checkout.resumen.messages.guest_email_required'));
         return;
       }
       
@@ -1132,7 +1137,7 @@ getVarietyImage(cart: any): string {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(this.guestEmail)) {
         console.error('❌ [ResumenCheckout] Email inválido:', this.guestEmail);
-        alertWarning('Por favor, ingresa un email válido');
+        alertWarning(this.translate.instant('checkout.resumen.messages.guest_email_invalid'));
         return;
       }
       
@@ -1197,7 +1202,7 @@ getVarietyImage(cart: any): string {
 
       const guestId = this.getCurrentGuestId();
       if (!guestId) {
-        alertDanger('No se pudo identificar el invitado para actualizar la dirección habitual.');
+        alertDanger(this.translate.instant('checkout.resumen.messages.guest_not_identified_usual'));
         return;
       }
 
@@ -1308,11 +1313,11 @@ getVarietyImage(cart: any): string {
 
   public login() {
     if (!this.email_identify) {
-      alertDanger("Es necesario ingresar el email");
+      alertDanger(this.translate.instant('checkout.resumen.messages.login_email_required'));
     }
 
     if (!this.password_identify) {
-      alertDanger("Es necesario ingresar el password");
+      alertDanger(this.translate.instant('checkout.resumen.messages.login_password_required'));
     }
 
     const subscriptionLogin =  this._authService.login(this.email_identify, this.password_identify).subscribe(
@@ -1350,9 +1355,9 @@ getVarietyImage(cart: any): string {
     if (!this.name || !this.surname || !this.pais || !this.calle || !this.numero || !this.zipcode || !this.poblacion || !this.ciudad || !this.email || !this.phone) {
       this.status = false;
       this.validMessage = true;
-      this.errorOrSuccessMessage = "Por favor, rellene los campos obligatorios de la dirección de envío";
+      this.errorOrSuccessMessage = this.translate.instant('checkout.resumen.messages.fill_required_fields');
       this.hideMessageAfterDelay();
-      alertDanger("Rellene los campos obligatorios de la dirección de envío");
+      alertDanger(this.translate.instant('checkout.resumen.messages.fill_required_fields'));
       return;
     }
 
@@ -1364,7 +1369,7 @@ getVarietyImage(cart: any): string {
 
     // Marcar como validando
     this.isValidating = true;
-    this.validationMessage = 'Validando código postal y ciudad...';
+    this.validationMessage = this.translate.instant('checkout.resumen.messages.validating_postal');
 
     // Construir objeto de dirección para validación
     const addressData = {
@@ -1383,7 +1388,7 @@ getVarietyImage(cart: any): string {
     console.log('🔍 [ResumenCheckout-Update] Paso 1: Validando código postal con backend API...');
     
     const proceedToPrintful = () => {
-      this.validationMessage = 'Validando dirección con Printful...';
+      this.validationMessage = this.translate.instant('checkout.resumen.messages.validating_printful');
       this.addressValidationService.validateWithPrintful(addressData).subscribe({
         next: (validation) => {
           this.isValidating = false;
@@ -1401,7 +1406,7 @@ getVarietyImage(cart: any): string {
 
           // ✅ Dirección válida, proceder a actualizar
           console.log('✅ [ResumenCheckout-Update] Validación Printful OK, actualizando...');
-          this.validationMessage = 'Dirección válida, actualizando...';
+          this.validationMessage = this.translate.instant('checkout.resumen.messages.address_valid_updating');
           this.proceedWithUpdate();
         },
         error: (err) => {
@@ -1409,10 +1414,10 @@ getVarietyImage(cart: any): string {
           this.isValidating = false;
           this.status = false;
           this.validMessage = true;
-          this.errorOrSuccessMessage = "Error al validar la dirección con Printful";
+          this.errorOrSuccessMessage = this.translate.instant('checkout.resumen.messages.printful_validation_error');
           this.validationMessage = '';
           this.hideMessageAfterDelay();
-          alertDanger("Error al validar la dirección");
+          alertDanger(this.translate.instant('checkout.resumen.messages.printful_validation_error_short'));
         }
       });
     };
@@ -1447,10 +1452,10 @@ getVarietyImage(cart: any): string {
           this.isValidating = false;
           this.status = false;
           this.validMessage = true;
-          this.errorOrSuccessMessage = "Error al validar el código postal y ciudad";
+          this.errorOrSuccessMessage = this.translate.instant('checkout.resumen.messages.postal_validation_error');
           this.validationMessage = '';
           this.hideMessageAfterDelay();
-          alertDanger("Error al validar el código postal y ciudad");
+          alertDanger(this.translate.instant('checkout.resumen.messages.postal_validation_error'));
         }
       });
     }
@@ -1512,7 +1517,7 @@ getVarietyImage(cart: any): string {
         this.showAlert(message, 'danger');
         break;
       default:
-        this.showAlert('Error desconocido', 'danger');
+        this.showAlert(this.translate.instant('checkout.resumen.messages.unknown_error'), 'danger');
         break;
     }
     this.closeModal();
@@ -1540,7 +1545,7 @@ getVarietyImage(cart: any): string {
   }
 
   private handleAddressUpdateError(error: any): void {
-    this.showAlert("¡Oops! No se pudo actualizar la dirección", 'danger');
+    this.showAlert(this.translate.instant('checkout.resumen.messages.update_address_error'), 'danger');
     this.closeModal();
   }
 

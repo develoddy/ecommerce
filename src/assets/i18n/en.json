@@ -337,5 +337,178 @@
             "subtitle": "Products that fit your passion for code and tech culture.",
             "new_collection": "New collection"
         }
+    },
+    "checkout": {
+        "resumen": {
+            "delivery": {
+                "title": "Shipping type",
+                "home": "Home delivery",
+                "free": "FREE",
+                "store": "Store",
+                "pickup_point": "Pickup point",
+                "label": "Delivery:"
+            },
+            "modules": {
+                "digital": {
+                    "title": "Instant digital delivery",
+                    "description": "You don't need to provide a shipping address. We'll send the download link to your email."
+                },
+                "service": {
+                    "title": "Custom service",
+                    "description": "You don't need to provide a shipping address. We'll send you scheduling instructions by email."
+                },
+                "integration": {
+                    "title": "Integration access",
+                    "description": "You don't need to provide a shipping address. We'll send you credentials by email."
+                }
+            },
+            "contact": {
+                "title": "Contact information",
+                "description": "We'll send the information to this email",
+                "email_label": "Email",
+                "email_placeholder": "your@email.com",
+                "email_required_error": "Email is required",
+                "email_invalid_error": "Enter a valid email",
+                "name_label": "Full name",
+                "optional": "(optional)",
+                "name_placeholder": "Your name",
+                "name_hint": "Helps us personalize the communication",
+                "continue_button": "Continue to payment"
+            },
+            "authenticated_email": {
+                "title": "Delivery email confirmed",
+                "description": "We'll send the information to:",
+                "continue_button": "Continue to payment"
+            },
+            "address_form": {
+                "cancel_button": "Cancel",
+                "edit_title": "Edit address",
+                "title": "Shipping details",
+                "name_label": "First name",
+                "name_placeholder": "First name",
+                "surname_label": "Last name",
+                "surname_placeholder": "Last name",
+                "email_label": "E-Mail",
+                "email_placeholder": "E-mail",
+                "country_label": "Country",
+                "country_placeholder": "Country",
+                "eu_group": "🇪🇺 European Union",
+                "street_label": "Street",
+                "street_placeholder": "Street (e.g. Gran Vía Street)",
+                "number_label": "Number",
+                "number_placeholder": "Number (e.g. 123)",
+                "number_required_error": "You must include the street number for shipping",
+                "apartment_label": "Apartment/Floor",
+                "apartment_placeholder": "Apartment/Floor (optional, e.g. 3rd floor)",
+                "apartment_hint": "Optional: floor, door, staircase, etc.",
+                "field_required_error": "Complete this field to continue",
+                "phone_label": "Mobile",
+                "phone_placeholder": "Mobile",
+                "set_default_label": "Set as default shipping address",
+                "update_button": "Update address",
+                "save_button": "Save address",
+                "validating_button": "Validating...",
+                "error_prefix": "Error:"
+            },
+            "postal_code": {
+                "label": "Postal code",
+                "placeholder": "Postal code (e.g. 28013)",
+                "searching": "Searching...",
+                "valid_message": "Valid postal code",
+                "not_found_warning": "We couldn't auto-complete this postal code. Please enter the town and province manually.",
+                "technical_error_warning": "We couldn't automatically verify the postal code. Please enter the town and province."
+            },
+            "city": {
+                "label": "Town",
+                "select_placeholder": "Select your town",
+                "available_count": "{{count}} towns available for this postal code",
+                "select_required_error": "Please select a town",
+                "placeholder_auto": "Town (auto-completed from postal code)",
+                "placeholder_manual": "Town",
+                "autocomplete_hint": "Will be auto-completed once you enter the postal code",
+                "manual_required_error": "Enter the town",
+                "enter_zip_first_error": "Enter the postal code first"
+            },
+            "province": {
+                "label": "Province/State",
+                "placeholder_auto": "Province (auto-completed from postal code)",
+                "placeholder_manual": "Province",
+                "autocomplete_hint": "Will be auto-completed once you enter the postal code",
+                "manual_required_error": "Enter the province",
+                "enter_zip_first_error": "Enter the postal code first"
+            },
+            "address_list": {
+                "title": "Shipping details",
+                "new_address_button": "New address",
+                "change_button": "Change",
+                "loading": "Loading...",
+                "loading_description": "Loading addresses...",
+                "default_badge": "Default address",
+                "edit_button": "Edit",
+                "phone_with_prefix": "Phone +34 {{phone}}"
+            },
+            "address_drawer": {
+                "title": "Shipping address",
+                "empty_title": "Oops! Your cart is empty",
+                "empty_description": "Start filling it with things you'll love.",
+                "confirm_button": "Confirm address",
+                "continue_payment_button": "Continue to payment",
+                "add_another_button": "Add another address"
+            },
+            "cart_summary": {
+                "title": "Price Summary",
+                "subtotal": "Subtotal",
+                "discount": "Discount",
+                "shipping": "Shipping",
+                "free": "Free",
+                "total": "Total",
+                "taxes_included": "Taxes included"
+            },
+            "continue_payment_button": "Continue to payment",
+            "privacy_policy_text": "By continuing, you confirm that you have read the",
+            "privacy_policy_link": "Privacy policy",
+            "empty_cart": {
+                "title": "Your cart is empty",
+                "description": "Get inspired by the latest trends and discover something new to refresh your wardrobe",
+                "discover_button": "Discover new arrivals"
+            },
+            "items_list": {
+                "title": "Items",
+                "sku_label": "Item No.",
+                "color_label": "Color",
+                "size_label": "Size",
+                "quantity_label": "Quantity",
+                "total_label": "Total"
+            },
+            "messages": {
+                "country_not_allowed": "Sorry, we don't ship to {{country}}. We only ship to European Union countries.",
+                "shipping_error_generic": "We couldn't calculate shipping for this address. Please check that all the details are correct.",
+                "shipping_error_default": "We couldn't calculate shipping for this address.",
+                "shipping_error_invalid_zip": "The postal code is not valid for this country.",
+                "shipping_error_invalid_address": "The address is not valid. Please check that all the details are correct.",
+                "select_address_required": "Please select a shipping address before continuing.",
+                "spain_only_shipping": "We currently only ship to Spain.",
+                "shipping_calc_failed": "We couldn't calculate shipping for the selected address. Please check that the address is correct or select another one.",
+                "empty_cart_error": "Your cart is empty. Add products before continuing.",
+                "fill_required_fields": "Please fill in the required shipping address fields",
+                "validating_postal": "Validating postal code and town...",
+                "validating_printful": "Validating address with Printful...",
+                "address_valid_saving": "Address valid, saving...",
+                "address_valid_updating": "Address valid, updating...",
+                "printful_validation_error": "Error validating the address with Printful",
+                "printful_validation_error_short": "Error validating the address",
+                "postal_validation_error": "Error validating the postal code and town",
+                "guest_not_identified_save": "Couldn't identify the guest to save the address",
+                "guest_not_identified_save_alert": "Couldn't identify the guest. Reload the page and try again.",
+                "save_error": "Error saving the address",
+                "guest_email_required": "Please enter your email to continue",
+                "guest_email_invalid": "Please enter a valid email",
+                "guest_not_identified_usual": "Couldn't identify the guest to update the default address.",
+                "login_email_required": "Email is required",
+                "login_password_required": "Password is required",
+                "unknown_error": "Unknown error",
+                "update_address_error": "Oops! The address could not be updated"
+            }
+        }
     }
 }

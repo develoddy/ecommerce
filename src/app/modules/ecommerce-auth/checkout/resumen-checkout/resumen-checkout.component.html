@@ -6,7 +6,7 @@
                 <!-- DELIVERY METHODS: Solo mostrar para productos físicos (Printful merch) -->
                 <div class="mb-5" *ngIf="requiresShipping()">
                     <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
-                        <i class="icon anm anm-truck-l me-2"></i>Tipo de envío
+                        <i class="icon anm anm-truck-l me-2"></i>{{ 'checkout.resumen.delivery.title' | translate }}
                     </h3>
                     <div class="d-flex flex-row mb-3">
                         <div class="py-3 px-5 border border-dark me-3">
@@ -19,8 +19,8 @@
                                         </g>
                                     </svg>
                                 </span>
-                                <span class="text-center"> Domicilio </span>
-                                <span class="text-center">GRATIS</span>
+                                <span class="text-center"> {{ 'checkout.resumen.delivery.home' | translate }} </span>
+                                <span class="text-center">{{ 'checkout.resumen.delivery.free' | translate }}</span>
                             </div>
                         </div>
                         <div class="p-5 bg-warning d-none">
@@ -30,8 +30,8 @@
                                         <path d="M17.603 5H21v15h-3v-9.337L15.521 15l-1.929-3 4.01-7zM3 5v15h3v-9.492L12.313 20 14 17 6 5z"></path>
                                     </svg>
                                 </span>
-                                <span>Tienda</span>
-                                <span class="texts_uppercaseL__dKrzo">GRATIS</span>
+                                <span>{{ 'checkout.resumen.delivery.store' | translate }}</span>
+                                <span class="texts_uppercaseL__dKrzo">{{ 'checkout.resumen.delivery.free' | translate }}</span>
                             </div>
                         </div>
                         <div class="p-3 border border-muted w-25 d-none">
@@ -41,8 +41,8 @@
                                         <path d="M12 2C9.355 2 6.875 3.542 5.682 5.929c-1.295 2.589-.724 5.925 1.511 8.909.072.105 4.391 6.585 4.391 6.585l.416.624.416-.624 4.377-6.567c2.25-3.002 2.82-6.338 1.525-8.927C17.125 3.542 14.645 2 12 2m3.999 12.25c-.016.02-.019.022-3.999 5.994-3.98-5.972-3.983-5.974-3.993-5.987-2.017-2.693-2.552-5.639-1.43-7.881C7.602 4.326 9.73 3 12 3s4.398 1.325 5.423 3.376c1.122 2.242.587 5.188-1.424 7.874M12 5C9.794 5 8 6.794 8 9s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4m0 7c-1.654 0-3-1.346-3-3s1.346-3 3-3 3 1.346 3 3-1.346 3-3 3"></path>
                                     </svg>
                                 </span>
-                                <span class="text-center">Punto de recogida</span>
-                                <span class="text-center">GRATIS</span>
+                                <span class="text-center">{{ 'checkout.resumen.delivery.pickup_point' | translate }}</span>
+                                <span class="text-center">{{ 'checkout.resumen.delivery.free' | translate }}</span>
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                 <!-- SHIPPING RATES -->
                 <div class="align-items-center mb-lg-5 mb-3 d-none">
                     <h3 class="fw-bold text-uppercase mb-0">
-                        Entrega:
+                        {{ 'checkout.resumen.delivery.label' | translate }}
                         <span class="fw-normal text-capitalize">
                             <ng-container *ngIf="entregaUnica">
                                 {{ fechaEntregaLabel }}
@@ -78,10 +78,10 @@
                         <i class="icon anm anm-download-l me-3" style="font-size: 2rem; color: #28a745;"></i>
                         <div>
                             <h5 class="mb-2" style="color: #155724; font-weight: 600;">
-                                <i class="icon anm anm-check-circle-o me-2"></i>Entrega digital instantánea
+                                <i class="icon anm anm-check-circle-o me-2"></i>{{ 'checkout.resumen.modules.digital.title' | translate }}
                             </h5>
                             <p class="mb-0" style="color: #155724;">
-                                No necesitas proporcionar dirección de envío. Te enviaremos el enlace de descarga a tu email.
+                                {{ 'checkout.resumen.modules.digital.description' | translate }}
                             </p>
                         </div>
                     </div>
@@ -91,10 +91,10 @@
                         <i class="icon anm anm-calendar-l me-3" style="font-size: 2rem; color: #17a2b8;"></i>
                         <div>
                             <h5 class="mb-2" style="color: #0c5460; font-weight: 600;">
-                                <i class="icon anm anm-check-circle-o me-2"></i>Servicio personalizado
+                                <i class="icon anm anm-check-circle-o me-2"></i>{{ 'checkout.resumen.modules.service.title' | translate }}
                             </h5>
                             <p class="mb-0" style="color: #0c5460;">
-                                No necesitas proporcionar dirección de envío. Te enviaremos instrucciones para agendar a tu email.
+                                {{ 'checkout.resumen.modules.service.description' | translate }}
                             </p>
                         </div>
                     </div>
@@ -104,10 +104,10 @@
                         <i class="icon anm anm-cog me-3" style="font-size: 2rem; color: #17a2b8;"></i>
                         <div>
                             <h5 class="mb-2" style="color: #0c5460; font-weight: 600;">
-                                <i class="icon anm anm-check-circle-o me-2"></i>Acceso a integración
+                                <i class="icon anm anm-check-circle-o me-2"></i>{{ 'checkout.resumen.modules.integration.title' | translate }}
                             </h5>
                             <p class="mb-0" style="color: #0c5460;">
-                                No necesitas proporcionar dirección de envío. Te enviaremos credenciales a tu email.
+                                {{ 'checkout.resumen.modules.integration.description' | translate }}
                             </p>
                         </div>
                     </div>
@@ -118,10 +118,10 @@
                     <div class="card border-0 shadow-sm" style="border-radius: 12px;">
                         <div class="card-body p-4">
                             <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
-                                <i class="icon anm anm-envelope-l me-2"></i>Información de contacto
+                                <i class="icon anm anm-envelope-l me-2"></i>{{ 'checkout.resumen.contact.title' | translate }}
                             </h3>
                             <p class="text-muted mb-4">
-                                <small>Te enviaremos la información a este email</small>
+                                <small>{{ 'checkout.resumen.contact.description' | translate }}</small>
                             </p>
                             
                             <form #contactForm="ngForm" novalidate>
@@ -129,7 +129,7 @@
                                 <div class="row justify-content-center mb-3">
                                     <div class="form-group col-12">
                                         <label for="contact-email" class="form-label fw-bold">
-                                            Email <span class="required text-danger">*</span>
+                                            {{ 'checkout.resumen.contact.email_label' | translate }} <span class="required text-danger">*</span>
                                         </label>
                                         <div class="position-relative">
                                             <input 
@@ -140,7 +140,7 @@
                                                 type="email" 
                                                 required 
                                                 email
-                                                placeholder="tu@email.com" 
+                                                [placeholder]="'checkout.resumen.contact.email_placeholder' | translate" 
                                                 class="form-control py-3" 
                                                 [ngClass]="{'is-invalid': contactEmail.invalid && (contactEmail.touched || contactForm.submitted)}" 
                                             />
@@ -156,8 +156,8 @@
                                             </button>
                                         </div>
                                         <div *ngIf="contactEmail.invalid && (contactEmail.touched || contactForm.submitted)" class="invalid-feedback d-block">
-                                            <span *ngIf="contactEmail.errors?.required">El email es obligatorio</span>
-                                            <span *ngIf="contactEmail.errors?.email">Ingresa un email válido</span>
+                                            <span *ngIf="contactEmail.errors?.required">{{ 'checkout.resumen.contact.email_required_error' | translate }}</span>
+                                            <span *ngIf="contactEmail.errors?.email">{{ 'checkout.resumen.contact.email_invalid_error' | translate }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -166,17 +166,17 @@
                                 <div class="row justify-content-center mb-3">
                                     <div class="form-group col-12">
                                         <label for="contact-name" class="form-label fw-bold">
-                                            Nombre completo <span class="text-muted">(opcional)</span>
+                                            {{ 'checkout.resumen.contact.name_label' | translate }} <span class="text-muted">{{ 'checkout.resumen.contact.optional' | translate }}</span>
                                         </label>
                                         <input 
                                             name="contact_name" 
                                             [(ngModel)]="guestName" 
                                             id="contact-name" 
                                             type="text" 
-                                            placeholder="Tu nombre" 
+                                            [placeholder]="'checkout.resumen.contact.name_placeholder' | translate" 
                                             class="form-control py-3" 
                                         />
-                                        <small class="text-muted">Nos ayuda a personalizar la comunicación</small>
+                                        <small class="text-muted">{{ 'checkout.resumen.contact.name_hint' | translate }}</small>
                                     </div>
                                 </div>
                                 
@@ -188,7 +188,7 @@
                                             class="btn btn-dark w-100 py-3 text-uppercase fw-normal" 
                                             (click)="confirmarDireccion()"
                                             [disabled]="contactForm.invalid">
-                                            Continuar al pago
+                                            {{ 'checkout.resumen.contact.continue_button' | translate }}
                                         </button>
                                     </div>
                                 </div>
@@ -205,10 +205,10 @@
                                 <i class="icon anm anm-check-circle-o me-3" style="font-size: 2rem; color: #28a745;"></i>
                                 <div>
                                     <h5 class="mb-2" style="font-weight: 600;">
-                                        Email de entrega confirmado
+                                        {{ 'checkout.resumen.authenticated_email.title' | translate }}
                                     </h5>
                                     <p class="mb-0 text-muted">
-                                        Enviaremos la información a: <strong>{{ CURRENT_USER_AUTHENTICATED.email }}</strong>
+                                        {{ 'checkout.resumen.authenticated_email.description' | translate }} <strong>{{ CURRENT_USER_AUTHENTICATED.email }}</strong>
                                     </p>
                                 </div>
                             </div>
@@ -222,7 +222,7 @@
                                 type="button"
                                 class="btn btn-dark w-100 py-3 text-uppercase fw-normal" 
                                 (click)="confirmarDireccion()">
-                                Continuar al pago
+                                {{ 'checkout.resumen.authenticated_email.continue_button' | translate }}
                             </button>
                         </div>
                     </div>
@@ -246,7 +246,7 @@
                                                         <div class="d-flex justify-content-between align-items-center mb-4" style="border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
                                                             <h3 class="mb-0 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px;">
                                                                 <i class="icon anm anm-map-marker-al me-2"></i>
-                                                                {{ isEditMode ? 'Editar dirección' : 'Datos de envío' }}
+                                                                {{ isEditMode ? ('checkout.resumen.address_form.edit_title' | translate) : ('checkout.resumen.address_form.title' | translate) }}
                                                             </h3>
                                                             <!-- Botón cancelar en modo edición o cuando hay direcciones y se muestra formulario -->
                                                             <button 
@@ -254,7 +254,7 @@
                                                                 type="button" 
                                                                 class="btn btn-outline-secondary btn-sm"
                                                                 (click)="cancelAddressForm()">
-                                                                <i class="icon anm anm-times-l me-1"></i>Cancelar
+                                                                <i class="icon anm anm-times-l me-1"></i>{{ 'checkout.resumen.address_form.cancel_button' | translate }}
                                                             </button>
                                                         </div>
                                                         <form #addressForm="ngForm" novalidate (ngSubmit)="storeAddress()">
@@ -262,7 +262,7 @@
                                                                 <!-- Nombre -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="firstname" class="form-label d-none">Nombre <span class="required">*</span></label>
+                                                                        <label for="firstname" class="form-label d-none">{{ 'checkout.resumen.address_form.name_label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
                                                                             <input name="firstname" 
                                                                                    [(ngModel)]="name" 
@@ -270,7 +270,7 @@
                                                                                    id="firstname" 
                                                                                    type="text" 
                                                                                    required 
-                                                                                   placeholder="Nombre" 
+                                                                                   [placeholder]="'checkout.resumen.address_form.name_placeholder' | translate" 
                                                                                    class="form-control py-4" 
                                                                                    [ngClass]="{'is-invalid': firstname.invalid && (firstname.touched || addressForm.submitted)}" />
                                                                             <button *ngIf="name" 
@@ -286,16 +286,16 @@
                                                                             </button>
                                                                         </div>
                                                                         <div *ngIf="firstname.invalid && (firstname.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            Completa este campo para continuar
+                                                                            {{ 'checkout.resumen.address_form.field_required_error' | translate }}
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <!-- Apellidos -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="lastname" class="form-label d-none">Apellidos <span class="required">*</span></label>
+                                                                        <label for="lastname" class="form-label d-none">{{ 'checkout.resumen.address_form.surname_label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
-                                                                            <input name="lastname" [(ngModel)]="surname" #lastname="ngModel" id="lastname" type="text" required placeholder="Apellidos" class="form-control py-4" [ngClass]="{'is-invalid': lastname.invalid && (lastname.touched || addressForm.submitted)}" />
+                                                                            <input name="lastname" [(ngModel)]="surname" #lastname="ngModel" id="lastname" type="text" required [placeholder]="'checkout.resumen.address_form.surname_placeholder' | translate" class="form-control py-4" [ngClass]="{'is-invalid': lastname.invalid && (lastname.touched || addressForm.submitted)}" />
                                                                             <button *ngIf="surname" 
                                                                                     type="button" 
                                                                                     (click)="clearField('surname')" 
@@ -309,16 +309,16 @@
                                                                             </button>
                                                                         </div>
                                                                         <div *ngIf="lastname.invalid && (lastname.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            Completa este campo para continuar
+                                                                            {{ 'checkout.resumen.address_form.field_required_error' | translate }}
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <!-- Email -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="email" class="form-label d-none">E-Mail <span class="required">*</span></label>
+                                                                        <label for="email" class="form-label d-none">{{ 'checkout.resumen.address_form.email_label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
-                                                                            <input name="email" [(ngModel)]="email" #emailRef="ngModel" id="email" type="email" required placeholder="E-mail" class="form-control py-4" [ngClass]="{'is-invalid': emailRef.invalid && (emailRef.touched || addressForm.submitted)}" />
+                                                                            <input name="email" [(ngModel)]="email" #emailRef="ngModel" id="email" type="email" required [placeholder]="'checkout.resumen.address_form.email_placeholder' | translate" class="form-control py-4" [ngClass]="{'is-invalid': emailRef.invalid && (emailRef.touched || addressForm.submitted)}" />
                                                                             <button *ngIf="email" 
                                                                                     type="button" 
                                                                                     (click)="clearField('email')" 
@@ -332,14 +332,14 @@
                                                                             </button>
                                                                         </div>
                                                                         <div *ngIf="emailRef.invalid && (emailRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            Completa este campo para continuar
+                                                                            {{ 'checkout.resumen.address_form.field_required_error' | translate }}
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <!-- Pais -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="address_country1" class="form-label d-none">País <span class="required">*</span></label>
+                                                                        <label for="address_country1" class="form-label d-none">{{ 'checkout.resumen.address_form.country_label' | translate }} <span class="required">*</span></label>
                                                                         <select 
                                                                         id="address_country1" 
                                                                         name="address[country]" 
@@ -348,8 +348,8 @@
                                                                         required 
                                                                         class="form-control py-4 fw-light" 
                                                                         [ngClass]="{'is-invalid': paisSelect.invalid && (paisSelect.touched || addressForm.submitted)}">
-                                                                            <option value="" disabled>País</option>
-                                                                            <optgroup label="🇪🇺 Unión Europea">
+                                                                            <option value="" disabled>{{ 'checkout.resumen.address_form.country_placeholder' | translate }}</option>
+                                                                            <optgroup [label]="'checkout.resumen.address_form.eu_group' | translate">
                                                                                 <option *ngFor="let country of supportedCountries" 
                                                                                         [value]="country.code" 
                                                                                         [label]="country.name">
@@ -358,16 +358,16 @@
                                                                             </optgroup>
                                                                         </select>
                                                                         <div *ngIf="paisSelect.invalid && (paisSelect.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            Completa este campo para continuar
+                                                                            {{ 'checkout.resumen.address_form.field_required_error' | translate }}
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <!-- Calle -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="calle" class="form-label d-none">Calle <span class="required">*</span></label>
+                                                                        <label for="calle" class="form-label d-none">{{ 'checkout.resumen.address_form.street_label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
-                                                                            <input name="calle" id="calle" type="text" required [(ngModel)]="calle" #calleRef="ngModel" placeholder="Calle (ej: Calle Gran Vía)" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': calleRef.invalid && (calleRef.touched || addressForm.submitted)}" />
+                                                                            <input name="calle" id="calle" type="text" required [(ngModel)]="calle" #calleRef="ngModel" [placeholder]="'checkout.resumen.address_form.street_placeholder' | translate" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': calleRef.invalid && (calleRef.touched || addressForm.submitted)}" />
                                                                             <button *ngIf="calle" 
                                                                                     type="button" 
                                                                                     (click)="clearField('calle')" 
@@ -381,7 +381,7 @@
                                                                             </button>
                                                                         </div>
                                                                         <div *ngIf="calleRef.invalid && (calleRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            Completa este campo para continuar
+                                                                            {{ 'checkout.resumen.address_form.field_required_error' | translate }}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -389,9 +389,9 @@
                                                                 <!-- Número -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="numero" class="form-label d-none">Número <span class="required">*</span></label>
+                                                                        <label for="numero" class="form-label d-none">{{ 'checkout.resumen.address_form.number_label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
-                                                                            <input name="numero" id="numero" type="text" required [(ngModel)]="numero" #numeroRef="ngModel" placeholder="Número (ej: 123)" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': numeroRef.invalid && (numeroRef.touched || addressForm.submitted)}" />
+                                                                            <input name="numero" id="numero" type="text" required [(ngModel)]="numero" #numeroRef="ngModel" [placeholder]="'checkout.resumen.address_form.number_placeholder' | translate" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': numeroRef.invalid && (numeroRef.touched || addressForm.submitted)}" />
                                                                             <button *ngIf="numero" 
                                                                                     type="button" 
                                                                                     (click)="clearField('numero')" 
@@ -405,7 +405,7 @@
                                                                             </button>
                                                                         </div>
                                                                         <div *ngIf="numeroRef.invalid && (numeroRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            Debes incluir el número de la calle para el envío
+                                                                            {{ 'checkout.resumen.address_form.number_required_error' | translate }}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -413,9 +413,9 @@
                                                                 <!-- Apartamento/Piso (Opcional) -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="apartamento" class="form-label d-none">Apartamento/Piso</label>
+                                                                        <label for="apartamento" class="form-label d-none">{{ 'checkout.resumen.address_form.apartment_label' | translate }}</label>
                                                                         <div class="position-relative">
-                                                                            <input name="apartamento" id="apartamento" type="text" [(ngModel)]="apartamento" placeholder="Apartamento/Piso (opcional, ej: 3º B)" class="form-control py-4 fw-light" />
+                                                                            <input name="apartamento" id="apartamento" type="text" [(ngModel)]="apartamento" [placeholder]="'checkout.resumen.address_form.apartment_placeholder' | translate" class="form-control py-4 fw-light" />
                                                                             <button *ngIf="apartamento" 
                                                                                     type="button" 
                                                                                     (click)="clearField('apartamento')" 
@@ -428,14 +428,14 @@
                                                                                 </svg>
                                                                             </button>
                                                                         </div>
-                                                                        <small class="form-text text-muted">Opcional: piso, puerta, escalera, etc.</small>
+                                                                        <small class="form-text text-muted">{{ 'checkout.resumen.address_form.apartment_hint' | translate }}</small>
                                                                     </div>
                                                                 </div>
 
                                                                 <!-- 🎯 Código postal (MANGO.ES STYLE) -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="postcode" class="form-label d-none">Código postal <span class="required">*</span></label>
+                                                                        <label for="postcode" class="form-label d-none">{{ 'checkout.resumen.postal_code.label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
                                                                             <input name="postcode" 
                                                                                    id="postcode" 
@@ -445,7 +445,7 @@
                                                                                    #zipcodeRef="ngModel"
                                                                                    (blur)="onZipCodeChange(zipcode)"
                                                                                    (change)="onZipCodeChange(zipcode)"
-                                                                                   placeholder="Código postal (ej: 28013)" 
+                                                                                   [placeholder]="'checkout.resumen.postal_code.placeholder' | translate" 
                                                                                    class="form-control py-4 fw-light" 
                                                                                    [ngClass]="{
                                                                                        'is-invalid': (zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted)) || postalCodeError
@@ -466,13 +466,13 @@
                                                                                  class="position-absolute" 
                                                                                  style="right: 10px; top: 50%; transform: translateY(-50%);">
                                                                                 <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                                                                    <span class="visually-hidden">Buscando...</span>
+                                                                                    <span class="visually-hidden">{{ 'checkout.resumen.postal_code.searching' | translate }}</span>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <!-- Error de validación estándar -->
                                                                         <div *ngIf="zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted) && !postalCodeError" class="invalid-feedback d-block">
-                                                                            Completa este campo para continuar
+                                                                            {{ 'checkout.resumen.address_form.field_required_error' | translate }}
                                                                         </div>
                                                                         <!-- Error de código postal no encontrado -->
                                                                         <div *ngIf="postalCodeError" class="invalid-feedback d-block">
@@ -480,7 +480,7 @@
                                                                         </div>
                                                                         <!-- Mensaje de éxito -->
                                                                         <div *ngIf="postalCodeState === 'FOUND' && !isLoadingPostalCode" class="text-success small mt-1">
-                                                                            <i class="icon anm anm-check me-1"></i>Código postal válido
+                                                                            <i class="icon anm anm-check me-1"></i>{{ 'checkout.resumen.postal_code.valid_message' | translate }}
                                                                         </div>
                                                                         <!-- Aviso de fallback manual (CP válido no encontrado / error técnico) -->
                                                                         <div *ngIf="postalCodeWarning" class="text-warning small mt-1">
@@ -491,7 +491,7 @@
                                                                 <!-- 🎯 Ciudad/Población (DROPDOWN SI HAY MÚLTIPLES OPCIONES) -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="new-city" class="form-label d-none">Población <span class="required">*</span></label>
+                                                                        <label for="new-city" class="form-label d-none">{{ 'checkout.resumen.city.label' | translate }} <span class="required">*</span></label>
                                                                         
                                                                         <!-- Dropdown si hay múltiples ciudades -->
                                                                         <ng-container *ngIf="availableCities.length > 1; else singleCity">
@@ -502,7 +502,7 @@
                                                                                     #poblacionSelect="ngModel" 
                                                                                     class="form-control py-4 fw-light"
                                                                                     [ngClass]="{'is-invalid': poblacionSelect.invalid && (poblacionSelect.touched || addressForm.submitted)}">
-                                                                                <option value="" disabled>Selecciona tu ciudad</option>
+                                                                                <option value="" disabled>{{ 'checkout.resumen.city.select_placeholder' | translate }}</option>
                                                                                 <option *ngFor="let cityObj of availableCities" 
                                                                                         [value]="cityObj.city">
                                                                                     {{ cityObj.city }}
@@ -511,18 +511,18 @@
                                                                             </select>
                                                                             
                                                                             <small class="form-text text-success mt-1">
-                                                                                <i class="icon anm anm-check me-1"></i>{{ availableCities.length }} ciudades disponibles para este código postal
+                                                                                <i class="icon anm anm-check me-1"></i>{{ 'checkout.resumen.city.available_count' | translate:{count: availableCities.length} }}
                                                                             </small>
                                                                             
                                                                             <div *ngIf="poblacionSelect.invalid && (poblacionSelect.touched || addressForm.submitted)" class="invalid-feedback d-block">
-                                                                                Por favor selecciona una ciudad
+                                                                                {{ 'checkout.resumen.city.select_required_error' | translate }}
                                                                             </div>
                                                                         </ng-container>
                                                                         
                                                                         <!-- Input si hay una sola ciudad o aún no se ha buscado -->
                                                                         <ng-template #singleCity>
                                                                             <input name="city" 
-                                                                                   [placeholder]="isManualFallback ? 'Población' : 'Población (se autocompleta con el CP)'" 
+                                                                                   [placeholder]="(isManualFallback ? 'checkout.resumen.city.placeholder_manual' : 'checkout.resumen.city.placeholder_auto') | translate" 
                                                                                    class="form-control py-4 fw-light bg-light" 
                                                                                    required 
                                                                                    [(ngModel)]="poblacion" 
@@ -533,11 +533,11 @@
                                                                                    type="text" />
                                                                             
                                                                             <small class="form-text text-muted" *ngIf="!isManualFallback && availableCities.length === 0 && !poblacion">
-                                                                                <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
+                                                                                <i class="icon anm anm-info-r me-1"></i>{{ 'checkout.resumen.city.autocomplete_hint' | translate }}
                                                                             </small>
                                                                             
                                                                             <div *ngIf="poblacionInput.invalid && (poblacionInput.touched || addressForm.submitted)" class="invalid-feedback d-block">
-                                                                                {{ isManualFallback ? 'Introduce la población' : 'Ingresa primero el código postal' }}
+                                                                                {{ (isManualFallback ? 'checkout.resumen.city.manual_required_error' : 'checkout.resumen.city.enter_zip_first_error') | translate }}
                                                                             </div>
                                                                         </ng-template>
                                                                         
@@ -550,9 +550,9 @@
                                                                 <!-- 🎯 Provincia/Estado (AUTOCOMPLETADA - READONLY) -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="address_State" class="form-label d-none">Provincia/Estado <span class="required">*</span></label>
+                                                                        <label for="address_State" class="form-label d-none">{{ 'checkout.resumen.province.label' | translate }} <span class="required">*</span></label>
                                                                         <input name="state" 
-                                                                               [placeholder]="isManualFallback ? 'Provincia' : 'Provincia (se autocompleta con el CP)'" 
+                                                                               [placeholder]="(isManualFallback ? 'checkout.resumen.province.placeholder_manual' : 'checkout.resumen.province.placeholder_auto') | translate" 
                                                                                class="form-control py-4 fw-light bg-light" 
                                                                                required 
                                                                                [(ngModel)]="ciudad" 
@@ -562,19 +562,19 @@
                                                                                id="address_State" 
                                                                                type="text" />
                                                                         <small class="form-text text-muted" *ngIf="!ciudad && !isManualFallback">
-                                                                            <i class="icon anm anm-info-r me-1"></i>Se autocompletará al ingresar el código postal
+                                                                            <i class="icon anm anm-info-r me-1"></i>{{ 'checkout.resumen.province.autocomplete_hint' | translate }}
                                                                         </small>
                                                                         <div *ngIf="ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            {{ isManualFallback ? 'Introduce la provincia' : 'Ingresa primero el código postal' }}
+                                                                            {{ (isManualFallback ? 'checkout.resumen.province.manual_required_error' : 'checkout.resumen.province.enter_zip_first_error') | translate }}
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <!-- Telefono -->
                                                                 <div class="row justify-content-center">
                                                                     <div class="form-group col-12">
-                                                                        <label for="phone" class="form-label d-none">Móvil <span class="required">*</span></label>
+                                                                        <label for="phone" class="form-label d-none">{{ 'checkout.resumen.address_form.phone_label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
-                                                                            <input name="phone" id="phone" type="tel" required [(ngModel)]="phone" #phoneRef="ngModel" placeholder="Móvil" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': phoneRef.invalid && (phoneRef.touched || addressForm.submitted)}" />
+                                                                            <input name="phone" id="phone" type="tel" required [(ngModel)]="phone" #phoneRef="ngModel" [placeholder]="'checkout.resumen.address_form.phone_placeholder' | translate" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': phoneRef.invalid && (phoneRef.touched || addressForm.submitted)}" />
                                                                             <button *ngIf="phone" 
                                                                                     type="button" 
                                                                                     (click)="clearField('phone')" 
@@ -588,7 +588,7 @@
                                                                             </button>
                                                                         </div>
                                                                         <div *ngIf="phoneRef.invalid && (phoneRef.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            Completa este campo para continuar
+                                                                            {{ 'checkout.resumen.address_form.field_required_error' | translate }}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -598,7 +598,7 @@
                                                                         <div class="checkout-tearm customCheckbox">
                                                                             <input id="checkout_usual_shipping_address" name="checkout_usual_shipping_address" [(ngModel)]="usual_shipping_address" type="checkbox" value="checkout tearm" required />
                                                                             <label for="checkout_usual_shipping_address">
-                                                                                Elegir como dirección de envío habitual</label>
+                                                                                {{ 'checkout.resumen.address_form.set_default_label' | translate }}</label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -612,13 +612,13 @@
                                                                                 style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
                                                                             <ng-container *ngIf="!isValidating">
                                                                                 <i class="icon anm anm-check-cil me-2" style="font-size: 1.2rem;"></i>
-                                                                                <span>{{ isEditMode ? 'Actualizar dirección' : 'Guardar dirección' }}</span>
+                                                                                <span>{{ isEditMode ? ('checkout.resumen.address_form.update_button' | translate) : ('checkout.resumen.address_form.save_button' | translate) }}</span>
                                                                             </ng-container>
                                                                             <ng-container *ngIf="isValidating">
                                                                                 <div class="spinner-border spinner-border-sm text-white me-2" role="status">
-                                                                                    <span class="visually-hidden">Validando...</span>
+                                                                                    <span class="visually-hidden">{{ 'checkout.resumen.address_form.validating_button' | translate }}</span>
                                                                                 </div>
-                                                                                <span>Validando...</span>
+                                                                                <span>{{ 'checkout.resumen.address_form.validating_button' | translate }}</span>
                                                                             </ng-container>
                                                                         </button>
                                                                         
@@ -631,7 +631,7 @@
                                                                         <!-- Mensaje de error -->
                                                                         <div class="alert alert-danger mt-3 mb-0 py-2 px-3" *ngIf="validMessage && !status" style="border-left: 4px solid #dc3545; border-radius: 6px;">
                                                                             <i class="icon anm anm-times-circle me-2"></i>
-                                                                            <strong>Error:</strong> {{ errorOrSuccessMessage }}
+                                                                            <strong>{{ 'checkout.resumen.address_form.error_prefix' | translate }}</strong> {{ errorOrSuccessMessage }}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -651,22 +651,22 @@
                                     <div *ngIf="loading" class="loading-spinner d-flex justify-content-center h-100 align-items-center" style="min-height: 300px;">
                                         <div class="text-center">
                                             <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
-                                                <span class="visually-hidden">Cargando...</span>
+                                                <span class="visually-hidden">{{ 'checkout.resumen.address_list.loading' | translate }}</span>
                                             </div>
-                                            <p class="text-muted fw-semibold" style="font-size: 1rem; letter-spacing: 0.5px;">Cargando direcciones...</p>
+                                            <p class="text-muted fw-semibold" style="font-size: 1rem; letter-spacing: 0.5px;">{{ 'checkout.resumen.address_list.loading_description' | translate }}</p>
                                         </div>
                                     </div>
 
                                     <!-- Mostrar la lista de direcciones & ShippingRates -->
                                     <div class="address-book-section" [class.d-none]="loading">
                                         <div class="top-sec d-flex mb-3 d-flex justify-content-between align-items-center" [class.d-none]="loading">
-                                            <h3 class="mb-0 text-uppercase">Datos de envío</h3>
+                                            <h3 class="mb-0 text-uppercase">{{ 'checkout.resumen.address_list.title' | translate }}</h3>
                                             <div class="d-flex gap-2">
                                                 <button type="button" class="btn btn-outline-primary btn-sm" (click)="showNewAddressForm()">
-                                                    <i class="icon anm anm-plus-l me-1"></i>Nueva dirección
+                                                    <i class="icon anm anm-plus-l me-1"></i>{{ 'checkout.resumen.address_list.new_address_button' | translate }}
                                                 </button>
                                                 <button type="button" class="btn btn-outline-secondary btn-sm" (click)="openAddressModal()">
-                                                    <i class="icon anm anm-edit-l me-1"></i>Cambiar
+                                                    <i class="icon anm anm-edit-l me-1"></i>{{ 'checkout.resumen.address_list.change_button' | translate }}
                                                 </button>
                                             </div>
                                         </div>
@@ -682,14 +682,14 @@
                                                                         <path d="M12 7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 3c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1"></path>
                                                                     </svg>
                                                                 </span>
-                                                                <span class="px-2 fw-bold">Domicilio</span>
-                                                                <span class="fw-bold">GRATIS</span>
+                                                                <span class="px-2 fw-bold">{{ 'checkout.resumen.delivery.home' | translate }}</span>
+                                                                <span class="fw-bold">{{ 'checkout.resumen.delivery.free' | translate }}</span>
                                                             </div>
                                                         </div>
                                                         <!-- Shipping rates -->
                                                         <div class="mb-3">
                                                             <p class="fw-bold text-uppercase mb-0">
-                                                                Entrega:
+                                                                {{ 'checkout.resumen.delivery.label' | translate }}
                                                                 <span class="fw-normal text-capitalize">
                                                                     <ng-container *ngIf="entregaUnica">
                                                                         {{ fechaEntregaLabel }}
@@ -712,7 +712,7 @@
                                                             </div>
                                                             <div class="address mb-1">
                                                                 <p class="fw-light">
-                                                                    Tel. +34 {{ selectedAddress.phone }}
+                                                                    {{ 'checkout.resumen.address_list.phone_with_prefix' | translate:{phone: selectedAddress.phone} }}
                                                                 </p>
                                                             </div>
                                                             <div class="address mb-1">
@@ -750,7 +750,7 @@
                                                                  " 
                                                                  *ngIf="selectedAddress.usual_shipping_address">
                                                                 <i class="icon anm anm-check-cil me-2" style="font-size: 0.9rem;"></i>
-                                                                <span class="text-uppercase">Dirección habitual</span>
+                                                                <span class="text-uppercase">{{ 'checkout.resumen.address_list.default_badge' | translate }}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -769,11 +769,11 @@
                 <!-- CART SUMMARY VERSION MÓVIL -->
                 <div class="cart-info mb-4 d-block d-md-none bg-white border-0 p-0">
                     <div class="cart-info mb-4 bg-white border-0 p-0">
-                        <h3 class="title mb-3 text-uppercase ">Resumen de Precio</h3>
+                        <h3 class="title mb-3 text-uppercase ">{{ 'checkout.resumen.cart_summary.title' | translate }}</h3>
                         <div class="cart-order-detail cart-col">
                             <!-- Subtotal-->
                             <div class="row g-0">
-                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light">{{ 'checkout.resumen.cart_summary.subtotal' | translate }}</span>
                                 <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                     <span class="money">
                                         <!-- Mostrar subtotal original solo si hay descuentos, sino mostrar subtotal final -->
@@ -795,7 +795,7 @@
 
                             <!-- Descuento aplicado (solo si hay descuentos) -->
                             <div class="row g-0" *ngIf="hasAnyCartDiscount()">
-                                <span class="col-6 col-sm-6 cart-subtotal-title text-danger fw-light">Descuento</span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title text-danger fw-light">{{ 'checkout.resumen.cart_summary.discount' | translate }}</span>
                                 <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
                                     <span class="money">
                                         <span class="price-small fw-light">
@@ -808,13 +808,13 @@
 
                             <!-- Envío Gratis -->
                             <div class="row g-0 mb-2">
-                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Envío</span>
-                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">Gratis</span></span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title fw-light">{{ 'checkout.resumen.cart_summary.shipping' | translate }}</span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">{{ 'checkout.resumen.cart_summary.free' | translate }}</span></span>
                             </div>
 
                             <!-- Total Precio actual -->
                             <div class="row g-0">
-                                <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase fw-normal">Total</span>
+                                <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase fw-normal">{{ 'checkout.resumen.cart_summary.total' | translate }}</span>
                                 <span class="col-6 col-sm-6 cart-subtotal-title fs-6 cart-subtotal text-end">
                                     <span class="money price fw-normal">
                                         <span class="me-1">{{ euro }}</span>
@@ -827,7 +827,7 @@
                             <!-- Impuestos incluidos -->
                             <div class="row g-0 d-none">
                                 <div class="col-6 col-sm-6text-center">
-                                    <small class="text-muted fw-light">Impuestos incluidos</small>
+                                    <small class="text-muted fw-light">{{ 'checkout.resumen.cart_summary.taxes_included' | translate }}</small>
                                 </div>
                             </div>
                         </div>
@@ -843,14 +843,14 @@
                                 (click)="goToNextStep()"
                                 style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
                             <i class="icon anm anm-arrow-right me-2" style="font-size: 1.2rem;"></i>
-                            <span>Continuar a pago</span>
+                            <span>{{ 'checkout.resumen.continue_payment_button' | translate }}</span>
                         </button>
                         <p class="text-center mb-0" style="font-size: 0.85rem;">
-                            <small class="text-muted">Al continuar, confirmas que has leído la
+                            <small class="text-muted">{{ 'checkout.resumen.privacy_policy_text' | translate }}
                                 <a class="text-dark fw-semibold text-decoration-underline"
                                    target="_blank"
                                     style="cursor: pointer;"
-                                   (click)="openInNewTab('privacy-policy')">Política de privacidad</a>
+                                   (click)="openInNewTab('privacy-policy')">{{ 'checkout.resumen.privacy_policy_link' | translate }}</a>
                                 </small>
                         </p>
                     </div>
@@ -862,14 +862,14 @@
             <div id="main-left" class="text-center py-5">
                 <i class="icon anm anm-bag-l d-block mb-4" style="font-size: 5rem; color: #dee2e6;"></i>
                 <h3 class="text-uppercase mb-3" style="color: #222; font-size: 1.5rem; letter-spacing: 0.5px;">
-                    Tu carrito está vacío
+                    {{ 'checkout.resumen.empty_cart.title' | translate }}
                 </h3>
                 <p class="text-muted mb-4" style="font-size: 1rem; max-width: 500px; margin: 0 auto;">
-                    Inspírate con las últimas tendencias y descubre algo nuevo para renovar tu armario
+                    {{ 'checkout.resumen.empty_cart.description' | translate }}
                 </p>
                 <div class="mt-4">
                     <a onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products']" class="text-decoration-none">
-                        <button class="btn-dark-ld text-uppercase">Descubrir novedades</button>
+                        <button class="btn-dark-ld text-uppercase">{{ 'checkout.resumen.empty_cart.discover_button' | translate }}</button>
                     </a>
                 </div>
             </div>
@@ -883,7 +883,7 @@
         <div id="main-right">
             <!-- BLOQUE: TU CARRITO -->
             <div class="order-1">
-                <h3 class="title mb-0 text-uppercase mb-3 fw-bold border border-success" *ngClass="{'d-none': isMobile}">Resumen de precio</h3>
+                <h3 class="title mb-0 text-uppercase mb-3 fw-bold border border-success" *ngClass="{'d-none': isMobile}">{{ 'checkout.resumen.cart_summary.title' | translate }}</h3>
 
                 <!-- AHORA EL CUPON SE GESTIONA EN LIST CART -->
                 <!-- CODIGO PROMOCIONAL OCUTALMOS-->
@@ -963,7 +963,7 @@
                     <div class="cart-order-detail cart-col">
                         <!-- Subtotal-->
                         <div class="row g-0">
-                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Subtotal</span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">{{ 'checkout.resumen.cart_summary.subtotal' | translate }}</span>
                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
                                 <span class="money">
                                     <!-- Mostrar subtotal original solo si hay descuentos, sino mostrar subtotal final -->
@@ -985,7 +985,7 @@
 
                         <!-- Descuento aplicado (solo si hay descuentos) -->
                         <div class="row g-0" *ngIf="hasAnyCartDiscount()">
-                            <span class="col-6 col-sm-6 cart-subtotal-title text-danger fw-light">Descuento</span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title text-danger fw-light">{{ 'checkout.resumen.cart_summary.discount' | translate }}</span>
                             <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
                                 <span class="money">
                                     <span class="price-small fw-light">
@@ -998,13 +998,13 @@
 
                         <!-- Envío Gratis -->
                         <div class="row g-0 mb-2">
-                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Envío</span>
-                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">Gratis</span></span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">{{ 'checkout.resumen.cart_summary.shipping' | translate }}</span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">{{ 'checkout.resumen.cart_summary.free' | translate }}</span></span>
                         </div>
 
                         <!-- Total Precio actual -->
                         <div class="row g-0">
-                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase fw-normal">Total</span>
+                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase fw-normal">{{ 'checkout.resumen.cart_summary.total' | translate }}</span>
                             <span class="col-6 col-sm-6 cart-subtotal-title fs-6 cart-subtotal text-end">
                                 <span class="money price fw-normal">
                                     <span class="me-1">{{ euro }}</span>
@@ -1017,7 +1017,7 @@
                         <!-- Impuestos incluidos -->
                         <div class="row g-0 d-none">
                             <div class="col-6 col-sm-6text-center">
-                                <small class="text-muted fw-light">Impuestos incluidos</small>
+                                <small class="text-muted fw-light">{{ 'checkout.resumen.cart_summary.taxes_included' | translate }}</small>
                             </div>
                         </div>
                     </div>
@@ -1028,7 +1028,7 @@
                 <div class="col-12 order-0 lists-carts  order-md-2">
                     <div class="block order-summary p-0">
                         <div class="block-content">
-                            <h3 class="mb-0 text-uppercase" style="color: #222;font-size: 1.25rem;letter-spacing: 0.5px;border-bottom: 2px solid #222;padding-bottom: 0.5rem;">Artículos ({{ listCarts.length }})</h3>
+                            <h3 class="mb-0 text-uppercase" style="color: #222;font-size: 1.25rem;letter-spacing: 0.5px;border-bottom: 2px solid #222;padding-bottom: 0.5rem;">{{ 'checkout.resumen.items_list.title' | translate }} ({{ listCarts.length }})</h3>
                             <div class="order-list">
                                 <ng-container *ngFor="let cart of listCarts">
                                     <div class="d-flex py-3 gap-3 align-items-start">
@@ -1100,23 +1100,23 @@
                                                     </div>
                                                 </div>
                                                 <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.product?.sku">
-                                                    <span class="w-25">Art. Nº</span>
+                                                    <span class="w-25">{{ 'checkout.resumen.items_list.sku_label' | translate }}</span>
                                                     <span class="ms-lg-3 ms-5">{{ cart.product.sku }}</span>
                                                 </div>
                                                 <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.variedad?.color">
-                                                    <span class="w-25">Color</span>
+                                                    <span class="w-25">{{ 'checkout.resumen.items_list.color_label' | translate }}</span>
                                                     <span class="ms-lg-3 ms-5 fw-light">{{ cart.variedad.color }}</span>
                                                 </div>
                                                 <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.variedad">
-                                                    <span class="w-25">Talla</span>
+                                                    <span class="w-25">{{ 'checkout.resumen.items_list.size_label' | translate }}</span>
                                                     <span class="ms-lg-3 ms-5 fw-light">{{ cart.variedad.valor }}</span>
                                                 </div>
                                                 <div class="d-flex fw-light lh-1 mb-1">
-                                                    <span class="w-25">Cantidad</span>
+                                                    <span class="w-25">{{ 'checkout.resumen.items_list.quantity_label' | translate }}</span>
                                                     <span class="ms-lg-3 ms-5 fw-light">{{ cart.cantidad}}</span>
                                                 </div>
                                                 <div class="d-flex fw-light lh-1 mb-1">
-                                                    <span class="w-25">Total</span>
+                                                    <span class="w-25">{{ 'checkout.resumen.items_list.total_label' | translate }}</span>
                                                     <span class="money ms-lg-3 ms-5">
                                                         <span class="text-dangerpaymen">
                                                             <span class="me-1">{{ euro }}</span>
@@ -1183,7 +1183,7 @@
                     <i class="icon anm anm-times-r" data-bs-toggle="tooltip" data-bs-placement="left" title="Close"></i>
                 </button>
                 <h4 class="fs-6 text-uppercase fw-bold">
-                    Dirección de envío ({{ listAddresses.length }})
+                    {{ 'checkout.resumen.address_drawer.title' | translate }} ({{ listAddresses.length }})
                 </h4>
             </div>
             <div class="minicart-content d-flex">
@@ -1196,9 +1196,9 @@
                                 </div>
                             </div>
                             <h5 class="header-title mb-0 text-uppercase">
-                                ¡Oops! Tu carrito está vacío
+                                {{ 'checkout.resumen.address_drawer.empty_title' | translate }}
                             </h5>
-                            <p>Empieza a llenarlo con cosas que te encantarán.</p>
+                            <p>{{ 'checkout.resumen.address_drawer.empty_description' | translate }}</p>
                         </div>
                     </div>
                 </ng-container>
@@ -1225,7 +1225,7 @@
                                                 <div>
                                                     <a href="#" onclick="return false;" (click)="editAddressFromSidebar(list_address)">
                                                         <button type="button" class="border-0 fw-bold text-decoration-underline">
-                                                            Editar
+                                                            {{ 'checkout.resumen.address_list.edit_button' | translate }}
                                                         </button>
                                                     </a>
                                                 </div>
@@ -1242,7 +1242,7 @@
                                                     <br />
                                                 </p>
                                                 <p class="fw-light mb-0">
-                                                    Tel. +34 {{ list_address.phone }}
+                                                    {{ 'checkout.resumen.address_list.phone_with_prefix' | translate:{phone: list_address.phone} }}
                                                 </p>
                                             </div>
                                         </div>
@@ -1256,10 +1256,10 @@
             <div class="minicart-bottom" *ngIf="listAddressClients.length != 0 || listAddressGuest.length != 0">
                 <div class="minicart-action d-flex flex-column mt-3">
                     <button class="cart-btn btn-dark-ld me-1 py-3 mb-3" (click)="confirmarDireccion()">
-                        {{ requiresShipping() ? 'Confirmar dirección' : 'Continuar al pago' }}
+                        {{ requiresShipping() ? ('checkout.resumen.address_drawer.confirm_button' | translate) : ('checkout.resumen.address_drawer.continue_payment_button' | translate) }}
                     </button>
                     <a *ngIf="CURRENT_USER_AUTHENTICATED" href="#" onclick="return false;" (click)="showNewAddressForm(); closeMiniAdress()" class="cart-btn btn-outline-white-ld text-black me-1 py-3 mb-3">
-                        <i class="icon anm anm-plus-l me-2"></i>Añadir otra dirección
+                        <i class="icon anm anm-plus-l me-2"></i>{{ 'checkout.resumen.address_drawer.add_another_button' | translate }}
                     </a>
                     <!-- <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-white text-black bg-white w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3">Añadir otra dirección</a> -->
                     <!-- <a href="#" onclick="return false;" (click)="goToRegisterAddress()"> 

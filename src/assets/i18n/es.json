@@ -337,5 +337,178 @@
             "subtitle": "Productos que encajan con tu pasión por el código y la cultura tech.",
             "new_collection": "Nueva colección"
         }
+    },
+    "checkout": {
+        "resumen": {
+            "delivery": {
+                "title": "Tipo de envío",
+                "home": "Domicilio",
+                "free": "GRATIS",
+                "store": "Tienda",
+                "pickup_point": "Punto de recogida",
+                "label": "Entrega:"
+            },
+            "modules": {
+                "digital": {
+                    "title": "Entrega digital instantánea",
+                    "description": "No necesitas proporcionar dirección de envío. Te enviaremos el enlace de descarga a tu email."
+                },
+                "service": {
+                    "title": "Servicio personalizado",
+                    "description": "No necesitas proporcionar dirección de envío. Te enviaremos instrucciones para agendar a tu email."
+                },
+                "integration": {
+                    "title": "Acceso a integración",
+                    "description": "No necesitas proporcionar dirección de envío. Te enviaremos credenciales a tu email."
+                }
+            },
+            "contact": {
+                "title": "Información de contacto",
+                "description": "Te enviaremos la información a este email",
+                "email_label": "Email",
+                "email_placeholder": "tu@email.com",
+                "email_required_error": "El email es obligatorio",
+                "email_invalid_error": "Ingresa un email válido",
+                "name_label": "Nombre completo",
+                "optional": "(opcional)",
+                "name_placeholder": "Tu nombre",
+                "name_hint": "Nos ayuda a personalizar la comunicación",
+                "continue_button": "Continuar al pago"
+            },
+            "authenticated_email": {
+                "title": "Email de entrega confirmado",
+                "description": "Enviaremos la información a:",
+                "continue_button": "Continuar al pago"
+            },
+            "address_form": {
+                "cancel_button": "Cancelar",
+                "edit_title": "Editar dirección",
+                "title": "Datos de envío",
+                "name_label": "Nombre",
+                "name_placeholder": "Nombre",
+                "surname_label": "Apellidos",
+                "surname_placeholder": "Apellidos",
+                "email_label": "E-Mail",
+                "email_placeholder": "E-mail",
+                "country_label": "País",
+                "country_placeholder": "País",
+                "eu_group": "🇪🇺 Unión Europea",
+                "street_label": "Calle",
+                "street_placeholder": "Calle (ej: Calle Gran Vía)",
+                "number_label": "Número",
+                "number_placeholder": "Número (ej: 123)",
+                "number_required_error": "Debes incluir el número de la calle para el envío",
+                "apartment_label": "Apartamento/Piso",
+                "apartment_placeholder": "Apartamento/Piso (opcional, ej: 3º B)",
+                "apartment_hint": "Opcional: piso, puerta, escalera, etc.",
+                "field_required_error": "Completa este campo para continuar",
+                "phone_label": "Móvil",
+                "phone_placeholder": "Móvil",
+                "set_default_label": "Elegir como dirección de envío habitual",
+                "update_button": "Actualizar dirección",
+                "save_button": "Guardar dirección",
+                "validating_button": "Validando...",
+                "error_prefix": "Error:"
+            },
+            "postal_code": {
+                "label": "Código postal",
+                "placeholder": "Código postal (ej: 28013)",
+                "searching": "Buscando...",
+                "valid_message": "Código postal válido",
+                "not_found_warning": "No hemos podido autocompletar este código postal. Introduce la población y provincia manualmente.",
+                "technical_error_warning": "No hemos podido verificar automáticamente el código postal. Introduce población y provincia."
+            },
+            "city": {
+                "label": "Población",
+                "select_placeholder": "Selecciona tu ciudad",
+                "available_count": "{{count}} ciudades disponibles para este código postal",
+                "select_required_error": "Por favor selecciona una ciudad",
+                "placeholder_auto": "Población (se autocompleta con el CP)",
+                "placeholder_manual": "Población",
+                "autocomplete_hint": "Se autocompletará al ingresar el código postal",
+                "manual_required_error": "Introduce la población",
+                "enter_zip_first_error": "Ingresa primero el código postal"
+            },
+            "province": {
+                "label": "Provincia/Estado",
+                "placeholder_auto": "Provincia (se autocompleta con el CP)",
+                "placeholder_manual": "Provincia",
+                "autocomplete_hint": "Se autocompletará al ingresar el código postal",
+                "manual_required_error": "Introduce la provincia",
+                "enter_zip_first_error": "Ingresa primero el código postal"
+            },
+            "address_list": {
+                "title": "Datos de envío",
+                "new_address_button": "Nueva dirección",
+                "change_button": "Cambiar",
+                "loading": "Cargando...",
+                "loading_description": "Cargando direcciones...",
+                "default_badge": "Dirección habitual",
+                "edit_button": "Editar",
+                "phone_with_prefix": "Tel. +34 {{phone}}"
+            },
+            "address_drawer": {
+                "title": "Dirección de envío",
+                "empty_title": "¡Oops! Tu carrito está vacío",
+                "empty_description": "Empieza a llenarlo con cosas que te encantarán.",
+                "confirm_button": "Confirmar dirección",
+                "continue_payment_button": "Continuar al pago",
+                "add_another_button": "Añadir otra dirección"
+            },
+            "cart_summary": {
+                "title": "Resumen de Precio",
+                "subtotal": "Subtotal",
+                "discount": "Descuento",
+                "shipping": "Envío",
+                "free": "Gratis",
+                "total": "Total",
+                "taxes_included": "Impuestos incluidos"
+            },
+            "continue_payment_button": "Continuar a pago",
+            "privacy_policy_text": "Al continuar, confirmas que has leído la",
+            "privacy_policy_link": "Política de privacidad",
+            "empty_cart": {
+                "title": "Tu carrito está vacío",
+                "description": "Inspírate con las últimas tendencias y descubre algo nuevo para renovar tu armario",
+                "discover_button": "Descubrir novedades"
+            },
+            "items_list": {
+                "title": "Artículos",
+                "sku_label": "Art. Nº",
+                "color_label": "Color",
+                "size_label": "Talla",
+                "quantity_label": "Cantidad",
+                "total_label": "Total"
+            },
+            "messages": {
+                "country_not_allowed": "Lo sentimos, no realizamos envíos a {{country}}. Solo enviamos a países de la Unión Europea.",
+                "shipping_error_generic": "No se pudo calcular el envío para esta dirección. Verifica que todos los datos sean correctos.",
+                "shipping_error_default": "No se pudo calcular el envío para esta dirección.",
+                "shipping_error_invalid_zip": "El código postal no es válido para este país.",
+                "shipping_error_invalid_address": "La dirección no es válida. Verifica que todos los datos sean correctos.",
+                "select_address_required": "Por favor, selecciona una dirección de envío antes de continuar.",
+                "spain_only_shipping": "Actualmente solo realizamos envíos a España.",
+                "shipping_calc_failed": "No se pudo calcular el envío para la dirección seleccionada. Por favor, verifica que la dirección sea correcta o selecciona otra.",
+                "empty_cart_error": "Tu carrito está vacío. Añade productos antes de continuar.",
+                "fill_required_fields": "Rellene los campos obligatorios de la dirección de envío",
+                "validating_postal": "Validando código postal y ciudad...",
+                "validating_printful": "Validando dirección con Printful...",
+                "address_valid_saving": "Dirección válida, guardando...",
+                "address_valid_updating": "Dirección válida, actualizando...",
+                "printful_validation_error": "Error al validar la dirección con Printful",
+                "printful_validation_error_short": "Error al validar la dirección",
+                "postal_validation_error": "Error al validar el código postal y ciudad",
+                "guest_not_identified_save": "No se pudo identificar el invitado para guardar la dirección",
+                "guest_not_identified_save_alert": "No se pudo identificar el invitado. Recarga la página e inténtalo de nuevo.",
+                "save_error": "Error al guardar la dirección",
+                "guest_email_required": "Por favor, ingresa tu email para continuar",
+                "guest_email_invalid": "Por favor, ingresa un email válido",
+                "guest_not_identified_usual": "No se pudo identificar el invitado para actualizar la dirección habitual.",
+                "login_email_required": "Es necesario ingresar el email",
+                "login_password_required": "Es necesario ingresar el password",
+                "unknown_error": "Error desconocido",
+                "update_address_error": "¡Oops! No se pudo actualizar la dirección"
+            }
+        }
     }
 }
