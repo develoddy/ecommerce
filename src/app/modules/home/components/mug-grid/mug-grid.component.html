@@ -16,6 +16,7 @@
                             <a href="#" (click)="navigateToProduct(mugProduct.slug,mugProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
                                 <!-- Image alt="Camiseta {{ product_selected.title }} para programadores LujanDev"-->
                                 <img class="primary blur-up lazyload rounded-0 w-100 h-100" 
+                                     itemprop="image"
                                      data-src="{{ mugProduct.imagen }}" 
                                      src="{{ mugProduct.imagen }}" 
                                      alt="Camiseta {{mugProduct.title}} para programadores LujanDev" 
@@ -98,9 +99,8 @@
                             <div class="product-name lh-1">
                                 <a [routerLink]="['/',country,locale,'shop','product',mugProduct.slug]" 
                                     [queryParams]="getRouterDiscount(mugProduct)" 
-                                    class="text-truncate d-inline-block product-title fw-light" 
-                                    itemprop="name">
-                                      {{ mugProduct.title }}
+                                    class="text-truncate d-inline-block product-title fw-light">
+                                      <span itemprop="name">{{ mugProduct.title }}</span>
                                 </a>
                                 <!-- Subtítulo para SEO y visual -->
                                 <p class="product-subtitle text-muted lh-1 fw-light mb-2 d-none" itemprop="description">

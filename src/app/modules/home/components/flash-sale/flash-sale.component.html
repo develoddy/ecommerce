@@ -16,7 +16,7 @@
                             <!-- Start Product Image -->
                             <a href="#" (click)="navigateToProduct(ourProduct.slug, ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
                                 <!-- Image alt="Camiseta {{ product_selected.title }} para programadores LujanDev"-->
-                                <img class="primary blur-up lazyload rounded-0 w-100 h-100" data-src="{{ ourProduct.imagen }}" src="{{ ourProduct.imagen }}" alt="Camiseta {{ ourProduct.title }} para programadores LujanDev" title="Camiseta {{ ourProduct.title }} para programadores LujanDev" width="625" height="608" style="object-fit: cover;" />
+                                <img class="primary blur-up lazyload rounded-0 w-100 h-100" itemprop="image" data-src="{{ ourProduct.imagen }}" src="{{ ourProduct.imagen }}" alt="Camiseta {{ ourProduct.title }} para programadores LujanDev" title="Camiseta {{ ourProduct.title }} para programadores LujanDev" width="625" height="608" style="object-fit: cover;" />
                                 <!-- End Image -->
                                 <!-- Hover Image -->
                                 <ng-container *ngIf="ourProduct.imagen_two">
@@ -84,8 +84,8 @@
                             <!--End Product Vendor-->
                             <!-- Product Name -->
                             <div class="product-name">
-                                <a [routerLink]="['/', country, locale, 'shop', 'product', ourProduct.slug]" [queryParams]="getRouterDiscount(ourProduct)" class="text-truncate d-inline-block product-title fw-light" itemprop="name">
-                                    {{ ourProduct.title }}
+                                <a [routerLink]="['/', country, locale, 'shop', 'product', ourProduct.slug]" [queryParams]="getRouterDiscount(ourProduct)" class="text-truncate d-inline-block product-title fw-light">
+                                    <span itemprop="name">{{ ourProduct.title }}</span>
                                 </a>
                                 <!-- Subtítulo para SEO y visual -->
                                 <p class="product-subtitle text-muted lh-1 fw-light mb-2 d-none" itemprop="description">

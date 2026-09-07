@@ -22,6 +22,7 @@
                             <!-- Start Product Image -->
                             <a href="#" (click)="navigateToProduct(ourProduct.slug,ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
                                 <img class="primary blur-up lazyload rounded-0 w-100 h-100" 
+                                     itemprop="image"
                                      data-src="{{ ourProduct.imagen }}" 
                                      src="{{ ourProduct.imagen }}" 
                                      [alt]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
@@ -104,9 +105,8 @@
                             <div class="product-name lh-1">
                                 <a [routerLink]="['/',country,locale,'shop','product',ourProduct.slug]" 
                                     [queryParams]="getRouterDiscount(ourProduct)" 
-                                    class="product-title fw-light" 
-                                    itemprop="name">
-                                      {{ ourProduct.title }}
+                                    class="product-title fw-light">
+                                      <span itemprop="name">{{ ourProduct.title }}</span>
                                 </a>
                                 <!-- Subtítulo para SEO y visual -->
                                 <p class="product-subtitle text-muted lh-1 fw-light mb-2 d-none" itemprop="description">

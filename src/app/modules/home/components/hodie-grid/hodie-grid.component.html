@@ -16,6 +16,7 @@
                             <a href="#" (click)="navigateToProduct(hodieProduct.slug,hodieProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
                                 <!-- Image alt="Camiseta {{ product_selected.title }} para programadores LujanDev"-->
                                 <img class="primary blur-up lazyload rounded-0 w-100 h-100" 
+                                     itemprop="image"
                                      data-src="{{ hodieProduct.imagen }}" 
                                      src="{{ hodieProduct.imagen }}" 
                                      alt="Camiseta {{hodieProduct.title}} para programadores LujanDev" 
@@ -98,9 +99,8 @@
                             <div class="product-name lh-1">
                                 <a [routerLink]="['/',locale,country,'shop','product',hodieProduct.slug]" 
                                     [queryParams]="getRouterDiscount(hodieProduct)" 
-                                    class="text-truncate d-inline-block product-title fw-light" 
-                                    itemprop="name">
-                                      {{ hodieProduct.title }}
+                                    class="text-truncate d-inline-block product-title fw-light">
+                                      <span itemprop="name">{{ hodieProduct.title }}</span>
                                 </a>
                                 <!-- Subtítulo para SEO y visual -->
                                 <p class="product-subtitle text-muted lh-1 fw-light mb-2 d-none" itemprop="description">
