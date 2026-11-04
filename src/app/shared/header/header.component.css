@@ -976,3 +976,107 @@ body.menuOn {
   }
 }
 /* END LUJANDEV — NAVIGATION HOVER V5 */
+
+/* LUJANDEV — MOBILE TOP BAR COMPACT V1 */
+/* Reducir exclusivamente el espaciado vertical de la barra superior. */
+
+@media (max-width: 767px) {
+  .top-header {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+/* END LUJANDEV — MOBILE TOP BAR COMPACT V1 */
+
+/* LUJANDEV — MOBILE LOCALE EDITORIAL V2.3 */
+/* Refinamiento visual exclusivo de región e idioma en menú móvil. */
+
+@media (max-width: 767px) {
+  .mobile-nav-wrapper .lujandev-mobile-locale {
+    padding: 20px 0 24px;
+    border-top: 1px solid #e8e8e8;
+  }
+
+  .mobile-nav-wrapper .lujandev-mobile-locale .title {
+    margin: 0 0 18px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .mobile-nav-wrapper .lujandev-mobile-locale label {
+    display: block;
+    margin: 0 0 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #666666;
+  }
+
+  .mobile-nav-wrapper .lujandev-mobile-locale select {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    margin: 0 0 16px;
+    padding: 10px 12px;
+    border: 1px solid #dedede;
+    border-radius: 0;
+    background-color: #ffffff;
+    color: #111111;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .mobile-nav-wrapper .lujandev-mobile-locale select:focus-visible {
+    outline: 2px solid #111111;
+    outline-offset: 2px;
+  }
+}
+/* END LUJANDEV — MOBILE LOCALE EDITORIAL V2.3 */
+
+/* LUJANDEV — MOBILE HEADER SSENSE V3.1 */
+/* Distribución editorial del buscador en móvil. */
+@media (max-width: 767px) {
+  .header .search-parent {
+    position: static !important;
+  }
+
+  .header .search-parent .site-search {
+    position: absolute !important;
+    left: 44px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 2;
+  }
+}
+/* END LUJANDEV — MOBILE HEADER SSENSE V3.1 */
+
+/* LUJANDEV — TABLET HEADER SSENSE V3.2 */
+/* Distribución editorial exclusiva para tablet. */
+@media (min-width: 768px) and (max-width: 991px) {
+
+  /* Ocultar navegación desktop en tablet */
+  .header .d-menu-col {
+    display: none !important;
+  }
+
+  /* Mantener el buscador en el grupo izquierdo */
+  .header .search-parent {
+    position: static !important;
+  }
+
+  .header .search-parent .site-search {
+    position: absolute !important;
+    left: 60px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 2;
+  }
+
+  /* Evitar que la hamburguesa ocupe el centro */
+  .header .logo {
+    margin-left: 0 !important;
+    justify-content: flex-start !important;
+  }
+}
+/* END LUJANDEV — TABLET HEADER SSENSE V3.2 */

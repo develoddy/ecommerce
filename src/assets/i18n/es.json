@@ -108,7 +108,10 @@
             "title": "Carro"
         },
         "mobile": {
-            "menu": "Menu"
+            "menu": "Menu",
+            "region_language": "Región e idioma",
+            "country": "País",
+            "language": "Idioma"
         },
         "sale_badge": "Sale"
     },

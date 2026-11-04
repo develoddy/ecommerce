@@ -19,7 +19,7 @@
                 </div>
 
                 <!-- Idioma y moneda -->
-                <div class="col-12 col-md-3 col-lg-3 d-flex align-items-center justify-content-center justify-content-md-end">
+                <div class="col-12 col-md-3 col-lg-3 d-none d-md-flex align-items-center justify-content-center justify-content-md-end">
                     <!-- Contenedor para país + idioma -->
                     <div class="locale-controls-wrapper">
                         <!-- Selector de País -->
@@ -1065,6 +1065,36 @@
                                 class="icon anm anm-envelope-l"></i> infoexample.com</a></li>
                 </ul>
             </div>
+            <!-- LUJANDEV — MOBILE LOCALE CONTROLS V2.1 -->
+            <div class="lujandev-mobile-locale">
+                <h5 class="title">{{ "header.mobile.region_language" | translate }}</h5>
+
+                <label for="lujandev-mobile-country">{{ "header.mobile.country" | translate }}</label>
+                <select
+                    id="lujandev-mobile-country"
+                    [value]="country"
+                    (change)="onCountryChange($any($event.target).value)">
+                    <option
+                        *ngFor="let option of countries"
+                        [value]="option.code">
+                        {{ option.name }}
+                    </option>
+                </select>
+
+                <label for="lujandev-mobile-language">{{ "header.mobile.language" | translate }}</label>
+                <select
+                    id="lujandev-mobile-language"
+                    [value]="locale"
+                    (change)="onLocaleChange($any($event.target).value)">
+                    <option
+                        *ngFor="let option of availableLocales"
+                        [value]="option.code">
+                        {{ option.name }}
+                    </option>
+                </select>
+            </div>
+            <!-- END LUJANDEV — MOBILE LOCALE CONTROLS V2.1 -->
+
             <div class="mobile-follow mt-2">
                 <h5 class="title">Síganos</h5>
                 <ul class="list-inline social-icons d-inline-flex mt-1">

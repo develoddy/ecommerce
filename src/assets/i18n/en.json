@@ -108,7 +108,10 @@
             "title": "Cart"
         },
         "mobile": {
-            "menu": "Menu"
+            "menu": "Menu",
+            "region_language": "Region & language",
+            "country": "Country",
+            "language": "Language"
         },
         "sale_badge": "Sale"
     },
