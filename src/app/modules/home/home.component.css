@@ -285,3 +285,155 @@
   }
 }
 
+/* LUJANDEV — FEATURED BUILD EDITORIAL V4.1.2 START */
+@media (max-width: 767px) {
+  .destination-section .about-details {
+    padding: 36px 24px !important;
+  }
+
+  .destination-section .from-build-label {
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase;
+  }
+
+  .destination-section .about-details h2 {
+    font-size: clamp(28px, 7vw, 34px) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.035em !important;
+    margin-bottom: 16px !important;
+  }
+
+  .destination-section .about-details p {
+    font-size: 15px !important;
+    line-height: 1.55 !important;
+  }
+
+  .destination-section .about-details a.btn {
+    padding: 12px 18px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.06em !important;
+    border-radius: 0 !important;
+  }
+}
+/* LUJANDEV — FEATURED BUILD EDITORIAL V4.1.2 END */
+
+/* LUJANDEV — MANIFESTO EDITORIAL V4.1.5 START */
+
+.destination-section:has(.lujandev-manifesto) {
+  background: #fff !important;
+  padding: 100px 0 !important;
+}
+
+.lujandev-manifesto {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.lujandev-manifesto > .container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+
+.lujandev-manifesto .manifesto-label {
+  display: block;
+  margin-bottom: 28px;
+  color: #777;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.lujandev-manifesto .manifesto-title {
+  margin: 0 auto 36px;
+  color: #111;
+  font-size: clamp(36px, 4.5vw, 72px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -.055em;
+  text-transform: uppercase;
+}
+
+.lujandev-manifesto .manifesto-lead {
+  margin: 0 auto 16px;
+  color: #111;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.lujandev-manifesto .manifesto-copy {
+  max-width: 480px;
+  margin: 0 auto 30px;
+  color: #777;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.lujandev-manifesto .manifesto-link {
+  display: inline-block;
+  color: #111;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-bottom: 1px solid #111;
+  padding-bottom: 5px;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .destination-section:has(.lujandev-manifesto) {
+    padding: 76px 0 !important;
+  }
+
+  .lujandev-manifesto .manifesto-title {
+    font-size: clamp(36px, 5vw, 52px);
+  }
+}
+
+@media (max-width: 767px) {
+  .destination-section:has(.lujandev-manifesto) {
+    padding: 64px 0 !important;
+  }
+
+  .lujandev-manifesto {
+    padding: 0 12px;
+  }
+
+  .lujandev-manifesto .manifesto-label {
+    font-size: 10px;
+    margin-bottom: 24px;
+  }
+
+  .lujandev-manifesto .manifesto-title {
+    font-size: clamp(25px, 7vw, 36px);
+    line-height: 1.06;
+    letter-spacing: -.045em;
+    margin-bottom: 28px;
+  }
+
+  .lujandev-manifesto .manifesto-lead {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .lujandev-manifesto .manifesto-copy {
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 26px;
+  }
+
+  .lujandev-manifesto .manifesto-link {
+    font-size: 10px;
+  }
+}
+
+/* LUJANDEV — MANIFESTO EDITORIAL V4.1.5 END */

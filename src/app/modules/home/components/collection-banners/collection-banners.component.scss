@@ -168,3 +168,83 @@
     }
   }
 }
+
+/* LUJANDEV — PREMIUM COLLECTION BANNERS V4.1.4 START */
+@media (max-width: 767px) {
+  .collection-banners {
+    .collection-item.sp-col {
+      margin-bottom: 6px !important;
+    }
+
+    .zoom-scal {
+      position: relative !important;
+      display: block !important;
+      overflow: hidden !important;
+    }
+
+    .collection-banner-item .details {
+      position: absolute !important;
+      inset: 0 !important;
+      display: flex !important;
+      align-items: flex-end !important;
+      justify-content: flex-start !important;
+      padding: 16px !important;
+      transform: none !important;
+      background: linear-gradient(
+        to bottom,
+        transparent 55%,
+        rgba(0, 0, 0, 0.06) 72%,
+        rgba(0, 0, 0, 0.48) 100%
+      ) !important;
+
+      &.middle-left,
+      &.middle-right {
+        justify-content: flex-start !important;
+      }
+
+      .inner {
+        width: 100%;
+        max-width: 100%;
+        transform: none !important;
+        background: transparent !important;
+
+        .title {
+          font-size: clamp(13px, 3.5vw, 19px) !important;
+          line-height: 1.08 !important;
+          font-weight: 700 !important;
+          letter-spacing: -0.035em !important;
+          text-transform: uppercase !important;
+          color: #fff !important;
+          text-shadow: none !important;
+          overflow-wrap: break-word;
+        }
+      }
+    }
+  }
+}
+/* LUJANDEV — PREMIUM COLLECTION BANNERS V4.1.4 END */
+
+/* LUJANDEV — COLLECTION BANNERS RESPONSIVE V4.1.4 START */
+
+/* Tablet y escritorio: misma composición editorial que móvil */
+@media (min-width: 768px) {
+  .collection-banners {
+    .collection-banner-item .details {
+      transform: none !important;
+      align-items: flex-end !important;
+      padding: 28px !important;
+      background: linear-gradient(
+        to bottom,
+        transparent 55%,
+        rgba(0, 0, 0, 0.06) 72%,
+        rgba(0, 0, 0, 0.48) 100%
+      ) !important;
+
+      .inner {
+        transform: none !important;
+      }
+    }
+  }
+}
+
+/* END LUJANDEV — COLLECTION BANNERS RESPONSIVE V4.1.4 */

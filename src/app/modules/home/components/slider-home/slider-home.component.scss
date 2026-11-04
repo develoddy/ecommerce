@@ -128,3 +128,42 @@
 }
 
 /* LUJANDEV MOBILE HERO END */
+
+/* LUJANDEV — HERO EDITORIAL V4.1.1 START */
+/* Ajustes tipográficos móviles validados en DevTools. */
+@media (max-width: 767px) {
+  :host .home-slideshow .wrap-caption {
+    .ss-small-title {
+      font-size: 11px !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.12em !important;
+      margin-bottom: 10px !important;
+    }
+
+    .ss-mega-title {
+      font-size: clamp(28px, 7vw, 36px) !important;
+      line-height: 1.02 !important;
+      letter-spacing: -0.035em !important;
+      margin-bottom: 12px !important;
+    }
+
+    .ss-sub-title {
+      font-size: 13px !important;
+      line-height: 1.5 !important;
+      max-width: 310px !important;
+      margin-bottom: 16px !important;
+    }
+
+    .ss-btnWrap {
+      margin-top: 12px !important;
+
+      .btn-dark-ld {
+        padding: 12px 18px !important;
+        font-size: 11px !important;
+        letter-spacing: 0.08em !important;
+        border-radius: 0 !important;
+      }
+    }
+  }
+}
+/* LUJANDEV — HERO EDITORIAL V4.1.1 END */
