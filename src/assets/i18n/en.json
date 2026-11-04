@@ -112,7 +112,8 @@
         },
         "sale_badge": "Sale"
     },
-    "home": { 
+    "home": {
+        "loading": {"title": "Loading store...", "description": "Preparing the best products for you"},
         "today":"Today's",
         "flash_sales": "Flash Sales",
         "browse_by_category":"Browse by Category",

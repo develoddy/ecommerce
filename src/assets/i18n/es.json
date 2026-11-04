@@ -113,6 +113,7 @@
         "sale_badge": "Sale"
     },
     "home": {
+        "loading": {"title": "Cargando tienda...", "description": "Preparando los mejores productos para ti"},
         "today":"Hoy",
         "flash_sales": "Venta Flash",
         "browse_by_category":"Buscar por categoría",
