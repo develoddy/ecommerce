@@ -930,3 +930,49 @@ body.menuOn {
   display: block !important;
 }
 
+/* LUJANDEV — NAVIGATION TYPOGRAPHY V3 */
+/* Solo enlaces principales de escritorio. */
+
+@media (min-width: 992px) {
+  .header #siteNav > li.lvl1 > a {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+  }
+}
+/* END LUJANDEV — NAVIGATION TYPOGRAPHY V3 */
+
+/* LUJANDEV — HEADER ACTION LABELS V4 */
+/* Solo tipografía de etiquetas en escritorio. */
+
+@media (min-width: 992px) {
+  .header .iconset .menubar-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.035em;
+    line-height: 1.4;
+  }
+}
+/* END LUJANDEV — HEADER ACTION LABELS V4 */
+
+/* LUJANDEV — NAVIGATION HOVER V5 */
+/* Interacción editorial exclusiva de navegación desktop. */
+
+@media (min-width: 992px) {
+  .header #siteNav > li.lvl1 > a {
+    transition: color 180ms ease;
+  }
+
+  .header #siteNav > li.lvl1 > a:hover,
+  .header #siteNav > li.lvl1:hover > a {
+    color: #666666;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header #siteNav > li.lvl1 > a {
+    transition: none;
+  }
+}
+/* END LUJANDEV — NAVIGATION HOVER V5 */
