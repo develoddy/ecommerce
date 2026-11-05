@@ -492,9 +492,8 @@
 /* LUJANDEV — FOOTER SEAM V4.2.1 */
 
 /* Transición editorial entre Brand Message y Footer */
-:host .page-wrapper:has(app-brand-message):has(app-footer) {
-  background-color: #050505 !important;
-}
+/* El fondo oscuro se gestiona en Brand Message y Footer.
+   No aplicar background a todo page-wrapper. */
 
 /* LUJANDEV — FEATURED BUILD CONTRAST V4.2.2 */
 
@@ -511,3 +510,16 @@
 .destination-section:not(:has(.lujandev-manifesto)) .from-build-label {
   color: #171717 !important;
 }
+
+/* LUJANDEV — FEATURED BUILD SPACING V4.2.6 */
+
+.destination-section:not(:has(.lujandev-manifesto)) {
+  padding-top: 0 !important;
+}
+
+/* LUJANDEV — DROP 001 TOOLBAR SPACING START */
+.drop-toolbar {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+/* LUJANDEV — DROP 001 TOOLBAR SPACING END */
