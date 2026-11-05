@@ -17,7 +17,7 @@
 }
 
 /* Grid Container - Clean Layout */
-.grid-products, .product-slider-5items {
+:is(.grid-products, .product-slider-5items) {
   background: #ffffff;
   padding: 0;
   
@@ -55,10 +55,7 @@
     }
     
     // Vistas grid (2-5 columnas) - diseño vertical normal
-    &.row-cols-2,
-    &.row-cols-3,
-    &.row-cols-4,
-    &.row-cols-5 {
+    &:is(.row-cols-2, .row-cols-3, .row-cols-4, .row-cols-5) {
       .item.col-item {
         .product-box {
           display: block;
