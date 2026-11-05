@@ -495,3 +495,19 @@
 :host .page-wrapper:has(app-brand-message):has(app-footer) {
   background-color: #050505 !important;
 }
+
+/* LUJANDEV — FEATURED BUILD CONTRAST V4.2.2 */
+
+.destination-section:not(:has(.lujandev-manifesto)) {
+  background-color: #ffffff !important;
+}
+
+.destination-section:not(:has(.lujandev-manifesto)) .about-details {
+  color: #171717 !important;
+}
+
+.destination-section:not(:has(.lujandev-manifesto)) .about-details h2,
+.destination-section:not(:has(.lujandev-manifesto)) .about-details p,
+.destination-section:not(:has(.lujandev-manifesto)) .from-build-label {
+  color: #171717 !important;
+}

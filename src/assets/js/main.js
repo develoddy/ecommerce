@@ -87,29 +87,51 @@ function HOMEINITTEMPLATE ($, undefined) {
      02. Sticky Header
      -----------------------------------------*/
     function sticky_header() {
-        if ($(".header").hasClass("header-fixed")) {
-            var nav = $(".header");
-            if (nav.length) {
-                var offsetTop = nav.offset().top,
-                        headerHeight = nav.height(),
-                        injectSpace = $("<div />", {height: headerHeight}).insertAfter(nav);
+        var nav = $(".header.header-fixed");
+
+        if (!nav.length) {
+            return;
+        }
+
+        // Evitar inicializaciones duplicadas.
+        if (nav.data("lujandevStickyInitialized")) {
+            return;
+        }
+
+        nav.data("lujandevStickyInitialized", true);
+
+        var offsetTop = nav.offset().top;
+        var headerHeight = nav.height();
+
+        var injectSpace = $("<div />", {
+            height: headerHeight
+        }).insertAfter(nav);
+
+        injectSpace.hide();
+
+        function updateStickyHeader() {
+            var scrollTop = $(window).scrollTop();
+
+            if (scrollTop > offsetTop) {
+                nav.addClass("is-fixed");
+                injectSpace.show();
+            } else {
+                nav.removeClass("is-fixed");
                 injectSpace.hide();
-                $(window).on("load scroll", function() {
-                    if ($(window).scrollTop() > offsetTop) {
-                        nav.addClass("is-fixed");
-                        injectSpace.show();
-                    } else {
-                        nav.removeClass("is-fixed");
-                        injectSpace.hide();
-                    }
-                    if ($(window).scrollTop() > 50) { //150
-                        nav.addClass("is-small animated fadeIn");
-                    } else {
-                        nav.removeClass("is-small animated fadeIn");
-                    }
-                });
+            }
+
+            if (scrollTop > 50) {
+                nav.addClass("is-small animated fadeIn");
+            } else {
+                nav.removeClass("is-small animated fadeIn");
             }
         }
+
+        $(window)
+            .off("load.lujandevSticky scroll.lujandevSticky")
+            .on("load.lujandevSticky scroll.lujandevSticky", updateStickyHeader);
+
+        updateStickyHeader();
     }
     sticky_header();
 
@@ -1846,9 +1868,10 @@ function cleanupSliders($) {
 }
 
 function cleanupHOMEINITTEMPLATE($) {
-    // Aquí deberías limpiar los eventos adjuntados por HOMEINITTEMPLATE si es necesario
-    $(window).off("load scroll");
-    // Limpia otros eventos del DOM si se han adjuntado en HOMEINITTEMPLATE
+    // No eliminar indiscriminadamente los eventos de window.
+    // El Sticky Header es compartido entre rutas Angular
+    // y debe permanecer activo durante la navegación.
+    // Sus listeners están identificados con el namespace lujandevSticky.
 }
 
 function cleanupProductZoom($) {
