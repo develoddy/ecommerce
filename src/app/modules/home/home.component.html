@@ -870,7 +870,13 @@
 
       <!-- Parallax Banner Hoodie -->
       <div class="parallax-banner-style1">
-        <div class="hero hero-large hero-overlay bg-size from-build-banner"></div>
+        <div class="hero hero-large hero-overlay bg-size from-build-banner">
+          <a
+            class="from-build-desktop-cta"
+            [routerLink]="['/', locale, country, 'shop', 'filter-products']"
+            aria-label="Explore DROP 001">
+          </a>
+        </div>
 
         <section class="from-build-mobile">
           <div class="from-build-mobile-image"></div>
@@ -892,7 +898,7 @@
               <strong>DROP 001</strong> came from all of it.
             </p>
 
-            <a href="#">
+            <a [routerLink]="['/', locale, country, 'shop', 'filter-products']">
               EXPLORE DROP 001 →
             </a>
           </div>

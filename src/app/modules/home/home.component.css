@@ -437,3 +437,61 @@
 }
 
 /* LUJANDEV — MANIFESTO EDITORIAL V4.1.5 END */
+
+/* LUJANDEV — FROM THE BUILD V4.1.6 START */
+
+@media (max-width: 767px) {
+  .from-build-mobile-content {
+    padding-top: 30px !important;
+    padding-bottom: 32px !important;
+  }
+
+  .from-build-mobile-content h2 {
+    margin-bottom: 22px !important;
+  }
+
+  .from-build-mobile-content p {
+    margin-bottom: 14px !important;
+  }
+
+  .from-build-mobile-content a {
+    margin-top: 18px !important;
+  }
+}
+
+/* LUJANDEV — FROM THE BUILD V4.1.6 END */
+
+/* LUJANDEV — FROM THE BUILD DESKTOP CTA V4.1.6 */
+
+.from-build-banner {
+  position: relative;
+}
+
+.from-build-desktop-cta {
+  position: absolute;
+  left: 3.7%;
+  top: 82%;
+  width: 15%;
+  height: 9%;
+  z-index: 10;
+  display: block;
+  cursor: pointer;
+}
+
+.from-build-desktop-cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .from-build-desktop-cta {
+    display: none;
+  }
+}
+
+/* LUJANDEV — FOOTER SEAM V4.2.1 */
+
+/* Transición editorial entre Brand Message y Footer */
+:host .page-wrapper:has(app-brand-message):has(app-footer) {
+  background-color: #050505 !important;
+}

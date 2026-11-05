@@ -669,3 +669,165 @@
     font-size: 0.7rem;
   }
 }
+
+/* LUJANDEV — FOOTER PREMIUM V4.2.1 */
+
+.luxury-footer .footer-main {
+  padding: 72px 0 64px;
+}
+
+.luxury-footer .footer-logo-section {
+  margin-bottom: 48px;
+}
+
+.luxury-footer .footer-logo-img {
+  max-width: 160px;
+}
+
+.luxury-footer .footer-divider-line {
+  margin-bottom: 48px;
+}
+
+.luxury-footer .footer-columns-grid {
+  gap: 48px;
+}
+
+.luxury-footer .footer-column-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  margin-bottom: 24px;
+}
+
+.luxury-footer .footer-column-links a,
+.luxury-footer .footer-link-btn {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #999;
+}
+
+.luxury-footer .footer-column-links li {
+  margin-bottom: 14px;
+}
+
+.luxury-footer .footer-bottom-luxury {
+  padding: 32px 0;
+}
+
+.luxury-footer .footer-legal-section {
+  margin-bottom: 24px;
+}
+
+.luxury-footer .legal-links-luxury {
+  gap: 24px;
+}
+
+@media (min-width: 769px) and (max-width: 1199px) {
+  .luxury-footer .footer-columns-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .luxury-footer .footer-main {
+    padding: 48px 0 40px;
+  }
+
+  .luxury-footer .footer-main .container-fluid,
+  .luxury-footer .footer-bottom-luxury .container-fluid {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .luxury-footer .footer-logo-section {
+    margin-bottom: 36px;
+  }
+
+  .luxury-footer .footer-logo-img {
+    max-width: 130px;
+  }
+
+  .luxury-footer .footer-divider-line {
+    margin-bottom: 36px;
+  }
+
+  .luxury-footer .footer-columns-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+    row-gap: 36px;
+  }
+
+  .luxury-footer .footer-column-title {
+    font-size: 10px;
+    margin-bottom: 18px;
+  }
+
+  .luxury-footer .footer-column-links a,
+  .luxury-footer .footer-link-btn {
+    font-size: 12px;
+  }
+
+  .luxury-footer .country-selector-luxury {
+    padding: 10px 8px;
+    gap: 6px;
+  }
+
+  .luxury-footer .country-name-luxury {
+    font-size: 12px;
+  }
+
+  .luxury-footer .country-lang-luxury {
+    font-size: 11px;
+  }
+
+  .luxury-footer .social-links-luxury {
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .luxury-footer .footer-bottom-row {
+    gap: 20px;
+  }
+
+  .luxury-footer .legal-links-luxury {
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px 20px;
+  }
+}
+
+/* LUJANDEV — FOOTER MOBILE BALANCE V4.2.1 */
+
+@media (max-width: 768px) {
+  .luxury-footer .footer-main .container-fluid,
+  .luxury-footer .footer-bottom-luxury .container-fluid {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  .luxury-footer .footer-columns-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    column-gap: 24px !important;
+    row-gap: 40px !important;
+    justify-content: stretch !important;
+  }
+
+  .luxury-footer .footer-columns-grid > * {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .luxury-footer .footer-column-title {
+    font-size: 10px;
+    line-height: 1.5;
+    letter-spacing: .1em;
+  }
+
+  .luxury-footer .country-selector-luxury {
+    width: 100%;
+    min-width: 0;
+  }
+}
