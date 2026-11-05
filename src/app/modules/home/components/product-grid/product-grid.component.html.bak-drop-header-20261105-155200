@@ -1,0 +1,193 @@
+<div class="grid-products grid-view-items">
+    
+     <div class="section-header ms-3 mb-0">
+        <h2>DROP 001</h2>
+        <span class="drop-meta" [innerHTML]="'home.product_grid.meta' | translate"></span>
+        <p class="fw-light lh-1 fs-14">{{ 'home.product_grid.description' | translate }}</p>
+    </div>
+    <div class="row col-row product-options g-1" [ngClass]="getGridClasses()">
+    <!-- <div class="product-slider-5items gp10 arwOut5 grid-product" > -->
+        <ng-container *ngIf="ourProducts.length > 0">
+            <ng-container *ngFor="let ourProduct of ourProducts | slice:0:4">
+                <div class="item col-item" itemscope itemtype="https://schema.org/Product">
+                    <div class="product-box">
+                        <!-- Start Product Image -->
+                        <div class="product-image" 
+                             (mouseenter)="onProductHover(ourProduct)" 
+                             (mouseleave)="onProductLeave()">
+
+                            <!-- Etiqueta vertical -->
+                            <span class="product-tag-vertical">DROP 001</span>
+
+                            <!-- Start Product Image -->
+                            <a href="#" (click)="navigateToProduct(ourProduct.slug,ourProduct.campaing_discount?.id)" onclick="return false;" class="product-img rounded-0">
+                                <img class="primary blur-up lazyload rounded-0 w-100 h-100" 
+                                     itemprop="image"
+                                     data-src="{{ ourProduct.imagen }}" 
+                                     src="{{ ourProduct.imagen }}" 
+                                     [alt]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
+                                     [title]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
+                                     width="625" height="608" 
+                                     style="object-fit: cover" />
+                                <!-- End Image -->
+                                <!-- Hover Image -->
+                                <ng-container *ngIf="ourProduct.imagen_two">
+                                    <img class="hover blur-up lazyload rounded-0 w-100 h-100" 
+                                         data-src="{{ ourProduct.imagen_two }}" 
+                                         src="{{ ourProduct.imagen_two }}" 
+                                         [alt]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
+                                         [title]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
+                                         width="625" height="808" 
+                                         style="object-fit: cover" />
+                                </ng-container>
+                                <!-- End Hover Image -->
+                            </a>
+                            <!-- End Product Image -->
+
+                            <!-- Product label -->
+                            <div class="product-labels">
+                                <span *ngIf="getDiscountLabel(ourProduct)" class="lbl pr-label3">
+                                    {{ getDiscountLabel(ourProduct) }}
+                                </span>
+                                <!-- Label de mejor vendido -->
+                                <span *ngIf="!ourProduct.hasDiscount && ourProduct.isBestSeller" class="lbl pr-label4">
+                                    {{ 'home.product_grid.best_seller' | translate }}
+                                </span>
+                            </div>
+                            <!-- End Product label -->
+
+                            <!-- Size Selector - Appears on Hover -->
+                            <div class="size-selector" *ngIf="isProductHovered(ourProduct) && getAvailableSizes(ourProduct).length > 0">
+                                <div class="size-label">{{ 'home.product_grid.available_sizes' | translate }}</div>
+                                <div class="size-options">
+                                    <button *ngFor="let size of getAvailableSizes(ourProduct)" 
+                                            class="size-btn"
+                                            [class.selected]="isSizeSelected(ourProduct, size)"
+                                            [class.unavailable]="!isSizeAvailable(ourProduct, size)"
+                                            [disabled]="!isSizeAvailable(ourProduct, size)"
+                                            (click)="onSizeSelect(ourProduct, size)"
+                                            [title]="!isSizeAvailable(ourProduct, size) ? ('home.product_grid.out_of_stock' | translate) : (('home.product_grid.select_size' | translate) + ' ' + size)">
+                                        {{ size }}
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- End Size Selector -->
+
+                            <!--Product Button-->
+                            <div class="button-set style1" [ngClass]="{ 'd-none': isMobile }">
+                                <!--Cart Button-->
+                                <a href="#" onclick="return false;" class="btn-icon addtocart add-to-cart-modal d-none" (click)="openModalToCart(ourProduct)">
+                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" [title]="'home.product_grid.add_to_cart' | translate"><i class="icon anm anm-cart-l"></i><span class="text">{{ 'home.product_grid.add_to_cart' | translate }}</span></span>
+                                </a>
+                                <!--End Cart Button-->
+                                <!--Quick View Button-->
+                                <a href="#quickview-modal" class="btn-icon quickview quick-view-modal d-none" data-bs-toggle="modal" data-bs-target="#quickview_modal" (click)="openModalToCart(ourProduct)">
+                                    <span class="icon-wrap d-flex-justify-center h-100 w-100" data-bs-toggle="tooltip" data-bs-placement="left" [title]="'home.product_grid.quick_view' | translate"><i class="icon anm anm-search-plus-l"></i><span class="text">{{ 'home.product_grid.quick_view' | translate }}</span></span>
+                                </a>
+                                <!--End Quick View Button-->
+                                <!--Wishlist Button-->
+                                <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" [title]="'home.product_grid.add_to_favorites' | translate" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">{{ 'home.product_grid.add_to_favorites' | translate }}</span></a>
+                                <!--End Wishlist Button-->
+                                <!--Compare Button-->
+                                <a href="#" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" [title]="'home.product_grid.add_to_compare' | translate"><i class="icon anm anm-random-r"></i><span class="text">{{ 'home.product_grid.add_to_compare' | translate }}</span></a>
+                                <!--End Compare Button-->
+                            </div>
+                            <!--End Product Button-->
+                        </div>
+                        <!-- End Product Image -->
+
+                        <!-- Start Product Details -->
+                        <div class="product-details p-2">
+                            <!--Product Vendor-->
+                            <div class="product-vendor">{{ ourProduct.categorie.title || '' }}</div>
+                            <!--End Product Vendor-->
+                            <!-- Product Name class="text-truncate d-inline-block product-title fw-light" -->
+                            <div class="product-name lh-1">
+                                <a [routerLink]="['/',country,locale,'shop','product',ourProduct.slug]" 
+                                    [queryParams]="getRouterDiscount(ourProduct)" 
+                                    class="product-title fw-light">
+                                      <span itemprop="name">{{ ourProduct.title }}</span>
+                                </a>
+                                <!-- Subtítulo para SEO y visual -->
+                                <p class="product-subtitle text-muted lh-1 fw-light mb-2 d-none" itemprop="description">
+                                    {{ ourProduct.resumen }}
+                                </p>
+                            </div>
+                            <!-- End Product Name -->
+                             
+                            <!-- Schema.org Offer -->
+                            <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                                <link itemprop="url" [href]="getSanitizedUrl(ourProduct)" />
+                                <meta itemprop="priceCurrency" content="EUR" />
+                                <meta itemprop="price" content="{{ getPriceParts(ourProduct.finalPrice).total }}" />
+                                <link itemprop="availability" href="https://schema.org/InStock" />
+                            </div>
+                            <!-- End Schema.org Offer -->
+
+                            <!-- Product Price -->
+                            <div class="product-price">
+                                <!-- Old Price -->
+                                <span class="price old-price me-1" *ngIf="ourProduct.campaing_discount"><span class="me-1">{{euro}}</span>{{ ourProduct.price_usd }}</span>
+                                <!-- Final Price -->
+                                <span class="price" [ngClass]="{ 'text-danger': ourProduct.campaing_discount }">
+                                    <span class="me-1">{{euro}}</span>
+                                    <span class="">{{getPriceParts(ourProduct.finalPrice).integer }}.{{getPriceParts(ourProduct.finalPrice).decimals}}</span>
+                                </span>
+                            </div>
+                            <!-- End Product Price -->
+
+                            <!-- Product Review -->
+                            <div class="product-review d-none">
+                                <i class="icon anm anm-star"></i><i class="icon anm anm-star"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i><i class="icon anm anm-star-o"></i>
+                                <span class="caption hidden ms-1">10 Reviews</span>
+                            </div>
+                            <!-- End Product Review -->
+                            <!--Sort Description-->
+                            <!-- <p class="sort-desc hidden">{{ ourProduct.description_en }}</p> -->
+                             <p class="sort-desc hidden" *ngIf="ourProduct.description_es" [innerHTML]="ourProduct.description_es"></p>
+                            <!--End Sort Description-->
+                            <!-- Swatches Color -->
+                            <ul class="variants-clr swatches">
+                                <ng-container *ngFor="let item of ourProduct.colores; let colorIndex = index">
+                                    <li class="swatch medium" 
+                                        [class.active]="isColorSelected(ourProduct, colorIndex)"
+                                        (click)="onColorSelect(ourProduct, colorIndex, item.imagen)">
+                                        <span class="swatchLbl" 
+                                              [style.background-color]="item.hex" 
+                                              data-bs-toggle="tooltip" 
+                                              data-bs-placement="top" 
+                                              title="{{ item.color }}">
+                                        </span>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                            <!-- End Swatches Color -->
+                            <!-- Product Button -->
+                            <div class="button-action hidden d-none">
+                                <div class="addtocart-btn">
+                                    <form class="addtocart" action="#" method="post">
+                                        <a href="#addtocart-modal" class="btn btn-md add-to-cart-modal" data-bs-toggle="modal" data-bs-target="#addtocart_modal">
+                                            <i class="icon anm anm-cart-l me-2"></i><span class="text">{{ 'home.product_grid.add_to_cart' | translate }}</span>
+                                        </a>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- End Product Button -->
+                        </div>
+                        <!-- End product details -->
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div class="view-collection text-center px-3 mt-3 mb-5 mt-md-5 justify-content-right align-item-center d-flex">
+        <a *ngIf="categorie"
+            [routerLink]="['/', country, locale, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]" 
+            class="category-link clr-none"
+            [attr.title]="('home.product_grid.explore_category' | translate) + ' ' + categorie.title">
+            <button class="btn-dark-ld fw-light">{{ 'home.product_grid.view_drop' | translate }}</button>
+            <!-- <button class="btn-dark-ld fw-light">{{ 'home.product_grid.explore_category' | translate }} {{ categorie.title }}</button> -->
+        </a>
+    </div>
+</div>

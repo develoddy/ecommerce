@@ -1,7 +1,12 @@
 <div class="grid-products grid-view-items">
     
-     <div class="section-header ms-3 mb-0">
-        <h2>DROP 001</h2>
+     <div class="section-header drop-editorial-header ms-3 mb-0">
+        <div class="drop-editorial-top">
+            <h2>DROP 001</h2>
+            <div class="drop-editorial-controls">
+                <ng-content select=".drop-toolbar"></ng-content>
+            </div>
+        </div>
         <span class="drop-meta" [innerHTML]="'home.product_grid.meta' | translate"></span>
         <p class="fw-light lh-1 fs-14">{{ 'home.product_grid.description' | translate }}</p>
     </div>
