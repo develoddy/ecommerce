@@ -1,2 +1,294 @@
 /* Estilos específicos para la lista de productos */
+$ld-include-discount: false;
+$ld-include-decimals: false;
+$ld-include-collection: false;
+$ld-include-buttons: false;
+$ld-include-subtitle: false;
 @import "src/styles/product-cards";
+/* LUJANDEV CATALOG EDITORIAL SIZES V1 */
+@media (min-width: 768px) {
+  app-products-list .grid-products .product-image {
+    position: relative;
+  }
+
+  app-products-list .grid-products .product-image .size-selector {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    min-height: 48px;
+    margin: 0 !important;
+    padding: 10px 12px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: #fff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    z-index: 5;
+  }
+
+  app-products-list .grid-products .product-image .size-selector::before,
+  app-products-list .grid-products .product-image .size-selector::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  app-products-list .grid-products .size-selector .size-label {
+    display: none !important;
+  }
+
+  app-products-list .grid-products .size-selector .size-options {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+  }
+
+  app-products-list .grid-products .size-selector .size-btn {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 4px 2px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #111 !important;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  app-products-list .grid-products .size-selector .size-btn:hover,
+  app-products-list .grid-products .size-selector .size-btn.selected {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  app-products-list .grid-products .size-selector .size-btn.unavailable {
+    color: #aaa !important;
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+}
+
+/* LUJANDEV CATALOG — HEART & SWATCHES V1 */
+app-products-list .grid-products .product-image {
+  position: relative;
+}
+
+app-products-list .grid-products .ld-catalog-heart {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 8;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .18s ease, visibility .18s ease;
+}
+
+app-products-list .grid-products .ld-catalog-heart svg {
+  width: 20px;
+  height: 20px;
+}
+
+app-products-list .grid-products .product-image:hover .ld-catalog-heart,
+app-products-list .grid-products .ld-catalog-heart:focus-visible,
+app-products-list .grid-products .ld-catalog-heart.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+app-products-list .grid-products .ld-catalog-heart.is-active svg {
+  fill: #111;
+}
+
+app-products-list .grid-products .ld-catalog-heart:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+app-products-list .grid-products .variants-clr.swatches .swatch,
+app-products-list .grid-products .variants-clr.swatches .swatchLbl {
+  border-radius: 0 !important;
+}
+
+@media (hover: none) {
+  app-products-list .grid-products .ld-catalog-heart {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* LUJANDEV CATALOG — PRODUCT DETAILS V1 */
+
+app-products-list .grid-products .product-details {
+  padding: 12px 10px 20px !important;
+  text-align: left !important;
+  background: #fff;
+}
+
+app-products-list .grid-products .product-vendor {
+  margin: 0 0 5px !important;
+  color: #888 !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  letter-spacing: .035em;
+  text-transform: uppercase;
+}
+
+app-products-list .grid-products .product-name {
+  margin: 0 0 7px !important;
+  line-height: 1.4 !important;
+}
+
+app-products-list .grid-products .product-name .product-title {
+  display: block !important;
+  max-width: 100%;
+  color: #111 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  text-decoration: none !important;
+}
+
+app-products-list .grid-products .product-name .product-title:hover {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+app-products-list .grid-products .product-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px !important;
+  line-height: 1.4 !important;
+}
+
+app-products-list .grid-products .product-price .price {
+  color: #111;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}
+
+app-products-list .grid-products .product-price .old-price {
+  color: #999 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  text-decoration: line-through;
+}
+
+app-products-list .grid-products .variants-clr.swatches {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none;
+}
+
+app-products-list .grid-products .variants-clr.swatches li.swatch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px !important;
+  height: 19px !important;
+  min-width: 19px !important;
+  margin: 0 !important;
+  padding: 2px !important;
+  border: 1px solid transparent !important;
+  border-radius: 0 !important;
+  cursor: pointer;
+}
+
+app-products-list .grid-products .variants-clr.swatches li.swatch.active {
+  border-color: #aaa !important;
+}
+
+app-products-list .grid-products .variants-clr.swatches .swatchLbl {
+  display: block;
+  width: 13px !important;
+  height: 13px !important;
+  min-width: 13px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+@media (max-width: 767px) {
+  app-products-list .grid-products .product-details {
+    padding: 10px 4px 16px !important;
+  }
+
+  app-products-list .grid-products .product-name .product-title,
+  app-products-list .grid-products .product-price .price {
+    font-size: 13px !important;
+  }
+}
+
+/* LUJANDEV CATALOG — HOME PARITY V1 */
+
+/* Tallas agrupadas como en Home */
+@media (min-width: 768px) {
+  app-products-list .grid-products .size-selector .size-options {
+    width: auto !important;
+    max-width: 100% !important;
+    flex: 0 1 auto !important;
+    justify-content: center !important;
+    gap: 16px !important;
+  }
+
+  app-products-list .grid-products .size-selector .size-btn {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+/* Información inferior más compacta */
+app-products-list .grid-products .product-details {
+  padding-top: 9px !important;
+  padding-bottom: 14px !important;
+}
+
+app-products-list .grid-products .product-vendor {
+  margin-bottom: 4px !important;
+}
+
+app-products-list .grid-products .product-name {
+  margin-bottom: 4px !important;
+}
+
+app-products-list .grid-products .product-name .product-title {
+  font-weight: 500 !important;
+}
+
+app-products-list .grid-products .product-price {
+  margin-bottom: 8px !important;
+}
+
+app-products-list .grid-products .product-price .price {
+  font-weight: 400 !important;
+}

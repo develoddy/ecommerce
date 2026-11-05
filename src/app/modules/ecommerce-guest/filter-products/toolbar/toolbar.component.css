@@ -1,1 +1,129 @@
-/* Estilos específicos para la toolbar de productos */
+
+/* LUJANDEV — EDITORIAL CATALOG TOOLBAR */
+.editorial-shop-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 24px;
+  background: #fff;
+}
+
+.editorial-toolbar-left,
+.editorial-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.editorial-filter-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: #111;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.editorial-filter-button svg {
+  width: 19px;
+  height: 19px;
+}
+
+.editorial-product-count {
+  color: #777;
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.editorial-sort {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.editorial-sort label {
+  margin: 0;
+  color: #555;
+  font-size: 11px;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+
+.editorial-sort select {
+  max-width: 230px;
+  padding: 8px 24px 8px 8px;
+  background: #fff;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0;
+  color: #111;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.editorial-grid-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.editorial-grid-button {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  color: #999;
+  cursor: pointer;
+}
+
+.editorial-grid-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.editorial-grid-button:hover,
+.editorial-grid-button.active {
+  color: #111;
+  background: #f3f3f3;
+}
+
+.editorial-grid-button:focus-visible,
+.editorial-filter-button:focus-visible,
+.editorial-sort select:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .editorial-shop-toolbar {
+    padding: 12px 8px;
+    gap: 12px;
+  }
+
+  .editorial-toolbar-left,
+  .editorial-toolbar-right {
+    gap: 12px;
+  }
+
+  .editorial-product-count,
+  .editorial-sort,
+  .editorial-grid-button.desktop-view {
+    display: none;
+  }
+
+  .editorial-grid-button {
+    width: 34px;
+    height: 34px;
+  }
+}

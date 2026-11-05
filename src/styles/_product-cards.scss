@@ -1,8 +1,15 @@
+$ld-include-discount: true !default;
+$ld-include-decimals: true !default;
+$ld-include-collection: true !default;
+$ld-include-buttons: true !default;
+$ld-include-subtitle: true !default;
+
 /* ===================================================
    PRODUCT CARDS - SHARED STYLES FOR GRID & FLASH SALE
    =================================================== */
 
 /* Label Discount - Minimalist & Modern */
+@if $ld-include-discount {
 .pr-label-discount {
   background-color: #000000;
   color: #ffffff;
@@ -15,6 +22,8 @@
   margin: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
+}
+
 
 /* Grid Container - Clean Layout */
 :is(.grid-products, .product-slider-5items) {
@@ -324,7 +333,10 @@ img.hover {
 .row.col-row.row-cols-2 .product-details {
   .product-vendor { font-size: 10px; margin-bottom: 0px; }
   .product-name .product-title { font-size: 14px; line-height: 1.4; }
+@if $ld-include-subtitle {
   .product-subtitle { font-size: 13px; }
+}
+
   
   .product-price .price:not(.old-price) .price-main { 
     font-size: 20px;
@@ -350,6 +362,7 @@ img.hover {
 }
 
 /* Button Set - Minimal & Modern */
+@if $ld-include-buttons {
 .button-set {
   position: absolute;
   bottom: 12px;
@@ -388,6 +401,8 @@ img.hover {
     }
   }
 }
+}
+
 
 /* Product Details - Clean Typography */
 .product-details {
@@ -420,12 +435,15 @@ img.hover {
       margin: 0;
     }
     
+@if $ld-include-subtitle {
     .product-subtitle {
       font-size: 12px;
       color: #999999;
       margin-top: 0px;
       line-height: 1.2;
     }
+}
+
   }
   
   .product-price {
@@ -467,6 +485,7 @@ img.hover {
           letter-spacing: -0.5px;
         }
         
+@if $ld-include-decimals {
         .price-decimals {
           font-size: 11px !important;
           color: #000 !important;
@@ -493,6 +512,8 @@ img.hover {
             color: #333333;
           }
         }
+}
+
       }
     }
   }
@@ -530,6 +551,7 @@ img.hover {
 }
 
 /* View Collection Button - Enhanced */
+@if $ld-include-collection {
 .view-collection {
   margin-top: 60px;
   text-align: center;
@@ -554,6 +576,8 @@ img.hover {
     }
   }
 }
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -571,6 +595,7 @@ img.hover {
     }
   }
   
+@if $ld-include-buttons {
   .button-set {
     bottom: 8px;
     right: 8px;
@@ -585,6 +610,8 @@ img.hover {
       }
     }
   }
+}
+
   
   .variants-clr .swatch.medium {
     width: 16px;

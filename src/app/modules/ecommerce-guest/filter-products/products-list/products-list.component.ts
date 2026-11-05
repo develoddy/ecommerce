@@ -44,7 +44,34 @@ export class ProductsListComponent implements OnInit, OnChanges {
   selectedColors: { [productId: string]: number } = {}; // Track selected color index for each product
   productImages: { [productId: string]: string } = {}; // Track current image for each product
   hoveredProduct: string | null = null; // Track which product is being hovered
-  selectedSizes: { [productId: string]: string } = {}; // Track selected size for each product
+  selectedSizes: { [productId: string]: string } = {};
+
+  // Favoritos temporales: no se guardan en backend.
+  favoriteIds = new Set<string>();
+
+  private getFavoriteId(product: any): string {
+    return String(product.uniqueId || product.id || product._id || product.slug || '');
+  }
+
+  isFavorite(product: any): boolean {
+    const id = this.getFavoriteId(product);
+    return !!id && this.favoriteIds.has(id);
+  }
+
+  toggleFavorite(product: any, event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const id = this.getFavoriteId(product);
+    if (!id) return;
+
+    if (this.favoriteIds.has(id)) {
+      this.favoriteIds.delete(id);
+    } else {
+      this.favoriteIds.add(id);
+    }
+  }
+ // Track selected size for each product
 
   constructor(
     private priceCalculationService: PriceCalculationService,

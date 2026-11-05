@@ -1,4 +1,6 @@
 /* Product Grid - Uses shared product cards styles */
+$ld-include-discount: false;
+$ld-include-decimals: false;
 @import "src/styles/product-cards";
 
 /* Grid-specific styles (if needed) */
@@ -98,11 +100,11 @@
 
 /* LUJANDEV — DROP 001 EDITORIAL SPACING START */
 .grid-products .drop-editorial-header {
-  margin-bottom: 24px !important;
+  margin-bottom: 16px !important;
 }
 
 .grid-products .drop-editorial-header .drop-editorial-top {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .grid-products .drop-editorial-header .drop-meta {
@@ -110,12 +112,12 @@
 }
 
 .grid-products .drop-editorial-header p {
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 @media (max-width: 767px) {
   .grid-products .drop-editorial-header {
-    margin-bottom: 18px !important;
+    margin-bottom: 14px !important;
   }
 
   .grid-products .drop-editorial-header .drop-editorial-top {
@@ -159,15 +161,12 @@
 
 /* Geometría editorial mediante CSS */
 .drop-editorial-controls .grid-options .icon-mode {
-  --grid-icon-color: #222;
-  --grid-icon-width: 20px;
-  --grid-icon-height: 20px;
 }
 
 .drop-editorial-controls .grid-options .icon-mode .premium-grid-icon {
   display: block;
-  width: var(--grid-icon-width);
-  height: var(--grid-icon-height);
+  width: 20px;
+  height: 20px;
 }
 
 .drop-editorial-controls .grid-options .icon-mode.active {
@@ -247,3 +246,76 @@ app-product-grid .grid-products .item .product-details .variants-clr.swatches li
   border-radius: 0;
 }
 /* LUJANDEV — DROP 001 COLOR SWATCHES V1 END */
+
+
+/* LUJANDEV — DROP 001 EDITORIAL SIZES V1 START */
+@media (min-width: 768px) and (hover: hover) {
+  app-product-grid .grid-products .product-image .size-selector {
+    background: #ffffff;
+    padding: 10px 12px;
+    opacity: 0 !important;
+    transform: translateY(100%) !important;
+    transition: opacity 0.2s ease, transform 0.2s ease !important;
+    pointer-events: none;
+  }
+
+  app-product-grid .grid-products .product-image:hover .size-selector {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    pointer-events: auto;
+  }
+
+  app-product-grid .grid-products .product-image .size-selector .size-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  app-product-grid .grid-products .product-image .size-selector .size-options {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  app-product-grid .grid-products .product-image .size-selector .size-btn {
+    background: transparent;
+    color: #111111;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 8px 6px;
+    min-width: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  app-product-grid .grid-products .product-image .size-selector .size-btn:hover:not(:disabled) {
+    background: transparent;
+    color: #111111;
+    border-color: #111111;
+    box-shadow: none;
+  }
+
+  app-product-grid .grid-products .product-image .size-selector .size-btn.selected {
+    background: transparent;
+    color: #111111;
+    border-color: #111111;
+  }
+
+  app-product-grid .grid-products .product-image .size-selector .size-btn.unavailable {
+    background: transparent !important;
+    color: #aaaaaa !important;
+    opacity: 0.5 !important;
+  }
+}
+/* LUJANDEV — DROP 001 EDITORIAL SIZES V1 END */

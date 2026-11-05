@@ -1,7 +1,7 @@
 <div class="row">
-    <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col g-1 p-0">
-        <div class="grid-products grid-view-items">
-            <div class="row col-row product-options g-1" [ngClass]="gridClasses">
+    <div class="col-12 main-col p-0">
+        <div class="grid-products grid-view-items px-2 px-md-3 px-lg-4">
+            <div class="row col-row product-options g-3" [ngClass]="gridClasses">
                 <ng-container *ngFor="let product of pagedProducts">
                     <div class="item col-item">
                         <div class="product-box">
@@ -11,12 +11,30 @@
                                  (mouseleave)="onProductLeave()">
 
                                     <!-- Etiqueta vertical -->
-                                    <span class="product-tag-vertical">Nueva colección</span>
+                                    <span class="product-tag-vertical">DROP 001</span>
+
+                                    <!-- Corazón editorial: estado local -->
+                                    <button type="button"
+                                            class="ld-catalog-heart"
+                                            [class.is-active]="isFavorite(product)"
+                                            [attr.aria-pressed]="isFavorite(product)"
+                                            [attr.aria-label]="isFavorite(product) ? 'Quitar de favoritos temporales' : 'Marcar como favorito temporal'"
+                                            (click)="toggleFavorite(product, $event)">
+                                        <svg viewBox="0 0 24 24"
+                                             aria-hidden="true"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.6"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+                                            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>
+                                        </svg>
+                                    </button>
                                 
                                     <a href="#" [routerLink]="['/', country, locale, 'shop', 'product', product.slug]" onclick="return false;" class="product-img rounded-0">
-                                        <img class="primary blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen" [src]="product.imagen" alt="Product" title="Product" width="625" height="608" style="object-fit: cover;" />
+                                        <img class="primary blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen" [src]="product.imagen" [alt]="product.title" width="625" height="608" style="object-fit: cover;" />
                                         <ng-container *ngIf="product.imagen_two">
-                                            <img class="hover blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen_two" [src]="product.imagen_two" alt="Product" title="Product" width="625" height="808" style="object-fit: cover;"/>
+                                            <img class="hover blur-up lazyload rounded-0 w-100 h-100" [attr.data-src]="product.imagen_two" [src]="product.imagen_two" [alt]="product.title" width="625" height="808" style="object-fit: cover;"/>
                                         </ng-container>
                                     </a>
 

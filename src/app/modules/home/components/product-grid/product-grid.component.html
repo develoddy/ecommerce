@@ -1,6 +1,6 @@
-<div class="grid-products grid-view-items">
+<div class="grid-products grid-view-items px-2 px-md-3 px-lg-4">
     
-     <div class="section-header drop-editorial-header ms-3 mb-0">
+     <div class="section-header drop-editorial-header mb-0">
         <div class="drop-editorial-top">
             <h2>DROP 001</h2>
             <div class="drop-editorial-controls">
@@ -10,7 +10,7 @@
         <span class="drop-meta" [innerHTML]="'home.product_grid.meta' | translate"></span>
         <p class="fw-light lh-1 fs-14">{{ 'home.product_grid.description' | translate }}</p>
     </div>
-    <div class="row col-row product-options g-1" [ngClass]="getGridClasses()">
+    <div class="row col-row product-options g-3" [ngClass]="getGridClasses()">
     <!-- <div class="product-slider-5items gp10 arwOut5 grid-product" > -->
         <ng-container *ngIf="ourProducts.length > 0">
             <ng-container *ngFor="let ourProduct of ourProducts | slice:0:4">
