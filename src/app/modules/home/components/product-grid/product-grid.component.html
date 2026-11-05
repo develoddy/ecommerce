@@ -31,7 +31,6 @@
                                      data-src="{{ ourProduct.imagen }}" 
                                      src="{{ ourProduct.imagen }}" 
                                      [alt]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
-                                     [title]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
                                      width="625" height="608" 
                                      style="object-fit: cover" />
                                 <!-- End Image -->
@@ -41,7 +40,6 @@
                                          data-src="{{ ourProduct.imagen_two }}" 
                                          src="{{ ourProduct.imagen_two }}" 
                                          [alt]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
-                                         [title]="('home.product_grid.product_image_alt' | translate: {product: ourProduct.title})" 
                                          width="625" height="808" 
                                          style="object-fit: cover" />
                                 </ng-container>
@@ -71,7 +69,7 @@
                                             [class.unavailable]="!isSizeAvailable(ourProduct, size)"
                                             [disabled]="!isSizeAvailable(ourProduct, size)"
                                             (click)="onSizeSelect(ourProduct, size)"
-                                            [title]="!isSizeAvailable(ourProduct, size) ? ('home.product_grid.out_of_stock' | translate) : (('home.product_grid.select_size' | translate) + ' ' + size)">
+                                            [attr.aria-label]="!isSizeAvailable(ourProduct, size) ? ('home.product_grid.out_of_stock' | translate) : (('home.product_grid.select_size' | translate) + ' ' + size)">
                                         {{ size }}
                                     </button>
                                 </div>
@@ -91,7 +89,7 @@
                                 </a>
                                 <!--End Quick View Button-->
                                 <!--Wishlist Button-->
-                                <a href="#" class="btn-icon wishlist" data-bs-toggle="tooltip" data-bs-placement="left" [title]="'home.product_grid.add_to_favorites' | translate" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">{{ 'home.product_grid.add_to_favorites' | translate }}</span></a>
+                                <a href="#" class="btn-icon wishlist" [attr.aria-label]="'home.product_grid.add_to_favorites' | translate" onclick="return false;" (click)="addWishlist(ourProduct, FlashSale)"><i class="icon anm anm-heart-l"></i><span class="text">{{ 'home.product_grid.add_to_favorites' | translate }}</span></a>
                                 <!--End Wishlist Button-->
                                 <!--Compare Button-->
                                 <a href="#" class="btn-icon compare d-none" data-bs-toggle="tooltip" data-bs-placement="left" [title]="'home.product_grid.add_to_compare' | translate"><i class="icon anm anm-random-r"></i><span class="text">{{ 'home.product_grid.add_to_compare' | translate }}</span></a>

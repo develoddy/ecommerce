@@ -206,6 +206,44 @@ app-product-grid .grid-products .product-image .button-set.style1 {
 
 /* El corazón conserva su apariencia de botón independiente */
 app-product-grid .grid-products .product-image .button-set.style1 .wishlist {
+  background: #ffffff;
+  color: #111111;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+  &:hover,
+  &:focus-visible {
+    background: #ffffff;
+    color: #111111;
+    border-color: #333333;
+  }
 }
 /* LUJANDEV — DROP 001 FLOATING ACTIONS END */
+
+
+/* LUJANDEV — DROP 001 COLOR SWATCHES V1 START */
+app-product-grid .grid-products .item .product-details .variants-clr.swatches {
+  margin: 6px 0 0;
+  padding: 0;
+  gap: 8px;
+}
+
+app-product-grid .grid-products .item .product-details .variants-clr.swatches li.swatch.medium {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 2px;
+  border: 1px solid #dedede;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+app-product-grid .grid-products .item .product-details .variants-clr.swatches li.swatch.medium.active {
+  border-color: #111111;
+  box-shadow: none;
+}
+
+app-product-grid .grid-products .item .product-details .variants-clr.swatches li.swatch.medium .swatchLbl {
+  border: 0;
+  border-radius: 0;
+}
+/* LUJANDEV — DROP 001 COLOR SWATCHES V1 END */
