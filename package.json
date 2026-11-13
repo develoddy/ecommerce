@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node --max-old-space-size=4096 node_modules/@angular/cli/bin/ng serve --port 5000",
+    "start": "node --max-old-space-size=4096 node_modules/@angular/cli/bin/ng serve --host localhost --port 5001",
     "build": "node --max-old-space-size=4096 node_modules/@angular/cli/bin/ng build && npm run minify-css",
     "build:prod": "node --max-old-space-size=4096 node_modules/@angular/cli/bin/ng build --configuration production && npm run minify-css",
     "watch": "node --max-old-space-size=4096 node_modules/@angular/cli/bin/ng build --watch --configuration development",
