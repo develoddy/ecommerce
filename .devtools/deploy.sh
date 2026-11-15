@@ -59,16 +59,11 @@ echo -e "${MAGENTA}$divider${NC}"
 echo -e "${YELLOW}🚀 Iniciando proceso de Deploy de ECOMMERCE${NC}"
 echo -e "${BLUE}$divider${NC}"
 
-# ================= PASO 1: Validar repositorio fuente =================
-echo -e "\n${CYAN}1️⃣ PASO 1: Validar código fuente antes del despliegue${NC}"
+# ================= PASO 1: Guardar y publicar código fuente =================
+echo -e "\n${CYAN}1️⃣ PASO 1: Preparar código fuente Ecommerce${NC}"
 
 if [ "$(git branch --show-current)" != "main" ]; then
-  echo -e "${RED}❌ El despliegue requiere la rama main${NC}"
-  exit 1
-fi
-
-if [ -n "$(git status --porcelain)" ]; then
-  echo -e "${RED}❌ Existen cambios locales sin confirmar${NC}"
+  echo -e "${RED}❌ Solo se permite desplegar desde main${NC}"
   exit 1
 fi
 
@@ -78,11 +73,60 @@ if ! git fetch origin main; then
 fi
 
 if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
-  echo -e "${RED}❌ La rama main no está sincronizada con origin/main${NC}"
+  echo -e "${RED}❌ main no está sincronizada con origin/main${NC}"
   exit 1
 fi
 
-echo -e "${GREEN}✅ Código fuente validado${NC}"
+if [ -n "$(git status --porcelain)" ]; then
+  echo -e "${YELLOW}Archivos modificados:${NC}"
+  git status --short
+
+  read -r -p "¿Guardar y publicar estos cambios en main? [s/N]: " CONFIRM_SOURCE
+
+  if [ "$CONFIRM_SOURCE" != "s" ]; then
+    echo -e "${YELLOW}Operación cancelada${NC}"
+    exit 1
+  fi
+
+  read -r -p "Mensaje del commit (Enter = Pre-Deploy Ecommerce): " COMMIT_MESSAGE
+  COMMIT_MESSAGE=${COMMIT_MESSAGE:-"Pre-Deploy Ecommerce $(date '+%Y-%m-%d %H:%M:%S')"}
+
+  if ! git add -A; then
+    echo -e "${RED}❌ Error preparando los cambios${NC}"
+    exit 1
+  fi
+
+  echo -e "${CYAN}Cambios preparados:${NC}"
+  git diff --cached --stat
+
+  if ! git diff --cached --quiet; then
+    if ! git commit -m "$COMMIT_MESSAGE"; then
+      echo -e "${RED}❌ Error creando el commit${NC}"
+      exit 1
+    fi
+
+    if ! git push origin main; then
+      echo -e "${RED}❌ Error publicando el código fuente${NC}"
+      exit 1
+    fi
+  fi
+fi
+
+if [ -n "$(git status --porcelain)" ]; then
+  echo -e "${RED}❌ El repositorio sigue teniendo cambios locales${NC}"
+  exit 1
+fi
+
+if ! git fetch origin main; then
+  exit 1
+fi
+
+if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+  echo -e "${RED}❌ Falló la verificación final de GitHub${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}✅ Código fuente limpio y publicado correctamente${NC}"
 
 # ================= PASO 2: Compilar Angular =================
 echo -e "\n${CYAN}2️⃣ PASO 2: Compilar proyecto Angular${NC}"
