@@ -19,9 +19,13 @@ echo -e "${CYAN}📦 Node version: $(node -v)${NC}"
 echo -e "${CYAN}📦 NPM version: $(npm -v)${NC}"
 
 # ================= CONFIGURACIÓN =================
-PROJECT_DIR="$(pwd)" # Repo local ecommerce
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)" # Repo local ecommerce
+cd "$PROJECT_DIR" || {
+  echo -e "${RED}❌ No se pudo acceder al directorio del proyecto${NC}"
+  exit 1
+}
 BUILD_DIR="dist/ecommerce"
-DEPLOY_DIR="/Volumes/lujandev/dev/projects/ECOMMERCE/ECOMMERCE-RECURSOS/PRO-DIST/ecommerce_deploy/ecommerce"
+DEPLOY_DIR="$HOME/Developer/LujanDev/deployment/ecommerce/ecommerce"
 
 # Servidor remoto
 SSH_USER="root"
@@ -40,17 +44,30 @@ echo -e "${MAGENTA}$divider${NC}"
 echo -e "${YELLOW}🚀 Iniciando proceso de Deploy de ECOMMERCE${NC}"
 echo -e "${BLUE}$divider${NC}"
 
-# ================= PASO 1: Guardar cambios locales =================
-echo -e "\n${CYAN}1️⃣ PASO 1: Guardar cambios en el repo local${NC}"
-git add .
-git commit -m "💾 Pre-Deploy commit $(date '+%Y-%m-%d %H:%M:%S')" >/dev/null 2>&1
-git push origin main
-if [ $? -eq 0 ]; then
-  echo -e "${GREEN}✅ Cambios guardados y enviados a GitHub correctamente${NC}"
-else
-  echo -e "${RED}❌ Error al guardar/enviar cambios a GitHub. Se detiene la ejecución${NC}"
+# ================= PASO 1: Validar repositorio fuente =================
+echo -e "\n${CYAN}1️⃣ PASO 1: Validar código fuente antes del despliegue${NC}"
+
+if [ "$(git branch --show-current)" != "main" ]; then
+  echo -e "${RED}❌ El despliegue requiere la rama main${NC}"
   exit 1
 fi
+
+if [ -n "$(git status --porcelain)" ]; then
+  echo -e "${RED}❌ Existen cambios locales sin confirmar${NC}"
+  exit 1
+fi
+
+if ! git fetch origin main; then
+  echo -e "${RED}❌ No se pudo consultar origin/main${NC}"
+  exit 1
+fi
+
+if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+  echo -e "${RED}❌ La rama main no está sincronizada con origin/main${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}✅ Código fuente validado${NC}"
 
 # ================= PASO 2: Compilar Angular =================
 echo -e "\n${CYAN}2️⃣ PASO 2: Compilar proyecto Angular${NC}"
@@ -68,6 +85,36 @@ find "$BUILD_DIR" -name "._*" -type f -delete 2>/dev/null || true
 find "$BUILD_DIR" -name ".DS_Store" -type f -delete 2>/dev/null || true
 dot_clean "$BUILD_DIR" 2>/dev/null || true
 echo -e "${GREEN}✅ Archivos de metadatos eliminados${NC}"
+
+# ================= VALIDACIÓN PREVIA: Repositorio de distribución =================
+DEPLOY_REPO="$(dirname "$DEPLOY_DIR")"
+
+if [ ! -d "$DEPLOY_REPO/.git" ]; then
+  echo -e "${RED}❌ No existe el repositorio Git de distribución${NC}"
+  exit 1
+fi
+
+if [ "$(git -C "$DEPLOY_REPO" branch --show-current)" != "main" ]; then
+  echo -e "${RED}❌ El repositorio de distribución no está en main${NC}"
+  exit 1
+fi
+
+if [ -n "$(git -C "$DEPLOY_REPO" status --porcelain)" ]; then
+  echo -e "${RED}❌ El repositorio de distribución contiene cambios locales${NC}"
+  exit 1
+fi
+
+if ! git -C "$DEPLOY_REPO" fetch origin main; then
+  echo -e "${RED}❌ No se pudo consultar el remoto de distribución${NC}"
+  exit 1
+fi
+
+if [ "$(git -C "$DEPLOY_REPO" rev-parse HEAD)" != "$(git -C "$DEPLOY_REPO" rev-parse origin/main)" ]; then
+  echo -e "${RED}❌ El repositorio de distribución no está sincronizado con origin/main${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}✅ Repositorio de distribución validado${NC}"
 
 # ================= PASO 3: Sincronizar carpeta de deploy local =================
 echo -e "\n${CYAN}3️⃣ PASO 3: Sincronizar archivos con carpeta de deploy local${NC}"
@@ -89,27 +136,61 @@ echo -e "${GREEN}✅ Verificación completada${NC}"
 echo -e "\n${CYAN}4️⃣ PASO 4: Push final desde carpeta de deploy local${NC}"
 cd "$(dirname "$DEPLOY_DIR")" || exit
 
-# Abortar cualquier rebase en progreso
-git rebase --abort 2>/dev/null || true
-
-# Primero, sincronizar con el remote
+# Actualizar referencias y comprobar errores antes de publicar
 echo -e "${CYAN}📥 Sincronizando con remote...${NC}"
-git fetch origin main
+if ! git fetch origin main; then
+  echo -e "${RED}❌ Error al consultar el remoto de distribución${NC}"
+  exit 1
+fi
 
-# Ahora hacer commit y forzar push (los archivos compilados siempre se sobrescriben)
-git add .
-git commit -m "🚀 Deploy ECOMMERCE $(date '+%Y-%m-%d %H:%M:%S')" >/dev/null 2>&1
-git push origin main --force
-if [ $? -eq 0 ]; then
-  echo -e "${GREEN}✅ Cambios de deploy local enviados a GitHub correctamente${NC}"
+if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+  echo -e "${RED}❌ El remoto de distribución ha cambiado durante el despliegue${NC}"
+  exit 1
+fi
+
+# Publicar únicamente si existen cambios en la distribución
+if ! git add -A -- ecommerce/; then
+  echo -e "${RED}❌ Error al preparar los archivos de distribución${NC}"
+  exit 1
+fi
+
+git diff --cached --quiet
+DIFF_STATUS=$?
+
+if [ "$DIFF_STATUS" -eq 0 ]; then
+  echo -e "${GREEN}✅ No hay cambios de distribución que publicar${NC}"
+elif [ "$DIFF_STATUS" -eq 1 ]; then
+  if ! git commit -m "🚀 Deploy ECOMMERCE $(date '+%Y-%m-%d %H:%M:%S')"; then
+    echo -e "${RED}❌ Error al crear el commit de distribución${NC}"
+    exit 1
+  fi
+
+  if ! git push origin main; then
+    echo -e "${RED}❌ Error al publicar la distribución en GitHub${NC}"
+    exit 1
+  fi
+
+  echo -e "${GREEN}✅ Cambios de distribución publicados correctamente${NC}"
 else
-  echo -e "${RED}❌ Error en push desde deploy local. Se detiene la ejecución${NC}"
+  echo -e "${RED}❌ Error al comprobar los cambios preparados para distribución${NC}"
   exit 1
 fi
 
 # ================= PASO 5: Pull automático en servidor remoto =================
 echo -e "\n${CYAN}5️⃣ PASO 5: Actualizar servidor remoto${NC}"
-ssh -i "$SSH_KEY" "$SSH_USER@$SSH_HOST" "cd $REMOTE_PATH && git fetch origin main && git reset --hard origin/main"
+ssh -i "$SSH_KEY" "$SSH_USER@$SSH_HOST" "
+  cd '$REMOTE_PATH' || exit 1
+  test -z \"\$(git status --porcelain)\" || {
+    echo 'ERROR: El repositorio remoto contiene cambios locales'
+    exit 1
+  }
+  test \"\$(git branch --show-current)\" = main || {
+    echo 'ERROR: El repositorio remoto no está en main'
+    exit 1
+  }
+  git fetch origin main || exit 1
+  git merge --ff-only origin/main || exit 1
+"
 if [ $? -eq 0 ]; then
   echo -e "${GREEN}✅ Servidor remoto actualizado correctamente${NC}"
 else
@@ -117,13 +198,26 @@ else
   exit 1
 fi
 
-# ================= PASO 5.5: Limpieza final en servidor remoto =================
-echo -e "\n${CYAN}🧹 LIMPIEZA REMOTA: Eliminando archivos problemáticos en servidor${NC}"
-ssh -i "$SSH_KEY" "$SSH_USER@$SSH_HOST" "cd $REMOTE_PATH && find . -name '._*' -type f -delete 2>/dev/null || true; find . -name '.DS_Store' -type f -delete 2>/dev/null || true; systemctl reload nginx 2>/dev/null || service nginx reload 2>/dev/null || true"
-if [ $? -eq 0 ]; then
-  echo -e "${GREEN}✅ Limpieza remota y recarga de nginx completadas${NC}"
+# ================= PASO 5.5: Limpieza y validación de Nginx =================
+echo -e "\n${CYAN}🧹 LIMPIEZA REMOTA Y VALIDACIÓN DE NGINX${NC}"
+
+if ssh -i "$SSH_KEY" "$SSH_USER@$SSH_HOST" "
+  cd '$REMOTE_PATH' || exit 1
+
+  find . -name '._*' -type f -delete || exit 1
+  find . -name '.DS_Store' -type f -delete || exit 1
+
+  nginx -t || exit 1
+  if command -v systemctl >/dev/null 2>&1; then
+    systemctl reload nginx || exit 1
+  else
+    service nginx reload || exit 1
+  fi
+"; then
+  echo -e "${GREEN}✅ Limpieza y recarga de Nginx completadas${NC}"
 else
-  echo -e "${YELLOW}⚠️ Limpieza completada (nginx reload opcional falló)${NC}"
+  echo -e "${RED}❌ Error durante la limpieza o recarga de Nginx${NC}"
+  exit 1
 fi
 
 # ================= FIN =================

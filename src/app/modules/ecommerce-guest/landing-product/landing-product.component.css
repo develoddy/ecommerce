@@ -504,5 +504,200 @@ small.text-muted {
   }
 }
 
+/* LUJANDEV PDP UX V1.2 */
+
+/* DESKTOP: preservar galería y barra horizontal */
+.ld-pdp-desktop-bar {
+  align-items: center;
+  gap: 6px;
+  padding: 14px 20px;
+}
+
+.ld-pdp-desktop-bar h1 {
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* MOBILE: estética editorial */
+@media (max-width: 767px) {
+
+  .ld-pdp-mobile .product-layout-img {
+    margin-bottom: 16px !important;
+  }
+
+  .ld-pdp-mobile .product-single-meta {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .ld-pdp-mobile .product-single-meta h1 {
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  .ld-pdp-mobile .product-single-meta .product-price {
+    margin: 10px 0 0;
+  }
+
+  .ld-pdp-mobile .product-info {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ld-pdp-mobile .product-form {
+    margin-top: 0 !important;
+  }
+
+  .ld-pdp-mobile .product-swatches-option {
+    margin-top: 16px;
+  }
+
+  .ld-pdp-mobile .product-item {
+    margin-bottom: 22px !important;
+  }
+
+  /* TALLAS */
+  .ld-pdp-mobile .swatches-size .variants-size {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px !important;
+    padding: 0;
+  }
+
+  .ld-pdp-mobile .swatches-size .swatch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    min-height: 48px;
+    margin: 0;
+    padding: 0 10px;
+    border: 1px solid #d5d5d5;
+    border-radius: 2px;
+    background: #fff;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: border-color .2s ease, background-color .2s ease;
+  }
+
+  .ld-pdp-mobile .swatches-size .swatch .swatchLbl {
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  .ld-pdp-mobile .swatches-size .swatch.active {
+    border: 2px solid #111;
+    background: #f5f5f5;
+  }
+
+  .ld-pdp-mobile .swatches-size .swatch.active .swatchLbl {
+    font-weight: 600;
+  }
+
+  .ld-pdp-mobile .swatches-size .swatch.active .swatchLbl i {
+    color: #111 !important;
+  }
+
+  .ld-pdp-mobile .swatches-size .swatch.soldout {
+    opacity: .4 !important;
+    background: #f8f8f8;
+    cursor: not-allowed;
+  }
+
+  .ld-pdp-mobile .swatches-size .swatch.soldout::after {
+    display: none;
+  }
+
+  /* COMPRA */
+  .ld-pdp-mobile .product-action {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 24px !important;
+  }
+
+  .ld-pdp-mobile .product-action .product-form-quantity {
+    flex: 0 0 112px;
+    width: 112px;
+    min-width: 0;
+    margin-right: 0 !important;
+  }
+
+  .ld-pdp-mobile .product-action .qtyField {
+    width: 100%;
+  }
+
+  .ld-pdp-mobile .product-action .product-form-submit {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .ld-pdp-mobile .product-action .btn-dark {
+    min-height: 52px;
+    padding: 10px 8px !important;
+    border-radius: 2px !important;
+    letter-spacing: .035em !important;
+    font-size: 13px !important;
+  }
+
+  /* INFORMACIÓN */
+  .ld-pdp-mobile .alert-info,
+  .ld-pdp-mobile .shippingMsg .alert-success {
+    background: #f7f7f7;
+    color: #333;
+    border: 1px solid #e7e7e7 !important;
+    border-left: 2px solid #777 !important;
+    border-radius: 2px !important;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 359px) {
+  .ld-pdp-mobile .product-action .product-form-quantity {
+    flex-basis: 100px;
+    width: 100px;
+  }
+
+  .ld-pdp-mobile .product-action .btn-dark {
+    font-size: 12px !important;
+  }
+}
 
 
+/* LUJANDEV PDP QUANTITY REFINEMENT */
+
+@media (max-width: 767px) {
+  .ld-pdp-mobile .product-action .qtyField {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 52px;
+    padding: 0 6px;
+    margin: 0;
+    border-radius: 2px;
+  }
+
+  .ld-pdp-mobile .product-action .qtyField .qtyBtn {
+    flex: 0 0 28px;
+    width: 28px;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ld-pdp-mobile .product-action .qtyField input {
+    flex: 1 1 0;
+    width: 28px;
+    min-width: 0;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-weight: 600;
+  }
+}

@@ -1,0 +1,107 @@
+<div class="editorial-page">
+
+  <!-- CABECERA EDITORIAL -->
+  <header class="editorial-header">
+
+    <nav class="editorial-nav" aria-label="Categorías">
+      <button type="button" (click)="selectCategory('t-shirts')">
+        T-SHIRTS
+      </button>
+
+      <button type="button" (click)="selectCategory('hoodies')">
+        HOODIES
+      </button>
+
+      <button type="button" (click)="selectCategory('mugs')">
+        MUGS
+      </button>
+
+      <button type="button" (click)="selectCategory('caps')">
+        CAPS
+      </button>
+    </nav>
+
+    <button
+      type="button"
+      class="editorial-logo"
+      (click)="openStore()"
+      aria-label="LujanDev Store">
+      LUJANDEV
+    </button>
+
+    <div class="editorial-header-actions">
+      <button type="button" (click)="openStore()">
+        EXPLORAR TIENDA
+      </button>
+    </div>
+
+  </header>
+
+  <!-- CAMPAÑA EDITORIAL -->
+  <main>
+
+    <section class="editorial-hero" aria-labelledby="editorial-title">
+
+      <div class="editorial-hero-overlay"></div>
+
+      <div class="editorial-hero-content">
+
+        <span class="editorial-eyebrow">
+          THE DEVELOPER COLLECTION
+        </span>
+
+        <h1 id="editorial-title">
+          Diseño para<br>
+          quienes construyen.
+        </h1>
+
+        <nav class="editorial-hero-categories" aria-label="Explorar colecciones">
+
+          <button type="button" (click)="selectCategory('t-shirts')">
+            T-SHIRTS
+          </button>
+
+          <button type="button" (click)="selectCategory('hoodies')">
+            HOODIES
+          </button>
+
+          <button type="button" (click)="selectCategory('mugs')">
+            MUGS
+          </button>
+
+          <button type="button" (click)="selectCategory('caps')">
+            CAPS
+          </button>
+
+        </nav>
+
+      </div>
+
+    </section>
+
+    <!-- NEWSLETTER: PRESENTACIÓN VISUAL -->
+    <section class="editorial-newsletter">
+
+      <h2>
+        Recibe novedades, lanzamientos y colecciones exclusivas.
+      </h2>
+
+      <p>
+        Descubre lo próximo de LujanDev.
+      </p>
+
+      <button
+        type="button"
+        class="editorial-newsletter-cta"
+        (click)="openStore()">
+        EXPLORAR LA TIENDA
+      </button>
+
+    </section>
+
+  </main>
+
+  <!-- Footer compartido del ecommerce -->
+  <app-footer></app-footer>
+
+</div>
