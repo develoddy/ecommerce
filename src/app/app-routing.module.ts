@@ -15,13 +15,14 @@ import { TenantAuthGuard } from './guards/tenant-auth.guard';
 
 const routes: Routes = [
 
-  // Redirección de la raíz a /es/en/home
+  // Redirección de la raíz a la portada editorial
   {
     path: '',
-    redirectTo: 'es/en/home', // País y el idioma por defecto
+    redirectTo: 'store-editorial', // País y el idioma por defecto
     pathMatch: 'full'
   },
   // Ruta para preHome fuera de la estructura de locale/country
+  { path: 'store-editorial', loadChildren: () => import('./modules/ecommerce-initial/store-editorial/store-editorial.module').then(m => m.StoreEditorialModule) },
   { 
     path: 'preHome', 
     loadChildren: () => import('./modules/ecommerce-initial/ecommerce-initial.module').then(m => m.EcommerceInitialModule),

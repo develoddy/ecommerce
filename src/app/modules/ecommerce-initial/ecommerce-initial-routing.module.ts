@@ -11,7 +11,7 @@ const routes: Routes = [
     component: EcommerceInitialComponent,
     resolve: { prelaunchData: PrelaunchModeResolver },
     children: [
-      {
+          {
         path: '',
         // El componente se determina dinámicamente en el componente padre
         component: PreHomeComponent // Default fallback

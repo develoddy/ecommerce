@@ -16,7 +16,7 @@ import { PreLaunchLandingComponent } from './pre-launch-landing/pre-launch-landi
     EcommerceInitialComponent,
     PreHomeComponent,
     WelcomeComponent,
-    PreLaunchLandingComponent
+    PreLaunchLandingComponent,
   ],
   imports: [
     CommonModule,
