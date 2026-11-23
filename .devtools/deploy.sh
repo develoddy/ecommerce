@@ -71,7 +71,7 @@ echo -e "${GREEN}✅ Código fuente validado${NC}"
 
 # ================= PASO 2: Compilar Angular =================
 echo -e "\n${CYAN}2️⃣ PASO 2: Compilar proyecto Angular${NC}"
-ng build --configuration=production
+./node_modules/.bin/ng build --configuration=production
 if [ $? -ne 0 ]; then
   echo -e "${RED}❌ Error en la compilación de Angular. Se detiene la ejecución${NC}"
   exit 1
