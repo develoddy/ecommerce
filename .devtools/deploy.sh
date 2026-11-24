@@ -79,6 +79,48 @@ else
   echo -e "${GREEN}✅ Compilación completada correctamente${NC}"
 fi
 
+# ================= PASO 2.1: Versionado automático de assets =================
+echo -e "\n${CYAN}🔄 VERSIONADO: Actualizando referencias de assets${NC}"
+
+if ! RELEASE_VERSION="$(git rev-parse --short=12 HEAD)"; then
+  echo -e "${RED}❌ No se pudo obtener la versión${NC}"
+  exit 1
+fi
+
+if ! node - "$BUILD_DIR/index.html" "$RELEASE_VERSION" <<'NODE'
+const fs = require('fs');
+
+const file = process.argv[2];
+const version = process.argv[3];
+
+let html = fs.readFileSync(file, 'utf8');
+let count = 0;
+
+html = html.replace(
+  /((?:href|src)\s*=\s*["'])(assets\/[^"'?#]+\.(?:css|js))(["'])/gi,
+  (_, prefix, asset, suffix) => {
+    count++;
+    console.log(`${asset}?v=${version}`);
+    return `${prefix}${asset}?v=${version}${suffix}`;
+  }
+);
+
+if (count === 0) {
+  throw new Error('No se encontraron assets para versionar');
+}
+
+fs.writeFileSync(file, html, 'utf8');
+
+console.log(`Release: ${version}`);
+console.log(`Referencias versionadas: ${count}`);
+NODE
+then
+  echo -e "${RED}❌ Error al versionar assets${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}✅ Assets versionados correctamente${NC}"
+
 # ================= PASO 2.5: Limpiar archivos de metadatos de macOS =================
 echo -e "\n${CYAN}🧹 LIMPIEZA: Eliminando archivos de metadatos de macOS${NC}"
 find "$BUILD_DIR" -name "._*" -type f -delete 2>/dev/null || true
