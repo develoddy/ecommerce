@@ -1,36 +1,5 @@
 <!-- <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a> -->
-<!-- Loading -->
-<div
-  *ngIf="loader.loading$ | async"
-  class="loading-overlay"
-  role="status"
-  aria-live="polite"
-  aria-busy="true"
->
-  <div class="loading-container">
-    <div class="loading-content">
-
-      <div class="loading-brand" aria-hidden="true">
-        LUJANDEV
-      </div>
-
-      <div class="loading-progress" aria-hidden="true">
-        <div class="loading-progress-bar"></div>
-      </div>
-
-      <div class="loading-text">
-        <p class="loading-title">
-          {{ 'home.loading.title' | translate }}
-        </p>
-        <span class="loading-description">
-          {{ 'home.loading.description' | translate }}
-        </span>
-      </div>
-
-    </div>
-  </div>
-</div>
-<!-- End Loading -->
+<app-store-loader *ngIf="loader.loading$ | async"></app-store-loader>
 
 <!--Page Wrapper-->
 <div class="page-wrapper" >

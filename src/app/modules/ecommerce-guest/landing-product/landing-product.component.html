@@ -1,14 +1,10 @@
 <!--Page Wrapper-->
 
-<!-- Loading Spinner Elegante -->
-<div *ngIf="loader.loading$ | async" class="loading-spinner d-flex justify-content-center align-items-center" style="min-height: 400px;">
-    <div class="text-center">
-        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-            <span class="sr-only"></span>
-        </div>
-        <h4 class="text-muted mt-3">{{ 'product_detail.loading' | translate }}</h4>
-    </div>
-</div>
+<app-store-loader
+    *ngIf="loader.loading$ | async"
+    titleKey="product_detail.loading"
+    descriptionKey="">
+</app-store-loader>
 
 <div class="page-wrapper" *ngIf="!(loader.loading$ | async) && product_selected && related_products && interest_products">
     

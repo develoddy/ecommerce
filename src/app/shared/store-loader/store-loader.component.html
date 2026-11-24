@@ -1,0 +1,31 @@
+<!-- Loading -->
+<div
+  class="loading-overlay"
+  role="status"
+  aria-live="polite"
+  aria-busy="true"
+>
+  <div class="loading-container">
+    <div class="loading-content">
+
+      <div class="loading-brand" aria-hidden="true">
+        LUJANDEV
+      </div>
+
+      <div class="loading-progress" aria-hidden="true">
+        <div class="loading-progress-bar"></div>
+      </div>
+
+      <div class="loading-text">
+        <p class="loading-title">
+          {{ titleKey | translate }}
+        </p>
+        <span *ngIf="descriptionKey" class="loading-description">
+          {{ descriptionKey | translate }}
+        </span>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- End Loading -->

@@ -1,3 +1,4 @@
+import { StoreLoaderComponent } from './store-loader/store-loader.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
@@ -31,6 +32,7 @@ import { BrandMessageComponent } from './brand-message/brand-message.component';
     MiniSizeDrawerComponent,
     SizeGuideModalComponent,
     BrandMessageComponent,
+    StoreLoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -53,6 +55,7 @@ import { BrandMessageComponent } from './brand-message/brand-message.component';
     MiniSizeDrawerComponent,
     SizeGuideModalComponent,
     BrandMessageComponent,
+    StoreLoaderComponent,
     // Exportar módulos de formularios para que estén disponibles en toda la app
     FormsModule,
     ReactiveFormsModule,
