@@ -187,6 +187,8 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     this.locale = this.localizationService.locale;
   }
 
+  private pendingProductScroll = false;
+
   ngAfterViewInit(): void {
     this.loader.loading$.subscribe(isLoading => {
       if (!isLoading) {
@@ -205,6 +207,15 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
             // Detect changes por si necesitas que Angular actualice
             this.ngZone.run(() => {
               this.cdRef.detectChanges();
+
+              if (this.product_selected && this.pendingProductScroll) {
+                this.pendingProductScroll = false;
+                sessionStorage.removeItem('scrollToTop');
+
+                requestAnimationFrame(() => {
+                  window.scrollTo(0, 0);
+                });
+              }
             });
           }, 300); // 300ms para asegurar que el DOM esté listo
         });
@@ -462,6 +473,7 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
   private subscribeToRouteParams(): void {
     const routeParamsSubscription = this.routerActived.params.subscribe(
       (resp: any) => {
+        this.pendingProductScroll = true;
         this.slug = resp['slug'];
         this.initLandingProduct();
       }
