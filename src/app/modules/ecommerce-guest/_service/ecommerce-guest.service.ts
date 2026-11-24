@@ -4,6 +4,18 @@ import { URL_SERVICE } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { BehaviorSubject, finalize } from 'rxjs';
 
+export interface EditorialBanner {
+  _id: number;
+  placement: 'editorial';
+  state: number;
+  imagen_mobile_url: string;
+  imagen_desktop_url: string;
+}
+
+export interface EditorialBannerResponse {
+  banner: EditorialBanner | null;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -30,6 +42,12 @@ export class EcommerceGuestService {
     //return this._http.get(URL);
     return this._http.get(URL).pipe(
       finalize(() => this.loadingSubject.next(false)) // Finaliza el loading cuando termina la llamada
+    );
+  }
+
+  getEditorialBanner() {
+    return this._http.get<EditorialBannerResponse>(
+      URL_SERVICE + "sliders/editorial"
     );
   }
 

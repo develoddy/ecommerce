@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { EcommerceGuestService } from 'src/app/modules/ecommerce-guest/_service/ecommerce-guest.service';
+import { EcommerceGuestService, EditorialBanner } from 'src/app/modules/ecommerce-guest/_service/ecommerce-guest.service';
 import { LocalizationService } from 'src/app/services/localization.service';
 
 export type StoreEditorialCategory =
@@ -14,7 +14,41 @@ export type StoreEditorialCategory =
   templateUrl: './store-editorial.component.html',
   styleUrls: ['./store-editorial.component.css']
 })
-export class StoreEditorialComponent {
+export class StoreEditorialComponent implements OnInit {
+
+  editorialBanner: EditorialBanner | null = null;
+
+  ngOnInit(): void {
+    this.loadEditorialBanner();
+  }
+
+  private loadEditorialBanner(): void {
+    this.ecommerceGuestService.getEditorialBanner().subscribe({
+      next: (response) => {
+        const banner = response?.banner;
+
+        this.editorialBanner =
+          banner &&
+          banner.placement === 'editorial' &&
+          banner.state === 1 &&
+          banner.imagen_mobile_url &&
+          banner.imagen_desktop_url
+            ? banner
+            : null;
+      },
+      error: (error) => {
+        this.editorialBanner = null;
+        console.warn(
+          '[StoreEditorial] Banner dinamico no disponible:',
+          error
+        );
+      }
+    });
+  }
+
+  onEditorialImageError(): void {
+    this.editorialBanner = null;
+  }
 
   constructor(
     private router: Router,

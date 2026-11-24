@@ -42,6 +42,23 @@
 
     <section class="editorial-hero" aria-labelledby="editorial-title">
 
+      <picture
+        *ngIf="editorialBanner as banner"
+        class="editorial-hero-picture"
+        aria-hidden="true">
+
+        <source
+          media="(max-width: 767px)"
+          [attr.srcset]="banner.imagen_mobile_url">
+
+        <img
+          [src]="banner.imagen_desktop_url"
+          alt=""
+          loading="eager"
+          (error)="onEditorialImageError()">
+
+      </picture>
+
       <div class="editorial-hero-overlay"></div>
 
       <div class="editorial-hero-content">
