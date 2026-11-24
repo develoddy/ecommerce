@@ -1214,7 +1214,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         id: null,
         product: {
           title: this.modulePurchaseData.moduleName,
-          imagen: 'assets/images/logo.png',
+          imagen: 'assets/images/logo.38890900945d.png',
           slug: null
         },
         variedad: null,
@@ -1256,7 +1256,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   getVarietyImage(cart: any): string {
       // 🆕 Si no hay product o product.imagen, retornar placeholder para módulos
       if (!cart.product?.imagen) {
-        return 'assets/images/logo.png'; // Usar logo como placeholder
+        return 'assets/images/logo.38890900945d.png'; // Usar logo como placeholder
       }
       
       if (!cart.variedad?.files) return cart.product.imagen;

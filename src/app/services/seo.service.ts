@@ -163,7 +163,7 @@ export class SeoService {
         "name": "LujanDev",
         "logo": {
           "@type": "ImageObject",
-          "url": `${URL_FRONTEND}/assets/images/logo.png`
+          "url": `${URL_FRONTEND}/assets/images/logo.38890900945d.png`
         }
       }
     };

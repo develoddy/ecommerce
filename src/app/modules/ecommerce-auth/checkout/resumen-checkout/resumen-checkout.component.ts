@@ -262,7 +262,7 @@ export class ResumenCheckoutComponent implements OnInit {
         product: {
           title: this.modulePurchaseData.moduleName,
           portada: null,
-          imagen: 'assets/images/logo.png', // 🆕 Imagen placeholder para módulos (usar logo temporalmente)
+          imagen: 'assets/images/logo.38890900945d.png', // 🆕 Imagen placeholder para módulos (usar logo temporalmente)
           slug: null // 🆕 Null para evitar links rotos
         },
         variedad: null,
@@ -595,7 +595,7 @@ export class ResumenCheckoutComponent implements OnInit {
 getVarietyImage(cart: any): string {
     // 🆕 Si no hay product o product.imagen, retornar placeholder para módulos
     if (!cart.product?.imagen) {
-      return 'assets/images/logo.png'; // Usar logo como placeholder
+      return 'assets/images/logo.38890900945d.png'; // Usar logo como placeholder
     }
     
     if (!cart.variedad?.files) return cart.product.imagen;

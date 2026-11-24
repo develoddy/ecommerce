@@ -747,7 +747,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
     }
 
     // 4️⃣ Fallback al producto, o placeholder para módulos
-    return sale.product?.imagen || sale.product?.portada || 'assets/images/logo.png';
+    return sale.product?.imagen || sale.product?.portada || 'assets/images/logo.38890900945d.png';
   }
 
   removeAllCart(user_id: any) {
