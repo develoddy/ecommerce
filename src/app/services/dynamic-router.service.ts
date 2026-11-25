@@ -13,6 +13,39 @@ export class DynamicRouterService {
   ) {}
 
   /**
+   * Cambia el contexto regional conservando la URL actual.
+   */
+  changeLocale(country: string, locale: string): Promise<boolean> {
+    if (!this.localizationService.isValidLocale(country, locale)) {
+      console.warn('[DynamicRouter] Combinación regional inválida:', country, locale);
+      return Promise.resolve(false);
+    }
+
+    const urlTree = this.router.parseUrl(this.router.url);
+    const primary = urlTree.root.children['primary'];
+    const segments = primary ? primary.segments : [];
+
+    const hasLocalePrefix =
+      segments.length >= 2 &&
+      this.localizationService.isValidLocale(
+        segments[0].path,
+        segments[1].path
+      );
+
+    const remainingPath = hasLocalePrefix
+      ? segments.slice(2).map(segment => segment.path)
+      : [];
+
+    return this.router.navigate(
+      ['/', country, locale, ...remainingPath],
+      {
+        queryParams: urlTree.queryParams,
+        fragment: urlTree.fragment || undefined
+      }
+    );
+  }
+
+  /**
    * Navega respetando el país e idioma actuales
    * @param path - Array de segmentos de ruta (ej: ['account', 'myaddresses'])
    * @param extras - QueryParams, fragments, etc.

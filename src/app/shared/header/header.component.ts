@@ -1086,57 +1086,40 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.availableLocales = this.languageOptions[this.country] || [];
   }
 
-  // Método para cambiar de país (mismo patrón que preHome)
-  onCountryChange(newCountry: string) {
-    if (newCountry !== this.country) {
-      this.availableLocales = this.languageOptions[newCountry] || [];
-      const newLocale = this.availableLocales.length > 0 ? this.availableLocales[0].code : 'es';
-      
-      // Cerrar dropdown
-      this.isCountryDropdownOpen = false;
-      
-      // Actualizar LocalizationService
-      this.localizationService.setLocaleAndCountry(newCountry, newLocale);
-      
-      // Obtener la ruta actual sin el prefijo de país/locale
-      const currentUrl = this.router.url;
-      const urlSegments = currentUrl.split('/').filter(s => s);
-      
-      // Saltar los primeros dos segmentos (country y locale actuales)
-      const routeWithoutLocale = urlSegments.slice(2).join('/');
-      
-      // Navegar a la misma ruta pero con el nuevo país/locale
-      if (routeWithoutLocale) {
-        this.router.navigate([`/${newCountry}/${newLocale}/${routeWithoutLocale}`]);
-      } else {
-        this.router.navigate([`/${newCountry}/${newLocale}/home`]);
-      }
+  // Cambiar país conservando la página actual
+  onCountryChange(newCountry: string): void {
+    if (newCountry === this.country) {
+      return;
     }
+
+    const availableLocales = this.languageOptions[newCountry] || [];
+
+    if (availableLocales.length === 0) {
+      return;
+    }
+
+    const newLocale = availableLocales[0].code;
+
+    this.isCountryDropdownOpen = false;
+
+    this.dynamicRouter.changeLocale(newCountry, newLocale)
+      .catch(error => {
+        console.error('[Header] Error al cambiar de país:', error);
+      });
   }
 
-  // Método para cambiar de idioma (mismo patrón que preHome)
-  onLocaleChange(newLocale: string) {
-    if (newLocale !== this.locale) {
-      // Cerrar dropdown
-      this.isLanguageDropdownOpen = false;
-      
-      // Actualizar LocalizationService
-      this.localizationService.setLocaleAndCountry(this.country, newLocale);
-      
-      // Obtener la ruta actual sin el prefijo de país/locale
-      const currentUrl = this.router.url;
-      const urlSegments = currentUrl.split('/').filter(s => s);
-      
-      // Saltar los primeros dos segmentos (country y locale actuales)
-      const routeWithoutLocale = urlSegments.slice(2).join('/');
-      
-      // Navegar a la misma ruta pero con el nuevo locale
-      if (routeWithoutLocale) {
-        this.router.navigate([`/${this.country}/${newLocale}/${routeWithoutLocale}`]);
-      } else {
-        this.router.navigate([`/${this.country}/${newLocale}/home`]);
-      }
+  // Cambiar idioma conservando la página actual
+  onLocaleChange(newLocale: string): void {
+    if (newLocale === this.locale) {
+      return;
     }
+
+    this.isLanguageDropdownOpen = false;
+
+    this.dynamicRouter.changeLocale(this.country, newLocale)
+      .catch(error => {
+        console.error('[Header] Error al cambiar de idioma:', error);
+      });
   }
 
   // Toggle dropdown de idioma

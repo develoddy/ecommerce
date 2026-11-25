@@ -564,5 +564,25 @@
             "payment": "Pago",
             "confirmation": "Confirmación"
         }
+    },
+    "store_editorial": {
+        "hero": {
+            "eyebrow": "THE DEVELOPER COLLECTION",
+            "titleLine1": "Diseño para",
+            "titleLine2": "quienes construyen.",
+            "categoriesLabel": "Explorar colecciones"
+        },
+        "categories": {
+            "tshirts": "CAMISETAS",
+            "hoodies": "SUDADERAS",
+            "mugs": "TAZAS",
+            "caps": "GORRAS",
+            "shop": "TIENDA"
+        },
+        "newsletter": {
+            "title": "Recibe novedades, lanzamientos y colecciones exclusivas.",
+            "description": "Descubre lo próximo de LujanDev.",
+            "cta": "EXPLORAR LA TIENDA"
+        }
     }
 }

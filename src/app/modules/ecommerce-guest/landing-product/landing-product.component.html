@@ -23,7 +23,7 @@
                                 <i class="icon anm anm-angle-right-l"></i>
                                 <!-- Categoría clicable -->
                                 <a *ngIf="product_selected.categorie"
-                                [routerLink]="['/', locale, country, 'shop', 'filter-products', product_selected.categorie.slug, product_selected.categorie.id]">
+                                [routerLink]="['/', country, locale, 'shop', 'filter-products', product_selected.categorie.slug, product_selected.categorie.id]">
                                 <span class="fw-light">{{ product_selected.categorie.title || 'Categoría' }}</span>
                                 </a>
                                 <i *ngIf="product_selected.categorie" class="icon anm anm-angle-right-l"></i>
@@ -47,7 +47,7 @@
                                 <!-- Categoría -->
                                 <li *ngIf="product_selected.categorie" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
                                 <a itemprop="item"
-                                    [routerLink]="['/', locale, country, 'shop', 'filter-products', product_selected.categorie.slug, product_selected.categorie.id]">
+                                    [routerLink]="['/', country, locale, 'shop', 'filter-products', product_selected.categorie.slug, product_selected.categorie.id]">
                                     <span itemprop="name">{{ product_selected.categorie.title || 'Categoría' }}</span>
                                 </a>
                                 <meta itemprop="position" content="2" />

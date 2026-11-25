@@ -64,15 +64,15 @@
       <div class="editorial-hero-content">
 
         <span class="editorial-eyebrow">
-          THE DEVELOPER COLLECTION
+          {{ 'store_editorial.hero.eyebrow' | translate }}
         </span>
 
         <h1 id="editorial-title">
-          Diseño para<br>
-          quienes construyen.
+          {{ 'store_editorial.hero.titleLine1' | translate }}<br>
+          {{ 'store_editorial.hero.titleLine2' | translate }}
         </h1>
 
-        <nav class="editorial-hero-categories" aria-label="Explorar colecciones">
+        <nav class="editorial-hero-categories" [attr.aria-label]="'store_editorial.hero.categoriesLabel' | translate">
 
           <button type="button"
                   (mouseenter)="previewEditorialCategory('t-shirts')"
@@ -80,7 +80,7 @@
                   (focus)="previewEditorialCategory('t-shirts')"
                   (blur)="resetEditorialCategory()"
                   (click)="selectCategory('t-shirts')">
-            T-SHIRTS
+            {{ 'store_editorial.categories.tshirts' | translate }}
           </button>
 
           <button type="button"
@@ -89,7 +89,7 @@
                   (focus)="previewEditorialCategory('hoodies')"
                   (blur)="resetEditorialCategory()"
                   (click)="selectCategory('hoodies')">
-            HOODIES
+            {{ 'store_editorial.categories.hoodies' | translate }}
           </button>
 
           <button type="button"
@@ -98,7 +98,7 @@
                   (focus)="previewEditorialCategory('mugs')"
                   (blur)="resetEditorialCategory()"
                   (click)="selectCategory('mugs')">
-            MUGS
+            {{ 'store_editorial.categories.mugs' | translate }}
           </button>
 
           <button type="button"
@@ -107,7 +107,7 @@
                   (focus)="previewEditorialCategory('caps')"
                   (blur)="resetEditorialCategory()"
                   (click)="selectCategory('caps')">
-            CAPS
+            {{ 'store_editorial.categories.caps' | translate }}
           </button>
 
           <button *ngIf="false"
@@ -115,7 +115,7 @@
                   (mouseenter)="resetEditorialCategory()"
                   (focus)="resetEditorialCategory()"
                   (click)="openStore()">
-            SHOP
+            {{ 'store_editorial.categories.shop' | translate }}
           </button>
 
         </nav>
@@ -128,18 +128,18 @@
     <section class="editorial-newsletter">
 
       <h2>
-        Recibe novedades, lanzamientos y colecciones exclusivas.
+        {{ 'store_editorial.newsletter.title' | translate }}
       </h2>
 
       <p>
-        Descubre lo próximo de LujanDev.
+        {{ 'store_editorial.newsletter.description' | translate }}
       </p>
 
       <button
         type="button"
         class="editorial-newsletter-cta"
         (click)="openStore()">
-        EXPLORAR LA TIENDA
+        {{ 'store_editorial.newsletter.cta' | translate }}
       </button>
 
     </section>

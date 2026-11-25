@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -8,8 +8,8 @@ import { filter } from 'rxjs/operators';
 })
 export class LocalizationService {
   private countrySubject = new BehaviorSubject<string>('es');
-  private localeSubject = new BehaviorSubject<string>('en');
-  
+  private localeSubject = new BehaviorSubject<string>('es');
+
   country$ = this.countrySubject.asObservable();
   locale$ = this.localeSubject.asObservable();
 
@@ -21,7 +21,9 @@ export class LocalizationService {
     { code: 'de', name: 'Deutschland' }
   ];
 
-  readonly languageOptions: { [key: string]: { code: string, name: string }[] } = {
+  readonly languageOptions: {
+    [key: string]: { code: string, name: string }[]
+  } = {
     'es': [
       { code: 'es', name: 'Castellano' },
       { code: 'en', name: 'English' }
@@ -30,62 +32,88 @@ export class LocalizationService {
     'it': [{ code: 'it', name: 'Italiano' }],
     'de': [{ code: 'de', name: 'Deutsch' }]
   };
-  
+
   constructor(private router: Router) {
-    // Escuchar cambios de ruta para actualizar país/idioma automáticamente
     this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+      filter(
+        (event): event is NavigationEnd =>
+          event instanceof NavigationEnd
+      )
     ).subscribe((event: NavigationEnd) => {
-      this.updateFromUrl(event.url);
+      this.updateFromUrl(event.urlAfterRedirects);
     });
 
-    // Inicializar desde la URL actual
     this.updateFromUrl(this.router.url);
   }
 
   /**
-   * Actualiza país e idioma desde la URL actual
+   * Valida una combinación de país e idioma.
    */
-  private updateFromUrl(url: string) {
-    const segments = url.split('/').filter(s => s);
-    
-    if (segments.length >= 2) {
-      const country = segments[0];
-      const locale = segments[1];
-      
-      // Solo actualizar si son válidos (2 caracteres)
-      if (country.length === 2 && locale.length === 2) {
-        this.countrySubject.next(country);
-        this.localeSubject.next(locale);
-      }
+  isValidLocale(country: string, locale: string): boolean {
+    const validCountry = this.countries.some(
+      item => item.code === country
+    );
+
+    if (!validCountry) {
+      return false;
+    }
+
+    return (this.languageOptions[country] || [])
+      .some(item => item.code === locale);
+  }
+
+  /**
+   * Actualiza país e idioma desde la URL.
+   */
+  private updateFromUrl(url: string): void {
+    const urlTree = this.router.parseUrl(url);
+    const primary = urlTree.root.children['primary'];
+
+    if (!primary || primary.segments.length < 2) {
+      return;
+    }
+
+    const country = primary.segments[0].path;
+    const locale = primary.segments[1].path;
+
+    this.setLocaleAndCountry(country, locale);
+  }
+
+  /**
+   * Establece una combinación regional válida.
+   */
+  setLocaleAndCountry(country: string, locale: string): void {
+    if (!this.isValidLocale(country, locale)) {
+      return;
+    }
+
+    if (this.countrySubject.value !== country) {
+      this.countrySubject.next(country);
+    }
+
+    if (this.localeSubject.value !== locale) {
+      this.localeSubject.next(locale);
     }
   }
 
   /**
-   * Establece país e idioma manualmente (para pre-home)
+   * Obtiene el idioma disponible para las traducciones de la interfaz.
+   * No modifica el contexto regional del ecommerce.
    */
-  setLocaleAndCountry(country: string, locale: string) {
-    this.countrySubject.next(country);
-    this.localeSubject.next(locale);
+  getTranslationLocale(locale: string = this.locale): string {
+    const supportedLocales = ['es', 'en'];
+
+    return supportedLocales.includes(locale) ? locale : 'en';
   }
 
-  /**
-   * Obtiene país actual (desde URL o estado)
-   */
   get country(): string {
     return this.countrySubject.value;
   }
 
-  /**
-   * Obtiene idioma actual (desde URL o estado)
-   */
   get locale(): string {
     return this.localeSubject.value;
   }
 
-  /**
-   * Obtiene el prefijo completo para rutas
-   */
   get routePrefix(): string {
     return `/${this.country}/${this.locale}`;
   }

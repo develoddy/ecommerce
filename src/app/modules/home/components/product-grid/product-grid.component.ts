@@ -104,7 +104,7 @@ export class ProductGridComponent implements OnChanges, OnDestroy {
   }  
 
   getSanitizedUrl(product: any): SafeResourceUrl {
-    const url = URL_FRONTEND+`${this.locale}/${this.country}/shop/product/${product.slug}`;
+    const url = URL_FRONTEND+`${this.country}/${this.locale}/shop/product/${product.slug}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 

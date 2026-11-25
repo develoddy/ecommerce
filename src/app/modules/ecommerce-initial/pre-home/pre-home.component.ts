@@ -40,7 +40,7 @@ export class PreHomeComponent implements OnInit {
   gotoHome() {
     if (this.selectedCountry && this.selectedLocale) {
       this.localizationService.setLocaleAndCountry(this.selectedCountry , this.selectedLocale );
-      this.router.navigate(['/store-editorial']);
+      this.router.navigate(['/', this.selectedCountry, this.selectedLocale]);
     }
   }
 

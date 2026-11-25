@@ -979,7 +979,7 @@ getVarietyImage(cart: any): string {
 
   openInNewTab(path: string) {
     const url = this._router.serializeUrl(
-      this._router.createUrlTree(['/', this.locale, this.country, 'shop', path])
+      this._router.createUrlTree(['/', this.country, this.locale, 'shop', path])
     );
     window.open(url, '_blank');
   }

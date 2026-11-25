@@ -75,7 +75,7 @@ export class AppComponent implements AfterViewInit {
     this.translate.setDefaultLang('en');
     
     // Usar el locale inicial extraído de la URL (/es/es o /es/en)
-    this.translate.use(this.localizationService.locale);
+    this.translate.use(this.localizationService.getTranslationLocale());
 
     // Inicializar valores
     this.country = this.localizationService.country;
@@ -90,7 +90,7 @@ export class AppComponent implements AfterViewInit {
       this.locale = locale;
       // 🌐 Sincronizar cambio de locale con ngx-translate
       // Cuando la URL cambie (ej: navegación de /es/es a /es/en), ngx-translate usará el nuevo idioma
-      this.translate.use(locale);
+      this.translate.use(this.localizationService.getTranslationLocale(locale));
     });
   }
 

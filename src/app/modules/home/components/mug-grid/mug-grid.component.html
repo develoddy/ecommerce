@@ -175,7 +175,7 @@
     </div>
     <div class="view-collection text-center mt-5 mb-5 mt-md-5 justify-content-center align-item-center d-flex">
         <a *ngIf="categorie"
-            [routerLink]="['/', locale, country, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]" 
+            [routerLink]="['/', country, locale, 'shop', 'filter-products', generateSlug(categorie.title), categorie.id]"
             class="category-link clr-none"
             [attr.title]="'Explorar ' + categorie.title">
             <button class="btn-dark-ld fw-light">Explorar {{ categorie.title }}</button>

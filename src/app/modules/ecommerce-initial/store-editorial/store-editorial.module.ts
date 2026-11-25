@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { StoreEditorialComponent } from './store-editorial.component';
@@ -16,7 +17,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    SharedModule
+    SharedModule,
+    TranslateModule
   ]
 })
 export class StoreEditorialModule {}

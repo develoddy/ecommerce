@@ -37,7 +37,7 @@
                           <p [innerHTML]="'home.featured_build.description' | translate"></p>
                           <a
                             *ngIf="allShirtsCategory" 
-                            [routerLink]="['/', locale, country, 'shop', 'filter-products', allShirtsCategory.slug, allShirtsCategory._id]" 
+                            [routerLink]="['/', country, locale, 'shop', 'filter-products', allShirtsCategory.slug, allShirtsCategory._id]"
                             class="btn btn-lg mt20">
                             {{ 'home.featured_build.cta' | translate }}
                           </a>
@@ -839,7 +839,7 @@
         <div class="hero hero-large hero-overlay bg-size from-build-banner">
           <a
             class="from-build-desktop-cta"
-            [routerLink]="['/', locale, country, 'shop', 'filter-products']"
+            [routerLink]="['/', country, locale, 'shop', 'filter-products']"
             aria-label="Explore DROP 001">
           </a>
         </div>
@@ -864,7 +864,7 @@
               <strong>DROP 001</strong> came from all of it.
             </p>
 
-            <a [routerLink]="['/', locale, country, 'shop', 'filter-products']">
+            <a [routerLink]="['/', country, locale, 'shop', 'filter-products']">
               EXPLORE DROP 001 →
             </a>
           </div>
@@ -995,7 +995,7 @@
       <a
         href="shop-grid-view.html"
         onclick="return false;"
-        [routerLink]="['/', locale, country, 'shop', 'filter-products']"
+        [routerLink]="['/', country, locale, 'shop', 'filter-products']"
         ><i class="menubar-icon anm anm-th-large-l"></i
         ><span class="menubar-label">Compra</span></a
       >
@@ -1005,8 +1005,8 @@
         href="my-account.html"
         [routerLink]="
           CURRENT_USER_AUTHENTICATED
-            ? ['/', locale, country, 'account', 'my-account']
-            : ['/', locale, country, 'auth', 'login']
+            ? ['/', country, locale, 'account', 'my-account']
+            : ['/', country, locale, 'auth', 'login']
         "
         ><i class="menubar-icon icon anm anm-user-al"></i
         ><span class="menubar-label">Cuenta</span></a
@@ -1022,7 +1022,7 @@
       <a
         href="wishlist-style1.html"
         onclick="return false;"
-        [routerLink]="['/', this.locale, this.country, 'account', 'favorites']"
+        [routerLink]="['/', this.country, this.locale, 'account', 'favorites']"
       >
         <span class="span-count position-relative text-center"
           ><i class="menubar-icon icon anm anm-heart-l"></i
@@ -1041,8 +1041,8 @@
         onclick="return false;"
         [routerLink]="
           CURRENT_USER_AUTHENTICATED
-            ? ['/', locale, country, 'shop', 'cart']
-            : ['/', locale, country, 'auth', 'login']
+            ? ['/', country, locale, 'shop', 'cart']
+            : ['/', country, locale, 'auth', 'login']
         "
         class="btn-minicart"
         data-bs-toggle="offcanvas"

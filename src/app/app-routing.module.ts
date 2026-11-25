@@ -12,17 +12,22 @@ import { TrialRegisterComponent } from './components/trial-register/trial-regist
 import { SaasDashboardComponent } from './components/saas-dashboard/saas-dashboard.component';
 import { TenantLoginComponent } from './components/tenant-login/tenant-login.component';
 import { TenantAuthGuard } from './guards/tenant-auth.guard';
+import { LocaleGuard } from './guards/locale.guard';
 
 const routes: Routes = [
 
   // Redirección de la raíz a la portada editorial
   {
     path: '',
-    redirectTo: 'store-editorial', // País y el idioma por defecto
+    redirectTo: 'es/es', // País e idioma por defecto
     pathMatch: 'full'
   },
-  // Ruta para preHome fuera de la estructura de locale/country
-  { path: 'store-editorial', loadChildren: () => import('./modules/ecommerce-initial/store-editorial/store-editorial.module').then(m => m.StoreEditorialModule) },
+  // Compatibilidad con la antigua URL editorial
+  {
+    path: 'store-editorial',
+    redirectTo: 'es/es',
+    pathMatch: 'full'
+  },
   { 
     path: 'preHome', 
     loadChildren: () => import('./modules/ecommerce-initial/ecommerce-initial.module').then(m => m.EcommerceInitialModule),
@@ -70,6 +75,7 @@ const routes: Routes = [
   // 🔹 Rutas i18n existentes (NO tocar - Merch store)
   {
     path: ':country/:locale',
+    canActivate: [LocaleGuard],
     children: [
       {
         path: 'home',
@@ -99,11 +105,11 @@ const routes: Routes = [
         loadChildren: () => import("./modules/tracking/tracking.module").then(m => m.TrackingModule),
         data: { preload: false } // ✅ Ruta pública de tracking
       },
-      // Redirección al home por defecto si solo ponen /:country/:locale
+      // Portada editorial localizada
       {
         path: '',
-        redirectTo: 'home',
-        pathMatch: 'full'
+        pathMatch: 'full',
+        loadChildren: () => import('./modules/ecommerce-initial/store-editorial/store-editorial.module').then(m => m.StoreEditorialModule)
       },
       {
         path: '**',

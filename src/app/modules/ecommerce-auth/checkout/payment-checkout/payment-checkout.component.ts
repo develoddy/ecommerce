@@ -1689,7 +1689,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
 
   openInNewTab(path: string) {
     const url = this._router.serializeUrl(
-      this._router.createUrlTree(['/', this.locale, this.country, 'shop', path])
+      this._router.createUrlTree(['/', this.country, this.locale, 'shop', path])
     );
     window.open(url, '_blank');
   }
@@ -1733,7 +1733,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   verifyExistEmail(email: string) {
     sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
     this._router.navigate(
-      ['/', this.locale, this.country, 'account', 'myaddresses', 'add'],
+      ['/', this.country, this.locale, 'account', 'myaddresses', 'add'],
       { queryParams: { email } }
     );
   }

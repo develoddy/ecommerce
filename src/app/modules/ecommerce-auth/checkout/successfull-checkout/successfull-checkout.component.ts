@@ -988,7 +988,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   verifyExistEmail(email: string) {
     sessionStorage.setItem('returnUrl', this._router.url); // Guarda la URL actual en sessionStorage
     this._router.navigate(
-      ['/', this.locale, this.country, 'account', 'myaddresses', 'add'],
+      ['/', this.country, this.locale, 'account', 'myaddresses', 'add'],
       { queryParams: { email } }
     );
   }

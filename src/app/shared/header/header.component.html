@@ -1292,7 +1292,7 @@
                     conditions</a>
             </div>
             <div class="minicart-action d-flex flex-lg-row flex-column mt-3">
-                <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn-dark-ld w-50 me-1 mb-2"
+                <a [routerLink]="['/', country, locale, 'shop', 'cart']" class="cart-btn btn-dark-ld w-50 me-1 mb-2"
                     [ngClass]="{ 'w-100': isMobile }">Ver carrito</a>
                 <a href="checkout-style1.html" onclick="return false;" (click)="goToCheckout()"
                     class="proceed-to-checkout mb-2 btn-dark-ld w-50 ms-lg-1" [ngClass]="{ 'w-100': isMobile }">Comenzar
