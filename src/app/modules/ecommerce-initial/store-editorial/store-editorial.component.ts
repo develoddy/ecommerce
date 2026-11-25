@@ -1,3 +1,4 @@
+import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { EcommerceGuestService, EditorialBanner } from 'src/app/modules/ecommerce-guest/_service/ecommerce-guest.service';
@@ -75,7 +76,8 @@ export class StoreEditorialComponent implements OnInit {
   constructor(
     private router: Router,
     private localizationService: LocalizationService,
-    private ecommerceGuestService: EcommerceGuestService
+    private ecommerceGuestService: EcommerceGuestService,
+    public loader: LoaderService
   ) {}
 
 

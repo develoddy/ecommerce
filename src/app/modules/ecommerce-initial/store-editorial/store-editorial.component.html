@@ -1,11 +1,11 @@
 <app-store-loader
-  *ngIf="editorialLoading">
+  *ngIf="editorialLoading || (loader.loading$ | async)">
 </app-store-loader>
 
 <div class="editorial-page"
-     [class.editorial-is-loading]="editorialLoading"
-     [attr.aria-busy]="editorialLoading"
-     [attr.inert]="editorialLoading ? '' : null">
+     [class.editorial-is-loading]="editorialLoading || (loader.loading$ | async)"
+     [attr.aria-busy]="editorialLoading || (loader.loading$ | async)"
+     [attr.inert]="(editorialLoading || (loader.loading$ | async)) ? '' : null">
 
   <!-- HEADER COMPARTIDO -->
   <app-header></app-header>
