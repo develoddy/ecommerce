@@ -18,6 +18,10 @@ export class StoreEditorialComponent implements OnInit {
 
   editorialBanner: EditorialBanner | null = null;
 
+  editorialLoading = true;
+  useEditorialFallback = false;
+  editorialImageFailed = false;
+
   ngOnInit(): void {
     this.loadEditorialBanner();
   }
@@ -35,9 +39,13 @@ export class StoreEditorialComponent implements OnInit {
           banner.imagen_desktop_url
             ? banner
             : null;
+
+        if (!this.editorialBanner) {
+          this.showEditorialFallback();
+        }
       },
       error: (error) => {
-        this.editorialBanner = null;
+        this.showEditorialFallback();
         console.warn(
           '[StoreEditorial] Banner dinamico no disponible:',
           error
@@ -46,8 +54,22 @@ export class StoreEditorialComponent implements OnInit {
     });
   }
 
+  onEditorialImageLoad(): void {
+    this.editorialLoading = false;
+  }
+
   onEditorialImageError(): void {
+    this.showEditorialFallback();
+  }
+
+  private showEditorialFallback(): void {
     this.editorialBanner = null;
+    this.useEditorialFallback = true;
+  }
+
+  onEditorialFallbackError(): void {
+    this.editorialImageFailed = true;
+    this.editorialLoading = false;
   }
 
   constructor(

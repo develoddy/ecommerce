@@ -1,41 +1,14 @@
-<div class="editorial-page">
+<app-store-loader
+  *ngIf="editorialLoading">
+</app-store-loader>
 
-  <!-- CABECERA EDITORIAL -->
-  <header class="editorial-header">
+<div class="editorial-page"
+     [class.editorial-is-loading]="editorialLoading"
+     [attr.aria-busy]="editorialLoading"
+     [attr.inert]="editorialLoading ? '' : null">
 
-    <nav class="editorial-nav" aria-label="Categorías">
-      <button type="button" (click)="selectCategory('t-shirts')">
-        T-SHIRTS
-      </button>
-
-      <button type="button" (click)="selectCategory('hoodies')">
-        HOODIES
-      </button>
-
-      <button type="button" (click)="selectCategory('mugs')">
-        MUGS
-      </button>
-
-      <button type="button" (click)="selectCategory('caps')">
-        CAPS
-      </button>
-    </nav>
-
-    <button
-      type="button"
-      class="editorial-logo"
-      (click)="openStore()"
-      aria-label="LujanDev Store">
-      LUJANDEV
-    </button>
-
-    <div class="editorial-header-actions">
-      <button type="button" (click)="openStore()">
-        EXPLORAR TIENDA
-      </button>
-    </div>
-
-  </header>
+  <!-- HEADER COMPARTIDO -->
+  <app-header></app-header>
 
   <!-- CAMPAÑA EDITORIAL -->
   <main>
@@ -55,7 +28,22 @@
           [src]="banner.imagen_desktop_url"
           alt=""
           loading="eager"
+          (load)="onEditorialImageLoad()"
           (error)="onEditorialImageError()">
+
+      </picture>
+
+      <picture
+        *ngIf="useEditorialFallback && !editorialImageFailed"
+        class="editorial-hero-picture"
+        aria-hidden="true">
+
+        <img
+          src="assets/images/store-editorial/store-editorial-hero.png"
+          alt=""
+          loading="eager"
+          (load)="onEditorialImageLoad()"
+          (error)="onEditorialFallbackError()">
 
       </picture>
 

@@ -12,29 +12,8 @@
   color: #171717;
 }
 
-/* HEADER */
+/* HERO */
 
-.editorial-header {
-  position: relative;
-  z-index: 10;
-
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-
-  min-height: 76px;
-  padding: 0 32px;
-
-  background: #fff;
-}
-
-.editorial-nav {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.editorial-header button,
 .editorial-hero-categories button {
   appearance: none;
   border: 0;
@@ -42,41 +21,10 @@
   cursor: pointer;
 }
 
-.editorial-nav button,
-.editorial-header-actions button {
-  padding: 8px 0;
-
-  color: #171717;
-  font-family: Arial, sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.025em;
-  white-space: nowrap;
-}
-
-.editorial-nav button:hover,
-.editorial-header-actions button:hover {
-  text-decoration: underline;
-  text-underline-offset: 5px;
-}
-
-.editorial-logo {
-  font-family: Arial, sans-serif;
-  font-size: 27px;
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  color: #171717;
-}
-
-.editorial-header-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* HERO */
 
 .editorial-hero {
   position: relative;
+  box-sizing: border-box;
 
   display: flex;
   align-items: center;
@@ -218,48 +166,17 @@
   outline-offset: 5px;
 }
 
-/* TABLET */
-
-@media (max-width: 1024px) {
-
-  .editorial-header {
-    padding: 0 20px;
-  }
-
-  .editorial-nav {
-    gap: 12px;
-  }
-
-  .editorial-nav button {
-    font-size: 10px;
-  }
-
-  .editorial-logo {
-    font-size: 23px;
-  }
-
-}
-
 /* MOBILE */
 
 @media (max-width: 767px) {
 
-  .editorial-header {
-    grid-template-columns: 1fr auto;
-    min-height: 64px;
-    padding: 0 18px;
-  }
 
-  .editorial-nav {
+.editorial-nav {
     display: none;
   }
 
-  .editorial-logo {
-    justify-self: start;
-    font-size: 24px;
-  }
 
-  .editorial-header-actions button {
+.editorial-header-actions button {
     font-size: 10px;
   }
 
@@ -300,9 +217,9 @@
 .editorial-page .editorial-hero {
   position: relative;
   background-color: #4c392f;
-  background-image: url('/assets/images/store-editorial/store-editorial-hero.png');
+  background-image: none;
   background-size: cover;
-  background-position: center center;
+  background-position: center top;
   background-repeat: no-repeat;
 }
 
@@ -343,7 +260,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
+  object-position: center top;
 }
 
 .editorial-page .editorial-hero-overlay {
@@ -358,4 +275,11 @@
   .editorial-hero-picture img {
     object-position: 40% center;
   }
+}
+
+
+/* EDITORIAL LOADING STATE */
+
+.editorial-is-loading {
+  visibility: hidden;
 }
