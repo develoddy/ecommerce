@@ -4,9 +4,13 @@ import { URL_SERVICE } from 'src/app/config/config';
 import { AuthService } from '../../auth-profile/_services/auth.service';
 import { BehaviorSubject, finalize } from 'rxjs';
 
+export type EditorialCategory =
+  'default' | 't-shirts' | 'hoodies' | 'mugs' | 'caps';
+
 export interface EditorialBanner {
   _id: number;
   placement: 'editorial';
+  editorial_category?: EditorialCategory | null;
   state: number;
   imagen_mobile_url: string;
   imagen_desktop_url: string;
@@ -14,6 +18,7 @@ export interface EditorialBanner {
 
 export interface EditorialBannerResponse {
   banner: EditorialBanner | null;
+  banners?: Record<EditorialCategory, EditorialBanner | null>;
 }
 
 @Injectable({

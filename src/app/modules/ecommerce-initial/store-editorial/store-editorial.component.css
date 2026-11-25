@@ -283,3 +283,22 @@
 .editorial-is-loading {
   visibility: hidden;
 }
+
+
+/* EDITORIAL CAMPAIGN TRANSITIONS */
+
+.editorial-campaign-layer {
+  opacity: 0;
+  transition: opacity 450ms ease-in-out;
+  pointer-events: none;
+}
+
+.editorial-campaign-layer.editorial-campaign-active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial-campaign-layer {
+    transition: none;
+  }
+}

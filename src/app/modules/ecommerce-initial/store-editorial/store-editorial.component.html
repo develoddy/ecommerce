@@ -47,6 +47,18 @@
 
       </picture>
 
+      <picture
+        *ngFor="let campaign of readyEditorialCampaigns; trackBy: trackEditorialCampaign"
+        class="editorial-hero-picture editorial-campaign-layer"
+        [class.editorial-campaign-active]="activeEditorialCategory === campaign.category"
+        aria-hidden="true">
+
+        <img
+          [src]="campaign.url"
+          alt="">
+
+      </picture>
+
       <div class="editorial-hero-overlay"></div>
 
       <div class="editorial-hero-content">
@@ -62,20 +74,48 @@
 
         <nav class="editorial-hero-categories" aria-label="Explorar colecciones">
 
-          <button type="button" (click)="selectCategory('t-shirts')">
+          <button type="button"
+                  (mouseenter)="previewEditorialCategory('t-shirts')"
+                  (mouseleave)="resetEditorialCategory()"
+                  (focus)="previewEditorialCategory('t-shirts')"
+                  (blur)="resetEditorialCategory()"
+                  (click)="selectCategory('t-shirts')">
             T-SHIRTS
           </button>
 
-          <button type="button" (click)="selectCategory('hoodies')">
+          <button type="button"
+                  (mouseenter)="previewEditorialCategory('hoodies')"
+                  (mouseleave)="resetEditorialCategory()"
+                  (focus)="previewEditorialCategory('hoodies')"
+                  (blur)="resetEditorialCategory()"
+                  (click)="selectCategory('hoodies')">
             HOODIES
           </button>
 
-          <button type="button" (click)="selectCategory('mugs')">
+          <button type="button"
+                  (mouseenter)="previewEditorialCategory('mugs')"
+                  (mouseleave)="resetEditorialCategory()"
+                  (focus)="previewEditorialCategory('mugs')"
+                  (blur)="resetEditorialCategory()"
+                  (click)="selectCategory('mugs')">
             MUGS
           </button>
 
-          <button type="button" (click)="selectCategory('caps')">
+          <button type="button"
+                  (mouseenter)="previewEditorialCategory('caps')"
+                  (mouseleave)="resetEditorialCategory()"
+                  (focus)="previewEditorialCategory('caps')"
+                  (blur)="resetEditorialCategory()"
+                  (click)="selectCategory('caps')">
             CAPS
+          </button>
+
+          <button *ngIf="false"
+                  type="button"
+                  (mouseenter)="resetEditorialCategory()"
+                  (focus)="resetEditorialCategory()"
+                  (click)="openStore()">
+            SHOP
           </button>
 
         </nav>
