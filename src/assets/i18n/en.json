@@ -5,13 +5,17 @@
     "auth_profile": {
         "login": {
             "title": "Welcome",
-            "subtitle":"Please login here",
+            "subtitle": "Sign in with your email address or register to become a LujanDev member.",
             "email": "Email Address",
             "password": "Password",
-            "remember":"Remember Me",
-            "forget_password":"Forgot Password?",
-            "button_sign_up_now": "Sign Up Now",
-            "button_login":"Login"
+            "remember": "Keep me signed in",
+            "forget_password": "Forgot your password?",
+            "button_sign_up_now": "Create account",
+            "button_login": "Sign in",
+            "loading": "Signing in...",
+            "error_title": "Sign-in error",
+            "secure_data": "All data is kept secure",
+            "close": "Close"
         },
         "register": {
             "title":"Create New Account",

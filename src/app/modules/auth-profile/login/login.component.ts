@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CartService } from '../../ecommerce-guest/_service/cart.service';
 import { LocalizationService } from 'src/app/services/localization.service';
 import { Subscription } from 'rxjs';
+import { SeoService } from 'src/app/services/seo.service';
 
 declare function alertDanger([]):any;
 declare function alertWarning([]):any;
@@ -15,7 +16,7 @@ declare function alertSuccess([]):any;
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   email:string = "";
   password:string = "";
@@ -43,13 +44,26 @@ export class LoginComponent implements OnInit {
     public _router: Router,
     public translate: TranslateService,
     public routerActived: ActivatedRoute,
-    private localizationService: LocalizationService
+    private localizationService: LocalizationService,
+    private seoService: SeoService
   ) {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
   }
 
   ngOnInit(): void {
+    this.setupSEO();
+
+    this.subscriptions.add(
+      this._router.events.subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          this.country = this.localizationService.country;
+          this.locale = this.localizationService.locale;
+          this.setupSEO();
+        }
+      })
+    );
+
     this._authService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
@@ -250,6 +264,17 @@ export class LoginComponent implements OnInit {
     this.subscriptions.add(subscriptionLogin);
   }
 
+  private setupSEO(): void {
+    const isSpanish = this.localizationService.getTranslationLocale() === 'es';
+
+    this.seoService.updateUtilitySeo(
+      isSpanish ? 'Iniciar sesión' : 'Sign in',
+      isSpanish
+        ? 'Accede a tu cuenta de LujanDev.'
+        : 'Sign in to your LujanDev account.'
+    );
+  }
+
   changeLanguageToSpanish(): void {
     this.translate.use('es');
   }
@@ -259,6 +284,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this.seoService.restoreIndexing();
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
     }

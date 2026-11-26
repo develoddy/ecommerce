@@ -12,7 +12,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center align-items-center">
-                        <div class="page-title"><h1 class="text-uppercase mb-0">Bienvenido/a</h1></div>
+                        <div class="page-title"><h1 class="text-uppercase mb-0">{{ 'auth_profile.login.title' | translate }}</h1></div>
                     </div>
                 </div>
             </div>
@@ -27,18 +27,18 @@
                     <div class="col-12 col-sm-12 col-md-8 col-lg-5" [ngClass]="{'px-5': isDesktop, 'px-2': isMobile}">
                         <div class="inner h-100">
                             <form class="customer-form">	
-                                <h2 class="mb-5 text-uppercase d-none">Bienvenido/a</h2>
-                                <p class="text-start mb-4 fw-bold lh-1">Inicia sesión con tu correo electrónico o regístrate para hacerte Miembro de LujanDev.</p>
+                                <h2 class="mb-5 text-uppercase d-none">{{ 'auth_profile.login.title' | translate }}</h2>
+                                <p class="text-start mb-4 fw-bold lh-1">{{ 'auth_profile.login.subtitle' | translate }}</p>
                                 <div class="form-row">
                                     <div class="form-group col-12">
-                                        <label for="CustomerEmail" class="d-none">Correo electrónico <span class="required">*</span></label>
+                                        <label for="CustomerEmail" class="d-none">{{ 'auth_profile.login.email' | translate }} <span class="required">*</span></label>
                                         <div class="input-icon-wrapper position-relative">
                                             <i class="icon anm anm-envelope-l input-icon"></i>
                                             <input type="email" 
                                                    name="email" 
                                                    class="py-4 ps-5 pe-5" 
                                                    [(ngModel)]="email" 
-                                                   placeholder="Correo electrónico" 
+                                                   [placeholder]="'auth_profile.login.email' | translate"
                                                    id="CustomerEmail" 
                                                    autocomplete="off"
                                                    autocorrect="off"
@@ -65,7 +65,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="CustomerPassword" class="d-none">Contraseña <span class="required">*</span></label>
+                                        <label for="CustomerPassword" class="d-none">{{ 'auth_profile.login.password' | translate }} <span class="required">*</span></label>
                                         <div class="input-icon-wrapper position-relative">
                                             <i class="icon anm anm-lock-l input-icon"></i>
                                             <!-- Campo de contraseña -->
@@ -73,7 +73,7 @@
                                               [type]="isPasswordVisible ? 'text' : 'password'" 
                                               name="password" 
                                               [(ngModel)]="password" 
-                                              placeholder="Contraseña" 
+                                              [placeholder]="'auth_profile.login.password' | translate"
                                               id="CustomerPassword" 
                                               autocomplete="off"
                                               autocorrect="off"
@@ -129,9 +129,9 @@
                                         <div class="login-remember-forgot d-flex justify-content-between align-items-center">
                                             <div class="remember-check customCheckbox">
                                                 <input id="remember" name="remember" type="checkbox" value="remember" required />
-                                                <label for="remember"> Mantener la sesión iniciada</label>
+                                                <label for="remember">{{ 'auth_profile.login.remember' | translate }}</label>
                                             </div>
-                                            <a href="forgot-password.html" class="d-none" onclick="return false;" [routerLink]="['/', country, locale, 'auth', 'forgot-password']">¿Has olvidado tu contraseña?</a>
+                                            <a href="forgot-password.html" class="d-none" onclick="return false;" [routerLink]="['/', country, locale, 'auth', 'forgot-password']">{{ 'auth_profile.login.forget_password' | translate }}</a>
                                         </div>
                                     </div>
                                     <div class="form-group col-12" *ngIf="this.errorAutenticate">
@@ -139,11 +139,11 @@
                                             <div class="d-flex align-items-start">
                                                 <i class="icon anm anm-times-circle me-3" style="font-size: 1.5rem;"></i>
                                                 <div>
-                                                    <strong class="d-block mb-1">Error al iniciar sesión</strong>
+                                                    <strong class="d-block mb-1">{{ 'auth_profile.login.error_title' | translate }}</strong>
                                                     <small>{{ this.errorMessageAutenticate }}</small>
                                                 </div>
                                             </div>
-                                            <button type="button" class="btn-close" (click)="errorAutenticate = false" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" (click)="errorAutenticate = false" [attr.aria-label]="'auth_profile.login.close' | translate"></button>
                                         </div>
                                     </div>
                                     <div class="form-group col-12 mt-3 mb-3">
@@ -154,11 +154,11 @@
                                                 style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
                                             <ng-container *ngIf="!loading">
                                                 <i class="icon anm anm-sign-in-al me-2" style="font-size: 1.2rem;"></i>
-                                                <span>Iniciar sesión</span>
+                                                <span>{{ 'auth_profile.login.button_login' | translate }}</span>
                                             </ng-container>
                                             <ng-container *ngIf="loading">
                                                 <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                                <span>Iniciando sesión...</span>
+                                                <span>{{ 'auth_profile.login.loading' | translate }}</span>
                                             </ng-container>
                                         </button>
                                     </div>
@@ -168,7 +168,7 @@
                                                     class="btn-outline-white-ld w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center" 
                                                     style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
                                                 <i class="icon anm anm-user-plus me-2" style="font-size: 1.2rem;"></i>
-                                                <span>Crear cuenta</span>
+                                                <span>{{ 'auth_profile.login.button_sign_up_now' | translate }}</span>
                                             </button>
                                         </a>
                                     </div>
@@ -185,12 +185,12 @@
 
                                 <div class="d-flex flex-row justify-content-center align-items-center py-3" style="background-color: #f8f9fa; border-radius: 8px; margin-top: 1rem;">
                                     <i class="icon anm anm-shield-check me-2" style="font-size: 1.2rem; color: #28a745;"></i>
-                                    <section><small class="fw-light" style="color: #6c757d;">Todos los datos se mantienen de forma segura</small></section>
+                                    <section><small class="fw-light" style="color: #6c757d;">{{ 'auth_profile.login.secure_data' | translate }}</small></section>
                                 </div>
 
                                 <!-- <div class="login-signup-text mt-4 mb-2 fs-6 text-center text-muted">¿No tienes una cuenta? <a href="register.html" onclick="return false;" [routerLink]="['/auth/register']" class="btn-link">Regístrate ahora</a></div> -->
                                 <div class="login-signup-text mt-5 mb-2 text-center">
-                                    <a href="register.html" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'auth', 'resetpassword']" class="text-decoration-underline" >¿Has olvidado tu contraseña?</a>
+                                    <a href="register.html" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'auth', 'resetpassword']" class="text-decoration-underline" >{{ 'auth_profile.login.forget_password' | translate }}</a>
                                 </div>
                             </form>
                         </div>

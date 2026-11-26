@@ -30,6 +30,11 @@ export interface SeoData {
   providedIn: 'root',
 })
 export class SeoService {
+  private seoTitlePath: string | null = null;
+
+  hasSeoTitleForCurrentPath(): boolean {
+    return this.seoTitlePath === this.router.url.split('?')[0];
+  }
   private readonly devKeywords = [
     'developer merch', 'programmer shirts', 'coding t-shirts', 'funny programming',
     'developer gifts', 'programmer hoodies', 'coding apparel', 'software engineer',
@@ -45,7 +50,23 @@ export class SeoService {
   /**
    * Actualiza el SEO de la página con optimizaciones avanzadas
    */
+  updateUtilitySeo(title: string, description: string): void {
+    this.updateSeo({ title, description });
+    this.metaService.updateTag({
+      name: 'robots',
+      content: 'noindex, follow'
+    });
+  }
+
+  restoreIndexing(): void {
+    this.metaService.updateTag({
+      name: 'robots',
+      content: 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'
+    });
+  }
+
   updateSeo(data: SeoData): void {
+    this.restoreIndexing();
     const domain = URL_FRONTEND.replace(/\/$/, '');
     const cleanPath = this.router.url.split('?')[0];
     const fullUrl = data.url || `${domain}${cleanPath}`;
@@ -58,6 +79,7 @@ export class SeoService {
     // Optimizar título según tipo
     const optimizedTitle = this.optimizeTitle(data);
     this.titleService.setTitle(optimizedTitle);
+    this.seoTitlePath = cleanPath;
 
     // Meta description optimizada
     const optimizedDescription = this.optimizeDescription(data);
@@ -250,6 +272,7 @@ export class SeoService {
 
     // Extraer la ruta limpia (después de /country/lang)
     const restPath = pathSegments.slice(3).join('/');
+    const pathSuffix = restPath ? `/${restPath}` : '';
 
     // Map de idiomas → country correspondiente (siempre 'es': único país soportado actualmente)
     const hreflangMap = {
@@ -260,7 +283,7 @@ export class SeoService {
     Object.entries(hreflangMap).forEach(([lang, country]) => {
       const link: HTMLLinkElement = document.createElement('link');
       link.rel = 'alternate';
-      link.href = `${baseUrl}/${country}/${lang}/${restPath}`;
+      link.href = `${baseUrl}/${country}/${lang}${pathSuffix}`;
       link.hreflang = lang;
       document.head.appendChild(link);
     });
@@ -268,7 +291,7 @@ export class SeoService {
     // x-default → versión principal real de la app (es/en)
     const defaultLink: HTMLLinkElement = document.createElement('link');
     defaultLink.rel = 'alternate';
-    defaultLink.href = `${baseUrl}/es/en/${restPath}`;
+    defaultLink.href = `${baseUrl}/es/en${pathSuffix}`;
     defaultLink.hreflang = 'x-default';
     document.head.appendChild(defaultLink);
   }

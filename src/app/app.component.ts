@@ -54,7 +54,8 @@ export class AppComponent implements AfterViewInit {
     // public loader: LoaderService,
     private translate: TranslateService, 
     private router: Router,
-    private titleService: Title, 
+    private titleService: Title,
+    private seoService: SeoService,
     private bodyClassService: BodyClassService,
     private localizationService: LocalizationService,
     private headerEventsService: HeaderEventsService,
@@ -66,7 +67,9 @@ export class AppComponent implements AfterViewInit {
   ) {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.translate.get('app.title').subscribe((res: string) => {
-        this.titleService.setTitle(res);
+        if (!this.seoService.hasSeoTitleForCurrentPath()) {
+          this.titleService.setTitle(res);
+        }
       });
     });
 

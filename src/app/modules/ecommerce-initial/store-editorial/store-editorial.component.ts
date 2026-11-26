@@ -1,5 +1,9 @@
 import { LoaderService } from 'src/app/modules/home/_services/product/loader.service';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { SeoService } from 'src/app/services/seo.service';
+import { URL_FRONTEND } from 'src/app/config/config';
 import { Router } from '@angular/router';
 import { EcommerceGuestService, EditorialBanner, EditorialCategory } from 'src/app/modules/ecommerce-guest/_service/ecommerce-guest.service';
 import { LocalizationService } from 'src/app/services/localization.service';
@@ -15,7 +19,9 @@ export type StoreEditorialCategory =
   templateUrl: './store-editorial.component.html',
   styleUrls: ['./store-editorial.component.css']
 })
-export class StoreEditorialComponent implements OnInit {
+export class StoreEditorialComponent implements OnInit, OnDestroy {
+
+  private seoSubscription?: Subscription;
 
   editorialBanner: EditorialBanner | null = null;
   activeEditorialCategory: EditorialCategory = 'default';
@@ -40,7 +46,46 @@ export class StoreEditorialComponent implements OnInit {
   editorialImageFailed = false;
 
   ngOnInit(): void {
+    this.setupSEO();
+
+    this.seoSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.setupSEO();
+      }
+    });
+
     this.loadEditorialBanner();
+  }
+
+  ngOnDestroy(): void {
+    this.seoSubscription?.unsubscribe();
+  }
+
+  private setupSEO(): void {
+    const isSpanish =
+      this.localizationService.getTranslationLocale() === 'es';
+
+    const title = isSpanish
+      ? 'Ropa y accesorios para desarrolladores'
+      : 'Developer Clothing & Accessories';
+
+    const description = isSpanish
+      ? 'Diseño para quienes construyen. Descubre ropa y accesorios inspirados en el código, los bugs, los deploys y la cultura developer.'
+      : 'Designed for those who build. Discover clothing and accessories inspired by code, bugs, deploys and developer culture.';
+
+    this.seoService.updateSeo({
+      title,
+      description,
+      keywords: [
+        'developer clothing',
+        'developer merch',
+        'coding apparel',
+        'programmer gifts'
+      ],
+      image: `${URL_FRONTEND.replace(/\/$/, '')}/assets/img/developer-merch-hero.jpg`,
+      url: `${URL_FRONTEND.replace(/\/$/, '')}${this.localizationService.routePrefix}`,
+      type: 'homepage'
+    });
   }
 
   private loadEditorialBanner(): void {
@@ -153,6 +198,7 @@ export class StoreEditorialComponent implements OnInit {
     private router: Router,
     private localizationService: LocalizationService,
     private ecommerceGuestService: EcommerceGuestService,
+    private seoService: SeoService,
     public loader: LoaderService
   ) {}
 

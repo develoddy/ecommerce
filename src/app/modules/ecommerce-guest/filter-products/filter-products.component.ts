@@ -121,13 +121,23 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
     // Subscribe to LocalizationService for reactive country/locale updates
     this.subscriptions.add(
       this.localizationService.country$.subscribe(country => {
+        const changed = this.country !== country;
         this.country = country;
+
+        if (changed && this.categories.length > 0) {
+          this.setupSEO();
+        }
       })
     );
 
     this.subscriptions.add(
       this.localizationService.locale$.subscribe(locale => {
+        const changed = this.locale !== locale;
         this.locale = locale;
+
+        if (changed && this.categories.length > 0) {
+          this.setupSEO();
+        }
       })
     );
 
@@ -295,7 +305,7 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
 
    /* ------------------ INIT FUCTIONS ------------------ */
   configInitial() {
-    this.subscriptions = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
+    const configSubscription = this._ecommerceGuestService.configInitial().subscribe((resp:any) => {
       this.categories = resp.categories;
       
       // GENERAR SLUG PARA CASA CATEGORIA SIN MODIFICAR EL TITULO ORIGINAL
@@ -314,6 +324,7 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
 
       // ACTUALIZAR EL TITULO UNA VEZ CARGADAS LAS CATEGORIAS
       this.updateCategoryTitle();
+      this.setupSEO();
 
       this.variedades = resp.variedades;
 
@@ -331,6 +342,7 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
         }
       });
     });
+    this.subscriptions.add(configSubscription);
   }
 
   filterProduct(logo_position: string = '', priceRange?: string) {
@@ -863,50 +875,58 @@ export class FilterProductsComponent implements OnInit, OnDestroy {
    * Configura SEO dinámico para la página de filtros/categoría
    */
   setupSEO(): void {
-    // Obtener información de la categoría actual
-    const currentCategory = this.categories.find((cat: any) => cat._id === this.idCategorie);
-    const categoryName = currentCategory?.title || 'Developer Products';
-    const isFilterActive = this.categories_selecteds.length > 0 || this.variedad_selected._id;
-    
-    let title: string;
-    let description: string;
-    let keywords: string[] = [];
+    const currentCategory = this.categories.find(
+      (cat: any) => cat._id === Number(this.idCategorie)
+    );
 
-    if (isFilterActive) {
-      // SEO para página con filtros activos
-      title = `Filtered ${categoryName} | Developer Merch Collection`;
-      description = `Discover curated ${categoryName.toLowerCase()} for developers and programmers. Find the perfect coding apparel and developer merchandise.`;
-      keywords = [
-        'filtered developer merch',
-        'curated programmer products',
-        `${categoryName.toLowerCase()} collection`,
-        'developer product search',
-        'programming merchandise filter'
-      ];
-    } else if (categoryName !== 'Developer Products') {
-      // SEO específico para categoría
-      title = `${categoryName} | Developer Merch & Programming Apparel`;
-      description = `Shop ${categoryName.toLowerCase()} designed for developers, programmers, and coding enthusiasts. Premium quality developer merchandise and programming apparel.`;
-      keywords = this.generateCategoryKeywords(categoryName);
-    } else {
-      // SEO general para página de productos
-      title = 'Developer Merchandise & Programming Apparel Collection';
-      description = 'Browse our complete collection of developer merchandise, programming t-shirts, coding hoodies, and funny developer gifts for software engineers.';
-      keywords = [
-        'developer merchandise collection',
-        'programming apparel browse',
-        'coding t-shirts catalog',
-        'developer products shop',
-        'programmer clothing store'
-      ];
-    }
+    const isSpanish =
+      this.localizationService.getTranslationLocale() === 'es';
 
-    // Llamar al servicio SEO
+    const categoryName = currentCategory?.title || '';
+    const categorySlug = currentCategory?.slug || '';
+
+    const categoryNames: {
+      [key: string]: { es: string; en: string }
+    } = {
+      'all-shirts': {
+        es: 'Camisetas para desarrolladores',
+        en: 'Developer T-Shirts'
+      },
+      'hoodies': {
+        es: 'Sudaderas para desarrolladores',
+        en: 'Developer Hoodies'
+      },
+      'mugs': {
+        es: 'Tazas para desarrolladores',
+        en: 'Developer Mugs'
+      },
+      'dad-hats-baseball-caps': {
+        es: 'Gorras para desarrolladores',
+        en: 'Developer Caps'
+      }
+    };
+
+    const localizedCategory = categoryNames[categorySlug];
+
+    const title = localizedCategory
+      ? (isSpanish ? localizedCategory.es : localizedCategory.en)
+      : categoryName || (isSpanish
+        ? 'Ropa y accesorios para desarrolladores'
+        : 'Developer Clothing & Accessories');
+
+    const description = isSpanish
+      ? 'Descubre ' + title.toLowerCase() +
+        '. Diseños inspirados en el código, la programación y la cultura developer.'
+      : 'Discover ' + title.toLowerCase() +
+        '. Designs inspired by code, programming and developer culture.';
+
     this.seoService.updateSeo({
       title,
       description,
-      keywords: [...keywords, ...this.getBaseKeywords()],
-      image: '/assets/img/categories/' + (categoryName.toLowerCase().replace(/ /g, '-')) + '.jpg',
+      keywords: [
+        ...this.generateCategoryKeywords(categoryName || title),
+        ...this.getBaseKeywords()
+      ],
       type: 'category'
     });
   }

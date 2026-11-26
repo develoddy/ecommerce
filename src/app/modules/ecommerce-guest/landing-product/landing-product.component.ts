@@ -307,13 +307,23 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
     // Suscribirse a cambios de country y locale
     this.subscriptions.add(
       this.localizationService.country$.subscribe(country => {
+        const changed = this.country !== country;
         this.country = country;
+
+        if (changed && this.product_selected) {
+          this.setupSEO();
+        }
       })
     );
     
     this.subscriptions.add(
       this.localizationService.locale$.subscribe(locale => {
+        const changed = this.locale !== locale;
         this.locale = locale;
+
+        if (changed && this.product_selected) {
+          this.setupSEO();
+        }
       })
     );
 

@@ -4,14 +4,18 @@
     },
     "auth_profile": {
         "login": {
-            "title": "Bienvenido",
-            "subtitle":"Por favor inicia sesión aquí",
+            "title": "Bienvenido/a",
+            "subtitle": "Inicia sesión con tu correo electrónico o regístrate para hacerte Miembro de LujanDev.",
             "email": "Correo electrónico",
             "password": "Contraseña",
-            "remember":"Recodar contraseña",
-            "forget_password":"Olvidaste tu contraseña?",
-            "button_sign_up_now": "Regístrate ahora",
-            "button_login":"Iniciar sesión"
+            "remember": "Mantener la sesión iniciada",
+            "forget_password": "¿Has olvidado tu contraseña?",
+            "button_sign_up_now": "Crear cuenta",
+            "button_login": "Iniciar sesión",
+            "loading": "Iniciando sesión...",
+            "error_title": "Error al iniciar sesión",
+            "secure_data": "Todos los datos se mantienen de forma segura",
+            "close": "Cerrar"
         },
         "register": {
             "title":"Crear una nueva cuenta",
