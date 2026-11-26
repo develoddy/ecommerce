@@ -161,13 +161,9 @@ export class SubscriptionsListComponent implements OnInit, OnDestroy {
     this.savingPreferences = true;
     this.showMessage = false;
 
-    // Enviar userId junto con el email para vincular correctamente
+    // La API obtiene la identidad desde la cuenta autenticada
     this.subscriptions.add(
-      this.newsletterService.http.post(`${this.newsletterService.API_URL}newsletter/subscribe`, {
-        email: this.CURRENT_USER_AUTHENTICATED.email,
-        userId: this.CURRENT_USER_AUTHENTICATED._id,
-        source: 'home'
-      }).subscribe({
+      this.newsletterService.subscribeAuthenticated().subscribe({
         next: (response: any) => {
           this.savingPreferences = false;
           this.isSubscribedToNewsletter = true;
@@ -177,9 +173,9 @@ export class SubscriptionsListComponent implements OnInit, OnDestroy {
           if (emailPref) emailPref.enabled = true;
           
           // Verificar si se vinculó una suscripción guest existente
-          if (response.linked) {
+          if (response.data?.linked) {
             this.showSuccessMessage('Tu suscripción anterior ha sido vinculada correctamente a tu cuenta.');
-          } else if (response.resubscribed) {
+          } else if (response.data?.resubscribed) {
             this.showSuccessMessage('Te has vuelto a suscribir correctamente al newsletter.');
           } else {
             this.showSuccessMessage('Te has suscrito correctamente al newsletter. Revisa tu email para confirmar.');

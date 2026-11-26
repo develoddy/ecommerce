@@ -124,10 +124,11 @@
 
     </section>
 
-    <!-- NEWSLETTER: PRESENTACIÓN VISUAL -->
-    <section class="editorial-newsletter">
+    <!-- NEWSLETTER -->
+    <section class="editorial-newsletter"
+             aria-labelledby="editorial-newsletter-title">
 
-      <h2>
+      <h2 id="editorial-newsletter-title">
         {{ 'store_editorial.newsletter.title' | translate }}
       </h2>
 
@@ -135,12 +136,66 @@
         {{ 'store_editorial.newsletter.description' | translate }}
       </p>
 
-      <button
-        type="button"
-        class="editorial-newsletter-cta"
-        (click)="openStore()">
-        {{ 'store_editorial.newsletter.cta' | translate }}
-      </button>
+      <form
+        *ngIf="!newsletterSuccess"
+        class="editorial-newsletter-form"
+        (ngSubmit)="onSubmitNewsletter()"
+        novalidate>
+
+        <div class="editorial-newsletter-fields">
+          <input
+            type="email"
+            name="newsletterEmail"
+            class="editorial-newsletter-input"
+            [(ngModel)]="newsletterEmail"
+            [placeholder]="'store_editorial.newsletter.placeholder' | translate"
+            [attr.aria-label]="'store_editorial.newsletter.placeholder' | translate"
+            [attr.aria-invalid]="newsletterErrorKey ? 'true' : null"
+            [attr.aria-describedby]="newsletterErrorKey ? 'editorial-newsletter-error' : null"
+            [disabled]="newsletterSubmitting"
+            autocomplete="email"
+            required>
+
+          <button
+            type="submit"
+            class="editorial-newsletter-cta"
+            [disabled]="newsletterSubmitting">
+
+            {{ (newsletterSubmitting
+              ? 'store_editorial.newsletter.submitting'
+              : 'store_editorial.newsletter.cta') | translate }}
+
+          </button>
+        </div>
+
+        <p
+          *ngIf="newsletterErrorKey"
+          id="editorial-newsletter-error"
+          class="editorial-newsletter-error"
+          role="alert">
+          {{ newsletterErrorKey | translate }}
+        </p>
+
+      </form>
+
+      <div role="status" aria-live="polite">
+        <p
+          *ngIf="newsletterSuccess"
+          class="editorial-newsletter-success">
+          {{ 'store_editorial.newsletter.success' | translate }}
+        </p>
+
+        <p *ngIf="newsletterSuccess">
+          {{ 'store_editorial.newsletter.successDescription' | translate }}
+        </p>
+      </div>
+
+      <p class="editorial-newsletter-privacy">
+        {{ 'store_editorial.newsletter.privacyText' | translate }}
+        <a [routerLink]="newsletterPrivacyUrl">
+          {{ 'store_editorial.newsletter.privacyLink' | translate }}
+        </a>.
+      </p>
 
     </section>
 

@@ -58,7 +58,7 @@ export class NewsletterService {
   /**
    * Suscribir email al newsletter
    */
-  subscribeEmail(email: string, source: 'home' | 'footer' | 'checkout' = 'home'): Observable<NewsletterResponse> {
+  subscribeEmail(email: string, source: 'home' | 'footer' | 'checkout' | 'editorial' | 'product' = 'home'): Observable<NewsletterResponse> {
     const payload = {
       email: email.toLowerCase().trim(),
       source,
@@ -134,6 +134,17 @@ export class NewsletterService {
    * Obtener suscripción del usuario autenticado
    * Endpoint protegido para usuarios normales (no requiere permisos admin)
    */
+  subscribeAuthenticated(): Observable<any> {
+    const token = this.authService.token;
+    const headers = new HttpHeaders().set('token', token || '');
+
+    return this.http.post(
+      `${URL_SERVICE}newsletter/subscription`,
+      {},
+      { headers }
+    );
+  }
+
   getUserSubscription(): Observable<any> {
     const token = this.authService.token;
     const headers = new HttpHeaders().set('token', token || '');
