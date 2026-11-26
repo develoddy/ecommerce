@@ -29,16 +29,23 @@ declare function productZoom([]):any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  
+
   title = 'ecommerce';
   locale: string = "";
-  country: string = "";  
+  country: string = "";
   private modalInstance: any;
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = true;
   hasProducts: boolean = false;
-  width: number = 100; 
+
+  // Chat visible exclusivamente en Home comercial.
+  get isCommercialHome(): boolean {
+    const path = this.router.url.split(/[?#]/)[0];
+    return /^\/[^/]+\/[^/]+\/home\/?$/.test(path);
+  }
+
+  width: number = 100;
   height: number = 100;
   showPreferences: boolean = false;
   loadingAnalytics: boolean = false;
@@ -48,11 +55,11 @@ export class AppComponent implements AfterViewInit {
     analytics: false,
     marketing: false,
     functional: false
-  }; 
+  };
 
   constructor(
     // public loader: LoaderService,
-    private translate: TranslateService, 
+    private translate: TranslateService,
     private router: Router,
     private titleService: Title,
     private seoService: SeoService,
@@ -76,7 +83,7 @@ export class AppComponent implements AfterViewInit {
     // 🌐 FASE 1: Configurar ngx-translate desde URL
     // Establecer inglés como idioma por defecto (fallback)
     this.translate.setDefaultLang('en');
-    
+
 
     // Inicializar valores
     this.country = this.localizationService.country;
@@ -97,7 +104,7 @@ export class AppComponent implements AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     const consentGiven = this.cookieConsentService.hasUserConsented();
-    
+
     if (!consentGiven) {
       // Mostrar modal de consentimiento
       const modalElement = document.getElementById('cookie_modal');
@@ -112,7 +119,7 @@ export class AppComponent implements AfterViewInit {
       // Si ya hay consentimiento, inicializar analytics
       try {
         await this.initializeAnalytics();
-        
+
         // Debug info en desarrollo
         setTimeout(() => {
           this.analyticsService.debugInfo();
@@ -185,16 +192,16 @@ export class AppComponent implements AfterViewInit {
       marketing: true,
       functional: true
     };
-    
+
     this.cookieConsentService.setPreferences(allAccepted);
     this.cookieConsentService.setConsent('accepted');
-    
+
     // Cerrar modal primero para mejor UX
     this.modalInstance?.hide();
-    
+
     // Mostrar indicador de carga
     this.loadingAnalytics = true;
-    
+
     // Inicializar analytics de forma asíncrona
     try {
       console.log('🔄 Inicializando analytics tras aceptar cookies...');
@@ -215,32 +222,32 @@ export class AppComponent implements AfterViewInit {
       marketing: false,
       functional: false
     };
-    
+
     this.cookieConsentService.setPreferences(onlyNecessary);
     this.cookieConsentService.setConsent('rejected');
-    
+
     // Desactivar analytics si estaban activos
     this.analyticsService.disableAnalytics();
-    
+
     // Cerrar modal
     this.modalInstance?.hide();
-    
+
     console.log('🔒 Usuario rechazó cookies opcionales - Solo cookies necesarias activas');
   }
 
   async saveCustomPreferences() {
     this.cookieConsentService.setPreferences(this.cookiePreferences);
     this.cookieConsentService.setConsent('custom');
-    
+
     // Reset vista y cerrar modal primero
     this.showPreferences = false;
     this.modalInstance?.hide();
-    
+
     // Mostrar indicador de carga si es necesario
     if (this.cookiePreferences.analytics || this.cookiePreferences.marketing) {
       this.loadingAnalytics = true;
     }
-    
+
     // Gestionar analytics según preferencias personalizadas
     try {
       if (this.cookiePreferences.analytics || this.cookiePreferences.marketing) {
@@ -256,7 +263,7 @@ export class AppComponent implements AfterViewInit {
     } finally {
       this.loadingAnalytics = false;
     }
-    
+
     console.log('⚙️ Usuario configuró preferencias personalizadas:', this.cookiePreferences);
   }
 
@@ -285,17 +292,17 @@ export class AppComponent implements AfterViewInit {
     this.isDesktop = width > 768;
 
     if (this.isMobile) {
-        this.width = 80;  
-        this.height = 80; 
+        this.width = 80;
+        this.height = 80;
     } else {
         this.width = 100;
-        this.height = 100; 
+        this.height = 100;
     }
   }
 
   @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
       this.checkDeviceType();
-  } 
+  }
 }
 

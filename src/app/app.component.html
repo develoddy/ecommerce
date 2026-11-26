@@ -1,7 +1,10 @@
 
 <router-outlet></router-outlet>
-<!-- Chat widget (global) -->
-<app-chat-widget *ngIf="hasProducts"></app-chat-widget>
+<!-- Chat widget: Home comercial -->
+<app-chat-widget
+    *ngIf="hasProducts"
+    [style.display]="isCommercialHome ? null : 'none'">
+</app-chat-widget>
 
 <!-- Loading Analytics Indicator -->
 <div *ngIf="loadingAnalytics" class="analytics-loading-toast position-fixed bottom-0 end-0 m-3 p-3 bg-primary text-white rounded shadow" style="z-index: 1050;">

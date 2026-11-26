@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../_service/cart.service';
@@ -26,7 +27,17 @@ declare function collectionSlider4items($: any): any;
 @Component({
   selector: 'app-list-carts',
   templateUrl: './list-carts.component.html',
-  styleUrls: ['./list-carts.component.css']
+  styleUrls: [
+    './list-carts.component.css',
+    './styles/cart-layout.css',
+    './styles/cart-items.css',
+    './styles/cart-summary.css',
+    './styles/cart-coupon.css',
+    './styles/cart-shipping.css',
+    './styles/cart-recommendations.css',
+    './styles/cart-empty.css',
+    './styles/cart-responsive.css'
+  ]
 })
 export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   euro = "€";
@@ -59,6 +70,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription = new Subscription(); // Mantener todas las subscripciones
 
   constructor(
+    private translate: TranslateService,
     private router: Router,
     public ecommerceGuestService: EcommerceGuestService,
     private cartService: CartService,
@@ -285,13 +297,13 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     
     // PRIORIDAD 1: Cupón - siempre tiene prioridad sobre cualquier otro descuento
     if (cart.code_cupon) {
-      return `Cupón ${cart.code_cupon}`;
+      return this.translate.instant('cart.messages.coupon_label', {code: cart.code_cupon});
     }
     
     // PRIORIDAD 2: Usar type_campaign validado en backend (ÚNICA FUENTE DE VERDAD)
     // type_campaign: 1=Campaign Discount, 2=Flash Sale, 3=Cupón
     if (cart.type_campaign === 3) {
-      return `Cupón ${cart.code_cupon || ''}`;
+      return this.translate.instant('cart.messages.coupon_label', {code: cart.code_cupon || ''});
     } else if (cart.type_campaign === 2) {
       return 'Flash Sale';
     } else if (cart.type_campaign === 1) {
@@ -483,6 +495,120 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(LandingSubscriptions);
   }
 
+
+  // CX-03.02.07 - Cart recommendations
+  get cartRecommendations(): any[] {
+    const excluded = new Set(
+      this.listCarts.map(cart => cart.product?.slug)
+    );
+
+    const products = [
+      ...(Array.isArray(this.interest_products) ? this.interest_products : []),
+      ...(Array.isArray(this.related_products) ? this.related_products : [])
+    ];
+
+    const result: any[] = [];
+
+    for (const product of products) {
+      if (!product?.slug || excluded.has(product.slug)) {
+        continue;
+      }
+
+      excluded.add(product.slug);
+      result.push(product);
+
+      if (result.length === 6) {
+        break;
+      }
+    }
+
+    return result;
+  }
+
+  // Native recommendations scroll indicator.
+  onRecommendationsScroll(): void {
+    // Angular refreshes the indicator bindings on scroll.
+  }
+
+  getRecommendationIndicatorWidth(track: HTMLElement): number {
+    if (!track.scrollWidth) return 100;
+
+    return Math.min(
+      100,
+      (track.clientWidth / track.scrollWidth) * 100
+    );
+  }
+
+  getRecommendationProgress(track: HTMLElement): number {
+    if (!track.scrollWidth) return 0;
+
+    const maxScroll = Math.max(
+      0,
+      track.scrollWidth - track.clientWidth
+    );
+
+    const position = Math.max(
+      0,
+      Math.min(track.scrollLeft, maxScroll)
+    );
+
+    return (position / track.scrollWidth) * 100;
+  }
+
+  scrollRecommendations(track: HTMLElement, direction: number): void {
+    const card = track.firstElementChild as HTMLElement | null;
+
+    if (!card) return;
+
+    const gap = parseFloat(window.getComputedStyle(track).columnGap) || 0;
+    const distance = card.getBoundingClientRect().width + gap;
+
+    const reducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    track.scrollBy({
+      left: direction * distance,
+      behavior: reducedMotion ? 'auto' : 'smooth'
+    });
+  }
+
+  isRecommendationsEnd(track: HTMLElement): boolean {
+    return track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+  }
+
+  setRecommendationsScroll(track: HTMLElement, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    track.scrollLeft = Number(input.value);
+  }
+
+  trackRecommendation(index: number, product: any): string {
+    return product.slug;
+  }
+
+  getRecommendationPrice(product: any): number {
+    return this.priceCalculationService.calculateFinalPrice(
+      product,
+      this.SALE_FLASH
+    );
+  }
+
+  hasRecommendationDiscount(product: any): boolean {
+    return this.priceCalculationService.hasDiscount(
+      product.price_usd,
+      this.getRecommendationPrice(product)
+    );
+  }
+
+  openRecommendation(event: MouseEvent, product: any): void {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    event.preventDefault();
+    this.navigateToProduct(product.slug, product.campaing_discount?.id);
+  }
+
   private handleProductResponse(resp: any): void {
     this.product_selected = resp.product;
     this.related_products = resp.related_products;
@@ -556,7 +682,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
     let newQty = Number(cart.cantidad) + quantityChange;
 
     if (newQty < 1) {
-      alertDanger("Debes tener al menos un producto en el carrito.");
+      alertDanger(this.translate.instant('cart.messages.minimum'));
       return;
     }
 
@@ -569,7 +695,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (isNaN(newQty) || newQty < 1) {
       newQty = 1;
-      alertDanger("Debes tener al menos un producto en el carrito.");
+      alertDanger(this.translate.instant('cart.messages.minimum'));
     }
 
     cart.cantidad = newQty;
@@ -808,7 +934,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
   applyCupon(): void {
     // Validar que se haya ingresado un código
     if (!this.codeCupon || this.codeCupon.trim() === '') {
-      alertDanger('Por favor ingresa un código de cupón.');
+      alertDanger(this.translate.instant('cart.messages.code_required'));
       return;
     }
 
@@ -817,20 +943,20 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Validar si el mismo cupón ya está aplicado
     if (this.isSameCouponAlreadyApplied(this.codeCupon)) {
-      alertDanger(`El cupón "${normalizedCoupon}" ya está aplicado en tu carrito.`);
+      alertDanger(this.translate.instant('cart.messages.already_applied', {code: normalizedCoupon}));
       return;
     }
 
     // Validar si hay otro cupón aplicado
     if (this.hasActiveCoupon()) {
       const activeCoupon = this.getActiveCouponCode();
-      alertDanger(`Ya tienes el cupón "${activeCoupon?.toUpperCase()}" aplicado. Quítalo primero para aplicar uno nuevo.`);
+      alertDanger(this.translate.instant('cart.messages.another_applied', {code: activeCoupon?.toUpperCase()}));
       return;
     }
 
     // NUEVA LÓGICA SELECTIVA: Validar que haya al menos productos elegibles para cupón
     if (!this.hasProductsEligibleForCoupon()) {
-      alertDanger('Todos los productos en tu carrito ya tienen descuentos aplicados.');
+      alertDanger(this.translate.instant('cart.coupon.all_discounted'));
       return;
     }
 
@@ -888,13 +1014,13 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
 
           if (productsWithNewCoupon.length === 0) {
             // ❌ EL CUPÓN NO SE APLICÓ A NINGÚN PRODUCTO
-            alertDanger('El cupón no se aplica a los productos de tu carrito.');
+            alertDanger(this.translate.instant('cart.messages.not_applicable'));
           } else {
             // ✅ EL CUPÓN SE APLICÓ EXITOSAMENTE
             if (campaignCount > 0 && eligibleCount > 0) {
-              alertSuccess(`Cupón ${normalizedCoupon} aplicado correctamente a ${productsWithNewCoupon.length} producto(s). Los productos con descuentos previos mantienen sus precios especiales.`);
+              alertSuccess(this.translate.instant('cart.messages.applied_selective', {code: normalizedCoupon, count: productsWithNewCoupon.length}));
             } else {
-              alertSuccess(`Cupón ${normalizedCoupon} aplicado correctamente a ${productsWithNewCoupon.length} producto(s).`);
+              alertSuccess(this.translate.instant('cart.messages.applied', {code: normalizedCoupon, count: productsWithNewCoupon.length}));
             }
           }
 
@@ -924,7 +1050,7 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   removeCupon(): void {
     if (!this.hasActiveCoupon()) {
-      alertDanger('No hay ningún cupón aplicado para remover.');
+      alertDanger(this.translate.instant('cart.messages.no_coupon'));
       return;
     }
 
@@ -941,14 +1067,14 @@ export class ListCartsComponent implements OnInit, AfterViewInit, OnDestroy {
       if (resp.message === 403) {
         alertDanger(resp.message_text);
       } else {
-        alertSuccess(`Cupón "${activeCoupon}" removido correctamente.`);
+        alertSuccess(this.translate.instant('cart.messages.removed', {code: activeCoupon}));
         this.codeCupon = ''; // Limpiar input
         this.sotoreCarts();
       }
     }, (error) => {
       // Si no existe el método removeCupon, usar applyCupon con código vacío
       this.cartService.apllyCupon({ code: '', user_id: this.currentUser._id }).subscribe((resp: any) => {
-        alertSuccess(`Cupón "${activeCoupon}" removido correctamente.`);
+        alertSuccess(this.translate.instant('cart.messages.removed', {code: activeCoupon}));
         this.codeCupon = '';
         this.sotoreCarts();
       });

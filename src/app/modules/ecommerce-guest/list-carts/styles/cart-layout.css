@@ -1,0 +1,42 @@
+/* CX-03.02.01 - Cart layout */
+
+.ld-cart-header {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 24px 24px;
+    text-align: left;
+}
+
+.ld-cart-header .container-fluid {
+    padding: 0;
+}
+
+.ld-cart-header .page-title h2 {
+    font-size: 26px;
+    line-height: 1.25;
+}
+
+.ld-cart-header .page-title p {
+    text-align: left;
+    margin-top: 8px !important;
+}
+
+.ld-cart-container {
+    width: 100%;
+    max-width: 1280px;
+    padding: 0 24px;
+    margin: 0 auto;
+}
+
+.ld-cart-grid {
+    margin-left: 0;
+    margin-right: 0;
+    row-gap: 24px;
+}
+
+.ld-cart-grid > .ld-cart-items,
+.ld-cart-grid > .ld-cart-summary {
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
