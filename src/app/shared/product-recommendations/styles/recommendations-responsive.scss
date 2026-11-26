@@ -1,0 +1,84 @@
+@media (min-width: 768px) {
+    .ld-recommendations-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .ld-recommendations-nav {
+        display: flex;
+    }
+
+    .ld-recommendations-progress {
+        height: 24px;
+        background: transparent;
+        overflow: visible;
+        margin-top: 9px;
+    }
+
+    .ld-recommendations-progress::before {
+        content: '';
+        position: absolute;
+        top: 11px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #dedede;
+    }
+
+    .ld-recommendations-indicator {
+        top: 11px;
+        bottom: auto;
+        height: 2px;
+    }
+
+    .ld-recommendations-range {
+        display: block;
+    }
+
+    .ld-recommendations-track {
+        scroll-snap-type: none;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .ld-recommendations-track {
+        grid-auto-columns: calc((100% - 40px) / 3);
+    }
+}
+
+@media (max-width: 767px) {
+    .ld-recommendations {
+        margin: 32px auto;
+        padding: 24px 16px 0;
+    }
+
+    .ld-recommendations-header {
+        margin-bottom: 16px;
+    }
+
+    .ld-recommendations-header h2 {
+        font-size: 18px;
+    }
+
+    .ld-recommendations-header p {
+        font-size: 13px;
+    }
+
+    .ld-recommendations-track {
+        gap: 12px;
+        grid-auto-columns: calc((100% - 12px) / 2);
+        padding-bottom: 0;
+    }
+
+    .ld-recommendation h3,
+    .ld-recommendation-price {
+        font-size: 13px;
+    }
+
+    .ld-recommendation-tag {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+    }
+}

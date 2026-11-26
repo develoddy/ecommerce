@@ -75,6 +75,8 @@ declare function menuProductSlider($: any): any;
     './styles/product-controls.css',
     './styles/product-details.css',
     './styles/product-gallery.css',
+    './styles/product-sticky-purchase.css',
+    './styles/product-responsive.css',
   ],
 })
 export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy {

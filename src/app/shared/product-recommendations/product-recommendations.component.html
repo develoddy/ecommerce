@@ -1,0 +1,90 @@
+<section class="ld-recommendations">
+
+    <header class="ld-recommendations-header">
+        <div>
+            <h2>{{ (translationPrefix + '.title') | translate }}</h2>
+            <p>{{ (translationPrefix + '.subtitle') | translate }}</p>
+        </div>
+
+        <div class="ld-recommendations-nav" *ngIf="maxScroll > 1">
+            <button type="button"
+                    (click)="scroll(-1)"
+                    [disabled]="scrollPosition <= 1"
+                    [attr.aria-label]="'cart.recommendations.previous' | translate">
+                <i class="icon anm anm-angle-left-l" aria-hidden="true"></i>
+            </button>
+
+            <button type="button"
+                    (click)="scroll(1)"
+                    [disabled]="scrollPosition >= maxScroll - 1"
+                    [attr.aria-label]="'cart.recommendations.next' | translate">
+                <i class="icon anm anm-angle-right-l" aria-hidden="true"></i>
+            </button>
+        </div>
+    </header>
+
+    <div #track
+         class="ld-recommendations-track"
+         tabindex="0"
+         [attr.aria-label]="(translationPrefix + '.title') | translate"
+         (scroll)="updateScroll()"
+         (window:resize)="updateScroll()">
+
+        <article class="ld-recommendation"
+                 *ngFor="let product of products; trackBy: trackProduct">
+
+            <button type="button"
+                    class="ld-recommendation-link"
+                    (click)="openProduct(product)">
+
+                <div class="ld-recommendation-media">
+                    <img class="ld-recommendation-image"
+                         [src]="product.imagen"
+                         [alt]="product.title"
+                         loading="lazy"
+                         width="625"
+                         height="625">
+
+                    <span class="ld-recommendation-tag">
+                        {{ (translationPrefix + '.new_collection') | translate }}
+                    </span>
+                </div>
+
+                <h3>{{ product.title }}</h3>
+
+                <div class="ld-recommendation-price">
+                    <ng-container *ngIf="hasDiscount(product); else regularPrice">
+                        <del>{{ euro }} {{ product.price_usd }}</del>
+                        <strong class="ld-recommendation-discount">
+                            {{ euro }} {{ calculateFinalPrice(product) | number:'1.2-2' }}
+                        </strong>
+                    </ng-container>
+
+                    <ng-template #regularPrice>
+                        <strong>{{ euro }} {{ product.price_usd }}</strong>
+                    </ng-template>
+                </div>
+
+            </button>
+        </article>
+    </div>
+
+    <div class="ld-recommendations-progress"
+         *ngIf="maxScroll > 1">
+
+        <span class="ld-recommendations-indicator"
+              [style.width.%]="indicatorWidth"
+              [style.left.%]="indicatorPosition">
+        </span>
+
+        <input type="range"
+               class="ld-recommendations-range"
+               min="0"
+               step="1"
+               [max]="maxScroll"
+               [value]="scrollPosition"
+               (input)="setScroll($event)"
+               [attr.aria-label]="'cart.recommendations.scroll' | translate">
+    </div>
+
+</section>

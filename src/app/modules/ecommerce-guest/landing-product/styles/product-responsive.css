@@ -1,0 +1,106 @@
+/* PDP - Sticky Purchase responsive */
+
+@media (max-width: 991px) {
+    .ld-sticky-form {
+        gap: 10px;
+    }
+
+    .ld-sticky-purchase .stickyOptions .ld-sticky-select {
+        width: 150px;
+    }
+
+    .ld-sticky-add {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 767px) {
+    .ld-sticky-purchase {
+        padding: 12px 0;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .ld-sticky-form {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 10px;
+    }
+
+    .ld-sticky-purchase .product-featured-img,
+    .ld-sticky-purchase .ld-sticky-quantity {
+        display: none;
+    }
+
+    .ld-sticky-purchase .sticky-title {
+        display: flex;
+        grid-column: 1 / -1;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        max-width: none;
+        width: 100%;
+        gap: 12px;
+    }
+
+    .ld-sticky-purchase .ld-sticky-name {
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: none;
+    }
+
+    .ld-sticky-purchase .ld-sticky-price {
+        font-size: 15px;
+        white-space: nowrap;
+    }
+
+    .ld-sticky-purchase .ld-sticky-add {
+        font-size: 11px !important;
+        gap: 4px;
+        white-space: normal;
+        line-height: 1.3;
+    }
+
+    .ld-sticky-purchase .ld-sticky-add span {
+        font-size: inherit !important;
+    }
+
+    .ld-sticky-purchase .ld-sticky-add .icon {
+        font-size: 14px !important;
+        margin-right: 0 !important;
+    }
+
+    :host:has(.ld-sticky-purchase) #site-scroll {
+        bottom: calc(132px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    .ld-sticky-purchase .stickyOptions {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .ld-sticky-purchase .stickyOptions .ld-sticky-select {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .ld-sticky-add {
+        width: 100%;
+        font-size: 11px;
+        padding: 0 8px;
+    }
+}
+
+/* CX-02.11 - Mobile horizontal overflow */
+@media (max-width: 767px) {
+    .row:has(> .product-layout-img) {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .product-layout-img .slick-list {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        max-width: 100% !important;
+    }
+}

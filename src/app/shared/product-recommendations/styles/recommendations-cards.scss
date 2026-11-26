@@ -1,0 +1,93 @@
+.ld-recommendation {
+    min-width: 0;
+    scroll-snap-align: start;
+}
+
+.ld-recommendation-link {
+    display: block;
+    color: #111;
+    text-decoration: none;
+}
+
+.ld-recommendation-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    background: #e5e5e5;
+}
+
+.ld-recommendation h3 {
+    margin: 12px 0 6px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.ld-recommendation-price {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: #111;
+    font-size: 14px;
+}
+
+.ld-recommendation-price strong {
+    font-weight: 600;
+}
+
+.ld-recommendation-price del {
+    color: #777;
+}
+
+.ld-recommendation-discount {
+    color: #b42318;
+}
+
+/* Editorial product image */
+
+.ld-recommendation-media {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.ld-recommendation-tag {
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    left: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    color: #111;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+.ld-recommendation-link {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+    text-transform: none;
+}
+
+.ld-recommendation-link:focus-visible {
+    outline: 1px solid #111;
+    outline-offset: -1px;
+}
+
+.ld-recommendation-image {
+    border-radius: 0;
+}

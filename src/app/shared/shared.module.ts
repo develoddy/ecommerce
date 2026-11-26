@@ -11,6 +11,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory } from '../app.module';
 import { AddToCartModalComponent } from './modals/add-to-cart-modal/add-to-cart-modal.component';
 import { RelatedProductsComponent } from './related-products/related-products.component';
+import { ProductRecommendationsComponent } from './product-recommendations/product-recommendations.component';
 import { InterestProductsComponent } from './interest-products/interest-products.component';
 import { ProductSliderSkeletonComponent } from './skeleton-loader/product-slider-skeleton/product-slider-skeleton.component';
 import { ProductSingleSkeletonComponent } from './skeleton-loader/product-single-skeleton/product-single-skeleton.component';
@@ -25,6 +26,7 @@ import { BrandMessageComponent } from './brand-message/brand-message.component';
     FooterComponent,
     AddToCartModalComponent,
     RelatedProductsComponent,
+    ProductRecommendationsComponent,
     InterestProductsComponent,
     ProductSliderSkeletonComponent,
     ProductSingleSkeletonComponent,

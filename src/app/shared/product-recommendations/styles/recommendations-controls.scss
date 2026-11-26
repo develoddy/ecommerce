@@ -1,0 +1,89 @@
+/* Editorial scroll indicator */
+
+.ld-recommendations-track::-webkit-scrollbar {
+    display: none;
+}
+
+.ld-recommendations-progress {
+    position: relative;
+    height: 2px;
+    margin-top: 20px;
+    background: #dedede;
+    overflow: hidden;
+}
+
+.ld-recommendations-indicator {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: #111;
+    pointer-events: none;
+}
+
+.ld-recommendations-track:focus-visible {
+    outline: 1px solid #111;
+    outline-offset: 4px;
+}
+
+
+/* CX-03.02.07.06 - Carousel controls */
+
+.ld-recommendations-nav,
+.ld-recommendations-range {
+    display: none;
+}
+
+.ld-recommendations-nav {
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.ld-recommendations-nav button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid #d8d8d8;
+    border-radius: 50%;
+    background: #fff;
+    color: #111;
+    cursor: pointer;
+}
+
+.ld-recommendations-nav button:hover:not(:disabled) {
+    border-color: #111;
+}
+
+.ld-recommendations-nav button:disabled {
+    opacity: .3;
+    cursor: default;
+}
+
+.ld-recommendations-nav button:focus-visible,
+.ld-recommendations-progress:focus-within {
+    outline: 1px solid #111;
+    outline-offset: 4px;
+}
+
+.ld-recommendations-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: grab;
+}
+
+.ld-recommendations-range:active {
+    cursor: grabbing;
+}
+
+.ld-recommendations-nav button {
+    font-size: 14px;
+    line-height: 1;
+}
