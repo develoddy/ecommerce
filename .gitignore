@@ -42,3 +42,14 @@ testem.log
 ._*
 Thumbs.db
 *.md
+
+# Local backups and temporary files
+*.backup
+*.backup-*
+*.bak
+*.old
+*.orig
+*.tmp
+*.swp
+Captura de pantalla*
+Screenshot*

@@ -1,0 +1,98 @@
+/* CX-02 — Product Gallery UX */
+
+.prlightbox.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  max-width: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  aspect-ratio: 1 / 1;
+  line-height: 1 !important;
+  padding: 0 !important;
+  border: 1px solid #dedede !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  color: #111 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.prlightbox.btn:hover,
+.prlightbox.btn:focus {
+  background: #f5f5f5 !important;
+  color: #111 !important;
+}
+
+.pswp {
+  z-index: 10000 !important;
+}
+
+.pswp__bg {
+  background: #111 !important;
+}
+
+.pswp__top-bar {
+  background: #111 !important;
+}
+
+.pswp__counter {
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .prlightbox.btn {
+    right: 14px !important;
+    bottom: 24px !important;
+    transform: translate(-8px, -16px) !important;
+  }
+
+  .pswp__button--close {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+
+/* CX-02 — Product Thumbnails UX */
+
+.product-horizontal-thumb #gallery a {
+  position: relative;
+  border: 0 !important;
+  border-radius: 0;
+  box-shadow: none !important;
+  padding-bottom: 6px;
+  cursor: pointer;
+}
+
+.product-horizontal-thumb #gallery a img {
+  display: block;
+  border: 0 !important;
+  border-radius: 0;
+  box-shadow: none !important;
+}
+
+.product-horizontal-thumb #gallery a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: transparent;
+  pointer-events: none;
+}
+
+.product-horizontal-thumb #gallery a.ld-thumb-selected::after {
+  background: #111;
+}
+
+@media (max-width: 768px) {
+  .product-thumb.product-horizontal-thumb {
+    margin-top: 10px !important;
+  }
+}

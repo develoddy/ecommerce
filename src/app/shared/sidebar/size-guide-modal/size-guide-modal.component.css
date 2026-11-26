@@ -1,3 +1,7 @@
+.sizechart-modal {
+  z-index: 1055 !important;
+}
+
 /* Size Guide Modal Styles */
 .sizechart-modal .modal-dialog {
   max-width: 90vw;

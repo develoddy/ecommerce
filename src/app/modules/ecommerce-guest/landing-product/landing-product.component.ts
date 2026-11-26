@@ -67,7 +67,15 @@ declare function menuProductSlider($: any): any;
 @Component({
   selector: 'app-landing-product',
   templateUrl: './landing-product.component.html',
-  styleUrls: ['./landing-product.component.css'],
+  styleUrls: [
+    './landing-product.component.css',
+    './styles/product-layout.css',
+    './styles/product-storytelling.css',
+    './styles/product-purchase.css',
+    './styles/product-controls.css',
+    './styles/product-details.css',
+    './styles/product-gallery.css',
+  ],
 })
 export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy {
   currentUrl: string = '';

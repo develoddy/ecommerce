@@ -1,0 +1,180 @@
+/* CX-02.04.01 — Independent desktop columns */
+
+@media (min-width: 992px) {
+
+  .ld-pdp-desktop-bar {
+    grid-template-columns:
+      minmax(0, 1fr) minmax(0, 460px);
+    grid-template-areas: none;
+    grid-template-rows: auto;
+    column-gap: 32px;
+    align-items: start;
+  }
+
+  .ld-pdp-desktop-bar > .ld-pdp-editorial-column,
+  .ld-pdp-desktop-bar > .ld-pdp-purchase-column {
+    justify-self: stretch;
+    align-self: start !important;
+    padding: 0 !important;
+    min-width: 0;
+  }
+
+  .ld-pdp-desktop-bar > div.ld-pdp-editorial-column {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  .ld-pdp-desktop-bar > div.ld-pdp-purchase-column {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+
+  .ld-pdp-editorial-column,
+  .ld-pdp-purchase-column,
+  .ld-pdp-variants {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .ld-pdp-identity {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 44px;
+    align-items: start;
+    align-self: flex-start;
+    width: fit-content;
+    max-width: 100%;
+    gap: 12px;
+  }
+
+  .ld-pdp-identity > div,
+  .ld-pdp-editorial-column > div,
+  .ld-pdp-variants > div,
+  .ld-pdp-purchase-actions > div {
+    min-width: 0;
+    padding: 0 !important;
+    align-self: stretch !important;
+  }
+
+  .ld-pdp-identity .infolinks {
+    margin: 0;
+  }
+
+  .ld-pdp-variants > div:nth-child(-n+2) {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 12px 0 16px !important;
+  }
+
+  .ld-pdp-purchase-actions {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .ld-pdp-purchase-actions .product-form-quantity {
+    margin-right: 0 !important;
+  }
+
+  .ld-pdp-purchase-actions .qtyField {
+    width: 100%;
+  }
+}
+
+
+/* CX-02.05 — Delivery and production */
+
+.ld-pdp-service {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  color: #555;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ld-pdp-service > .icon {
+  flex: 0 0 20px;
+  font-size: 18px;
+  margin-top: 2px;
+  color: #333;
+}
+
+.ld-pdp-service-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.ld-pdp-service-content strong {
+  color: #222;
+  font-weight: 600;
+}
+
+.ld-pdp-production {
+  margin-top: 12px;
+}
+
+.ld-pdp-delivery,
+.ld-pdp-delivery-warning {
+  border-top: 1px solid #e5e5e5;
+}
+
+.ld-pdp-delivery-warning {
+  color: #856404;
+}
+
+.ld-pdp-delivery-warning strong,
+.ld-pdp-delivery-warning > .icon {
+  color: #856404;
+}
+
+@media (max-width: 991px) {
+  .ld-pdp-service {
+    font-size: 12px;
+    gap: 10px;
+  }
+}
+
+
+/* CX-02.05.03 — Full width service information */
+
+@media (min-width: 992px) {
+  .ld-pdp-purchase-actions > .ld-pdp-service-panel {
+    grid-column: 1 / -1;
+  }
+
+  .ld-pdp-service-panel .ld-pdp-production {
+    margin-top: 0;
+  }
+}
+
+
+/* CX-02.05.04 — Wishlist title alignment */
+
+@media (min-width: 992px) {
+  .ld-pdp-desktop-bar .ld-pdp-identity {
+    display: block;
+    width: 100%;
+  }
+
+  .ld-pdp-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .ld-pdp-title-row h1 {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .ld-pdp-title-row .infolinks {
+    flex: 0 0 44px;
+    margin: 0;
+  }
+}
