@@ -1,0 +1,28 @@
+/* CX-02.03 — Product storytelling */
+.ld-pdp-story {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 400;
+  overflow-wrap: break-word;
+}
+
+.ld-pdp-story p {
+  margin: 0;
+  white-space: pre-line;
+}
+
+.ld-pdp-story p + p {
+  margin-top: 8px;
+}
+
+.ld-pdp-story--desktop {
+  max-width: 460px;
+  margin-top: 16px;
+}
+
+.ld-pdp-story--mobile {
+  margin: 12px 0 16px;
+  font-size: 13px;
+  line-height: 1.5;
+}

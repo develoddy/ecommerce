@@ -1,0 +1,172 @@
+/* CX-02.07 — Product details refinement */
+
+.tabs-listing .product-tabs {
+  border-bottom: 1px solid #e5e5e5 !important;
+  gap: 24px;
+}
+
+.tabs-listing .product-tabs > li {
+  margin: 0 !important;
+}
+
+.tabs-listing .product-tabs > li > .tablink {
+  padding: 16px 0 !important;
+  font-size: 13px;
+  font-weight: 500 !important;
+  letter-spacing: 0.2px !important;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  background: transparent !important;
+}
+
+.tabs-listing .product-tabs > li.active > .tablink {
+  color: #111;
+  border-bottom-color: #111;
+  font-weight: 600 !important;
+}
+
+.tabs-listing .product-tabs > li > .tablink:hover {
+  color: #111;
+}
+
+/* Technical product information */
+
+.tabs-listing #description.tab-content > h2 {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.3px !important;
+}
+
+.tabs-listing .product-sku,
+.tabs-listing .product-sku span {
+  font-size: 12px !important;
+  color: #777 !important;
+}
+
+.tabs-listing .product-description {
+  max-width: 960px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #444;
+  overflow-wrap: break-word;
+}
+
+.tabs-listing .product-description > .row > div {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Mobile accordions */
+
+@media (max-width: 767px) {
+  .tabs-listing .tabs-ac-style {
+    min-height: 52px;
+    padding: 16px 12px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid #e5e5e5 !important;
+    background: transparent !important;
+    color: #222;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    box-sizing: border-box;
+  }
+
+  .tabs-listing .product-description {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .tabs-listing .product-sku {
+    margin-bottom: 16px;
+  }
+}
+
+
+/* CX-02.08 — Shipping and reviews refinement */
+
+.tabs-listing #shipping-return {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.ld-pdp-policy-title {
+  font-size: 18px !important;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: #111;
+}
+
+.ld-pdp-policy-notice {
+  padding: 16px;
+  background: #f7f7f7;
+  border: 1px solid #e8e8e8;
+  border-radius: 0;
+  color: #444;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.ld-pdp-policy-warning {
+  border-left: 3px solid #555;
+}
+
+.tabs-listing #shipping-return h5 {
+  font-size: 14px !important;
+  line-height: 1.5;
+}
+
+.tabs-listing #shipping-return ul {
+  padding-left: 20px;
+  list-style: disc outside;
+}
+
+.tabs-listing #shipping-return li {
+  margin-bottom: 4px;
+}
+
+.ld-pdp-reviews-empty {
+  padding: 40px 24px;
+  border: 1px solid #e5e5e5;
+  background: #fafafa;
+  text-align: center;
+}
+
+.ld-pdp-reviews-icon {
+  font-size: 32px;
+  color: #666;
+}
+
+.ld-pdp-reviews-empty h4 {
+  font-size: 16px !important;
+  letter-spacing: 0 !important;
+}
+
+.ld-pdp-reviews-empty p {
+  font-size: 14px !important;
+  line-height: 1.7;
+}
+
+@media (max-width: 767px) {
+  .tabs-listing #shipping-return {
+    font-size: 13px;
+  }
+
+  .ld-pdp-policy-title {
+    font-size: 16px !important;
+  }
+
+  .ld-pdp-policy-notice {
+    padding: 12px;
+  }
+
+  .ld-pdp-reviews-empty {
+    padding: 28px 16px;
+  }
+
+  .ld-pdp-reviews-empty p {
+    font-size: 13px !important;
+  }
+}

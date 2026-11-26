@@ -1,8 +1,0 @@
-User-agent: *
-Disallow: /es/es/shop/cart
-Disallow: /es/es/account/checkout/
-Disallow: /es/es/auth/login
-Disallow: /es/es/auth/register
-Disallow: /es/es/account/favorites
-Allow: /
-Sitemap: https://api.lujandev.com/sitemap.xml

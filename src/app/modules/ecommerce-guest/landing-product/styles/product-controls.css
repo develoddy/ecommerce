@@ -1,0 +1,50 @@
+/* CX-02.06.02 — Desktop floating controls */
+
+@media (min-width: 992px) {
+  #site-scroll {
+    bottom: 88px !important;
+    right: 28px !important;
+    width: 40px !important;
+    height: 40px !important;
+    line-height: 38px !important;
+    box-sizing: border-box;
+    background: #fff !important;
+    color: #222 !important;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    text-align: center;
+    box-shadow: none;
+  }
+
+  #site-scroll i {
+    color: #222 !important;
+  }
+
+  #site-scroll:hover {
+    background: #f5f5f5 !important;
+  }
+}
+
+
+/* CX-02.06.03 — Mobile floating controls */
+
+@media (max-width: 991px) {
+  #site-scroll {
+    right: 18px !important;
+    bottom: 24px !important;
+    width: 40px !important;
+    height: 40px !important;
+    line-height: 38px !important;
+    box-sizing: border-box;
+    background: #fff !important;
+    color: #222 !important;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    text-align: center;
+    box-shadow: none;
+  }
+
+  #site-scroll i {
+    color: #222 !important;
+  }
+}
