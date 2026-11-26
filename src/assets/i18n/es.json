@@ -586,7 +586,17 @@
         "newsletter": {
             "title": "Recibe novedades, lanzamientos y colecciones exclusivas.",
             "description": "Descubre lo próximo de LujanDev.",
-            "cta": "EXPLORAR LA TIENDA"
+            "cta": "SUSCRIBIRME",
+            "placeholder": "Introduce tu correo electrónico",
+            "submitting": "SUSCRIBIENDO...",
+            "success": "¡Ya formas parte de LujanDev!",
+            "successDescription": "Recibirás nuestras novedades, lanzamientos y colecciones exclusivas.",
+            "errorRequired": "Introduce tu correo electrónico.",
+            "errorInvalid": "Introduce un correo electrónico válido.",
+            "errorGeneric": "No hemos podido completar tu suscripción. Inténtalo de nuevo.",
+            "errorRateLimit": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
+            "privacyText": "Consulta nuestra",
+            "privacyLink": "política de privacidad"
         }
     }
 }

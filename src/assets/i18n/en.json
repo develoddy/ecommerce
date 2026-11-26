@@ -586,7 +586,17 @@
         "newsletter": {
             "title": "Get updates, new releases and exclusive collections.",
             "description": "Discover what's next from LujanDev.",
-            "cta": "EXPLORE THE STORE"
+            "cta": "SUBSCRIBE",
+            "placeholder": "Enter your email address",
+            "submitting": "SUBSCRIBING...",
+            "success": "You're now part of LujanDev!",
+            "successDescription": "You'll receive our updates, new releases and exclusive collections.",
+            "errorRequired": "Enter your email address.",
+            "errorInvalid": "Enter a valid email address.",
+            "errorGeneric": "We could not complete your subscription. Please try again.",
+            "errorRateLimit": "Too many attempts. Please wait a moment and try again.",
+            "privacyText": "Read our",
+            "privacyLink": "privacy policy"
         }
     }
 }

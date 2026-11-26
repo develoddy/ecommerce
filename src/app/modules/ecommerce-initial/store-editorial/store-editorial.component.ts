@@ -2,6 +2,8 @@ import { LoaderService } from 'src/app/modules/home/_services/product/loader.ser
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { NewsletterService } from 'src/app/services/newsletter.service';
 import { SeoService } from 'src/app/services/seo.service';
 import { URL_FRONTEND } from 'src/app/config/config';
 import { Router } from '@angular/router';
@@ -22,6 +24,12 @@ export type StoreEditorialCategory =
 export class StoreEditorialComponent implements OnInit, OnDestroy {
 
   private seoSubscription?: Subscription;
+  private newsletterSubscription?: Subscription;
+
+  newsletterEmail = '';
+  newsletterSubmitting = false;
+  newsletterSuccess = false;
+  newsletterErrorKey = '';
 
   editorialBanner: EditorialBanner | null = null;
   activeEditorialCategory: EditorialCategory = 'default';
@@ -59,6 +67,7 @@ export class StoreEditorialComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.seoSubscription?.unsubscribe();
+    this.newsletterSubscription?.unsubscribe();
   }
 
   private setupSEO(): void {
@@ -199,6 +208,7 @@ export class StoreEditorialComponent implements OnInit, OnDestroy {
     private localizationService: LocalizationService,
     private ecommerceGuestService: EcommerceGuestService,
     private seoService: SeoService,
+    private newsletterService: NewsletterService,
     public loader: LoaderService
   ) {}
 
@@ -306,6 +316,62 @@ export class StoreEditorialComponent implements OnInit, OnDestroy {
         );
       }
     });
+  }
+
+  get newsletterPrivacyUrl(): string {
+    return `${this.localizationService.routePrefix}/shop/privacy-policy`;
+  }
+
+  onSubmitNewsletter(): void {
+    if (this.newsletterSubmitting) {
+      return;
+    }
+
+    this.newsletterErrorKey = '';
+    this.newsletterSuccess = false;
+
+    const email = this.newsletterEmail.trim().toLowerCase();
+
+    if (!email) {
+      this.newsletterErrorKey = 'store_editorial.newsletter.errorRequired';
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.newsletterErrorKey = 'store_editorial.newsletter.errorInvalid';
+      return;
+    }
+
+    this.newsletterSubmitting = true;
+
+    this.newsletterSubscription = this.newsletterService
+      .subscribeEmail(email, 'editorial')
+      .pipe(
+        finalize(() => {
+          this.newsletterSubmitting = false;
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          if (response.status === 200 || response.status === 201) {
+            this.newsletterSuccess = true;
+            this.newsletterEmail = '';
+
+            try {
+              this.newsletterService.markEmailAsSubscribed(email);
+            } catch (error) {
+              console.warn('[StoreEditorial] Newsletter local storage:', error);
+            }
+          } else {
+            this.newsletterErrorKey = 'store_editorial.newsletter.errorGeneric';
+          }
+        },
+        error: (error) => {
+          this.newsletterErrorKey = error.status === 429
+            ? 'store_editorial.newsletter.errorRateLimit'
+            : 'store_editorial.newsletter.errorGeneric';
+        }
+      });
   }
 
   openStore(): void {
