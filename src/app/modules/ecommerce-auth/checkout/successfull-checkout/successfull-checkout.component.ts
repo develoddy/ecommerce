@@ -31,7 +31,15 @@ declare function alertSuccess([]): any;
 @Component({
   selector: 'app-successfull-checkout',
   templateUrl: './successfull-checkout.component.html',
-  styleUrls: ['./successfull-checkout.component.css'],
+  styleUrls: [
+    './successfull-checkout.component.css',
+    './styles/confirmation-layout.css',
+    './styles/confirmation-success.css',
+    './styles/confirmation-order.css',
+    './styles/confirmation-delivery.css',
+    './styles/confirmation-actions.css',
+    './styles/confirmation-responsive.css',
+  ],
 })
 export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement?: ElementRef;
@@ -118,19 +126,7 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const sessionId = this.routerActived.snapshot.queryParamMap.get('session_id');
 
-    // 🔒 Detectar recarga manual: si ya visitó esta página, redirigir a /labs
-    const hasVisitedSuccess = sessionStorage.getItem('visited_success_page');
-    if (hasVisitedSuccess === 'true') {
-      console.log('[Success] Recarga detectada - redirigiendo a /labs...');
-      sessionStorage.removeItem('visited_success_page');
-      sessionStorage.removeItem('checkout_sale_data');
-      sessionStorage.removeItem('modulePurchase');
-      this._router.navigate(['/labs']);
-      return;
-    }
-
-    // Marcar que el usuario está visitando la página de éxito por primera vez
-    sessionStorage.setItem('visited_success_page', 'true');
+    // Recover the order before deciding navigation.
 
     // Suscribirse a cambios de localización
     this.subscribeToLocalization();
@@ -242,16 +238,16 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
       
-      // 🔥 Si no se encontró data en ningún fallback, desactivar loading
+      // No recoverable order: return to the storefront.
       this.loading = false;
+      this._router.navigate([
+        '/', this.country, this.locale, 'home'
+      ], { replaceUrl: true });
+      return;
     }
 
-    // Limpiar parámetros de URL para evitar re-procesar en recarga
-    if (sessionId) {
-      const cleanPath = this._router.url.split('?')[0];
-     
-      this.location.replaceState(cleanPath);
-    }
+    // Mantener la referencia Stripe para recuperar el pedido.
+    // Preserve Stripe session_id for order recovery on reload.
 
     this.activate.emit(true);
     this.subscriptionService.setShowSubscriptionSection(false);

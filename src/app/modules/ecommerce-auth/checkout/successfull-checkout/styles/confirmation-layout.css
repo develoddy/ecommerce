@@ -1,0 +1,26 @@
+.ld-confirmation {
+  color: #171717;
+}
+
+.ld-confirmation .ld-confirmation-layout {
+  margin: 0;
+}
+
+.ld-confirmation .ld-confirmation-products,
+.ld-confirmation .ld-confirmation-summary {
+  min-width: 0;
+}
+
+.ld-confirmation .checkout-form > div {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.ld-confirmation .block {
+  border: 0;
+  box-shadow: none;
+}
+
+.ld-confirmation .money {
+  font-family: inherit;
+}

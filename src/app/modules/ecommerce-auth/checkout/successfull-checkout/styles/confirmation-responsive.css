@@ -1,0 +1,68 @@
+@media (min-width: 992px) {
+  .ld-confirmation .ld-confirmation-products {
+    padding-right: 24px !important;
+  }
+
+  .ld-confirmation .order-summary .main-col > .d-flex {
+    max-height: 440px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 8px;
+    scrollbar-width: thin;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .ld-confirmation .ld-confirmation-summary {
+    margin-top: 16px !important;
+    padding: 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .ld-confirmation .ld-confirmation-success {
+    padding: 24px 0 !important;
+    margin-bottom: 16px !important;
+  }
+
+  .ld-confirmation .ld-confirmation-success h1 {
+    font-size: 24px !important;
+  }
+
+  .ld-confirmation .product-image-container {
+    width: 76px;
+    min-width: 76px !important;
+    flex-basis: 76px;
+  }
+
+  .ld-confirmation .product-image {
+    width: 76px !important;
+    height: 76px !important;
+  }
+
+  .ld-confirmation .product-card > .d-flex {
+    gap: 12px !important;
+  }
+
+  .ld-confirmation .product-attributes .row > div {
+    width: 100%;
+  }
+
+  .ld-confirmation .product-total span {
+    font-size: 12px !important;
+  }
+
+  .ld-confirmation .cart-info {
+    padding: 16px !important;
+  }
+
+  .ld-confirmation .shipping-info,
+  .ld-confirmation .payment-info,
+  .ld-confirmation .order-details {
+    padding: 16px !important;
+  }
+
+  .ld-confirmation .final-actions {
+    margin-top: 16px !important;
+  }
+}

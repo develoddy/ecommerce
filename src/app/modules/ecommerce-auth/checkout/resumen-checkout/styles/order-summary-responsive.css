@@ -1,0 +1,143 @@
+@media (max-width: 767.98px) {
+    .ld-order-summary {
+        padding: 18px 16px;
+        margin-bottom: 8px;
+    }
+
+    .ld-order-summary .ld-order-title {
+        font-size: 15px;
+        margin-bottom: 14px !important;
+    }
+
+    .ld-order-summary .ld-order-image {
+        width: 76px;
+    }
+
+    .ld-order-summary .ld-order-item-heading {
+        font-size: 13px;
+    }
+
+    .ld-order-summary .ld-order-item:last-child {
+        border-bottom: 0;
+        padding-bottom: 0 !important;
+    }
+}
+
+
+.ld-order-toggle {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .checkout-grid:has(> .ld-order-summary) {
+        gap: 24px;
+    }
+
+    .ld-order-summary {
+        padding: 16px;
+        margin-bottom: 0;
+    }
+
+    .ld-order-summary .ld-order-toggle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 0;
+        min-height: 44px;
+        border: 0;
+        background: transparent;
+        color: #111;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .ld-order-toggle > .icon {
+        font-size: 21px;
+    }
+
+    .ld-order-toggle-label {
+        flex: 1;
+        min-width: 0;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
+    .ld-order-toggle-label small {
+        display: block;
+        margin-top: 4px;
+        font-size: 11px;
+        font-weight: 400;
+        color: #666;
+    }
+
+    .ld-order-toggle-price {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .ld-order-chevron {
+        width: 8px;
+        height: 8px;
+        border-right: 1.5px solid currentColor;
+        border-bottom: 1.5px solid currentColor;
+        transform: rotate(45deg);
+        margin: 0 3px 4px;
+    }
+
+    .ld-order-chevron-open {
+        transform: rotate(225deg);
+        margin-bottom: 0;
+    }
+
+    .ld-order-summary > .ld-order-collapsed {
+        display: none !important;
+    }
+
+    .ld-order-summary > .order-1:not(.ld-order-collapsed) {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #ddd;
+    }
+
+    .ld-order-summary .ld-order-totals {
+        display: block !important;
+    }
+
+    .ld-order-summary .ld-order-item:last-child {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 16px !important;
+    }
+
+    .ld-shipping-form .ld-field-number input {
+        padding-right: 12px !important;
+    }
+}
+
+
+/* Desktop order summary scroll */
+
+@media (min-width: 768px) {
+    .ld-order-summary .ld-order-items {
+        max-height: 420px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 8px;
+        scrollbar-width: thin;
+        scrollbar-color: #bcbcbc transparent;
+    }
+
+    .ld-order-summary .ld-order-items::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .ld-order-summary .ld-order-items::-webkit-scrollbar-thumb {
+        background: #bcbcbc;
+        border-radius: 2px;
+    }
+
+    .ld-order-summary .ld-order-items::-webkit-scrollbar-track {
+        background: transparent;
+    }
+}

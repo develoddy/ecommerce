@@ -1,0 +1,43 @@
+.ld-payment .ld-payment-address .top-sec {
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ld-payment .ld-payment-address .top-sec h3 {
+    font-size: 18px !important;
+    letter-spacing: 0 !important;
+}
+
+.ld-payment .ld-payment-address .top-sec button {
+    background: transparent !important;
+    color: #111 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-decoration: underline;
+    padding: 10px 0;
+    font-size: 13px;
+}
+
+.ld-payment .ld-payment-address .address-box {
+    background: #f8f8f8;
+    padding: 20px !important;
+    border-color: #ddd !important;
+    border-radius: 0 !important;
+    overflow-wrap: anywhere;
+}
+
+.ld-payment .ld-payment-address .address-box p {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.ld-payment .ld-payment-address .address-box .badge {
+    background: #ededed !important;
+    color: #555 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+}

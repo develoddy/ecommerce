@@ -1,0 +1,50 @@
+/* Checkout - Progress indicator */
+.checkout-stepper {
+    background: #fff;
+    padding: 24px 0 28px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 32px;
+}
+
+.checkout-stepper .row {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.checkout-stepper .col-4 {
+    z-index: 1;
+    min-width: 0;
+}
+
+.ld-step-progress {
+    position: absolute;
+    top: 23px;
+    left: 16.6667%;
+    width: 66.6666%;
+    height: 2px;
+    background: #e5e5e5;
+    z-index: 0;
+}
+
+.progress-line {
+    height: 100%;
+    background: #111;
+    transition: width 0.3s ease;
+}
+
+.step-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.step-circle .icon {
+    font-size: 21px;
+}
+
+.step-label {
+    font-size: 13px;
+    letter-spacing: 0;
+    line-height: 1.4;
+}

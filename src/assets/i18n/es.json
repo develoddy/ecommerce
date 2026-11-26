@@ -1,677 +1,681 @@
 {
-    "app": {
-        "title": "Tienda online"
+  "app": {
+    "title": "Tienda online"
+  },
+  "auth_profile": {
+    "login": {
+      "title": "Bienvenido/a",
+      "subtitle": "Inicia sesión con tu correo electrónico o regístrate para hacerte Miembro de LujanDev.",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "remember": "Mantener la sesión iniciada",
+      "forget_password": "¿Has olvidado tu contraseña?",
+      "button_sign_up_now": "Crear cuenta",
+      "button_login": "Iniciar sesión",
+      "loading": "Iniciando sesión...",
+      "error_title": "Error al iniciar sesión",
+      "secure_data": "Todos los datos se mantienen de forma segura",
+      "close": "Cerrar"
     },
-    "auth_profile": {
-        "login": {
-            "title": "Bienvenido/a",
-            "subtitle": "Inicia sesión con tu correo electrónico o regístrate para hacerte Miembro de LujanDev.",
-            "email": "Correo electrónico",
-            "password": "Contraseña",
-            "remember": "Mantener la sesión iniciada",
-            "forget_password": "¿Has olvidado tu contraseña?",
-            "button_sign_up_now": "Crear cuenta",
-            "button_login": "Iniciar sesión",
-            "loading": "Iniciando sesión...",
-            "error_title": "Error al iniciar sesión",
-            "secure_data": "Todos los datos se mantienen de forma segura",
-            "close": "Cerrar"
-        },
-        "register": {
-            "title":"Crear una nueva cuenta",
-            "subtitle":"Por favor ingresa los detalles",
-            "first_name": "Nombre",
-            "last_name": "Apellido",
-            "email": "Correo electrónico",
-            "password": "Contraseña",
-            "password_repeat": "Repetir contraseña",
-            "condition":"Acepto los <b>Términos y condiciones</b>",
-            "button_login": "Iniciar sesión",
-            "button_signup":"Registrar"
-        },
-        "forgot_password": {
-            "title":"Has olvidado tu contraseña",
-            "subtitle":"Ingrese su dirección de correo electrónico registrada. Le enviaremos un código para restablecer su contraseña.",
-            "email": "Correo electrónico",
-            "button_send":"Enviar",
-            "button_back": "Atrás"
-        }
+    "register": {
+      "title": "Crear una nueva cuenta",
+      "subtitle": "Por favor ingresa los detalles",
+      "first_name": "Nombre",
+      "last_name": "Apellido",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "password_repeat": "Repetir contraseña",
+      "condition": "Acepto los <b>Términos y condiciones</b>",
+      "button_login": "Iniciar sesión",
+      "button_signup": "Registrar"
     },
-    "header": {
-        "tagline": "Bugs. deploys. noches largas. ahora se llevan.",
-        "language_selector": {
-            "castellano": "Castellano"
-        },
-        "country_selector": {
-            "spain": "España"
-        },
-        "home":"Inicio",
-        "shop": {
-            "title": "Compras",
-            "list": {
-                "": ""
-            }
-        },
-        "pages":{
-            "title": "Paginas",
-            "list": {
-                "account": "Mi cuenta",
-                "cart": "Mi carrito",
-                "wishlist": "Mi lista de deseos",
-                "checkout": "Proceso de pago"
-            }
-        },
-        "about":"Nuestra historia",
-        "blog":"Blog",
-        "contact":"Contacta con nosotros",
-        "list_account": {
-            "myaccount":"Mi cuenta",
-            "myorders":"Mis pedidos",
-            "mypurchases":"Mis compras",
-            "support":"Soporte",
-            "login":"Iniciar sesión",
-            "logout":"Cerrar sesión"
-        },
-        "categories":"Categorias",
-        "categories_menu": {
-            "tshirts": "Camisetas",
-            "hoodies": "Hoodies",
-            "mugs": "Mugs",
-            "caps": "Gorras",
-            "all_tshirts": "Todas las Camisetas",
-            "tshirts_center_logo": "Camisetas Logo Central",
-            "tshirts_side_logo": "Camisetas Logo Lateral",
-            "all_hoodies": "Todas las Hoodies",
-            "hoodies_with_hood": "Hoodies con Capucha",
-            "all_mugs": "Todos los Mugs",
-            "all_caps": "Todas las Gorras",
-            "best_sellers": "Los más vendidos"
-        },
-        "search": {
-            "label": "Buscar",
-            "title": "Busca tu outfit developer 🕶",
-            "placeholder": "Buscar en LujanDev.",
-            "all_categories": "Todas las categorías",
-            "trending": "Tendencias actuales:",
-            "result_found": "resultado encontrado",
-            "results_found": "resultados encontrados",
-            "no_results": "No encontramos resultados",
-            "try_other_keywords": "Intenta buscar con otras palabras clave"
-        },
-        "account": {
-            "title": "Cuenta",
-            "no_account": "¿No tienes una cuenta?",
-            "signup": "Regístrate",
-            "lujandev_likes_you": "Lujandev likes you",
-            "help": "Ayuda"
-        },
-        "wishlist": {
-            "title": "Favoritos"
-        },
-        "cart": {
-            "title": "Carro"
-        },
-        "mobile": {
-            "menu": "Menu",
-            "region_language": "Región e idioma",
-            "country": "País",
-            "language": "Idioma"
-        },
-        "sale_badge": "Sale"
+    "forgot_password": {
+      "title": "Has olvidado tu contraseña",
+      "subtitle": "Ingrese su dirección de correo electrónico registrada. Le enviaremos un código para restablecer su contraseña.",
+      "email": "Correo electrónico",
+      "button_send": "Enviar",
+      "button_back": "Atrás"
+    }
+  },
+  "header": {
+    "tagline": "Bugs. deploys. noches largas. ahora se llevan.",
+    "language_selector": {
+      "castellano": "Castellano"
     },
-    "home": {
-        "loading": {"title": "Cargando tienda...", "description": "Preparando los mejores productos para ti"},
-        "today":"Hoy",
-        "flash_sales": "Venta Flash",
-        "browse_by_category":"Buscar por categoría",
-        "best_selling_products":"Productos más vendidos",
-        "explore_our_products":"Explora nuestros productos",
-        "users_feedback":"Comentarios de los usuarios",
-        "new_arrivals":"Los recién llegados",
-
-        "featured_build": {
-            "label": "FROM THE BUILD / 002",
-            "title": "FUNCIONABA EN<br>LOCALHOST.",
-            "subtitle": "Producción tenía otros planes.",
-            "description": "La clase de cosas que pasan construyendo software y terminan convirtiéndose en un diseño <b>LujanDev</b>.",
-            "cta": "VER DROP 001 →"
-        },
-
-        "collection_banners": {
-            "title": "COMPRA POR CATEGORÍA"
-        },
-
-        "manifesto": {
-            "label": "LUJANDEV / BUILT IN PUBLIC",
-            "title": "NO DISEÑAMOS<br>SOBRE CÓDIGO.<br><br>DISEÑAMOS DESDE<br>LO QUE PASA<br>CONSTRUYÉNDOLO.",
-            "lead": "Bugs reales. Deploys reales. Noches reales.",
-            "copy": "Lo que pasa mientras construimos LujanDev termina formando parte de LujanDev.",
-            "cta": "CONOCE LA HISTORIA →"
-        },
-
-        "brand_message": {
-            "title": "EL BUILD<br>CONTINÚA.",
-            "copy": "Nuevos bugs. Nuevos deploys.<br>Nuevas historias que pueden terminar<br>convertidas en el siguiente diseño.",
-            "newsletter_label": "BUILD LOGS. NUEVOS DROPS. SIN SPAM.",
-            "success": "¡Ya estás dentro del build!",
-            "placeholder": "Introduce tu correo electrónico",
-            "cta": "ÚNETE AL BUILD →"
-        },
-
-        "service_section": {
-            "support": {
-                "title": "Atención real",
-                "description": "Estamos contigo."
-            },
-            "shipping": {
-                "title": "Envío + seguimiento",
-                "description": "Sabes dónde está."
-            },
-            "payment": {
-                "title": "Pago seguro",
-                "description": "Sin historias."
-            },
-            "returns": {
-                "title": "Devoluciones fáciles",
-                "description": "Sin complicaciones."
-            }
-        },
-
-        "service_and_quality": {
-            "delivery": {
-                "title": "Entrega rápida y segura",
-                "description": "Cuéntanos sobre tu servicio."
-            },
-            "warranty": {
-                "title": "Garantía de devolución del dinero",
-                "description": "En 10 días."
-            },
-            "return": {
-                "title": "Política de devolución de 24 horas",
-                "description": "No hay preguntas."
-            },
-            "support": {
-                "title": "Soporte de calidad profesional",
-                "description": "Soporte en vivo 24 horas al día, 7 días a la semana."
-            }
-        },
-
-        "product_grid": {
-            "meta": "HECHO DE BUGS,<br>DEPLOYS Y DEMASIADAS HORAS.",
-            "description": "Diseños nacidos de lo que pasa mientras construyes y envías software.",
-            "best_seller": "Mejor Vendido",
-            "available_sizes": "Tallas disponibles:",
-            "out_of_stock": "Sin stock",
-            "select_size": "Seleccionar talla",
-            "add_to_cart": "Añadir al carrito",
-            "quick_view": "Vista rápida",
-            "add_to_favorites": "Añadir a favoritos",
-            "add_to_compare": "Añadir para comparar",
-            "view_drop": "VER DROP 001 →",
-            "explore_category": "Explorar",
-            "product_image_alt": "Camiseta {{product}} — LujanDev Drop 001",
-            "discount_label": "¡Oferta –{{percent}}%!"
-        }
+    "country_selector": {
+      "spain": "España"
     },
-    "footer": {
-        "explore": {
-            "title": "EXPLORA",
-            "about": "Sobre nosotros",
-            "all_products": "Todos los productos"
-        },
-        "help": {
-            "title": "AYUDA",
-            "shipping": "Envíos",
-            "returns": "Devoluciones",
-            "contact": "Contacto"
-        },
-        "localization": {
-            "title": "PAÍS E IDIOMA",
-            "country": "España",
-            "language": "Castellano"
-        },
-        "social": {
-            "follow_build": "SIGUE EL BUILD"
-        },
-        "copyright": "Todos los derechos reservados",
-        "legal": {
-            "legal_notice": "Aviso Legal",
-            "privacy": "Privacidad",
-            "cookies": "Cookies",
-            "terms": "Condiciones"
-        },
-        "legal_titles": {
-            "legal_notice": "Aviso Legal",
-            "privacy": "Política de Privacidad",
-            "cookies": "Política de Cookies",
-            "terms": "Condiciones Generales de Venta",
-            "odr": "Plataforma de Resolución de Litigios en Línea de la UE"
-        }
+    "home": "Inicio",
+    "shop": {
+      "title": "Compras",
+      "list": {
+        "": ""
+      }
     },
-    "main": {
-        "language": "Idioma",
-        "spanish": "Español",
-        "english": "Inglés",
-        "input_placeholder": "Introduce texto aquí",
-        "introduced_text": "El texto introducido es: {{ text }}"
+    "pages": {
+      "title": "Paginas",
+      "list": {
+        "account": "Mi cuenta",
+        "cart": "Mi carrito",
+        "wishlist": "Mi lista de deseos",
+        "checkout": "Proceso de pago"
+      }
     },
-    "product_detail": {
-        "loading": "Cargando producto...",
-        "colors": "Colores",
-        "color_selected": "Color seleccionado",
-        "select_color": "Seleccionar color",
-        "error_select_color": "Selecciona un color",
-        "sizes": "Tallas",
-        "size_selected": "Talla seleccionada",
-        "select_size": "Seleccionar talla",
-        "error_select_size": "Selecciona una talla",
-        "size_guide": "Guía de tallas",
-        "add_to_cart": "Añadir al carrito",
-        "add_to_favorites": "Añadir a favoritos",
-        "print_on_demand": "Print on Demand: Producto fabricado bajo demanda especialmente para ti",
-        "production_title": "Hecho para ti",
-        "production_description": "Fabricamos tu producto bajo pedido.",
-        "delivery_title": "Envío gratuito",
-        "delivery_estimate": "Entrega estimada:",
-        "article_number": "Art. Nº.",
-        "quantity": "Cantidad",
-        "select": "Seleccionar",
-        "add": "Añadir",
-        "tabs": {
-            "description": "Descripción",
-            "shipping_returns": "Envíos y devoluciones",
-            "reviews": "Reseñas",
-            "composition": "Composición, origen y cuidados"
-        },
-        "details": {
-            "color": "Color"
-        },
-        "shipping": {
-            "title": "Envíos",
-            "home_delivery": "Envío a domicilio: 3 a 7 días laborables",
-            "free_shipping": "Envío incluido en el precio del producto",
-            "tracking_included": "Seguimiento incluido en todos los envíos",
-            "pod_notice": "Print on Demand: Tus productos se fabrican bajo demanda especialmente para ti. Los tiempos de producción y envío pueden variar ligeramente.",
-            "free_delivery": "Entrega GRATIS el",
-            "for": "para",
-            "all_spain": "en toda España",
-            "not_available": "Envío no disponible",
-            "not_available_address": "para la dirección seleccionada."
-        },
-        "returns": {
-            "title": "Devoluciones y Reembolsos",
-            "pod_products": "Productos fabricados bajo demanda (Print on Demand)",
-            "pod_warning": "Nuestros productos se fabrican especialmente para ti al realizar el pedido, por lo que no aceptamos devoluciones por cambio de opinión, talla incorrecta o preferencias personales.",
-            "accepted_claims": "Reclamaciones aceptadas (plazo de 30 días):",
-            "defective_product": "Producto defectuoso: Impresión dañada, rota o con manchas",
-            "shipping_damage": "Daños en el envío: Producto deteriorado durante el transporte",
-            "wrong_product": "Producto incorrecto: Modelo, color o talla incorrectos",
-            "lost_order": "Pedido perdido: No recibido por el transportista",
-            "not_accepted": "NO se aceptan reclamaciones por:",
-            "change_mind": "Cambio de opinión sobre el diseño o producto",
-            "wrong_size_choice": "Talla elegida incorrectamente por el cliente",
-            "not_expected": "\"No era lo que esperaba\" (diseño correcto pero no gusta)",
-            "personal_preferences": "Preferencias personales o estéticas",
-            "how_to_claim": "¿Cómo gestionar una reclamación?",
-            "claim_instructions": "Si tu pedido presenta alguno de los problemas aceptados, contacta con nosotros dentro de los 30 días posteriores a la recepción proporcionando:",
-            "order_number": "Número de pedido",
-            "photos": "Fotografías claras del problema",
-            "description": "Descripción detallada del defecto o error",
-            "resolution": "En caso de confirmarse el error, procederemos a la reimpresión del producto o reembolso, según corresponda."
-        },
-        "reviews": {
-            "title": "Reseñas",
-            "avg_rating": "Puntuación media",
-            "ratings": "Calificaciones",
-            "no_reviews": "Este producto no tiene reseñas por ahora. ¡Sé el primero en compartir tu opinión!",
-            "customer_reviews": "Reseñas de clientes",
-            "write_review": "Escribe una reseña",
-            "email_notice": "Tu dirección de correo electrónico no será publicada. Los campos obligatorios están marcados con *",
-            "name": "Nombre",
-            "email": "Correo electrónico",
-            "review_title": "Título de la reseña",
-            "rating": "Clasificación",
-            "review_body": "Cuerpo de la reseña",
-            "characters_remaining": "(1500) caracteres restantes",
-            "submit_review": "Enviar reseña"
-        },
-        "errors": {
-            "please_select_color": "Por favor, selecciona un color",
-            "please_select_size": "Por favor, selecciona una talla"
-        },
-        "related_products": {
-            "title": "Del mismo estilo",
-            "subtitle": "Productos que hacen match con tu setup y tu estilo dev.",
-            "new_collection": "Nueva colección"
-        },
-        "interest_products": {
-            "title": "Recomendado para devs",
-            "subtitle": "Productos que encajan con tu pasión por el código y la cultura tech.",
-            "new_collection": "Nueva colección"
-        }
+    "about": "Nuestra historia",
+    "blog": "Blog",
+    "contact": "Contacta con nosotros",
+    "list_account": {
+      "myaccount": "Mi cuenta",
+      "myorders": "Mis pedidos",
+      "mypurchases": "Mis compras",
+      "support": "Soporte",
+      "login": "Iniciar sesión",
+      "logout": "Cerrar sesión"
     },
-    "checkout": {
-        "resumen": {
-            "delivery": {
-                "title": "Tipo de envío",
-                "home": "Domicilio",
-                "free": "GRATIS",
-                "store": "Tienda",
-                "pickup_point": "Punto de recogida",
-                "label": "Entrega:"
-            },
-            "modules": {
-                "digital": {
-                    "title": "Entrega digital instantánea",
-                    "description": "No necesitas proporcionar dirección de envío. Te enviaremos el enlace de descarga a tu email."
-                },
-                "service": {
-                    "title": "Servicio personalizado",
-                    "description": "No necesitas proporcionar dirección de envío. Te enviaremos instrucciones para agendar a tu email."
-                },
-                "integration": {
-                    "title": "Acceso a integración",
-                    "description": "No necesitas proporcionar dirección de envío. Te enviaremos credenciales a tu email."
-                }
-            },
-            "contact": {
-                "title": "Información de contacto",
-                "description": "Te enviaremos la información a este email",
-                "email_label": "Email",
-                "email_placeholder": "tu@email.com",
-                "email_required_error": "El email es obligatorio",
-                "email_invalid_error": "Ingresa un email válido",
-                "name_label": "Nombre completo",
-                "optional": "(opcional)",
-                "name_placeholder": "Tu nombre",
-                "name_hint": "Nos ayuda a personalizar la comunicación",
-                "continue_button": "Continuar al pago"
-            },
-            "authenticated_email": {
-                "title": "Email de entrega confirmado",
-                "description": "Enviaremos la información a:",
-                "continue_button": "Continuar al pago"
-            },
-            "address_form": {
-                "cancel_button": "Cancelar",
-                "edit_title": "Editar dirección",
-                "title": "Datos de envío",
-                "name_label": "Nombre",
-                "name_placeholder": "Nombre",
-                "surname_label": "Apellidos",
-                "surname_placeholder": "Apellidos",
-                "email_label": "E-Mail",
-                "email_placeholder": "E-mail",
-                "country_label": "País",
-                "country_placeholder": "País",
-                "eu_group": "🇪🇺 Unión Europea",
-                "street_label": "Calle",
-                "street_placeholder": "Calle (ej: Calle Gran Vía)",
-                "number_label": "Número",
-                "number_placeholder": "Número (ej: 123)",
-                "number_required_error": "Debes incluir el número de la calle para el envío",
-                "apartment_label": "Apartamento/Piso",
-                "apartment_placeholder": "Apartamento/Piso (opcional, ej: 3º B)",
-                "apartment_hint": "Opcional: piso, puerta, escalera, etc.",
-                "field_required_error": "Completa este campo para continuar",
-                "phone_label": "Móvil",
-                "phone_placeholder": "Móvil",
-                "set_default_label": "Elegir como dirección de envío habitual",
-                "update_button": "Actualizar dirección",
-                "save_button": "Guardar dirección",
-                "validating_button": "Validando...",
-                "error_prefix": "Error:"
-            },
-            "postal_code": {
-                "label": "Código postal",
-                "placeholder": "Código postal (ej: 28013)",
-                "searching": "Buscando...",
-                "valid_message": "Código postal válido",
-                "not_found_warning": "No hemos podido autocompletar este código postal. Introduce la población y provincia manualmente.",
-                "technical_error_warning": "No hemos podido verificar automáticamente el código postal. Introduce población y provincia."
-            },
-            "city": {
-                "label": "Población",
-                "select_placeholder": "Selecciona tu ciudad",
-                "available_count": "{{count}} ciudades disponibles para este código postal",
-                "select_required_error": "Por favor selecciona una ciudad",
-                "placeholder_auto": "Población (se autocompleta con el CP)",
-                "placeholder_manual": "Población",
-                "autocomplete_hint": "Se autocompletará al ingresar el código postal",
-                "manual_required_error": "Introduce la población",
-                "enter_zip_first_error": "Ingresa primero el código postal"
-            },
-            "province": {
-                "label": "Provincia/Estado",
-                "placeholder_auto": "Provincia (se autocompleta con el CP)",
-                "placeholder_manual": "Provincia",
-                "autocomplete_hint": "Se autocompletará al ingresar el código postal",
-                "manual_required_error": "Introduce la provincia",
-                "enter_zip_first_error": "Ingresa primero el código postal"
-            },
-            "address_list": {
-                "title": "Datos de envío",
-                "new_address_button": "Nueva dirección",
-                "change_button": "Cambiar",
-                "loading": "Cargando...",
-                "loading_description": "Cargando direcciones...",
-                "default_badge": "Dirección habitual",
-                "edit_button": "Editar",
-                "phone_with_prefix": "Tel. +34 {{phone}}"
-            },
-            "address_drawer": {
-                "title": "Dirección de envío",
-                "empty_title": "¡Oops! Tu carrito está vacío",
-                "empty_description": "Empieza a llenarlo con cosas que te encantarán.",
-                "confirm_button": "Confirmar dirección",
-                "continue_payment_button": "Continuar al pago",
-                "add_another_button": "Añadir otra dirección"
-            },
-            "cart_summary": {
-                "title": "Resumen de Precio",
-                "subtotal": "Subtotal",
-                "discount": "Descuento",
-                "shipping": "Envío",
-                "free": "Gratis",
-                "total": "Total",
-                "taxes_included": "Impuestos incluidos"
-            },
-            "continue_payment_button": "Continuar a pago",
-            "privacy_policy_text": "Al continuar, confirmas que has leído la",
-            "privacy_policy_link": "Política de privacidad",
-            "empty_cart": {
-                "title": "Tu carrito está vacío",
-                "description": "Inspírate con las últimas tendencias y descubre algo nuevo para renovar tu armario",
-                "discover_button": "Descubrir novedades"
-            },
-            "items_list": {
-                "title": "Artículos",
-                "sku_label": "Art. Nº",
-                "color_label": "Color",
-                "size_label": "Talla",
-                "quantity_label": "Cantidad",
-                "total_label": "Total"
-            },
-            "messages": {
-                "country_not_allowed": "Lo sentimos, no realizamos envíos a {{country}}. Solo enviamos a países de la Unión Europea.",
-                "shipping_error_generic": "No se pudo calcular el envío para esta dirección. Verifica que todos los datos sean correctos.",
-                "shipping_error_default": "No se pudo calcular el envío para esta dirección.",
-                "shipping_error_invalid_zip": "El código postal no es válido para este país.",
-                "shipping_error_invalid_address": "La dirección no es válida. Verifica que todos los datos sean correctos.",
-                "select_address_required": "Por favor, selecciona una dirección de envío antes de continuar.",
-                "spain_only_shipping": "Actualmente solo realizamos envíos a España.",
-                "shipping_calc_failed": "No se pudo calcular el envío para la dirección seleccionada. Por favor, verifica que la dirección sea correcta o selecciona otra.",
-                "empty_cart_error": "Tu carrito está vacío. Añade productos antes de continuar.",
-                "fill_required_fields": "Rellene los campos obligatorios de la dirección de envío",
-                "validating_postal": "Validando código postal y ciudad...",
-                "validating_printful": "Validando dirección con Printful...",
-                "address_valid_saving": "Dirección válida, guardando...",
-                "address_valid_updating": "Dirección válida, actualizando...",
-                "printful_validation_error": "Error al validar la dirección con Printful",
-                "printful_validation_error_short": "Error al validar la dirección",
-                "postal_validation_error": "Error al validar el código postal y ciudad",
-                "guest_not_identified_save": "No se pudo identificar el invitado para guardar la dirección",
-                "guest_not_identified_save_alert": "No se pudo identificar el invitado. Recarga la página e inténtalo de nuevo.",
-                "save_error": "Error al guardar la dirección",
-                "guest_email_required": "Por favor, ingresa tu email para continuar",
-                "guest_email_invalid": "Por favor, ingresa un email válido",
-                "guest_not_identified_usual": "No se pudo identificar el invitado para actualizar la dirección habitual.",
-                "login_email_required": "Es necesario ingresar el email",
-                "login_password_required": "Es necesario ingresar el password",
-                "unknown_error": "Error desconocido",
-                "update_address_error": "¡Oops! No se pudo actualizar la dirección"
-            }
-        },
-        "payment": {
-            "shipping": {
-                "title": "Dirección de envío"
-            },
-            "digital_delivery": {
-                "title": "Email de entrega",
-                "product_type": "Producto digital",
-                "immediate_delivery": "Envío inmediato por correo electrónico",
-                "default_customer_name": "Cliente"
-            },
-            "methods": {
-                "title": "Método de pago",
-                "card_label": "Tarjeta",
-                "paypal_label": "Paypal",
-                "paypal_info": "Después de hacer clic en “Completar la compra”, aparecerá una ventana emergente que te pedirá que inicies sesión en tu cuenta de PayPal. Revisa el pago y los detalles de envío para completar la compra. A continuación, irás a la página de confirmación del pedido de www.tienda.lujandev.com"
-            },
-            "buttons": {
-                "pay_with_card": "Pagar con tarjeta"
-            },
-            "legal": {
-                "terms_text": "Al finalizar la compra, confirmas que has leído, entendido y que aceptas las",
-                "terms_link": "Condiciones de venta",
-                "terms_title": "Condiciones Generales de Venta"
-            },
-            "address_modal": {
-                "select_country_placeholder": "Seleccione un país",
-                "address_label": "Dirección",
-                "state_label": "Ciudad",
-                "state_default_option": "Provincia/Estado",
-                "default_shipping_text": "Dirección de envío habitual",
-                "save_button": "Guardar cambios"
-            },
-            "errors": {
-                "stripe_load_failed": "Stripe no pudo cargarse",
-                "empty_cart": "El carrito está vacío",
-                "select_shipping_address": "Por favor, seleccione una dirección de envío.",
-                "complete_address_fields": "Por favor, complete todos los campos obligatorios de la dirección (nombre, dirección, email).",
-                "email_required_modules": "Email requerido para módulos digitales",
-                "complete_required_address_fields": "Por favor, complete todos los campos obligatorios de la dirección.",
-                "cannot_proceed_empty_cart": "No se puede proceder con la orden si el carrito está vacío.",
-                "select_appropriate_shipping": "Por favor, seleccione la dirección de envío correspondiente."
-            },
-            "address": {
-                "update_error": "Error al actualizar la dirección."
-            }
-        },
-        "steps": {
-            "payment": "Pago",
-            "confirmation": "Confirmación"
-        }
+    "categories": "Categorias",
+    "categories_menu": {
+      "tshirts": "Camisetas",
+      "hoodies": "Hoodies",
+      "mugs": "Mugs",
+      "caps": "Gorras",
+      "all_tshirts": "Todas las Camisetas",
+      "tshirts_center_logo": "Camisetas Logo Central",
+      "tshirts_side_logo": "Camisetas Logo Lateral",
+      "all_hoodies": "Todas las Hoodies",
+      "hoodies_with_hood": "Hoodies con Capucha",
+      "all_mugs": "Todos los Mugs",
+      "all_caps": "Todas las Gorras",
+      "best_sellers": "Los más vendidos"
     },
-    "store_editorial": {
-        "hero": {
-            "eyebrow": "THE DEVELOPER COLLECTION",
-            "titleLine1": "Diseño para",
-            "titleLine2": "quienes construyen.",
-            "categoriesLabel": "Explorar colecciones"
-        },
-        "categories": {
-            "tshirts": "CAMISETAS",
-            "hoodies": "SUDADERAS",
-            "mugs": "TAZAS",
-            "caps": "GORRAS",
-            "shop": "TIENDA"
-        },
-        "newsletter": {
-            "title": "Recibe novedades, lanzamientos y colecciones exclusivas.",
-            "description": "Descubre lo próximo de LujanDev.",
-            "cta": "SUSCRIBIRME",
-            "placeholder": "Introduce tu correo electrónico",
-            "submitting": "SUSCRIBIENDO...",
-            "success": "¡Ya formas parte de LujanDev!",
-            "successDescription": "Recibirás nuestras novedades, lanzamientos y colecciones exclusivas.",
-            "errorRequired": "Introduce tu correo electrónico.",
-            "errorInvalid": "Introduce un correo electrónico válido.",
-            "errorGeneric": "No hemos podido completar tu suscripción. Inténtalo de nuevo.",
-            "errorRateLimit": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
-            "privacyText": "Consulta nuestra",
-            "privacyLink": "política de privacidad"
-        }
+    "search": {
+      "label": "Buscar",
+      "title": "Busca tu outfit developer 🕶",
+      "placeholder": "Buscar en LujanDev.",
+      "all_categories": "Todas las categorías",
+      "trending": "Tendencias actuales:",
+      "result_found": "resultado encontrado",
+      "results_found": "resultados encontrados",
+      "no_results": "No encontramos resultados",
+      "try_other_keywords": "Intenta buscar con otras palabras clave"
+    },
+    "account": {
+      "title": "Cuenta",
+      "no_account": "¿No tienes una cuenta?",
+      "signup": "Regístrate",
+      "lujandev_likes_you": "Lujandev likes you",
+      "help": "Ayuda"
+    },
+    "wishlist": {
+      "title": "Favoritos"
     },
     "cart": {
-        "title": "Carrito de la compra",
-        "loading": "Cargando tu carrito...",
-        "count_one": "{{count}} producto en tu carrito",
-        "count_many": "{{count}} productos en tu carrito",
-        "sku": "Art. n.º",
-        "decrease": "Reducir cantidad",
-        "increase": "Aumentar cantidad",
-        "remove": "Eliminar",
-        "close": "Cerrar",
-        "free_shipping": "Envío gratuito",
-        "shipping_description": "Tu pedido incluye envío gratuito.",
-        "summary": "Resumen del pedido",
-        "checkout": "Finalizar compra",
-        "coupon": {
-            "title": "¿Tienes un código de descuento?",
-            "applied": "Cupón aplicado",
-            "remove": "Quitar",
-            "remove_title": "Quitar cupón",
-            "placeholder": "Código de cupón",
-            "apply": "Aplicar",
-            "apply_title": "Aplicar cupón",
-            "login_required": "Inicia sesión para usar cupones",
-            "guest_notice": "Los cupones solo están disponibles para usuarios registrados.",
-            "login": "Inicia sesión",
-            "or": "o",
-            "register": "regístrate",
-            "guest_suffix": "para usar cupones.",
-            "hint": "Ingresa tu código de descuento para ahorrar en tu compra.",
-            "eligible": "El cupón se aplicará solo a productos sin descuentos previos.",
-            "eligible_count": "El cupón se aplicará solo a productos sin descuentos previos ({{eligible}} de {{total}} productos).",
-            "replace": "Para aplicar un cupón diferente, primero quita el actual.",
-            "all_discounted": "Todos los productos en tu carrito ya tienen descuentos aplicados."
-        },
-        "recommendations": {
-            "title": "Completa tu pedido",
-            "description": "Otros productos que encajan con tu estilo.",
-            "previous": "Productos anteriores",
-            "next": "Productos siguientes",
-            "scroll": "Desplazar recomendaciones"
-        },
-        "empty": {
-            "title": "Tu carrito está vacío",
-            "description": "Descubre productos creados para quienes viven entre código, ideas y café.",
-            "explore": "Explorar colección",
-            "home": "Volver al inicio"
-        },
-        "help": {
-            "prefix": "¿Necesitas ayuda? Ponte en contacto con el",
-            "link": "servicio de Atención al cliente"
-        },
-        "nav": {
-            "shop": "Compra",
-            "account": "Cuenta",
-            "home": "Inicio",
-            "favorites": "Favoritos",
-            "cart": "Carrito"
-        },
-        "messages": {
-            "minimum": "Debes tener al menos un producto en el carrito.",
-            "code_required": "Por favor ingresa un código de cupón.",
-            "already_applied": "El cupón \"{{code}}\" ya está aplicado en tu carrito.",
-            "another_applied": "Ya tienes el cupón \"{{code}}\" aplicado. Quítalo primero para aplicar uno nuevo.",
-            "not_applicable": "El cupón no se aplica a los productos de tu carrito.",
-            "applied": "Cupón {{code}} aplicado correctamente a {{count}} producto(s).",
-            "applied_selective": "Cupón {{code}} aplicado correctamente a {{count}} producto(s). Los productos con descuentos previos mantienen sus precios especiales.",
-            "no_coupon": "No hay ningún cupón aplicado para remover.",
-            "removed": "Cupón \"{{code}}\" removido correctamente.",
-            "coupon_label": "Cupón {{code}}"
-        }
+      "title": "Carro"
+    },
+    "mobile": {
+      "menu": "Menu",
+      "region_language": "Región e idioma",
+      "country": "País",
+      "language": "Idioma"
+    },
+    "sale_badge": "Sale"
+  },
+  "home": {
+    "loading": {
+      "title": "Cargando tienda...",
+      "description": "Preparando los mejores productos para ti"
+    },
+    "today": "Hoy",
+    "flash_sales": "Venta Flash",
+    "browse_by_category": "Buscar por categoría",
+    "best_selling_products": "Productos más vendidos",
+    "explore_our_products": "Explora nuestros productos",
+    "users_feedback": "Comentarios de los usuarios",
+    "new_arrivals": "Los recién llegados",
+    "featured_build": {
+      "label": "FROM THE BUILD / 002",
+      "title": "FUNCIONABA EN<br>LOCALHOST.",
+      "subtitle": "Producción tenía otros planes.",
+      "description": "La clase de cosas que pasan construyendo software y terminan convirtiéndose en un diseño <b>LujanDev</b>.",
+      "cta": "VER DROP 001 →"
+    },
+    "collection_banners": {
+      "title": "COMPRA POR CATEGORÍA"
+    },
+    "manifesto": {
+      "label": "LUJANDEV / BUILT IN PUBLIC",
+      "title": "NO DISEÑAMOS<br>SOBRE CÓDIGO.<br><br>DISEÑAMOS DESDE<br>LO QUE PASA<br>CONSTRUYÉNDOLO.",
+      "lead": "Bugs reales. Deploys reales. Noches reales.",
+      "copy": "Lo que pasa mientras construimos LujanDev termina formando parte de LujanDev.",
+      "cta": "CONOCE LA HISTORIA →"
+    },
+    "brand_message": {
+      "title": "EL BUILD<br>CONTINÚA.",
+      "copy": "Nuevos bugs. Nuevos deploys.<br>Nuevas historias que pueden terminar<br>convertidas en el siguiente diseño.",
+      "newsletter_label": "BUILD LOGS. NUEVOS DROPS. SIN SPAM.",
+      "success": "¡Ya estás dentro del build!",
+      "placeholder": "Introduce tu correo electrónico",
+      "cta": "ÚNETE AL BUILD →"
+    },
+    "service_section": {
+      "support": {
+        "title": "Atención real",
+        "description": "Estamos contigo."
+      },
+      "shipping": {
+        "title": "Envío + seguimiento",
+        "description": "Sabes dónde está."
+      },
+      "payment": {
+        "title": "Pago seguro",
+        "description": "Sin historias."
+      },
+      "returns": {
+        "title": "Devoluciones fáciles",
+        "description": "Sin complicaciones."
+      }
+    },
+    "service_and_quality": {
+      "delivery": {
+        "title": "Entrega rápida y segura",
+        "description": "Cuéntanos sobre tu servicio."
+      },
+      "warranty": {
+        "title": "Garantía de devolución del dinero",
+        "description": "En 10 días."
+      },
+      "return": {
+        "title": "Política de devolución de 24 horas",
+        "description": "No hay preguntas."
+      },
+      "support": {
+        "title": "Soporte de calidad profesional",
+        "description": "Soporte en vivo 24 horas al día, 7 días a la semana."
+      }
+    },
+    "product_grid": {
+      "meta": "HECHO DE BUGS,<br>DEPLOYS Y DEMASIADAS HORAS.",
+      "description": "Diseños nacidos de lo que pasa mientras construyes y envías software.",
+      "best_seller": "Mejor Vendido",
+      "available_sizes": "Tallas disponibles:",
+      "out_of_stock": "Sin stock",
+      "select_size": "Seleccionar talla",
+      "add_to_cart": "Añadir al carrito",
+      "quick_view": "Vista rápida",
+      "add_to_favorites": "Añadir a favoritos",
+      "add_to_compare": "Añadir para comparar",
+      "view_drop": "VER DROP 001 →",
+      "explore_category": "Explorar",
+      "product_image_alt": "Camiseta {{product}} — LujanDev Drop 001",
+      "discount_label": "¡Oferta –{{percent}}%!"
     }
+  },
+  "footer": {
+    "explore": {
+      "title": "EXPLORA",
+      "about": "Sobre nosotros",
+      "all_products": "Todos los productos"
+    },
+    "help": {
+      "title": "AYUDA",
+      "shipping": "Envíos",
+      "returns": "Devoluciones",
+      "contact": "Contacto"
+    },
+    "localization": {
+      "title": "PAÍS E IDIOMA",
+      "country": "España",
+      "language": "Castellano"
+    },
+    "social": {
+      "follow_build": "SIGUE EL BUILD"
+    },
+    "copyright": "Todos los derechos reservados",
+    "legal": {
+      "legal_notice": "Aviso Legal",
+      "privacy": "Privacidad",
+      "cookies": "Cookies",
+      "terms": "Condiciones"
+    },
+    "legal_titles": {
+      "legal_notice": "Aviso Legal",
+      "privacy": "Política de Privacidad",
+      "cookies": "Política de Cookies",
+      "terms": "Condiciones Generales de Venta",
+      "odr": "Plataforma de Resolución de Litigios en Línea de la UE"
+    }
+  },
+  "main": {
+    "language": "Idioma",
+    "spanish": "Español",
+    "english": "Inglés",
+    "input_placeholder": "Introduce texto aquí",
+    "introduced_text": "El texto introducido es: {{ text }}"
+  },
+  "product_detail": {
+    "loading": "Cargando producto...",
+    "colors": "Colores",
+    "color_selected": "Color seleccionado",
+    "select_color": "Seleccionar color",
+    "error_select_color": "Selecciona un color",
+    "sizes": "Tallas",
+    "size_selected": "Talla seleccionada",
+    "select_size": "Seleccionar talla",
+    "error_select_size": "Selecciona una talla",
+    "size_guide": "Guía de tallas",
+    "add_to_cart": "Añadir al carrito",
+    "add_to_favorites": "Añadir a favoritos",
+    "print_on_demand": "Print on Demand: Producto fabricado bajo demanda especialmente para ti",
+    "production_title": "Hecho para ti",
+    "production_description": "Fabricamos tu producto bajo pedido.",
+    "delivery_title": "Envío gratuito",
+    "delivery_estimate": "Entrega estimada:",
+    "article_number": "Art. Nº.",
+    "quantity": "Cantidad",
+    "select": "Seleccionar",
+    "add": "Añadir",
+    "tabs": {
+      "description": "Descripción",
+      "shipping_returns": "Envíos y devoluciones",
+      "reviews": "Reseñas",
+      "composition": "Composición, origen y cuidados"
+    },
+    "details": {
+      "color": "Color"
+    },
+    "shipping": {
+      "title": "Envíos",
+      "home_delivery": "Envío a domicilio: 3 a 7 días laborables",
+      "free_shipping": "Envío incluido en el precio del producto",
+      "tracking_included": "Seguimiento incluido en todos los envíos",
+      "pod_notice": "Print on Demand: Tus productos se fabrican bajo demanda especialmente para ti. Los tiempos de producción y envío pueden variar ligeramente.",
+      "free_delivery": "Entrega GRATIS el",
+      "for": "para",
+      "all_spain": "en toda España",
+      "not_available": "Envío no disponible",
+      "not_available_address": "para la dirección seleccionada."
+    },
+    "returns": {
+      "title": "Devoluciones y Reembolsos",
+      "pod_products": "Productos fabricados bajo demanda (Print on Demand)",
+      "pod_warning": "Nuestros productos se fabrican especialmente para ti al realizar el pedido, por lo que no aceptamos devoluciones por cambio de opinión, talla incorrecta o preferencias personales.",
+      "accepted_claims": "Reclamaciones aceptadas (plazo de 30 días):",
+      "defective_product": "Producto defectuoso: Impresión dañada, rota o con manchas",
+      "shipping_damage": "Daños en el envío: Producto deteriorado durante el transporte",
+      "wrong_product": "Producto incorrecto: Modelo, color o talla incorrectos",
+      "lost_order": "Pedido perdido: No recibido por el transportista",
+      "not_accepted": "NO se aceptan reclamaciones por:",
+      "change_mind": "Cambio de opinión sobre el diseño o producto",
+      "wrong_size_choice": "Talla elegida incorrectamente por el cliente",
+      "not_expected": "\"No era lo que esperaba\" (diseño correcto pero no gusta)",
+      "personal_preferences": "Preferencias personales o estéticas",
+      "how_to_claim": "¿Cómo gestionar una reclamación?",
+      "claim_instructions": "Si tu pedido presenta alguno de los problemas aceptados, contacta con nosotros dentro de los 30 días posteriores a la recepción proporcionando:",
+      "order_number": "Número de pedido",
+      "photos": "Fotografías claras del problema",
+      "description": "Descripción detallada del defecto o error",
+      "resolution": "En caso de confirmarse el error, procederemos a la reimpresión del producto o reembolso, según corresponda."
+    },
+    "reviews": {
+      "title": "Reseñas",
+      "avg_rating": "Puntuación media",
+      "ratings": "Calificaciones",
+      "no_reviews": "Este producto no tiene reseñas por ahora. ¡Sé el primero en compartir tu opinión!",
+      "customer_reviews": "Reseñas de clientes",
+      "write_review": "Escribe una reseña",
+      "email_notice": "Tu dirección de correo electrónico no será publicada. Los campos obligatorios están marcados con *",
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "review_title": "Título de la reseña",
+      "rating": "Clasificación",
+      "review_body": "Cuerpo de la reseña",
+      "characters_remaining": "(1500) caracteres restantes",
+      "submit_review": "Enviar reseña"
+    },
+    "errors": {
+      "please_select_color": "Por favor, selecciona un color",
+      "please_select_size": "Por favor, selecciona una talla"
+    },
+    "related_products": {
+      "title": "Del mismo estilo",
+      "subtitle": "Productos que hacen match con tu setup y tu estilo dev.",
+      "new_collection": "Nueva colección"
+    },
+    "interest_products": {
+      "title": "Recomendado para devs",
+      "subtitle": "Productos que encajan con tu pasión por el código y la cultura tech.",
+      "new_collection": "Nueva colección"
+    }
+  },
+  "checkout": {
+    "layout": {
+      "back_to_cart": "Volver al carrito",
+      "secure": "Compra segura"
+    },
+    "resumen": {
+      "delivery": {
+        "title": "Tipo de envío",
+        "home": "Domicilio",
+        "free": "GRATIS",
+        "store": "Tienda",
+        "pickup_point": "Punto de recogida",
+        "label": "Entrega:"
+      },
+      "modules": {
+        "digital": {
+          "title": "Entrega digital instantánea",
+          "description": "No necesitas proporcionar dirección de envío. Te enviaremos el enlace de descarga a tu email."
+        },
+        "service": {
+          "title": "Servicio personalizado",
+          "description": "No necesitas proporcionar dirección de envío. Te enviaremos instrucciones para agendar a tu email."
+        },
+        "integration": {
+          "title": "Acceso a integración",
+          "description": "No necesitas proporcionar dirección de envío. Te enviaremos credenciales a tu email."
+        }
+      },
+      "contact": {
+        "title": "Información de contacto",
+        "description": "Te enviaremos la información a este email",
+        "email_label": "Email",
+        "email_placeholder": "tu@email.com",
+        "email_required_error": "El email es obligatorio",
+        "email_invalid_error": "Ingresa un email válido",
+        "name_label": "Nombre completo",
+        "optional": "(opcional)",
+        "name_placeholder": "Tu nombre",
+        "name_hint": "Nos ayuda a personalizar la comunicación",
+        "continue_button": "Continuar al pago"
+      },
+      "authenticated_email": {
+        "title": "Email de entrega confirmado",
+        "description": "Enviaremos la información a:",
+        "continue_button": "Continuar al pago"
+      },
+      "address_form": {
+        "cancel_button": "Cancelar",
+        "edit_title": "Editar dirección",
+        "title": "Datos de envío",
+        "name_label": "Nombre",
+        "name_placeholder": "Nombre",
+        "surname_label": "Apellidos",
+        "surname_placeholder": "Apellidos",
+        "email_label": "E-Mail",
+        "email_placeholder": "E-mail",
+        "country_label": "País",
+        "country_placeholder": "País",
+        "eu_group": "🇪🇺 Unión Europea",
+        "street_label": "Calle",
+        "street_placeholder": "Calle (ej: Calle Gran Vía)",
+        "number_label": "Número",
+        "number_placeholder": "Número (ej: 123)",
+        "number_required_error": "Debes incluir el número de la calle para el envío",
+        "apartment_label": "Apartamento/Piso",
+        "apartment_placeholder": "Apartamento/Piso (opcional, ej: 3º B)",
+        "apartment_hint": "Opcional: piso, puerta, escalera, etc.",
+        "field_required_error": "Completa este campo para continuar",
+        "phone_label": "Móvil",
+        "phone_placeholder": "Móvil",
+        "set_default_label": "Elegir como dirección de envío habitual",
+        "update_button": "Actualizar dirección",
+        "save_button": "Guardar dirección",
+        "validating_button": "Validando...",
+        "error_prefix": "Error:"
+      },
+      "postal_code": {
+        "label": "Código postal",
+        "placeholder": "Código postal (ej: 28013)",
+        "searching": "Buscando...",
+        "valid_message": "Código postal válido",
+        "not_found_warning": "No hemos podido autocompletar este código postal. Introduce la población y provincia manualmente.",
+        "technical_error_warning": "No hemos podido verificar automáticamente el código postal. Introduce población y provincia."
+      },
+      "city": {
+        "label": "Población",
+        "select_placeholder": "Selecciona tu ciudad",
+        "available_count": "{{count}} ciudades disponibles para este código postal",
+        "select_required_error": "Por favor selecciona una ciudad",
+        "placeholder_auto": "Población (se autocompleta con el CP)",
+        "placeholder_manual": "Población",
+        "autocomplete_hint": "Se autocompletará al ingresar el código postal",
+        "manual_required_error": "Introduce la población",
+        "enter_zip_first_error": "Ingresa primero el código postal"
+      },
+      "province": {
+        "label": "Provincia/Estado",
+        "placeholder_auto": "Provincia (se autocompleta con el CP)",
+        "placeholder_manual": "Provincia",
+        "autocomplete_hint": "Se autocompletará al ingresar el código postal",
+        "manual_required_error": "Introduce la provincia",
+        "enter_zip_first_error": "Ingresa primero el código postal"
+      },
+      "address_list": {
+        "title": "Datos de envío",
+        "new_address_button": "Nueva dirección",
+        "change_button": "Cambiar",
+        "loading": "Cargando...",
+        "loading_description": "Cargando direcciones...",
+        "default_badge": "Dirección habitual",
+        "edit_button": "Editar",
+        "phone_with_prefix": "Tel. +34 {{phone}}"
+      },
+      "address_drawer": {
+        "title": "Dirección de envío",
+        "empty_title": "¡Oops! Tu carrito está vacío",
+        "empty_description": "Empieza a llenarlo con cosas que te encantarán.",
+        "confirm_button": "Confirmar dirección",
+        "continue_payment_button": "Continuar al pago",
+        "add_another_button": "Añadir otra dirección"
+      },
+      "cart_summary": {
+        "title": "Resumen de Precio",
+        "subtotal": "Subtotal",
+        "discount": "Descuento",
+        "shipping": "Envío",
+        "free": "Gratis",
+        "total": "Total",
+        "taxes_included": "Impuestos incluidos"
+      },
+      "continue_payment_button": "Continuar a pago",
+      "privacy_policy_text": "Al continuar, confirmas que has leído la",
+      "privacy_policy_link": "Política de privacidad",
+      "empty_cart": {
+        "title": "Tu carrito está vacío",
+        "description": "Inspírate con las últimas tendencias y descubre algo nuevo para renovar tu armario",
+        "discover_button": "Descubrir novedades"
+      },
+      "items_list": {
+        "title": "Artículos",
+        "sku_label": "Art. Nº",
+        "color_label": "Color",
+        "size_label": "Talla",
+        "quantity_label": "Cantidad",
+        "total_label": "Total"
+      },
+      "messages": {
+        "country_not_allowed": "Lo sentimos, no realizamos envíos a {{country}}. Solo enviamos a países de la Unión Europea.",
+        "shipping_error_generic": "No se pudo calcular el envío para esta dirección. Verifica que todos los datos sean correctos.",
+        "shipping_error_default": "No se pudo calcular el envío para esta dirección.",
+        "shipping_error_invalid_zip": "El código postal no es válido para este país.",
+        "shipping_error_invalid_address": "La dirección no es válida. Verifica que todos los datos sean correctos.",
+        "select_address_required": "Por favor, selecciona una dirección de envío antes de continuar.",
+        "spain_only_shipping": "Actualmente solo realizamos envíos a España.",
+        "shipping_calc_failed": "No se pudo calcular el envío para la dirección seleccionada. Por favor, verifica que la dirección sea correcta o selecciona otra.",
+        "empty_cart_error": "Tu carrito está vacío. Añade productos antes de continuar.",
+        "fill_required_fields": "Rellene los campos obligatorios de la dirección de envío",
+        "validating_postal": "Validando código postal y ciudad...",
+        "validating_printful": "Validando dirección con Printful...",
+        "address_valid_saving": "Dirección válida, guardando...",
+        "address_valid_updating": "Dirección válida, actualizando...",
+        "printful_validation_error": "Error al validar la dirección con Printful",
+        "printful_validation_error_short": "Error al validar la dirección",
+        "postal_validation_error": "Error al validar el código postal y ciudad",
+        "guest_not_identified_save": "No se pudo identificar el invitado para guardar la dirección",
+        "guest_not_identified_save_alert": "No se pudo identificar el invitado. Recarga la página e inténtalo de nuevo.",
+        "save_error": "Error al guardar la dirección",
+        "guest_email_required": "Por favor, ingresa tu email para continuar",
+        "guest_email_invalid": "Por favor, ingresa un email válido",
+        "guest_not_identified_usual": "No se pudo identificar el invitado para actualizar la dirección habitual.",
+        "login_email_required": "Es necesario ingresar el email",
+        "login_password_required": "Es necesario ingresar el password",
+        "unknown_error": "Error desconocido",
+        "update_address_error": "¡Oops! No se pudo actualizar la dirección"
+      },
+      "order_summary": {
+        "show": "Ver resumen del pedido",
+        "hide": "Ocultar resumen del pedido"
+      }
+    },
+    "payment": {
+      "shipping": {
+        "title": "Dirección de envío"
+      },
+      "digital_delivery": {
+        "title": "Email de entrega",
+        "product_type": "Producto digital",
+        "immediate_delivery": "Envío inmediato por correo electrónico",
+        "default_customer_name": "Cliente"
+      },
+      "methods": {
+        "title": "Método de pago",
+        "card_label": "Tarjeta",
+        "paypal_label": "Paypal",
+        "paypal_info": "Después de hacer clic en “Completar la compra”, aparecerá una ventana emergente que te pedirá que inicies sesión en tu cuenta de PayPal. Revisa el pago y los detalles de envío para completar la compra. A continuación, irás a la página de confirmación del pedido de www.tienda.lujandev.com"
+      },
+      "buttons": {
+        "pay_with_card": "Pagar con tarjeta"
+      },
+      "legal": {
+        "terms_text": "Al finalizar la compra, confirmas que has leído, entendido y que aceptas las",
+        "terms_link": "Condiciones de venta",
+        "terms_title": "Condiciones Generales de Venta"
+      },
+      "address_modal": {
+        "select_country_placeholder": "Seleccione un país",
+        "address_label": "Dirección",
+        "state_label": "Ciudad",
+        "state_default_option": "Provincia/Estado",
+        "default_shipping_text": "Dirección de envío habitual",
+        "save_button": "Guardar cambios"
+      },
+      "errors": {
+        "stripe_load_failed": "Stripe no pudo cargarse",
+        "empty_cart": "El carrito está vacío",
+        "select_shipping_address": "Por favor, seleccione una dirección de envío.",
+        "complete_address_fields": "Por favor, complete todos los campos obligatorios de la dirección (nombre, dirección, email).",
+        "email_required_modules": "Email requerido para módulos digitales",
+        "complete_required_address_fields": "Por favor, complete todos los campos obligatorios de la dirección.",
+        "cannot_proceed_empty_cart": "No se puede proceder con la orden si el carrito está vacío.",
+        "select_appropriate_shipping": "Por favor, seleccione la dirección de envío correspondiente."
+      },
+      "address": {
+        "update_error": "Error al actualizar la dirección."
+      }
+    },
+    "steps": {
+      "payment": "Pago",
+      "confirmation": "Confirmación"
+    }
+  },
+  "store_editorial": {
+    "hero": {
+      "eyebrow": "THE DEVELOPER COLLECTION",
+      "titleLine1": "Diseño para",
+      "titleLine2": "quienes construyen.",
+      "categoriesLabel": "Explorar colecciones"
+    },
+    "categories": {
+      "tshirts": "CAMISETAS",
+      "hoodies": "SUDADERAS",
+      "mugs": "TAZAS",
+      "caps": "GORRAS",
+      "shop": "TIENDA"
+    },
+    "newsletter": {
+      "title": "Recibe novedades, lanzamientos y colecciones exclusivas.",
+      "description": "Descubre lo próximo de LujanDev.",
+      "cta": "SUSCRIBIRME",
+      "placeholder": "Introduce tu correo electrónico",
+      "submitting": "SUSCRIBIENDO...",
+      "success": "¡Ya formas parte de LujanDev!",
+      "successDescription": "Recibirás nuestras novedades, lanzamientos y colecciones exclusivas.",
+      "errorRequired": "Introduce tu correo electrónico.",
+      "errorInvalid": "Introduce un correo electrónico válido.",
+      "errorGeneric": "No hemos podido completar tu suscripción. Inténtalo de nuevo.",
+      "errorRateLimit": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
+      "privacyText": "Consulta nuestra",
+      "privacyLink": "política de privacidad"
+    }
+  },
+  "cart": {
+    "title": "Carrito de la compra",
+    "loading": "Cargando tu carrito...",
+    "count_one": "{{count}} producto en tu carrito",
+    "count_many": "{{count}} productos en tu carrito",
+    "sku": "Art. n.º",
+    "decrease": "Reducir cantidad",
+    "increase": "Aumentar cantidad",
+    "remove": "Eliminar",
+    "close": "Cerrar",
+    "free_shipping": "Envío gratuito",
+    "shipping_description": "Tu pedido incluye envío gratuito.",
+    "summary": "Resumen del pedido",
+    "checkout": "Finalizar compra",
+    "coupon": {
+      "title": "¿Tienes un código de descuento?",
+      "applied": "Cupón aplicado",
+      "remove": "Quitar",
+      "remove_title": "Quitar cupón",
+      "placeholder": "Código de cupón",
+      "apply": "Aplicar",
+      "apply_title": "Aplicar cupón",
+      "login_required": "Inicia sesión para usar cupones",
+      "guest_notice": "Los cupones solo están disponibles para usuarios registrados.",
+      "login": "Inicia sesión",
+      "or": "o",
+      "register": "regístrate",
+      "guest_suffix": "para usar cupones.",
+      "hint": "Ingresa tu código de descuento para ahorrar en tu compra.",
+      "eligible": "El cupón se aplicará solo a productos sin descuentos previos.",
+      "eligible_count": "El cupón se aplicará solo a productos sin descuentos previos ({{eligible}} de {{total}} productos).",
+      "replace": "Para aplicar un cupón diferente, primero quita el actual.",
+      "all_discounted": "Todos los productos en tu carrito ya tienen descuentos aplicados."
+    },
+    "recommendations": {
+      "title": "Completa tu pedido",
+      "description": "Otros productos que encajan con tu estilo.",
+      "previous": "Productos anteriores",
+      "next": "Productos siguientes",
+      "scroll": "Desplazar recomendaciones"
+    },
+    "empty": {
+      "title": "Tu carrito está vacío",
+      "description": "Descubre productos creados para quienes viven entre código, ideas y café.",
+      "explore": "Explorar colección",
+      "home": "Volver al inicio"
+    },
+    "help": {
+      "prefix": "¿Necesitas ayuda? Ponte en contacto con el",
+      "link": "servicio de Atención al cliente"
+    },
+    "nav": {
+      "shop": "Compra",
+      "account": "Cuenta",
+      "home": "Inicio",
+      "favorites": "Favoritos",
+      "cart": "Carrito"
+    },
+    "messages": {
+      "minimum": "Debes tener al menos un producto en el carrito.",
+      "code_required": "Por favor ingresa un código de cupón.",
+      "already_applied": "El cupón \"{{code}}\" ya está aplicado en tu carrito.",
+      "another_applied": "Ya tienes el cupón \"{{code}}\" aplicado. Quítalo primero para aplicar uno nuevo.",
+      "not_applicable": "El cupón no se aplica a los productos de tu carrito.",
+      "applied": "Cupón {{code}} aplicado correctamente a {{count}} producto(s).",
+      "applied_selective": "Cupón {{code}} aplicado correctamente a {{count}} producto(s). Los productos con descuentos previos mantienen sus precios especiales.",
+      "no_coupon": "No hay ningún cupón aplicado para remover.",
+      "removed": "Cupón \"{{code}}\" removido correctamente.",
+      "coupon_label": "Cupón {{code}}"
+    }
+  }
 }

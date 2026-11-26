@@ -1,0 +1,112 @@
+.ld-order-summary {
+    min-width: 0;
+    align-self: start;
+    padding: 24px;
+    background: #f5f5f5;
+}
+
+.ld-order-summary > .order-1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.ld-order-summary .ld-order-title {
+    display: block !important;
+    order: 0;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 20px !important;
+    border: 0 !important;
+}
+
+.ld-order-summary .ld-order-items {
+    order: 1 !important;
+    padding: 0;
+    min-width: 0;
+}
+
+.ld-order-summary .ld-order-items h3 {
+    font-size: 12px !important;
+    font-weight: 500;
+    letter-spacing: .3px !important;
+    border-bottom: 1px solid #ddd !important;
+    padding-bottom: 12px !important;
+}
+
+.ld-order-summary .ld-order-item {
+    gap: 12px !important;
+    border-bottom: 1px solid #ddd;
+}
+
+.ld-order-summary .ld-order-image {
+    width: 88px;
+}
+
+.ld-order-summary .ld-order-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.ld-order-summary .ld-order-item-info {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.ld-order-summary .ld-order-item-heading {
+    flex-direction: column;
+    gap: 6px;
+    line-height: 1.4 !important;
+    font-size: 13px;
+}
+
+.ld-order-summary .ld-order-item-heading a {
+    font-weight: 500 !important;
+}
+
+.ld-order-summary .ld-order-attribute {
+    display: grid !important;
+    grid-template-columns: minmax(52px, auto) minmax(0, 1fr);
+    gap: 8px;
+    font-size: 12px;
+    line-height: 1.5 !important;
+    color: #555;
+}
+
+.ld-order-summary .ld-order-attribute > span {
+    width: auto !important;
+    margin-left: 0 !important;
+}
+
+.ld-order-summary .ld-order-totals {
+    order: 2 !important;
+    background: transparent !important;
+    margin: 20px 0 0 !important;
+    padding: 0 !important;
+}
+
+.ld-order-summary .ld-order-totals .row {
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.ld-order-summary .ld-order-grand-total {
+    border-top: 1px solid #ccc;
+    padding-top: 18px;
+    margin-top: 16px;
+    margin-bottom: 0 !important;
+}
+
+.ld-order-summary .ld-order-grand-total span {
+    font-weight: 600 !important;
+}
+
+.ld-order-summary .ld-order-grand-total .money {
+    font-size: 20px;
+}
+
+.ld-shipping-form .ld-field-submit .btn {
+    border-radius: 0 !important;
+}

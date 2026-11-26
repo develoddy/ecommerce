@@ -1,0 +1,72 @@
+/* Checkout - Responsive */
+@media (max-width: 767.98px) {
+    .checkout-stepper {
+        padding: 18px 0 20px;
+        margin-bottom: 24px;
+    }
+
+    .step-circle {
+        width: 42px;
+        height: 42px;
+    }
+
+    .step-circle .icon {
+        font-size: 18px;
+    }
+
+    .step-label {
+        font-size: 12px;
+    }
+
+    .ld-step-progress {
+        top: 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .progress-line,
+    .step-circle {
+        transition: none;
+    }
+}
+
+/* Checkout - Header and footer responsive */
+
+@media (max-width: 767.98px) {
+    .ld-checkout-header-inner {
+        min-height: 64px;
+        padding: 10px 16px;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .ld-checkout-logo img {
+        width: 112px;
+    }
+
+    .ld-checkout-back button {
+        font-size: 11px;
+        gap: 4px;
+        text-align: left;
+        line-height: 1.4;
+    }
+
+    .ld-checkout-secure {
+        font-size: 10px;
+        gap: 4px;
+        line-height: 1.4;
+    }
+
+    .ld-checkout-secure svg {
+        flex-shrink: 0;
+    }
+
+    .ld-checkout-footer {
+        margin-top: 32px;
+        padding: 24px 16px;
+    }
+
+    .ld-checkout-footer-links {
+        gap: 12px 18px;
+    }
+}

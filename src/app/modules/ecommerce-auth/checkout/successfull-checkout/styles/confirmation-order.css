@@ -1,0 +1,107 @@
+.ld-confirmation .order-summary {
+  padding: 0 !important;
+  margin-bottom: 24px !important;
+}
+
+.ld-confirmation .order-summary h3,
+.ld-confirmation .cart-info h3 {
+  font-size: 16px !important;
+  color: #171717 !important;
+  font-weight: 600 !important;
+  border-bottom: 1px solid #ddd !important;
+  padding-bottom: 14px !important;
+  text-align: left !important;
+}
+
+.ld-confirmation .order-summary h3 .icon,
+.ld-confirmation .cart-info h3 .icon {
+  display: none;
+}
+
+.ld-confirmation .product-card {
+  padding: 16px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid #ddd !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+
+.ld-confirmation .product-card > .d-flex {
+  flex-direction: row !important;
+  gap: 16px !important;
+}
+
+.ld-confirmation .product-image-container {
+  min-width: 96px !important;
+  width: 96px;
+  flex: 0 0 96px;
+  margin: 0 !important;
+}
+
+.ld-confirmation .product-image-container a {
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.ld-confirmation .product-image {
+  width: 96px !important;
+  height: 96px !important;
+  object-fit: cover;
+  border-radius: 0 !important;
+}
+
+.ld-confirmation .product-card .flex-grow-1 {
+  min-width: 0;
+}
+
+.ld-confirmation .product-card h5 {
+  font-size: 14px !important;
+  color: #171717 !important;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.ld-confirmation .attribute-icon {
+  display: none !important;
+}
+
+.ld-confirmation .product-attributes {
+  margin-bottom: 8px !important;
+}
+
+.ld-confirmation .product-attributes small,
+.ld-confirmation .product-attributes span {
+  font-size: 12px !important;
+}
+
+.ld-confirmation .product-total {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 8px 0 0 !important;
+  gap: 8px;
+}
+
+.ld-confirmation .product-total span {
+  color: #171717 !important;
+  font-size: 13px !important;
+}
+
+.ld-confirmation .cart-info {
+  background: #f5f5f5 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 24px !important;
+}
+
+.ld-confirmation .cart-info .row {
+  margin-bottom: 12px;
+}
+
+.ld-confirmation .cart-info .fs-5 {
+  border-top: 1px solid #ccc;
+  padding-top: 16px;
+  font-size: 17px !important;
+}

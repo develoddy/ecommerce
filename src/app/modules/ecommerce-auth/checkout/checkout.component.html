@@ -1,5 +1,42 @@
 <!--Page Wrapper-->
 <div class="page-wrapper">
+    <!-- Checkout Header -->
+    <header class="ld-checkout-header"
+            *ngIf="isPhysicalCheckout">
+        <div class="ld-checkout-header-inner">
+
+            <div class="ld-checkout-back">
+                <button type="button"
+                        *ngIf="currentStep !== 'successfull'"
+                        (click)="navigateToCart()">
+                    <i class="icon anm anm-angle-left-l"
+                       aria-hidden="true"></i>
+                    <span>{{ 'checkout.layout.back_to_cart' | translate }}</span>
+                </button>
+            </div>
+
+            <div class="ld-checkout-logo">
+                <img src="assets/images/logo.38890900945d.png"
+                     alt="LujanDev" />
+            </div>
+
+            <div class="ld-checkout-secure">
+                <svg width="16" height="18"
+                     viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.5"
+                     aria-hidden="true">
+                    <rect x="5" y="10" width="14"
+                          height="11" rx="1"></rect>
+                    <path d="M8 10V6a4 4 0 0 1 8 0v4"></path>
+                </svg>
+                <span>{{ 'checkout.layout.secure' | translate }}</span>
+            </div>
+
+        </div>
+    </header>
+    <!-- End Checkout Header -->
+
     <!-- Loading -->
     <div *ngIf="loader.loading$ | async" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
         <div class="row">
@@ -20,71 +57,61 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                     <!--Nav step checkout-->
                     <ng-container *ngIf="isCheckoutNavVisible">
-                        <div class="checkout-stepper" style="background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%); padding: 2rem 0rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                        <div class="checkout-stepper">
                             <div class="container">
-                                <div class="row justify-content-center align-items-center position-relative" style="max-width: 800px; margin: 0 auto;">
+                                <div class="row justify-content-center align-items-center position-relative">
                                     
                                     <!-- Línea de progreso -->
-                                    <div class="position-absolute w-100" style="height: 3px; background-color: #e9ecef; top: 50%; transform: translateY(-50%); z-index: 0; left: 0; right: 0;">
+                                    <div class="ld-step-progress">
                                         <div class="progress-line" 
-                                             [style.width]="currentStep === 'resumen' ? '0%' : currentStep === 'payment' ? '50%' : '100%'"
-                                             style="height: 100%; background: linear-gradient(90deg, #000 0%, #ccc 100%); transition: width 0.5s ease;"></div>
+                                             [style.width]="currentStep === 'resumen' ? '0%' : currentStep === 'payment' ? '50%' : '100%'"></div>
                                     </div>
 
                                     <!-- Step 1: Envío -->
-                                    <div class="col-4 text-center position-relative" style="z-index: 1;">
+                                    <div class="col-4 text-center position-relative">
                                         <div class="step-wrapper">
                                             <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
                                                  [style.background-color]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '#000' : '#ffffff'"
                                                  [style.border]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '3px solid #000' : '3px solid #dee2e6'"
-                                                 style="width: 56px; height: 56px; border-radius: 50%; transition: all 0.3s ease; cursor: pointer;"
                                                  (click)="currentStep !== 'resumen' && navigateToStep('resumen')">
                                                 <i class="icon anm anm-truck-l" 
-                                                   [style.color]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '#ffffff' : '#6c757d'"
-                                                   style="font-size: 1.5rem; transition: color 0.3s ease;"></i>
+                                                   [style.color]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '#ffffff' : '#6c757d'"></i>
                                             </div>
                                             <div class="step-label fw-semibold"
-                                                 [style.color]="currentStep === 'resumen' ? '#222' : '#6c757d'"
-                                                 style="font-size: 0.95rem; letter-spacing: 0.3px; transition: color 0.3s ease;">
+                                                 [style.color]="currentStep === 'resumen' ? '#222' : '#6c757d'">
                                                 {{ 'checkout.resumen.cart_summary.shipping' | translate }}
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- Step 2: Pago -->
-                                    <div class="col-4 text-center position-relative" style="z-index: 1;">
+                                    <div class="col-4 text-center position-relative">
                                         <div class="step-wrapper">
                                             <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
                                                  [style.background-color]="currentStep === 'payment' || currentStep === 'successfull' ? '#000' : '#ffffff'"
                                                  [style.border]="currentStep === 'payment' || currentStep === 'successfull' ? '3px solid #000' : '3px solid #dee2e6'"
-                                                 style="width: 56px; height: 56px; border-radius: 50%; transition: all 0.3s ease; cursor: pointer;"
                                                  (click)="currentStep === 'successfull' && navigateToStep('payment')">
                                                 <i class="icon anm anm-credit-card-l" 
-                                                   [style.color]="currentStep === 'payment' || currentStep === 'successfull' ? '#ffffff' : '#6c757d'"
-                                                   style="font-size: 1.5rem; transition: color 0.3s ease;"></i>
+                                                   [style.color]="currentStep === 'payment' || currentStep === 'successfull' ? '#ffffff' : '#6c757d'"></i>
                                             </div>
                                             <div class="step-label fw-semibold"
-                                                 [style.color]="currentStep === 'payment' ? '#222' : '#6c757d'"
-                                                 style="font-size: 0.95rem; letter-spacing: 0.3px; transition: color 0.3s ease;">
+                                                 [style.color]="currentStep === 'payment' ? '#222' : '#6c757d'">
                                                 {{ 'checkout.steps.payment' | translate }}
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- Step 3: Confirmación -->
-                                    <div class="col-4 text-center position-relative" style="z-index: 1;">
+                                    <div class="col-4 text-center position-relative">
                                         <div class="step-wrapper">
                                             <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
                                                  [style.background-color]="currentStep === 'successfull' ? '#000' : '#ffffff'"
-                                                 [style.border]="currentStep === 'successfull' ? '3px solid #000' : '3px solid #dee2e6'"
-                                                 style="width: 56px; height: 56px; border-radius: 50%; transition: all 0.3s ease;">
+                                                 [style.border]="currentStep === 'successfull' ? '3px solid #000' : '3px solid #dee2e6'">
                                                 <i class="icon anm anm-check-cil" 
-                                                   [style.color]="currentStep === 'successfull' ? '#ffffff' : '#6c757d'"
-                                                   style="font-size: 1.5rem; transition: color 0.3s ease;"></i>
+                                                   [style.color]="currentStep === 'successfull' ? '#ffffff' : '#6c757d'"></i>
                                             </div>
                                             <div class="step-label fw-semibold"
-                                                 [style.color]="currentStep === 'successfull' ? '#222' : '#6c757d'"
-                                                 style="font-size: 0.95rem; letter-spacing: 0.3px; transition: color 0.3s ease;">
+                                                 [style.color]="currentStep === 'successfull' ? '#222' : '#6c757d'">
                                                 {{ 'checkout.steps.confirmation' | translate }}
                                             </div>
                                         </div>
@@ -109,6 +136,36 @@
         <!--End Main Content-->
     </div>
     <!-- End Body Container -->
+
+
+    <!-- Checkout Footer -->
+    <footer class="ld-checkout-footer"
+            *ngIf="isPhysicalCheckout">
+        <nav class="ld-checkout-footer-links">
+
+            <a [routerLink]="['/', country, locale, 'shop', 'aviso-legal']">
+                {{ 'footer.legal.legal_notice' | translate }}
+            </a>
+
+            <a [routerLink]="['/', country, locale, 'shop', 'privacy-policy']">
+                {{ 'footer.legal.privacy' | translate }}
+            </a>
+
+            <a [routerLink]="['/', country, locale, 'shop', 'politica-cookies']">
+                {{ 'footer.legal.cookies' | translate }}
+            </a>
+
+            <a [routerLink]="['/', country, locale, 'shop', 'condiciones-venta']">
+                {{ 'footer.legal.terms' | translate }}
+            </a>
+
+        </nav>
+
+        <div class="ld-checkout-copyright">
+            &copy; LUJANDEV
+        </div>
+    </footer>
+    <!-- End Checkout Footer -->
 
     <!--Scoll Top-->
     <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>

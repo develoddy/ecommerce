@@ -1,29 +1,29 @@
 <!-- LOADING MINIMALISTA - Estilo LujanDev -->
 <div *ngIf="loading" class="payment-loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); display: flex; align-items: center; justify-content: center; z-index: 9999;">
     <div class="loading-container text-center" style="max-width: 400px; padding: 2rem;">
-        
+
         <!-- Simple Spinner -->
         <div class="mb-4">
             <div class="spinner-border" role="status" style="width: 3rem; height: 3rem; border: 3px solid #f3f3f3; border-top: 3px solid #000; border-radius: 50%; animation: spin 1s linear infinite;">
                 <span class="visually-hidden">Procesando...</span>
             </div>
         </div>
-        
+
         <!-- Título -->
         <h3 class="mb-3" style="color: #000; font-size: 1.5rem; font-weight: 600; letter-spacing: -0.5px;">
             Procesando pago
         </h3>
-        
+
         <!-- Mensaje simple -->
         <p class="mb-4" style="color: #666; font-size: 0.95rem; line-height: 1.5;">
             Por favor, espera mientras confirmamos tu transacción de forma segura.
         </p>
-        
+
         <!-- Barra de progreso minimalista -->
         <div class="progress mb-4" style="height: 2px; background: #f0f0f0; border-radius: 2px; overflow: hidden;">
             <div class="progress-bar" role="progressbar" style="width: 0%; background: #000; animation: progress 2s ease-in-out infinite;"></div>
         </div>
-        
+
         <!-- Badges de seguridad simplificados -->
         <div class="d-flex justify-content-center align-items-center gap-3 mb-3" style="font-size: 0.75rem; color: #999;">
             <div class="d-flex align-items-center">
@@ -36,12 +36,12 @@
                 <span>Cifrado SSL</span>
             </div>
         </div>
-        
+
         <!-- Nota -->
         <p style="color: #999; font-size: 0.8rem; margin: 0;">
             No cierres esta ventana
         </p>
-        
+
     </div>
 </div>
 
@@ -58,30 +58,30 @@
 }
 </style>
 
-<div [ngClass]="{'tab-pane': true, 'active': isLastStepActive_4 && isSaleSuccess}" id="steps4" [class.d-none]="loading">
+<div [ngClass]="{'tab-pane': true, 'active': isLastStepActive_4 && isSaleSuccess}" id="steps4" [class.d-none]="loading" [class.ld-confirmation]="!isModulePurchase">
     <ng-container>
         <!--Order success-->
         <!-- ORDER SUCCESS -->
-        <div class="success-text checkout-card text-center mb-md-5">
+        <div class="success-text checkout-card text-center mb-md-5 ld-confirmation-success">
             <!-- Animación de confirmación -->
             <div class="position-relative d-inline-block mb-4">
                 <i class="icon anm anm-check-circle-o d-block" style="font-size: 5rem; color: #28a745;"></i>
             </div>
-            
+
             <h1 class="mb-3" style="color: #000; font-size: 2.2rem; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                 ¡Gracias por tu compra!
             </h1>
             <p class="mb-2 text-success" style="font-size: 1.2rem; font-weight: 600; max-width: 600px; margin: 0 auto;">
-                ✅ Tu pago se ha realizado con éxito
+                <ng-container *ngIf="isModulePurchase">✅ </ng-container>Tu pago se ha realizado con éxito
             </p>
-            
+
             <!-- 🆕 Mensaje diferenciado según tipo de compra -->
             <!-- Mensaje informativo simple -->
             <p class="mb-4 text-muted" style="font-size: 1.1rem; max-width: 650px; margin: 0 auto; line-height: 1.7;">
                 <i class="icon anm anm-envelope-l me-2 text-primary"></i>
-                Recibirás un correo electrónico con la confirmación de tu pedido y te notificaremos cuando sea enviado.
+                Recibirás un correo electrónico con la confirmación de tu pedido.<ng-container *ngIf="requiresShipping()"> Te notificaremos cuando sea enviado.</ng-container>
             </p>
-            
+
             <!-- Número de pedido simple (sin CTA) -->
             <div class="d-inline-block px-4 py-2 mt-3 mb-4" *ngIf="this.sale" style="background: #f8f9fa; border-radius: 8px; border: 2px solid #dee2e6;">
                 <small class="d-block text-muted" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Número de Pedido</small>
@@ -91,12 +91,12 @@
         </div>
         <!-- END ORDER SUCCESS -->
 
-        <div class="row checkout-form">
+        <div class="row checkout-form ld-confirmation-layout">
             <!-- ITEMS CARTS COMPRAS -->
             <div class="col-12 col-sm-12 col-md-12 col-lg-12" [ngClass]="{'mb-5': isDesktop, 'mb-2': isMobile}">
                 <div class="row">
                     <!-- ORDER -->
-                    <div class="col-12 col-lg-8 p-0">
+                    <div class="col-12 col-lg-8 p-0 ld-confirmation-products">
                         <div class="block order-summary p-2 mb-5">
                             <div class="block-content">
                                 <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
@@ -132,7 +132,7 @@
                                                         />
                                                     </div>
                                                         <!--  END PRODUCTO IMAGE -->
-                                                        
+
                                                         <!-- DETALLES DEL PRODUCTO -->
                                                         <div class="flex-grow-1">
                                                             <!-- TITULO DEL PRODUCTO-->
@@ -181,7 +181,7 @@
                                                                 </span>
                                                             </ng-template>
                                                         </div>
-                                                        
+
                                                             <!-- ATRIBUTOS DEL PRODUCTO -->
                                                             <div class="product-attributes mb-3">
                                                                 <div class="row g-2">
@@ -220,7 +220,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        
+
                                                             <!-- TOTAL DEL PRODUCTO -->
                                                             <div class="product-total d-flex justify-content-between align-items-center p-2" style="background: #f8f9fa; border-radius: 8px; border-left: 4px solid #28a745;">
                                                                 <span class="fw-semibold text-success" style="font-size: 0.9rem;">Total del producto:</span>
@@ -245,7 +245,7 @@
                     <!-- END ORDER -->
 
                     <!-- CART SUMMARY -->
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-5 mt-lg-0">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-5 mt-lg-0 ld-confirmation-summary">
                         <div class="cart-info sidebar-sticky" style="background: #ffffff; border: 1px solid #e9ecef; border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
                             <h3 class="mb-4 text-center" style="color: #2c3e50; font-size: 1.4rem; font-weight: 700; letter-spacing: 0.5px; border-bottom: 3px solid #28a745; padding-bottom: 0.75rem; text-transform: uppercase;">
                                 <i class="icon anm anm-calculator me-2" style="color: #28a745;"></i>Resumen Final
@@ -278,7 +278,7 @@
                                             </ng-template>
                                         </span>
                                     </div>
-                                    
+
                                     <!-- Descuento aplicado (solo si hay descuentos) -->
                                     <div class="row g-0" *ngIf="hasAnyCartDiscount()">
                                         <span class="col-6 col-sm-6 cart-subtotal-title fw-light text-danger">Descuento</span>
@@ -294,14 +294,14 @@
                                     </div>
                                 </ng-container>
                                 <!-- END SUBTOTAL -->
-                                
+
                                 <!-- ENVÍO GRATIS -->
                                 <div class="row g-0 mb-2">
                                     <span class="col-6 col-sm-6 cart-subtotal-title fw-light">Envío</span>
                                     <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">Gratis</span></span>
                                 </div>
                                 <!-- END ENVÍO GRATIS -->
-                                
+
                                 <!-- TOTAL -->
                                 <div class="row g-0">
                                     <span class="col-6 col-sm-6 cart-subtotal-title fs-5 text-uppercase fw-bold">Total</span>
@@ -316,7 +316,7 @@
                                     </span>
                                 </div>
                                 <!-- END TOTAL -->
-                                
+
                                 <!-- IMPUESTOS INCLUIDOS -->
                                 <div class="row g-0 d-none">
                                     <div class="col-6 col-sm-6 text-center">
@@ -326,7 +326,7 @@
                                 <!-- END IMPUESTOS INCLUIDOS -->
 
                                 <!-- PAY METHODS CARDS -->
-                                <div class="d-flex mb-3">
+                                <div *ngIf="isModulePurchase" class="d-flex mb-3">
                                     <ul class="d-flex flex-row">
                                         <li class="ms-0"><svg  width="44" height="28" xmlns="http://www.w3.org/2000/svg" class="Icon_icon-content-1__kPDLF"><title  lang="en">Visa</title><path  fill="#1434CB" d="M27.787 8.02c-2.809 0-5.32 1.456-5.32 4.146 0 3.085 4.453 3.298 4.453 4.847 0 .653-.748 1.237-2.025 1.237-1.813 0-3.168-.816-3.168-.816l-.58 2.714s1.561.69 3.633.69c3.071 0 5.488-1.528 5.488-4.264 0-3.26-4.47-3.466-4.47-4.904 0-.511.613-1.072 1.887-1.072 1.437 0 2.61.594 2.61.594l.566-2.622s-1.275-.55-3.074-.55m-25.699.198-.068.396s1.182.216 2.246.647c1.37.495 1.468.783 1.699 1.678l2.515 9.695h3.371l5.194-12.416h-3.364l-3.337 8.441-1.362-7.155c-.125-.819-.757-1.286-1.532-1.286zm16.31 0-2.639 12.416h3.208l2.629-12.416zm17.89 0c-.774 0-1.184.414-1.485 1.138l-4.699 11.278h3.364l.65-1.88h4.098l.396 1.88h2.968L38.99 8.218zm.437 3.354.997 4.66H35.05l1.674-4.66Z"></path></svg></li>
                                         <li class="ms-2"><svg  width="44" height="28" xmlns="http://www.w3.org/2000/svg" viewBox="7 -2 31 31" class="Icon_icon-content-1__kPDLF"><title  lang="en">Mastercard</title><path  d="M12.601 25.947v-1.592c0-.61-.371-1.009-1.008-1.009-.319 0-.665.105-.903.452-.186-.29-.452-.452-.85-.452a.86.86 0 0 0-.743.372v-.319H8.54v2.548h.557V24.54c0-.451.238-.665.61-.665.37 0 .556.238.556.665v1.407h.557V24.54c0-.451.266-.665.609-.665.371 0 .557.238.557.665v1.407zm8.258-2.548h-.903v-.77h-.557v.77h-.504v.504h.504v1.17c0 .584.238.927.875.927.238 0 .504-.08.69-.186l-.16-.479a.9.9 0 0 1-.48.133c-.266 0-.371-.16-.371-.424v-1.14h.903v-.505zm4.726-.056a.76.76 0 0 0-.665.371v-.318h-.557v2.548h.557V24.51c0-.423.185-.665.532-.665.105 0 .238.028.346.053l.16-.532c-.11-.022-.268-.022-.373-.022Zm-7.142.266c-.266-.185-.637-.266-1.036-.266-.637 0-1.06.319-1.06.823 0 .424.318.665.875.742l.266.028c.29.053.451.133.451.266 0 .186-.213.319-.584.319-.372 0-.665-.133-.85-.266l-.267.423c.29.214.69.319 1.089.319.742 0 1.169-.346 1.169-.823 0-.451-.346-.69-.875-.77l-.266-.028c-.239-.028-.424-.08-.424-.238 0-.185.185-.29.48-.29.318 0 .636.132.797.213zm14.812-.266a.76.76 0 0 0-.665.371v-.318h-.557v2.548h.557V24.51c0-.423.185-.665.532-.665.105 0 .238.028.346.053l.16-.526c-.107-.028-.265-.028-.373-.028Zm-7.114 1.33c0 .77.532 1.327 1.355 1.327.371 0 .637-.08.903-.29l-.266-.452c-.213.16-.424.238-.665.238-.451 0-.77-.319-.77-.823 0-.48.319-.798.77-.822.238 0 .452.08.665.238l.266-.452c-.266-.213-.532-.29-.903-.29-.823-.004-1.355.556-1.355 1.326m5.15 0V23.4h-.557v.319c-.186-.239-.452-.372-.798-.372-.717 0-1.274.557-1.274 1.327s.557 1.327 1.274 1.327c.371 0 .637-.133.798-.371v.318h.557v-1.274Zm-2.045 0c0-.451.291-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.476-.028-.77-.374-.77-.823m-6.661-1.33c-.743 0-1.275.532-1.275 1.327 0 .798.532 1.327 1.302 1.327a1.62 1.62 0 0 0 1.037-.346l-.267-.4a1.26 1.26 0 0 1-.742.266c-.346 0-.69-.16-.77-.609h1.884v-.213c.024-.82-.455-1.352-1.17-1.352Zm0 .48c.346 0 .584.213.637.609h-1.327c.052-.343.29-.61.69-.61Zm13.83.85v-2.282h-.556v1.327c-.186-.239-.452-.372-.798-.372-.718 0-1.274.557-1.274 1.327S34.343 26 35.061 26c.371 0 .637-.133.798-.371v.318h.556zm-2.044 0c0-.451.29-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.48-.028-.77-.374-.77-.823m-18.637 0V23.4h-.557v.319c-.185-.239-.451-.372-.798-.372-.717 0-1.274.557-1.274 1.327s.557 1.327 1.274 1.327c.372 0 .638-.133.798-.371v.318h.557v-1.274Zm-2.069 0c0-.451.29-.822.77-.822.452 0 .77.346.77.822 0 .452-.318.823-.77.823-.48-.028-.77-.374-.77-.823"></path><path  fill="#FF5A00" d="M26.62 4.044h-8.362V19.07h8.363V4.044Z"></path><path  fill="#EB001B" d="M18.814 11.557a9.58 9.58 0 0 1 3.637-7.513A9.5 9.5 0 0 0 16.557 2 9.55 9.55 0 0 0 7 11.557a9.55 9.55 0 0 0 9.557 9.556c2.23 0 4.274-.77 5.895-2.044a9.54 9.54 0 0 1-3.638-7.512"></path><path  fill="#F79E1B" d="M37.903 11.557a9.55 9.55 0 0 1-9.557 9.556c-2.23 0-4.274-.77-5.895-2.044a9.5 9.5 0 0 0 3.638-7.512 9.58 9.58 0 0 0-3.637-7.513A9.5 9.5 0 0 1 28.343 2c5.286 0 9.56 4.302 9.56 9.557"></path></svg></li>
@@ -346,17 +346,17 @@
                     </div>
                     <!-- END CART SUMMARY -->
 
-                </div>                   
+                </div>
             </div>
             <!-- END ITEMS CARTS COMPRAS -->
 
             <!-- DETAILS COMPRA -->
             <div class="col-12 col-sm-12 col-md-12 col-lg-12" *ngIf="!isModulePurchase">
-                <div class="row g-3">
-                    <div class="col-12 col-md-6 col-lg-3">
+                <div class="row g-3 ld-confirmation-details">
+                    <div class="col-12 col-md-6 col-lg-4">
                         <!--Order Address-->
                         <div class="block p-0">
-                            <div class="block-content"> 
+                            <div class="block-content">
                                 <div class="shipping-details mb-4 mb-sm-0 lh-1">
                                     <h3 class="mb-3 d-flex align-items-center" style="color: #2c3e50; font-size: 1.2rem; font-weight: 600;">
                                         <div class="icon-container me-3" style="width: 32px; height: 32px; background: #007bff; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -370,7 +370,7 @@
                                             <div class="mb-2 d-flex align-items-center">
                                                 <i class="icon anm anm-user me-2 text-primary"></i>
                                                 <strong style="color: #2c3e50;">
-                                                    {{ (shippingAddress?.name || sale?.address_client?.name) }} 
+                                                    {{ (shippingAddress?.name || sale?.address_client?.name) }}
                                                     {{ (shippingAddress?.surname || sale?.address_client?.surname) }}
                                                 </strong>
                                             </div>
@@ -379,8 +379,8 @@
                                                 <div>
                                                     <div>{{ shippingAddress?.address || sale?.address_client?.address }}</div>
                                                     <div>
-                                                        {{ shippingAddress?.zipcode || sale?.address_client?.zipcode }} 
-                                                        {{ shippingAddress?.poblacion || sale?.address_client?.poblacion }}, 
+                                                        {{ shippingAddress?.zipcode || sale?.address_client?.zipcode }}
+                                                        {{ shippingAddress?.poblacion || sale?.address_client?.poblacion }},
                                                         {{ shippingAddress?.ciudad || sale?.address_client?.ciudad }}
                                                     </div>
                                                 </div>
@@ -404,9 +404,9 @@
                                 </div>
                             </div>
                         </div>
-                        <!--Order Address-->    
+                        <!--Order Address-->
                     </div>
-                    <div class="col-12 col-md-6 col-lg-3">
+                    <div class="col-12 col-md-6 col-lg-4">
                         <div class="block p-0">
                             <div class="block-content">
                                 <div class="billing-details">
@@ -428,7 +428,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-3">
+                    <div class="col-12 col-md-6 col-lg-4">
                         <div class="block p-0">
                             <div class="block-content">
                                 <div class="shipping-details mb-4 mb-sm-0">
@@ -444,7 +444,7 @@
                                                 <i class="icon anm anm-hashtag me-2" style="color: #6f42c1;"></i>
                                                 <div>
                                                     <small class="text-muted d-block" style="font-size: 0.75rem;">ID del pedido</small>
-                                                    <strong style="font-family: 'Courier New', monospace;">#PF{{ sale.printfulOrderId }}</strong>
+                                                    <strong>{{ sale.printfulOrderId ? '#PF' + sale.printfulOrderId : sale.n_transaction }}</strong>
                                                 </div>
                                             </div>
                                             <div class="mb-2 d-flex align-items-center">
@@ -476,7 +476,7 @@
                 <!--Acciones del usuario-->
                 <div class="final-actions mt-5 p-4" style="background: #ffffff; border-radius: 16px; border: 1px solid #e9ecef; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
                     <h4 class="text-center mb-4" style="color: #2c3e50; font-weight: 600;">¿Qué te gustaría hacer ahora?</h4>
-                    
+
                     <div class="row g-3">
 
                         <!-- Seguir comprando -->
@@ -488,9 +488,9 @@
                                     <span style="font-size: 1rem;">Seguir comprando</span>
                                 </button>
                             </a>
-                            
+
                         </div>
-                        
+
                         <!-- Contactar soporte -->
                         <div class="col-12 col-md-6">
                             <a [href]="'mailto:soporte@lujandev.com?subject=Consulta sobre pedido ' + (sale?.printfulOrderId ? '#PF' + sale.printfulOrderId : sale?.n_transaction) + '&body=Hola, tengo una consulta sobre mi pedido.'" class="text-decoration-none d-block">
@@ -501,12 +501,12 @@
                             </a>
                         </div>
                     </div>
-                    
+
                     <!-- Mensaje adicional -->
                     <div class="text-center mt-4">
                         <div class="alert alert-light border-0" style="background: #f0f8f0; border-radius: 12px;">
                             <i class="icon anm anm-heart text-danger me-2"></i>
-                            <strong>¡Gracias por confiar en nosotros!</strong> 
+                            <strong>¡Gracias por confiar en nosotros!</strong>
                             <br>
                             <small class="text-muted">Te mantendremos informado sobre el estado de tu pedido vía email.</small>
                         </div>

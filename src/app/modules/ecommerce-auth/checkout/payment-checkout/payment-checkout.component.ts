@@ -33,7 +33,15 @@ declare var paypal: any;
 @Component({
   selector: 'app-payment-checkout',
   templateUrl: './payment-checkout.component.html',
-  styleUrls: ['./payment-checkout.component.css'],
+  styleUrls: [
+    './payment-checkout.component.css',
+    './styles/payment-layout.css',
+    './styles/payment-address.css',
+    './styles/payment-methods.css',
+    './styles/payment-summary.css',
+    './styles/payment-actions.css',
+    './styles/payment-responsive.css'
+  ],
 })
 export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   @ViewChild('paypal', { static: false }) paypalElement!: ElementRef;
@@ -116,7 +124,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   usandoFallback: boolean = false;
   private previousPaymentMethod: 'card' | 'paypal' = 'card';
   private paymentMethodCheckInterval: any;
-  
+
   // 🆕 Module properties
   moduleType: string | null = null; // 'digital', 'service', 'physical', 'integration'
   moduleData: any = null; // Información completa del módulo
@@ -146,7 +154,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       this.isModulePurchase = true;
       this.modulePurchaseData = JSON.parse(modulePurchaseStr);
       console.log('[Payment] Detected MODULE purchase:', this.modulePurchaseData);
-      
+
       // 🔥 Cargar información completa del módulo desde backend
       this.loadModuleData(this.modulePurchaseData.moduleId);
     } else {
@@ -154,12 +162,12 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       this.isModulePurchase = false;
       this.modulePurchaseData = null;
     }
-    
+
     this.loadSPINER();
     this.verifyAuthenticatedUser();
     this.loadCurrentDataCart();
     this.checkDeviceType();
-    
+
     // 🌍 Actualizar country y locale cuando cambien
     this.subscriptions.add(
       this.localizationService.country$.subscribe(country => {
@@ -171,19 +179,19 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         this.locale = locale;
       })
     );
-    
+
     // Sistema de monitoreo continuo para selectedPaymentMethod
     this.paymentMethodCheckInterval = setInterval(() => {
       if (this.previousPaymentMethod !== this.selectedPaymentMethod) {
         this.previousPaymentMethod = this.selectedPaymentMethod;
-        
+
         // Si cambió a PayPal, forzar el proceso
         if (this.selectedPaymentMethod === 'paypal') {
           this.onPaymentMethodChange();
         }
       }
     }, 500); // Verificar cada 500ms
-    
+
     setTimeout(() => {
       HOMEINITTEMPLATE($);
       actionNetxCheckout($);
@@ -193,9 +201,9 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   ngAfterViewChecked(): void {
     // Si PayPal está seleccionado, el elemento existe, y está pendiente de render
     const currentPaypalElement = this.getPaypalElement();
-    if (this.selectedPaymentMethod === 'paypal' && 
-        this.paypalPendingRender && 
-        currentPaypalElement?.nativeElement && 
+    if (this.selectedPaymentMethod === 'paypal' &&
+        this.paypalPendingRender &&
+        currentPaypalElement?.nativeElement &&
         !this.paypalRendered) {
       // Asignar el elemento correcto
       this.paypalElement = currentPaypalElement;
@@ -206,13 +214,13 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
 
   /**
    * Cargar el SDK de PayPal dinámicamente
-   * @param clientId 
-   * @returns 
+   * @param clientId
+   * @returns
    */
   loadPayPalSdk(clientId: string): Promise<any> {
     console.log('[PayPal SDK] Iniciando carga con ClientID:', clientId);
     console.log('[PayPal SDK] Dispositivo:', { isMobile: this.isMobile, isTablet: this.isTablet, isDesktop: this.isDesktop });
-    
+
     return new Promise((resolve, reject) => {
       // Evita cargar dos veces el script
       if ((window as any).paypal) {
@@ -409,17 +417,17 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
     if (this.selectedPaymentMethod === 'paypal') {
       // Marcar como pendiente de render
       this.paypalPendingRender = true;
-      
+
       // Intentar renderizar PayPal
       this.tryRenderPaypal();
-      
+
     } else {
       // Si cambia a tarjeta, eliminar botón PayPal para evitar duplicados
       this.paypalPendingRender = false;
       this.destroyPaypalButtons();
     }
   }
-  
+
   // Método para intentar renderizar PayPal con múltiples estrategias
   private tryRenderPaypal() {
     // Estrategia 1: Usar elemento PayPal correcto según dispositivo
@@ -433,17 +441,17 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         return;
       }
     }, 50);
-    
+
     // Estrategia 2: Buscar elemento manualmente
     setTimeout(() => {
       const manualElement = document.querySelector('[data-paypal-container]') as HTMLElement;
-      
+
       if (manualElement && this.paypalPendingRender && !this.paypalRendered) {
         // Forzar que sea visible antes de usar
         if (manualElement.style.display === 'none') {
           manualElement.style.display = 'block';
         }
-        
+
         // Asignar temporalmente el elemento al ViewChild
         this.paypalElement = { nativeElement: manualElement } as ElementRef;
         this.paypalPendingRender = false;
@@ -451,7 +459,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         return;
       }
     }, 150);
-    
+
     // Estrategia 3: Fallback después de 300ms
     setTimeout(() => {
       if (this.paypalPendingRender && !this.paypalRendered) {
@@ -469,19 +477,19 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   onPaypalLabelClick(event: Event) {
     // Forzar la selección de PayPal
     this.selectedPaymentMethod = 'paypal';
-    
+
     // Ejecutar el cambio de método de pago
     this.onPaymentMethodChange();
   }
-  
+
   onPaypalRadioClick(event: Event) {
     // Radio click manejado por ngModel
   }
-  
+
   onPaypalRadioChange(event: Event) {
     // Radio change manejado por ngModel
   }
-  
+
   // Método de fallback manual para forzar PayPal en móvil
   forcePaypalActivation() {
     console.log('🔥 forcePaypalActivation() EJECUTÁNDOSE - Fallback manual');
@@ -493,26 +501,26 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       paypalElementNative: !!this.paypalElement?.nativeElement,
       isMobile: this.isMobile
     });
-    
+
     // Forzar selección de PayPal y resetear estado
     this.selectedPaymentMethod = 'paypal';
     this.paypalPendingRender = true;
     this.paypalRendered = false;
-    
+
     console.log('🔥 Estado después de forzar valores:', {
       selectedPaymentMethod: this.selectedPaymentMethod,
       paypalPendingRender: this.paypalPendingRender,
       paypalRendered: this.paypalRendered
     });
-    
+
     // Usar el nuevo sistema de múltiples estrategias
     this.tryRenderPaypal();
   }
-  
+
   // Crear contenedor PayPal temporal si no existe (especialmente para móvil)
   private createTemporaryPaypalContainer() {
     console.log('🔥 createTemporaryPaypalContainer() - Creando contenedor dinámico');
-    
+
     // Verificar si ya existe un contenedor temporal
     let existingContainer = document.querySelector('#paypal-temporary-container') as HTMLElement;
     if (existingContainer) {
@@ -522,16 +530,16 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       this.payWithPaypal();
       return;
     }
-    
+
     // Buscar un lugar donde insertar el contenedor - ser más agresivo
     const targetParent = document.querySelector('.checkout-grid, .cart-info, .payment-methods, main, body');
     if (!targetParent) {
       console.log('🔥 ❌ No se encontró padre para contenedor temporal');
       return;
     }
-    
+
     console.log('🔥 Padre encontrado:', targetParent.className || targetParent.tagName);
-    
+
     // Crear el div contenedor PayPal con estilos fijos
     const paypalContainer = document.createElement('div');
     paypalContainer.id = 'paypal-temporary-container';
@@ -550,7 +558,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       position: relative;
       z-index: 999;
     `;
-    
+
     // Añadir un mensaje de debug más visible
     paypalContainer.innerHTML = `
       <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 12px; margin-bottom: 15px; border-radius: 6px; color: #155724;">
@@ -558,20 +566,20 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         <small>El botón PayPal debería aparecer aquí momentáneamente...</small>
       </div>
     `;
-    
+
     // Insertar el contenedor al principio del padre para máxima visibilidad
     targetParent.insertBefore(paypalContainer, targetParent.firstChild);
-    
+
     console.log('🔥 ✅ Contenedor temporal creado e insertado:', {
       container: paypalContainer,
       parent: targetParent.tagName,
       visible: paypalContainer.offsetHeight > 0
     });
-    
+
     // Asignar al ViewChild y renderizar
     this.paypalElement = { nativeElement: paypalContainer } as ElementRef;
     this.paypalPendingRender = false;
-    
+
     console.log('🔥 Ejecutando payWithPaypal() con contenedor temporal');
     this.payWithPaypal();
   }
@@ -618,7 +626,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       alertDanger(this.translate.instant('checkout.payment.errors.stripe_load_failed'));
       return;
     }
-    
+
     // 🐛 DEBUG: Estado actual del componente
     console.log('🔍 [Stripe Debug] Estado del componente:', {
       isModulePurchase: this.isModulePurchase,
@@ -634,14 +642,14 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         alertDanger(this.translate.instant('checkout.payment.errors.empty_cart'));
         return;
       }
-      
+
       // Solo validar dirección para productos físicos
       if (!this.listAddresses || !this.address_client_selected) {
         this.validMessage = true;
         this.errorOrSuccessMessage = this.translate.instant('checkout.payment.errors.select_shipping_address');
         return;
       }
-      
+
       // 🔒 VALIDACIÓN ESTRICTA: Verificar que los campos de dirección tengan valores reales
       if (!this.name || !this.name.trim() || !this.address || !this.address.trim() || !this.email || !this.email.trim()) {
         this.validMessage = true;
@@ -661,14 +669,14 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         alertDanger(this.translate.instant('checkout.payment.errors.email_required_modules'));
         return;
       }
-      
+
       // Solo validar dirección si requiere envío (módulos físicos)
       if (this.requiresShipping() && (!this.listAddresses || !this.address_client_selected)) {
         this.validMessage = true;
         this.errorOrSuccessMessage = this.translate.instant('checkout.payment.errors.select_shipping_address');
         return;
       }
-      
+
       // 🔒 VALIDACIÓN ESTRICTA para módulos físicos
       if (this.requiresShipping() && (!this.name || !this.name.trim() || !this.address || !this.address.trim())) {
         this.validMessage = true;
@@ -679,7 +687,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
 
     // 🆕 Crear payload diferente según tipo de compra
     let payload: any;
-    
+
     if (this.isModulePurchase) {
       // Compra de módulo: sin cart, con moduleId/moduleKey
       const basePayload: any = {
@@ -690,13 +698,13 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         country: this.country,
         locale: this.locale,
       };
-      
+
       // Para módulos digitales/servicios: datos mínimos
       if (!this.requiresShipping()) {
         console.log('📧 [PaymentCheckout Stripe] ===== CONSTRUYENDO address para MÓDULO =====');
         console.log('📧 [PaymentCheckout Stripe] this.email:', this.email);
         console.log('📧 [PaymentCheckout Stripe] this.name:', this.name);
-        
+
         basePayload.address = {
           name: this.name || 'Cliente',
           surname: '',
@@ -708,7 +716,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           address: 'Producto Digital',
           zipcode: '',
         };
-        
+
         console.log('✅ [PaymentCheckout Stripe] address construido:', JSON.stringify(basePayload.address));
       } else {
         // Módulos físicos: dirección completa
@@ -724,9 +732,9 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           zipcode: this.zipcode,
         };
       }
-      
+
       payload = basePayload;
-      
+
       console.log('📦 [PaymentCheckout Stripe] ===== PAYLOAD MÓDULO =====');
       console.log('📦 [PaymentCheckout Stripe] payload.address.email:', payload.address.email);
       console.log('📦 [PaymentCheckout Stripe] payload.moduleId:', payload.moduleId);
@@ -875,7 +883,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
               );
               return;
             }
-            
+
             // Solo validar dirección para productos físicos
             if (!this.listAddresses || !this.address_client_selected) {
               this.validMessage = true;
@@ -889,7 +897,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
               alertDanger(this.translate.instant('checkout.payment.errors.email_required_modules'));
               return;
             }
-            
+
             // Solo validar dirección si requiere envío (módulos físicos)
             if (this.requiresShipping() && (!this.listAddresses || !this.address_client_selected)) {
               this.validMessage = true;
@@ -903,7 +911,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           const originalSubtotal = this.getOriginalSubtotal();
           const finalSubtotal = this.getSubtotal();
           const totalDiscount = this.getTotalDiscount();
-          
+
           console.log('[PayPal Debug] Cálculos:', {
             originalSubtotal: originalSubtotal.toFixed(2),
             finalSubtotal: finalSubtotal.toFixed(2),
@@ -914,7 +922,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           // Crear items con precios ORIGINALES (PayPal manejará descuentos por separado)
           const items = this.listCarts.map((item: any) => {
             const originalPrice = parseFloat(item.variedad?.retail_price || item.price_unitario || 0);
-            
+
             return {
               name: item.product.title,
               unit_amount: {
@@ -963,7 +971,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           let Order = await actions.order.capture();
           // Usar el total final calculado (con descuentos aplicados)
           const finalTotal = this.getSubtotal();
-          
+
           let sale: any = {
             user: this.CURRENT_USER_AUTHENTICATED
               ? this.CURRENT_USER_AUTHENTICATED._id
@@ -978,7 +986,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
               Order.purchase_units[0].payments.captures[0].id,
             total: finalTotal, // Usar total calculado con descuentos
           };
-          
+
           // 🆕 Si es módulo, agregar module_id directamente al objeto sale
           if (this.isModulePurchase && this.modulePurchaseData?.moduleId) {
             sale.module_id = this.modulePurchaseData.moduleId;
@@ -991,7 +999,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
             console.log('📧 [PaymentCheckout] ===== CONSTRUYENDO sale_address para MÓDULO =====');
             console.log('📧 [PaymentCheckout] this.email:', this.email);
             console.log('📧 [PaymentCheckout] this.name:', this.name);
-            
+
             // Módulos digitales: solo email (y nombre si existe)
             sale_address = {
               name: this.name || 'Cliente',
@@ -1006,7 +1014,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
               nota: 'Compra de módulo digital',
               zipcode: '',
             };
-            
+
             console.log('✅ [PaymentCheckout] sale_address construido:', JSON.stringify(sale_address));
           } else {
             // Productos físicos: dirección completa
@@ -1038,11 +1046,11 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
             country: this.country,
             locale: this.locale
           };
-          
+
           console.log('📦 [PaymentCheckout] ===== ENVIANDO ORDEN AL BACKEND =====');
           console.log('📦 [PaymentCheckout] orderDataToSend.sale_address.email:', orderDataToSend.sale_address.email);
           console.log('📦 [PaymentCheckout] isModulePurchase:', this.isModulePurchase);
-          
+
           // 🆕 Si es compra de módulo, agregar moduleId/moduleKey
           if (this.isModulePurchase) {
             orderDataToSend.moduleId = this.modulePurchaseData.moduleId;
@@ -1050,7 +1058,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
             console.log('📦 [PaymentCheckout] Agregando moduleId:', orderDataToSend.moduleId);
             console.log('📦 [PaymentCheckout] Agregando moduleKey:', orderDataToSend.moduleKey);
           }
-          
+
           console.log('📦 [PaymentCheckout] Payload completo:', JSON.stringify(orderDataToSend, null, 2));
 
           this._authEcommerce.registerSale(orderDataToSend, isGuest).subscribe((resp: any) => {
@@ -1117,7 +1125,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           );
         },
       }).render(this.paypalElement?.nativeElement);
-      
+
       // Marcar como renderizado exitosamente
       this.paypalRendered = true;
       console.log('🎉 [PayPal Success] Botón PayPal renderizado exitosamente!', {
@@ -1127,7 +1135,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
         isMobile: this.isMobile,
         paypalRendered: this.paypalRendered
       });
-      
+
       // Verificar que el botón sea visible en el DOM
       setTimeout(() => {
         const paypalButton = this.paypalElement?.nativeElement?.querySelector('[data-testid="button"], .paypal-button, iframe');
@@ -1138,7 +1146,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
           containerContent: this.paypalElement?.nativeElement?.innerHTML?.slice(0, 200) + '...'
         });
       }, 1000);
-      
+
     } catch (error) {
       console.error('💥 [PayPal Error] Error al cargar PayPal SDK:', error);
       this.paypalRendered = false; // Reset para reintentar
@@ -1148,12 +1156,12 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
   destroyPaypalButtons() {
     this.paypalRendered = false;
     this.paypalPendingRender = false;
-    
+
     // Limpiar contenedor desktop
     if (this.paypalElement?.nativeElement) {
       this.paypalElement.nativeElement.innerHTML = '';
     }
-    
+
     // Limpiar contenedor móvil
     if (this.paypalMobileElement?.nativeElement) {
       this.paypalMobileElement.nativeElement.innerHTML = '';
@@ -1193,7 +1201,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       }
     );
   }
-  
+
   /**
    * 🆕 Determinar si el módulo requiere dirección de envío
    * Solo módulos tipo 'physical' requieren envío
@@ -1229,14 +1237,14 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       }];
       return;
     }
-    
+
     // 🔥 Si NO es compra de módulo, limpiar el sessionStorage
     // Esto evita que queden datos antiguos de módulos que causen conflictos
     if (sessionStorage.getItem('modulePurchase')) {
       console.log('[Payment] Limpiando modulePurchase del sessionStorage (compra regular de productos)');
       sessionStorage.removeItem('modulePurchase');
     }
-    
+
     this.subscriptions.add(
       this._cartService.currenteDataCart$.subscribe((resp: any) => {
         this.listCarts = resp;
@@ -1258,7 +1266,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       if (!cart.product?.imagen) {
         return 'assets/images/logo.38890900945d.png'; // Usar logo como placeholder
       }
-      
+
       if (!cart.variedad?.files) return cart.product.imagen;
 
       // Buscamos primero la imagen tipo 'preview'
@@ -1293,19 +1301,19 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
     console.log('🔍 [PaymentCheckout] verifyAuthenticatedUser() iniciado');
     console.log('🔍 [PaymentCheckout] isModulePurchase:', this.isModulePurchase);
     console.log('🔍 [PaymentCheckout] requiresShipping():', this.requiresShipping());
-    
+
     this._authEcommerce._authService.user.pipe(take(1)).subscribe((user) => {
       if (user) {
         this.CURRENT_USER_AUTHENTICATED = user;
         this.CURRENT_USER_GUEST = null;
         console.log('✅ [PaymentCheckout] Usuario autenticado detectado:', user.email);
-        
+
         // 🆕 Para módulos digitales/servicios, usar email del usuario autenticado
         if (this.isModulePurchase && !this.requiresShipping()) {
           this.email = user.email;
           console.log('✅ [PaymentCheckout] Email asignado (autenticado):', this.email);
         }
-        
+
         this.checkIfAddressClientExists();
       } else {
         console.log('🔍 [PaymentCheckout] No hay usuario autenticado, verificando guest...');
@@ -1317,7 +1325,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
               this.CURRENT_USER_AUTHENTICATED = null;
               this.CURRENT_USER_GUEST = guestUser;
               console.log('✅ [PaymentCheckout] Guest user detectado, id:', guestUser.id);
-              
+
               // 🆕 Para módulos digitales/servicios, recuperar email de sessionStorage
               if (this.isModulePurchase && !this.requiresShipping()) {
                 console.log('🔍 [PaymentCheckout] Intentando recuperar email de sessionStorage...');
@@ -1325,7 +1333,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
                 const guestName = sessionStorage.getItem('moduleGuestName');
                 console.log('🔍 [PaymentCheckout] moduleGuestEmail en sessionStorage:', guestEmail);
                 console.log('🔍 [PaymentCheckout] moduleGuestName en sessionStorage:', guestName);
-                
+
                 if (guestEmail) {
                   this.email = guestEmail;
                   if (guestName) {
@@ -1337,14 +1345,14 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
                   console.error('❌ [PaymentCheckout] No se encontró moduleGuestEmail en sessionStorage!');
                 }
               }
-              
+
               this.checkIfAddressGuestExists();
             } else {
               // ❌ Ningún usuario válido → usuario completamente nuevo
               this.CURRENT_USER_AUTHENTICATED = null;
               this.CURRENT_USER_GUEST = null;
               console.log('⚠️ [PaymentCheckout] Usuario COMPLETAMENTE NUEVO (sin guest)');
-              
+
               // 🆕 Para módulos digitales/servicios de invitados nuevos, recuperar email de sessionStorage
               if (this.isModulePurchase && !this.requiresShipping()) {
                 console.log('🔍 [PaymentCheckout] Intentando recuperar email de sessionStorage (NEW USER)...');
@@ -1352,7 +1360,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
                 const guestName = sessionStorage.getItem('moduleGuestName');
                 console.log('🔍 [PaymentCheckout] moduleGuestEmail en sessionStorage:', guestEmail);
                 console.log('🔍 [PaymentCheckout] moduleGuestName en sessionStorage:', guestName);
-                
+
                 if (guestEmail) {
                   this.email = guestEmail;
                   if (guestName) {
@@ -1409,7 +1417,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       return;
     }
 
-    /** 2. SI NO HAY DIRECCION HABITUAL, 
+    /** 2. SI NO HAY DIRECCION HABITUAL,
     ENTONCES BUSCA EN SESSION STORAGE **/
     const savedAddressId = sessionStorage.getItem(storageKey);
     if (savedAddressId) {
@@ -1441,7 +1449,7 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
       this.shippingMethod = '';
       return;
     }
-    
+
     /* GENERAR ITEMS PARA ENVÍO */
     const items = this.listCarts.map((item: any) => ({
       variant_id: item.variedad.variant_id,
@@ -1797,15 +1805,15 @@ export class PaymentCheckoutComponent implements OnInit, AfterViewChecked {
     }
 
     const discountValue = parseFloat(cart.discount);
-    
+
     // Verificar que el descuento sea válido
     if (isNaN(discountValue) || discountValue <= 0) {
       return originalPrice;
     }
 
     let priceAfterDiscount: number;
-    
-    if (cart.type_discount === 1) { 
+
+    if (cart.type_discount === 1) {
       // Descuento porcentual
       if (cart.code_cupon) {
         // CUPONES REALES - aplicar redondeo .95

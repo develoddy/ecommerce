@@ -1,0 +1,17 @@
+.ld-payment .btn-dark-ld {
+    width: 100%;
+    min-height: 52px;
+    background: #111 !important;
+    color: #fff !important;
+    border: 1px solid #111 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.ld-payment .btn-dark-ld:focus-visible {
+    outline: 2px solid #111;
+    outline-offset: 3px;
+}

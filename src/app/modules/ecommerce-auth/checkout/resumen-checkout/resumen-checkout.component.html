@@ -1,52 +1,25 @@
 <div id="steps2">
-    <div class="checkout-grid p-lg-5">
+    <div class="checkout-grid p-lg-5" [class.ld-checkout-grid-empty]="listCarts.length === 0">
         <!-- ======== COL IZQUIRDA ======== -->
         <ng-container *ngIf="listCarts.length > 0; else showAddress">
             <div id="main-left">
-                <!-- DELIVERY METHODS: Solo mostrar para productos físicos (Printful merch) -->
-                <div class="mb-5" *ngIf="requiresShipping()">
-                    <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
-                        <i class="icon anm anm-truck-l me-2"></i>{{ 'checkout.resumen.delivery.title' | translate }}
+
+                <!-- DELIVERY METHODS -->
+                <section class="ld-shipping-method" *ngIf="requiresShipping()">
+                    <h3 class="ld-shipping-heading">
+                        <i class="icon anm anm-truck-l me-2"></i>
+                        {{ 'checkout.resumen.delivery.title' | translate }}
                     </h3>
-                    <div class="d-flex flex-row mb-3">
-                        <div class="py-3 px-5 border border-dark me-3">
-                            <div class="d-flex flex-column justify-content-center">
-                                <span class="text-center">
-                                    <svg width="24" height="24" aria-hidden="true" class="Icon_icon-content-1__kPDLF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.04 24.04">
-                                        <g data-name="S">
-                                            <path d="M21.8 11.2 21 9.6zM21 9.6l-.7-1.5z"></path>
-                                            <path d="M21 20h-2.5v-6H5v6H3v1h18Zm-10 0v-4h2v4ZM4.3 9.8l.7-.5V13h13.5V8.9l1.2.9.6-.8L12 2.9 9 5.1V3H6v4.3L3.7 9Zm6.6-2.4A2.1 2.1 0 0 1 12 7a1.54 1.54 0 0 1 1.5 1.5A1.54 1.54 0 0 1 12 10a2.1 2.1 0 0 1-1.1-.4 1.5 1.5 0 0 1-.4-1.1 1.5 1.5 0 0 1 .4-1.1"></path>
-                                        </g>
-                                    </svg>
-                                </span>
-                                <span class="text-center"> {{ 'checkout.resumen.delivery.home' | translate }} </span>
-                                <span class="text-center">{{ 'checkout.resumen.delivery.free' | translate }}</span>
-                            </div>
-                        </div>
-                        <div class="p-5 bg-warning d-none">
-                            <div class="d-flex flex-column justify-content-center">
-                                <span class="text-center">
-                                    <svg width="24" height="24" aria-hidden="true" class="Icon_icon-content-1__kPDLF" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
-                                        <path d="M17.603 5H21v15h-3v-9.337L15.521 15l-1.929-3 4.01-7zM3 5v15h3v-9.492L12.313 20 14 17 6 5z"></path>
-                                    </svg>
-                                </span>
-                                <span>{{ 'checkout.resumen.delivery.store' | translate }}</span>
-                                <span class="texts_uppercaseL__dKrzo">{{ 'checkout.resumen.delivery.free' | translate }}</span>
-                            </div>
-                        </div>
-                        <div class="p-3 border border-muted w-25 d-none">
-                            <div class="d-flex flex-column justify-content-center">
-                                <span class="text-center">
-                                    <svg width="24" height="24" aria-hidden="true" class="Icon_icon-content-1__kPDLF" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24">
-                                        <path d="M12 2C9.355 2 6.875 3.542 5.682 5.929c-1.295 2.589-.724 5.925 1.511 8.909.072.105 4.391 6.585 4.391 6.585l.416.624.416-.624 4.377-6.567c2.25-3.002 2.82-6.338 1.525-8.927C17.125 3.542 14.645 2 12 2m3.999 12.25c-.016.02-.019.022-3.999 5.994-3.98-5.972-3.983-5.974-3.993-5.987-2.017-2.693-2.552-5.639-1.43-7.881C7.602 4.326 9.73 3 12 3s4.398 1.325 5.423 3.376c1.122 2.242.587 5.188-1.424 7.874M12 5C9.794 5 8 6.794 8 9s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4m0 7c-1.654 0-3-1.346-3-3s1.346-3 3-3 3 1.346 3 3-1.346 3-3 3"></path>
-                                    </svg>
-                                </span>
-                                <span class="text-center">{{ 'checkout.resumen.delivery.pickup_point' | translate }}</span>
-                                <span class="text-center">{{ 'checkout.resumen.delivery.free' | translate }}</span>
-                            </div>
-                        </div>
+                    <div class="ld-delivery-option">
+                        <i class="icon anm anm-truck-l" aria-hidden="true"></i>
+                        <span class="ld-delivery-name">
+                            {{ 'checkout.resumen.delivery.home' | translate }}
+                        </span>
+                        <span class="ld-delivery-price">
+                            {{ 'checkout.resumen.delivery.free' | translate }}
+                        </span>
                     </div>
-                </div>
+                </section>
                 <!-- END DELIVERY METHODS -->
 
                 <!-- SHIPPING RATES -->
@@ -64,15 +37,15 @@
                     </h3>
                 </div>
                 <!-- END SHIPPING RATES -->
-                
+
                 <!-- 🆕 MENSAJE INFORMATIVO: Para módulos digitales/servicios/integraciones -->
-                <div *ngIf="!requiresShipping()" class="alert mb-4" 
+                <div *ngIf="!requiresShipping()" class="alert mb-4"
                      [ngClass]="{
                        'alert-success': moduleType === 'digital',
                        'alert-info': moduleType === 'service' || moduleType === 'integration'
                      }"
                      style="border-radius: 12px; border-left: 4px solid;">
-                    
+
                     <!-- DIGITAL -->
                     <div *ngIf="moduleType === 'digital'" class="d-flex align-items-start">
                         <i class="icon anm anm-download-l me-3" style="font-size: 2rem; color: #28a745;"></i>
@@ -85,7 +58,7 @@
                             </p>
                         </div>
                     </div>
-                    
+
                     <!-- SERVICE -->
                     <div *ngIf="moduleType === 'service'" class="d-flex align-items-start">
                         <i class="icon anm anm-calendar-l me-3" style="font-size: 2rem; color: #17a2b8;"></i>
@@ -98,7 +71,7 @@
                             </p>
                         </div>
                     </div>
-                    
+
                     <!-- INTEGRATION -->
                     <div *ngIf="moduleType === 'integration'" class="d-flex align-items-start">
                         <i class="icon anm anm-cog me-3" style="font-size: 2rem; color: #17a2b8;"></i>
@@ -112,7 +85,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 🆕 FORMULARIO SIMPLIFICADO: Para módulos digitales/servicios (solo email si es guest) -->
                 <div *ngIf="!requiresShipping() && !CURRENT_USER_AUTHENTICATED" class="mb-lg-5 mb-3">
                     <div class="card border-0 shadow-sm" style="border-radius: 12px;">
@@ -123,7 +96,7 @@
                             <p class="text-muted mb-4">
                                 <small>{{ 'checkout.resumen.contact.description' | translate }}</small>
                             </p>
-                            
+
                             <form #contactForm="ngForm" novalidate>
                                 <!-- Email (obligatorio) -->
                                 <div class="row justify-content-center mb-3">
@@ -132,23 +105,23 @@
                                             {{ 'checkout.resumen.contact.email_label' | translate }} <span class="required text-danger">*</span>
                                         </label>
                                         <div class="position-relative">
-                                            <input 
-                                                name="contact_email" 
-                                                [(ngModel)]="guestEmail" 
-                                                #contactEmail="ngModel" 
-                                                id="contact-email" 
-                                                type="email" 
-                                                required 
+                                            <input
+                                                name="contact_email"
+                                                [(ngModel)]="guestEmail"
+                                                #contactEmail="ngModel"
+                                                id="contact-email"
+                                                type="email"
+                                                required
                                                 email
-                                                [placeholder]="'checkout.resumen.contact.email_placeholder' | translate" 
-                                                class="form-control py-3" 
-                                                [ngClass]="{'is-invalid': contactEmail.invalid && (contactEmail.touched || contactForm.submitted)}" 
+                                                [placeholder]="'checkout.resumen.contact.email_placeholder' | translate"
+                                                class="form-control py-3"
+                                                [ngClass]="{'is-invalid': contactEmail.invalid && (contactEmail.touched || contactForm.submitted)}"
                                             />
-                                            <button 
-                                                *ngIf="guestEmail" 
-                                                type="button" 
-                                                (click)="clearField('guestEmail')" 
-                                                class="position-absolute d-flex align-items-center justify-content-center" 
+                                            <button
+                                                *ngIf="guestEmail"
+                                                type="button"
+                                                (click)="clearField('guestEmail')"
+                                                class="position-absolute d-flex align-items-center justify-content-center"
                                                 style="right: 12px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); border-radius: 50%; cursor: pointer;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
                                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -161,31 +134,31 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Nombre (opcional pero recomendado) -->
                                 <div class="row justify-content-center mb-3">
                                     <div class="form-group col-12">
                                         <label for="contact-name" class="form-label fw-bold">
                                             {{ 'checkout.resumen.contact.name_label' | translate }} <span class="text-muted">{{ 'checkout.resumen.contact.optional' | translate }}</span>
                                         </label>
-                                        <input 
-                                            name="contact_name" 
-                                            [(ngModel)]="guestName" 
-                                            id="contact-name" 
-                                            type="text" 
-                                            [placeholder]="'checkout.resumen.contact.name_placeholder' | translate" 
-                                            class="form-control py-3" 
+                                        <input
+                                            name="contact_name"
+                                            [(ngModel)]="guestName"
+                                            id="contact-name"
+                                            type="text"
+                                            [placeholder]="'checkout.resumen.contact.name_placeholder' | translate"
+                                            class="form-control py-3"
                                         />
                                         <small class="text-muted">{{ 'checkout.resumen.contact.name_hint' | translate }}</small>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Botón para continuar -->
                                 <div class="row justify-content-center mt-4">
                                     <div class="col-12">
-                                        <button 
+                                        <button
                                             type="button"
-                                            class="btn btn-dark w-100 py-3 text-uppercase fw-normal" 
+                                            class="btn btn-dark w-100 py-3 text-uppercase fw-normal"
                                             (click)="confirmarDireccion()"
                                             [disabled]="contactForm.invalid">
                                             {{ 'checkout.resumen.contact.continue_button' | translate }}
@@ -196,7 +169,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 🆕 MENSAJE PARA USUARIOS AUTENTICADOS: Confirmación de email -->
                 <div *ngIf="!requiresShipping() && CURRENT_USER_AUTHENTICATED" class="mb-lg-5 mb-3">
                     <div class="card border-0 shadow-sm" style="border-radius: 12px; background: #f8f9fa;">
@@ -214,13 +187,13 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Botón para continuar -->
                     <div class="row justify-content-center mt-3">
                         <div class="col-12">
-                            <button 
+                            <button
                                 type="button"
-                                class="btn btn-dark w-100 py-3 text-uppercase fw-normal" 
+                                class="btn btn-dark w-100 py-3 text-uppercase fw-normal"
                                 (click)="confirmarDireccion()">
                                 {{ 'checkout.resumen.authenticated_email.continue_button' | translate }}
                             </button>
@@ -249,83 +222,27 @@
                                                                 {{ isEditMode ? ('checkout.resumen.address_form.edit_title' | translate) : ('checkout.resumen.address_form.title' | translate) }}
                                                             </h3>
                                                             <!-- Botón cancelar en modo edición o cuando hay direcciones y se muestra formulario -->
-                                                            <button 
-                                                                *ngIf="isEditMode || (showAddressForm && listAddresses.length > 0)" 
-                                                                type="button" 
+                                                            <button
+                                                                *ngIf="isEditMode || (showAddressForm && listAddresses.length > 0)"
+                                                                type="button"
                                                                 class="btn btn-outline-secondary btn-sm"
                                                                 (click)="cancelAddressForm()">
                                                                 <i class="icon anm anm-times-l me-1"></i>{{ 'checkout.resumen.address_form.cancel_button' | translate }}
                                                             </button>
                                                         </div>
-                                                        <form #addressForm="ngForm" novalidate (ngSubmit)="storeAddress()">
+                                                        <form class="ld-shipping-form" #addressForm="ngForm" novalidate (ngSubmit)="storeAddress()">
                                                             <fieldset>
-                                                                <!-- Nombre -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12">
-                                                                        <label for="firstname" class="form-label d-none">{{ 'checkout.resumen.address_form.name_label' | translate }} <span class="required">*</span></label>
+                                                                <h4 class="ld-form-section">{{ 'checkout.resumen.contact.title' | translate }}</h4>
+<!-- Email -->
+                                                                <div class="ld-field ld-field-email">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <label for="email" class="form-label ld-field-label">{{ 'checkout.resumen.address_form.email_label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
-                                                                            <input name="firstname" 
-                                                                                   [(ngModel)]="name" 
-                                                                                   #firstname="ngModel" 
-                                                                                   id="firstname" 
-                                                                                   type="text" 
-                                                                                   required 
-                                                                                   [placeholder]="'checkout.resumen.address_form.name_placeholder' | translate" 
-                                                                                   class="form-control py-4" 
-                                                                                   [ngClass]="{'is-invalid': firstname.invalid && (firstname.touched || addressForm.submitted)}" />
-                                                                            <button *ngIf="name" 
-                                                                                    type="button" 
-                                                                                    (click)="clearField('name')" 
-                                                                                    class="position-absolute d-flex align-items-center justify-content-center" 
-                                                                                    style="right: 12px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); border-radius: 50%; cursor: pointer; transition: all 0.2s ease; padding: 0;"
-                                                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
-                                                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" style="color: #6c757d;">
-                                                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                                                                                </svg>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div *ngIf="firstname.invalid && (firstname.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            {{ 'checkout.resumen.address_form.field_required_error' | translate }}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- Apellidos -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12">
-                                                                        <label for="lastname" class="form-label d-none">{{ 'checkout.resumen.address_form.surname_label' | translate }} <span class="required">*</span></label>
-                                                                        <div class="position-relative">
-                                                                            <input name="lastname" [(ngModel)]="surname" #lastname="ngModel" id="lastname" type="text" required [placeholder]="'checkout.resumen.address_form.surname_placeholder' | translate" class="form-control py-4" [ngClass]="{'is-invalid': lastname.invalid && (lastname.touched || addressForm.submitted)}" />
-                                                                            <button *ngIf="surname" 
-                                                                                    type="button" 
-                                                                                    (click)="clearField('surname')" 
-                                                                                    class="position-absolute d-flex align-items-center justify-content-center" 
-                                                                                    style="right: 12px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); border-radius: 50%; cursor: pointer; transition: all 0.2s ease; padding: 0;"
-                                                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
-                                                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" style="color: #6c757d;">
-                                                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                                                                                </svg>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div *ngIf="lastname.invalid && (lastname.touched || addressForm.submitted)" class="invalid-feedback">
-                                                                            {{ 'checkout.resumen.address_form.field_required_error' | translate }}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- Email -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12">
-                                                                        <label for="email" class="form-label d-none">{{ 'checkout.resumen.address_form.email_label' | translate }} <span class="required">*</span></label>
-                                                                        <div class="position-relative">
-                                                                            <input name="email" [(ngModel)]="email" #emailRef="ngModel" id="email" type="email" required [placeholder]="'checkout.resumen.address_form.email_placeholder' | translate" class="form-control py-4" [ngClass]="{'is-invalid': emailRef.invalid && (emailRef.touched || addressForm.submitted)}" />
-                                                                            <button *ngIf="email" 
-                                                                                    type="button" 
-                                                                                    (click)="clearField('email')" 
-                                                                                    class="position-absolute d-flex align-items-center justify-content-center" 
-                                                                                    style="right: 12px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); border-radius: 50%; cursor: pointer; transition: all 0.2s ease; padding: 0;"
-                                                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
-                                                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                                            <input name="email" [(ngModel)]="email" #emailRef="ngModel" id="email" type="email" required [placeholder]="'checkout.resumen.address_form.email_placeholder' | translate" class="form-control" [ngClass]="{'is-invalid': emailRef.invalid && (emailRef.touched || addressForm.submitted)}" />
+                                                                            <button *ngIf="email"
+                                                                                    type="button"
+                                                                                    (click)="clearField('email')"
+                                                                                    class="ld-clear-field position-absolute d-flex align-items-center justify-content-center">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" style="color: #6c757d;">
                                                                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                                                                                 </svg>
@@ -336,22 +253,71 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Pais -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12">
-                                                                        <label for="address_country1" class="form-label d-none">{{ 'checkout.resumen.address_form.country_label' | translate }} <span class="required">*</span></label>
-                                                                        <select 
-                                                                        id="address_country1" 
-                                                                        name="address[country]" 
-                                                                        [(ngModel)]="pais" 
-                                                                        #paisSelect="ngModel" 
-                                                                        required 
-                                                                        class="form-control py-4 fw-light" 
+<h4 class="ld-form-section ld-address-heading">{{ 'checkout.resumen.address_form.title' | translate }}</h4>
+<!-- Nombre -->
+                                                                <div class="ld-field ld-field-name">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <label for="firstname" class="form-label ld-field-label">{{ 'checkout.resumen.address_form.name_label' | translate }} <span class="required">*</span></label>
+                                                                        <div class="position-relative">
+                                                                            <input name="firstname"
+                                                                                   [(ngModel)]="name"
+                                                                                   #firstname="ngModel"
+                                                                                   id="firstname"
+                                                                                   type="text"
+                                                                                   required
+                                                                                   [placeholder]="'checkout.resumen.address_form.name_placeholder' | translate"
+                                                                                   class="form-control"
+                                                                                   [ngClass]="{'is-invalid': firstname.invalid && (firstname.touched || addressForm.submitted)}" />
+                                                                            <button *ngIf="name"
+                                                                                    type="button"
+                                                                                    (click)="clearField('name')"
+                                                                                    class="ld-clear-field position-absolute d-flex align-items-center justify-content-center">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" style="color: #6c757d;">
+                                                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                                                                </svg>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div *ngIf="firstname.invalid && (firstname.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                            {{ 'checkout.resumen.address_form.field_required_error' | translate }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+<!-- Apellidos -->
+                                                                <div class="ld-field ld-field-surname">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <label for="lastname" class="form-label ld-field-label">{{ 'checkout.resumen.address_form.surname_label' | translate }} <span class="required">*</span></label>
+                                                                        <div class="position-relative">
+                                                                            <input name="lastname" [(ngModel)]="surname" #lastname="ngModel" id="lastname" type="text" required [placeholder]="'checkout.resumen.address_form.surname_placeholder' | translate" class="form-control" [ngClass]="{'is-invalid': lastname.invalid && (lastname.touched || addressForm.submitted)}" />
+                                                                            <button *ngIf="surname"
+                                                                                    type="button"
+                                                                                    (click)="clearField('surname')"
+                                                                                    class="ld-clear-field position-absolute d-flex align-items-center justify-content-center">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" style="color: #6c757d;">
+                                                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                                                                </svg>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div *ngIf="lastname.invalid && (lastname.touched || addressForm.submitted)" class="invalid-feedback">
+                                                                            {{ 'checkout.resumen.address_form.field_required_error' | translate }}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+<!-- Pais -->
+                                                                <div class="ld-field ld-field-country">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <label for="address_country1" class="form-label ld-field-label">{{ 'checkout.resumen.address_form.country_label' | translate }} <span class="required">*</span></label>
+                                                                        <select
+                                                                        id="address_country1"
+                                                                        name="address[country]"
+                                                                        [(ngModel)]="pais"
+                                                                        #paisSelect="ngModel"
+                                                                        required
+                                                                        class="form-control fw-light"
                                                                         [ngClass]="{'is-invalid': paisSelect.invalid && (paisSelect.touched || addressForm.submitted)}">
                                                                             <option value="" disabled>{{ 'checkout.resumen.address_form.country_placeholder' | translate }}</option>
                                                                             <optgroup [label]="'checkout.resumen.address_form.eu_group' | translate">
-                                                                                <option *ngFor="let country of supportedCountries" 
-                                                                                        [value]="country.code" 
+                                                                                <option *ngFor="let country of supportedCountries"
+                                                                                        [value]="country.code"
                                                                                         [label]="country.name">
                                                                                     {{ country.name }}
                                                                                 </option>
@@ -362,19 +328,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Calle -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12">
-                                                                        <label for="calle" class="form-label d-none">{{ 'checkout.resumen.address_form.street_label' | translate }} <span class="required">*</span></label>
+<!-- Calle -->
+                                                                <div class="ld-field ld-field-street">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <label for="calle" class="form-label ld-field-label">{{ 'checkout.resumen.address_form.street_label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
-                                                                            <input name="calle" id="calle" type="text" required [(ngModel)]="calle" #calleRef="ngModel" [placeholder]="'checkout.resumen.address_form.street_placeholder' | translate" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': calleRef.invalid && (calleRef.touched || addressForm.submitted)}" />
-                                                                            <button *ngIf="calle" 
-                                                                                    type="button" 
-                                                                                    (click)="clearField('calle')" 
-                                                                                    class="position-absolute d-flex align-items-center justify-content-center" 
-                                                                                    style="right: 12px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); border-radius: 50%; cursor: pointer; transition: all 0.2s ease; padding: 0;"
-                                                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
-                                                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                                            <input name="calle" id="calle" type="text" required [(ngModel)]="calle" #calleRef="ngModel" [placeholder]="'checkout.resumen.address_form.street_placeholder' | translate" class="form-control fw-light" [ngClass]="{'is-invalid': calleRef.invalid && (calleRef.touched || addressForm.submitted)}" />
+                                                                            <button *ngIf="calle"
+                                                                                    type="button"
+                                                                                    (click)="clearField('calle')"
+                                                                                    class="ld-clear-field position-absolute d-flex align-items-center justify-content-center">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" style="color: #6c757d;">
                                                                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                                                                                 </svg>
@@ -385,20 +348,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-                                                                <!-- Número -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12">
-                                                                        <label for="numero" class="form-label d-none">{{ 'checkout.resumen.address_form.number_label' | translate }} <span class="required">*</span></label>
+<!-- Número -->
+                                                                <div class="ld-field ld-field-number">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <label for="numero" class="form-label ld-field-label">{{ 'checkout.resumen.address_form.number_label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
-                                                                            <input name="numero" id="numero" type="text" required [(ngModel)]="numero" #numeroRef="ngModel" [placeholder]="'checkout.resumen.address_form.number_placeholder' | translate" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': numeroRef.invalid && (numeroRef.touched || addressForm.submitted)}" />
-                                                                            <button *ngIf="numero" 
-                                                                                    type="button" 
-                                                                                    (click)="clearField('numero')" 
-                                                                                    class="position-absolute d-flex align-items-center justify-content-center" 
-                                                                                    style="right: 12px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); border-radius: 50%; cursor: pointer; transition: all 0.2s ease; padding: 0;"
-                                                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
-                                                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                                            <input name="numero" id="numero" type="text" required [(ngModel)]="numero" #numeroRef="ngModel" [placeholder]="'checkout.resumen.address_form.number_placeholder' | translate" class="form-control fw-light" [ngClass]="{'is-invalid': numeroRef.invalid && (numeroRef.touched || addressForm.submitted)}" />
+                                                                            <button *ngIf="numero"
+                                                                                    type="button"
+                                                                                    (click)="clearField('numero')"
+                                                                                    class="ld-clear-field position-absolute d-flex align-items-center justify-content-center">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" style="color: #6c757d;">
                                                                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                                                                                 </svg>
@@ -409,20 +368,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-                                                                <!-- Apartamento/Piso (Opcional) -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12">
-                                                                        <label for="apartamento" class="form-label d-none">{{ 'checkout.resumen.address_form.apartment_label' | translate }}</label>
+<!-- Apartamento/Piso (Opcional) -->
+                                                                <div class="ld-field ld-field-apartment">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <label for="apartamento" class="form-label ld-field-label">{{ 'checkout.resumen.address_form.apartment_label' | translate }}</label>
                                                                         <div class="position-relative">
-                                                                            <input name="apartamento" id="apartamento" type="text" [(ngModel)]="apartamento" [placeholder]="'checkout.resumen.address_form.apartment_placeholder' | translate" class="form-control py-4 fw-light" />
-                                                                            <button *ngIf="apartamento" 
-                                                                                    type="button" 
-                                                                                    (click)="clearField('apartamento')" 
-                                                                                    class="position-absolute d-flex align-items-center justify-content-center" 
-                                                                                    style="right: 12px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); border-radius: 50%; cursor: pointer; transition: all 0.2s ease; padding: 0;"
-                                                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
-                                                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                                            <input name="apartamento" id="apartamento" type="text" [(ngModel)]="apartamento" [placeholder]="'checkout.resumen.address_form.apartment_placeholder' | translate" class="form-control fw-light" />
+                                                                            <button *ngIf="apartamento"
+                                                                                    type="button"
+                                                                                    (click)="clearField('apartamento')"
+                                                                                    class="ld-clear-field position-absolute d-flex align-items-center justify-content-center">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" style="color: #6c757d;">
                                                                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                                                                                 </svg>
@@ -431,39 +386,35 @@
                                                                         <small class="form-text text-muted">{{ 'checkout.resumen.address_form.apartment_hint' | translate }}</small>
                                                                     </div>
                                                                 </div>
-
-                                                                <!-- 🎯 Código postal (MANGO.ES STYLE) -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12">
-                                                                        <label for="postcode" class="form-label d-none">{{ 'checkout.resumen.postal_code.label' | translate }} <span class="required">*</span></label>
+<!-- 🎯 Código postal (MANGO.ES STYLE) -->
+                                                                <div class="ld-field ld-field-postcode">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <label for="postcode" class="form-label ld-field-label">{{ 'checkout.resumen.postal_code.label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
-                                                                            <input name="postcode" 
-                                                                                   id="postcode" 
-                                                                                   type="text" 
-                                                                                   required 
-                                                                                   [(ngModel)]="zipcode" 
+                                                                            <input name="postcode"
+                                                                                   id="postcode"
+                                                                                   type="text"
+                                                                                   required
+                                                                                   [(ngModel)]="zipcode"
                                                                                    #zipcodeRef="ngModel"
                                                                                    (blur)="onZipCodeChange(zipcode)"
                                                                                    (change)="onZipCodeChange(zipcode)"
-                                                                                   [placeholder]="'checkout.resumen.postal_code.placeholder' | translate" 
-                                                                                   class="form-control py-4 fw-light" 
+                                                                                   [placeholder]="'checkout.resumen.postal_code.placeholder' | translate"
+                                                                                   class="form-control fw-light"
                                                                                    [ngClass]="{
                                                                                        'is-invalid': (zipcodeRef.invalid && (zipcodeRef.touched || addressForm.submitted)) || postalCodeError
                                                                                    }" />
-                                                                            <button *ngIf="zipcode && !isLoadingPostalCode" 
-                                                                                    type="button" 
-                                                                                    (click)="clearField('zipcode')" 
-                                                                                    class="position-absolute d-flex align-items-center justify-content-center" 
-                                                                                    style="right: 12px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); border-radius: 50%; cursor: pointer; transition: all 0.2s ease; padding: 0; z-index: 10;"
-                                                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
-                                                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                                            <button *ngIf="zipcode && !isLoadingPostalCode"
+                                                                                    type="button"
+                                                                                    (click)="clearField('zipcode')"
+                                                                                    class="ld-clear-field position-absolute d-flex align-items-center justify-content-center">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" style="color: #6c757d;">
                                                                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                                                                                 </svg>
                                                                             </button>
                                                                             <!-- Spinner de carga -->
-                                                                            <div *ngIf="isLoadingPostalCode" 
-                                                                                 class="position-absolute" 
+                                                                            <div *ngIf="isLoadingPostalCode"
+                                                                                 class="position-absolute"
                                                                                  style="right: 10px; top: 50%; transform: translateY(-50%);">
                                                                                 <div class="spinner-border spinner-border-sm text-primary" role="status">
                                                                                     <span class="visually-hidden">{{ 'checkout.resumen.postal_code.searching' | translate }}</span>
@@ -488,78 +439,78 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- 🎯 Ciudad/Población (DROPDOWN SI HAY MÚLTIPLES OPCIONES) -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12">
-                                                                        <label for="new-city" class="form-label d-none">{{ 'checkout.resumen.city.label' | translate }} <span class="required">*</span></label>
-                                                                        
+<!-- 🎯 Ciudad/Población (DROPDOWN SI HAY MÚLTIPLES OPCIONES) -->
+                                                                <div class="ld-field ld-field-city">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <label [attr.for]="availableCities.length > 1 ? 'new-city-select' : 'new-city'" class="form-label ld-field-label">{{ 'checkout.resumen.city.label' | translate }} <span class="required">*</span></label>
+
                                                                         <!-- Dropdown si hay múltiples ciudades -->
                                                                         <ng-container *ngIf="availableCities.length > 1; else singleCity">
-                                                                            <select name="city" 
+                                                                            <select name="city"
                                                                                     id="new-city-select"
-                                                                                    required 
-                                                                                    [(ngModel)]="poblacion" 
-                                                                                    #poblacionSelect="ngModel" 
-                                                                                    class="form-control py-4 fw-light"
+                                                                                    required
+                                                                                    [(ngModel)]="poblacion"
+                                                                                    #poblacionSelect="ngModel"
+                                                                                    class="form-control fw-light"
                                                                                     [ngClass]="{'is-invalid': poblacionSelect.invalid && (poblacionSelect.touched || addressForm.submitted)}">
                                                                                 <option value="" disabled>{{ 'checkout.resumen.city.select_placeholder' | translate }}</option>
-                                                                                <option *ngFor="let cityObj of availableCities" 
+                                                                                <option *ngFor="let cityObj of availableCities"
                                                                                         [value]="cityObj.city">
                                                                                     {{ cityObj.city }}
                                                                                     <span *ngIf="cityObj.isPrimary"> (Principal)</span>
                                                                                 </option>
                                                                             </select>
-                                                                            
+
                                                                             <small class="form-text text-success mt-1">
                                                                                 <i class="icon anm anm-check me-1"></i>{{ 'checkout.resumen.city.available_count' | translate:{count: availableCities.length} }}
                                                                             </small>
-                                                                            
+
                                                                             <div *ngIf="poblacionSelect.invalid && (poblacionSelect.touched || addressForm.submitted)" class="invalid-feedback d-block">
                                                                                 {{ 'checkout.resumen.city.select_required_error' | translate }}
                                                                             </div>
                                                                         </ng-container>
-                                                                        
+
                                                                         <!-- Input si hay una sola ciudad o aún no se ha buscado -->
                                                                         <ng-template #singleCity>
-                                                                            <input name="city" 
-                                                                                   [placeholder]="(isManualFallback ? 'checkout.resumen.city.placeholder_manual' : 'checkout.resumen.city.placeholder_auto') | translate" 
-                                                                                   class="form-control py-4 fw-light bg-light" 
-                                                                                   required 
-                                                                                   [(ngModel)]="poblacion" 
-                                                                                   #poblacionInput="ngModel" 
+                                                                            <input name="city"
+                                                                                   [placeholder]="(isManualFallback ? 'checkout.resumen.city.placeholder_manual' : 'checkout.resumen.city.placeholder_auto') | translate"
+                                                                                   class="form-control fw-light bg-light"
+                                                                                   required
+                                                                                   [(ngModel)]="poblacion"
+                                                                                   #poblacionInput="ngModel"
                                                                                    [readonly]="!isManualFallback"
-                                                                                   [ngClass]="{'is-invalid': poblacionInput.invalid && (poblacionInput.touched || addressForm.submitted)}" 
-                                                                                   id="new-city" 
+                                                                                   [ngClass]="{'is-invalid': poblacionInput.invalid && (poblacionInput.touched || addressForm.submitted)}"
+                                                                                   id="new-city"
                                                                                    type="text" />
-                                                                            
+
                                                                             <small class="form-text text-muted" *ngIf="!isManualFallback && availableCities.length === 0 && !poblacion">
                                                                                 <i class="icon anm anm-info-r me-1"></i>{{ 'checkout.resumen.city.autocomplete_hint' | translate }}
                                                                             </small>
-                                                                            
+
                                                                             <div *ngIf="poblacionInput.invalid && (poblacionInput.touched || addressForm.submitted)" class="invalid-feedback d-block">
                                                                                 {{ (isManualFallback ? 'checkout.resumen.city.manual_required_error' : 'checkout.resumen.city.enter_zip_first_error') | translate }}
                                                                             </div>
                                                                         </ng-template>
-                                                                        
+
                                                                         <!-- Error de validación de ciudad -->
                                                                         <div *ngIf="cityError" class="invalid-feedback d-block">
                                                                             <i class="icon anm anm-times-r me-1"></i>{{ cityError }}
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- 🎯 Provincia/Estado (AUTOCOMPLETADA - READONLY) -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12">
-                                                                        <label for="address_State" class="form-label d-none">{{ 'checkout.resumen.province.label' | translate }} <span class="required">*</span></label>
-                                                                        <input name="state" 
-                                                                               [placeholder]="(isManualFallback ? 'checkout.resumen.province.placeholder_manual' : 'checkout.resumen.province.placeholder_auto') | translate" 
-                                                                               class="form-control py-4 fw-light bg-light" 
-                                                                               required 
-                                                                               [(ngModel)]="ciudad" 
-                                                                               #ciudadRef="ngModel" 
+<!-- 🎯 Provincia/Estado (AUTOCOMPLETADA - READONLY) -->
+                                                                <div class="ld-field ld-field-province">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <label for="address_State" class="form-label ld-field-label">{{ 'checkout.resumen.province.label' | translate }} <span class="required">*</span></label>
+                                                                        <input name="state"
+                                                                               [placeholder]="(isManualFallback ? 'checkout.resumen.province.placeholder_manual' : 'checkout.resumen.province.placeholder_auto') | translate"
+                                                                               class="form-control fw-light bg-light"
+                                                                               required
+                                                                               [(ngModel)]="ciudad"
+                                                                               #ciudadRef="ngModel"
                                                                                [readonly]="isProvinceReadonly"
-                                                                               [ngClass]="{'is-invalid': ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)}" 
-                                                                               id="address_State" 
+                                                                               [ngClass]="{'is-invalid': ciudadRef.invalid && (ciudadRef.touched || addressForm.submitted)}"
+                                                                               id="address_State"
                                                                                type="text" />
                                                                         <small class="form-text text-muted" *ngIf="!ciudad && !isManualFallback">
                                                                             <i class="icon anm anm-info-r me-1"></i>{{ 'checkout.resumen.province.autocomplete_hint' | translate }}
@@ -569,19 +520,16 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Telefono -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12">
-                                                                        <label for="phone" class="form-label d-none">{{ 'checkout.resumen.address_form.phone_label' | translate }} <span class="required">*</span></label>
+<!-- Telefono -->
+                                                                <div class="ld-field ld-field-phone">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <label for="phone" class="form-label ld-field-label">{{ 'checkout.resumen.address_form.phone_label' | translate }} <span class="required">*</span></label>
                                                                         <div class="position-relative">
-                                                                            <input name="phone" id="phone" type="tel" required [(ngModel)]="phone" #phoneRef="ngModel" [placeholder]="'checkout.resumen.address_form.phone_placeholder' | translate" class="form-control py-4 fw-light" [ngClass]="{'is-invalid': phoneRef.invalid && (phoneRef.touched || addressForm.submitted)}" />
-                                                                            <button *ngIf="phone" 
-                                                                                    type="button" 
-                                                                                    (click)="clearField('phone')" 
-                                                                                    class="position-absolute d-flex align-items-center justify-content-center" 
-                                                                                    style="right: 12px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: rgba(108, 117, 125, 0.1); border-radius: 50%; cursor: pointer; transition: all 0.2s ease; padding: 0;"
-                                                                                    onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
-                                                                                    onmouseout="this.style.background='rgba(108, 117, 125, 0.1)'">
+                                                                            <input name="phone" id="phone" type="tel" required [(ngModel)]="phone" #phoneRef="ngModel" [placeholder]="'checkout.resumen.address_form.phone_placeholder' | translate" class="form-control fw-light" [ngClass]="{'is-invalid': phoneRef.invalid && (phoneRef.touched || addressForm.submitted)}" />
+                                                                            <button *ngIf="phone"
+                                                                                    type="button"
+                                                                                    (click)="clearField('phone')"
+                                                                                    class="ld-clear-field position-absolute d-flex align-items-center justify-content-center">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" style="color: #6c757d;">
                                                                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                                                                                 </svg>
@@ -592,9 +540,9 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- CheckBook-->
-                                                                <div class="row justify-content-center pt-2 pb-4">
-                                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-12">
+<!-- CheckBook-->
+                                                                <div class="ld-field ld-field-default">
+                                                                    <div class="form-group ld-field-control">
                                                                         <div class="checkout-tearm customCheckbox">
                                                                             <input id="checkout_usual_shipping_address" name="checkout_usual_shipping_address" [(ngModel)]="usual_shipping_address" type="checkbox" value="checkout tearm" required />
                                                                             <label for="checkout_usual_shipping_address">
@@ -602,14 +550,14 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Button register o update -->
-                                                                <div class="row justify-content-center">
-                                                                    <div class="form-group col-12 col-sm-6 col-md-6 col-lg-12">
-                                                                        <button type="submit" 
-                                                                                class="btn btn-dark w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center" 
-                                                                                (click)="storeAddress()" 
+<!-- Button register o update -->
+                                                                <div class="ld-field ld-field-submit">
+                                                                    <div class="form-group ld-field-control">
+                                                                        <button type="submit"
+                                                                                class="btn btn-dark w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center"
+
                                                                                 [disabled]="isValidating"
-                                                                                style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
+                                                                                >
                                                                             <ng-container *ngIf="!isValidating">
                                                                                 <i class="icon anm anm-check-cil me-2" style="font-size: 1.2rem;"></i>
                                                                                 <span>{{ isEditMode ? ('checkout.resumen.address_form.update_button' | translate) : ('checkout.resumen.address_form.save_button' | translate) }}</span>
@@ -621,13 +569,13 @@
                                                                                 <span>{{ 'checkout.resumen.address_form.validating_button' | translate }}</span>
                                                                             </ng-container>
                                                                         </button>
-                                                                        
+
                                                                         <!-- Mensaje de validación en progreso -->
                                                                         <div *ngIf="validationMessage" class="alert alert-info mt-3 mb-0 py-2 px-3" style="border-left: 4px solid #0dcaf0; border-radius: 6px;">
                                                                             <i class="icon anm anm-info-cil me-2"></i>
                                                                             {{ validationMessage }}
                                                                         </div>
-                                                                        
+
                                                                         <!-- Mensaje de error -->
                                                                         <div class="alert alert-danger mt-3 mb-0 py-2 px-3" *ngIf="validMessage && !status" style="border-left: 4px solid #dc3545; border-radius: 6px;">
                                                                             <i class="icon anm anm-times-circle me-2"></i>
@@ -635,7 +583,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </fieldset>
+</fieldset>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -658,7 +606,7 @@
                                     </div>
 
                                     <!-- Mostrar la lista de direcciones & ShippingRates -->
-                                    <div class="address-book-section" [class.d-none]="loading">
+                                    <div class="address-book-section ld-address-list" [class.d-none]="loading">
                                         <div class="top-sec d-flex mb-3 d-flex justify-content-between align-items-center" [class.d-none]="loading">
                                             <h3 class="mb-0 text-uppercase">{{ 'checkout.resumen.address_list.title' | translate }}</h3>
                                             <div class="d-flex gap-2">
@@ -672,7 +620,7 @@
                                         </div>
                                         <div class="row">
                                             <ng-container *ngIf="selectedAddress">
-                                                <div class="address-select-box active">
+                                                <div class="address-select-box active ld-saved-address">
                                                     <div class="address-box bg-block">
                                                         <div class="d-flex flex-row justify-content-between mb-3">
                                                             <div class="d-flex flex-row">
@@ -737,18 +685,7 @@
                                                    }}</span><br />
                                                                 </p>
                                                             </div>
-                                                            <div class="badge px-3 py-2 mt-3 d-inline-flex align-items-center" 
-                                                                 style="
-                                                                     width: fit-content !important;
-                                                                     background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-                                                                     color: white;
-                                                                     font-weight: 600;
-                                                                     font-size: 0.65rem;
-                                                                     letter-spacing: 0.5px;
-                                                                     border: 1px solid rgba(40, 167, 69, 0.2);
-                                                                     box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15);
-                                                                 " 
-                                                                 *ngIf="selectedAddress.usual_shipping_address">
+                                                            <div class="ld-default-address" *ngIf="selectedAddress.usual_shipping_address">
                                                                 <i class="icon anm anm-check-cil me-2" style="font-size: 0.9rem;"></i>
                                                                 <span class="text-uppercase">{{ 'checkout.resumen.address_list.default_badge' | translate }}</span>
                                                             </div>
@@ -767,7 +704,7 @@
                 <!-- END SHIPPING ADDRESS -->
 
                 <!-- CART SUMMARY VERSION MÓVIL -->
-                <div class="cart-info mb-4 d-block d-md-none bg-white border-0 p-0">
+                <div *ngIf="isModulePurchase" class="cart-info mb-4 d-block d-md-none bg-white border-0 p-0">
                     <div class="cart-info mb-4 bg-white border-0 p-0">
                         <h3 class="title mb-3 text-uppercase ">{{ 'checkout.resumen.cart_summary.title' | translate }}</h3>
                         <div class="cart-order-detail cart-col">
@@ -819,7 +756,7 @@
                                     <span class="money price fw-normal">
                                         <span class="me-1">{{ euro }}</span>
                                         <span>{{getFormattedPrice(getTotal()).integerPart}}.{{ getFormattedPrice(getTotal()).decimalPart }}</span>
-                                        
+
                                     </span>
                                 </span>
                             </div>
@@ -838,8 +775,8 @@
                 <!-- BOTON CONTINUAR A PAGO -->
                 <ng-container *ngIf="listAddresses.length != 0 && !showAddressForm">
                     <div class="d-flex flex-column mb-4">
-                        <button type="button" 
-                                class="btn btn-dark w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center mb-3" 
+                        <button type="button"
+                                class="btn btn-dark w-100 py-3 text-uppercase fw-semibold d-flex align-items-center justify-content-center mb-3"
                                 (click)="goToNextStep()"
                                 style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
                             <i class="icon anm anm-arrow-right me-2" style="font-size: 1.2rem;"></i>
@@ -859,17 +796,17 @@
             </div>
         </ng-container>
         <ng-template #showAddress>
-            <div id="main-left" class="text-center py-5">
-                <i class="icon anm anm-bag-l d-block mb-4" style="font-size: 5rem; color: #dee2e6;"></i>
-                <h3 class="text-uppercase mb-3" style="color: #222; font-size: 1.5rem; letter-spacing: 0.5px;">
+            <div id="main-left" class="ld-checkout-empty">
+                <i class="icon anm anm-bag-l d-block mb-4"></i>
+                <h3 class="text-uppercase mb-3">
                     {{ 'checkout.resumen.empty_cart.title' | translate }}
                 </h3>
-                <p class="text-muted mb-4" style="font-size: 1rem; max-width: 500px; margin: 0 auto;">
+                <p class="text-muted mb-4">
                     {{ 'checkout.resumen.empty_cart.description' | translate }}
                 </p>
                 <div class="mt-4">
                     <a onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products']" class="text-decoration-none">
-                        <button class="btn-dark-ld text-uppercase">{{ 'checkout.resumen.empty_cart.discover_button' | translate }}</button>
+                        <button class="ld-empty-action">{{ 'checkout.resumen.empty_cart.discover_button' | translate }}</button>
                     </a>
                 </div>
             </div>
@@ -880,14 +817,45 @@
         <!--  -->
 
         <!-- ======== COL DERECHA ======== -->
-        <div id="main-right">
+        <div id="main-right" *ngIf="listCarts.length > 0" [class.ld-order-summary]="!isModulePurchase">
+
+            <button
+                *ngIf="!isModulePurchase"
+                type="button"
+                class="ld-order-toggle"
+                [attr.aria-expanded]="orderSummaryExpanded"
+                aria-controls="ld-order-content"
+                (click)="orderSummaryExpanded = !orderSummaryExpanded">
+
+                <i class="icon anm anm-bag-l" aria-hidden="true"></i>
+
+                <span class="ld-order-toggle-label">
+                    {{ (orderSummaryExpanded
+                        ? 'checkout.resumen.order_summary.hide'
+                        : 'checkout.resumen.order_summary.show') | translate }}
+                    <small>
+                        {{ 'checkout.resumen.items_list.title' | translate }}
+                        ({{ listCarts.length }})
+                    </small>
+                </span>
+
+                <strong class="ld-order-toggle-price">
+                    {{ euro }}
+                    {{getFormattedPrice(getTotal()).integerPart}}.{{getFormattedPrice(getTotal()).decimalPart}}
+                </strong>
+
+                <span class="ld-order-chevron"
+                      [class.ld-order-chevron-open]="orderSummaryExpanded"
+                      aria-hidden="true"></span>
+            </button>
+
             <!-- BLOQUE: TU CARRITO -->
-            <div class="order-1">
-                <h3 class="title mb-0 text-uppercase mb-3 fw-bold border border-success" *ngClass="{'d-none': isMobile}">{{ 'checkout.resumen.cart_summary.title' | translate }}</h3>
+            <div class="order-1" id="ld-order-content" [class.ld-order-collapsed]="!isModulePurchase && !orderSummaryExpanded">
+                <h3 class="title mb-0 text-uppercase mb-3 fw-bold ld-order-title" *ngClass="{'d-none': isMobile}">{{ 'checkout.resumen.cart_summary.title' | translate }}</h3>
 
                 <!-- AHORA EL CUPON SE GESTIONA EN LIST CART -->
                 <!-- CODIGO PROMOCIONAL OCUTALMOS-->
-                <!-- 
+                <!--
                 <div class="mb-3 codigo_promocional mb-3 d-none">
                     <div class="block-content">
                         <div class="payment-accordion-radio">
@@ -959,7 +927,7 @@
                 <!-- END CODIGO PROMOCIONAL -->
 
                 <!-- CART SUMMARY VERSION DESKTOP -->
-                <div class="cart-info mb-5 mb-5 d-none d-md-block bg-white border-0 p-0">
+                <div class="cart-info ld-order-totals mb-5 d-none d-md-block bg-white border-0 p-0">
                     <div class="cart-order-detail cart-col">
                         <!-- Subtotal-->
                         <div class="row g-0">
@@ -1003,13 +971,13 @@
                         </div>
 
                         <!-- Total Precio actual -->
-                        <div class="row g-0">
+                        <div class="row g-0 ld-order-grand-total">
                             <span class="col-6 col-sm-6 cart-subtotal-title fs-6 text-uppercase fw-normal">{{ 'checkout.resumen.cart_summary.total' | translate }}</span>
                             <span class="col-6 col-sm-6 cart-subtotal-title fs-6 cart-subtotal text-end">
                                 <span class="money price fw-normal">
                                     <span class="me-1">{{ euro }}</span>
                                     <span>{{getFormattedPrice(getTotal()).integerPart}}.{{ getFormattedPrice(getTotal()).decimalPart }}</span>
-                                    
+
                                 </span>
                             </span>
                         </div>
@@ -1025,44 +993,44 @@
                 <!-- CART SUMMARY -->
 
                 <!-- CARTS LIST  -->
-                <div class="col-12 order-0 lists-carts  order-md-2">
+                <div class="col-12 order-0 lists-carts order-md-2 ld-order-items">
                     <div class="block order-summary p-0">
                         <div class="block-content">
                             <h3 class="mb-0 text-uppercase" style="color: #222;font-size: 1.25rem;letter-spacing: 0.5px;border-bottom: 2px solid #222;padding-bottom: 0.5rem;">{{ 'checkout.resumen.items_list.title' | translate }} ({{ listCarts.length }})</h3>
                             <div class="order-list">
                                 <ng-container *ngFor="let cart of listCarts">
-                                    <div class="d-flex py-3 gap-3 align-items-start">
+                                    <div class="d-flex py-3 gap-3 align-items-start ld-order-item">
                                         <!-- Imagen -->
-                                        <div style="flex: 0 0 auto">
+                                        <div class="ld-order-image" style="flex: 0 0 auto">
                                             <a *ngIf="cart.product?.slug" [routerLink]="['/landing-product',cart.product.slug]">
-                                                <img 
-                                                    class="blur-up lazyload" 
-                                                    [attr.data-src]="getVarietyImage(cart)" 
-                                                    [src]="getVarietyImage(cart)" 
-                                                    [alt]="cart.product?.title || 'Producto'" 
-                                                    [title]="cart.product?.title || 'Producto'" 
-                                                    width="120" 
-                                                    height="170" 
+                                                <img
+                                                    class="blur-up lazyload"
+                                                    [attr.data-src]="getVarietyImage(cart)"
+                                                    [src]="getVarietyImage(cart)"
+                                                    [alt]="cart.product?.title || 'Producto'"
+                                                    [title]="cart.product?.title || 'Producto'"
+                                                    width="120"
+                                                    height="170"
                                                     />
                                             </a>
                                             <!-- Imagen sin link para módulos (no tienen slug) -->
-                                            <img *ngIf="!cart.product?.slug" 
-                                                class="blur-up lazyload" 
-                                                [attr.data-src]="getVarietyImage(cart)" 
-                                                [src]="getVarietyImage(cart)" 
-                                                [alt]="cart.product?.title || 'Módulo'" 
-                                                [title]="cart.product?.title || 'Módulo'" 
-                                                width="120" 
-                                                height="170" 
+                                            <img *ngIf="!cart.product?.slug"
+                                                class="blur-up lazyload"
+                                                [attr.data-src]="getVarietyImage(cart)"
+                                                [src]="getVarietyImage(cart)"
+                                                [alt]="cart.product?.title || 'Módulo'"
+                                                [title]="cart.product?.title || 'Módulo'"
+                                                width="120"
+                                                height="170"
                                                 />
 
                                             <!-- <img class="blur-up lazyload" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="Product" width="120" height="170" /> -->
                                         </div>
                                         <!-- Info del producto -->
-                                        <div class="flex-grow-1 d-flex flex-column justify-content-between">
+                                        <div class="flex-grow-1 d-flex flex-column justify-content-between ld-order-item-info">
                                             <!-- Datos adicionales -->
                                             <div class="d-flex flex-column ">
-                                                <div class="d-flex lh-1 mb-2">
+                                                <div class="d-flex lh-1 mb-2 ld-order-item-heading">
                                                     <div class="fw-normal me-2">
                                                         <!-- Link solo si tiene slug (Printful) -->
                                                         <a *ngIf="cart.product?.slug" href="#" class="fw-normal d-inline-block" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
@@ -1099,23 +1067,23 @@
                                                         </ng-template>
                                                     </div>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.product?.sku">
+                                                <div class="d-flex fw-light lh-1 mb-1 ld-order-attribute" *ngIf="cart.product?.sku">
                                                     <span class="w-25">{{ 'checkout.resumen.items_list.sku_label' | translate }}</span>
                                                     <span class="ms-lg-3 ms-5">{{ cart.product.sku }}</span>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.variedad?.color">
+                                                <div class="d-flex fw-light lh-1 mb-1 ld-order-attribute" *ngIf="cart.variedad?.color">
                                                     <span class="w-25">{{ 'checkout.resumen.items_list.color_label' | translate }}</span>
                                                     <span class="ms-lg-3 ms-5 fw-light">{{ cart.variedad.color }}</span>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.variedad">
+                                                <div class="d-flex fw-light lh-1 mb-1 ld-order-attribute" *ngIf="cart.variedad">
                                                     <span class="w-25">{{ 'checkout.resumen.items_list.size_label' | translate }}</span>
                                                     <span class="ms-lg-3 ms-5 fw-light">{{ cart.variedad.valor }}</span>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1">
+                                                <div class="d-flex fw-light lh-1 mb-1 ld-order-attribute">
                                                     <span class="w-25">{{ 'checkout.resumen.items_list.quantity_label' | translate }}</span>
                                                     <span class="ms-lg-3 ms-5 fw-light">{{ cart.cantidad}}</span>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1">
+                                                <div class="d-flex fw-light lh-1 mb-1 ld-order-attribute">
                                                     <span class="w-25">{{ 'checkout.resumen.items_list.total_label' | translate }}</span>
                                                     <span class="money ms-lg-3 ms-5">
                                                         <span class="text-dangerpaymen">
@@ -1262,7 +1230,7 @@
                         <i class="icon anm anm-plus-l me-2"></i>{{ 'checkout.resumen.address_drawer.add_another_button' | translate }}
                     </a>
                     <!-- <a [href]="'/' + locale + '/' + country + '/shop/cart'" class="cart-btn btn btn-outline-white text-black bg-white w-100 me-1 btn-lg text-uppercase fw-normal py-3 mb-3">Añadir otra dirección</a> -->
-                    <!-- <a href="#" onclick="return false;" (click)="goToRegisterAddress()"> 
+                    <!-- <a href="#" onclick="return false;" (click)="goToRegisterAddress()">
                <button type="button" class="btn btn-primary px-5 text-uppercase fw-normal">Añadir otra dirección</button>
                </a> -->
                     <!-- <a href="#" onclick="return false;" [routerLink]="['/', locale, country, 'account', 'myaddresses', 'add']" (click)="goToRegisterAddress()">  -->

@@ -1,0 +1,133 @@
+@media (min-width: 768px) {
+    .ld-payment .ld-payment-items .order-list {
+        max-height: 420px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 8px;
+        scrollbar-width: thin;
+        scrollbar-color: #bcbcbc transparent;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .ld-payment .checkout-grid {
+        gap: 24px;
+    }
+
+    .ld-payment .ld-payment-summary {
+        padding: 16px;
+    }
+
+    .ld-payment .ld-payment-image {
+        width: 76px;
+    }
+
+    .ld-payment .ld-payment-address .address-box {
+        padding: 16px !important;
+    }
+}
+
+
+/* Mobile payment order summary */
+
+.ld-payment-toggle {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .ld-payment .ld-payment-items {
+        margin-top: 0 !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .ld-payment .ld-payment-summary {
+        padding: 16px;
+        margin-bottom: 0;
+    }
+
+    .ld-payment .ld-payment-toggle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        min-height: 44px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #111;
+        text-align: left;
+        cursor: pointer;
+        order: -1;
+    }
+
+    .ld-payment-toggle > .icon {
+        font-size: 21px;
+    }
+
+    .ld-payment-toggle-label {
+        flex: 1;
+        min-width: 0;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
+    .ld-payment-toggle-label small {
+        display: block;
+        margin-top: 4px;
+        font-size: 11px;
+        font-weight: 400;
+        color: #666;
+    }
+
+    .ld-payment-toggle-price {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .ld-payment-chevron {
+        width: 8px;
+        height: 8px;
+        border-right: 1.5px solid currentColor;
+        border-bottom: 1.5px solid currentColor;
+        transform: rotate(45deg);
+        margin: 0 3px 4px;
+    }
+
+    .ld-payment-toggle[aria-expanded="true"] .ld-payment-chevron {
+        transform: rotate(225deg);
+    }
+
+    .ld-payment-toggle[aria-expanded="false"] .ld-payment-hide,
+    .ld-payment-toggle[aria-expanded="true"] .ld-payment-show {
+        display: none;
+    }
+
+    .ld-payment-toggle[aria-expanded="false"] + .ld-payment-items {
+        display: none !important;
+    }
+
+    .ld-payment-toggle[aria-expanded="true"] + .ld-payment-items {
+        margin-top: 16px !important;
+        padding-top: 16px !important;
+        border-top: 1px solid #ddd;
+    }
+
+    .ld-payment .ld-payment-items .order-list {
+        max-height: none;
+        overflow: visible;
+    }
+
+    .ld-payment .ld-payment-address .top-sec {
+        gap: 8px;
+    }
+
+    .ld-payment .ld-payment-address .top-sec h3 {
+        font-size: 16px !important;
+    }
+
+    .ld-payment #site-scroll {
+        display: none !important;
+    }
+}
