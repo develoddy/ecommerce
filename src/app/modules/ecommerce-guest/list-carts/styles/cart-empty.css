@@ -1,0 +1,71 @@
+/* CX-03.02.08 - Empty cart */
+
+.ld-cart-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-top: 1px solid #e2e2e2;
+    padding: 80px 24px;
+    color: #111;
+}
+
+.ld-cart-empty-icon {
+    font-size: 56px;
+    margin-bottom: 24px;
+}
+
+.ld-cart-empty h3 {
+    margin: 0 0 16px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.ld-cart-empty p {
+    max-width: 360px;
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.ld-cart-empty-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 28px;
+}
+
+.ld-cart-empty-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px;
+    background: #111;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.ld-cart-empty-cta:hover {
+    background: #333;
+    color: #fff;
+}
+
+.ld-cart-empty-home {
+    color: #555;
+    font-size: 13px;
+    text-decoration: underline;
+}
+
+.ld-cart-empty a:focus-visible {
+    outline: 2px solid #111;
+    outline-offset: 4px;
+}

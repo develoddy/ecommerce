@@ -602,5 +602,76 @@
             "privacyText": "Read our",
             "privacyLink": "privacy policy"
         }
+    },
+    "cart": {
+        "title": "Shopping bag",
+        "loading": "Loading your bag...",
+        "count_one": "{{count}} item in your bag",
+        "count_many": "{{count}} items in your bag",
+        "sku": "Item No.",
+        "decrease": "Decrease quantity",
+        "increase": "Increase quantity",
+        "remove": "Remove",
+        "close": "Close",
+        "free_shipping": "Free shipping",
+        "shipping_description": "Your order includes free shipping.",
+        "summary": "Order summary",
+        "checkout": "Checkout",
+        "coupon": {
+            "title": "Have a discount code?",
+            "applied": "Discount code applied",
+            "remove": "Remove",
+            "remove_title": "Remove discount code",
+            "placeholder": "Discount code",
+            "apply": "Apply",
+            "apply_title": "Apply discount code",
+            "login_required": "Sign in to use discount codes",
+            "guest_notice": "Discount codes are only available to registered users.",
+            "login": "Sign in",
+            "or": "or",
+            "register": "register",
+            "guest_suffix": "to use discount codes.",
+            "hint": "Enter your discount code to save on your order.",
+            "eligible": "The discount code only applies to items without existing discounts.",
+            "eligible_count": "The discount code only applies to items without existing discounts ({{eligible}} of {{total}} items).",
+            "replace": "Remove the current discount code before applying another.",
+            "all_discounted": "All items in your bag already have discounts."
+        },
+        "recommendations": {
+            "title": "Complete your order",
+            "description": "More products that match your style.",
+            "previous": "Previous products",
+            "next": "Next products",
+            "scroll": "Scroll recommendations"
+        },
+        "empty": {
+            "title": "Your bag is empty",
+            "description": "Discover products made for those who live between code, ideas and coffee.",
+            "explore": "Explore the collection",
+            "home": "Back to home"
+        },
+        "help": {
+            "prefix": "Need help? Contact our",
+            "link": "customer service team"
+        },
+        "nav": {
+            "shop": "Shop",
+            "account": "Account",
+            "home": "Home",
+            "favorites": "Favorites",
+            "cart": "Bag"
+        },
+        "messages": {
+            "minimum": "You must have at least one item in your bag.",
+            "code_required": "Please enter a discount code.",
+            "already_applied": "Discount code \"{{code}}\" is already applied to your bag.",
+            "another_applied": "Discount code \"{{code}}\" is already applied. Remove it before applying another.",
+            "not_applicable": "This discount code does not apply to the items in your bag.",
+            "applied": "Discount code {{code}} successfully applied to {{count}} item(s).",
+            "applied_selective": "Discount code {{code}} successfully applied to {{count}} item(s). Previously discounted items retain their special prices.",
+            "no_coupon": "There is no discount code to remove.",
+            "removed": "Discount code \"{{code}}\" successfully removed.",
+            "coupon_label": "Code {{code}}"
+        }
     }
 }

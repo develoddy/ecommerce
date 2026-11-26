@@ -1,0 +1,196 @@
+/* CX-03.02.07 - Cart recommendations */
+
+.ld-cart-recommendations {
+    max-width: 1440px;
+    margin: 48px auto;
+    padding: 32px 24px 0;
+    border-top: 1px solid #e2e2e2;
+}
+
+.ld-cart-recommendations-header {
+    margin-bottom: 24px;
+}
+
+.ld-cart-recommendations-header h2 {
+    margin: 0 0 8px;
+    color: #111;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -.3px;
+}
+
+.ld-cart-recommendations-header p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.ld-cart-recommendations-track {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    padding-bottom: 12px;
+}
+
+.ld-cart-recommendation {
+    min-width: 0;
+    scroll-snap-align: start;
+}
+
+.ld-cart-recommendation-link {
+    display: block;
+    color: #111;
+    text-decoration: none;
+}
+
+.ld-cart-recommendation-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    background: #e5e5e5;
+}
+
+.ld-cart-recommendation h3 {
+    margin: 12px 0 6px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.ld-cart-recommendation-price {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: #111;
+    font-size: 14px;
+}
+
+.ld-cart-recommendation-price strong {
+    font-weight: 600;
+}
+
+.ld-cart-recommendation-price del {
+    color: #777;
+}
+
+.ld-cart-recommendation-discount {
+    color: #b42318;
+}
+
+/* Editorial product image */
+
+.ld-cart-recommendation-media {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.ld-cart-recommendation-tag {
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    left: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    color: #111;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+/* Editorial scroll indicator */
+
+.ld-cart-recommendations-track::-webkit-scrollbar {
+    display: none;
+}
+
+.ld-cart-recommendations-progress {
+    position: relative;
+    height: 2px;
+    margin-top: 20px;
+    background: #dedede;
+    overflow: hidden;
+}
+
+.ld-cart-recommendations-indicator {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: #111;
+    pointer-events: none;
+}
+
+.ld-cart-recommendations-track:focus-visible {
+    outline: 1px solid #111;
+    outline-offset: 4px;
+}
+
+
+/* CX-03.02.07.06 - Carousel controls */
+
+.ld-cart-recommendations-nav,
+.ld-cart-recommendations-range {
+    display: none;
+}
+
+.ld-cart-recommendations-nav {
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.ld-cart-recommendations-nav button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid #d8d8d8;
+    border-radius: 50%;
+    background: #fff;
+    color: #111;
+    cursor: pointer;
+}
+
+.ld-cart-recommendations-nav button:hover:not(:disabled) {
+    border-color: #111;
+}
+
+.ld-cart-recommendations-nav button:disabled {
+    opacity: .3;
+    cursor: default;
+}
+
+.ld-cart-recommendations-nav button:focus-visible,
+.ld-cart-recommendations-progress:focus-within {
+    outline: 1px solid #111;
+    outline-offset: 4px;
+}
+
+.ld-cart-recommendations-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: grab;
+}
+
+.ld-cart-recommendations-range:active {
+    cursor: grabbing;
+}

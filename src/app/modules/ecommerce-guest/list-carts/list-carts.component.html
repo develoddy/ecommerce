@@ -4,7 +4,7 @@
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
             <span class="sr-only"></span>
         </div>
-        <h4 class="text-muted mt-3">Cargando tu carrito...</h4>
+        <h4 class="text-muted mt-3">{{ 'cart.loading' | translate }}</h4>
     </div>
 </div>
 
@@ -13,22 +13,22 @@
     <!-- BODY CONTAINER -->
     <div id="page-content">
         <!-- PAGE HEADER -->
-        <div class="page-header text-center bg-transparent mb-0 p-3">
+        <div class="page-header ld-cart-header bg-transparent mb-0">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex flex-column justify-content-between align-items-start">
                         <div class="page-title">
                             <h2 class="fw-bold text-uppercase mb-0" style="color: #222; letter-spacing: 0.5px;">
-                                <i class="icon anm anm-bag-l me-2"></i>Carrito de la compra
+                                <i class="icon anm anm-bag-l me-2"></i>{{ 'cart.title' | translate }}
                             </h2>
                             <p class="text-muted mb-0 mt-1" *ngIf="listCarts.length > 0">
-                                <small>{{listCarts.length}} {{listCarts.length === 1 ? 'producto' : 'productos'}} en tu carrito</small>
+                                <small>{{ (listCarts.length === 1 ? 'cart.count_one' : 'cart.count_many') | translate:{count: listCarts.length} }}</small>
                             </p>
                         </div>
                         <!--Breadcrumbs-->
                         <div class="breadcrumbs d-none">
                             <a href="#" class="text-decoration-underline" onclick="return false;" routerLink="/" title="Lujandev.com">Lujandev.com</a>
-                            <span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Carrito de la compra</span>
+                            <span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>{{ 'cart.title' | translate }}</span>
                         </div>
                         <!--End Breadcrumbs-->
                     </div>
@@ -38,161 +38,141 @@
         <!-- END PAGE HEADER -->
 
         <!-- MAIN CONTENT -->
-        <div class="container">
+        <div class="container ld-cart-container">
             <ng-container *ngIf="listCarts.length == 0; else allCarts">
-                <div class="d-flex justify-content-center align-items-center py-5">
-                    <div class="p-4 text-center">
-                        <div class="mb-4">
-                            <i class="icon anm anm-bag-l display-1 text-muted opacity-25"></i>
-                        </div>
-                        <h3 class="text-uppercase mb-3" style="color: #222; letter-spacing: 0.5px;">Tu carrito está vacío</h3>
-                        <p class="text-muted pt-2" style="max-width: 500px; margin: 0 auto;">
-                            Inspírate con las últimas tendencias y descubre algo nuevo para renovar tu armario. 
-                            Encuentra productos únicos que se adapten a tu estilo.
-                        </p>
-                        <div class="view-collection text-center mt-4 mb-4">
-                            <a onclick="return false;" 
-                               [routerLink]="dynamicRouter.getRouterLink(['shop', 'filter-products'])" 
-                               class="btn btn-primary btn-lg px-5 text-uppercase">
-                                <i class="icon anm anm-search-l me-2"></i>Descubrir novedades
-                            </a>
-                        </div>
+                <section class="ld-cart-empty"
+                         aria-labelledby="cart-empty-title">
+
+                    <i class="icon anm anm-bag-l ld-cart-empty-icon"
+                       aria-hidden="true"></i>
+
+                    <h3 id="cart-empty-title">
+                        {{ 'cart.empty.title' | translate }}
+                    </h3>
+
+                    <p>
+                        Descubre productos creados para quienes
+                        viven entre código, ideas y café.
+                    </p>
+
+                    <div class="ld-cart-empty-actions">
+                        <a [routerLink]="dynamicRouter.getRouterLink(['shop', 'filter-products'])"
+                           class="ld-cart-empty-cta">
+                            {{ 'cart.empty.explore' | translate }}
+                        </a>
+
+                        <a [routerLink]="dynamicRouter.getRouterLink(['home'])"
+                           class="ld-cart-empty-home">
+                            {{ 'cart.empty.home' | translate }}
+                        </a>
                     </div>
-                </div>
+                </section>
             </ng-container>
             <ng-template #allCarts>
-                <div class="row">
+                <div class="row ld-cart-grid">
                     <!--Cart Content-->
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-8 main-col">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-8 main-col ld-cart-items">
                         <!-- Alerta de Envío Gratis Mejorada -->
-                        <div class="alert alert-success py-3 alert-dismissible fade show cart-alert mb-4" role="alert" style="border-left: 4px solid #28a745;">
+                        <div class="alert alert-dismissible fade show cart-alert ld-cart-shipping-banner" role="status">
                             <div class="d-flex align-items-center">
-                                <i class="icon anm anm-truck-l icon-large me-3" style="font-size: 2rem;"></i>
+                                <i class="icon anm anm-truck-l ld-cart-shipping-icon"></i>
                                 <div>
-                                    <strong class="text-uppercase d-block">¡Felicidades!</strong>
-                                    <span>Tienes envío gratis en este pedido</span>
+                                    <strong class="d-block">{{ 'cart.free_shipping' | translate }}</strong>
+                                    <span>{{ 'cart.shipping_description' | translate }}</span>
                                 </div>
                             </div>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" [attr.aria-label]="'cart.close' | translate"></button>
                         </div>
                         <!--End Alert msg-->
                         <!-- List carts -->
-                        <div class="d-flex flex-column gap-3">
+                        <div class="ld-cart-list">
                             <ng-container *ngFor="let cart of listCarts">
-                                <div class="d-flex flex-lg-row">
-                                    <div class="p-2">
-                                        <a href="#" class="cart-remove remove-icon position-static d-inline-flex align-items-center justify-content-center" 
-                                           onclick="return false;" 
-                                           (click)="storeRemoveCart(cart)" 
-                                           data-bs-toggle="tooltip" 
-                                           data-bs-placement="top" 
-                                           title="Eliminar producto"
-                                           style="width: 32px; height: 32px; border-radius: 50%; transition: all 0.3s ease; background-color: #f8f9fa;">
-                                            <i class="icon anm anm-times-r" style="font-size: 1.2rem; color: #6c757d;"></i>
-                                        </a>
-                                    </div>
-                                    <div class="p-2">
-                                        <a href="#" onclick="return false;" [routerLink]="dynamicRouter.getRouterLink(['shop', 'product', cart.product.slug])">
-                                            <img class="blur-up lazyload" [src]="getVarietyImage(cart)" alt="product" title="{{ cart.product.title }} / {{ cart.variedad?.color }}" width="250" height="250" />
-                                        </a>
-                                    </div>
-                                    <div class="p-2 d-flex flex-column">
-                                        <div class="text-uppercase lh-1 mb-2">
-                                            <a href="#" class="fw-semibold text-dark" onclick="return false;" [routerLink]="dynamicRouter.getRouterLink(['shop', 'product', cart.product.slug])" style="letter-spacing: 0.3px;">
+                                <article class="ld-cart-item">
+
+                                    <a class="ld-cart-item-image"
+                                       [routerLink]="dynamicRouter.getRouterLink(['shop', 'product', cart.product.slug])">
+                                        <img class="blur-up lazyload"
+                                             [src]="getVarietyImage(cart)"
+                                             [alt]="cart.product.title"
+                                             title="{{ cart.product.title }} / {{ cart.variedad?.color }}"
+                                             width="250" height="250" />
+                                    </a>
+
+                                    <div class="ld-cart-item-content">
+
+                                        <div class="ld-cart-item-heading">
+                                            <a class="ld-cart-item-title"
+                                               [routerLink]="dynamicRouter.getRouterLink(['shop', 'product', cart.product.slug])">
                                                 {{ cart.product.title }}
                                             </a>
-                                        </div>
-                                        <!-- Badge de tipo de descuento -->
-                                        <div class="mb-2" *ngIf="hasCartItemDiscount(cart)">
-                                            <span class="badge bg-success text-white fw-light" style="font-size: 0.75rem;">
-                                                {{ getDiscountType(cart) }}
+
+                                            <span class="ld-cart-item-total"
+                                                  [class.text-danger]="hasCartItemDiscount(cart)">
+                                                {{ euro }} {{ getPriceParts(cart.finalSubtotal || (cart.finalUnitPrice || getFinalUnitPrice(cart)) * cart.cantidad).integer }}.{{ getPriceParts(cart.finalSubtotal || (cart.finalUnitPrice || getFinalUnitPrice(cart)) * cart.cantidad).decimals }}
                                             </span>
                                         </div>
 
-                                        <div class="d-flex align-items-center">
-                                            <!-- Precio original tachado si hay descuento -->
-                                            <span class="money me-2" *ngIf="hasCartItemDiscount(cart)">
-                                                <span class="price old-price text-decoration-line-through text-muted" style="font-size: 0.95rem;">
-                                                    {{ euro }} {{ getPriceParts(getOriginalUnitPrice(cart)).integer }}.{{ getPriceParts(getOriginalUnitPrice(cart)).decimals }}
-                                                </span>
+                                        <div class="ld-cart-item-sku">
+                                            {{ 'cart.sku' | translate }} {{ cart.product.sku }}
+                                        </div>
+
+                                        <div class="ld-cart-item-variant" *ngIf="cart.variedad">
+                                            <span>{{ cart.variedad.color }}</span>
+                                            <span *ngIf="cart.variedad.color && cart.variedad.valor"> / </span>
+                                            <span>{{ cart.variedad.valor }}</span>
+                                        </div>
+
+                                        <div class="ld-cart-item-discount" *ngIf="hasCartItemDiscount(cart)">
+                                            {{ getDiscountType(cart) }}
+                                        </div>
+
+                                        <div class="ld-cart-item-unit-price">
+                                            <span class="ld-cart-item-old-price" *ngIf="hasCartItemDiscount(cart)">
+                                                {{ euro }} {{ getPriceParts(getOriginalUnitPrice(cart)).integer }}.{{ getPriceParts(getOriginalUnitPrice(cart)).decimals }}
                                             </span>
 
-                                            <!-- Precio final (con descuento si aplica) -->
-                                            <span class="money">
-                                                <span class="price-small fw-bold" [class.text-danger]="hasCartItemDiscount(cart)" style="font-size: 1.1rem;">
-                                                    <span class="me-1">{{ euro }}</span>
-                                                    <span class="">{{ getPriceParts(cart.finalUnitPrice || getFinalUnitPrice(cart)).integer }}.</span>
-                                                    <span class="">
-                                                        <span>{{ getPriceParts(cart.finalUnitPrice || getFinalUnitPrice(cart)).decimals }}</span>
-                                                    </span>
-                                                </span>
+                                            <span [class.text-danger]="hasCartItemDiscount(cart)">
+                                                {{ euro }} {{ getPriceParts(cart.finalUnitPrice || getFinalUnitPrice(cart)).integer }}.{{ getPriceParts(cart.finalUnitPrice || getFinalUnitPrice(cart)).decimals }}
                                             </span>
                                         </div>
-                                        <div class="d-flex lh-sm mb-1">
-                                            <span class="w-25 fw-light text-muted" style="font-size: 0.9rem;">Art. nº</span>
-                                            <span class="ms-lg-3 ms-5 text-dark">{{ cart.product.sku }}</span>
-                                        </div>
-                                        <div class="d-flex lh-sm mb-1">
-                                            <span class="w-25 fw-light text-muted" style="font-size: 0.9rem;">Color</span>
-                                            <span class="ms-lg-3 ms-5 text-dark">{{cart.variedad.color}}</span>
-                                        </div>
-                                        <div class="d-flex lh-sm mb-1" *ngIf="cart.variedad">
-                                            <span class="w-25 fw-light text-muted" style="font-size: 0.9rem;">Talla</span>
-                                            <span class="ms-lg-3 ms-5 text-dark">{{cart.variedad.valor}}</span>
-                                        </div>
-                                        <div class="d-flex lh-sm mb-1">
-                                            <span class="w-25 fw-light text-muted" style="font-size: 0.9rem;">Cantidad</span>
-                                            <span class="ms-lg-3 ms-5 text-dark">{{ cart.cantidad }}</span>
-                                        </div>
-                                        <div class="d-flex lh-sm mb-3 pt-2" style="border-top: 1px solid #e9ecef;">
-                                            <span class="w-25 fw-semibold text-dark">Total</span>
-                                            <span class="money ms-lg-3 ms-5">
-                                                <span class="price-small fw-bold" [class.text-danger]="hasCartItemDiscount(cart)" style="font-size: 1rem;">
-                                                    <span class="me-1">{{ euro }}</span>
-                                                    <span class="">{{ getPriceParts(cart.finalSubtotal || (cart.finalUnitPrice || getFinalUnitPrice(cart)) * cart.cantidad).integer }}.</span>
-                                                    <span class="">
-                                                        <span>{{ getPriceParts(cart.finalSubtotal || (cart.finalUnitPrice || getFinalUnitPrice(cart)) * cart.cantidad).decimals }}</span>
 
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <div class="">
+                                        <div class="ld-cart-item-actions">
                                             <div class="cart-qty d-flex">
-                                                <div class="qtyField">
-                                                    <!-- Botón menos -->
-                                                    <a class="qtyBtn minus text-muted d-inline-flex align-items-center justify-content-center" 
-                                                       href="#" 
-                                                       onclick="return false;" 
-                                                       (click)="dec(cart); $event.preventDefault()"
-                                                       style="width: 36px; height: 36px; border-radius: 4px; transition: all 0.2s ease;"
-                                                       onmouseover="this.style.backgroundColor='#f8f9fa'"
-                                                       onmouseout="this.style.backgroundColor='transparent'">
-                                                        <i class="icon anm anm-minus-r fs-5 text-black"></i>
-                                                    </a>
+                                                <div class="qtyField ld-cart-quantity">
 
-                                                    <!-- Input cantidad -->
-                                                    <input class="cart-qty-input qty border-0 fs-5 text-black text-center fw-semibold" 
-                                                           type="number" 
-                                                           [(ngModel)]="cart.cantidad" 
-                                                           min="1" 
-                                                           (blur)="validateCartQuantity(cart)"/>
+                                                    <button type="button"
+                                                            class="qtyBtn minus"
+                                                            [attr.aria-label]="'cart.decrease' | translate"
+                                                            (click)="dec(cart); $event.preventDefault()">
+                                                        <i class="icon anm anm-minus-r"></i>
+                                                    </button>
 
-                                                    <!-- Botón más -->
-                                                    <a class="qtyBtn plus text-muted d-inline-flex align-items-center justify-content-center" 
-                                                       href="#" 
-                                                       onclick="return false;" 
-                                                       (click)="inc(cart); $event.preventDefault()"
-                                                       style="width: 36px; height: 36px; border-radius: 4px; transition: all 0.2s ease;"
-                                                       onmouseover="this.style.backgroundColor='#f8f9fa'"
-                                                       onmouseout="this.style.backgroundColor='transparent'">
-                                                        <i class="icon anm anm-plus-r fs-5 text-black"></i>
-                                                    </a>
+                                                    <input class="cart-qty-input qty"
+                                                           type="number"
+                                                           [attr.aria-label]="'product_detail.quantity' | translate"
+                                                           [(ngModel)]="cart.cantidad"
+                                                           min="1"
+                                                           (blur)="validateCartQuantity(cart)" />
+
+                                                    <button type="button"
+                                                            class="qtyBtn plus"
+                                                            [attr.aria-label]="'cart.increase' | translate"
+                                                            (click)="inc(cart); $event.preventDefault()">
+                                                        <i class="icon anm anm-plus-r"></i>
+                                                    </button>
+
                                                 </div>
                                             </div>
+
+                                            <button type="button"
+                                                    class="ld-cart-item-remove"
+                                                    (click)="storeRemoveCart(cart)">
+                                                {{ 'cart.remove' | translate }}
+                                            </button>
                                         </div>
+
                                     </div>
-                                </div>
+                                </article>
                             </ng-container>
                         </div>
                         <!-- End List carts -->
@@ -200,19 +180,19 @@
 
 
                     <!-- Resumen de precio -->
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-4  mt-lg-0 order-3 order-lg-2">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-4 ld-cart-summary order-2">
                         <div class="cart-info sidebar-sticky bg-transparent border-0 px-0">
                             <div class="mb-4">
-                                <h3 class="title mb-2 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
-                                    <i class="icon anm anm-file-text-l me-2"></i>Resumen del pedido
+                                <h3 class="ld-cart-summary-title">
+                                    {{ 'cart.summary' | translate }}
                                 </h3>
                             </div>
-                            <div class="cart-order-detail cart-col" style="background-color: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                            <div class="cart-order-detail cart-col ld-cart-summary-panel">
                                 <!-- Subtotal sin rebajas (si hay descuentos) -->
                                 <div class="row g-0 mb-2" *ngIf="hasAnyCartDiscount()">
-                                    <span class="col-6 col-sm-6 cart-subtotal-title text-muted" style="font-size: 0.95rem;">Subtotal</span>
+                                    <span class="col-6 col-sm-6 cart-subtotal-title text-muted">{{ 'checkout.resumen.cart_summary.subtotal' | translate }}</span>
                                     <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                        <span class="price-small text-muted old-price text-decoration-line-through" style="font-size: 0.95rem;">
+                                        <span class="price-small text-muted old-price text-decoration-line-through">
                                             <span class="me-1">{{ euro }}</span>
                                             <span class="">{{ getPriceParts(getOriginalSubtotal()).integer }}.</span>
                                             <span class="">
@@ -224,11 +204,11 @@
 
                                 <!-- Descuento aplicado (solo si hay descuentos) -->
                                 <div class="row g-0 mb-2" *ngIf="hasAnyCartDiscount()">
-                                    <span class="col-6 col-sm-6 cart-subtotal-title text-danger" style="font-size: 0.95rem;">
-                                        <i class="icon anm anm-tag-l me-1"></i>Descuento
+                                    <span class="col-6 col-sm-6 cart-subtotal-title text-danger">
+                                        <i class="icon anm anm-tag-l me-1"></i>{{ 'checkout.resumen.cart_summary.discount' | translate }}
                                     </span>
                                     <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end text-danger">
-                                        <span class="price-small fw-semibold" style="font-size: 0.95rem;">
+                                        <span class="price-small fw-semibold">
                                             <span class="me-1">{{ euro }}</span>
                                             -<span class="">{{ getPriceParts(getTotalDiscount()).integer }}.</span>
                                             <span class="">
@@ -240,9 +220,9 @@
 
                                 <!-- Subtotal (si no hay descuentos) -->
                                 <div class="row g-0 mb-2" *ngIf="!hasAnyCartDiscount()">
-                                    <span class="col-6 col-sm-6 cart-subtotal-title text-muted" style="font-size: 0.95rem;">Subtotal</span>
+                                    <span class="col-6 col-sm-6 cart-subtotal-title text-muted">{{ 'checkout.resumen.cart_summary.subtotal' | translate }}</span>
                                     <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                        <span class="price-small" style="font-size: 0.95rem;">
+                                        <span class="price-small">
                                             <span class="me-1">{{ euro }}</span>
                                             <span class="">{{ getPriceParts(totalCarts).integer }}.</span>
                                             <span class="">
@@ -253,22 +233,22 @@
                                 </div>
 
                                 <!-- Envío -->
-                                <div class="row g-0 mb-3 pb-3" style="border-bottom: 2px solid #dee2e6;">
-                                    <span class="col-6 col-sm-6 cart-subtotal-title text-muted" style="font-size: 0.95rem;">
-                                        <i class="icon anm anm-truck-l me-1"></i>Envío
+                                <div class="row g-0 ld-cart-summary-shipping">
+                                    <span class="col-6 col-sm-6 cart-subtotal-title text-muted">
+                                        <i class="icon anm anm-truck-l me-1"></i>{{ 'checkout.resumen.cart_summary.shipping' | translate }}
                                     </span>
                                     <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                        <span class="money text-success fw-semibold" style="font-size: 0.95rem;">Gratis</span>
+                                        <span class="money ld-cart-shipping-value">{{ 'checkout.resumen.cart_summary.free' | translate }}</span>
                                     </span>
                                 </div>
 
                                 <!-- Total -->
                                 <div class="row g-0">
-                                    <span class="col-6 col-sm-6 cart-subtotal-title text-uppercase fw-bold" style="font-size: 1.1rem; color: #222;">
-                                        Total
+                                    <span class="col-6 col-sm-6 ld-cart-summary-total-label">
+                                        {{ 'checkout.resumen.cart_summary.total' | translate }}
                                     </span>
                                     <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end">
-                                        <span class="money price fw-bold" style="font-size: 1.3rem; color: #222;">
+                                        <span class="money price ld-cart-summary-total-value">
                                             <span class="me-1">{{ euro }}</span>
                                             <span class="">{{ getPriceParts(totalCarts).integer }}.</span>
                                             <span class="">
@@ -290,19 +270,15 @@
                                     <input type="checkbox" value="allen-vela" id="cart-tearm" />
                                     <label for="cart-tearm">Estoy de acuerdo con los términos y condiciones</label>
                                 </div>
-                                <a [routerLink]="dynamicRouter.getRouterLink(['account', 'checkout'])" id="cartCheckout" class="text-decoration-none d-block mt-3">
-                                    <button type="submit" 
-                                            name="add" 
-                                            class="btn-dark-ld text-uppercase"
-                                            style="letter-spacing: 1px; border-radius: 8px; transition: all 0.3s ease; font-size: 1rem;">
-                                        <i class="icon anm anm-check-cil me-2" style="font-size: 1.2rem;"></i>
-                                        <span>Proceder al pago</span>
-                                    </button>
+                                <a [routerLink]="dynamicRouter.getRouterLink(['account', 'checkout'])"
+                                   id="cartCheckout"
+                                   class="ld-cart-checkout">
+                                    {{ 'cart.checkout' | translate }}
                                 </a>
                                 <div class="paymnet-img text-center mb-3 d-none">
                                     <img src="assets/images/icons/safepayment.png" alt="Payment" width="299" height="28" />
                                 </div>
-                                <div class="d-flex mb-3">
+                                <div class="ld-cart-payment-methods">
                                     <ul class="d-flex flex-row">
                                         <li class="ms-0">
                                             <svg width="44" height="28" xmlns="http://www.w3.org/2000/svg" class="Icon_icon-content-1__kPDLF">
@@ -354,11 +330,114 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div>
-                                    <p class="lh-1 fw-light">
-                                        <small>¿Necesitas ayuda? Ponte en contacto con el
-                                            <a href="#" onclick="return false;" class="text-decoration-underline fw-normal">servicio de Atención al
-                                                cliente
+
+                                <!-- Cart coupon -->
+                                <details class="ld-cart-coupon"
+                                         [open]="hasActiveCoupon() || showCouponError">
+                                    <summary>
+                                        <span>{{ 'cart.coupon.title' | translate }}</span>
+                                    </summary>
+                                    <div class="ld-coupon-content">
+<div *ngIf="hasActiveCoupon()" class="ld-coupon-active">
+                                        <div class="d-flex align-items-center">
+                                            <i class="icon anm anm-gift-l me-3"></i>
+                                            <div>
+                                                <strong class="d-block text-uppercase">
+                                                    <i class="icon anm anm-check-cil me-1"></i>{{ 'cart.coupon.applied' | translate }}
+                                                </strong>
+                                                <span class="text-uppercase fw-bold">{{getActiveCouponCode()}}</span>
+                                            </div>
+                                        </div>
+                                        <button type="button"
+                                                (click)="removeCupon()"
+                                                class="ld-coupon-remove"
+                                                [title]="'cart.coupon.remove_title' | translate">
+                                            <i class="icon anm anm-times-circle me-2"></i>
+                                            <span >{{ 'cart.coupon.remove' | translate }}</span>
+                                        </button>
+                                    </div>
+
+
+                                    <form *ngIf="!hasActiveCoupon()">
+                                        <div class="form-group">
+
+                                            <div class="ld-coupon-form">
+                                                <input id="coupon_input"
+                                                       class="form-control"
+
+                                                       type="text"
+                                                       name="coupon"
+                                                       [placeholder]="'cart.coupon.placeholder' | translate"
+                                                       [(ngModel)]="codeCupon"
+                                                       (keyup.enter)="applyCupon()"
+                                                       maxlength="20"
+                                                       autocomplete="off"
+                                                       required
+                                                       [disabled]="isGuestUser()" />
+                                                <button type="button"
+                                                        class="ld-coupon-apply"
+
+                                                        (click)="applyCupon()"
+                                                        [disabled]="isGuestUser() || !codeCupon || codeCupon.trim() === ''"
+                                                        [title]="(isGuestUser() ? 'cart.coupon.login_required' : 'cart.coupon.apply_title') | translate">
+                                                    <i class="icon anm anm-check-cil me-2"></i>
+                                                    <span>{{ 'cart.coupon.apply' | translate }}</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="ld-coupon-error" role="alert" *ngIf="showCouponError">
+                                                <i class="icon anm anm-times-circle me-2"></i>
+                                                <strong>{{ 'checkout.resumen.address_form.error_prefix' | translate }}</strong> {{couponErrorMessage}}
+                                            </div>
+
+
+                                            <div class="ld-coupon-note" *ngIf="isGuestUser() && !showCouponError">
+                                                <i class="icon anm anm-info-cil me-2"></i>
+                                                {{ 'cart.coupon.guest_notice' | translate }} <br />
+                                                <a href="#" class="text-decoration-underline fw-bold" [routerLink]="dynamicRouter.routerLinks.login">{{ 'cart.coupon.login' | translate }}</a>
+                                                {{ 'cart.coupon.or' | translate }} <a href="#" class="text-decoration-underline fw-bold" [routerLink]="dynamicRouter.routerLinks.register">{{ 'cart.coupon.register' | translate }}</a> {{ 'cart.coupon.guest_suffix' | translate }}
+                                            </div>
+
+
+                                            <small class="form-text text-muted mt-1 mb-2" *ngIf="!isGuestUser() && !hasProductsWithCampaignDiscount() && !showCouponError">
+                                                {{ 'cart.coupon.hint' | translate }}
+                                            </small>
+                                            <small class="form-text text-muted mt-1" *ngIf="!isGuestUser() && hasProductsWithCampaignDiscount() && hasProductsEligibleForCoupon() && !showCouponError">
+                                                {{ 'cart.coupon.eligible' | translate }}
+                                            </small>
+                                        </div>
+                                    </form>
+
+
+                                    <div *ngIf="hasActiveCoupon()" class="mt-3">
+                                        <div class="ld-coupon-note">
+                                            <i class="icon anm anm-info-cil me-2"></i>
+                                            <small>{{ 'cart.coupon.replace' | translate }}</small>
+                                        </div>
+                                    </div>
+
+
+                                    <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount() && hasProductsEligibleForCoupon()" class="ld-coupon-note">
+                                        <i class="icon anm anm-info-cil me-2"></i>
+                                        <small>
+                                            {{ 'cart.coupon.eligible_count' | translate:{eligible: getEligibleProductsCount(), total: listCarts.length} }}
+                                        </small>
+                                    </div>
+
+
+                                    <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount() && !hasProductsEligibleForCoupon()" class="ld-coupon-note">
+                                        <i class="icon anm anm-exclamation-triangle me-2"></i>
+                                        <small>
+                                            {{ 'cart.coupon.all_discounted' | translate }}
+                                        </small>
+                                    </div>
+                                    </div>
+                                </details>
+
+<div>
+                                    <p class="ld-cart-summary-help">
+                                        <small>{{ 'cart.help.prefix' | translate }}
+                                            <a href="#" onclick="return false;" class="text-decoration-underline fw-normal">{{ 'cart.help.link' | translate }}
                                             </a>.
                                         </small>
                                     </p>
@@ -369,188 +448,7 @@
                     <!-- End Resumen de precio -->
                     <!--End Cart Content-->
 
-                    <!--CUPON-->
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 cart-footer pt-5 order-2 order-lg-3" >
-                        <div class="row justify-content-center">
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-12 py-3">
-                                <div class="cart-discount">
-                                    <h3 class="text-uppercase mb-3" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
-                                        <i class="icon anm anm-gift-l me-2"></i>Código de descuento
-                                    </h3>
 
-                                    <!-- Mostrar cupón activo si existe -->
-                                    <div *ngIf="hasActiveCoupon()" class="alert alert-success d-flex justify-content-between align-items-center p-3 mb-3" style="border-left: 4px solid #28a745;">
-                                        <div class="d-flex align-items-center">
-                                            <i class="icon anm anm-gift-l me-3" style="font-size: 1.5rem;"></i>
-                                            <div>
-                                                <strong class="d-block text-uppercase">
-                                                    <i class="icon anm anm-check-cil me-1"></i>Cupón aplicado
-                                                </strong>
-                                                <span class="text-uppercase fw-bold" style="font-size: 0.95rem;">{{getActiveCouponCode()}}</span>
-                                            </div>
-                                        </div>
-                                        <button type="button" 
-                                                (click)="removeCupon()" 
-                                                class="btn btn-outline-danger btn-sm d-flex align-items-center fw-semibold" 
-                                                title="Quitar cupón"
-                                                style="border-radius: 6px; padding: 0.5rem 1rem; transition: all 0.3s ease; letter-spacing: 0.3px;">
-                                            <i class="icon anm anm-times-circle me-2" style="font-size: 1rem;"></i>
-                                            <span class="d-none d-md-inline">Quitar</span>
-                                        </button>
-                                    </div>
-
-                                    <!-- Formulario para aplicar cupón (solo visible si NO hay cupón activo) -->
-                                    <form *ngIf="!hasActiveCoupon()">
-                                        <div class="form-group">
-                                            <!-- <label for="coupon_input lh-1">
-                                                        Introduce tu código promocional y disfruta de grandes ahorros en tu compra.
-                                                    </label> -->
-                                            <div class="input-group mt-2 mb-2">
-                                                <input id="coupon_input" 
-                                                       class="form-control" 
-                                                       [ngClass]="{ 'me-2': isDesktop, 'mb-2': !isDesktop }" 
-                                                       type="text" 
-                                                       name="coupon" 
-                                                       placeholder="Código de cupón" 
-                                                       [(ngModel)]="codeCupon" 
-                                                       (keyup.enter)="applyCupon()"
-                                                       maxlength="20" 
-                                                       autocomplete="off" 
-                                                       required 
-                                                       [disabled]="isGuestUser()"
-                                                       style="border-radius: 6px; padding: 0.75rem; font-size: 0.95rem; height: 52px;" />
-                                                <button type="button" 
-                                                        class="btn btn-dark text-nowrap fw-semibold" 
-                                                        [ngClass]="{ 'w-25': isDesktop, 'w-100': !isDesktop }" 
-                                                        (click)="applyCupon()" 
-                                                        [disabled]="isGuestUser() || !codeCupon || codeCupon.trim() === ''" 
-                                                        [title]="isGuestUser() ? 'Inicia sesión para usar cupones' : 'Aplicar cupón'"
-                                                        style="border-radius: 6px; padding: 0.75rem 1.5rem; transition: all 0.3s ease; letter-spacing: 0.5px;">
-                                                    <i class="icon anm anm-check-cil me-2"></i>
-                                                    <span>Aplicar</span>
-                                                </button>
-                                            </div>
-                                            <!-- Mensaje de error del cupón (temporal) -->
-                                            <div class="alert alert-danger py-2 px-3 mt-2 mb-2" *ngIf="showCouponError" style="border-left: 4px solid #dc3545;">
-                                                <i class="icon anm anm-times-circle me-2"></i>
-                                                <strong>Error:</strong> {{couponErrorMessage}}
-                                            </div>
-                                            
-                                            <!-- Mensaje informativo para usuarios guest -->
-                                            <div class="alert alert-info py-2 px-3 mt-2 mb-2" *ngIf="isGuestUser() && !showCouponError" style="border-left: 4px solid #0dcaf0;">
-                                                <i class="icon anm anm-info-cil me-2"></i>
-                                                Los cupones solo están disponibles para usuarios registrados. <br />
-                                                <a href="#" class="text-decoration-underline fw-bold" [routerLink]="dynamicRouter.routerLinks.login">Inicia sesión</a> 
-                                                o <a href="#" class="text-decoration-underline fw-bold" [routerLink]="dynamicRouter.routerLinks.register">regístrate</a> para usar cupones.
-                                            </div>
-                                            
-                                            <!-- Mensajes de ayuda normales (se ocultan cuando hay error o es guest) -->
-                                            <small class="form-text text-muted mt-1 mb-2" *ngIf="!isGuestUser() && !hasProductsWithCampaignDiscount() && !showCouponError">
-                                                Ingresa tu código de descuento para ahorrar en tu compra.
-                                            </small>
-                                            <small class="form-text text-muted mt-1" *ngIf="!isGuestUser() && hasProductsWithCampaignDiscount() && hasProductsEligibleForCoupon() && !showCouponError">
-                                                El cupón se aplicará solo a productos sin descuentos previos.
-                                            </small>
-                                        </div>
-                                    </form>
-
-                                    <!-- Información adicional cuando hay cupón aplicado -->
-                                    <div *ngIf="hasActiveCoupon()" class="mt-3">
-                                        <div class="alert alert-info py-2 px-3 mb-0" style="border-left: 4px solid #0dcaf0;">
-                                            <i class="icon anm anm-info-cil me-2"></i>
-                                            <small>Para aplicar un cupón diferente, primero quita el actual.</small>
-                                        </div>
-                                    </div>
-
-                                    <!-- Mensaje informativo según el escenario -->
-                                    <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount() && hasProductsEligibleForCoupon()" class="alert alert-info mt-3 py-2 px-3" style="border-left: 4px solid #0dcaf0;">
-                                        <i class="icon anm anm-info-cil me-2"></i>
-                                        <small>
-                                            El cupón se aplicará solo a productos sin descuentos previos ({{getEligibleProductsCount()}} de {{listCarts.length}} productos).
-                                        </small>
-                                    </div>
-
-                                    <!-- Mensaje si todos los productos tienen descuento -->
-                                    <div *ngIf="!hasActiveCoupon() && hasProductsWithCampaignDiscount() && !hasProductsEligibleForCoupon()" class="alert alert-warning mt-3 py-2 px-3" style="border-left: 4px solid #ffc107;">
-                                        <i class="icon anm anm-exclamation-triangle me-2"></i>
-                                        <small>
-                                            Todos los productos en tu carrito ya tienen descuentos aplicados.
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-4 mb-12 d-none">
-                                        <div class="cart-info sidebar-sticky">
-                                            <h3 class="title mb-3 ls-2 text-uppercase">
-                                                Resumen de Precio
-                                            </h3>
-                                            <div class="cart-order-detail cart-col">
-                                                <div class="row g-0 border-bottom pb-2">
-                                                    <span
-                                                        class="col-6 col-sm-6 cart-subtotal-title"><strong>Subtotal</strong></span>
-                                                    <span
-                                                        class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span
-                                                            class="money">{{ euro }} {{ totalCarts | number : "1.2-2"}}</span></span>
-                                                </div>
-                                                <div class="row g-0 border-bottom py-2 d-none">
-                                                    <span class="col-6 col-sm-6 cart-subtotal-title"><strong>Cupón de
-                                                            descuento</strong></span>
-                                                    <span
-                                                        class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span
-                                                            class="money">-$25.00</span></span>
-                                                </div>
-                                                <div class="row g-0 border-bottom py-2 d-none">
-                                                    <span
-                                                        class="col-6 col-sm-6 cart-subtotal-title"><strong>Tax</strong></span>
-                                                    <span
-                                                        class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span
-                                                            class="money">$10.00</span></span>
-                                                </div>
-                                                <div class="row g-0 border-bottom py-2">
-                                                    <span
-                                                        class="col-6 col-sm-6 cart-subtotal-title"><strong>Envío</strong></span>
-                                                    <span
-                                                        class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span
-                                                            class="money">Envío gratis</span></span>
-                                                </div>
-                                                <div class="row g-0 pt-2">
-                                                    <span
-                                                        class="col-6 col-sm-6 cart-subtotal-title fs-6"><strong>Total</strong></span>
-                                                    <span
-                                                        class="col-6 col-sm-6 cart-subtotal-title fs-5 cart-subtotal text-end">
-                                                        <b class="money">{{ euro }} {{ totalCarts | number : "1.2-2"}}</b>
-                                                    </span>
-                                                </div>
-
-                                                <p class="cart-shipping mt-3 d-none">
-                                                    Envío &amp; Impuestos calculados al finalizar la compra
-                                                </p>
-                                                <p class="cart-shipping fst-normal freeShipclaim d-none">
-                                                    <i class="me-2 align-middle icon anm anm-truck-l"></i><b>ENVÍO
-                                                        GRATIS</b> ELEGIBLE
-                                                </p>
-                                                <div class="customCheckbox cart-tearm d-none">
-                                                    <input type="checkbox" value="allen-vela" id="cart-tearm" />
-                                                    <label for="cart-tearm">Estoy de acuerdo con los términos y
-                                                        condiciones</label>
-                                                </div>
-                                                
-                                                <a [routerLink]="dynamicRouter.getRouterLink(['account', 'checkout'])" id="cartCheckout" class="">
-                                                    <button _ngcontent-serverapp-c57="" type="submit" name="add"
-                                                        class="btn-dark-ld product-form-cart-submit text-uppercase fw-normal mt-3 mb-2">
-                                                        <span>Continuar con el pago</span>
-                                                    </button>
-                                                </a>
-                                                <div class="paymnet-img text-center">
-                                                    <img src="assets/images/icons/safepayment.png" alt="Payment" width="299"
-                                                        height="28" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                        </div>
-                    </div>
-                    <!--END CUPON-->
                 </div>
             </ng-template>
         </div>
@@ -563,16 +461,98 @@
             </ng-container>
 
             <ng-template #product_related_slider>
-                <ng-container *ngIf="related_products && related_products.length > 0">
-                    <!--Related Products-->
-                    <app-related-products [related_products]="related_products" [product_selected]="product_selected" [euro]="euro" (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)" [getDiscount]="getDiscount" [SALE_FLASH]="SALE_FLASH"></app-related-products>
-                    <!--End Related Products-->
-                </ng-container>
+                <ng-container *ngIf="cartRecommendations as products">
+                    <section *ngIf="listCarts.length > 0 && products.length > 0"
+                             class="ld-cart-recommendations"
+                             aria-labelledby="cart-recommendations-title">
 
-                <ng-container *ngIf="interest_products && interest_products.length > 0">
-                    <!-- Interest Products-->
-                    <app-interest-products [interest_products]="interest_products" [product_selected]="product_selected" [euro]="euro" (navigateToProduct)="navigateToProduct($event.slug, $event.discountId)" [getDiscount]="getDiscount" [SALE_FLASH]="SALE_FLASH"></app-interest-products>
-                    <!--End Interest Products-->
+                        <header class="ld-cart-recommendations-header">
+                            <div>
+                                <h2 id="cart-recommendations-title">
+                                    {{ 'cart.recommendations.title' | translate }}
+                                </h2>
+                                <p>{{ 'cart.recommendations.description' | translate }}</p>
+                            </div>
+
+                            <div class="ld-cart-recommendations-nav"
+                                 *ngIf="recommendationsTrack.scrollWidth > recommendationsTrack.clientWidth + 1">
+
+                                <button type="button"
+                                        [disabled]="recommendationsTrack.scrollLeft <= 1"
+                                        [attr.aria-label]="'cart.recommendations.previous' | translate"
+                                        (click)="scrollRecommendations(recommendationsTrack, -1)">
+                                    <i class="icon anm anm-angle-left-l" aria-hidden="true"></i>
+                                </button>
+
+                                <button type="button"
+                                        [disabled]="isRecommendationsEnd(recommendationsTrack)"
+                                        [attr.aria-label]="'cart.recommendations.next' | translate"
+                                        (click)="scrollRecommendations(recommendationsTrack, 1)">
+                                    <i class="icon anm anm-angle-right-l" aria-hidden="true"></i>
+                                </button>
+
+                            </div>
+                        </header>
+
+                        <div class="ld-cart-recommendations-track"
+                             #recommendationsTrack
+                             (scroll)="onRecommendationsScroll()"
+                             tabindex="0">
+                            <article *ngFor="let product of products; trackBy: trackRecommendation"
+                                     class="ld-cart-recommendation">
+
+                                <a [routerLink]="dynamicRouter.getRouterLink(['shop', 'product', product.slug])"
+                                   (click)="openRecommendation($event, product)"
+                                   class="ld-cart-recommendation-link">
+
+                                    <div class="ld-cart-recommendation-media">
+                                        <img [src]="product.imagen"
+                                             [alt]="product.title"
+                                             loading="lazy"
+                                             class="ld-cart-recommendation-image">
+
+                                        <span class="ld-cart-recommendation-tag">
+                                            {{ 'product_detail.related_products.new_collection' | translate }}
+                                        </span>
+                                    </div>
+
+                                    <h3>{{ product.title }}</h3>
+                                </a>
+
+                                <div class="ld-cart-recommendation-price">
+                                    <ng-container *ngIf="hasRecommendationDiscount(product); else regularPrice">
+                                        <del>{{ euro }} {{ product.price_usd }}</del>
+                                        <strong class="ld-cart-recommendation-discount">
+                                            {{ euro }} {{ getRecommendationPrice(product) | number:'1.2-2' }}
+                                        </strong>
+                                    </ng-container>
+
+                                    <ng-template #regularPrice>
+                                        <strong>{{ euro }} {{ product.price_usd }}</strong>
+                                    </ng-template>
+                                </div>
+                            </article>
+                        </div>
+
+                        <div class="ld-cart-recommendations-progress"
+                             *ngIf="recommendationsTrack.scrollWidth > recommendationsTrack.clientWidth + 1">
+
+                            <span class="ld-cart-recommendations-indicator"
+                                  aria-hidden="true"
+                                  [style.width.%]="getRecommendationIndicatorWidth(recommendationsTrack)"
+                                  [style.left.%]="getRecommendationProgress(recommendationsTrack)">
+                            </span>
+
+                            <input type="range"
+                                   class="ld-cart-recommendations-range"
+                                   min="0"
+                                   step="1"
+                                   [max]="recommendationsTrack.scrollWidth - recommendationsTrack.clientWidth"
+                                   [value]="recommendationsTrack.scrollLeft"
+                                   [attr.aria-label]="'cart.recommendations.scroll' | translate"
+                                   (input)="setRecommendationsScroll(recommendationsTrack, $event)">
+                        </div>
+                    </section>
                 </ng-container>
             </ng-template>
         </ng-container>
@@ -588,7 +568,7 @@
                     <!--Breadcrumbs-->
                     <div class="breadcrumbs text-uppercase">
                         <a href="index.html" onclick="return false;" routerLink="/" class="fw-light" title="Lujandev.com<">Lujandev.com</a>
-                        <span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>Carrito de la compra</span>
+                        <span class="main-title fw-bold"><i class="icon anm anm-angle-right-l"></i>{{ 'cart.title' | translate }}</span>
                     </div>
                     <!--End Breadcrumbs-->
                 </div>
@@ -600,25 +580,26 @@
 
 
     <!-- STICKY MENUBAR MOBILE -->
-    <div class="menubar-mobile d-flex align-items-center justify-content-between d-lg-none">
+    <div *ngIf="listCarts.length === 0"
+         class="menubar-mobile d-flex align-items-center justify-content-between d-lg-none">
         <div class="menubar-shop menubar-item">
-            <a href="shop-grid-view.html" onclick="return false;" [routerLink]="dynamicRouter.getRouterLink(['shop', 'filter-products'])"><i class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">Compra</span></a>
+            <a href="shop-grid-view.html" onclick="return false;" [routerLink]="dynamicRouter.getRouterLink(['shop', 'filter-products'])"><i class="menubar-icon anm anm-th-large-l"></i><span class="menubar-label">{{ 'cart.nav.shop' | translate }}</span></a>
         </div>
         <div class="menubar-account menubar-item">
             <a href="my-account.html" [routerLink]="
             currentUser.email
                 ? dynamicRouter.getRouterLink(['account', 'my-account'])
                 : dynamicRouter.routerLinks.login
-            "><i class="menubar-icon icon anm anm-user-al"></i><span class="menubar-label">Cuenta</span></a>
+            "><i class="menubar-icon icon anm anm-user-al"></i><span class="menubar-label">{{ 'cart.nav.account' | translate }}</span></a>
         </div>
         <div class="menubar-search menubar-item">
-            <a [href]="['/']"><span class="menubar-icon anm anm-home-l"></span><span class="menubar-label">Inicio</span></a>
+            <a [href]="['/']"><span class="menubar-icon anm anm-home-l"></span><span class="menubar-label">{{ 'cart.nav.home' | translate }}</span></a>
         </div>
         <div class="menubar-wish menubar-item">
             <a href="wishlist-style1.html" onclick="return false;" [routerLink]="dynamicRouter.getRouterLink(['account', 'favorites'])">
                 <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-heart-l"></i><span class="wishlist-count counter menubar-count" *ngIf="listWishlists.length > 0">{{
                             listWishlists.length }}</span></span>
-                <span class="menubar-label">Favoritos</span>
+                <span class="menubar-label">{{ 'cart.nav.favorites' | translate }}</span>
             </a>
         </div>
         <div class="menubar-cart menubar-item">
@@ -628,11 +609,36 @@
                 : dynamicRouter.routerLinks.login
             " class="btn-minicart" data-bs-toggle="offcanvas" data-bs-target="#minicart-drawer">
                 <span class="span-count position-relative text-center"><i class="menubar-icon icon anm anm-cart-l"></i><span class="cart-count counter menubar-count" *ngIf="listCarts.length > 0">{{ listCarts.length }}</span></span>
-                <span class="menubar-label">Carrito</span>
+                <span class="menubar-label">{{ 'cart.nav.cart' | translate }}</span>
             </a>
         </div>
     </div>
     <!--END STICKY MENUBAR MOBILE-->
+
+    <!-- CX-03 - Sticky checkout -->
+    <div *ngIf="listCarts.length > 0"
+         class="ld-cart-sticky-checkout">
+
+        <div class="ld-cart-sticky-total">
+            <span>{{ 'checkout.resumen.cart_summary.total' | translate }}</span>
+
+            <strong>
+                {{ euro }} {{ getPriceParts(totalCarts).integer }}.{{ getPriceParts(totalCarts).decimals }}
+            </strong>
+        </div>
+
+        <a [routerLink]="dynamicRouter.getRouterLink(['account', 'checkout'])"
+           class="ld-cart-sticky-button">
+            {{ 'cart.checkout' | translate }}
+        </a>
+    </div>
+
+    <div *ngIf="listCarts.length > 0"
+         class="ld-cart-sticky-spacer"
+         aria-hidden="true">
+    </div>
+    <!-- End sticky checkout -->
+
 
     <!-- SCROLL TOP-->
     <div id="site-scroll"><i class="icon anm anm-arw-up"></i></div>
@@ -643,7 +649,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" [attr.aria-label]="'cart.close' | translate"></button>
                     <form method="post" action="#" id="product-form-quickshop" class="product-form align-items-center">
                         <!-- Product Info -->
                         <div class="row g-0 item mb-3">
@@ -737,7 +743,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" [attr.aria-label]="'cart.close' | translate"></button>
                     <form method="post" action="#" id="product-form-addtocart" class="product-form align-items-center">
                         <h3 class="title mb-3 text-success text-center">
                             Added to cart Successfully!
@@ -785,7 +791,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" [attr.aria-label]="'cart.close' | translate"></button>
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 mb-3 mb-md-0">
                             <!-- Model Thumbnail -->

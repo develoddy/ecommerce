@@ -602,5 +602,76 @@
             "privacyText": "Consulta nuestra",
             "privacyLink": "política de privacidad"
         }
+    },
+    "cart": {
+        "title": "Carrito de la compra",
+        "loading": "Cargando tu carrito...",
+        "count_one": "{{count}} producto en tu carrito",
+        "count_many": "{{count}} productos en tu carrito",
+        "sku": "Art. n.º",
+        "decrease": "Reducir cantidad",
+        "increase": "Aumentar cantidad",
+        "remove": "Eliminar",
+        "close": "Cerrar",
+        "free_shipping": "Envío gratuito",
+        "shipping_description": "Tu pedido incluye envío gratuito.",
+        "summary": "Resumen del pedido",
+        "checkout": "Finalizar compra",
+        "coupon": {
+            "title": "¿Tienes un código de descuento?",
+            "applied": "Cupón aplicado",
+            "remove": "Quitar",
+            "remove_title": "Quitar cupón",
+            "placeholder": "Código de cupón",
+            "apply": "Aplicar",
+            "apply_title": "Aplicar cupón",
+            "login_required": "Inicia sesión para usar cupones",
+            "guest_notice": "Los cupones solo están disponibles para usuarios registrados.",
+            "login": "Inicia sesión",
+            "or": "o",
+            "register": "regístrate",
+            "guest_suffix": "para usar cupones.",
+            "hint": "Ingresa tu código de descuento para ahorrar en tu compra.",
+            "eligible": "El cupón se aplicará solo a productos sin descuentos previos.",
+            "eligible_count": "El cupón se aplicará solo a productos sin descuentos previos ({{eligible}} de {{total}} productos).",
+            "replace": "Para aplicar un cupón diferente, primero quita el actual.",
+            "all_discounted": "Todos los productos en tu carrito ya tienen descuentos aplicados."
+        },
+        "recommendations": {
+            "title": "Completa tu pedido",
+            "description": "Otros productos que encajan con tu estilo.",
+            "previous": "Productos anteriores",
+            "next": "Productos siguientes",
+            "scroll": "Desplazar recomendaciones"
+        },
+        "empty": {
+            "title": "Tu carrito está vacío",
+            "description": "Descubre productos creados para quienes viven entre código, ideas y café.",
+            "explore": "Explorar colección",
+            "home": "Volver al inicio"
+        },
+        "help": {
+            "prefix": "¿Necesitas ayuda? Ponte en contacto con el",
+            "link": "servicio de Atención al cliente"
+        },
+        "nav": {
+            "shop": "Compra",
+            "account": "Cuenta",
+            "home": "Inicio",
+            "favorites": "Favoritos",
+            "cart": "Carrito"
+        },
+        "messages": {
+            "minimum": "Debes tener al menos un producto en el carrito.",
+            "code_required": "Por favor ingresa un código de cupón.",
+            "already_applied": "El cupón \"{{code}}\" ya está aplicado en tu carrito.",
+            "another_applied": "Ya tienes el cupón \"{{code}}\" aplicado. Quítalo primero para aplicar uno nuevo.",
+            "not_applicable": "El cupón no se aplica a los productos de tu carrito.",
+            "applied": "Cupón {{code}} aplicado correctamente a {{count}} producto(s).",
+            "applied_selective": "Cupón {{code}} aplicado correctamente a {{count}} producto(s). Los productos con descuentos previos mantienen sus precios especiales.",
+            "no_coupon": "No hay ningún cupón aplicado para remover.",
+            "removed": "Cupón \"{{code}}\" removido correctamente.",
+            "coupon_label": "Cupón {{code}}"
+        }
     }
 }

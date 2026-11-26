@@ -1,0 +1,32 @@
+/* CX-03.02.05 - Cart shipping */
+
+.ld-cart-items .ld-cart-shipping-banner {
+    background: #f6f6f6;
+    color: #111;
+    border: 0;
+    border-radius: 0;
+    padding: 16px 44px 16px 16px;
+    margin-bottom: 24px;
+}
+
+.ld-cart-shipping-icon {
+    flex-shrink: 0;
+    font-size: 26px;
+    margin-right: 14px;
+}
+
+.ld-cart-shipping-banner strong {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.ld-cart-shipping-banner span {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.ld-cart-shipping-banner .btn-close {
+    padding: 16px;
+}
