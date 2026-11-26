@@ -12,7 +12,7 @@ $transition: all 0.25s cubic-bezier(.2,.9,.2,1);
   position: fixed;
   bottom: 80px;
   right: 20px;
-  z-index: 1100;
+  z-index: 1040;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   display: flex;
   /* stack elements so the button sits at the very bottom and the panel grows upward */
@@ -728,4 +728,45 @@ html.chat-fullscreen-active, body.chat-fullscreen-active {
      (virtual keyboard likely visible), pin the footer to the viewport above the keyboard
      using safe-area insets. Use :focus-within so no TS is required. */
   
+}
+
+/* CX-02.06.02 — Desktop floating controls */
+
+@media (min-width: 992px) {
+  .chat-widget-container {
+    bottom: 24px;
+    right: 24px;
+  }
+
+  .chat-button {
+    width: 48px;
+    height: 48px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .chat-button__icon svg {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+
+/* CX-02.06.03 — Mobile floating controls */
+
+@media (max-width: 991px) {
+  .chat-button {
+    width: 44px;
+    height: 44px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  }
+
+  .chat-button__icon svg {
+    width: 34px;
+    height: 34px;
+  }
+
+  .chat-widget-container:has(> .chat-button) {
+    right: 16px;
+    bottom: 76px;
+  }
 }

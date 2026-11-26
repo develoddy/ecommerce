@@ -48,3 +48,121 @@
     font-size: 0.8rem;
   }
 }
+
+/* CX-02 — Size Guide UX */
+
+.sizechart-modal .nav-tabs {
+  border-bottom: 1px solid #dedede;
+  gap: 0;
+}
+
+.sizechart-modal .nav-tabs .nav-link {
+  color: #666;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  font-weight: 500;
+}
+
+.sizechart-modal .nav-tabs .nav-link.active {
+  color: #111;
+  border-bottom-color: #111;
+  background: transparent;
+  font-weight: 600;
+}
+
+.sizechart-modal .nav-tabs .nav-link.disabled {
+  opacity: 0.4;
+}
+
+.sizechart-modal input[type="radio"] {
+  accent-color: #111;
+}
+
+.sizechart-modal .size-chart-tbl {
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+
+  .sizechart-modal {
+    padding: 0 !important;
+  }
+
+  .sizechart-modal .modal-dialog {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    min-height: 100%;
+    margin: 0 !important;
+  }
+
+  .sizechart-modal .modal-content {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border: 0;
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .sizechart-modal .modal-body {
+    min-height: 0;
+    padding: 20px 16px;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+
+  .sizechart-modal .btn-close {
+    position: sticky;
+    top: 0;
+    float: right;
+    z-index: 2;
+    background-color: #fff;
+  }
+
+  .sizechart-modal h4 {
+    padding-right: 32px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .sizechart-wrap > .d-flex {
+    margin-bottom: 12px !important;
+  }
+
+  .sizechart-wrap > .d-flex > .mt-3 {
+    margin-bottom: 0 !important;
+  }
+
+  .sizechart-modal .nav-tabs {
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    margin-bottom: 20px !important;
+  }
+
+  .sizechart-modal .nav-tabs .nav-item {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .sizechart-modal .nav-tabs .nav-link {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 4px;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: normal;
+  }
+
+  .sizechart-modal .size-guide-content {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .sizechart-modal .size-guide-content img {
+    width: 100%;
+    height: auto;
+  }
+}

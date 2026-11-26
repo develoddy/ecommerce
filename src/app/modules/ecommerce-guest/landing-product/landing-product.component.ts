@@ -621,6 +621,26 @@ export class LandingProductComponent implements OnInit, AfterViewInit, OnDestroy
    * Obtiene la descripción del producto según el locale actual
    * Fallback: si el idioma actual no tiene descripción, usa el otro idioma
    */
+  getProductStoryParagraphs(): string[] {
+    return this.getProductStory()
+      .split(/\r?\n(?:[ \t]*\r?\n)+/)
+      .map(paragraph => paragraph.trim())
+      .filter(Boolean);
+  }
+
+  getProductStory(): string {
+    if (!this.product_selected) {
+      return '';
+    }
+
+    const storyEs = this.product_selected.story_es || '';
+    const storyEn = this.product_selected.story_en || '';
+
+    return this.locale === 'en'
+      ? storyEn.trim() || storyEs.trim()
+      : storyEs.trim() || storyEn.trim();
+  }
+
   getProductDescription(): string {
     if (!this.product_selected) {
       return '';
