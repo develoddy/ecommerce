@@ -92,21 +92,60 @@
 
                 <!-- Detail Product -->
                 <div class="d-flex flex-column flex-lg-row justify-content-between custom-border-bottom ld-pdp-desktop-bar">
-                    <!-- Title Product -->
-                    <div class="p-2 align-self-center">
-                        <h1 class="mb-0" >
+
+                    <div class="ld-pdp-editorial-column">
+                        <div class="ld-pdp-identity">
+    <div class="ld-pdp-title-row">
+        <h1 class="mb-0" >
                             {{ product_selected.title }}
                         </h1>
-                    </div>
-
-                    <!-- Product Info link -->
-                    <div class="p-2 align-self-center">
-                        <p class="infolinks d-flex-center justify-content-between">
+        <p class="infolinks d-flex-center justify-content-between">
                             <a class="text-link wishlist fw-light" href="#" onclick="return false;" (click)="addWishlist(product_selected)"><i class="icon anm anm-heart-l"></i></a>
                         </p>
+    </div>
+    <div class="ld-pdp-story ld-pdp-story--desktop"
+                             *ngIf="getProductStory() as story">
+                            <p *ngFor="let paragraph of getProductStoryParagraphs()">{{ paragraph }}</p>
+                        </div>
+</div>
+                    <!-- Price Product -->
+                    <div class="p-2 align-self-center">
+                        <div class="product-price d-flex-center">
+                            <!-- Precio original tachado si hay descuento -->
+                            <ng-container *ngIf="hasDiscount()">
+                                <span class="price old-price">€ {{ getOriginalPrice().toFixed(2) }}</span>
+                            </ng-container>
+
+                            <!-- Precio final (con descuento si aplica) -->
+                            <span class="price" [class.text-danger]="hasDiscount()">
+                                € {{ getFinalPrice().toFixed(2) }}
+                            </span>
+
+                            <!-- Versión alternativa con separación de decimales (oculta por defecto) -->
+                            <span class="price d-none" itemprop="priceCurrency" content="EUR">
+                                <span class="price-main" itemprop="price">
+                                    {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
+                                </span>
+                                <span class="price-decimals">
+                                    <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
+                                    <span class="currency-symbol">€</span>
+                                </span>
+                            </span>
+                        </div>
+                        <!-- Schema.org Offer -->
+                        <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                            <link itemprop="url" [href]="currentUrl" />
+                            <meta itemprop="priceCurrency" content="EUR" />
+                            <meta itemprop="price" content="{{ getFinalPrice().toFixed(2) }}" />
+                            <link itemprop="availability" [href]="isProductAvailable() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'" />
+                        </div>
+                    </div>
+                    <!-- End Price Product -->
                     </div>
 
-                    <!-- Swatches Color -->
+                    <div class="ld-pdp-purchase-column">
+                        <div class="ld-pdp-variants">
+                            <!-- Swatches Color -->
                     <div class="p-2 align-self-center d-flex flex-column" [ngClass]="{'border border-danger': colorError}">
                         <div class="d-flex align-items-center">
                             <a href="#" 
@@ -166,42 +205,9 @@
                         </a>
                     </div>
                     <!-- End Guía de Tallas -->
-                        
-                    <!-- Price Product -->
-                    <div class="p-2 align-self-center">
-                        <div class="product-price d-flex-center">
-                            <!-- Precio original tachado si hay descuento -->
-                            <ng-container *ngIf="hasDiscount()">
-                                <span class="price old-price">€ {{ getOriginalPrice().toFixed(2) }}</span>
-                            </ng-container>
-                            
-                            <!-- Precio final (con descuento si aplica) -->
-                            <span class="price" [class.text-danger]="hasDiscount()">
-                                € {{ getFinalPrice().toFixed(2) }}
-                            </span>
-                            
-                            <!-- Versión alternativa con separación de decimales (oculta por defecto) -->
-                            <span class="price d-none" itemprop="priceCurrency" content="EUR">
-                                <span class="price-main" itemprop="price">
-                                    {{ getPriceWithDiscount().integerPart }} <!-- Parte entera -->
-                                </span>
-                                <span class="price-decimals">
-                                    <sup>{{ getPriceWithDiscount().decimalPart }}</sup> <!-- Parte decimal -->
-                                    <span class="currency-symbol">€</span>
-                                </span>
-                            </span>
                         </div>
-                        <!-- Schema.org Offer -->
-                        <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                            <link itemprop="url" [href]="currentUrl" />
-                            <meta itemprop="priceCurrency" content="EUR" />
-                            <meta itemprop="price" content="{{ getFinalPrice().toFixed(2) }}" />
-                            <link itemprop="availability" [href]="isProductAvailable() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'" />
-                        </div>
-                    </div>
-                    <!-- End Price Product -->
-
-                    <div class="p-2 align-self-center">
+                        <div class="ld-pdp-purchase-actions">
+                            <div class="p-2 align-self-center">
                         <!-- Product Quantity -->
                         <div class="product-form-quantity d-flex-center" [ngClass]="{'border border-danger': cantidadError, 'mb-2': isMobile, 'me-2': isDesktop}">
                             <label class="label d-flex align-items-center fw-normal d-none">
@@ -258,17 +264,57 @@
                         </div>
                         <!-- End Product Action -->
                         
+                        </div>
+                        <div class="ld-pdp-service-panel">
                         <!-- Print on Demand Badge -->
-                        <div class="alert alert-info py-2 px-3 mt-2 mb-0 d-flex align-items-center" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.85rem;">
-                            <i class="icon anm anm-info-cir me-2"></i>
-                            <span [innerHTML]="'product_detail.print_on_demand' | translate"></span>
+                        <div class="ld-pdp-service ld-pdp-production">
+                            <i class="icon anm anm-info-cir" aria-hidden="true"></i>
+                            <div class="ld-pdp-service-content">
+                                <strong>{{ 'product_detail.production_title' | translate }}</strong>
+                                <span>{{ 'product_detail.production_description' | translate }}</span>
+                            </div>
                         </div>
                         <!-- End Print on Demand Badge -->
+                        <ng-container *ngTemplateOutlet="ldShippingInfo"></ng-container>
+                        </div>
+                        </div>
                     </div>
+
                     <!-- End Product -->
                 </div>
             </div>
             <!-- END PRODUCT CONTENT VERSION DESKTOP -->
+            <ng-template #ldShippingInfo>
+                <div class="ld-pdp-service ld-pdp-delivery"
+                     *ngIf="shippingRate > 0 && fechaEntregaMin">
+                    <i class="icon anm anm-truck-l" aria-hidden="true"></i>
+                    <div class="ld-pdp-service-content">
+                        <strong>{{ 'product_detail.delivery_title' | translate }}</strong>
+                        <span>
+                            {{ 'product_detail.delivery_estimate' | translate }}
+                            {{ fechaEntregaMin }}
+                        </span>
+                        <ng-container *ngIf="!isFallbackAddress; else ldGenericAddress">
+                            <span>
+                                {{ 'product_detail.shipping.for' | translate }}
+                                <span class="text-decoration-underline">{{ address }}</span>
+                            </span>
+                        </ng-container>
+                        <ng-template #ldGenericAddress>
+                            <span>{{ 'product_detail.shipping.all_spain' | translate }}</span>
+                        </ng-template>
+                    </div>
+                </div>
+
+                <div class="ld-pdp-service ld-pdp-delivery-warning"
+                     *ngIf="shippingRate === 0">
+                    <i class="icon anm anm-exclamation-triangle" aria-hidden="true"></i>
+                    <div class="ld-pdp-service-content">
+                        <strong>{{ 'product_detail.shipping.not_available' | translate }}</strong>
+                        <span>{{ 'product_detail.shipping.not_available_address' | translate }}</span>
+                    </div>
+                </div>
+            </ng-template>
 
             <!--  -->
             <!--  -->
@@ -300,7 +346,7 @@
                                     <!-- End Product Label -->
                                     <!-- Product Buttons -->
                                     <div class="product-buttons">
-                                        <a href="#;" onclick="return false;" class="btn btn-primary prlightbox" data-bs-toggle="tooltip" data-bs-placement="top" title="Zoom Image"><i class="icon anm anm-expand-l-arrows"></i></a>
+                                        <a href="#;" onclick="return false;" class="btn btn-primary prlightbox" data-bs-toggle="tooltip" data-bs-placement="top" title="Zoom Image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21M7.5 10.5h6M10.5 7.5v6"></path></svg></a>
                                     </div>
                                     <!-- End Product Buttons -->
                                 </div>
@@ -313,6 +359,7 @@
                                             <a [attr.data-image]="item.imagen" 
                                             [attr.data-zoom-image]="item.imagen" 
                                             class="slick-slide slick-cloned active"
+                                            [class.ld-thumb-selected]="firstImage === item.imagen"
                                             (click)="selectThumbnail(item.imagen)">
                                                 <img class="blur-up lazyload" 
                                                     [attr.data-src]="item.imagen" 
@@ -379,6 +426,12 @@
                                             </span>
                                         </span>
                                     </div>
+
+                                    <div class="ld-pdp-story ld-pdp-story--mobile"
+                                         *ngIf="getProductStory() as story">
+                                        <p *ngFor="let paragraph of getProductStoryParagraphs()">{{ paragraph }}</p>
+                                    </div>
+
                                     <!-- Schema.org Offer -->
                                     <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                         <link itemprop="url" [href]="currentUrl" />
@@ -580,9 +633,12 @@
                                 <!-- End Product Action -->
 
                                 <!-- Print on Demand Badge -->
-                                <div class="alert alert-info py-2 px-3 mt-3 mb-0 d-flex align-items-center" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.85rem;">
-                                    <i class="icon anm anm-info-cir me-2"></i>
-                                    <span [innerHTML]="'product_detail.print_on_demand' | translate"></span>
+                                <div class="ld-pdp-service ld-pdp-production">
+                                    <i class="icon anm anm-info-cir" aria-hidden="true"></i>
+                                    <div class="ld-pdp-service-content">
+                                        <strong>{{ 'product_detail.production_title' | translate }}</strong>
+                                        <span>{{ 'product_detail.production_description' | translate }}</span>
+                                    </div>
                                 </div>
                                 <!-- End Print on Demand Badge -->
 
@@ -604,28 +660,7 @@
                             <!-- Product Info -->
                             <div class="userViewMsg featureText d-none" data-user="20" data-time="11000"><i class="icon anm anm-eye-r"></i><b class="uersView">21</b> La gente está buscando este producto</div>
                             <!-- 135deg -->
-                            <div class="shippingMsg featureText" *ngIf="shippingRate > 0 && fechaEntregaMin">
-                                <div class="alert alert-success py-2 px-3 mb-3" style="border-left: 4px solid #28a745; border-radius: 6px;">
-                                    <i class="icon anm anm-truck-l me-2" style="font-size: 1.3rem;"></i>
-                                    <strong style="font-size: 0.95rem;">
-                                        {{ 'product_detail.shipping.free_delivery' | translate }} {{ fechaEntregaMin }}
-                                    </strong>
-                                    <ng-container *ngIf="!isFallbackAddress; else generic">
-                                    <span class="d-block" style="font-size: 0.85rem;">{{ 'product_detail.shipping.for' | translate }} <span class="text-decoration-underline">{{ address }}</span></span>
-                                    </ng-container>
-                                    <ng-template #generic>
-                                        <span class="d-block" style="font-size: 0.85rem;">{{ 'product_detail.shipping.all_spain' | translate }}</span>
-                                    </ng-template>
-                                </div>
-                            </div>
-                            <!-- Mostrar mensaje alternativo cuando no hay tarifa -->
-                            <div class="shippingMsg featureText" *ngIf="shippingRate === 0">
-                                <div class="alert alert-warning py-2 px-3 mb-3" style="border-left: 4px solid #ffc107; border-radius: 6px;">
-                                    <i class="icon anm anm-exclamation-triangle me-2" style="font-size: 1.2rem;"></i>
-                                    <strong style="font-size: 0.95rem;">{{ 'product_detail.shipping.not_available' | translate }}</strong>
-                                    <span class="d-block" style="font-size: 0.85rem;">{{ 'product_detail.shipping.not_available_address' | translate }}</span>
-                                </div>
-                            </div>
+                            <ng-container *ngTemplateOutlet="ldShippingInfo"></ng-container>
                             <div class="freeShipMsg featureText d-none" data-price="199"><i class="icon anm anm-truck-r"></i>Gaste <b class="freeShip"><span class="money" data-currency-usd="$199.00" data-currency="USD">{{ euro }}30.00</span></b> Más para envío gratis</div>
                             <!-- End Product Info -->
                             <!-- Social Sharing -->
@@ -644,7 +679,7 @@
                 </div>
                 <!--End Product Content-->
             </div>
-            <!-- END PRODUCT CONTENT VERSION DESKTOP -->
+            <!-- END PRODUCT CONTENT VERSION MOBILE -->
             
             <!--  -->
             <!--  -->
@@ -741,24 +776,24 @@
                         <div class="d-flex flex-column">
                             <!-- Sección Envíos -->
                             <div class="border-bottom mb-4 pb-3">
-                                <h4 class="text-uppercase fw-bold mb-3" style="color: #222; letter-spacing: 1px; font-size: 1.1rem;">
+                                <h4 class="ld-pdp-policy-title mb-3">
                                     <i class="icon anm anm-truck-l me-2"></i>{{ 'product_detail.shipping.title' | translate }}
                                 </h4>
                                 <div class="d-flex flex-column gap-2">
                                     <div class="d-flex align-items-center">
-                                        <i class="icon anm anm-check-cil me-2" style="color: #28a745;"></i>
+                                        <i class="icon anm anm-check-cil me-2" style="color: #555;"></i>
                                         <span [innerHTML]="'product_detail.shipping.home_delivery' | translate"></span>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <i class="icon anm anm-check-cil me-2" style="color: #28a745;"></i>
+                                        <i class="icon anm anm-check-cil me-2" style="color: #555;"></i>
                                         <span [innerHTML]="'product_detail.shipping.free_shipping' | translate"></span>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <i class="icon anm anm-check-cil me-2" style="color: #28a745;"></i>
+                                        <i class="icon anm anm-check-cil me-2" style="color: #555;"></i>
                                         <span>{{ 'product_detail.shipping.tracking_included' | translate }}</span>
                                     </div>
                                 </div>
-                                <div class="alert alert-info mt-3 py-2 px-3 mb-0" style="border-left: 4px solid #0dcaf0; border-radius: 6px; font-size: 0.9rem;">
+                                <div class="ld-pdp-policy-notice mt-3 mb-0">
                                     <i class="icon anm anm-info-cir me-2"></i>
                                     <span [innerHTML]="'product_detail.shipping.pod_notice' | translate"></span>
                                 </div>
@@ -766,12 +801,12 @@
 
                             <!-- Sección Devoluciones y Reembolsos -->
                             <div class="mb-3">
-                                <h4 class="text-uppercase fw-bold mb-3" style="color: #222; letter-spacing: 1px; font-size: 1.1rem;">
+                                <h4 class="ld-pdp-policy-title mb-3">
                                     <i class="icon anm anm-sync-ar me-2"></i>{{ 'product_detail.returns.title' | translate }}
                                 </h4>
                                 
                                 <!-- Advertencia importante -->
-                                <div class="alert alert-warning py-3 px-3 mb-3" style="border-left: 4px solid #ffc107; border-radius: 6px;">
+                                <div class="ld-pdp-policy-notice ld-pdp-policy-warning mb-3">
                                     <div class="d-flex align-items-start">
                                         <i class="icon anm anm-exclamation-triangle me-2 mt-1" style="font-size: 1.2rem;"></i>
                                         <div>
@@ -785,7 +820,7 @@
                                 <!-- Casos aceptados -->
                                 <div class="mb-3">
                                     <h5 class="fw-semibold mb-2" style="color: #222; font-size: 1rem;">
-                                        ✅ {{ 'product_detail.returns.accepted_claims' | translate }}
+                                        <i class="icon anm anm-check-cil me-2" aria-hidden="true"></i>{{ 'product_detail.returns.accepted_claims' | translate }}
                                     </h5>
                                     <ul class="mb-0" style="line-height: 1.8;">
                                         <li [innerHTML]="'product_detail.returns.defective_product' | translate"></li>
@@ -797,8 +832,8 @@
 
                                 <!-- Casos NO aceptados -->
                                 <div class="mb-3">
-                                    <h5 class="fw-semibold mb-2" style="color: #dc3545; font-size: 1rem;">
-                                        ❌ {{ 'product_detail.returns.not_accepted' | translate }}
+                                    <h5 class="fw-semibold mb-2" style="color: #222; font-size: 1rem;">
+                                        <i class="icon anm anm-info-cir me-2" aria-hidden="true"></i>{{ 'product_detail.returns.not_accepted' | translate }}
                                     </h5>
                                     <ul class="mb-0" style="line-height: 1.8; color: #6c757d;">
                                         <li>Cambio de opinión sobre el diseño o producto</li>
@@ -811,7 +846,7 @@
                                 <!-- Proceso de reclamación -->
                                 <div class="border-top pt-3 mt-3">
                                     <h5 class="fw-semibold mb-2" style="color: #222; font-size: 1rem;">
-                                        📧 {{ 'product_detail.returns.how_to_claim' | translate }}
+                                        <i class="icon anm anm-file-text-o me-2" aria-hidden="true"></i>{{ 'product_detail.returns.how_to_claim' | translate }}
                                     </h5>
                                     <p class="mb-2" style="font-size: 0.95rem;" [innerHTML]="'product_detail.returns.claim_instructions' | translate">
                                     </p>
@@ -887,9 +922,9 @@
                                 
                                 <div class="spr-reviews">
                                     <ng-container *ngIf="this.REVIEWS.length == 0; else showReview">
-                                        <div class="alert alert-info py-4 px-4" style="border-left: 4px solid #0dcaf0; border-radius: 8px;">
+                                        <div class="ld-pdp-reviews-empty">
                                             <div class="text-center">
-                                                <i class="icon anm anm-comments-l mb-3" style="font-size: 3rem; color: #0dcaf0;"></i>
+                                                <i class="icon anm anm-comments-l mb-3 ld-pdp-reviews-icon"></i>
                                                 <h4 class="mb-2" style="color: #222; font-weight: 600; letter-spacing: 0.5px;">
                                                     <i class="icon anm anm-star me-2"></i>{{ 'product_detail.tabs.reviews' | translate }}
                                                 </h4>

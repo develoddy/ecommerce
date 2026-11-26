@@ -1620,7 +1620,7 @@ function HOMEINITTEMPLATE ($, undefined) {
     });
 
     /* Below 767 Accordian style */
-    $(".tabs-ac-style").on("click", function() {
+    $(".tabs-ac-style").not("app-landing-product .tabs-ac-style").on("click", function() {
         $(".tab-content").hide();
         var activeTab = $(this).attr("rel");
         $("#" + activeTab).fadeIn();
@@ -1634,6 +1634,33 @@ function HOMEINITTEMPLATE ($, undefined) {
             $("html, body").animate({scrollTop: tabposition.top}, 700);
         }
     });
+
+    // CX-02.07.03 - Product mobile accordions
+    $(document)
+        .off("click.ldPdpAccordion", "app-landing-product .tabs-ac-style")
+        .on("click.ldPdpAccordion", "app-landing-product .tabs-ac-style", function() {
+            if ($(window).width() >= 768) {
+                return;
+            }
+
+            var $header = $(this);
+            var $container = $header.closest(".tab-container");
+            var $panel = $header.next(".tab-content");
+
+            if (!$container.length || !$panel.length) {
+                return;
+            }
+
+            var wasOpen = $panel.is(":visible");
+
+            $container.children(".tab-content").stop(true, true).hide();
+            $container.children(".tabs-ac-style").removeClass("active");
+
+            if (!wasOpen) {
+                $header.addClass("active");
+                $panel.show();
+            }
+        });
 
 
     /*----------------------------
@@ -1696,23 +1723,81 @@ function pswp($) {
 
     $.each(items, function(index, value) {
         image[index] = new Image();
+
+        image[index].onload = function() {
+            value.w = this.naturalWidth;
+            value.h = this.naturalHeight;
+        };
+
         image[index].src = value['src'];
     });
-    $('.prlightbox').on('click', function(event) {
-        event.preventDefault();
 
-        var $index = $(".active-thumb").parent().attr('data-slick-index');
-        $index++;
-        $index = $index - 1;
+    $('.prlightbox')
+        .off('click.ldGallery')
+        .on('click.ldGallery', function(event) {
+            event.preventDefault();
 
-        var options = {
-            index: $index,
-            bgOpacity: 0.7,
-            showHideOpacity: true
-        };
-        var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
-        lightBox.init();
-    });
+            if (!items.length) return;
+
+            var currentSrc = $('#zoompro').attr('src');
+            var currentIndex = items.findIndex(function(item) {
+                return item.src === currentSrc;
+            });
+
+            if (currentIndex < 0) {
+                currentIndex = parseInt(
+                    $(".active-thumb").parent().attr('data-slick-index'),
+                    10
+                );
+            }
+
+            if (!Number.isFinite(currentIndex)) currentIndex = 0;
+
+            currentIndex = Math.max(
+                0, Math.min(currentIndex, items.length - 1)
+            );
+
+            var openGallery = function() {
+                var options = {
+                    index: currentIndex,
+                    bgOpacity: 1,
+                    showHideOpacity: true,
+                    shareEl: false,
+                    fullscreenEl: false,
+                    getDoubleTapZoom: function(isMouseClick, item) {
+                        return Math.max(1, item.initialZoomLevel);
+                    }
+                };
+
+                var lightBox = new PhotoSwipe(
+                    $pswp, PhotoSwipeUI_Default, items, options
+                );
+
+                lightBox.listen('gettingData', function(index, item) {
+                    var loaded = image[index];
+
+                    if (loaded && loaded.naturalWidth > 0) {
+                        item.w = loaded.naturalWidth;
+                        item.h = loaded.naturalHeight;
+                    }
+                });
+
+                lightBox.init();
+            };
+
+            var selected = image[currentIndex];
+
+            if (selected && !selected.complete) {
+                selected.addEventListener('load', openGallery, {
+                    once: true
+                });
+                selected.addEventListener('error', openGallery, {
+                    once: true
+                });
+            } else {
+                openGallery();
+            }
+        });
 }
 
 function actionNetxCheckout(params) {
