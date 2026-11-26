@@ -1743,53 +1743,60 @@
     <!--End Product Video Modal-->
 
     <!-- Sticky Cart -->
-    <div class="stickyCart" *ngIf="showStickyCart && variedades?.length">
+    <div class="stickyCart ld-sticky-purchase" *ngIf="showStickyCart && variedades?.length">
         <div class="container">
-            <form method="post" action="#" id="stickycart-form" class="d-flex-center justify-content-center">
+            <form method="post" action="#" id="stickycart-form" class="ld-sticky-form">
                 <div class="product-featured-img">
                     <img class="blur-up lazyload" [attr.data-src]="firstImage" [src]="firstImage" alt="product" width="120" height="170" />
                 </div>
-                <div class="sticky-title ms-2 ps-1 text-secondary fw-bold text-uppercase pe-5" style="font-size: 12;">{{ product_selected.title }}</div>
+                <div class="sticky-title ld-sticky-product">
+                    <span class="ld-sticky-name">
+                        {{ product_selected.title }}
+                    </span>
+                    <span class="ld-sticky-price">
+                        {{ euro }} {{ getPriceWithDiscount().integerPart }}.{{ getPriceWithDiscount().decimalPart }}
+                    </span>
+                </div>
                 <div class="stickyOptions position-relative" [ngClass]="{'border border-danger': tallaError}">
-                    <!-- <div class="selectedOpt text-uppercase fw-light">Seleccionar</div> -->
-                     <div class="selectedOpt text-uppercase fw-light" (click)="toggleOptions()">
-                        {{ variedad_selected ? variedad_selected.color + ' / ' + variedad_selected.valor : ('product_detail.select' | translate) }}
+
+                     <div class="selectedOpt ld-sticky-select" (click)="toggleOptions()">
+                        {{ variedad_selected ? variedad_selected.color + ' / ' + variedad_selected.valor : ('product_detail.select_size' | translate) }}
                     </div>
                     <ul [ngClass]="{'d-block': showOptions, 'd-none': !showOptions}">
-                        <li 
+                        <li
                             *ngFor="let variedad of variedades; let i = index"
-                            class="vrOpt" 
-                            data-val="31677941252156" 
-                            data-no="0" 
-                            [ngClass]="{ 
-                                'available': variedad.stock > 0, 
-                                'soldout': variedad.stock === 0, 
+                            class="vrOpt"
+                            data-val="31677941252156"
+                            data-no="0"
+                            [ngClass]="{
+                                'available': variedad.stock > 0,
+                                'soldout': variedad.stock === 0,
                                 'active': variedad.valor === variedad_selected?.valor
-                            }" 
+                            }"
                             (click)="selectedVariedad(variedad, i)"
                         >
                                 {{variedad.color}} / {{variedad.valor}} - {{ product_selected.price_usd }} {{ euro }}
                         </li>
-                        
+
                     </ul>
                 </div>
 
-                <div class="qtyField mx-2 bg-black" [ngClass]="{'border border-danger': cantidadError}">
-                    <a class="qtyBtn minus" 
-                       href="#;" 
+                <div class="qtyField ld-sticky-quantity" [ngClass]="{'border border-danger': cantidadError}">
+                    <a class="qtyBtn minus"
+                       href="#;"
                        (click)="decrementQty(); $event.preventDefault()"
                        style="transition: all 0.2s ease;"
                        onmouseover="this.style.opacity='0.7'"
                        onmouseout="this.style.opacity='1'">
                         <i class="icon anm anm-minus-r"></i>
                     </a>
-                    <input type="text" 
-                           name="quantity" 
-                           [(ngModel)]="cantidad" 
-                           class="product-form-input qty border-0" 
+                    <input type="text"
+                           name="quantity"
+                           [(ngModel)]="cantidad"
+                           class="product-form-input qty border-0"
                            style="font-weight: 600;" />
-                    <a class="qtyBtn plus" 
-                       href="#;" 
+                    <a class="qtyBtn plus"
+                       href="#;"
                        (click)="incrementQty(); $event.preventDefault()"
                        style="transition: all 0.2s ease;"
                        onmouseover="this.style.opacity='0.7'"
@@ -1798,33 +1805,24 @@
                     </a>
                 </div>
 
-                <div class="stickyOptions position-relative">
-                    <button type="submit" 
-                            name="add" 
-                            class="btn-dark-ld text-uppercase fw-semibold px-4 py-2" 
+                <div class="stickyOptions position-relative ld-sticky-action">
+                    <button type="submit"
+                            name="add"
+                            class="ld-sticky-add"
                             (click)="storeCart(); $event.preventDefault()"
-                            style="letter-spacing: 0.5px; border-radius: 6px; transition: all 0.3s ease;">
+                            >
                         <i class="icon anm anm-bag-l me-2"></i>
-                        <span>{{ 'product_detail.add' | translate }}</span>
+                        <span>{{ 'product_detail.add_to_cart' | translate }}</span>
                     </button>
                 </div>
 
 
-                <!-- <div class="qtyField mx-2 bg-black" [ngClass]="{'border border-danger': cantidadError}">
-                    <a class="qtyBtn minus" href="#;" onclick="return false;"><i class="icon anm anm-minus-r"></i></a>
-                    <input type="text" name="quantity" value="1" id="qty-cart" class="product-form-input qty border-0" />
-                    <a class="qtyBtn plus" href="#;" onclick="return false;"><i class="icon anm anm-plus-r"></i></a>
-                </div>
-                <div class="stickyOptions position-relative">
-                     <button type="submit" name="add" class="btn-dark-ld product-form-cart-submit text-uppercase" (click)="storeCart()">
-                        <span class="fw-normal">Añadir</span>
-                    </button>
-                </div> -->
-               
+
+
             </form>
         </div>
     </div>
-    <!-- End Sticky Cart -->
+<!-- End Sticky Cart -->
 
     <!--MiniColor Drawer-->
     <app-mini-color-drawer
