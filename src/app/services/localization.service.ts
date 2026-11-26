@@ -43,7 +43,7 @@ export class LocalizationService {
       this.updateFromUrl(event.urlAfterRedirects);
     });
 
-    this.updateFromUrl(this.router.url);
+    this.updateFromUrl(window.location.pathname);
   }
 
   /**

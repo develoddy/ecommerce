@@ -1072,8 +1072,8 @@
                 <label for="lujandev-mobile-country">{{ "header.mobile.country" | translate }}</label>
                 <select
                     id="lujandev-mobile-country"
-                    [value]="country"
-                    (change)="onCountryChange($any($event.target).value)">
+                    [ngModel]="country"
+                    (ngModelChange)="onCountryChange($event)">
                     <option
                         *ngFor="let option of countries"
                         [value]="option.code">
@@ -1084,8 +1084,8 @@
                 <label for="lujandev-mobile-language">{{ "header.mobile.language" | translate }}</label>
                 <select
                     id="lujandev-mobile-language"
-                    [value]="locale"
-                    (change)="onLocaleChange($any($event.target).value)">
+                    [ngModel]="locale"
+                    (ngModelChange)="onLocaleChange($event)">
                     <option
                         *ngFor="let option of availableLocales"
                         [value]="option.code">

@@ -74,8 +74,6 @@ export class AppComponent implements AfterViewInit {
     // Establecer inglés como idioma por defecto (fallback)
     this.translate.setDefaultLang('en');
     
-    // Usar el locale inicial extraído de la URL (/es/es o /es/en)
-    this.translate.use(this.localizationService.getTranslationLocale());
 
     // Inicializar valores
     this.country = this.localizationService.country;
