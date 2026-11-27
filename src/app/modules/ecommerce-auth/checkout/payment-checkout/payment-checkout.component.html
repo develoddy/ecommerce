@@ -1,5 +1,5 @@
 
-<div id="steps3">
+<div id="steps3" [class.ld-payment]="!isModulePurchase">
     <div class="checkout-grid p-lg-5">
       <!-- ======== COL IZQUIRDA ======== -->
          <div id="main-left">
@@ -26,7 +26,7 @@
             <!-- END DELIVERY METHODS -->
 
             <!-- 🆕 SHIPPING ADDRESS: Solo mostrar si requiere envío (Printful o módulos físicos) -->
-            <div *ngIf="requiresShipping()" class="block payment-methods pb-0 mb-4 p-0">
+            <div *ngIf="requiresShipping()" class="block payment-methods pb-0 mb-4 p-0 ld-payment-address">
                   <div class="block-content">
                      <!-- Mostrar la lista de direcciones -->
                      <div class="address-book-section" [class.d-none]="loading" *ngIf="this.selectedAddress">
@@ -114,7 +114,7 @@
                                           <!-- <div class="form-text p-1 px-3 mt-3 text-dark" style="width: fit-content !important;background-color: #f3f3f3;" *ngIf="selectedAddress.usual_shipping_address">
                                              Dirección de envío habitual
                                           </div> -->
-                                          <div class="badge px-3 py-2 mt-3 d-inline-flex align-items-center" 
+                                          <div class="badge px-3 py-2 mt-3 d-inline-flex align-items-center"
                                                 style="
                                                    width: fit-content !important;
                                                    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
@@ -124,7 +124,7 @@
                                                    letter-spacing: 0.5px;
                                                    border: 1px solid rgba(40, 167, 69, 0.2);
                                                    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15);
-                                                " 
+                                                "
                                                 *ngIf="selectedAddress.usual_shipping_address">
                                                 <i class="icon anm anm-check-cil me-2" style="font-size: 0.9rem;"></i>
                                                 <span class="text-uppercase">{{ 'checkout.resumen.address_list.default_badge' | translate }}</span>
@@ -296,7 +296,7 @@
             <!-- END EMAIL DE ENTREGA -->
 
             <!-- PAYMENT METHODS -->
-            <div class="mb-3 payment-methods mb-4">
+            <div class="mb-3 payment-methods mb-4 ld-payment-methods">
                   <div class="block-content">
                      <h3 class="mb-3 text-uppercase" style="color: #222; font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 2px solid #222; padding-bottom: 0.5rem;">
                         <i class="icon anm anm-credit-card-l me-2"></i>{{ 'checkout.payment.methods.title' | translate }}
@@ -632,7 +632,7 @@
                                  </ng-template>
                               </span>
                         </div>
-                        
+
                         <!-- Descuento aplicado (solo si hay descuentos) -->
                         <div class="row g-0" *ngIf="hasAnyCartDiscount()">
                               <span class="col-6 col-sm-6 cart-subtotal-title text-danger">{{ 'checkout.resumen.cart_summary.discount' | translate }}</span>
@@ -646,13 +646,13 @@
                                  </span>
                               </span>
                         </div>
-                        
+
                         <!-- Envío Gratis -->
                         <div class="row g-0 mb-2">
                               <span class="col-6 col-sm-6 cart-subtotal-title">{{ 'checkout.resumen.cart_summary.shipping' | translate }}</span>
                               <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money">{{ 'checkout.resumen.cart_summary.free' | translate }}</span></span>
                         </div>
-                        
+
                         <!-- Total Precio actual -->
                         <div class="row g-0 pt-2">
                               <span class="col-6 col-sm-6 cart-subtotal-title ls-1 text-uppercase fw-bold">{{ 'checkout.resumen.cart_summary.total' | translate }}</span>
@@ -668,7 +668,7 @@
                                  </strong>
                               </span>
                         </div>
-                        
+
                         <!-- Impuestos incluidos -->
                         <div class="row g-0 d-none">
                            <div class="col-6 col-sm-6 text-center">
@@ -689,12 +689,12 @@
                                  </span>
                               </ng-template>
                         </button>
-                        
+
                         <!-- Contenedor PayPal - Móvil -->
-                        <div *ngIf="selectedPaymentMethod === 'paypal'" 
-                             class="paypal-container-mobile mt-3 mb-2 w-100" 
-                             #paypalMobile 
-                             [class.disabled]="disablePayments" 
+                        <div *ngIf="selectedPaymentMethod === 'paypal'"
+                             class="paypal-container-mobile mt-3 mb-2 w-100"
+                             #paypalMobile
+                             [class.disabled]="disablePayments"
                              data-paypal-container
                              style="min-height: 50px;">
                         </div>
@@ -747,7 +747,7 @@
                               <div class="TermsOfSale_terms__2leN4" id="checkout.step2.termsofsale">
                                  <p class="lh-1 fw-lighter">
                                     <small>{{ 'checkout.payment.legal.terms_text' | translate }}
-                                          <a 
+                                          <a
                                              class="text-decoration-underline fw-normal"
                                              (click)="isModulePurchase ? false : openInNewTab('condiciones-venta')"
                                              onclick="return !this.isModulePurchase"
@@ -769,14 +769,14 @@
       <!--  -->
 
       <!-- ======== COL DERECHA ======== -->
-         <div id="main-right">
+         <div id="main-right" class="ld-payment-summary">
             <!-- BLOQUE: TU CARRITO -->
             <div class="order-1">
                <h3 class="title mb-0 text-uppercase fw-normal mb-3 fw-bold" *ngClass="{'d-none': isMobile}">{{ 'checkout.resumen.cart_summary.title' | translate }}</h3>
 
                <!-- CODIGO PROMOCIONAL OCUTALMOS-->
                <!-- AHORA EL CUPON SE GESTIONA EN LIST CART -->
-               <!-- 
+               <!--
                <div class="mb-3 codigo_promocional mb-4 d-none">
                   <div class="block-content">
                      <div class="payment-accordion-radio">
@@ -810,9 +810,9 @@
                   </div>
                </div> -->
                <!-- END CODIGO PROMOCIONAL -->
-                
+
                <!-- CART SUMMARY VERSION DESKTOP -->
-               <div class="cart-info cart-summary mb-3 d-none d-md-block bg-white border-0 p-0" *ngIf="!isMobile">
+               <div class="cart-info cart-summary mb-3 d-none d-md-block bg-white border-0 p-0 ld-payment-totals" *ngIf="!isMobile">
                   <div class="cart-order-detail cart-col">
                      <!-- Subtotal-->
                      <div class="row g-0">
@@ -839,7 +839,7 @@
                               </ng-template>
                            </span>
                      </div>
-                     
+
                      <!-- Descuento aplicado (solo si hay descuentos) -->
                      <div class="row g-0" *ngIf="hasAnyCartDiscount()">
                            <span class="col-6 col-sm-6 cart-subtotal-title text-danger fw-light">{{ 'checkout.resumen.cart_summary.discount' | translate }}</span>
@@ -849,20 +849,20 @@
                                  -<span class="">{{getFormattedPrice(getTotalDiscount()).integerPart}}.</span>
                                  <span class="">
                                        <span>{{ getFormattedPrice(getTotalDiscount()).decimalPart }}</span>
-                                       
+
                                  </span>
                               </span>
                            </span>
                      </div>
-                     
+
                      <!-- Envío Gratis -->
                      <div class="row g-0 mb-2">
                            <span class="col-6 col-sm-6 cart-subtotal-title fw-light">{{ 'checkout.resumen.cart_summary.shipping' | translate }}</span>
                            <span class="col-6 col-sm-6 cart-subtotal-title cart-subtotal text-end"><span class="money fw-light">{{ 'checkout.resumen.cart_summary.free' | translate }}</span></span>
                      </div>
-                     
+
                      <!-- Total Precio actual -->
-                     <div class="row g-0">
+                     <div class="row g-0 ld-payment-grand-total">
                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6 ls-1 text-uppercase fw-normal">{{ 'checkout.resumen.cart_summary.total' | translate }}</span>
                            <span class="col-6 col-sm-6 cart-subtotal-title fs-6 cart-subtotal text-end">
                               <strong>
@@ -876,7 +876,7 @@
                               </strong>
                            </span>
                      </div>
-                     
+
                      <!-- Impuestos incluidos -->
                      <div class="row g-0 d-none">
                         <div class="col-6 col-sm-6 text-center">
@@ -896,16 +896,16 @@
                               </span>
                            </ng-template>
                      </button>
-                     
+
                      <!-- Contenedor PayPal - Mismo nivel que Stripe -->
-                     <div *ngIf="selectedPaymentMethod === 'paypal'" 
-                          class="paypal-container-desktop mt-3 mb-2 w-100" 
-                          #paypal 
-                          [class.disabled]="disablePayments" 
+                     <div *ngIf="selectedPaymentMethod === 'paypal'"
+                          class="paypal-container-desktop mt-3 mb-2 w-100"
+                          #paypal
+                          [class.disabled]="disablePayments"
                           data-paypal-container
                           style="min-height: 50px;">
                      </div>
-                     
+
 
                      <div class="d-flex mb-3">
                            <ul class="d-flex flex-row">
@@ -956,7 +956,7 @@
                            <div class="" id="checkout.step2.termsofsale">
                               <p class="lh-1 fw-lighter">
                                  <small>{{ 'checkout.payment.legal.terms_text' | translate }}
-                                       <a 
+                                       <a
                                           class="text-decoration-underline fw-normal"
                                           (click)="isModulePurchase ? false : openInNewTab('condiciones-venta')"
                                           onclick="return !this.isModulePurchase"
@@ -972,42 +972,77 @@
                <!-- ENC CART SUMARY VERSION DESKTOP -->
 
                <!-- CARTS LIST -->
-               <div class="col-12 order-0 lists-carts  order-md-2">
+
+    <button
+        *ngIf="!isModulePurchase"
+        #paymentSummaryToggle
+        type="button"
+        class="ld-payment-toggle"
+        aria-expanded="false"
+        aria-controls="ld-payment-items-content"
+        (click)="paymentSummaryToggle.setAttribute(
+            'aria-expanded',
+            paymentSummaryToggle.getAttribute('aria-expanded') === 'true'
+                ? 'false' : 'true'
+        )">
+
+        <i class="icon anm anm-bag-l" aria-hidden="true"></i>
+
+        <span class="ld-payment-toggle-label">
+            <span class="ld-payment-show">
+                {{ 'checkout.resumen.order_summary.show' | translate }}
+            </span>
+            <span class="ld-payment-hide">
+                {{ 'checkout.resumen.order_summary.hide' | translate }}
+            </span>
+            <small>
+                {{ 'checkout.resumen.items_list.title' | translate }}
+                ({{ listCarts.length }})
+            </small>
+        </span>
+
+        <strong class="ld-payment-toggle-price">
+            {{ euro }} {{getFormattedPrice(getTotal()).integerPart}}.{{getFormattedPrice(getTotal()).decimalPart}}
+        </strong>
+
+        <span class="ld-payment-chevron" aria-hidden="true"></span>
+    </button>
+    <div class="col-12 order-0 lists-carts order-md-2 ld-payment-items" id="ld-payment-items-content">
                   <div class="block order-summary p-0">
                         <div class="block-content">
                            <h3 class="mb-0 text-uppercase" style="color: #222;font-size: 1.25rem;letter-spacing: 0.5px;border-bottom: 2px solid #222;padding-bottom: 0.5rem;">{{ 'checkout.resumen.items_list.title' | translate }} ({{ listCarts.length }})</h3>
                            <div class="order-list">
                               <ng-container *ngFor="let cart of listCarts">
-                                    <div class="d-flex py-3 gap-3 align-items-start">
+                                    <div class="d-flex py-3 gap-3 align-items-start ld-payment-item">
                                        <!-- Imagen -->
-                                       <div style="flex: 0 0 auto">
+                                       <div class="ld-payment-image" style="flex: 0 0 auto">
                                           <a *ngIf="cart.product?.slug" [routerLink]="['/landing-product',cart.product.slug]">
-                                             <img 
-                                                class="blur-up lazyload" 
-                                                [attr.data-src]="getVarietyImage(cart)" 
-                                                [src]="getVarietyImage(cart)" 
-                                                [alt]="cart.product?.title || 'Producto'" 
-                                                [title]="cart.product?.title || 'Producto'" 
-                                                width="120" 
-                                                height="170" 
+                                             <img
+                                                class="blur-up lazyload"
+                                                [attr.data-src]="getVarietyImage(cart)"
+                                                [src]="getVarietyImage(cart)"
+                                                [alt]="cart.product?.title || 'Producto'"
+                                                [title]="cart.product?.title || 'Producto'"
+                                                width="120"
+                                                height="170"
                                                 />
                                           </a>
-                                          <img *ngIf="!cart.product?.slug" 
-                                             class="blur-up lazyload" 
-                                             [attr.data-src]="getVarietyImage(cart)" 
-                                             [src]="getVarietyImage(cart)" 
-                                             [alt]="cart.product?.title || 'Módulo'" 
-                                             [title]="cart.product?.title || 'Módulo'" 
-                                             width="120" 
-                                             height="170" 
+                                          <img *ngIf="!cart.product?.slug"
+                                             class="blur-up lazyload"
+                                             [attr.data-src]="getVarietyImage(cart)"
+                                             [src]="getVarietyImage(cart)"
+                                             [alt]="cart.product?.title || 'Módulo'"
+                                             [title]="cart.product?.title || 'Módulo'"
+                                             width="120"
+                                             height="170"
                                              />
                                                 <!-- <img class="blur-up lazyload" [attr.data-src]="cart.product.imagen" [src]="cart.product.imagen" alt="product" title="Product" width="120" height="170" /> -->
                                        </div>
                                        <!-- Info del producto -->
-                                       <div class="flex-grow-1 d-flex flex-column justify-content-between">
+                                       <div class="flex-grow-1 d-flex flex-column justify-content-between ld-payment-item-info">
                                           <!-- Datos adicionales -->
                                           <div class="d-flex flex-column ">
-                                                <div class="d-flex lh-1 mb-2">
+                                                <div class="d-flex lh-1 mb-2 ld-payment-item-heading">
                                                    <div class="fw-normal me-2">
                                                       <a *ngIf="cart.product?.slug" href="#" class="fw-normal d-inline-block" onclick="return false;" [routerLink]="['/', this.country, this.locale, 'shop', 'product', cart.product.slug]">{{ cart.product.title }}</a>
                                                       <span *ngIf="!cart.product?.slug" class="fw-normal">{{ cart.product?.title || 'Módulo' }}</span>
@@ -1051,23 +1086,23 @@
                                                       </ng-template>
                                                    </div>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.product?.sku">
+                                                <div class="d-flex fw-light lh-1 mb-1 ld-payment-attribute" *ngIf="cart.product?.sku">
                                                    <span class="w-25">{{ 'checkout.resumen.items_list.sku_label' | translate }}</span>
                                                    <span class="ms-lg-3 ms-5">{{ cart.product.sku }}</span>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.variedad?.color">
+                                                <div class="d-flex fw-light lh-1 mb-1 ld-payment-attribute" *ngIf="cart.variedad?.color">
                                                    <span class="w-25">{{ 'checkout.resumen.items_list.color_label' | translate }}</span>
                                                    <span class="ms-lg-3 ms-5 fw-light">{{ cart.variedad.color }}</span>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1" *ngIf="cart.variedad">
+                                                <div class="d-flex fw-light lh-1 mb-1 ld-payment-attribute" *ngIf="cart.variedad">
                                                    <span class="w-25">{{ 'checkout.resumen.items_list.size_label' | translate }}</span>
                                                    <span class="ms-lg-3 ms-5 fw-light">{{ cart.variedad.valor }}</span>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1">
+                                                <div class="d-flex fw-light lh-1 mb-1 ld-payment-attribute">
                                                    <span class="w-25">{{ 'checkout.resumen.items_list.quantity_label' | translate }}</span>
                                                    <span class="ms-lg-3 ms-5 fw-light">{{ cart.cantidad}}</span>
                                                 </div>
-                                                <div class="d-flex fw-light lh-1 mb-1">
+                                                <div class="d-flex fw-light lh-1 mb-1 ld-payment-attribute">
                                                    <span class="w-25">{{ 'checkout.resumen.items_list.total_label' | translate }}</span>
                                                    <span class="money ms-lg-3 ms-5">
                                                       <span>

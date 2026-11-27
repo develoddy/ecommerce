@@ -1,677 +1,681 @@
 {
-    "app": {
-        "title": "Online store"
+  "app": {
+    "title": "Online store"
+  },
+  "auth_profile": {
+    "login": {
+      "title": "Welcome",
+      "subtitle": "Sign in with your email address or register to become a LujanDev member.",
+      "email": "Email Address",
+      "password": "Password",
+      "remember": "Keep me signed in",
+      "forget_password": "Forgot your password?",
+      "button_sign_up_now": "Create account",
+      "button_login": "Sign in",
+      "loading": "Signing in...",
+      "error_title": "Sign-in error",
+      "secure_data": "All data is kept secure",
+      "close": "Close"
     },
-    "auth_profile": {
-        "login": {
-            "title": "Welcome",
-            "subtitle": "Sign in with your email address or register to become a LujanDev member.",
-            "email": "Email Address",
-            "password": "Password",
-            "remember": "Keep me signed in",
-            "forget_password": "Forgot your password?",
-            "button_sign_up_now": "Create account",
-            "button_login": "Sign in",
-            "loading": "Signing in...",
-            "error_title": "Sign-in error",
-            "secure_data": "All data is kept secure",
-            "close": "Close"
-        },
-        "register": {
-            "title":"Create New Account",
-            "subtitle":"Please enter details",
-            "first_name": "First Name",
-            "last_name": "Last Name",
-            "email": "Email Address",
-            "password": "Password",
-            "password_repeat": "Password Repeat",
-            "condition":"I agree to the <b>Terms & Condition</b>",
-            "button_login": "Log In",
-            "button_signup":"Signup"
-        },
-        "forgot_password": {
-            "title":"Forgot Password",
-            "subtitle":"Enter your registered email address. we'll send you a code to reset your password.",
-            "email": "Email Address",
-            "button_send":"Send OTP",
-            "button_back": "Back"
-        }
+    "register": {
+      "title": "Create New Account",
+      "subtitle": "Please enter details",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email Address",
+      "password": "Password",
+      "password_repeat": "Password Repeat",
+      "condition": "I agree to the <b>Terms & Condition</b>",
+      "button_login": "Log In",
+      "button_signup": "Signup"
     },
-    "header": {
-        "tagline": "Bugs. deploys. late nights. now wearable.",
-        "language_selector": {
-            "castellano": "Spanish"
-        },
-        "country_selector": {
-            "spain": "Spain"
-        },
-        "home":"Home",
-        "shop": {
-            "title": "Shop",
-            "list": {
-                "":""
-            }
-        },
-        "pages": {
-            "title": "Pages",
-            "list": {
-                "account": "My Account",
-                "cart": "My Cart",
-                "wishlist": "My Wishlist",
-                "checkout": "Checkout"
-            }
-        },
-        "about":"About",
-        "blog":"Blog",
-        "contact":"Contact Us",
-        "list_account": {
-            "myaccount":"My Account",
-            "myorders":"My Orders",
-            "mypurchases":"My Purchases",
-            "support":"Support",
-            "login":"Log In",
-            "logout":"Log Out"
-        },
-        "categories":"Categories",
-        "categories_menu": {
-            "tshirts": "T-Shirts",
-            "hoodies": "Hoodies",
-            "mugs": "Mugs",
-            "caps": "Caps",
-            "all_tshirts": "All T-Shirts",
-            "tshirts_center_logo": "Center Logo T-Shirts",
-            "tshirts_side_logo": "Side Logo T-Shirts",
-            "all_hoodies": "All Hoodies",
-            "hoodies_with_hood": "Hoodies with Hood",
-            "all_mugs": "All Mugs",
-            "all_caps": "All Caps",
-            "best_sellers": "Best Sellers"
-        },
-        "search": {
-            "label": "Search",
-            "title": "Find your developer outfit 🕶",
-            "placeholder": "Search in LujanDev.",
-            "all_categories": "All categories",
-            "trending": "Trending now:",
-            "result_found": "result found",
-            "results_found": "results found",
-            "no_results": "No results found",
-            "try_other_keywords": "Try searching with different keywords"
-        },
-        "account": {
-            "title": "Account",
-            "no_account": "Don't have an account?",
-            "signup": "Sign up",
-            "lujandev_likes_you": "Lujandev likes you",
-            "help": "Help"
-        },
-        "wishlist": {
-            "title": "Favorites"
-        },
-        "cart": {
-            "title": "Cart"
-        },
-        "mobile": {
-            "menu": "Menu",
-            "region_language": "Region & language",
-            "country": "Country",
-            "language": "Language"
-        },
-        "sale_badge": "Sale"
+    "forgot_password": {
+      "title": "Forgot Password",
+      "subtitle": "Enter your registered email address. we'll send you a code to reset your password.",
+      "email": "Email Address",
+      "button_send": "Send OTP",
+      "button_back": "Back"
+    }
+  },
+  "header": {
+    "tagline": "Bugs. deploys. late nights. now wearable.",
+    "language_selector": {
+      "castellano": "Spanish"
     },
-    "home": {
-        "loading": {"title": "Loading store...", "description": "Preparing the best products for you"},
-        "today":"Today's",
-        "flash_sales": "Flash Sales",
-        "browse_by_category":"Browse by Category",
-        "best_selling_products":"Best Selling Products",
-        "explore_our_products":"Explore our Products",
-        "users_feedback":"Users Feedback",
-        "new_arrivals":"New Arrivals",
-
-        "featured_build": {
-            "label": "FROM THE BUILD / 002",
-            "title": "IT WORKED ON<br>LOCALHOST.",
-            "subtitle": "Production had other plans.",
-            "description": "The kind of thing that happens while building software and somehow ends up becoming a LujanDev design.",
-            "cta": "EXPLORE DROP 001 →"
-        },
-
-        "collection_banners": {
-            "title": "SHOP BY CATEGORY"
-        },
-
-        "manifesto": {
-            "label": "LUJANDEV / BUILT IN PUBLIC",
-            "title": "WE DON'T DESIGN<br>ABOUT CODE.<br><br>WE DESIGN FROM<br>WHAT HAPPENS<br>WHILE BUILDING IT.",
-            "lead": "Real bugs. Real deploys. Real late nights.",
-            "copy": "What happens while building LujanDev ends up becoming part of LujanDev.",
-            "cta": "DISCOVER THE STORY →"
-        },
-
-        "brand_message": {
-            "title": "THE BUILD<br>CONTINUES.",
-            "copy": "New bugs. New deploys.<br>New stories that might end up<br>as the next design.",
-            "newsletter_label": "BUILD LOGS. NEW DROPS. NO SPAM.",
-            "success": "You're in the build.",
-            "placeholder": "Your email",
-            "cta": "JOIN THE BUILD →"
-        },
-
-        "service_section": {
-            "support": {
-                "title": "Real support",
-                "description": "We're here."
-            },
-            "shipping": {
-                "title": "Shipping + tracking",
-                "description": "Know where it is."
-            },
-            "payment": {
-                "title": "Secure payment",
-                "description": "No hassle."
-            },
-            "returns": {
-                "title": "Easy returns",
-                "description": "No complications."
-            }
-        },
-
-        "service_and_quality": {
-            "delivery": {
-                "title": "Fast & Secure Delivery",
-                "description": "Tell about your service."
-            },
-            "warranty": {
-                "title": "Money Back Guarantee",
-                "description": "Within 10 days."
-            },
-            "return": {
-                "title": "24 Hour Return Policy",
-                "description": "No question ask."
-            },
-            "support": {
-                "title": "Pro Quality Support",
-                "description": "24/7 Live support."
-            }
-        },
-
-        "product_grid": {
-            "meta": "BUILT FROM BUGS,<br>DEPLOYS AND WAY TOO MANY HOURS.",
-            "description": "Designs born from what happens while building and shipping software.",
-            "best_seller": "Best Seller",
-            "available_sizes": "Available sizes:",
-            "out_of_stock": "Out of stock",
-            "select_size": "Select size",
-            "add_to_cart": "Add to cart",
-            "quick_view": "Quick view",
-            "add_to_favorites": "Add to favorites",
-            "add_to_compare": "Add to compare",
-            "view_drop": "EXPLORE DROP 001 →",
-            "explore_category": "Explore",
-            "product_image_alt": "T-Shirt {{product}} — LujanDev Drop 001",
-            "discount_label": "Deal –{{percent}}%!"
-        }
+    "country_selector": {
+      "spain": "Spain"
     },
-    "footer": {
-        "explore": {
-            "title": "EXPLORE",
-            "about": "About us",
-            "all_products": "All products"
-        },
-        "help": {
-            "title": "HELP",
-            "shipping": "Shipping",
-            "returns": "Returns",
-            "contact": "Contact"
-        },
-        "localization": {
-            "title": "COUNTRY & LANGUAGE",
-            "country": "Spain",
-            "language": "English"
-        },
-        "social": {
-            "follow_build": "FOLLOW THE BUILD"
-        },
-        "copyright": "All rights reserved",
-        "legal": {
-            "legal_notice": "Legal Notice",
-            "privacy": "Privacy",
-            "cookies": "Cookies",
-            "terms": "Terms"
-        },
-        "legal_titles": {
-            "legal_notice": "Legal Notice",
-            "privacy": "Privacy Policy",
-            "cookies": "Cookie Policy",
-            "terms": "Terms and Conditions of Sale",
-            "odr": "EU Online Dispute Resolution Platform"
-        }
+    "home": "Home",
+    "shop": {
+      "title": "Shop",
+      "list": {
+        "": ""
+      }
     },
-    "main": {
-        "language": "Language",
-        "spanish": "Spanish",
-        "english": "English",
-        "input_placeholder": "Introduce text here",
-        "introduced_text": "Introduced text is: {{ text }}"
+    "pages": {
+      "title": "Pages",
+      "list": {
+        "account": "My Account",
+        "cart": "My Cart",
+        "wishlist": "My Wishlist",
+        "checkout": "Checkout"
+      }
     },
-    "product_detail": {
-        "loading": "Loading product...",
-        "colors": "Colors",
-        "color_selected": "Color selected",
-        "select_color": "Select color",
-        "error_select_color": "Select a color",
-        "sizes": "Sizes",
-        "size_selected": "Size selected",
-        "select_size": "Select size",
-        "error_select_size": "Select a size",
-        "size_guide": "Size guide",
-        "add_to_cart": "Add to cart",
-        "add_to_favorites": "Add to favorites",
-        "print_on_demand": "Print on Demand: Product made on demand especially for you",
-        "production_title": "Made for you",
-        "production_description": "Your product is made to order.",
-        "delivery_title": "Free shipping",
-        "delivery_estimate": "Estimated delivery:",
-        "article_number": "Item No.",
-        "quantity": "Quantity",
-        "select": "Select",
-        "add": "Add",
-        "tabs": {
-            "description": "Description",
-            "shipping_returns": "Shipping & Returns",
-            "reviews": "Reviews",
-            "composition": "Composition, origin and care"
-        },
-        "details": {
-            "color": "Color"
-        },
-        "shipping": {
-            "title": "Shipping",
-            "home_delivery": "Home delivery: 3 to 7 business days",
-            "free_shipping": "Shipping included in the product price",
-            "tracking_included": "Tracking included on all shipments",
-            "pod_notice": "Print on Demand: Your products are made on demand especially for you. Production and shipping times may vary slightly.",
-            "free_delivery": "FREE delivery on",
-            "for": "to",
-            "all_spain": "across Spain",
-            "not_available": "Shipping not available",
-            "not_available_address": "for the selected address."
-        },
-        "returns": {
-            "title": "Returns and Refunds",
-            "pod_products": "Print on Demand Products",
-            "pod_warning": "Our products are made especially for you when you place your order, so we do not accept returns for change of mind, incorrect size or personal preferences.",
-            "accepted_claims": "Accepted claims (30-day period):",
-            "defective_product": "Defective product: Damaged, broken or stained print",
-            "shipping_damage": "Shipping damage: Product damaged during transport",
-            "wrong_product": "Wrong product: Incorrect model, color or size",
-            "lost_order": "Lost order: Not received by carrier",
-            "not_accepted": "NO claims accepted for:",
-            "change_mind": "Change of mind about design or product",
-            "wrong_size_choice": "Size chosen incorrectly by customer",
-            "not_expected": "\"Not what I expected\" (correct design but not liked)",
-            "personal_preferences": "Personal or aesthetic preferences",
-            "how_to_claim": "How to manage a claim?",
-            "claim_instructions": "If your order has any of the accepted issues, contact us within 30 days of receipt providing:",
-            "order_number": "Order number",
-            "photos": "Clear photos of the problem",
-            "description": "Detailed description of the defect or error",
-            "resolution": "If the error is confirmed, we will proceed with product reprint or refund, as appropriate."
-        },
-        "reviews": {
-            "title": "Reviews",
-            "avg_rating": "Average rating",
-            "ratings": "Ratings",
-            "no_reviews": "This product has no reviews yet. Be the first to share your opinion!",
-            "customer_reviews": "Customer reviews",
-            "write_review": "Write a review",
-            "email_notice": "Your email address will not be published. Required fields are marked with *",
-            "name": "Name",
-            "email": "Email",
-            "review_title": "Review title",
-            "rating": "Rating",
-            "review_body": "Review body",
-            "characters_remaining": "(1500) characters remaining",
-            "submit_review": "Submit review"
-        },
-        "errors": {
-            "please_select_color": "Please select a color",
-            "please_select_size": "Please select a size"
-        },
-        "related_products": {
-            "title": "More in this style",
-            "subtitle": "Products that match your setup and dev style.",
-            "new_collection": "New collection"
-        },
-        "interest_products": {
-            "title": "Recommended for devs",
-            "subtitle": "Products that fit your passion for code and tech culture.",
-            "new_collection": "New collection"
-        }
+    "about": "About",
+    "blog": "Blog",
+    "contact": "Contact Us",
+    "list_account": {
+      "myaccount": "My Account",
+      "myorders": "My Orders",
+      "mypurchases": "My Purchases",
+      "support": "Support",
+      "login": "Log In",
+      "logout": "Log Out"
     },
-    "checkout": {
-        "resumen": {
-            "delivery": {
-                "title": "Shipping type",
-                "home": "Home delivery",
-                "free": "FREE",
-                "store": "Store",
-                "pickup_point": "Pickup point",
-                "label": "Delivery:"
-            },
-            "modules": {
-                "digital": {
-                    "title": "Instant digital delivery",
-                    "description": "You don't need to provide a shipping address. We'll send the download link to your email."
-                },
-                "service": {
-                    "title": "Custom service",
-                    "description": "You don't need to provide a shipping address. We'll send you scheduling instructions by email."
-                },
-                "integration": {
-                    "title": "Integration access",
-                    "description": "You don't need to provide a shipping address. We'll send you credentials by email."
-                }
-            },
-            "contact": {
-                "title": "Contact information",
-                "description": "We'll send the information to this email",
-                "email_label": "Email",
-                "email_placeholder": "your@email.com",
-                "email_required_error": "Email is required",
-                "email_invalid_error": "Enter a valid email",
-                "name_label": "Full name",
-                "optional": "(optional)",
-                "name_placeholder": "Your name",
-                "name_hint": "Helps us personalize the communication",
-                "continue_button": "Continue to payment"
-            },
-            "authenticated_email": {
-                "title": "Delivery email confirmed",
-                "description": "We'll send the information to:",
-                "continue_button": "Continue to payment"
-            },
-            "address_form": {
-                "cancel_button": "Cancel",
-                "edit_title": "Edit address",
-                "title": "Shipping details",
-                "name_label": "First name",
-                "name_placeholder": "First name",
-                "surname_label": "Last name",
-                "surname_placeholder": "Last name",
-                "email_label": "E-Mail",
-                "email_placeholder": "E-mail",
-                "country_label": "Country",
-                "country_placeholder": "Country",
-                "eu_group": "🇪🇺 European Union",
-                "street_label": "Street",
-                "street_placeholder": "Street (e.g. Gran Vía Street)",
-                "number_label": "Number",
-                "number_placeholder": "Number (e.g. 123)",
-                "number_required_error": "You must include the street number for shipping",
-                "apartment_label": "Apartment/Floor",
-                "apartment_placeholder": "Apartment/Floor (optional, e.g. 3rd floor)",
-                "apartment_hint": "Optional: floor, door, staircase, etc.",
-                "field_required_error": "Complete this field to continue",
-                "phone_label": "Mobile",
-                "phone_placeholder": "Mobile",
-                "set_default_label": "Set as default shipping address",
-                "update_button": "Update address",
-                "save_button": "Save address",
-                "validating_button": "Validating...",
-                "error_prefix": "Error:"
-            },
-            "postal_code": {
-                "label": "Postal code",
-                "placeholder": "Postal code (e.g. 28013)",
-                "searching": "Searching...",
-                "valid_message": "Valid postal code",
-                "not_found_warning": "We couldn't auto-complete this postal code. Please enter the town and province manually.",
-                "technical_error_warning": "We couldn't automatically verify the postal code. Please enter the town and province."
-            },
-            "city": {
-                "label": "Town",
-                "select_placeholder": "Select your town",
-                "available_count": "{{count}} towns available for this postal code",
-                "select_required_error": "Please select a town",
-                "placeholder_auto": "Town (auto-completed from postal code)",
-                "placeholder_manual": "Town",
-                "autocomplete_hint": "Will be auto-completed once you enter the postal code",
-                "manual_required_error": "Enter the town",
-                "enter_zip_first_error": "Enter the postal code first"
-            },
-            "province": {
-                "label": "Province/State",
-                "placeholder_auto": "Province (auto-completed from postal code)",
-                "placeholder_manual": "Province",
-                "autocomplete_hint": "Will be auto-completed once you enter the postal code",
-                "manual_required_error": "Enter the province",
-                "enter_zip_first_error": "Enter the postal code first"
-            },
-            "address_list": {
-                "title": "Shipping details",
-                "new_address_button": "New address",
-                "change_button": "Change",
-                "loading": "Loading...",
-                "loading_description": "Loading addresses...",
-                "default_badge": "Default address",
-                "edit_button": "Edit",
-                "phone_with_prefix": "Phone +34 {{phone}}"
-            },
-            "address_drawer": {
-                "title": "Shipping address",
-                "empty_title": "Oops! Your cart is empty",
-                "empty_description": "Start filling it with things you'll love.",
-                "confirm_button": "Confirm address",
-                "continue_payment_button": "Continue to payment",
-                "add_another_button": "Add another address"
-            },
-            "cart_summary": {
-                "title": "Price Summary",
-                "subtotal": "Subtotal",
-                "discount": "Discount",
-                "shipping": "Shipping",
-                "free": "Free",
-                "total": "Total",
-                "taxes_included": "Taxes included"
-            },
-            "continue_payment_button": "Continue to payment",
-            "privacy_policy_text": "By continuing, you confirm that you have read the",
-            "privacy_policy_link": "Privacy policy",
-            "empty_cart": {
-                "title": "Your cart is empty",
-                "description": "Get inspired by the latest trends and discover something new to refresh your wardrobe",
-                "discover_button": "Discover new arrivals"
-            },
-            "items_list": {
-                "title": "Items",
-                "sku_label": "Item No.",
-                "color_label": "Color",
-                "size_label": "Size",
-                "quantity_label": "Quantity",
-                "total_label": "Total"
-            },
-            "messages": {
-                "country_not_allowed": "Sorry, we don't ship to {{country}}. We only ship to European Union countries.",
-                "shipping_error_generic": "We couldn't calculate shipping for this address. Please check that all the details are correct.",
-                "shipping_error_default": "We couldn't calculate shipping for this address.",
-                "shipping_error_invalid_zip": "The postal code is not valid for this country.",
-                "shipping_error_invalid_address": "The address is not valid. Please check that all the details are correct.",
-                "select_address_required": "Please select a shipping address before continuing.",
-                "spain_only_shipping": "We currently only ship to Spain.",
-                "shipping_calc_failed": "We couldn't calculate shipping for the selected address. Please check that the address is correct or select another one.",
-                "empty_cart_error": "Your cart is empty. Add products before continuing.",
-                "fill_required_fields": "Please fill in the required shipping address fields",
-                "validating_postal": "Validating postal code and town...",
-                "validating_printful": "Validating address with Printful...",
-                "address_valid_saving": "Address valid, saving...",
-                "address_valid_updating": "Address valid, updating...",
-                "printful_validation_error": "Error validating the address with Printful",
-                "printful_validation_error_short": "Error validating the address",
-                "postal_validation_error": "Error validating the postal code and town",
-                "guest_not_identified_save": "Couldn't identify the guest to save the address",
-                "guest_not_identified_save_alert": "Couldn't identify the guest. Reload the page and try again.",
-                "save_error": "Error saving the address",
-                "guest_email_required": "Please enter your email to continue",
-                "guest_email_invalid": "Please enter a valid email",
-                "guest_not_identified_usual": "Couldn't identify the guest to update the default address.",
-                "login_email_required": "Email is required",
-                "login_password_required": "Password is required",
-                "unknown_error": "Unknown error",
-                "update_address_error": "Oops! The address could not be updated"
-            }
-        },
-        "payment": {
-            "shipping": {
-                "title": "Shipping address"
-            },
-            "digital_delivery": {
-                "title": "Delivery email",
-                "product_type": "Digital product",
-                "immediate_delivery": "Immediate delivery by email",
-                "default_customer_name": "Customer"
-            },
-            "methods": {
-                "title": "Payment method",
-                "card_label": "Card",
-                "paypal_label": "Paypal",
-                "paypal_info": "After clicking “Complete purchase”, a pop-up window will ask you to log in to your PayPal account. Review the payment and shipping details to complete the purchase. You will then be taken to the order confirmation page of www.tienda.lujandev.com"
-            },
-            "buttons": {
-                "pay_with_card": "Pay with card"
-            },
-            "legal": {
-                "terms_text": "By completing your purchase, you confirm that you have read, understood and agree to the",
-                "terms_link": "Terms of sale",
-                "terms_title": "General Terms of Sale"
-            },
-            "address_modal": {
-                "select_country_placeholder": "Select a country",
-                "address_label": "Address",
-                "state_label": "City",
-                "state_default_option": "Province/State",
-                "default_shipping_text": "Default shipping address",
-                "save_button": "Save changes"
-            },
-            "errors": {
-                "stripe_load_failed": "Stripe could not be loaded",
-                "empty_cart": "The cart is empty",
-                "select_shipping_address": "Please select a shipping address.",
-                "complete_address_fields": "Please complete all required address fields (name, address, email).",
-                "email_required_modules": "Email required for digital modules",
-                "complete_required_address_fields": "Please complete all required address fields.",
-                "cannot_proceed_empty_cart": "Cannot proceed with the order if the cart is empty.",
-                "select_appropriate_shipping": "Please select the corresponding shipping address."
-            },
-            "address": {
-                "update_error": "Error updating the address."
-            }
-        },
-        "steps": {
-            "payment": "Payment",
-            "confirmation": "Confirmation"
-        }
+    "categories": "Categories",
+    "categories_menu": {
+      "tshirts": "T-Shirts",
+      "hoodies": "Hoodies",
+      "mugs": "Mugs",
+      "caps": "Caps",
+      "all_tshirts": "All T-Shirts",
+      "tshirts_center_logo": "Center Logo T-Shirts",
+      "tshirts_side_logo": "Side Logo T-Shirts",
+      "all_hoodies": "All Hoodies",
+      "hoodies_with_hood": "Hoodies with Hood",
+      "all_mugs": "All Mugs",
+      "all_caps": "All Caps",
+      "best_sellers": "Best Sellers"
     },
-    "store_editorial": {
-        "hero": {
-            "eyebrow": "THE DEVELOPER COLLECTION",
-            "titleLine1": "Designed for",
-            "titleLine2": "those who build.",
-            "categoriesLabel": "Explore collections"
-        },
-        "categories": {
-            "tshirts": "T-SHIRTS",
-            "hoodies": "HOODIES",
-            "mugs": "MUGS",
-            "caps": "CAPS",
-            "shop": "SHOP"
-        },
-        "newsletter": {
-            "title": "Get updates, new releases and exclusive collections.",
-            "description": "Discover what's next from LujanDev.",
-            "cta": "SUBSCRIBE",
-            "placeholder": "Enter your email address",
-            "submitting": "SUBSCRIBING...",
-            "success": "You're now part of LujanDev!",
-            "successDescription": "You'll receive our updates, new releases and exclusive collections.",
-            "errorRequired": "Enter your email address.",
-            "errorInvalid": "Enter a valid email address.",
-            "errorGeneric": "We could not complete your subscription. Please try again.",
-            "errorRateLimit": "Too many attempts. Please wait a moment and try again.",
-            "privacyText": "Read our",
-            "privacyLink": "privacy policy"
-        }
+    "search": {
+      "label": "Search",
+      "title": "Find your developer outfit 🕶",
+      "placeholder": "Search in LujanDev.",
+      "all_categories": "All categories",
+      "trending": "Trending now:",
+      "result_found": "result found",
+      "results_found": "results found",
+      "no_results": "No results found",
+      "try_other_keywords": "Try searching with different keywords"
+    },
+    "account": {
+      "title": "Account",
+      "no_account": "Don't have an account?",
+      "signup": "Sign up",
+      "lujandev_likes_you": "Lujandev likes you",
+      "help": "Help"
+    },
+    "wishlist": {
+      "title": "Favorites"
     },
     "cart": {
-        "title": "Shopping bag",
-        "loading": "Loading your bag...",
-        "count_one": "{{count}} item in your bag",
-        "count_many": "{{count}} items in your bag",
-        "sku": "Item No.",
-        "decrease": "Decrease quantity",
-        "increase": "Increase quantity",
-        "remove": "Remove",
-        "close": "Close",
-        "free_shipping": "Free shipping",
-        "shipping_description": "Your order includes free shipping.",
-        "summary": "Order summary",
-        "checkout": "Checkout",
-        "coupon": {
-            "title": "Have a discount code?",
-            "applied": "Discount code applied",
-            "remove": "Remove",
-            "remove_title": "Remove discount code",
-            "placeholder": "Discount code",
-            "apply": "Apply",
-            "apply_title": "Apply discount code",
-            "login_required": "Sign in to use discount codes",
-            "guest_notice": "Discount codes are only available to registered users.",
-            "login": "Sign in",
-            "or": "or",
-            "register": "register",
-            "guest_suffix": "to use discount codes.",
-            "hint": "Enter your discount code to save on your order.",
-            "eligible": "The discount code only applies to items without existing discounts.",
-            "eligible_count": "The discount code only applies to items without existing discounts ({{eligible}} of {{total}} items).",
-            "replace": "Remove the current discount code before applying another.",
-            "all_discounted": "All items in your bag already have discounts."
-        },
-        "recommendations": {
-            "title": "Complete your order",
-            "description": "More products that match your style.",
-            "previous": "Previous products",
-            "next": "Next products",
-            "scroll": "Scroll recommendations"
-        },
-        "empty": {
-            "title": "Your bag is empty",
-            "description": "Discover products made for those who live between code, ideas and coffee.",
-            "explore": "Explore the collection",
-            "home": "Back to home"
-        },
-        "help": {
-            "prefix": "Need help? Contact our",
-            "link": "customer service team"
-        },
-        "nav": {
-            "shop": "Shop",
-            "account": "Account",
-            "home": "Home",
-            "favorites": "Favorites",
-            "cart": "Bag"
-        },
-        "messages": {
-            "minimum": "You must have at least one item in your bag.",
-            "code_required": "Please enter a discount code.",
-            "already_applied": "Discount code \"{{code}}\" is already applied to your bag.",
-            "another_applied": "Discount code \"{{code}}\" is already applied. Remove it before applying another.",
-            "not_applicable": "This discount code does not apply to the items in your bag.",
-            "applied": "Discount code {{code}} successfully applied to {{count}} item(s).",
-            "applied_selective": "Discount code {{code}} successfully applied to {{count}} item(s). Previously discounted items retain their special prices.",
-            "no_coupon": "There is no discount code to remove.",
-            "removed": "Discount code \"{{code}}\" successfully removed.",
-            "coupon_label": "Code {{code}}"
-        }
+      "title": "Cart"
+    },
+    "mobile": {
+      "menu": "Menu",
+      "region_language": "Region & language",
+      "country": "Country",
+      "language": "Language"
+    },
+    "sale_badge": "Sale"
+  },
+  "home": {
+    "loading": {
+      "title": "Loading store...",
+      "description": "Preparing the best products for you"
+    },
+    "today": "Today's",
+    "flash_sales": "Flash Sales",
+    "browse_by_category": "Browse by Category",
+    "best_selling_products": "Best Selling Products",
+    "explore_our_products": "Explore our Products",
+    "users_feedback": "Users Feedback",
+    "new_arrivals": "New Arrivals",
+    "featured_build": {
+      "label": "FROM THE BUILD / 002",
+      "title": "IT WORKED ON<br>LOCALHOST.",
+      "subtitle": "Production had other plans.",
+      "description": "The kind of thing that happens while building software and somehow ends up becoming a LujanDev design.",
+      "cta": "EXPLORE DROP 001 →"
+    },
+    "collection_banners": {
+      "title": "SHOP BY CATEGORY"
+    },
+    "manifesto": {
+      "label": "LUJANDEV / BUILT IN PUBLIC",
+      "title": "WE DON'T DESIGN<br>ABOUT CODE.<br><br>WE DESIGN FROM<br>WHAT HAPPENS<br>WHILE BUILDING IT.",
+      "lead": "Real bugs. Real deploys. Real late nights.",
+      "copy": "What happens while building LujanDev ends up becoming part of LujanDev.",
+      "cta": "DISCOVER THE STORY →"
+    },
+    "brand_message": {
+      "title": "THE BUILD<br>CONTINUES.",
+      "copy": "New bugs. New deploys.<br>New stories that might end up<br>as the next design.",
+      "newsletter_label": "BUILD LOGS. NEW DROPS. NO SPAM.",
+      "success": "You're in the build.",
+      "placeholder": "Your email",
+      "cta": "JOIN THE BUILD →"
+    },
+    "service_section": {
+      "support": {
+        "title": "Real support",
+        "description": "We're here."
+      },
+      "shipping": {
+        "title": "Shipping + tracking",
+        "description": "Know where it is."
+      },
+      "payment": {
+        "title": "Secure payment",
+        "description": "No hassle."
+      },
+      "returns": {
+        "title": "Easy returns",
+        "description": "No complications."
+      }
+    },
+    "service_and_quality": {
+      "delivery": {
+        "title": "Fast & Secure Delivery",
+        "description": "Tell about your service."
+      },
+      "warranty": {
+        "title": "Money Back Guarantee",
+        "description": "Within 10 days."
+      },
+      "return": {
+        "title": "24 Hour Return Policy",
+        "description": "No question ask."
+      },
+      "support": {
+        "title": "Pro Quality Support",
+        "description": "24/7 Live support."
+      }
+    },
+    "product_grid": {
+      "meta": "BUILT FROM BUGS,<br>DEPLOYS AND WAY TOO MANY HOURS.",
+      "description": "Designs born from what happens while building and shipping software.",
+      "best_seller": "Best Seller",
+      "available_sizes": "Available sizes:",
+      "out_of_stock": "Out of stock",
+      "select_size": "Select size",
+      "add_to_cart": "Add to cart",
+      "quick_view": "Quick view",
+      "add_to_favorites": "Add to favorites",
+      "add_to_compare": "Add to compare",
+      "view_drop": "EXPLORE DROP 001 →",
+      "explore_category": "Explore",
+      "product_image_alt": "T-Shirt {{product}} — LujanDev Drop 001",
+      "discount_label": "Deal –{{percent}}%!"
     }
+  },
+  "footer": {
+    "explore": {
+      "title": "EXPLORE",
+      "about": "About us",
+      "all_products": "All products"
+    },
+    "help": {
+      "title": "HELP",
+      "shipping": "Shipping",
+      "returns": "Returns",
+      "contact": "Contact"
+    },
+    "localization": {
+      "title": "COUNTRY & LANGUAGE",
+      "country": "Spain",
+      "language": "English"
+    },
+    "social": {
+      "follow_build": "FOLLOW THE BUILD"
+    },
+    "copyright": "All rights reserved",
+    "legal": {
+      "legal_notice": "Legal Notice",
+      "privacy": "Privacy",
+      "cookies": "Cookies",
+      "terms": "Terms"
+    },
+    "legal_titles": {
+      "legal_notice": "Legal Notice",
+      "privacy": "Privacy Policy",
+      "cookies": "Cookie Policy",
+      "terms": "Terms and Conditions of Sale",
+      "odr": "EU Online Dispute Resolution Platform"
+    }
+  },
+  "main": {
+    "language": "Language",
+    "spanish": "Spanish",
+    "english": "English",
+    "input_placeholder": "Introduce text here",
+    "introduced_text": "Introduced text is: {{ text }}"
+  },
+  "product_detail": {
+    "loading": "Loading product...",
+    "colors": "Colors",
+    "color_selected": "Color selected",
+    "select_color": "Select color",
+    "error_select_color": "Select a color",
+    "sizes": "Sizes",
+    "size_selected": "Size selected",
+    "select_size": "Select size",
+    "error_select_size": "Select a size",
+    "size_guide": "Size guide",
+    "add_to_cart": "Add to cart",
+    "add_to_favorites": "Add to favorites",
+    "print_on_demand": "Print on Demand: Product made on demand especially for you",
+    "production_title": "Made for you",
+    "production_description": "Your product is made to order.",
+    "delivery_title": "Free shipping",
+    "delivery_estimate": "Estimated delivery:",
+    "article_number": "Item No.",
+    "quantity": "Quantity",
+    "select": "Select",
+    "add": "Add",
+    "tabs": {
+      "description": "Description",
+      "shipping_returns": "Shipping & Returns",
+      "reviews": "Reviews",
+      "composition": "Composition, origin and care"
+    },
+    "details": {
+      "color": "Color"
+    },
+    "shipping": {
+      "title": "Shipping",
+      "home_delivery": "Home delivery: 3 to 7 business days",
+      "free_shipping": "Shipping included in the product price",
+      "tracking_included": "Tracking included on all shipments",
+      "pod_notice": "Print on Demand: Your products are made on demand especially for you. Production and shipping times may vary slightly.",
+      "free_delivery": "FREE delivery on",
+      "for": "to",
+      "all_spain": "across Spain",
+      "not_available": "Shipping not available",
+      "not_available_address": "for the selected address."
+    },
+    "returns": {
+      "title": "Returns and Refunds",
+      "pod_products": "Print on Demand Products",
+      "pod_warning": "Our products are made especially for you when you place your order, so we do not accept returns for change of mind, incorrect size or personal preferences.",
+      "accepted_claims": "Accepted claims (30-day period):",
+      "defective_product": "Defective product: Damaged, broken or stained print",
+      "shipping_damage": "Shipping damage: Product damaged during transport",
+      "wrong_product": "Wrong product: Incorrect model, color or size",
+      "lost_order": "Lost order: Not received by carrier",
+      "not_accepted": "NO claims accepted for:",
+      "change_mind": "Change of mind about design or product",
+      "wrong_size_choice": "Size chosen incorrectly by customer",
+      "not_expected": "\"Not what I expected\" (correct design but not liked)",
+      "personal_preferences": "Personal or aesthetic preferences",
+      "how_to_claim": "How to manage a claim?",
+      "claim_instructions": "If your order has any of the accepted issues, contact us within 30 days of receipt providing:",
+      "order_number": "Order number",
+      "photos": "Clear photos of the problem",
+      "description": "Detailed description of the defect or error",
+      "resolution": "If the error is confirmed, we will proceed with product reprint or refund, as appropriate."
+    },
+    "reviews": {
+      "title": "Reviews",
+      "avg_rating": "Average rating",
+      "ratings": "Ratings",
+      "no_reviews": "This product has no reviews yet. Be the first to share your opinion!",
+      "customer_reviews": "Customer reviews",
+      "write_review": "Write a review",
+      "email_notice": "Your email address will not be published. Required fields are marked with *",
+      "name": "Name",
+      "email": "Email",
+      "review_title": "Review title",
+      "rating": "Rating",
+      "review_body": "Review body",
+      "characters_remaining": "(1500) characters remaining",
+      "submit_review": "Submit review"
+    },
+    "errors": {
+      "please_select_color": "Please select a color",
+      "please_select_size": "Please select a size"
+    },
+    "related_products": {
+      "title": "More in this style",
+      "subtitle": "Products that match your setup and dev style.",
+      "new_collection": "New collection"
+    },
+    "interest_products": {
+      "title": "Recommended for devs",
+      "subtitle": "Products that fit your passion for code and tech culture.",
+      "new_collection": "New collection"
+    }
+  },
+  "checkout": {
+    "layout": {
+      "back_to_cart": "Back to cart",
+      "secure": "Secure checkout"
+    },
+    "resumen": {
+      "delivery": {
+        "title": "Shipping type",
+        "home": "Home delivery",
+        "free": "FREE",
+        "store": "Store",
+        "pickup_point": "Pickup point",
+        "label": "Delivery:"
+      },
+      "modules": {
+        "digital": {
+          "title": "Instant digital delivery",
+          "description": "You don't need to provide a shipping address. We'll send the download link to your email."
+        },
+        "service": {
+          "title": "Custom service",
+          "description": "You don't need to provide a shipping address. We'll send you scheduling instructions by email."
+        },
+        "integration": {
+          "title": "Integration access",
+          "description": "You don't need to provide a shipping address. We'll send you credentials by email."
+        }
+      },
+      "contact": {
+        "title": "Contact information",
+        "description": "We'll send the information to this email",
+        "email_label": "Email",
+        "email_placeholder": "your@email.com",
+        "email_required_error": "Email is required",
+        "email_invalid_error": "Enter a valid email",
+        "name_label": "Full name",
+        "optional": "(optional)",
+        "name_placeholder": "Your name",
+        "name_hint": "Helps us personalize the communication",
+        "continue_button": "Continue to payment"
+      },
+      "authenticated_email": {
+        "title": "Delivery email confirmed",
+        "description": "We'll send the information to:",
+        "continue_button": "Continue to payment"
+      },
+      "address_form": {
+        "cancel_button": "Cancel",
+        "edit_title": "Edit address",
+        "title": "Shipping details",
+        "name_label": "First name",
+        "name_placeholder": "First name",
+        "surname_label": "Last name",
+        "surname_placeholder": "Last name",
+        "email_label": "E-Mail",
+        "email_placeholder": "E-mail",
+        "country_label": "Country",
+        "country_placeholder": "Country",
+        "eu_group": "🇪🇺 European Union",
+        "street_label": "Street",
+        "street_placeholder": "Street (e.g. Gran Vía Street)",
+        "number_label": "Number",
+        "number_placeholder": "Number (e.g. 123)",
+        "number_required_error": "You must include the street number for shipping",
+        "apartment_label": "Apartment/Floor",
+        "apartment_placeholder": "Apartment/Floor (optional, e.g. 3rd floor)",
+        "apartment_hint": "Optional: floor, door, staircase, etc.",
+        "field_required_error": "Complete this field to continue",
+        "phone_label": "Mobile",
+        "phone_placeholder": "Mobile",
+        "set_default_label": "Set as default shipping address",
+        "update_button": "Update address",
+        "save_button": "Save address",
+        "validating_button": "Validating...",
+        "error_prefix": "Error:"
+      },
+      "postal_code": {
+        "label": "Postal code",
+        "placeholder": "Postal code (e.g. 28013)",
+        "searching": "Searching...",
+        "valid_message": "Valid postal code",
+        "not_found_warning": "We couldn't auto-complete this postal code. Please enter the town and province manually.",
+        "technical_error_warning": "We couldn't automatically verify the postal code. Please enter the town and province."
+      },
+      "city": {
+        "label": "Town",
+        "select_placeholder": "Select your town",
+        "available_count": "{{count}} towns available for this postal code",
+        "select_required_error": "Please select a town",
+        "placeholder_auto": "Town (auto-completed from postal code)",
+        "placeholder_manual": "Town",
+        "autocomplete_hint": "Will be auto-completed once you enter the postal code",
+        "manual_required_error": "Enter the town",
+        "enter_zip_first_error": "Enter the postal code first"
+      },
+      "province": {
+        "label": "Province/State",
+        "placeholder_auto": "Province (auto-completed from postal code)",
+        "placeholder_manual": "Province",
+        "autocomplete_hint": "Will be auto-completed once you enter the postal code",
+        "manual_required_error": "Enter the province",
+        "enter_zip_first_error": "Enter the postal code first"
+      },
+      "address_list": {
+        "title": "Shipping details",
+        "new_address_button": "New address",
+        "change_button": "Change",
+        "loading": "Loading...",
+        "loading_description": "Loading addresses...",
+        "default_badge": "Default address",
+        "edit_button": "Edit",
+        "phone_with_prefix": "Phone +34 {{phone}}"
+      },
+      "address_drawer": {
+        "title": "Shipping address",
+        "empty_title": "Oops! Your cart is empty",
+        "empty_description": "Start filling it with things you'll love.",
+        "confirm_button": "Confirm address",
+        "continue_payment_button": "Continue to payment",
+        "add_another_button": "Add another address"
+      },
+      "cart_summary": {
+        "title": "Price Summary",
+        "subtotal": "Subtotal",
+        "discount": "Discount",
+        "shipping": "Shipping",
+        "free": "Free",
+        "total": "Total",
+        "taxes_included": "Taxes included"
+      },
+      "continue_payment_button": "Continue to payment",
+      "privacy_policy_text": "By continuing, you confirm that you have read the",
+      "privacy_policy_link": "Privacy policy",
+      "empty_cart": {
+        "title": "Your cart is empty",
+        "description": "Get inspired by the latest trends and discover something new to refresh your wardrobe",
+        "discover_button": "Discover new arrivals"
+      },
+      "items_list": {
+        "title": "Items",
+        "sku_label": "Item No.",
+        "color_label": "Color",
+        "size_label": "Size",
+        "quantity_label": "Quantity",
+        "total_label": "Total"
+      },
+      "messages": {
+        "country_not_allowed": "Sorry, we don't ship to {{country}}. We only ship to European Union countries.",
+        "shipping_error_generic": "We couldn't calculate shipping for this address. Please check that all the details are correct.",
+        "shipping_error_default": "We couldn't calculate shipping for this address.",
+        "shipping_error_invalid_zip": "The postal code is not valid for this country.",
+        "shipping_error_invalid_address": "The address is not valid. Please check that all the details are correct.",
+        "select_address_required": "Please select a shipping address before continuing.",
+        "spain_only_shipping": "We currently only ship to Spain.",
+        "shipping_calc_failed": "We couldn't calculate shipping for the selected address. Please check that the address is correct or select another one.",
+        "empty_cart_error": "Your cart is empty. Add products before continuing.",
+        "fill_required_fields": "Please fill in the required shipping address fields",
+        "validating_postal": "Validating postal code and town...",
+        "validating_printful": "Validating address with Printful...",
+        "address_valid_saving": "Address valid, saving...",
+        "address_valid_updating": "Address valid, updating...",
+        "printful_validation_error": "Error validating the address with Printful",
+        "printful_validation_error_short": "Error validating the address",
+        "postal_validation_error": "Error validating the postal code and town",
+        "guest_not_identified_save": "Couldn't identify the guest to save the address",
+        "guest_not_identified_save_alert": "Couldn't identify the guest. Reload the page and try again.",
+        "save_error": "Error saving the address",
+        "guest_email_required": "Please enter your email to continue",
+        "guest_email_invalid": "Please enter a valid email",
+        "guest_not_identified_usual": "Couldn't identify the guest to update the default address.",
+        "login_email_required": "Email is required",
+        "login_password_required": "Password is required",
+        "unknown_error": "Unknown error",
+        "update_address_error": "Oops! The address could not be updated"
+      },
+      "order_summary": {
+        "show": "View order summary",
+        "hide": "Hide order summary"
+      }
+    },
+    "payment": {
+      "shipping": {
+        "title": "Shipping address"
+      },
+      "digital_delivery": {
+        "title": "Delivery email",
+        "product_type": "Digital product",
+        "immediate_delivery": "Immediate delivery by email",
+        "default_customer_name": "Customer"
+      },
+      "methods": {
+        "title": "Payment method",
+        "card_label": "Card",
+        "paypal_label": "Paypal",
+        "paypal_info": "After clicking “Complete purchase”, a pop-up window will ask you to log in to your PayPal account. Review the payment and shipping details to complete the purchase. You will then be taken to the order confirmation page of www.tienda.lujandev.com"
+      },
+      "buttons": {
+        "pay_with_card": "Pay with card"
+      },
+      "legal": {
+        "terms_text": "By completing your purchase, you confirm that you have read, understood and agree to the",
+        "terms_link": "Terms of sale",
+        "terms_title": "General Terms of Sale"
+      },
+      "address_modal": {
+        "select_country_placeholder": "Select a country",
+        "address_label": "Address",
+        "state_label": "City",
+        "state_default_option": "Province/State",
+        "default_shipping_text": "Default shipping address",
+        "save_button": "Save changes"
+      },
+      "errors": {
+        "stripe_load_failed": "Stripe could not be loaded",
+        "empty_cart": "The cart is empty",
+        "select_shipping_address": "Please select a shipping address.",
+        "complete_address_fields": "Please complete all required address fields (name, address, email).",
+        "email_required_modules": "Email required for digital modules",
+        "complete_required_address_fields": "Please complete all required address fields.",
+        "cannot_proceed_empty_cart": "Cannot proceed with the order if the cart is empty.",
+        "select_appropriate_shipping": "Please select the corresponding shipping address."
+      },
+      "address": {
+        "update_error": "Error updating the address."
+      }
+    },
+    "steps": {
+      "payment": "Payment",
+      "confirmation": "Confirmation"
+    }
+  },
+  "store_editorial": {
+    "hero": {
+      "eyebrow": "THE DEVELOPER COLLECTION",
+      "titleLine1": "Designed for",
+      "titleLine2": "those who build.",
+      "categoriesLabel": "Explore collections"
+    },
+    "categories": {
+      "tshirts": "T-SHIRTS",
+      "hoodies": "HOODIES",
+      "mugs": "MUGS",
+      "caps": "CAPS",
+      "shop": "SHOP"
+    },
+    "newsletter": {
+      "title": "Get updates, new releases and exclusive collections.",
+      "description": "Discover what's next from LujanDev.",
+      "cta": "SUBSCRIBE",
+      "placeholder": "Enter your email address",
+      "submitting": "SUBSCRIBING...",
+      "success": "You're now part of LujanDev!",
+      "successDescription": "You'll receive our updates, new releases and exclusive collections.",
+      "errorRequired": "Enter your email address.",
+      "errorInvalid": "Enter a valid email address.",
+      "errorGeneric": "We could not complete your subscription. Please try again.",
+      "errorRateLimit": "Too many attempts. Please wait a moment and try again.",
+      "privacyText": "Read our",
+      "privacyLink": "privacy policy"
+    }
+  },
+  "cart": {
+    "title": "Shopping bag",
+    "loading": "Loading your bag...",
+    "count_one": "{{count}} item in your bag",
+    "count_many": "{{count}} items in your bag",
+    "sku": "Item No.",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "remove": "Remove",
+    "close": "Close",
+    "free_shipping": "Free shipping",
+    "shipping_description": "Your order includes free shipping.",
+    "summary": "Order summary",
+    "checkout": "Checkout",
+    "coupon": {
+      "title": "Have a discount code?",
+      "applied": "Discount code applied",
+      "remove": "Remove",
+      "remove_title": "Remove discount code",
+      "placeholder": "Discount code",
+      "apply": "Apply",
+      "apply_title": "Apply discount code",
+      "login_required": "Sign in to use discount codes",
+      "guest_notice": "Discount codes are only available to registered users.",
+      "login": "Sign in",
+      "or": "or",
+      "register": "register",
+      "guest_suffix": "to use discount codes.",
+      "hint": "Enter your discount code to save on your order.",
+      "eligible": "The discount code only applies to items without existing discounts.",
+      "eligible_count": "The discount code only applies to items without existing discounts ({{eligible}} of {{total}} items).",
+      "replace": "Remove the current discount code before applying another.",
+      "all_discounted": "All items in your bag already have discounts."
+    },
+    "recommendations": {
+      "title": "Complete your order",
+      "description": "More products that match your style.",
+      "previous": "Previous products",
+      "next": "Next products",
+      "scroll": "Scroll recommendations"
+    },
+    "empty": {
+      "title": "Your bag is empty",
+      "description": "Discover products made for those who live between code, ideas and coffee.",
+      "explore": "Explore the collection",
+      "home": "Back to home"
+    },
+    "help": {
+      "prefix": "Need help? Contact our",
+      "link": "customer service team"
+    },
+    "nav": {
+      "shop": "Shop",
+      "account": "Account",
+      "home": "Home",
+      "favorites": "Favorites",
+      "cart": "Bag"
+    },
+    "messages": {
+      "minimum": "You must have at least one item in your bag.",
+      "code_required": "Please enter a discount code.",
+      "already_applied": "Discount code \"{{code}}\" is already applied to your bag.",
+      "another_applied": "Discount code \"{{code}}\" is already applied. Remove it before applying another.",
+      "not_applicable": "This discount code does not apply to the items in your bag.",
+      "applied": "Discount code {{code}} successfully applied to {{count}} item(s).",
+      "applied_selective": "Discount code {{code}} successfully applied to {{count}} item(s). Previously discounted items retain their special prices.",
+      "no_coupon": "There is no discount code to remove.",
+      "removed": "Discount code \"{{code}}\" successfully removed.",
+      "coupon_label": "Code {{code}}"
+    }
+  }
 }

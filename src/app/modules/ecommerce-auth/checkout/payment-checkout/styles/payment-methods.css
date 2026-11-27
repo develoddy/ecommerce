@@ -1,0 +1,32 @@
+.ld-payment .ld-payment-methods h3 {
+    font-size: 18px !important;
+    letter-spacing: 0 !important;
+    border-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.ld-payment .ld-payment-methods .accordion-item {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 20px 16px !important;
+}
+
+.ld-payment .ld-payment-methods .accordion-item:has(input:checked) {
+    border-color: #111 !important;
+}
+
+.ld-payment .ld-payment-methods .card-header {
+    padding: 0;
+    background: transparent;
+    border: 0;
+}
+
+.ld-payment .ld-payment-methods input[type="radio"] {
+    accent-color: #111;
+}
+
+.ld-payment .ld-payment-methods input[type="radio"]:checked + label,
+.ld-payment .ld-payment-methods input[type="radio"]:checked + span {
+    color: #111;
+    font-weight: 500;
+}

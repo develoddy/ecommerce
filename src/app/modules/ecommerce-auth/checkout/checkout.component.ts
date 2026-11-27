@@ -22,9 +22,25 @@ declare function alertSuccess([]):any;
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.css']
+  styleUrls: [
+    './checkout.component.css',
+    './styles/checkout-layout.css',
+    './styles/checkout-stepper.css',
+    './styles/checkout-header.css',
+    './styles/checkout-footer.css',
+    './styles/checkout-responsive.css'
+  ]
 })
 export class CheckoutComponent implements OnInit, AfterViewInit {
+
+  get isPhysicalCheckout(): boolean {
+    try {
+      return !sessionStorage.getItem('modulePurchase');
+    } catch {
+      return false;
+    }
+  }
+
 
   @ViewChild('paypal',{static: true}) paypalElement?: ElementRef;
   euro = "€";
@@ -701,6 +717,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
    * Permite navegar entre pasos del checkout
    */
   navigateToStep(step: string): void {
+    if (this.isPhysicalCheckout && this.currentStep === 'successfull') {
+      return;
+    }
+
     if (step === 'resumen' && this.currentStep !== 'resumen') {
       this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { 
         queryParams: { initialized: true, from: 'stepper' }

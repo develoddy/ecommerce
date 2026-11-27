@@ -1,0 +1,39 @@
+.ld-confirmation .final-actions {
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 24px 0 !important;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ld-confirmation .final-actions h4,
+.ld-confirmation .final-actions > .text-center {
+  display: none;
+}
+
+.ld-confirmation .final-actions .btn-dark-ld {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid #171717 !important;
+  border-radius: 0 !important;
+  background: #171717 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.ld-confirmation .final-actions .btn-dark-ld span {
+  font-size: 13px !important;
+  text-transform: uppercase;
+}
+
+.ld-confirmation .final-actions a[href^="mailto:"] .btn-dark-ld {
+  background: #fff !important;
+  color: #171717 !important;
+}
+
+.ld-confirmation .final-actions .btn-dark-ld:focus-visible {
+  outline: 2px solid #171717;
+  outline-offset: 3px;
+}

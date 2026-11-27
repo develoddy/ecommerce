@@ -22,7 +22,16 @@ declare function alertSuccess([]):any;
 @Component({
   selector: 'app-resumen-checkout',
   templateUrl: './resumen-checkout.component.html',
-  styleUrls: ['./resumen-checkout.component.css']
+  styleUrls: [
+    './resumen-checkout.component.css',
+    './styles/shipping-method.css',
+    './styles/shipping-form.css',
+    './styles/shipping-addresses.css',
+    './styles/shipping-empty.css',
+    './styles/shipping-responsive.css',
+    './styles/order-summary.css',
+    './styles/order-summary-responsive.css'
+  ]
 })
 
 export class ResumenCheckoutComponent implements OnInit {
@@ -51,17 +60,18 @@ export class ResumenCheckoutComponent implements OnInit {
   address_client_selected:any = null;
   listCarts:any = [];
   totalCarts:any=null;
+  orderSummaryExpanded = false;
   show = false;
   // 🆕 Compra de módulo
   isModulePurchase: boolean = false;
   modulePurchaseData: any = null;
   moduleType: string | null = null; // 'digital', 'service', 'physical', 'integration'
   moduleData: any = null; // Información completa del módulo
-  
+
   // 🆕 Variables para formulario de contacto (invitados que compran módulos)
   guestEmail: string = '';
   guestName: string = '';
-  
+
   // Estado del formulario de dirección
   showAddressForm = false;
   isEditMode = false;
@@ -93,8 +103,8 @@ export class ResumenCheckoutComponent implements OnInit {
   isMobile: boolean = false;
   isTablet: boolean = false;
   isDesktop: boolean = false;
-  width: number = 100; 
-  height: number = 100; 
+  width: number = 100;
+  height: number = 100;
   shippingRate: number = 0;
   fechaEntregaMin: string = '';
   fechaEntregaMax: string = '';
@@ -111,7 +121,7 @@ export class ResumenCheckoutComponent implements OnInit {
     pais: 'España',
     zipcode: '28013'
   };
-  
+
   usandoFallback: boolean = false;
 
   // 🎯 Propiedades de validación de código postal (tipo Mango.es)
@@ -143,8 +153,8 @@ export class ResumenCheckoutComponent implements OnInit {
     private translate: TranslateService
   ) {
     this.routerActived.paramMap.subscribe(params => {
-      this.locale = params.get('locale') || 'es';  
-      this.country = params.get('country') || 'es'; 
+      this.locale = params.get('locale') || 'es';
+      this.country = params.get('country') || 'es';
     });
   }
 
@@ -248,14 +258,14 @@ export class ResumenCheckoutComponent implements OnInit {
       this.isModulePurchase = true;
       this.modulePurchaseData = JSON.parse(modulePurchaseStr);
       console.log('[Checkout] Detected MODULE purchase:', this.modulePurchaseData);
-      
+
       // 🔥 Cargar información completa del módulo desde backend
       this.loadModuleData(this.modulePurchaseData.moduleId);
-      
+
       // 🔥 Asegurar que el precio es número
       const modulePrice = parseFloat(this.modulePurchaseData.modulePrice) || 0;
       console.log('[Checkout] Module price parsed:', modulePrice, 'Original:', this.modulePurchaseData.modulePrice);
-      
+
       // Simular cart item para el módulo (para compatibilidad con UI)
       this.listCarts = [{
         id: null,
@@ -275,22 +285,22 @@ export class ResumenCheckoutComponent implements OnInit {
         isModule: true, // Flag para identificar que es módulo
         moduleKey: this.modulePurchaseData.moduleKey
       }];
-      
+
       this.totalCarts = modulePrice; // 🔥 Asegurar que totalCarts también es número
-      
+
       console.log('[Checkout] Simulated cart for module:', this.listCarts[0]);
       console.log('[Checkout] Total carts:', this.totalCarts);
     }
-    
+
     this.verifyAuthenticatedUser();
-    
+
     // Solo cargar cart normal si NO es módulo
     if (!this.isModulePurchase) {
       this.currentDataCart();
     }
-    
+
     this.checkDeviceType();
-    
+
     // 🎯 UX IMPROVEMENT: Preseleccionar país basado en la URL del usuario
     this.preselectCountryFromUrl();
     setTimeout(() => {
@@ -324,7 +334,7 @@ export class ResumenCheckoutComponent implements OnInit {
       }
     );
   }
-  
+
   /**
    * 🆕 Determinar si el módulo requiere dirección de envío
    * Solo módulos tipo 'physical' requieren envío
@@ -335,7 +345,7 @@ export class ResumenCheckoutComponent implements OnInit {
   }
 
   loadShippingRateWithAddress(address: any, items: {variant_id: number, quantity: number}[], isFallback: boolean = false) {
-    
+
     // Si address es un array, tomamos el primero
     const addressObj = Array.isArray(address) ? address[0] : address;
 
@@ -436,7 +446,7 @@ export class ResumenCheckoutComponent implements OnInit {
       },
       error: (err) => {
         console.error("❌ Error al calcular tarifas de envío", err);
-        
+
         // Mostrar mensaje más específico según el error
         let errorMessage = this.translate.instant('checkout.resumen.messages.shipping_error_default');
         if (err.error?.error?.message) {
@@ -447,7 +457,7 @@ export class ResumenCheckoutComponent implements OnInit {
             errorMessage = this.translate.instant('checkout.resumen.messages.shipping_error_invalid_address');
           }
         }
-        
+
         alertDanger(errorMessage);
         this.shippingRate = 0;
         this.shippingMethod = '';
@@ -547,7 +557,7 @@ export class ResumenCheckoutComponent implements OnInit {
         return;
       }
     }
-    
+
      // 3. Fallback: preferir la primera dirección de España si existe, si no la primera del array
     if (list.length > 0) {
       const fallbackAddress = list.find(addr => this.isSpainAddress(addr)) || list[0];
@@ -567,7 +577,7 @@ export class ResumenCheckoutComponent implements OnInit {
     }));
 
     // si ya tienes la dirección cargada
-    if ( selectedAddress ) { 
+    if ( selectedAddress ) {
       // Llamar a loadShippingRateWithAddress con dirección y los items
       this.loadShippingRateWithAddress(selectedAddress, items);
     }
@@ -578,9 +588,9 @@ export class ResumenCheckoutComponent implements OnInit {
       this._cartService.currenteDataCart$.subscribe((resp:any) => {
         this.listCarts = resp;
         //console.log("Get list Carts resumen: ", this.listCarts);
-        
+
         this.totalCarts = this.listCarts.reduce((sum: number, item: any) => {
-          // Usar el precio final procesado con descuentos si existe, si no calcular 
+          // Usar el precio final procesado con descuentos si existe, si no calcular
           const finalPrice = item.finalUnitPrice || this.getFinalUnitPrice(item);
           return sum + (finalPrice * item.cantidad);
         }, 0);
@@ -597,7 +607,7 @@ getVarietyImage(cart: any): string {
     if (!cart.product?.imagen) {
       return 'assets/images/logo.38890900945d.png'; // Usar logo como placeholder
     }
-    
+
     if (!cart.variedad?.files) return cart.product.imagen;
 
     // Buscamos primero la imagen tipo 'preview'
@@ -612,12 +622,12 @@ getVarietyImage(cart: any): string {
     return cart.product.imagen;
   }
 
-  
+
   navigateToHome() {
     this.subscriptionService.setShowSubscriptionSection(true);
     this._router.navigate(['/', this.country, this.locale, 'shop', 'home']);
   }
-  
+
   /**
    * 🇪🇸 TEMPORAL: normaliza el país de una dirección y confirma si corresponde a España.
    * Acepta 'ES' / 'es' / 'España' / 'españa'. Válido mientras el mercado comercial sea España-only.
@@ -664,11 +674,11 @@ getVarietyImage(cart: any): string {
     if (typeof price === 'string') {
       price = parseFloat(price); // Convertir a número
     }
-  
+
     if (isNaN(price)) {
       return { integerPart: "0", decimalPart: "00" }; // Manejo de error si el valor no es válido
     }
-    
+
     const formatted = price.toFixed(2).split('.'); // Asegura siempre dos decimales
     return {
       integerPart: formatted[0], // Parte entera
@@ -730,7 +740,7 @@ getVarietyImage(cart: any): string {
 
   /**apllyCupon() {
     let data = {
-      code: this.code_cupon, 
+      code: this.code_cupon,
       user_id: this.CURRENT_USER_AUTHENTICATED._id
     }
 
@@ -791,13 +801,13 @@ getVarietyImage(cart: any): string {
       phone: this.phone
     };
 
-    
+
     const proceedToPrintful = () => {
       this.validationMessage = this.translate.instant('checkout.resumen.messages.validating_printful');
       this.addressValidationService.validateWithPrintful(addressData).subscribe({
         next: (validation) => {
           this.isValidating = false;
-          
+
           if (!validation.isValid) {
             // ❌ Dirección no válida según Printful
             this.status = false;
@@ -847,7 +857,7 @@ getVarietyImage(cart: any): string {
             alertDanger(localValidation.message);
             return;
           }
-          
+
           // ✅ Validación local correcta, ahora validar con Printful
           proceedToPrintful();
         },
@@ -874,7 +884,7 @@ getVarietyImage(cart: any): string {
       ...addressData,
       usual_shipping_address: this.usual_shipping_address
     };
-    
+
     // Seleccionar petición según tipo de usuario
     let request$;
     if (this.CURRENT_USER_AUTHENTICATED) {
@@ -905,12 +915,12 @@ getVarietyImage(cart: any): string {
         this.hideMessageAfterDelay();
         alertSuccess(resp.message);
         this.resetForm();
-        
+
         // Cerrar formulario y volver a mostrar lista
         this.showAddressForm = false;
         this.isEditMode = false;
         this.editingAddressId = null;
-        
+
         // Recargar direcciones para mostrar la lista actualizada
         this.loadAddresses();
       } else {
@@ -945,7 +955,7 @@ getVarietyImage(cart: any): string {
     this.email = '';
     this.phone = '';
     this.usual_shipping_address = false;
-    
+
     // Limpiar estados de edición
     this.address_client_selected = null;
     this.availableCities = [];
@@ -967,7 +977,7 @@ getVarietyImage(cart: any): string {
     this.isEditMode = false;
     this.editingAddressId = null;
     this.resetForm();
-    
+
     // Scroll al formulario
     setTimeout(() => {
       const formElement = document.querySelector('#addressFormContainer');
@@ -999,13 +1009,13 @@ getVarietyImage(cart: any): string {
    */
   loadAddressDataToForm(address: any) {
     console.log("address: ", address);
-    
+
     this.address_client_selected = address;
      console.log("address_client_selected: ", this.address_client_selected);
     this.name = address.name;
     this.surname = address.surname;
     this.pais = address.pais;
-    
+
     // Manejar campos separados o dirección completa
     if (address.calle) {
       this.calle = address.calle;
@@ -1015,11 +1025,11 @@ getVarietyImage(cart: any): string {
       // Backward compatibility: extraer de address completa
       const fullAddress = address.address || '';
       const parts = fullAddress.split(',').map((p: string) => p.trim());
-      
+
       if (parts.length > 0) {
         const calleYNumero = parts[0];
         const match = calleYNumero.match(/^(.+?)\s+(\d+[A-Za-z]?)\s*$/);
-        
+
         if (match) {
           this.calle = match[1].trim();
           this.numero = match[2].trim();
@@ -1027,11 +1037,11 @@ getVarietyImage(cart: any): string {
           this.calle = calleYNumero;
           this.numero = '';
         }
-        
+
         this.apartamento = parts.length > 1 ? parts[1] : '';
       }
     }
-    
+
     this.ciudad = address.ciudad;
     this.phone = address.telefono || address.phone;
     this.email = address.email;
@@ -1046,7 +1056,7 @@ getVarietyImage(cart: any): string {
     this.name = this.address_client_selected.name;
     this.surname = this.address_client_selected.surname;
     this.pais = this.address_client_selected.pais;
-    
+
     // Si la dirección tiene campos separados, usarlos
     if (this.address_client_selected.calle) {
       this.calle = this.address_client_selected.calle;
@@ -1055,16 +1065,16 @@ getVarietyImage(cart: any): string {
     } else {
       // Si solo tiene address, intentar extraer calle, número y apartamento (backward compatibility)
       const fullAddress = this.address_client_selected.address || '';
-      
+
       // Intentar separar por coma (formato: "Calle 123, 3º B")
       const parts = fullAddress.split(',').map((p: string) => p.trim());
-      
+
       if (parts.length > 0) {
         // Primera parte es calle + número
         const calleYNumero = parts[0];
         // Buscar el último número en la primera parte
         const match = calleYNumero.match(/^(.+?)\s+(\d+[A-Za-z]?)\s*$/);
-        
+
         if (match) {
           this.calle = match[1].trim();
           this.numero = match[2].trim();
@@ -1073,7 +1083,7 @@ getVarietyImage(cart: any): string {
           this.calle = calleYNumero;
           this.numero = '';
         }
-        
+
         // Segunda parte es apartamento (si existe)
         this.apartamento = parts.length > 1 ? parts[1] : '';
       } else {
@@ -1082,7 +1092,7 @@ getVarietyImage(cart: any): string {
         this.apartamento = '';
       }
     }
-    
+
     this.ciudad = this.address_client_selected.ciudad;
     this.phone = this.address_client_selected.telefono || this.address_client_selected.phone;
     this.email = this.address_client_selected.email;
@@ -1093,7 +1103,7 @@ getVarietyImage(cart: any): string {
 
   onAddressChange(selectedId: string) {
     const selectedAddress = this.listAddresses.find(address => address.id == selectedId);
-  
+
     if (selectedAddress) {
       this.selectedAddressId = selectedAddress.id;
       this.addressClienteSelected(selectedAddress);
@@ -1101,7 +1111,7 @@ getVarietyImage(cart: any): string {
       console.error('ID de dirección no encontrado:', selectedId);
     }
   }
-  
+
   get listAddresses(): any[] {
     return this.CURRENT_USER_AUTHENTICATED ? this.listAddressClients : this.listAddressGuest;
   }
@@ -1113,7 +1123,7 @@ getVarietyImage(cart: any): string {
       console.log('🔍 [ResumenCheckout] isModulePurchase:', this.isModulePurchase);
       console.log('🔍 [ResumenCheckout] moduleType:', this.moduleType);
       console.log('🔍 [ResumenCheckout] CURRENT_USER_AUTHENTICATED:', !!this.CURRENT_USER_AUTHENTICATED);
-      
+
       // Usuario autenticado: siempre tiene email
       if (this.CURRENT_USER_AUTHENTICATED) {
         this.email = this.CURRENT_USER_AUTHENTICATED.email;
@@ -1122,17 +1132,17 @@ getVarietyImage(cart: any): string {
         this.navigateToPayment();
         return;
       }
-      
+
       // Usuario invitado: validar que ingresó email
       console.log('🔍 [ResumenCheckout] Usuario invitado - guestEmail:', this.guestEmail);
       console.log('🔍 [ResumenCheckout] Usuario invitado - guestName:', this.guestName);
-      
+
       if (!this.guestEmail || !this.guestEmail.trim()) {
         console.error('❌ [ResumenCheckout] Email vacío');
         alertWarning(this.translate.instant('checkout.resumen.messages.guest_email_required'));
         return;
       }
-      
+
       // Validar formato de email
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(this.guestEmail)) {
@@ -1140,13 +1150,13 @@ getVarietyImage(cart: any): string {
         alertWarning(this.translate.instant('checkout.resumen.messages.guest_email_invalid'));
         return;
       }
-      
+
       console.log('✅ [ResumenCheckout] Email válido capturado:', this.guestEmail);
-      
+
       // Guardar email en sessionStorage para PaymentCheckout
       sessionStorage.setItem('moduleGuestEmail', this.guestEmail);
       console.log('✅ [ResumenCheckout] Guardado moduleGuestEmail en sessionStorage');
-      
+
       if (this.guestName) {
         sessionStorage.setItem('moduleGuestName', this.guestName);
         console.log('✅ [ResumenCheckout] Guardado moduleGuestName:', this.guestName);
@@ -1154,13 +1164,13 @@ getVarietyImage(cart: any): string {
         sessionStorage.setItem('moduleGuestName', 'Cliente');
         console.log('✅ [ResumenCheckout] Guardado moduleGuestName: Cliente (default)');
       }
-      
+
       // Navegar al paso de pago
       console.log('🚀 [ResumenCheckout] Navegando a payment-checkout...');
       this.navigateToPayment();
       return;
     }
-    
+
     // 🔹 Flujo normal para productos físicos (Printful o módulos physical)
     if (!this.selectedAddressId) {
       console.warn('No hay dirección seleccionada');
@@ -1219,14 +1229,14 @@ getVarietyImage(cart: any): string {
 
     this.closeMiniAdress();
   }
-  
+
   /**
    * 🆕 Navegar al paso de pago
    * Usado tanto para módulos sin envío como para productos con dirección confirmada
    */
   navigateToPayment() {
     this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'payment'], {
-      queryParams: { 
+      queryParams: {
         initialized: 'true',
         from: 'step2'
       }
@@ -1254,8 +1264,8 @@ getVarietyImage(cart: any): string {
       });
     } else if (this.CURRENT_USER_GUEST) {
       this.dynamicRouter.navigateWithLocale(['account', 'checkout', 'delivery'], {
-        queryParams: { 
-          returnUrl: this.dynamicRouter.createUrlWithLocale(['account', 'checkout', 'resumen']) + '?initialized=true&from=step2' 
+        queryParams: {
+          returnUrl: this.dynamicRouter.createUrlWithLocale(['account', 'checkout', 'resumen']) + '?initialized=true&from=step2'
         }
       });
     }
@@ -1272,19 +1282,19 @@ getVarietyImage(cart: any): string {
     // Abrir sidebar con la lista de direcciones
     this.minicartService.openMiniAddress();
   }
-  
+
   editAddressFromSidebar(address: any) {
     // 1. Cerrar sidebar
     this.minicartService.closeMiniAddress();
-    
+
     // 2. Activar modo edición
     this.isEditMode = true;
     this.showAddressForm = true;
     this.editingAddressId = address.id;
-    
+
     // 3. Cargar datos de la dirección en el formulario principal
     this.loadAddressDataToForm(address);
-    
+
     // 4. Scroll al formulario para mejor UX
     setTimeout(() => {
       const formElement = document.querySelector('#addressFormContainer');
@@ -1293,12 +1303,12 @@ getVarietyImage(cart: any): string {
       }
     }, 100);
   }
-  
+
   removeAddressSelected(list_address:any) {
-    this._authEcommerce.deleteAddressClient(list_address.id).subscribe((resp:any) => {      
+    this._authEcommerce.deleteAddressClient(list_address.id).subscribe((resp:any) => {
       let INDEX = this.listAddressClients.findIndex((item:any) => item.id == list_address.id);
       // Verifica si se encontró el elemento
-      if (INDEX !== -1) { 
+      if (INDEX !== -1) {
         this.listAddressClients.splice(INDEX, 1); // Elimina 1 elemento a partir del índice INDEX
       }
       alertSuccess(resp.message);
@@ -1339,7 +1349,7 @@ getVarietyImage(cart: any): string {
   /* --------------- EMPIEZA EL CICLO DE ACTUALIZACION DE DIRECCIONES TANTO PARA USUARIOS REGISTRADOS O USUARIO INVITADO -------------- */
   /**
    * Actualiza la dirección del usuario en el sistema.
-   * Este método se encarga de gestionar la actualización de direcciones 
+   * Este método se encarga de gestionar la actualización de direcciones
    * tanto para usuarios registrados como para usuarios invitados.
    *
    * - Llama al servicio correspondiente (`updateAddressClient` o `updateAddressGuest`).
@@ -1386,13 +1396,13 @@ getVarietyImage(cart: any): string {
 
     // 🔍 PASO 1: VALIDAR CON BACKEND API (validación local con base de datos postal_codes)
     console.log('🔍 [ResumenCheckout-Update] Paso 1: Validando código postal con backend API...');
-    
+
     const proceedToPrintful = () => {
       this.validationMessage = this.translate.instant('checkout.resumen.messages.validating_printful');
       this.addressValidationService.validateWithPrintful(addressData).subscribe({
         next: (validation) => {
           this.isValidating = false;
-          
+
           if (!validation.isValid) {
             // ❌ Dirección no válida según Printful
             this.status = false;
@@ -1442,7 +1452,7 @@ getVarietyImage(cart: any): string {
             alertDanger(localValidation.message);
             return;
           }
-          
+
           // ✅ Validación local correcta, ahora validar con Printful
           console.log('✅ [ResumenCheckout-Update] Validación backend OK, validando con Printful...');
           proceedToPrintful();
@@ -1466,7 +1476,7 @@ getVarietyImage(cart: any): string {
     const addressId = this.editingAddressId || this.address_client_selected?.id;
     const guestId = this.getCurrentGuestId();
     const guestSessionId = this.CURRENT_USER_GUEST?.session_id || null;
-    
+
     let data = {
       _id       : addressId,
       user      : this.CURRENT_USER_AUTHENTICATED ? this.CURRENT_USER_AUTHENTICATED._id : guestId,
@@ -1483,18 +1493,18 @@ getVarietyImage(cart: any): string {
       phone     : this.phone,
       usual_shipping_address: this.usual_shipping_address,
     };
-      
+
     // VERIFICAR SI SE ESTÁ MODIFICANDO EN USUARIO REGISTRADO O INVITADO
     this.CURRENT_USER_AUTHENTICATED ? this.updateAddressClient(data) : this.updateAddressGuest(data);
   }
-  
+
   private updateAddressClient(data: any) {
     this._authEcommerce.updateAddressClient(data).subscribe(
       (resp: any) => this.handleAddressUpdateResponse(resp, 'client'),
       (error) => this.handleAddressUpdateError(error)
     );
   }
-  
+
   private updateAddressGuest(data: any) {
     this._authEcommerce.updateAddressGuest(data).subscribe(
       (resp: any) => this.handleAddressUpdateResponse(resp, 'guest'),
@@ -1504,7 +1514,7 @@ getVarietyImage(cart: any): string {
 
   private handleAddressUpdateResponse(resp: any, type: 'client' | 'guest') {
     const { status, address_client, message } = resp;
-    
+
     switch (status) {
       case 200:
         this.updateAddressList(address_client, type);
@@ -1526,20 +1536,20 @@ getVarietyImage(cart: any): string {
   private updateAddressList(addressClient: any, type: 'client' | 'guest'): void {
     const list = type === 'client' ? this.listAddressClients : this.listAddressGuest;
     const index = list.findIndex((item: any) => item.id === this.address_client_selected.id);
-    
+
     if (index !== -1) {
       list[index] = addressClient;
     }
-    
+
     // Recargar direcciones para actualizar selectedAddress y la vista
     this.loadAddresses();
-    
+
     // Si la dirección editada es la actualmente seleccionada, actualizarla
     if (this.selectedAddress && this.selectedAddress.id === addressClient.id) {
       this.selectedAddress = addressClient;
       this.cdr.detectChanges(); // Forzar detección de cambios
     }
-    
+
     this.hideMessageAfterDelay();
     this.resetForm();
   }
@@ -1562,7 +1572,7 @@ getVarietyImage(cart: any): string {
         break;
     }
   }
-  
+
   private closeModal(): void {
     // Cerrar formulario en lugar del modal
     this.showAddressForm = false;
@@ -1595,30 +1605,30 @@ getVarietyImage(cart: any): string {
 
     // Si no hay descuento aplicado, retornar precio original
     if (!cart.type_discount || !cart.discount) {
-      
+
       return originalPrice;
     }
 
     const discountValue = parseFloat(cart.discount);
-    
+
     // Verificar que el descuento sea válido
     if (isNaN(discountValue) || discountValue <= 0) {
       return originalPrice;
     }
 
     let priceAfterDiscount: number;
-    
-    if (cart.type_discount === 1) { 
+
+    if (cart.type_discount === 1) {
       // Descuento porcentual
       if (cart.code_cupon) {
         // CUPONES REALES - aplicar redondeo .95
-        
+
         if (discountValue > 100) return originalPrice;
         priceAfterDiscount = originalPrice * (1 - discountValue / 100);
         priceAfterDiscount = Math.max(0, priceAfterDiscount);
-        
+
         const finalWithRounding = this.priceCalculationService.formatPrice(priceAfterDiscount);
-        
+
         return finalWithRounding;
       } else if (cart.code_discount && !cart.code_cupon) {
         // FLASH SALE con descuento porcentual - usar el descuento como porcentaje
@@ -1657,10 +1667,10 @@ getVarietyImage(cart: any): string {
     if (!cart.type_discount || !cart.discount) {
       return false;
     }
-    
+
     const originalPrice = parseFloat(cart.variedad?.retail_price || cart.price_unitario || 0);
     const finalPrice = this.getFinalUnitPrice(cart);
-    
+
     // Verificar si el precio final es menor al original (hay descuento real)
     return finalPrice < originalPrice && finalPrice > 0;
   }
@@ -1765,19 +1775,19 @@ getVarietyImage(cart: any): string {
    */
   private preselectCountryFromUrl(): void {
     const currentCountry = this.localizationService.country.toUpperCase();
-    
+
     // Mapear códigos de país de URL a códigos de formulario
     const countryMapping: {[key: string]: string} = {
       'ES': 'ES', // España
-      'FR': 'FR', // Francia  
+      'FR': 'FR', // Francia
       'IT': 'IT', // Italia
       'DE': 'DE'  // Alemania
     };
-    
+
     // Si el país actual está en nuestros países soportados, preseleccionarlo
     if (countryMapping[currentCountry]) {
       this.pais = countryMapping[currentCountry];
-      
+
       console.log(`🎯 UX (Checkout): Preseleccionando país ${this.pais} basado en URL /${this.localizationService.country}/${this.localizationService.locale}/`);
     }
   }
@@ -1785,5 +1795,5 @@ getVarietyImage(cart: any): string {
   @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
       this.checkDeviceType(); // Verifica el tamaño de la pantalla
-  } 
+  }
 }

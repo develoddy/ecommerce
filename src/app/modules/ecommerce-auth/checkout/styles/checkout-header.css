@@ -1,0 +1,53 @@
+/* Checkout - Header */
+
+.ld-checkout-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.ld-checkout-header-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    min-height: 76px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 16px;
+}
+
+.ld-checkout-back button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: #222;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.ld-checkout-back button:hover {
+    text-decoration: underline;
+}
+
+.ld-checkout-logo {
+    text-align: center;
+}
+
+.ld-checkout-logo img {
+    width: 150px;
+    max-width: 100%;
+    height: auto;
+}
+
+.ld-checkout-secure {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    color: #555;
+    font-size: 12px;
+}

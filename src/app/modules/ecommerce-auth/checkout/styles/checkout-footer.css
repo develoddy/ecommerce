@@ -1,0 +1,31 @@
+/* Checkout - Footer */
+
+.ld-checkout-footer {
+    border-top: 1px solid #e5e5e5;
+    background: #fff;
+    padding: 28px 20px;
+    margin-top: 48px;
+    text-align: center;
+}
+
+.ld-checkout-footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+}
+
+.ld-checkout-footer-links a {
+    color: #555;
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.ld-checkout-copyright {
+    margin-top: 20px;
+    color: #777;
+    font-size: 11px;
+    letter-spacing: 1px;
+}

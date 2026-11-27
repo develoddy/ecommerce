@@ -1,0 +1,22 @@
+:host {
+    display: block;
+    min-width: 0;
+}
+
+.ld-payment .checkout-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 325px);
+}
+
+.ld-payment #main-left,
+.ld-payment #main-right {
+    min-width: 0;
+}
+
+.ld-payment #main-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.ld-payment .ld-payment-methods {
+    order: -1;
+}

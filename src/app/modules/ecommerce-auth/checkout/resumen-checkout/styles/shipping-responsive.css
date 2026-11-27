@@ -1,0 +1,37 @@
+@media (max-width: 767.98px) {
+    .ld-shipping-method {
+        margin-bottom: 24px;
+    }
+
+    .ld-shipping-form fieldset {
+        gap: 16px 12px;
+    }
+
+    .ld-shipping-form .ld-field {
+        grid-column: span 12;
+    }
+
+    .ld-shipping-form .ld-field-street {
+        grid-column: span 8;
+    }
+
+    .ld-shipping-form .ld-field-number {
+        grid-column: span 4;
+    }
+
+    .ld-shipping-form .form-control {
+        font-size: 16px;
+    }
+
+    .ld-checkout-empty {
+        padding: 40px 12px;
+    }
+
+    .ld-checkout-empty h3 {
+        font-size: 19px;
+    }
+
+    .ld-address-list .top-sec {
+        align-items: flex-start !important;
+    }
+}

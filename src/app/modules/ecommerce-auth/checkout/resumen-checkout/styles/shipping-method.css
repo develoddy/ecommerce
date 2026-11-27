@@ -1,0 +1,32 @@
+.ld-shipping-method {
+    margin-bottom: 32px;
+}
+
+.ld-shipping-heading {
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.ld-delivery-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid #222;
+    padding: 18px 16px;
+    min-height: 64px;
+}
+
+.ld-delivery-option .icon {
+    font-size: 23px;
+}
+
+.ld-delivery-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.ld-delivery-price {
+    font-weight: 600;
+}

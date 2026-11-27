@@ -1,0 +1,130 @@
+.ld-shipping-form fieldset {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 18px 14px;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.ld-shipping-form .ld-field {
+    grid-column: span 12;
+    min-width: 0;
+}
+
+.ld-shipping-form .ld-field-name,
+.ld-shipping-form .ld-field-surname,
+.ld-shipping-form .ld-field-city,
+.ld-shipping-form .ld-field-province {
+    grid-column: span 6;
+}
+
+.ld-shipping-form .ld-field-street {
+    grid-column: span 8;
+}
+
+.ld-shipping-form .ld-field-number {
+    grid-column: span 4;
+}
+
+.ld-shipping-form .ld-field-control {
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+}
+
+.ld-form-section {
+    grid-column: 1 / -1;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.ld-address-heading {
+    margin-top: 12px;
+}
+
+.ld-shipping-form .ld-field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 7px;
+    color: #222;
+}
+
+.ld-shipping-form .form-control {
+    width: 100%;
+    min-height: 48px;
+    height: 48px;
+    border: 1px solid #bcbcbc;
+    border-radius: 0;
+    background-color: #fff;
+    padding: 10px 14px !important;
+    font-size: 14px;
+    box-shadow: none;
+}
+
+.ld-shipping-form .position-relative input.form-control {
+    padding-right: 44px !important;
+}
+
+.ld-shipping-form .form-control:focus {
+    border-color: #111;
+    outline: 1px solid #111;
+    box-shadow: none;
+}
+
+.ld-shipping-form .form-control[readonly] {
+    background-color: #f5f5f5;
+}
+
+.ld-shipping-form .form-control:not([readonly]).bg-light {
+    background-color: #fff !important;
+}
+
+.ld-shipping-form .form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+.ld-shipping-form .invalid-feedback {
+    display: block;
+    font-size: 12px;
+}
+
+.ld-shipping-form .form-text {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.ld-clear-field {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    color: #666;
+    background: #f2f2f2;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.ld-clear-field:hover {
+    background: #e5e5e5;
+}
+
+.ld-shipping-form .ld-field-submit .btn {
+    min-height: 52px;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 13px;
+    letter-spacing: .5px;
+}
+
+.ld-shipping-form .ld-field-default {
+    margin: 8px 0;
+}
