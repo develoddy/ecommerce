@@ -49,6 +49,7 @@ export class TrackingSearchComponent implements OnInit {
    * Valida el Order ID y token, luego redirige a la página de estado
    */
   searchTracking(): void {
+    if (this.isSearching) return;
     // Marcar campos como tocados
     this.orderIdTouched = true;
     this.tokenTouched = true;
@@ -57,33 +58,46 @@ export class TrackingSearchComponent implements OnInit {
     this.errorMessage = '';
 
     // Sanitizar y validar Order ID
-    this.orderId = this.trackingService.sanitizeOrderId(this.orderId);
+    this.orderId = this.orderId.trim();
     this.trackingToken = this.trackingToken.trim();
 
     // Validaciones específicas
     if (!this.orderId) {
-      this.errorMessage = '⚠️ Por favor ingresa un número de orden';
+      this.errorMessage = 'Introduce el número de pedido.';
       return;
     }
 
     if (!this.trackingService.validateOrderId(this.orderId)) {
-      this.errorMessage = '⚠️ El número de orden no es válido. Usa el formato: #PF135327909 o 135327909';
+      this.errorMessage = 'El número de pedido no es válido.';
       return;
     }
 
     if (!this.trackingToken) {
-      this.errorMessage = '⚠️ Por favor ingresa el token de seguimiento';
+      this.errorMessage = 'Introduce el código de acceso.';
       return;
     }
 
-    if (this.trackingToken.length !== 32) {
-      this.errorMessage = `⚠️ El token debe tener exactamente 32 caracteres (actualmente: ${this.trackingToken.length})`;
+    if (!/^[a-fA-F0-9]{32}$/.test(this.trackingToken)) {
+      this.errorMessage = 'El código de acceso no es válido. Comprueba el código recibido por correo.';
       return;
     }
+
+    this.orderId = this.trackingService.sanitizeOrderId(this.orderId);
 
     // Todo validado, redirigir
     this.isSearching = true;
-    this.router.navigate(['/', this.country, this.locale, 'tracking', this.orderId, this.trackingToken]);
+    this.router.navigate([
+      '/', this.country, this.locale,
+      'tracking', this.orderId, this.trackingToken
+    ]).then(navigated => {
+      if (!navigated) {
+        this.errorMessage = 'No se pudo consultar el pedido. Inténtalo de nuevo.';
+      }
+    }).catch(() => {
+      this.errorMessage = 'No se pudo consultar el pedido. Inténtalo de nuevo.';
+    }).finally(() => {
+      this.isSearching = false;
+    });
   }
 
   /**
@@ -91,9 +105,9 @@ export class TrackingSearchComponent implements OnInit {
    */
   validateOrderId(): void {
     this.orderIdTouched = true;
-    if (this.orderId && !this.trackingService.validateOrderId(this.trackingService.sanitizeOrderId(this.orderId))) {
-      this.errorMessage = '⚠️ Formato de orden inválido. Usa: #PF135327909 o 135327909';
-    } else if (this.errorMessage.includes('orden')) {
+    if (this.orderId && !this.trackingService.validateOrderId(this.orderId)) {
+      this.errorMessage = 'El número de pedido no es válido.';
+    } else if (this.errorMessage.includes('pedido')) {
       this.errorMessage = '';
     }
   }
@@ -104,9 +118,9 @@ export class TrackingSearchComponent implements OnInit {
   validateToken(): void {
     this.tokenTouched = true;
     const trimmedToken = this.trackingToken.trim();
-    if (trimmedToken && trimmedToken.length !== 32) {
-      this.errorMessage = `⚠️ El token debe tener 32 caracteres (actualmente: ${trimmedToken.length})`;
-    } else if (this.errorMessage.includes('token')) {
+    if (trimmedToken && !/^[a-fA-F0-9]{32}$/.test(trimmedToken)) {
+      this.errorMessage = 'El código de acceso no es válido.';
+    } else if (this.errorMessage.includes('código de acceso')) {
       this.errorMessage = '';
     }
   }

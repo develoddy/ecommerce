@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { finalize, timeout, retry, catchError, map } from 'rxjs/operators';
+import { finalize, timeout, catchError, map } from 'rxjs/operators';
 import { URL_SERVICE } from 'src/app/config/config';
 import { TrackingResponse, TrackingStatus } from '../models/tracking-status.model';
 
@@ -11,7 +11,7 @@ import { TrackingResponse, TrackingStatus } from '../models/tracking-status.mode
  * - Llamadas directas a API backend que consulta Printful
  * - Combina datos de Printful + BD local
  * - Manejo robusto de errores
- * - Timeouts y retries
+ * - Timeout sin reintentos automáticos
  */
 @Injectable({
   providedIn: 'root'
@@ -21,9 +21,8 @@ export class TrackingService {
   isLoading$: Observable<boolean>;
   isLoadingSubject: BehaviorSubject<boolean>;
 
-  // Configuración de timeouts y retries (igual que Printful service)
+  // Timeout de consultas públicas
   private readonly DEFAULT_TIMEOUT = 30000; // 30 segundos
-  private readonly MAX_RETRIES = 2; // Reintentar 2 veces
 
   constructor(
     private _http: HttpClient
@@ -43,14 +42,24 @@ export class TrackingService {
    * @returns Observable con el estado completo del tracking
    */
   getTrackingStatus(orderId: string, token: string): Observable<TrackingStatus> {
+    const normalizedOrderId = this.sanitizeOrderId(orderId);
+
+    if (
+      !this.validateOrderId(orderId) ||
+      !/^[a-fA-F0-9]{32}$/.test(token)
+    ) {
+      return throwError(() => ({
+        message: 'Verifica el número de pedido y el código de acceso.'
+      }));
+    }
+
     this.isLoadingSubject.next(true);
     
-    const url = `${URL_SERVICE}orders/tracking/${orderId}/${token}`;
+    const url = `${URL_SERVICE}orders/tracking/${encodeURIComponent(normalizedOrderId)}/${encodeURIComponent(token)}`;
 
 
     return this._http.get<TrackingResponse>(url).pipe(
       timeout(this.DEFAULT_TIMEOUT),
-      retry(this.MAX_RETRIES),
       map(response => {
         if (!response.success || !response.data) {
           throw new Error(response.message || 'No se pudo obtener el estado del pedido');
@@ -59,41 +68,42 @@ export class TrackingService {
         return response.data;
       }),
       catchError(error => {
-        console.error('❌ Error obteniendo tracking:', error);
+        console.error('Error obteniendo el estado del pedido');
         
         // Manejar diferentes tipos de errores
         if (error.name === 'TimeoutError') {
           return throwError(() => ({
-            message: 'La consulta tardó demasiado tiempo. Por favor, intenta de nuevo.',
-            error: error
+            message: 'La consulta tardó demasiado tiempo. Por favor, intenta de nuevo.'
           }));
         }
         
         if (error.status === 0) {
           return throwError(() => ({
-            message: 'No se pudo conectar con el servidor. Verifica tu conexión a internet.',
-            error: error
+            message: 'No se pudo conectar con el servidor. Verifica tu conexión a internet.'
           }));
         }
         
         if (error.status === 404) {
           return throwError(() => ({
-            message: 'Orden no encontrada. Verifica el número de orden.',
-            error: error
+            message: 'Verifica el número de pedido y el código de acceso.'
           }));
         }
         
         if (error.status === 400) {
           return throwError(() => ({
-            message: 'Número de orden inválido.',
-            error: error
+            message: 'Verifica el número de pedido y el código de acceso.'
           }));
         }
         
+        if (error.status === 429) {
+          return throwError(() => ({
+            message: 'Demasiadas consultas. Espera unos minutos antes de volver a intentarlo.'
+          }));
+        }
+
         // Error genérico
         return throwError(() => ({
-          message: error.error?.message || 'Error al consultar el tracking',
-          error: error
+          message: 'No se pudo consultar el estado del pedido. Inténtalo más tarde.'
         }));
       }),
       finalize(() => {
@@ -115,8 +125,8 @@ export class TrackingService {
       return false;
     }
 
-    // Permitir números (Printful ID) o alfanuméricos (external_id)
-    const orderIdPattern = /^[a-zA-Z0-9\-_]+$/;
+    // Identificadores numéricos con prefijo PF opcional
+    const orderIdPattern = /^(?:#?PF)?[0-9]{1,20}$/i;
     return orderIdPattern.test(orderId.trim());
   }
 
@@ -129,8 +139,10 @@ export class TrackingService {
    * @returns Order ID limpio (sin #PF)
    */
   sanitizeOrderId(orderId: string): string {
-    // Remover #PF o PF del inicio (case insensitive) y dejar solo números
-    return orderId.trim().replace(/^#?PF/i, '').replace(/[^0-9]/g, '');
+    // Normalizar únicamente identificadores válidos
+    return this.validateOrderId(orderId)
+      ? orderId.trim().replace(/^#?PF/i, '')
+      : '';
   }
 
   /**
@@ -149,8 +161,9 @@ export class TrackingService {
       'onhold': 20,
       'inprocess': 50,
       'partial': 75,
-      'fulfilled': 100,
-      'archived': 100
+      'shipped': 75,
+      'fulfilled': 75,
+      'archived': 0
     };
 
     return progressMap[status.toLowerCase()] || 0;
@@ -171,6 +184,7 @@ export class TrackingService {
       'onhold': 'badge-info',
       'inprocess': 'badge-primary',
       'partial': 'badge-info',
+      'shipped': 'badge-success',
       'fulfilled': 'badge-success',
       'archived': 'badge-secondary'
     };
@@ -193,7 +207,8 @@ export class TrackingService {
       'onhold': 'En espera',
       'inprocess': 'Fabricando',
       'partial': 'Parcial',
-      'fulfilled': 'Entregado',
+      'shipped': 'Enviado',
+      'fulfilled': 'Enviado',
       'archived': 'Archivado'
     };
 
