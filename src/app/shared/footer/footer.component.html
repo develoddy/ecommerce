@@ -69,6 +69,7 @@
                     <h3 class="footer-column-title">{{ 'footer.help.title' | translate }}</h3>
                     <ul class="footer-column-links">
                         <li><a href="#" onclick="return false">{{ 'footer.help.shipping' | translate }}</a></li>
+                        <li><a [routerLink]="['/', country, locale, 'tracking']">{{ 'footer.help.track_order' | translate }}</a></li>
                         <li><a [routerLink]="['/', this.country, this.locale, 'account', 'mypurchases']">{{ 'header.list_account.mypurchases' | translate }}</a></li>
                         <li><a href="#" onclick="return false">{{ 'footer.help.returns' | translate }}</a></li>
                         <li><a href="#" onclick="return false">{{ 'footer.help.contact' | translate }}</a></li>

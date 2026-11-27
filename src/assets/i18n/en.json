@@ -216,6 +216,7 @@
       "all_products": "All products"
     },
     "help": {
+      "track_order": "Track my order",
       "title": "HELP",
       "shipping": "Shipping",
       "returns": "Returns",
