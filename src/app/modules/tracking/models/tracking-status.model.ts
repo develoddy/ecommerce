@@ -35,7 +35,6 @@ export interface TrackingStatus {
   
   // Estados de Printful (raw data)
   printfulStatus: string;
-  printfulRaw?: any;            // Data completa de Printful (opcional)
   
   // Timeline de eventos
   timeline: TrackingEvent[];
@@ -52,6 +51,7 @@ export type PrintfulOrderStatus =
   | 'onhold'          // En espera
   | 'inprocess'       // En proceso de fabricación
   | 'partial'         // Parcialmente completado
+  | 'shipped'
   | 'fulfilled'       // Completado y enviado
   | 'archived';       // Archivado
 
@@ -106,7 +106,7 @@ export interface TrackingEvent {
   status: string;
   title: string;
   description: string;
-  date: string;
+  date: string | null;
   completed: boolean;
 }
 
@@ -141,8 +141,9 @@ export const TRACKING_PROGRESS_MAP: Record<PrintfulOrderStatus, number> = {
   'onhold': 20,
   'inprocess': 50,
   'partial': 75,
-  'fulfilled': 100,
-  'archived': 100
+  'shipped': 75,
+  'fulfilled': 75,
+  'archived': 0
 };
 
 /**
@@ -156,7 +157,8 @@ export const TRACKING_STATUS_TEXT: Record<PrintfulOrderStatus, string> = {
   'onhold': 'En espera',
   'inprocess': 'Fabricando',
   'partial': 'Parcial',
-  'fulfilled': 'Entregado',
+  'shipped': 'Enviado',
+  'fulfilled': 'Enviado',
   'archived': 'Archivado'
 };
 
@@ -171,6 +173,7 @@ export const TRACKING_STATUS_BADGE: Record<PrintfulOrderStatus, string> = {
   'onhold': 'badge-info',
   'inprocess': 'badge-primary',
   'partial': 'badge-info',
+  'shipped': 'badge-success',
   'fulfilled': 'badge-success',
   'archived': 'badge-secondary'
 };

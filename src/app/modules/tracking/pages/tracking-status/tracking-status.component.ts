@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { TrackingService } from '../../services/tracking.service';
-import { TrackingStatus, TrackingEvent, TRACKING_PROGRESS_MAP } from '../../models/tracking-status.model';
+import { TrackingStatus, TrackingEvent } from '../../models/tracking-status.model';
 
 /**
  * 📦 Componente de visualización de estado de tracking
@@ -81,14 +81,14 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           this.trackingData = data;
-          this.timeline = data.timeline || this.generateTimeline(data);
+          this.timeline = data.timeline || [];
           this.isLoading = false;
           
         },
         error: (error) => {
           this.error = error.message || 'Error al cargar el estado del pedido';
           this.isLoading = false;
-          console.error('❌ Error loading tracking:', error);
+          console.error('Error cargando el estado del pedido');
         }
       });
   }
@@ -108,75 +108,6 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 📝 Generar timeline de eventos basado en estado de Printful
-   */
-  private generateTimeline(data: TrackingStatus): TrackingEvent[] {
-    const events: TrackingEvent[] = [
-      {
-        type: 'order_received',
-        status: 'completed',
-        title: 'Pedido Recibido',
-        description: 'Tu pedido ha sido recibido y confirmado',
-        date: data.dates.created,
-        completed: true
-      },
-      {
-        type: 'processing',
-        status: this.getEventStatus(data.status, 'processing'),
-        title: 'Procesando',
-        description: 'Validando pago y preparando orden',
-        date: data.dates.created,
-        completed: ['inprocess', 'partial', 'fulfilled'].includes(data.status)
-      },
-      {
-        type: 'manufacturing',
-        status: this.getEventStatus(data.status, 'manufacturing'),
-        title: 'Fabricando',
-        description: 'Tu producto está siendo fabricado',
-        date: data.dates.updated,
-        completed: ['partial', 'fulfilled'].includes(data.status)
-      },
-      {
-        type: 'shipped',
-        status: this.getEventStatus(data.status, 'shipped'),
-        title: 'Enviado',
-        description: data.trackingNumber 
-          ? `En tránsito - ${data.carrier || 'Carrier'}: ${data.trackingNumber}`
-          : 'Tu pedido está en camino',
-        date: data.dates.shipped || '',
-        completed: data.status === 'fulfilled' || !!data.trackingNumber
-      },
-      {
-        type: 'delivered',
-        status: this.getEventStatus(data.status, 'delivered'),
-        title: 'Entregado',
-        description: data.dates.delivered 
-          ? 'Tu pedido ha sido entregado'
-          : 'Esperando entrega',
-        date: data.dates.delivered || data.estimated.max || '',
-        completed: data.status === 'fulfilled' && !!data.dates.delivered
-      }
-    ];
-
-    return events;
-  }
-
-  /**
-   * 🎯 Determinar estado de un evento en el timeline
-   */
-  private getEventStatus(orderStatus: string, eventType: string): string {
-    const statusFlow = ['pending', 'onhold', 'inprocess', 'partial', 'fulfilled'];
-    const eventFlow = ['order_received', 'processing', 'manufacturing', 'shipped', 'delivered'];
-    
-    const orderIndex = statusFlow.indexOf(orderStatus);
-    const eventIndex = eventFlow.indexOf(eventType);
-    
-    if (orderIndex < 0 || eventIndex < 0) return 'pending';
-    if (orderIndex >= eventIndex) return 'completed';
-    return 'pending';
-  }
-
-  /**
    * 🎨 Obtener clase CSS para badge de estado
    */
   getStatusBadgeClass(): string {
@@ -189,6 +120,12 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
    */
   getStatusText(): string {
     if (!this.trackingData) return '';
+    if (this.timeline.some(event =>
+      event.type === 'delivered' && event.completed
+    )) {
+      return 'Entregado';
+    }
+
     return this.trackingService.getStatusText(this.trackingData.status);
   }
 
@@ -197,7 +134,15 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
    */
   openTrackingUrl(): void {
     if (this.trackingData?.trackingUrl) {
-      window.open(this.trackingData.trackingUrl, '_blank');
+      try {
+        const url = new URL(this.trackingData.trackingUrl);
+
+        if (url.protocol === 'https:' || url.protocol === 'http:') {
+          window.open(url.href, '_blank', 'noopener,noreferrer');
+        }
+      } catch {
+        return;
+      }
     }
   }
 
@@ -224,7 +169,7 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
    */
   getProgressPercentage(): number {
     if (!this.trackingData) return 0;
-    return TRACKING_PROGRESS_MAP[this.trackingData.status] || 0;
+    return this.trackingData.progress || 0;
   }
 
   /**
@@ -239,9 +184,10 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
   /**
    * 📅 Formatear fecha
    */
-  formatDate(dateString: string): string {
+  formatDate(dateString: string | null): string {
     if (!dateString) return '';
     const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return '';
     return date.toLocaleDateString('es-ES', { 
       day: 'numeric', 
       month: 'long', 
