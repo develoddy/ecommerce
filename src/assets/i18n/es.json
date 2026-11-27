@@ -677,5 +677,30 @@
       "removed": "Cupón \"{{code}}\" removido correctamente.",
       "coupon_label": "Cupón {{code}}"
     }
+  },
+  "tracking": {
+    "search": {
+      "home": "Inicio",
+      "eyebrow": "SEGUIMIENTO DE PEDIDOS",
+      "title": "Sigue tu pedido",
+      "description": "Consulta el estado de tu pedido desde la confirmación hasta la entrega.",
+      "order_label": "Número de pedido",
+      "order_placeholder": "Ej. 135327909",
+      "order_hint": "Encontrarás este número en el email de tu pedido.",
+      "order_invalid": "Introduce un número de pedido válido.",
+      "order_required": "Introduce el número de pedido.",
+      "token_label": "Código de acceso",
+      "token_placeholder": "Introduce tu código de acceso",
+      "token_hint": "Utiliza el código de acceso de tu pedido.",
+      "token_required": "Introduce el código de acceso.",
+      "token_invalid": "Comprueba el código de acceso recibido por correo.",
+      "submit": "Consultar pedido",
+      "loading": "Consultando...",
+      "secure": "Acceso seguro a la información de tu pedido",
+      "help_title": "¿Necesitas ayuda?",
+      "help_description": "Revisa los emails relacionados con tu compra. Allí encontrarás los datos de seguimiento cuando estén disponibles.",
+      "navigation_error": "No se pudo consultar el pedido. Inténtalo de nuevo.",
+      "breadcrumb_label": "Ruta de navegación"
+    }
   }
 }
