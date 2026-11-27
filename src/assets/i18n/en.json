@@ -677,5 +677,30 @@
       "removed": "Discount code \"{{code}}\" successfully removed.",
       "coupon_label": "Code {{code}}"
     }
+  },
+  "tracking": {
+    "search": {
+      "home": "Home",
+      "eyebrow": "ORDER TRACKING",
+      "title": "Track your order",
+      "description": "Check your order status from confirmation to delivery.",
+      "order_label": "Order number",
+      "order_placeholder": "E.g. 135327909",
+      "order_hint": "You can find this number in your order email.",
+      "order_invalid": "Enter a valid order number.",
+      "order_required": "Enter your order number.",
+      "token_label": "Access code",
+      "token_placeholder": "Enter your access code",
+      "token_hint": "Use the access code associated with your order.",
+      "token_required": "Enter your access code.",
+      "token_invalid": "Check the access code you received by email.",
+      "submit": "Track order",
+      "loading": "Checking...",
+      "secure": "Secure access to your order information",
+      "help_title": "Need help?",
+      "help_description": "Check your order emails. You will find your tracking details there when they become available.",
+      "navigation_error": "We couldn't retrieve your order. Please try again.",
+      "breadcrumb_label": "Breadcrumb"
+    }
   }
 }

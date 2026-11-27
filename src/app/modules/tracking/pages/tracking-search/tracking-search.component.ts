@@ -48,6 +48,15 @@ export class TrackingSearchComponent implements OnInit {
    * 🔍 Buscar estado del pedido
    * Valida el Order ID y token, luego redirige a la página de estado
    */
+  get isOrderIdValid(): boolean {
+    return !!this.orderId.trim() &&
+      this.trackingService.validateOrderId(this.orderId.trim());
+  }
+
+  get isTokenValid(): boolean {
+    return /^[a-fA-F0-9]{32}$/.test(this.trackingToken.trim());
+  }
+
   searchTracking(): void {
     if (this.isSearching) return;
     // Marcar campos como tocados
@@ -63,22 +72,22 @@ export class TrackingSearchComponent implements OnInit {
 
     // Validaciones específicas
     if (!this.orderId) {
-      this.errorMessage = 'Introduce el número de pedido.';
+      this.errorMessage = 'tracking.search.order_required';
       return;
     }
 
     if (!this.trackingService.validateOrderId(this.orderId)) {
-      this.errorMessage = 'El número de pedido no es válido.';
+      this.errorMessage = 'tracking.search.order_invalid';
       return;
     }
 
     if (!this.trackingToken) {
-      this.errorMessage = 'Introduce el código de acceso.';
+      this.errorMessage = 'tracking.search.token_required';
       return;
     }
 
     if (!/^[a-fA-F0-9]{32}$/.test(this.trackingToken)) {
-      this.errorMessage = 'El código de acceso no es válido. Comprueba el código recibido por correo.';
+      this.errorMessage = 'tracking.search.token_invalid';
       return;
     }
 
@@ -91,10 +100,10 @@ export class TrackingSearchComponent implements OnInit {
       'tracking', this.orderId, this.trackingToken
     ]).then(navigated => {
       if (!navigated) {
-        this.errorMessage = 'No se pudo consultar el pedido. Inténtalo de nuevo.';
+        this.errorMessage = 'tracking.search.navigation_error';
       }
     }).catch(() => {
-      this.errorMessage = 'No se pudo consultar el pedido. Inténtalo de nuevo.';
+      this.errorMessage = 'tracking.search.navigation_error';
     }).finally(() => {
       this.isSearching = false;
     });
@@ -106,8 +115,8 @@ export class TrackingSearchComponent implements OnInit {
   validateOrderId(): void {
     this.orderIdTouched = true;
     if (this.orderId && !this.trackingService.validateOrderId(this.orderId)) {
-      this.errorMessage = 'El número de pedido no es válido.';
-    } else if (this.errorMessage.includes('pedido')) {
+      this.errorMessage = 'tracking.search.order_invalid';
+    } else if (this.errorMessage.startsWith('tracking.search.order_')) {
       this.errorMessage = '';
     }
   }
@@ -119,8 +128,8 @@ export class TrackingSearchComponent implements OnInit {
     this.tokenTouched = true;
     const trimmedToken = this.trackingToken.trim();
     if (trimmedToken && !/^[a-fA-F0-9]{32}$/.test(trimmedToken)) {
-      this.errorMessage = 'El código de acceso no es válido.';
-    } else if (this.errorMessage.includes('código de acceso')) {
+      this.errorMessage = 'tracking.search.token_invalid';
+    } else if (this.errorMessage.startsWith('tracking.search.token_')) {
       this.errorMessage = '';
     }
   }
