@@ -1,3 +1,4 @@
+import { AuthGuard } from '../auth-profile/_services/guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TrackingSearchComponent } from './pages/tracking-search/tracking-search.component';
@@ -11,6 +12,12 @@ const routes: Routes = [
   {
     path: '',
     component: TrackingSearchComponent
+  },
+  {
+    path: 'account/:orderId',
+    component: TrackingStatusComponent,
+    canActivate: [AuthGuard],
+    data: { authenticatedTracking: true }
   },
   {
     path: ':orderId/:token',

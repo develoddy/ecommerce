@@ -776,5 +776,32 @@
         "unknown": "Hay una incidencia pendiente de revisión."
       }
     }
+  },
+  "purchase_tracking": {
+    "view_order": "Consultar mi pedido",
+    "download_receipt": "Descargar recibo",
+    "generating": "Generando...",
+    "title": "Mis compras",
+    "empty_title": "Aún no tienes ninguna compra",
+    "empty_description": "Cuando compres algo online, aparecerá aquí.",
+    "discover": "Descubrir lo último",
+    "order": "Pedido #",
+    "date": "Fecha:",
+    "paid_with": "Pagado con:",
+    "total": "Total:",
+    "sku": "Art. nº",
+    "quantity": "Cant:",
+    "status": "Estado:",
+    "discount": "% de descuento",
+    "original_price": "Precio original:",
+    "saving": "Ahorro:",
+    "summary": "Resumen",
+    "orders": "Pedidos",
+    "last_purchase": "Última compra",
+    "help": "Ayuda",
+    "customer_service": "Atención al cliente",
+    "final_price": "Precio final",
+    "price": "Precio",
+    "back_to_purchases": "Volver a mis compras"
   }
 }

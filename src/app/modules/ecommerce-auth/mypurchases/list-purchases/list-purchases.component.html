@@ -1,5 +1,5 @@
 <!--Page Wrapper-->
-<div class="page-wrapper">
+<div class="page-wrapper lujandev-purchases">
 
     <!-- Loading -->
     <div *ngIf="loading" class="loading-spinner border d-flex vh-100 justify-content-center align-items-center">
@@ -20,10 +20,10 @@
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-between align-items-start">
                         <div class="page-title ">
-                            <h2 class="fw-bold text-uppercase">Mis compras</h2>
+                            <h2 class="fw-bold text-uppercase">{{ 'purchase_tracking.title' | translate }}</h2>
                         </div>
                         <!--Breadcrumbs-->
-                        <div class="breadcrumbs d-none"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>Mis compras</span></div>
+                        <div class="breadcrumbs d-none"><a href="index.html" onclick="return false;" routerLink="/" title="Back to the home page">Lujandev.com</a><span class="main-title"><i class="icon anm anm-angle-right-l"></i>{{ 'purchase_tracking.title' | translate }}</span></div>
                         <!--End Breadcrumbs-->
                     </div>
                 </div>
@@ -47,14 +47,14 @@
                                                     <img src="assets/images/favicon.png" alt="Image" style="width: 50px; height: 50px;">
                                                 </div>
                                             </div>
-                                            <!-- <h5 class="header-title mb-0 fw-bold h3 mb-4">Mis compras</h5> -->
-                                            <strong class="h3 text-uppercase">Aún no tienes ninguna compra</strong>
-                                            <p class="pt-3">Cuando compres algo online, aparecerá aquí.</p>
+                                            <!-- <h5 class="header-title mb-0 fw-bold h3 mb-4">{{ 'purchase_tracking.title' | translate }}</h5> -->
+                                            <strong class="h3 text-uppercase">{{ 'purchase_tracking.empty_title' | translate }}</strong>
+                                            <p class="pt-3">{{ 'purchase_tracking.empty_description' | translate }}</p>
                                             <p class="pt-3 d-none">Pide tu ticket digital la próxima vez que compres en tienda para <br /> llevarlo siempre contigo.</p>
                                         </div>
                                     </div>
                                     <div class="view-collection text-center mt-4 mb-5 mt-md-5">
-                                        <a class="btn-dark-ld text-uppercase" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products']">Descubrir lo último</a>
+                                        <a class="btn-dark-ld text-uppercase" href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'filter-products']">{{ 'purchase_tracking.discover' | translate }}</a>
                                     </div>
                                     <!-- <hr> -->
                                 </ng-container>
@@ -67,23 +67,21 @@
                                                     <!-- Iterate paginatedSaleDetails and render one order-card per sale group -->
                                                     <ng-container *ngFor="let detail of paginatedSaleDetails; let i = index">
                                                         <ng-container *ngIf="i === 0 || (paginatedSaleDetails[i - 1].sale?.id !== detail.sale?.id)">
-                                                            <div class="order-card p-3 border rounded bg-white">
+                                                            <div class="order-card bg-white">
                                                                 <div class="d-flex justify-content-between align-items-start mb-3 order-header">
                                                                     <div>
-                                                                        <strong class="d-block">Pedido #{{ detail.sale?.id || detail.sale_id || ('#' + (i + 1)) }}</strong>
-                                                                        <small class="text-muted">Fecha: {{ (detail.sale?.updatedAt || detail.sale?.createdAt || detail.createdAt) | date:'mediumDate' }}</small>
+                                                                        <strong class="d-block">{{ 'purchase_tracking.order' | translate }}{{ detail.sale?.id || detail.sale_id || ('#' + (i + 1)) }}</strong>
+                                                                        <small class="text-muted">{{ 'purchase_tracking.date' | translate }} {{ formatPurchaseDate(detail.sale?.createdAt || detail.createdAt || detail.sale?.updatedAt) }}</small>
                                                                     </div>
                                                                     <div class="text-end">
-                                                                        <span class="badge bg-dark mb-1">{{ detail.sale?.status || detail.status || 'Processing' }}</span>
+                                                                        <span *ngIf="!canTrackOrder(detail.sale)"
+                                                                              class="badge bg-dark mb-1">{{ detail.sale?.status || detail.status || 'Processing' }}</span>
                                                                         <div *ngIf="detail.sale?.method_payment" class="mb-1">
-                                                                            <small class="badge rounded-pill" 
-                                                                                   [ngClass]="{'bg-primary': detail.sale.method_payment.toLowerCase() === 'stripe', 'bg-info': detail.sale.method_payment.toLowerCase() === 'paypal'}">
-                                                                                <i class="icon" 
-                                                                                   [ngClass]="{'anm anm-cc-stripe': detail.sale.method_payment.toLowerCase() === 'stripe', 'anm anm-cc-paypal': detail.sale.method_payment.toLowerCase() === 'paypal'}"></i>
-                                                                                Pagado con: {{ detail.sale.method_payment }}
+                                                                            <small class="order-payment">
+                                                                                {{ 'purchase_tracking.paid_with' | translate }} {{ detail.sale.method_payment }}
                                                                             </small>
                                                                         </div>
-                                                                        <div class="small">Total: <strong>{{ euro }}{{ getSaleTotalPrice(detail.sale) }}</strong></div>
+                                                                        <div class="small">{{ 'purchase_tracking.total' | translate }} <strong>{{ formatPurchaseAmount(getSaleTotalPrice(detail.sale)) }}</strong></div>
                                                                     </div>
                                                                 </div>
 
@@ -102,81 +100,32 @@
                                                                                         <a href="#" onclick="return false;" [routerLink]="['/', country, locale, 'shop', 'product', prodDetail.product?.slug || prodDetail.product.slug]">{{ prodDetail.product?.title || prodDetail.product.title }}</a>
                                                                                     </div>
                                                                     <div class="d-flex align-items-center mt-1">
-                                                                        <div class="me-3 small text-muted">Art. nº {{ prodDetail.product?.sku || prodDetail.product.sku || '—' }}</div>
-                                                                        <div class="me-3 small text-muted">Cant: {{ prodDetail.cantidad || prodDetail.quantity || prodDetail.qty || 1 }}</div>
-                                                                        <div class="me-3 small text-muted">Estado: <span class="badge rounded-pill bg-secondary">{{ prodDetail.status || prodDetail.state || '—' }}</span></div>
+                                                                        <div class="me-3 small text-muted">{{ 'purchase_tracking.sku' | translate }} {{ prodDetail.product?.sku || prodDetail.product.sku || '—' }}</div>
+                                                                        <div class="me-3 small text-muted">{{ 'purchase_tracking.quantity' | translate }} {{ prodDetail.cantidad || prodDetail.quantity || prodDetail.qty || 1 }}</div>
+
                                                                     </div>
-                                                                    
-                                                                    <!-- 🚚 TRACKING INFORMATION (usando campos existentes de Printful) -->
-                                                                    <div *ngIf="hasTrackingInfo(detail.sale)" class="mt-2">
-                                                                        <div class="p-2 bg-light rounded border-start border-primary border-3">
-                                                                            <div class="d-flex align-items-center justify-content-between">
-                                                                                <div class="flex-grow-1">
-                                                                                    <div class="d-flex align-items-center mb-1">
-                                                                                        <i class="icon anm anm-truck-l me-2 text-primary"></i>
-                                                                                        <span class="badge" 
-                                                                                              [ngClass]="getSyncStatusClass(detail.sale?.syncStatus)">
-                                                                                            {{ getSyncStatusText(detail.sale?.syncStatus) }}
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <div *ngIf="detail.sale?.trackingNumber" class="small text-muted">
-                                                                                        <strong>Número de seguimiento:</strong> {{ detail.sale.trackingNumber }}
-                                                                                    </div>
-                                                                                    <div *ngIf="detail.sale?.carrier" class="small text-muted">
-                                                                                        <strong>Transportista:</strong> {{ detail.sale.carrier }}
-                                                                                    </div>
-                                                                                    <div *ngIf="detail.sale?.shippedAt" class="small text-muted">
-                                                                                        <strong>Enviado:</strong> {{ detail.sale.shippedAt | date:'short' }}
-                                                                                    </div>
-                                                                                    <div *ngIf="detail.sale?.printfulOrderId" class="small text-muted">
-                                                                                        <strong>ID Printful:</strong> #PF{{ detail.sale.printfulOrderId }}
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div *ngIf="detail.sale?.trackingUrl" class="ms-2">
-                                                                                    <a [href]="detail.sale.trackingUrl" 
-                                                                                       target="_blank" 
-                                                                                       class="btn btn-sm btn-outline-primary"
-                                                                                       title="Seguir envío en tiempo real">
-                                                                                        <i class="icon anm anm-search-plus-l me-1"></i>
-                                                                                        Seguir envío
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <!-- 📦 ESTADO SIN TRACKING AÚN -->
-                                                                    <div *ngIf="!hasTrackingInfo(detail.sale)" class="mt-2">
-                                                                        <div class="p-2 bg-warning bg-opacity-10 rounded border-start border-warning border-3">
-                                                                            <div class="d-flex align-items-center">
-                                                                                <i class="icon anm anm-clock me-2 text-warning"></i>
-                                                                                <span class="small">
-                                                                                    <strong>{{ getProcessingStatusText(detail.sale?.syncStatus) }}</strong><br>
-                                                                                    <span class="text-muted">{{ getProcessingStatusDescription(detail.sale?.syncStatus) }}</span>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>                                                                                    <!-- 🏷️ Información de descuentos -->
+
+                                                                    <!-- 🏷️ Información de descuentos -->
                                                                                     <div *ngIf="hasDiscount(prodDetail)" class="mt-2 p-2 bg-light rounded">
                                                                                         <div class="row g-2 small">
                                                                                             <div class="col-12">
                                                                                                 <span class="badge bg-success me-2">{{ getDiscountType(prodDetail) }}</span>
-                                                                                                <span class="text-success fw-bold">{{ getDiscountPercentage(prodDetail) }}% de descuento</span>
+                                                                                                <span class="text-success fw-bold">{{ getDiscountPercentage(prodDetail) }}{{ 'purchase_tracking.discount' | translate }}</span>
                                                                                             </div>
                                                                                             <div class="col-6">
-                                                                                                <div class="text-muted">Precio original:</div>
-                                                                                                <div class="text-decoration-line-through">{{ euro }}{{ getOriginalPriceForDisplay(prodDetail) }}</div>
+                                                                                                <div class="text-muted">{{ 'purchase_tracking.original_price' | translate }}</div>
+                                                                                                <div class="text-decoration-line-through">{{ formatPurchaseAmount(getOriginalPriceForDisplay(prodDetail)) }}</div>
                                                                                             </div>
                                                                                             <div class="col-6">
-                                                                                                <div class="text-muted">Ahorro:</div>
-                                                                                                <div class="text-success fw-bold">-{{ euro }}{{ getDiscountAmount(prodDetail) }}</div>
+                                                                                                <div class="text-muted">{{ 'purchase_tracking.saving' | translate }}</div>
+                                                                                                <div class="text-success fw-bold">-{{ formatPurchaseAmount(getDiscountAmount(prodDetail)) }}</div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="text-end ms-3">
-                                                                                    <div class="small text-muted">{{ hasDiscount(prodDetail) ? 'Precio final' : 'Precio' }}</div>
-                                                                                    <div class="fw-bold {{ hasDiscount(prodDetail) ? 'text-success' : '' }}">{{ euro }}{{ getDisplayPrice(prodDetail) }}</div>
+                                                                                    <div class="small text-muted">{{ (hasDiscount(prodDetail) ? 'purchase_tracking.final_price' : 'purchase_tracking.price') | translate }}</div>
+                                                                                    <div class="fw-bold {{ hasDiscount(prodDetail) ? 'text-success' : '' }}">{{ formatPurchaseAmount(getDisplayPrice(prodDetail)) }}</div>
                                                                                     <div *ngIf="hasDiscount(prodDetail)" class="small text-muted">
                                                                                         por {{ prodDetail.cantidad || prodDetail.quantity || prodDetail.qty || 1 }} ud.
                                                                                     </div>
@@ -188,24 +137,30 @@
                                                                         </ng-container>
                                                                     </ng-container>
                                                                 </div>
-                                                                
-                                                                <!-- Botón para descargar recibo -->
-                                                                <div class="d-flex justify-content-end mt-3 pt-2 border-top">
-                                                                    <button 
-                                                                        type="button" 
-                                                                        class="btn btn-outline-dark btn-sm d-flex align-items-center gap-1" 
+
+                                                                <!-- Order actions -->
+                                                                <div class="order-actions mt-3 pt-3 border-top">
+                                                                    <a
+                                                                        *ngIf="canTrackOrder(detail.sale)"
+                                                                        class="btn btn-dark btn-sm order-tracking-button"
+                                                                        [routerLink]="['/', country, locale, 'tracking', 'account', detail.sale.id]">
+                                                                        {{ 'purchase_tracking.view_order' | translate }}
+                                                                    </a>
+                                                                    <button
+                                                                        type="button"
+                                                                        class="btn btn-outline-dark btn-sm order-receipt-button d-flex align-items-center gap-1"
                                                                         (click)="downloadReceipt(detail.sale?.id || detail.sale_id)"
                                                                         [disabled]="isDownloadingReceipt(detail.sale?.id || detail.sale_id)"
-                                                                        title="Descargar recibo en PDF">
+                                                                        [attr.title]="'purchase_tracking.download_receipt' | translate">
                                                                         <!-- Spinner cuando está descargando -->
                                                                         <ng-container *ngIf="isDownloadingReceipt(detail.sale?.id || detail.sale_id)">
                                                                             <div class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></div>
-                                                                            <small>Generando...</small>
+                                                                            <small>{{ 'purchase_tracking.generating' | translate }}</small>
                                                                         </ng-container>
                                                                         <!-- Estado normal -->
                                                                         <ng-container *ngIf="!isDownloadingReceipt(detail.sale?.id || detail.sale_id)">
                                                                             <i class="icon anm anm-download-l"></i>
-                                                                            <small>Descargar recibo</small>
+                                                                            <small>{{ 'purchase_tracking.download_receipt' | translate }}</small>
                                                                         </ng-container>
                                                                     </button>
                                                                 </div>
@@ -218,23 +173,23 @@
 
                                         <!-- Right: Sidebar (help / quick actions) -->
                                         <div class="col-12 col-lg-4 mt-4 mt-lg-0">
-                                            <div class="cart-info sidebar-sticky bg-transparent border-0 p-3 rounded bg-white">
-                                                <h3 class="title mb-3 ls-2 text-uppercase">Resumen</h3>
+                                            <div class="cart-info sidebar-sticky purchase-summary">
+                                                <h3 class="title mb-3 ls-2 text-uppercase">{{ 'purchase_tracking.summary' | translate }}</h3>
                                                 <div class="cart-order-detail cart-col small text-muted">
                                                     <div class="row g-0 mb-2">
-                                                        <span class="col-6 fw-light">Pedidos</span>
+                                                        <span class="col-6 fw-light">{{ 'purchase_tracking.orders' | translate }}</span>
                                                         <span class="col-6 text-end">{{ sale_orders?.length || 0 }}</span>
                                                     </div>
                                                     <div class="row g-0 mb-2">
-                                                        <span class="col-6 fw-light">Última compra</span>
-                                                        <span class="col-6 text-end small text-muted">{{ lastPurchaseDate | date:'mediumDate' }}</span>
+                                                        <span class="col-6 fw-light">{{ 'purchase_tracking.last_purchase' | translate }}</span>
+                                                        <span class="col-6 text-end small text-muted">{{ formatPurchaseDate(lastPurchaseDate) }}</span>
                                                     </div>
                                                     <div class="row g-0 mb-2">
-                                                        <span class="col-6 fw-light">Ayuda</span>
-                                                        <span class="col-6 text-end"><a href="#" onclick="return false;" class="text-decoration-underline">Atención al cliente</a></span>
+                                                        <span class="col-6 fw-light">{{ 'purchase_tracking.help' | translate }}</span>
+                                                        <span class="col-6 text-end"><a href="#" onclick="return false;" class="text-decoration-underline">{{ 'purchase_tracking.customer_service' | translate }}</a></span>
                                                     </div>
                                                     <div class="mt-3">
-                                                        <a [routerLink]="['/', country, locale, 'shop', 'filter-products']" class="btn-dark-ld text-uppercase d-block text-center">Descubrir lo último</a>
+                                                        <a [routerLink]="['/', country, locale, 'shop', 'filter-products']" class="btn-dark-ld text-uppercase d-block text-center">{{ 'purchase_tracking.discover' | translate }}</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -261,7 +216,7 @@
 
             <!-- Paginación -->
             <!-- Paginación -->
-            <nav class="clearfix pagination-bottom" *ngIf="sale_orders.length > 0">
+            <nav class="clearfix pagination-bottom" *ngIf="totalPages > 1">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" [class.disabled]="currentPage === 1">
                         <a class="page-link" href="#" onclick="return false;" (click)="onPageChange(currentPage - 1)" [class.disabled]="currentPage === 1">

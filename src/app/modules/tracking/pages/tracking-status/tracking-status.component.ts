@@ -1,3 +1,4 @@
+import { AuthService } from '../../../auth-profile/_services/auth.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, Subscription, takeUntil } from 'rxjs';
@@ -19,6 +20,7 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
   // Data
   orderId: string = '';
   token: string = '';
+  isAuthenticatedTracking: boolean = false;
   trackingData: TrackingStatus | null = null;
 
   // Estados
@@ -39,7 +41,8 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private trackingService: TrackingService
+    private trackingService: TrackingService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -56,9 +59,15 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
         this.orderId = params['orderId'];
-        this.token = params['token'];
+        this.token = params['token'] || '';
 
-        if (this.orderId && this.token) {
+        this.isAuthenticatedTracking =
+          this.route.snapshot.data['authenticatedTracking'] === true;
+
+        if (
+          this.orderId &&
+          (this.isAuthenticatedTracking || this.token)
+        ) {
           this.loadTrackingData();
         } else {
           // Si falta orderId o token, redirigir a búsqueda
@@ -84,8 +93,17 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
     this.trackingData = null;
     this.timeline = [];
 
-    this.trackingRequest = this.trackingService
-      .getTrackingStatus(this.orderId, this.token)
+    const request$ = this.isAuthenticatedTracking
+      ? this.trackingService.getAuthenticatedTrackingStatus(
+          this.orderId,
+          this.authService.token
+        )
+      : this.trackingService.getTrackingStatus(
+          this.orderId,
+          this.token
+        );
+
+    this.trackingRequest = request$
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
@@ -95,6 +113,19 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
 
         },
         error: (error) => {
+          if (
+            this.isAuthenticatedTracking &&
+            error?.status === 401
+          ) {
+            this.isLoading = false;
+
+            this.router.navigate([
+              '/', this.country, this.locale, 'auth', 'login'
+            ]);
+
+            return;
+          }
+
           this.error = 'tracking.status.error_description';
           this.isLoading = false;
           console.error('Error cargando el estado del pedido');
@@ -114,7 +145,13 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
    * 🔙 Volver a búsqueda
    */
   goBack(): void {
-    this.router.navigate(['/', this.country, this.locale, 'tracking']);
+    const destination = this.isAuthenticatedTracking
+      ? ['account', 'mypurchases']
+      : ['tracking'];
+
+    this.router.navigate([
+      '/', this.country, this.locale, ...destination
+    ]);
   }
 
   /**

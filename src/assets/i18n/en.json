@@ -776,5 +776,32 @@
         "unknown": "An issue is awaiting review."
       }
     }
+  },
+  "purchase_tracking": {
+    "view_order": "View my order",
+    "download_receipt": "Download receipt",
+    "generating": "Generating...",
+    "title": "My purchases",
+    "empty_title": "You have no purchases yet",
+    "empty_description": "Your online purchases will appear here.",
+    "discover": "Discover what's new",
+    "order": "Order #",
+    "date": "Date:",
+    "paid_with": "Paid with:",
+    "total": "Total:",
+    "sku": "Item no.",
+    "quantity": "Qty:",
+    "status": "Status:",
+    "discount": "% off",
+    "original_price": "Original price:",
+    "saving": "Saving:",
+    "summary": "Summary",
+    "orders": "Orders",
+    "last_purchase": "Last purchase",
+    "help": "Help",
+    "customer_service": "Customer service",
+    "final_price": "Final price",
+    "price": "Price",
+    "back_to_purchases": "Back to my purchases"
   }
 }

@@ -22,3 +22,186 @@
   border-color: #dee2e6;
   color: #6c757d;
 }
+/* Order-level actions */
+.order-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-actions .btn {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+}
+
+.order-tracking-button {
+  padding: 10px 20px;
+  background-color: #111;
+  border-color: #111;
+  color: #fff;
+}
+
+.order-tracking-button:hover {
+  background-color: #333;
+  border-color: #333;
+  color: #fff;
+}
+
+@media (max-width: 575.98px) {
+  .order-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .order-actions .btn {
+    width: 100%;
+  }
+}
+
+/* LujanDev purchase identity */
+
+.lujandev-purchases .page-title h2 {
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: #111;
+}
+
+.lujandev-purchases .order-card {
+  padding: 24px;
+  border: 1px solid #dedede;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.lujandev-purchases .order-header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.lujandev-purchases .order-header strong {
+  font-weight: 700;
+}
+
+.lujandev-purchases .order-payment {
+  display: inline-block;
+  color: #666;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.lujandev-purchases .order-products {
+  padding: 8px 0 16px;
+}
+
+.lujandev-purchases .order-products img {
+  border-radius: 0 !important;
+}
+
+.lujandev-purchases .order-products .view {
+  color: #111;
+}
+
+.lujandev-purchases .order-actions {
+  gap: 12px;
+  padding-top: 20px !important;
+}
+
+.lujandev-purchases .order-actions .btn {
+  min-height: 46px;
+  padding: 12px 22px;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.lujandev-purchases .order-tracking-button {
+  background: #111 !important;
+  border: 1px solid #111 !important;
+  color: #fff !important;
+}
+
+.lujandev-purchases .order-receipt-button {
+  background: #fff !important;
+  border: 1px solid #111 !important;
+  color: #111 !important;
+}
+
+.lujandev-purchases .order-tracking-button:hover {
+  background: #333 !important;
+}
+
+.lujandev-purchases .order-receipt-button:hover:not(:disabled) {
+  background: #f3f3f3 !important;
+}
+
+.lujandev-purchases .order-actions .btn:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 3px;
+}
+
+.lujandev-purchases .purchase-summary {
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 24px;
+}
+
+.lujandev-purchases .purchase-summary .title {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #dedede;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.lujandev-purchases .purchase-summary .btn-dark-ld {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.lujandev-purchases .pagination .page-link {
+  border-radius: 0 !important;
+  box-shadow: none;
+}
+
+@media (max-width: 575.98px) {
+  .lujandev-purchases .order-card {
+    padding: 16px;
+  }
+
+  .lujandev-purchases .order-header {
+    gap: 12px;
+  }
+
+  .lujandev-purchases .order-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lujandev-purchases .order-actions .btn {
+    width: 100%;
+  }
+
+  .lujandev-purchases .purchase-summary {
+    padding: 16px 0;
+  }
+}
+
+/* Purchase icon refinement */
+
+.lujandev-purchases .order-products .view,
+.lujandev-purchases .order-products .view .icon {
+  color: #111 !important;
+}
+
+.lujandev-purchases .order-products .view:hover .icon {
+  color: #666 !important;
+}

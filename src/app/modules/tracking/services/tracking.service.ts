@@ -41,6 +41,56 @@ export class TrackingService {
 
 
 
+  /**
+   * Retrieves tracking for an authenticated customer.
+   * Ownership and tenant authorization are enforced by the API.
+   */
+  getAuthenticatedTrackingStatus(
+    orderId: string,
+    accessToken: string
+  ): Observable<TrackingStatus> {
+
+    if (
+      !/^[1-9][0-9]{0,9}$/.test(orderId) ||
+      Number(orderId) > 2147483647
+    ) {
+      return throwError(() => ({
+        status: 404
+      }));
+    }
+
+    if (!accessToken) {
+      return throwError(() => ({
+        status: 401
+      }));
+    }
+
+    const url = `${URL_SERVICE}orders/tracking/account/${encodeURIComponent(orderId)}`;
+
+    const headers = new HttpHeaders({
+      token: accessToken
+    });
+
+    this.isLoadingSubject.next(true);
+
+    return this._http.get<TrackingResponse>(
+      url,
+      { headers }
+    ).pipe(
+      timeout(this.DEFAULT_TIMEOUT),
+      map(response => {
+        if (!response.success || !response.data) {
+          throw new Error('Invalid tracking response');
+        }
+
+        return response.data;
+      }),
+      finalize(() => {
+        this.isLoadingSubject.next(false);
+      })
+    );
+  }
+
   isLoading$: Observable<boolean>;
   isLoadingSubject: BehaviorSubject<boolean>;
 

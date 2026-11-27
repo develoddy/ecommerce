@@ -12,9 +12,15 @@
 
       <span aria-hidden="true">/</span>
 
+      <a *ngIf="isAuthenticatedTracking; else publicTrackingBreadcrumb"
+         [routerLink]="['/', country, locale, 'account', 'mypurchases']">
+        {{ 'purchase_tracking.title' | translate }}
+      </a>
+      <ng-template #publicTrackingBreadcrumb>
       <a [routerLink]="['/', country, locale, 'tracking']">
         {{ 'tracking.search.title' | translate }}
       </a>
+      </ng-template>
 
       <span aria-hidden="true">/</span>
 
@@ -23,6 +29,15 @@
       </span>
 
     </nav>
+    <div *ngIf="isAuthenticatedTracking" class="account-tracking-return">
+      <a
+        [routerLink]="['/', country, locale, 'account', 'mypurchases']"
+        class="account-tracking-return-link">
+        <span aria-hidden="true">←</span>
+        {{ 'purchase_tracking.back_to_purchases' | translate }}
+      </a>
+    </div>
+
 
     <!-- Loading -->
     <section *ngIf="isLoading"
@@ -56,7 +71,9 @@
         <button type="button"
                 class="detail-button detail-button-outline"
                 (click)="goBack()">
-          {{ 'tracking.status.back' | translate }}
+          {{ (isAuthenticatedTracking
+            ? 'purchase_tracking.back_to_purchases'
+            : 'tracking.status.back') | translate }}
         </button>
       </div>
 
@@ -79,7 +96,7 @@
 
             <p class="order-reference">
               {{ 'tracking.status.order_number' | translate }}
-              #{{ data.orderId || orderId }}
+              #{{ data.externalId || data.orderId || orderId }}
             </p>
 
           </div>

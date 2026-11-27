@@ -31,7 +31,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   locale: string = "";
   country: string = "";
-  
+
   // Loading state para descarga de recibos
   downloadingReceipts: Set<number> = new Set(); // Track múltiples descargas por saleId
 
@@ -47,13 +47,13 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     this.country = this.localizationService.country;
     this.locale = this.localizationService.locale;
   }
- 
+
   ngOnInit(): void {
     this.subscriptions = this._ecommerceAuthService.loading$.subscribe(isLoading => {
       this.loading = isLoading;
     });
 
-    this.verifyAuthenticatedUser(); 
+    this.verifyAuthenticatedUser();
   }
 
   private verifyAuthenticatedUser(): void {
@@ -74,34 +74,6 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     };
 
     this._ecommerceAuthService.showProfileClient(data).subscribe((resp:any) => {
-      console.log("Mis compras: ", resp);
-      console.log("Estructura de sale_orders[0]:", resp.sale_orders?.[0]);
-      console.log("Estructura de sale_details[0]:", resp.sale_orders?.[0]?.sale_details?.[0]);
-      // Debug: Examinar campos de descuento disponibles
-       if (resp.sale_orders?.[0]?.sale_details?.[0]) {
-         const detail = resp.sale_orders[0].sale_details[0];
-         console.log("🔍 Campos de descuento disponibles:", {
-           code_discount: detail.code_discount,
-           discount: detail.discount,
-           code_cupon: detail.code_cupon,
-           price_unitario: detail.price_unitario,
-           type_discount: detail.type_discount,
-           product_price_eur: detail.product?.price_eur || detail.product?.price || detail.product?.price_usd,
-           product_price_usd: detail.product?.price_usd, // Legacy
-           variedad_retail_price: detail.variedad?.retail_price || detail.variedade?.retail_price
-         });
-        
-      //   // Debug de cálculos de descuento
-      //   console.log("🧮 Test de cálculos para el primer producto:", {
-      //     hasDiscount: this.hasDiscount(detail),
-      //     originalPrice: this.getOriginalPrice(detail),
-      //     finalPrice: this.getFinalUnitPrice(detail),
-      //     discountPercentage: this.getDiscountPercentage(detail),
-      //     discountAmount: this.getDiscountAmount(detail),
-      //     discountType: this.getDiscountType(detail)
-      //   });
-      }
-      
       this.sale_orders = resp.sale_orders;
       this.sale_details = [];
 
@@ -161,11 +133,11 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     if (!this.sale_details || this.sale_details.length === 0) {
       return null;
     }
-    
+
     // Como ya están ordenados, el primer elemento es la compra más reciente
     const lastDetail = this.sale_details[0];
     const dateStr = lastDetail?.sale?.createdAt || lastDetail?.sale?.updatedAt || lastDetail?.createdAt;
-    
+
     return dateStr ? new Date(dateStr) : null;
   }
 
@@ -185,7 +157,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   }
 
   // 📄 ================ MÉTODOS PARA RECIBOS ================ 📄
-  
+
   /**
    * Descargar recibo en PDF para una venta específica
    */
@@ -201,7 +173,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     }
 
     //console.log(`Descargando recibo para venta ID: ${saleId}`);
-    
+
     // Iniciar loading state
     this.downloadingReceipts.add(saleId);
 
@@ -209,7 +181,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     this._ecommerceAuthService.getReceiptBySale(saleId).subscribe({
       next: (resp: any) => {
         //console.log('Recibo obtenido:', resp);
-        
+
         if (resp && resp.success && resp.receipt) {
           // Si existe el recibo, proceder con la descarga del PDF
           this.downloadReceiptPdf(resp.receipt.id, saleId);
@@ -240,17 +212,17 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
         const link = document.createElement('a');
         link.href = url;
         link.download = `recibo-pedido-${saleId}.pdf`;
-        
+
         // Simular click para iniciar descarga
         document.body.appendChild(link);
         link.click();
-        
+
         // Limpiar
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-        
+
         console.log(`✅ Recibo descargado: recibo-pedido-${saleId}.pdf`);
-        
+
         // Terminar loading state
         this.downloadingReceipts.delete(saleId);
       },
@@ -288,7 +260,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
 
     // Obtener el total de la venta tal como está almacenado (suma exacta)
     const totalPrice = sale.total || sale.total_amount || 0;
-    
+
     // ✅ NO aplicar redondeo .95 al total - debe ser suma exacta de productos
     // El redondeo .95 solo se aplica a precios unitarios individuales
     return parseFloat(totalPrice.toString());
@@ -311,11 +283,11 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
    */
   hasDiscount(prodDetail: any): boolean {
     if (!prodDetail) return false;
-    
+
     // type_campaign: 1=Campaign, 2=Flash Sale, 3=Cupón
     // Solo mostrar descuento si type_campaign está presente y discount > 0
-    return prodDetail.type_campaign && 
-           [1, 2, 3].includes(prodDetail.type_campaign) && 
+    return prodDetail.type_campaign &&
+           [1, 2, 3].includes(prodDetail.type_campaign) &&
            parseFloat(prodDetail.discount || 0) > 0;
   }
 
@@ -326,12 +298,12 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
    */
   getOriginalPrice(prodDetail: any): number {
     if (!prodDetail) return 0;
-    
+
     // Usar el mismo orden de prioridad que el sistema de checkout
     const variedad = prodDetail.variedad || prodDetail.variedade;
     const retailPrice = parseFloat(variedad?.retail_price || 0);
     const productPrice = parseFloat(prodDetail.product?.price_eur || prodDetail.product?.price || prodDetail.product?.price_usd || 0);
-    
+
     // Priorizar retail_price de variedad, luego price_usd del producto
     return retailPrice > 0 ? retailPrice : productPrice;
   }
@@ -344,14 +316,14 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
    */
   getFinalUnitPrice(prodDetail: any): number {
     if (!prodDetail) return 0;
-    
+
     // price_unitario ya viene con el cálculo correcto desde el backend
     const finalPrice = parseFloat(prodDetail.price_unitario || 0);
-    
+
     if (finalPrice > 0) {
       return finalPrice;
     }
-    
+
     // Fallback: usar retail_price si price_unitario no está disponible
     const variedad = prodDetail.variedad || prodDetail.variedade;
     return parseFloat(variedad?.retail_price || prodDetail.product?.price_eur || prodDetail.product?.price || prodDetail.product?.price_usd || 0);
@@ -364,12 +336,12 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
    */
   getDiscountAmount(prodDetail: any): number {
     if (!prodDetail || !this.hasDiscount(prodDetail)) return 0;
-    
+
     const originalPrice = this.getOriginalPrice(prodDetail);
     const finalPrice = this.getFinalUnitPrice(prodDetail);
-    
+
     if (originalPrice <= 0 || finalPrice >= originalPrice) return 0;
-    
+
     // ✅ Calcular ahorro exacto: originalPrice - finalPrice
     // Ejemplo: 22.95 - 20.66 = 2.29 (no 2.95)
     return parseFloat((originalPrice - finalPrice).toFixed(2));
@@ -382,18 +354,18 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
    */
   getDiscountPercentage(prodDetail: any): number {
     if (!prodDetail || !this.hasDiscount(prodDetail)) return 0;
-    
+
     // Si type_discount es 1 (porcentual), usar directamente el valor de discount
     if (prodDetail.type_discount === 1 && prodDetail.discount > 0) {
       return Math.round(parseFloat(prodDetail.discount));
     }
-    
+
     // Si type_discount es 2 (fijo), calcular porcentaje
     const originalPrice = this.getOriginalPrice(prodDetail);
     const discountAmount = parseFloat(prodDetail.discount || 0);
-    
+
     if (originalPrice <= 0 || discountAmount <= 0) return 0;
-    
+
     return Math.round((discountAmount / originalPrice) * 100);
   }
 
@@ -404,7 +376,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
    */
   getDiscountType(prodDetail: any): string {
     if (!prodDetail || !this.hasDiscount(prodDetail)) return '';
-    
+
     // Usar type_campaign validado en backend
     // type_campaign: 1=Campaign Discount, 2=Flash Sale, 3=Cupón
     if (prodDetail.type_campaign === 3) {
@@ -414,7 +386,7 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
     } else if (prodDetail.type_campaign === 1) {
       return 'Campaign Discount';
     }
-    
+
     return '';
   }
 
@@ -429,102 +401,49 @@ export class ListPurchasesComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 🚚 PRINTFUL TRACKING METHODS (usando campos existentes)
+   * Physical orders support authenticated tracking.
+   * The API independently enforces ownership and tenant scope.
    */
-
-  /**
-   * Get CSS class for Printful sync status badge
-   * @param syncStatus syncStatus from Sale model
-   * @returns Bootstrap badge class
-   */
-  getSyncStatusClass(syncStatus: string): string {
-    switch (syncStatus?.toLowerCase()) {
-      case 'pending':
-        return 'bg-warning text-dark';
-      case 'shipped':
-        return 'bg-info text-white';
-      case 'fulfilled':
-        return 'bg-success text-white';
-      case 'failed':
-        return 'bg-danger text-white';
-      case 'canceled':
-        return 'bg-secondary text-white';
-      default:
-        return 'bg-secondary text-white';
-    }
+  canTrackOrder(sale: any): boolean {
+    return !!sale &&
+      sale.module_id === null &&
+      Number.isSafeInteger(Number(sale.id)) &&
+      Number(sale.id) > 0 &&
+      Number(sale.id) <= 2147483647;
   }
 
-  /**
-   * Get Spanish text for Printful sync status
-   * @param syncStatus syncStatus from Sale model
-   * @returns Spanish status text
-   */
-  getSyncStatusText(syncStatus: string): string {
-    switch (syncStatus?.toLowerCase()) {
-      case 'pending':
-        return '⏳ Procesando';
-      case 'shipped':
-        return '🚚 Enviado';
-      case 'fulfilled':
-        return '📦 Entregado';
-      case 'failed':
-        return '❌ Error';
-      case 'canceled':
-        return '❌ Cancelado';
-      default:
-        return '❓ Estado desconocido';
-    }
+  formatPurchaseAmount(value: number): string {
+    if (!Number.isFinite(value)) return '';
+
+    return new Intl.NumberFormat(
+      this.locale === 'es' ? 'es-ES' : 'en-GB',
+      {
+        style: 'currency',
+        currency: 'EUR'
+      }
+    ).format(value);
   }
 
-  /**
-   * Check if order has tracking information from Printful
-   * @param sale Sale object with Printful tracking fields
-   * @returns True if has tracking
-   */
-  hasTrackingInfo(sale: any): boolean {
-    return sale && (
-      sale.trackingNumber || 
-      sale.trackingUrl || 
-      sale.printfulOrderId ||
-      (sale.syncStatus && sale.syncStatus !== 'pending')
-    );
-  }
+  formatPurchaseDate(value: any): string {
+    if (!value) return '';
 
-  /**
-   * Get processing status text for orders without tracking yet
-   * @param syncStatus Current sync status
-   * @returns Processing status text
-   */
-  getProcessingStatusText(syncStatus: string): string {
-    switch (syncStatus?.toLowerCase()) {
-      case 'failed':
-        return 'Error en el procesamiento';
-      case 'canceled':
-        return 'Pedido cancelado';
-      default:
-        return 'Procesando pedido';
-    }
-  }
+    const date = new Date(value);
 
-  /**
-   * Get processing status description
-   * @param syncStatus Current sync status
-   * @returns Processing description
-   */
-  getProcessingStatusDescription(syncStatus: string): string {
-    switch (syncStatus?.toLowerCase()) {
-      case 'failed':
-        return 'Hubo un problema con tu pedido. Contacta con soporte.';
-      case 'canceled':
-        return 'Tu pedido ha sido cancelado.';
-      default:
-        return 'Tu pedido está siendo preparado por Printful. Te notificaremos cuando sea enviado.';
-    }
+    if (Number.isNaN(date.getTime())) return '';
+
+    return new Intl.DateTimeFormat(
+      this.locale === 'es' ? 'es-ES' : 'en-GB',
+      {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }
+    ).format(date);
   }
 
   ngOnDestroy(): void {
     if (this.subscriptions) {
       this.subscriptions.unsubscribe();
-    } 
+    }
   }
 }
