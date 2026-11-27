@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { TrackingService } from '../../services/tracking.service';
 import { TrackingStatus, TrackingEvent } from '../../models/tracking-status.model';
 
@@ -20,20 +20,21 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
   orderId: string = '';
   token: string = '';
   trackingData: TrackingStatus | null = null;
-  
+
   // Estados
   isLoading: boolean = false;
   error: string = '';
-  
+
   // Timeline de eventos (estilo Amazon)
   timeline: TrackingEvent[] = [];
-  
+
   // Route params
   country: string = 'es';
   locale: string = 'es';
 
   // Cleanup
   private destroy$ = new Subject<void>();
+  private trackingRequest?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,7 +44,9 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Obtener country y locale del parent route
-    this.route.parent?.params.subscribe(params => {
+    this.route.parent?.params
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
       this.country = params['country'] || 'es';
       this.locale = params['locale'] || 'es';
     });
@@ -54,7 +57,7 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
       .subscribe(params => {
         this.orderId = params['orderId'];
         this.token = params['token'];
-        
+
         if (this.orderId && this.token) {
           this.loadTrackingData();
         } else {
@@ -65,6 +68,7 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.trackingRequest?.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -73,20 +77,25 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
    * 🔄 Cargar datos de tracking desde el backend
    */
   loadTrackingData(): void {
+    this.trackingRequest?.unsubscribe();
+
     this.isLoading = true;
     this.error = '';
+    this.trackingData = null;
+    this.timeline = [];
 
-    this.trackingService.getTrackingStatus(this.orderId, this.token)
+    this.trackingRequest = this.trackingService
+      .getTrackingStatus(this.orderId, this.token)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
           this.trackingData = data;
           this.timeline = data.timeline || [];
           this.isLoading = false;
-          
+
         },
         error: (error) => {
-          this.error = error.message || 'Error al cargar el estado del pedido';
+          this.error = 'tracking.status.error_description';
           this.isLoading = false;
           console.error('Error cargando el estado del pedido');
         }
@@ -97,6 +106,7 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
    * 🔄 Refrescar datos de tracking
    */
   refreshTracking(): void {
+    if (this.isLoading) return;
     this.loadTrackingData();
   }
 
@@ -118,6 +128,78 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
   /**
    * 📝 Obtener texto en español para estado
    */
+  get commercialStatusKey(): string {
+    const status = this.trackingData?.commercialStatus;
+
+    switch (status) {
+      case 'pending_confirmation':
+      case 'confirmed':
+      case 'production':
+      case 'partially_shipped':
+      case 'shipped':
+      case 'delivered':
+        return 'tracking.status.states.' + status;
+      default:
+        return 'tracking.status.states.unknown';
+    }
+  }
+
+  get commercialExceptions(): string[] {
+    const exceptions = this.trackingData?.exceptions;
+
+    if (!Array.isArray(exceptions)) return [];
+
+    const allowed = [
+      'returned', 'failed', 'canceled', 'onhold'
+    ];
+
+    return Array.from(new Set(
+      exceptions.map(exception =>
+        allowed.includes(exception) ? exception : 'unknown'
+      )
+    ));
+  }
+
+  trackTimelineEvent(
+    _index: number,
+    event: TrackingEvent
+  ): string {
+    return event.type;
+  }
+
+  getCommercialTimeline(): TrackingEvent[] {
+    const stages: {
+      type: TrackingEvent['type'];
+      key: string;
+    }[] = [
+      { type: 'order_received', key: 'confirmed' },
+      { type: 'manufacturing', key: 'production' },
+      { type: 'shipped', key: 'shipped' },
+      { type: 'delivered', key: 'delivered' }
+    ];
+
+    return stages.map(stage => {
+      const event = this.timeline.find(
+        item => item.type === stage.type
+      );
+
+      return {
+        type: stage.type,
+        title: 'tracking.status.timeline.' + stage.key,
+        description: '',
+        completed: event?.completed === true,
+        status: event?.completed === true
+          ? 'completed'
+          : event?.status === 'processing'
+            ? 'processing'
+            : 'pending',
+        date: event?.completed === true
+          ? event.date
+          : null
+      };
+    });
+  }
+
   getStatusText(): string {
     if (!this.trackingData) return '';
     if (this.timeline.some(event =>
@@ -132,6 +214,20 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
   /**
    * 🔗 Abrir tracking URL del carrier en nueva pestaña
    */
+  get hasTrackingUrl(): boolean {
+    try {
+      const value = this.trackingData?.trackingUrl;
+      if (!value) return false;
+
+      const url = new URL(value);
+
+      return url.protocol === 'https:' ||
+        url.protocol === 'http:';
+    } catch {
+      return false;
+    }
+  }
+
   openTrackingUrl(): void {
     if (this.trackingData?.trackingUrl) {
       try {
@@ -188,10 +284,11 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
     if (!dateString) return '';
     const date = new Date(dateString);
     if (Number.isNaN(date.getTime())) return '';
-    return date.toLocaleDateString('es-ES', { 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
+    return date.toLocaleDateString(
+      this.locale === 'es' ? 'es-ES' : 'en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
     });
   }
 
@@ -212,7 +309,7 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
   getItemImage(item: any): string {
     // 🎯 Lógica idéntica a successfull-checkout para consistencia visual
     // Priorizar mockup con diseño aplicado (preview) sobre producto genérico
-    
+
     // 1️⃣ Buscar en variedade.files (mockups con diseño aplicado)
     if (item.variedade && Array.isArray(item.variedade.files) && item.variedade.files.length > 0) {
       // Preview primero (mockup con diseño)
@@ -232,11 +329,11 @@ export class TrackingStatusComponent implements OnInit, OnDestroy {
     if (item.files && item.files.length > 0) {
       const previewFile = item.files.find((f: any) => f.type === 'preview');
       if (previewFile?.preview_url) return previewFile.preview_url;
-      
+
       const anyFile = item.files.find((f: any) => f.thumbnail_url || f.preview_url || f.url);
       if (anyFile) return anyFile.thumbnail_url || anyFile.preview_url || anyFile.url;
     }
-    
+
     // 3️⃣ Fallback final al producto genérico
     return item.product?.imagen || item.product?.portada || 'assets/images/placeholder.png';
   }

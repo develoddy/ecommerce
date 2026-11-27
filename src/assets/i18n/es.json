@@ -701,6 +701,61 @@
       "help_description": "Revisa los emails relacionados con tu compra. Allí encontrarás los datos de seguimiento cuando estén disponibles.",
       "navigation_error": "No se pudo consultar el pedido. Inténtalo de nuevo.",
       "breadcrumb_label": "Ruta de navegación"
+    },
+    "status": {
+      "detail": "Detalle",
+      "order_number": "Pedido",
+      "refresh": "Actualizar estado",
+      "loading": "Consultando tu pedido...",
+      "error_title": "No hemos podido consultar tu pedido",
+      "error_description": "Comprueba los datos de acceso o inténtalo de nuevo más tarde.",
+      "retry": "Volver a intentar",
+      "back": "Volver a seguimiento",
+      "timeline_title": "Estado de tu pedido",
+      "exception_title": "Información importante",
+      "shipment_title": "Información del envío",
+      "carrier": "Transportista",
+      "tracking_number": "Número de seguimiento",
+      "shipped_date": "Fecha de envío",
+      "delivered_date": "Fecha de entrega",
+      "estimated_delivery": "Entrega estimada",
+      "no_tracking": "No hay información de seguimiento del transportista disponible.",
+      "track_shipment": "Seguir envío",
+      "shipment_scope": "Esta información puede corresponder a uno de los envíos de tu pedido.",
+      "order_title": "Tu pedido",
+      "quantity": "Cantidad",
+      "total_items": "Total de artículos",
+      "no_items": "La información de los artículos no está disponible.",
+      "help_title": "¿Necesitas ayuda con tu pedido?",
+      "help_description": "Consulta los emails relacionados con tu compra para obtener más información.",
+      "continue_shopping": "Continuar comprando",
+      "states": {
+        "pending_confirmation": "Pendiente de confirmación",
+        "confirmed": "Pedido confirmado",
+        "production": "Tu pedido está en producción",
+        "partially_shipped": "Pedido enviado parcialmente",
+        "shipped": "Tu pedido ha sido enviado",
+        "delivered": "Tu pedido ha sido entregado",
+        "unknown": "Estado no disponible"
+      },
+      "timeline": {
+        "confirmed": "Confirmado",
+        "production": "Producción",
+        "shipped": "Enviado",
+        "delivered": "Entregado"
+      },
+      "step_status": {
+        "completed": "Completado",
+        "processing": "En curso",
+        "pending": "Pendiente"
+      },
+      "exceptions": {
+        "returned": "Se ha registrado una devolución de envío.",
+        "failed": "Se ha registrado una incidencia en el pedido.",
+        "canceled": "El pedido está cancelado.",
+        "onhold": "El pedido está en espera.",
+        "unknown": "Hay una incidencia pendiente de revisión."
+      }
     }
   }
 }

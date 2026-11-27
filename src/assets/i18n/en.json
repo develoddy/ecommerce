@@ -701,6 +701,61 @@
       "help_description": "Check your order emails. You will find your tracking details there when they become available.",
       "navigation_error": "We couldn't retrieve your order. Please try again.",
       "breadcrumb_label": "Breadcrumb"
+    },
+    "status": {
+      "detail": "Order details",
+      "order_number": "Order",
+      "refresh": "Refresh status",
+      "loading": "Retrieving your order...",
+      "error_title": "We couldn't retrieve your order",
+      "error_description": "Check your access details or try again later.",
+      "retry": "Try again",
+      "back": "Back to tracking",
+      "timeline_title": "Order status",
+      "exception_title": "Important information",
+      "shipment_title": "Shipment information",
+      "carrier": "Carrier",
+      "tracking_number": "Tracking number",
+      "shipped_date": "Shipping date",
+      "delivered_date": "Delivery date",
+      "estimated_delivery": "Estimated delivery",
+      "no_tracking": "Carrier tracking information is not available.",
+      "track_shipment": "Track shipment",
+      "shipment_scope": "This information may relate to one of your order's shipments.",
+      "order_title": "Your order",
+      "quantity": "Quantity",
+      "total_items": "Total items",
+      "no_items": "Order item information is not available.",
+      "help_title": "Need help with your order?",
+      "help_description": "Check your order emails for more information.",
+      "continue_shopping": "Continue shopping",
+      "states": {
+        "pending_confirmation": "Awaiting confirmation",
+        "confirmed": "Order confirmed",
+        "production": "Your order is in production",
+        "partially_shipped": "Order partially shipped",
+        "shipped": "Your order has shipped",
+        "delivered": "Your order has been delivered",
+        "unknown": "Order status unavailable"
+      },
+      "timeline": {
+        "confirmed": "Confirmed",
+        "production": "Production",
+        "shipped": "Shipped",
+        "delivered": "Delivered"
+      },
+      "step_status": {
+        "completed": "Completed",
+        "processing": "In progress",
+        "pending": "Pending"
+      },
+      "exceptions": {
+        "returned": "A shipment return has been recorded.",
+        "failed": "An issue has been recorded with your order.",
+        "canceled": "The order has been canceled.",
+        "onhold": "The order is on hold.",
+        "unknown": "An issue is awaiting review."
+      }
     }
   }
 }

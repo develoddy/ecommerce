@@ -1,0 +1,89 @@
+.detail-timeline {
+  padding: 30px 0 36px;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.timeline-stages {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  list-style: none;
+  padding: 0;
+  margin: 32px 0 0;
+}
+
+.timeline-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  gap: 14px;
+  text-align: center;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 19px;
+    left: calc(50% + 20px);
+    width: calc(100% - 40px);
+    height: 1px;
+    background: #ddd;
+  }
+
+  &.completed {
+    .stage-marker {
+      background: #111;
+      border-color: #111;
+      color: #fff;
+    }
+  }
+
+  &.active {
+    .stage-marker {
+      border-color: #111;
+      color: #111;
+    }
+
+    .stage-title {
+      font-weight: 600;
+    }
+  }
+}
+
+.stage-marker {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  background: #fff;
+  color: #666;
+  font-size: 13px;
+}
+
+.stage-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px;
+}
+
+.stage-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #111;
+}
+
+.stage-status,
+.stage-date {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #666;
+}

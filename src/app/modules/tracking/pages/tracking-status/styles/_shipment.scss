@@ -1,0 +1,48 @@
+.shipment-section {
+  min-width: 0;
+}
+
+.shipment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 0;
+    border-bottom: 1px solid #eee;
+
+    &:first-child {
+      padding-top: 0;
+    }
+  }
+
+  dt {
+    font-size: 12px;
+    font-weight: 400;
+    color: #666;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+}
+
+.shipment-note {
+  margin: 16px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #666;
+}
+
+.shipment-button {
+  width: 100%;
+  margin-top: 24px;
+}
