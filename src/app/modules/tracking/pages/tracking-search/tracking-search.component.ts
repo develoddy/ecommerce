@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TrackingService } from '../../services/tracking.service';
 
@@ -12,7 +14,19 @@ import { TrackingService } from '../../services/tracking.service';
   templateUrl: './tracking-search.component.html',
   styleUrls: ['./tracking-search.component.scss']
 })
-export class TrackingSearchComponent implements OnInit {
+export class TrackingSearchComponent implements OnInit, OnDestroy {
+
+  accessMode: 'email' | 'token' = 'email';
+
+  recoveryOrderId = '';
+  recoveryEmail = '';
+  recoveryOrderTouched = false;
+  recoveryEmailTouched = false;
+  recoveryMessage = '';
+  recoveryAccepted = false;
+  isRecovering = false;
+
+  private subscriptions = new Subscription();
 
   orderId: string = '';
   trackingToken: string = '';
@@ -38,10 +52,14 @@ export class TrackingSearchComponent implements OnInit {
     this.errorMessage = '';
     
     // Obtener country y locale de la ruta
-    this.route.parent?.params.subscribe(params => {
-      this.country = params['country'] || 'es';
-      this.locale = params['locale'] || 'es';
-    });
+    if (this.route.parent) {
+      this.subscriptions.add(
+        this.route.parent.params.subscribe(params => {
+          this.country = params['country'] || 'es';
+          this.locale = params['locale'] || 'es';
+        })
+      );
+    }
   }
 
   /**
@@ -55,6 +73,92 @@ export class TrackingSearchComponent implements OnInit {
 
   get isTokenValid(): boolean {
     return /^[a-fA-F0-9]{32}$/.test(this.trackingToken.trim());
+  }
+
+
+  get isRecoveryOrderValid(): boolean {
+    const id = this.recoveryOrderId.trim().replace(/^#/, '');
+
+    return /^[1-9][0-9]{0,9}$/.test(id) &&
+      Number(id) <= 2147483647;
+  }
+
+  get isRecoveryEmailValid(): boolean {
+    const email = this.recoveryEmail.trim();
+
+    return email.length <= 254 &&
+      /^[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+$/.test(email);
+  }
+
+  switchAccessMode(): void {
+    if (this.isRecovering || this.isSearching) return;
+
+    this.accessMode =
+      this.accessMode === 'email' ? 'token' : 'email';
+
+    this.errorMessage = '';
+    this.recoveryMessage = '';
+    this.recoveryAccepted = false;
+    this.recoveryOrderTouched = false;
+    this.recoveryEmailTouched = false;
+    this.orderIdTouched = false;
+    this.tokenTouched = false;
+  }
+
+  clearRecoveryMessage(): void {
+    this.recoveryMessage = '';
+    this.recoveryAccepted = false;
+  }
+
+  recoverTracking(): void {
+    if (this.isRecovering || this.recoveryAccepted) return;
+
+    this.recoveryOrderTouched = true;
+    this.recoveryEmailTouched = true;
+    this.clearRecoveryMessage();
+
+    if (!this.isRecoveryOrderValid ||
+        !this.isRecoveryEmailValid) {
+      return;
+    }
+
+    this.isRecovering = true;
+
+    this.subscriptions.add(
+      this.trackingService.recoverOrder(
+        this.recoveryOrderId,
+        this.recoveryEmail
+      ).pipe(
+        finalize(() => {
+          this.isRecovering = false;
+        })
+      ).subscribe({
+        next: response => {
+          if (response?.success === true) {
+            this.recoveryAccepted = true;
+            this.recoveryMessage = 'tracking.recovery.accepted';
+          } else {
+            this.recoveryMessage = 'tracking.recovery.error';
+          }
+        },
+        error: error => {
+          switch (error.status) {
+            case 429:
+              this.recoveryMessage = 'tracking.recovery.rate_limit';
+              break;
+            case 503:
+              this.recoveryMessage = 'tracking.recovery.unavailable';
+              break;
+            default:
+              this.recoveryMessage = 'tracking.recovery.error';
+          }
+        }
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   searchTracking(): void {

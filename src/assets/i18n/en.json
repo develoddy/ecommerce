@@ -679,6 +679,25 @@
     }
   },
   "tracking": {
+    "recovery": {
+      "description": "Enter your order number and the email address you used when placing your order.",
+      "order_placeholder": "E.g. 13",
+      "order_hint": "You can find the number in your confirmation email.",
+      "order_invalid": "Enter a valid order number.",
+      "email_label": "Purchase email",
+      "email_placeholder": "you@email.com",
+      "email_hint": "Use the email address associated with your order.",
+      "email_invalid": "Enter a valid email address.",
+      "submit": "Send tracking link",
+      "loading": "Processing request...",
+      "accepted": "If the details match an eligible order, you will receive a tracking link by email. Please also check your spam folder.",
+      "rate_limit": "Too many requests. Please try again later.",
+      "unavailable": "The service is temporarily unavailable. Please try again later.",
+      "error": "We could not process your request. Please try again.",
+      "switch_token": "I already have an access code",
+      "switch_email": "Recover access by email",
+      "help_description": "Check your order confirmation email to find your order number."
+    },
     "search": {
       "home": "Home",
       "eyebrow": "ORDER TRACKING",

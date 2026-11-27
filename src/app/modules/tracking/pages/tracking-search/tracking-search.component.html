@@ -16,11 +16,14 @@
         <span class="tracking-eyebrow">{{ 'tracking.search.eyebrow' | translate }}</span>
         <h1 id="tracking-title">{{ 'tracking.search.title' | translate }}</h1>
         <p>
-          {{ 'tracking.search.description' | translate }}
+          {{ (accessMode === 'email'
+            ? 'tracking.recovery.description'
+            : 'tracking.search.description') | translate }}
         </p>
       </header>
 
-      <form class="tracking-search-form"
+      <form *ngIf="accessMode === 'token'"
+            class="tracking-search-form"
             (ngSubmit)="searchTracking()"
             novalidate>
 
@@ -110,11 +113,124 @@
 
       </form>
 
+
+      <form *ngIf="accessMode === 'email'"
+            class="tracking-search-form"
+            (ngSubmit)="recoverTracking()"
+            novalidate>
+
+        <div class="tracking-field">
+          <label for="recoveryOrderInput">
+            {{ 'tracking.search.order_label' | translate }}
+          </label>
+
+          <input
+            id="recoveryOrderInput"
+            type="text"
+            name="recoveryOrderId"
+            [(ngModel)]="recoveryOrderId"
+            [placeholder]="'tracking.recovery.order_placeholder' | translate"
+            [class.is-invalid]="recoveryOrderTouched && !isRecoveryOrderValid"
+            [attr.aria-invalid]="recoveryOrderTouched && !isRecoveryOrderValid"
+            aria-describedby="recoveryOrderHelp"
+            (blur)="recoveryOrderTouched = true"
+            (input)="clearRecoveryMessage()"
+            [disabled]="isRecovering"
+            maxlength="11"
+            autocomplete="off"
+            required>
+
+          <small id="recoveryOrderHelp"
+                 [class.field-error]="recoveryOrderTouched && !isRecoveryOrderValid">
+            {{ (recoveryOrderTouched && !isRecoveryOrderValid
+              ? 'tracking.recovery.order_invalid'
+              : 'tracking.recovery.order_hint') | translate }}
+          </small>
+        </div>
+
+        <div class="tracking-field">
+          <label for="recoveryEmailInput">
+            {{ 'tracking.recovery.email_label' | translate }}
+          </label>
+
+          <input
+            id="recoveryEmailInput"
+            type="email"
+            name="recoveryEmail"
+            [(ngModel)]="recoveryEmail"
+            [placeholder]="'tracking.recovery.email_placeholder' | translate"
+            [class.is-invalid]="recoveryEmailTouched && !isRecoveryEmailValid"
+            [attr.aria-invalid]="recoveryEmailTouched && !isRecoveryEmailValid"
+            aria-describedby="recoveryEmailHelp"
+            (blur)="recoveryEmailTouched = true"
+            (input)="clearRecoveryMessage()"
+            [disabled]="isRecovering"
+            maxlength="254"
+            autocomplete="email"
+            autocapitalize="off"
+            spellcheck="false"
+            required>
+
+          <small id="recoveryEmailHelp"
+                 [class.field-error]="recoveryEmailTouched && !isRecoveryEmailValid">
+            {{ (recoveryEmailTouched && !isRecoveryEmailValid
+              ? 'tracking.recovery.email_invalid'
+              : 'tracking.recovery.email_hint') | translate }}
+          </small>
+        </div>
+
+        <button
+          class="tracking-submit"
+          type="submit"
+          [disabled]="isRecovering || recoveryAccepted"
+          [attr.aria-busy]="isRecovering">
+
+          <span *ngIf="isRecovering"
+                class="spinner-border spinner-border-sm"
+                aria-hidden="true"></span>
+
+          {{ (isRecovering
+            ? 'tracking.recovery.loading'
+            : 'tracking.recovery.submit') | translate }}
+        </button>
+
+        <div *ngIf="recoveryMessage"
+             [class.tracking-success]="recoveryAccepted"
+             [class.tracking-error]="!recoveryAccepted"
+             [attr.role]="recoveryAccepted ? 'status' : 'alert'">
+          {{ recoveryMessage | translate }}
+        </div>
+
+        <div class="tracking-security">
+          <svg width="15" height="15" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="1.5"
+               aria-hidden="true">
+            <rect x="5" y="10" width="14" height="11" rx="1"></rect>
+            <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+            <path d="M12 14v3"></path>
+          </svg>
+          <span>{{ 'tracking.search.secure' | translate }}</span>
+        </div>
+
+      </form>
+
+      <div class="tracking-mode-switch">
+        <button type="button"
+                (click)="switchAccessMode()"
+                [disabled]="isRecovering || isSearching">
+          {{ (accessMode === 'email'
+            ? 'tracking.recovery.switch_token'
+            : 'tracking.recovery.switch_email') | translate }}
+        </button>
+      </div>
+
       <section class="tracking-help"
                aria-labelledby="tracking-help-title">
         <h2 id="tracking-help-title">{{ 'tracking.search.help_title' | translate }}</h2>
         <p>
-          {{ 'tracking.search.help_description' | translate }}
+          {{ (accessMode === 'email'
+            ? 'tracking.recovery.help_description'
+            : 'tracking.search.help_description') | translate }}
         </p>
       </section>
 

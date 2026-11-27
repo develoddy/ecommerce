@@ -18,6 +18,29 @@ import { TrackingResponse, TrackingStatus } from '../models/tracking-status.mode
 })
 export class TrackingService {
 
+  /**
+   * Solicita un enlace de seguimiento al email de compra.
+   * La respuesta no confirma la existencia del pedido.
+   */
+  recoverOrder(
+    orderId: string,
+    email: string
+  ): Observable<{ success: boolean; message: string }> {
+    const url = `${URL_SERVICE}orders/tracking/recover`;
+
+    return this._http.post<{
+      success: boolean;
+      message: string;
+    }>(url, {
+      orderId: orderId.trim().replace(/^#/, ''),
+      email: email.trim().toLowerCase()
+    }).pipe(
+      timeout(this.DEFAULT_TIMEOUT)
+    );
+  }
+
+
+
   isLoading$: Observable<boolean>;
   isLoadingSubject: BehaviorSubject<boolean>;
 

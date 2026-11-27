@@ -679,6 +679,25 @@
     }
   },
   "tracking": {
+    "recovery": {
+      "description": "Introduce el número de pedido y el email que utilizaste al realizar tu compra.",
+      "order_placeholder": "Ej. 13",
+      "order_hint": "Encontrarás el número en tu email de confirmación.",
+      "order_invalid": "Introduce un número de pedido válido.",
+      "email_label": "Email de compra",
+      "email_placeholder": "tu@email.com",
+      "email_hint": "Utiliza el email asociado a tu pedido.",
+      "email_invalid": "Introduce una dirección de email válida.",
+      "submit": "Enviar enlace de seguimiento",
+      "loading": "Procesando solicitud...",
+      "accepted": "Si los datos coinciden con un pedido válido, recibirás un enlace de seguimiento por email. Revisa también tu carpeta de correo no deseado.",
+      "rate_limit": "Demasiadas solicitudes. Inténtalo de nuevo más tarde.",
+      "unavailable": "El servicio no está disponible temporalmente. Inténtalo más tarde.",
+      "error": "No se pudo procesar la solicitud. Inténtalo de nuevo.",
+      "switch_token": "Ya tengo un código de acceso",
+      "switch_email": "Recuperar acceso mediante email",
+      "help_description": "Consulta el email de confirmación de tu compra para encontrar el número de pedido."
+    },
     "search": {
       "home": "Inicio",
       "eyebrow": "SEGUIMIENTO DE PEDIDOS",
