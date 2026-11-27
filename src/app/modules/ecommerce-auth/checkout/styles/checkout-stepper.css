@@ -48,3 +48,94 @@
     letter-spacing: 0;
     line-height: 1.4;
 }
+
+/* Physical checkout - Minimal progress indicator */
+
+.checkout-stepper.ld-stepper-minimal {
+    padding: 16px 0 18px;
+    margin-bottom: 16px;
+}
+
+.ld-stepper-minimal .row {
+    max-width: 560px;
+}
+
+.ld-stepper-minimal .step-circle {
+    width: 44px;
+    height: 44px;
+    border: 0 !important;
+    border-radius: 0;
+    background: #fff !important;
+    margin-bottom: 2px !important;
+    position: relative;
+}
+
+.ld-stepper-minimal .step-circle .icon {
+    font-size: 20px;
+    line-height: 1;
+    color: #777 !important;
+}
+
+.ld-stepper-minimal .step-circle.ld-step-reached .icon {
+    color: #171717 !important;
+}
+
+.ld-stepper-minimal .ld-step-progress {
+    top: 21.5px;
+    height: 1px;
+    background: #ddd;
+}
+
+.ld-stepper-minimal .progress-line {
+    background: #171717;
+}
+
+.ld-stepper-minimal .step-label {
+    font-size: 12px;
+    font-weight: 400 !important;
+    line-height: 1.4;
+}
+
+.ld-stepper-minimal.ld-stepper-confirmed
+.step-circle .icon {
+    color: #171717 !important;
+}
+
+.ld-stepper-minimal.ld-stepper-confirmed
+.col-4:last-child .step-circle .icon {
+    background: #171717;
+    color: #fff !important;
+    border-radius: 50%;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ld-stepper-confirmed + .tab-content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+
+/* Final minimal stepper refinement */
+
+.checkout-stepper.ld-stepper-minimal {
+    border-bottom: 0 !important;
+    margin-bottom: 8px !important;
+}
+
+.ld-stepper-minimal.ld-stepper-confirmed .step-circle {
+    cursor: default !important;
+}
+
+.ld-stepper-minimal .ld-step-check {
+    display: block;
+    flex-shrink: 0;
+}
+
+.ld-stepper-minimal .step-circle {
+    width: 48px;
+}

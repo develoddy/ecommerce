@@ -57,7 +57,9 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                     <!--Nav step checkout-->
                     <ng-container *ngIf="isCheckoutNavVisible">
-                        <div class="checkout-stepper">
+                        <div class="checkout-stepper"
+                             [class.ld-stepper-minimal]="isPhysicalCheckout"
+                             [class.ld-stepper-confirmed]="isPhysicalCheckout && currentStep === 'successfull'">
                             <div class="container">
                                 <div class="row justify-content-center align-items-center position-relative">
                                     
@@ -72,8 +74,9 @@
                                         <div class="step-wrapper">
                                             <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
                                                  [style.background-color]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '#000' : '#ffffff'"
+                                                 [class.ld-step-reached]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull'"
                                                  [style.border]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '3px solid #000' : '3px solid #dee2e6'"
-                                                 (click)="currentStep !== 'resumen' && navigateToStep('resumen')">
+                                                 (click)="currentStep !== 'resumen' && !(isPhysicalCheckout && currentStep === 'successfull') && navigateToStep('resumen')">
                                                 <i class="icon anm anm-truck-l" 
                                                    [style.color]="currentStep === 'resumen' || currentStep === 'payment' || currentStep === 'successfull' ? '#ffffff' : '#6c757d'"></i>
                                             </div>
@@ -89,8 +92,9 @@
                                         <div class="step-wrapper">
                                             <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
                                                  [style.background-color]="currentStep === 'payment' || currentStep === 'successfull' ? '#000' : '#ffffff'"
+                                                 [class.ld-step-reached]="currentStep === 'payment' || currentStep === 'successfull'"
                                                  [style.border]="currentStep === 'payment' || currentStep === 'successfull' ? '3px solid #000' : '3px solid #dee2e6'"
-                                                 (click)="currentStep === 'successfull' && navigateToStep('payment')">
+                                                 (click)="!isPhysicalCheckout && currentStep === 'successfull' && navigateToStep('payment')">
                                                 <i class="icon anm anm-credit-card-l" 
                                                    [style.color]="currentStep === 'payment' || currentStep === 'successfull' ? '#ffffff' : '#6c757d'"></i>
                                             </div>
@@ -106,9 +110,26 @@
                                         <div class="step-wrapper">
                                             <div class="step-circle d-flex align-items-center justify-content-center mx-auto mb-2"
                                                  [style.background-color]="currentStep === 'successfull' ? '#000' : '#ffffff'"
+                                                 [class.ld-step-reached]="currentStep === 'successfull'"
                                                  [style.border]="currentStep === 'successfull' ? '3px solid #000' : '3px solid #dee2e6'">
-                                                <i class="icon anm anm-check-cil" 
+                                                <i *ngIf="!isPhysicalCheckout"
+                                                   class="icon anm anm-check-cil"
                                                    [style.color]="currentStep === 'successfull' ? '#ffffff' : '#6c757d'"></i>
+                                                <svg *ngIf="isPhysicalCheckout"
+                                                     class="ld-step-check"
+                                                     width="20" height="20"
+                                                     viewBox="0 0 20 20"
+                                                     aria-hidden="true">
+                                                    <circle cx="10" cy="10" r="9"
+                                                            [attr.fill]="currentStep === 'successfull' ? '#171717' : '#fff'"
+                                                            [attr.stroke]="currentStep === 'successfull' ? '#171717' : '#999'"/>
+                                                    <path d="M6 10 L9 13 L14 7"
+                                                          fill="none"
+                                                          [attr.stroke]="currentStep === 'successfull' ? '#fff' : '#999'"
+                                                          stroke-width="1.5"
+                                                          stroke-linecap="round"
+                                                          stroke-linejoin="round"/>
+                                                </svg>
                                             </div>
                                             <div class="step-label fw-semibold"
                                                  [style.color]="currentStep === 'successfull' ? '#222' : '#6c757d'">

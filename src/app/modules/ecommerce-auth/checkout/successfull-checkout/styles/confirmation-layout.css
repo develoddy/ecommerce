@@ -24,3 +24,36 @@
 .ld-confirmation .money {
   font-family: inherit;
 }
+
+.ld-confirmation {
+  box-sizing: border-box;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.ld-confirmation .ld-confirmation-layout > div > .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.ld-confirmation .ld-confirmation-toggle,
+.ld-confirmation .ld-confirmation-mobile-total {
+  display: none;
+}
+
+/* Align order columns */
+
+.ld-confirmation .ld-confirmation-layout {
+    align-items: flex-start !important;
+}
+
+.ld-confirmation .ld-confirmation-summary {
+    align-self: flex-start !important;
+}
+
+@media (min-width: 992px) {
+    .ld-confirmation .ld-confirmation-summary {
+        margin-top: 0 !important;
+    }
+}

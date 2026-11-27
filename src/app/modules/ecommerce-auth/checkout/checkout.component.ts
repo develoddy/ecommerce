@@ -717,6 +717,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
    * Permite navegar entre pasos del checkout
    */
   navigateToStep(step: string): void {
+    if (this.isPhysicalCheckout && this.currentStep === 'successfull') {
+      return;
+    }
+
     if (step === 'resumen' && this.currentStep !== 'resumen') {
       this._router.navigate(['/', this.country, this.locale, 'account', 'checkout', 'resumen'], { 
         queryParams: { initialized: true, from: 'stepper' }

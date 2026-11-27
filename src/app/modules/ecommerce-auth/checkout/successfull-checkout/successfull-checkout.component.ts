@@ -34,7 +34,7 @@ declare function alertSuccess([]): any;
   styleUrls: [
     './successfull-checkout.component.css',
     './styles/confirmation-layout.css',
-    './styles/confirmation-success.css',
+    './styles/confirmation-success.css', './styles/confirmation-processing.css',
     './styles/confirmation-order.css',
     './styles/confirmation-delivery.css',
     './styles/confirmation-actions.css',
@@ -42,6 +42,13 @@ declare function alertSuccess([]): any;
   ],
 })
 export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
+
+  get isConfirmationSecureConnection(): boolean {
+    return typeof window !== 'undefined'
+      && window.location.protocol === 'https:';
+  }
+
+
   @ViewChild('paypal', { static: true }) paypalElement?: ElementRef;
   euro = '€';
   listAddressClients: any = [];
@@ -373,6 +380,23 @@ export class SuccessfullCheckoutComponent implements OnInit, OnDestroy {
       this.analyticsService.trackPurchase(String(sale.id), value, sale.currency_total || 'EUR', items);
       localStorage.setItem(dedupeKey, '1');
     });
+  }
+
+  orderReferenceCopyStatus = '';
+
+  async copyOrderReference(reference: string): Promise<void> {
+    this.orderReferenceCopyStatus = '';
+
+    try {
+      if (!reference || !navigator.clipboard) {
+        throw new Error('Clipboard unavailable');
+      }
+
+      await navigator.clipboard.writeText(String(reference));
+      this.orderReferenceCopyStatus = 'copied';
+    } catch {
+      this.orderReferenceCopyStatus = 'error';
+    }
   }
 
   successPayStripe() {

@@ -70,3 +70,35 @@
         gap: 12px 18px;
     }
 }
+
+/* Physical checkout - Minimal mobile stepper */
+
+@media (max-width: 767.98px) {
+    .checkout-stepper.ld-stepper-minimal {
+        padding: 8px 0 14px;
+        margin-bottom: 12px;
+    }
+
+    .ld-stepper-minimal .step-circle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .ld-stepper-minimal .step-circle .icon {
+        font-size: 18px;
+    }
+
+    .ld-stepper-minimal .ld-step-progress {
+        top: 21.5px;
+        height: 1px;
+    }
+
+    .ld-stepper-minimal .step-label {
+        font-size: 11px;
+    }
+
+    .ld-stepper-minimal .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

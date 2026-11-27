@@ -46,3 +46,78 @@
   font-family: inherit !important;
   font-size: 14px !important;
 }
+
+/* Minimal confirmation hierarchy */
+
+.ld-confirmation .ld-confirmation-success {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 20px !important;
+}
+
+.ld-confirmation .ld-confirmation-success .d-inline-block.px-4 {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 8px 0 !important;
+    margin-top: 12px !important;
+}
+
+
+/* Final order reference hierarchy */
+
+.ld-confirmation .ld-confirmation-success {
+    padding-top: 0 !important;
+    padding-bottom: 16px !important;
+    margin-bottom: 16px !important;
+}
+
+.ld-confirmation .ld-confirmation-success p.mb-4 {
+    margin-bottom: 12px !important;
+}
+
+.ld-confirmation .ld-confirmation-success .d-inline-block.px-4 {
+    margin-top: 4px !important;
+}
+
+.ld-confirmation .ld-confirmation-success strong.ld-order-reference {
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    letter-spacing: .3px !important;
+    line-height: 1.4;
+    user-select: text;
+}
+
+.ld-confirmation .ld-reference-actions {
+    margin-top: 4px;
+}
+
+.ld-confirmation .ld-copy-reference {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 4px 8px;
+    border: 0;
+    background: transparent;
+    color: #555;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.ld-confirmation .ld-copy-reference:hover {
+    color: #171717;
+    text-decoration: underline;
+}
+
+.ld-confirmation .ld-copy-reference:focus-visible {
+    outline: 2px solid #171717;
+    outline-offset: 2px;
+}
+
+.ld-confirmation .ld-copy-status {
+    display: block;
+    font-size: 12px;
+    color: #555;
+}
