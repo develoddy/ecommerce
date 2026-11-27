@@ -2,6 +2,14 @@
  * 📦 Modelo de estado de tracking
  * Combina datos de Printful API + Base de datos local
  */
+export type CommercialOrderStatus =
+  | 'pending_confirmation'
+  | 'confirmed'
+  | 'production'
+  | 'partially_shipped'
+  | 'shipped'
+  | 'delivered';
+
 export interface TrackingStatus {
   // Identificadores
   orderId: string;              // ID de Printful
@@ -9,6 +17,8 @@ export interface TrackingStatus {
   
   // Estado del pedido
   status: PrintfulOrderStatus;
+  commercialStatus?: CommercialOrderStatus;
+  exceptions?: string[];
   progress: number;             // 0-100 para barra de progreso
   
   // Items del pedido (desde Printful)
